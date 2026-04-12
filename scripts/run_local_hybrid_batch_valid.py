@@ -1,0 +1,285 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
+
+import pandas as pd
+
+THIS_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = THIS_DIR.parent
+SRC_ROOT = PROJECT_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
+from trim.data.datasets import list_tasks
+from trim.utils.io import load_json, save_json
+
+try:
+    from tqdm.auto import tqdm
+except ImportError:
+    def tqdm(iterable=None, **kwargs):
+        return iterable
+
+
+FEATURE_CONFIG = "configs/features/fg_top_level_plus_rdkit_descriptors_and_pka_easy_to_NLP_Lv1.json"
+FEATURE_SET_NAME = "fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1"
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Train pairwise models and evaluate local-only/hybrid valid performance in parallel."
+    )
+    parser.add_argument("--tasks", default=None, help="Comma-separated task names. Defaults to all tasks.")
+    parser.add_argument("--exclude-tasks", default="BBB_Martins", help="Comma-separated task names to exclude.")
+    parser.add_argument("--python-executable", default=sys.executable)
+    parser.add_argument("--max-parallel-tasks", type=int, default=4)
+    parser.add_argument("--pair-n-jobs", type=int, default=64)
+    parser.add_argument("--top-k", type=int, default=4)
+    parser.add_argument("--allow-same-scaffold", action="store_true", default=True)
+    parser.add_argument("--strict-cross-scaffold", action="store_true")
+    parser.add_argument("--pair-output-root", default="outputs/models/pair_ebm/all_other_tasks_topk4_same_scaffold_njobs64_fg_plus_rdkit")
+    parser.add_argument("--local-output-root", default="outputs/metrics/local_only/all_other_tasks_topk4_same_scaffold_njobs64_fg_plus_rdkit")
+    parser.add_argument("--hybrid-output-root", default="outputs/metrics/hybrid/all_other_tasks_topk4_same_scaffold_njobs64_fg_plus_rdkit")
+    parser.add_argument("--log-root", default="outputs/logs/local_hybrid_batch_valid")
+    parser.add_argument("--global-model-root", default="outputs/models/global_ebm/all_tasks_njobs16_parallel")
+    parser.add_argument("--summary-output", default="outputs/metrics/local_hybrid_batch_valid_summary_fg_plus_rdkit.json")
+    return parser.parse_args()
+
+
+def resolve_tasks(args: argparse.Namespace) -> list[str]:
+    if args.tasks:
+        tasks = [item.strip() for item in args.tasks.split(",") if item.strip()]
+    else:
+        tasks = list_tasks()
+
+    excluded = {item.strip() for item in args.exclude_tasks.split(",") if item.strip()}
+    return [task for task in tasks if task not in excluded]
+
+
+def run_and_log(command: list[str], log_path: Path) -> None:
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    with log_path.open("w", encoding="utf-8") as handle:
+        handle.write("COMMAND:\n")
+        handle.write(" ".join(command))
+        handle.write("\n\n")
+        handle.flush()
+        process = subprocess.run(
+            command,
+            cwd=str(PROJECT_ROOT),
+            stdout=handle,
+            stderr=subprocess.STDOUT,
+            check=False,
+            text=True,
+        )
+    if process.returncode != 0:
+        raise RuntimeError(f"Command failed with exit code {process.returncode}: {' '.join(command)}")
+
+
+def build_allow_same_scaffold_flag(strict_cross_scaffold: bool) -> list[str]:
+    if strict_cross_scaffold:
+        return []
+    return ["--allow-same-scaffold"]
+
+
+def run_task_pipeline(task: str, args: argparse.Namespace) -> dict[str, object]:
+    allow_same_scaffold_flag = build_allow_same_scaffold_flag(args.strict_cross_scaffold)
+    pair_task_root = Path(args.pair_output_root) / task / FEATURE_SET_NAME
+    local_task_root = Path(args.local_output_root) / task
+    hybrid_task_root = Path(args.hybrid_output_root) / task
+    log_root = Path(args.log_root) / task
+
+    pos_command = [
+        args.python_executable,
+        "-u",
+        "scripts/train_pair_pos.py",
+        "--tasks",
+        task,
+        "--feature-config",
+        FEATURE_CONFIG,
+        "--top-k",
+        str(args.top_k),
+        "--n-jobs",
+        str(args.pair_n_jobs),
+        "--output-dir",
+        args.pair_output_root,
+        *allow_same_scaffold_flag,
+    ]
+    run_and_log(pos_command, log_root / "train_pair_pos.log")
+
+    neg_command = [
+        args.python_executable,
+        "-u",
+        "scripts/train_pair_neg.py",
+        "--tasks",
+        task,
+        "--feature-config",
+        FEATURE_CONFIG,
+        "--top-k",
+        str(args.top_k),
+        "--n-jobs",
+        str(args.pair_n_jobs),
+        "--output-dir",
+        args.pair_output_root,
+        *allow_same_scaffold_flag,
+    ]
+    run_and_log(neg_command, log_root / "train_pair_neg.log")
+
+    pos_bundle_path = pair_task_root / "pos_model_bundle.pkl"
+    neg_bundle_path = pair_task_root / "neg_model_bundle.pkl"
+    global_bundle_path = Path(args.global_model_root) / task / FEATURE_SET_NAME / "model_bundle.pkl"
+
+    local_command = [
+        args.python_executable,
+        "-u",
+        "scripts/run_local_only.py",
+        "--task",
+        task,
+        "--split",
+        "valid",
+        "--pos-bundle-path",
+        str(pos_bundle_path),
+        "--neg-bundle-path",
+        str(neg_bundle_path),
+        "--feature-config",
+        FEATURE_CONFIG,
+        "--top-k-pos",
+        str(args.top_k),
+        "--top-k-neg",
+        str(args.top_k),
+        "--output-dir",
+        str(local_task_root),
+        *allow_same_scaffold_flag,
+    ]
+    run_and_log(local_command, log_root / "run_local_only.log")
+
+    hybrid_command = [
+        args.python_executable,
+        "-u",
+        "scripts/run_hybrid.py",
+        "--task",
+        task,
+        "--split",
+        "valid",
+        "--pos-bundle-path",
+        str(pos_bundle_path),
+        "--neg-bundle-path",
+        str(neg_bundle_path),
+        "--global-bundle-path",
+        str(global_bundle_path),
+        "--feature-config",
+        FEATURE_CONFIG,
+        "--top-k-pos",
+        str(args.top_k),
+        "--top-k-neg",
+        str(args.top_k),
+        "--output-dir",
+        str(hybrid_task_root),
+        *allow_same_scaffold_flag,
+    ]
+    run_and_log(hybrid_command, log_root / "run_hybrid.log")
+
+    hybrid_metrics_path = hybrid_task_root / f"{task}__valid_molecule_level_metrics.json"
+    metrics_payload = load_json(hybrid_metrics_path)
+    return {
+        "task": task,
+        "metrics_path": str(hybrid_metrics_path.resolve()),
+        "metrics": metrics_payload["metrics"],
+        "logs": {
+            "train_pair_pos": str((log_root / "train_pair_pos.log").resolve()),
+            "train_pair_neg": str((log_root / "train_pair_neg.log").resolve()),
+            "run_local_only": str((log_root / "run_local_only.log").resolve()),
+            "run_hybrid": str((log_root / "run_hybrid.log").resolve()),
+        },
+    }
+
+
+def build_summary_rows(results: list[dict[str, object]]) -> pd.DataFrame:
+    rows: list[dict[str, object]] = []
+    for result in results:
+        metrics = result["metrics"]
+        local_metrics = metrics["local_only"]
+        global_metrics = metrics["global_only"]
+        hybrid_metrics = metrics["hybrid"]
+        rows.append(
+            {
+                "task": result["task"],
+                "local_macro_f1": local_metrics["macro_f1"],
+                "local_roc_auc": local_metrics["roc_auc"],
+                "local_balanced_accuracy": local_metrics["balanced_accuracy"],
+                "global_macro_f1": global_metrics["macro_f1"],
+                "global_roc_auc": global_metrics["roc_auc"],
+                "global_balanced_accuracy": global_metrics["balanced_accuracy"],
+                "hybrid_macro_f1": hybrid_metrics["macro_f1"],
+                "hybrid_roc_auc": hybrid_metrics["roc_auc"],
+                "hybrid_balanced_accuracy": hybrid_metrics["balanced_accuracy"],
+                "lambda": metrics["lambda"],
+                "metrics_path": result["metrics_path"],
+            }
+        )
+    return pd.DataFrame(rows).sort_values(by="hybrid_macro_f1", ascending=False).reset_index(drop=True)
+
+
+def main() -> int:
+    args = parse_args()
+    if args.strict_cross_scaffold:
+        args.allow_same_scaffold = False
+
+    tasks = resolve_tasks(args)
+    if not tasks:
+        raise ValueError("No tasks selected for batch run.")
+
+    print(
+        f"[batch-valid] num_tasks={len(tasks)} max_parallel_tasks={args.max_parallel_tasks} "
+        f"pair_n_jobs={args.pair_n_jobs} top_k={args.top_k} "
+        f"strict_cross_scaffold_pairs={args.strict_cross_scaffold}"
+    )
+
+    results: list[dict[str, object]] = []
+    with ThreadPoolExecutor(max_workers=args.max_parallel_tasks) as executor:
+        future_to_task = {
+            executor.submit(run_task_pipeline, task, args): task
+            for task in tasks
+        }
+        for future in tqdm(as_completed(future_to_task), total=len(future_to_task), desc="Completed tasks"):
+            task = future_to_task[future]
+            result = future.result()
+            results.append(result)
+            metrics = result["metrics"]
+            print(
+                f"[batch-valid] finished task={task} "
+                f"local_macro_f1={metrics['local_only']['macro_f1']:.4f} "
+                f"hybrid_macro_f1={metrics['hybrid']['macro_f1']:.4f} "
+                f"lambda={metrics['lambda']:.2f}"
+            )
+
+    summary_df = build_summary_rows(results)
+    summary_json_path = Path(args.summary_output)
+    summary_json_path.parent.mkdir(parents=True, exist_ok=True)
+    summary_csv_path = summary_json_path.with_suffix(".csv")
+    summary_df.to_csv(summary_csv_path, index=False)
+
+    payload = {
+        "config": {
+            "tasks": tasks,
+            "feature_config": FEATURE_CONFIG,
+            "pair_n_jobs": args.pair_n_jobs,
+            "top_k": args.top_k,
+            "strict_cross_scaffold_pairs": args.strict_cross_scaffold,
+            "max_parallel_tasks": args.max_parallel_tasks,
+            "python_executable": args.python_executable,
+        },
+        "summary_csv": str(summary_csv_path.resolve()),
+        "results": results,
+    }
+    save_json(summary_json_path, payload)
+    print(json.dumps(payload, indent=2, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
