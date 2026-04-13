@@ -6,7 +6,7 @@ If you are on `node002`, default to the `vllm` conda environment when you need R
 
 ## Current Progress Snapshot
 
-截至目前，**global 单分子 EBM 迁移阶段已经完成**，当前进度如下：
+截至目前，**纯 ML 主线（global / pairwise local / hybrid）已经完成**，当前进度如下：
 
 - 已在 `TRIM` 下建立新的项目骨架与脚本入口。
 - 已把 clean split data、RDKit/pKa feature、FG feature、similarity cache 接到 `TRIM` 本地路径下，目前大文件先采用 soft link 方式迁移。
@@ -44,7 +44,9 @@ If you are on `node002`, default to the `vllm` conda environment when you need R
   - `scripts/run_local_hybrid_batch_test.py`
     - 复用已有 pairwise bundle，批量跑多任务 test
     - 支持为特定任务覆盖 pair bundle 根目录，例如 `BBB_Martins`
-- 当前下一步重点应转到 **pairwise / local 模块**，不要重复花时间在 global EBM 迁移上，除非是为了配合 local / hybrid 接口做必要的小修改。
+- 当前状态判断：
+  - **纯 ML 主线任务已经完成**
+  - 后续若继续推进，重点应转到 **reasoning 重写**，或做更细的补充分析（例如 AD / similarity 分桶），而不是继续补基础的 pure ML pipeline
 
 ## 1. 项目背景
 
@@ -631,12 +633,20 @@ pair-level 主要建议看：
 - 能控制 cross-scaffold 邻居限制
 - 能生成 `[base_i, delta_i]` 形式的 pair 特征
 
+状态：
+- **已完成**
+- 已支持 train-only retrieval、正负邻居分开构造、same-scaffold 开关、批量 pair feature 生成。
+
 ### Phase 3：训练两个 pairwise EBM
 目标：
 - 训练 `pair_EBM_pos`
 - 训练 `pair_EBM_neg`
 - 不使用 main features
 - 仅使用 `(base_i, delta_i)` 的 interaction
+
+状态：
+- **已完成**
+- 已在 16 个任务上跑通 pairwise 训练，并用于后续 valid/test molecule-level evaluation。
 
 ### Phase 4：local-only molecule classifier
 目标：
@@ -645,12 +655,20 @@ pair-level 主要建议看：
 - 聚合得到 `S_local`
 - 报 molecule-level performance
 
+状态：
+- **已完成**
+- 已完成 16 个任务的 valid/test local-only molecule-level 评估与总表汇总。
+
 ### Phase 5：global + local hybrid
 目标：
 - 融合 `S_global` 和 `S_local`
 - 在 valid 上调 λ
 - 在 test 上报告最终结果
 - 与 global-only / local-only 对比
+
+状态：
+- **已完成**
+- 已完成 16 个任务的 valid/test hybrid 评估，并保存每个任务的 valid-selected `lambda`。
 
 ### Phase 6：分析与保障
 目标：
@@ -661,6 +679,11 @@ pair-level 主要建议看：
 补充进度：
 - 已经可以直接从现有 bundle 生成 global / pairwise 的解释性可视化。
 - pairwise 可视化当前采用 **2D heatmap**，因为模型项是 `f_i(base_i, delta_i)`，不是单变量曲线。
+
+状态：
+- **核心结论已完成**
+- 已经通过 16 任务 valid/test 对比明确看到了 `global-only / local-only / hybrid` 的整体增益格局。
+- `similarity / AD` 分桶分析若后续需要，可以作为补充研究项，但不影响“纯 ML 主线已完成”的判断。
 
 ---
 
@@ -678,13 +701,17 @@ pair-level 主要建议看：
 当前状态：
 - 第 1 条：**已基本完成**
 - 第 2 条：**已完成**
-- 第 3-5 条：**尚未完成，当前主攻方向应为 pairwise/local/hybrid**
+- 第 3-5 条：**已完成**
 
 ### 实验层面
 1. 能清楚报告 pair-level 与 molecule-level 两层指标
 2. 能清楚比较 global-only / local-only / hybrid
 3. 能说明 scaffold split 下 local 模块是否真的有帮助
 4. 能说明 local 模块在哪些 similarity / AD 区间更可靠
+
+当前状态：
+- 第 1-3 条：**已完成**
+- 第 4 条：**可选补充项，当前尚未系统做分桶报告，但不影响纯 ML 主线完成**
 
 ### 研究层面
 1. 如果 local-only 明显太弱，要知道是检索问题、pair teacher 问题还是聚合问题
@@ -759,3 +786,668 @@ pair-level 主要建议看：
 第一部分是已有的 global 单分子 EBM，用于提供全局 descriptor-level 先验；  
 第二部分是新增的两个 pairwise EBM，用于学习 query molecule 相对正类邻居与负类邻居的局部变化方向，并通过 train-only 邻居检索与分数聚合形成 molecule-level local evidence。  
 本阶段的重点是验证 global-only、local-only 以及 global+local hybrid 三套系统在 scaffold split 下的性能与稳定性，在此基础上再推进到后续的 reasoning 文本重写。
+
+---
+
+## 23. 下一阶段：Reasoning / CoT 重写（将纯 ML 决策过程转成高质量 SFT data）
+
+### 23.1 当前阶段切换的背景
+
+截至目前，**纯 ML 主线已经完成**：
+
+- global 单分子 EBM 已完成并验证
+- 两个 pairwise local EBM 已完成并验证
+- local-only / hybrid 的 molecule-level 评估已经完成
+- 16 个任务的 valid / test 结果已汇总
+- 当前结论是：纯 ML pipeline 已经基本跑通，下一步重点不应该继续补基础 ML，而应该转入 **reasoning 重写阶段**
+
+因此，从现在开始，项目的核心目标从：
+
+- “继续提升或重构纯 ML 主线”
+
+切换为：
+
+- “把已经验证过的可解释 ML 决策过程，系统化地转写成高质量、可控、可筛选的 reasoning / CoT SFT data”
+
+---
+
+### 23.2 这一阶段的根本目标
+
+本阶段的最终目标不是让 LLM 从零自己发明化学推理，而是：
+
+1. 先利用已经训练好的 **global EBM + local pairwise EBM + aggregation / hybrid**  
+   产出结构化、可信的 **evidence objects**
+
+2. 再让 LLM 在受约束条件下，把这些 evidence objects 改写成：
+   - 更易读
+   - 更自然
+   - 更像高质量 scientific reasoning
+   - 但仍然忠于原始纯 ML 证据
+
+3. 最终形成可用于后续 SFT / distilled reasoning data 的高质量样本集
+
+换句话说：
+
+**这一阶段不是“让 LLM 替我们做分类”**，而是  
+**“让 LLM 把已经存在的可解释决策证据改写成 reasoning”**
+
+---
+
+### 23.3 为什么不能直接把 EBM 图翻译成文本
+
+#### 23.3.1 对 global EBM 而言
+某些 feature（例如 BBB 中的 TPSA）可能有很多 bins，直接把 bin 编号、bin 边界、bin contribution 原样翻成文字会非常糟糕：
+
+- 不可读
+- 不自然
+- 不像人类 reasoning
+- 容易产生伪精确解释
+- 很多时候曲线局部近似线性，强行粗暴合并成几个大区间也未必合理
+
+因此：
+
+**不能把“模型内部表示”直接当成“自然语言解释表示”**
+
+#### 23.3.2 对 pairwise EBM 而言
+pairwise EBM 的单个项是：
+
+`f_i(base_i, delta_i)`
+
+它本质上是一个二维 interaction 面。  
+也不能直接把 heatmap 的每个 cell 或每个 bin 原样翻成句子。
+
+#### 23.3.3 正确做法
+对于 reasoning，我们真正需要的不是：
+
+- bin id
+- 图上的每个离散点
+- 原始 heatmap cell
+
+而是：
+
+- 当前样本上最重要的证据是什么
+- 这些证据是在支持、谨慎还是反对
+- 这些证据在 playbook / literature 语义里意味着什么
+- global 与 local 是否一致
+- 最后为什么保留这个标签
+
+也就是说，本阶段真正要做的是：
+
+**建立一层 evidence abstraction layer**  
+把纯 ML 证据先抽象成结构化证据对象，再交给 LLM 改写。
+
+---
+
+### 23.4 本阶段的核心思想：三层模式
+
+1. per important feature raw evidence objects
+2. 完整决策过成的中间草稿 draft，基本上就是每个feature的值还有决策推动方向的hint的短句拼起来
+3. 利用playbook做最终 polished reasoning
+
+---
+
+### 23.5 本阶段的设计原则
+
+#### 原则 1：ML 证据优先，LLM 只负责改写
+LLM 不负责重新做分类，不负责重新决定 label。  
+LLM 的职责是：
+
+- 读取中间草稿 draft
+- 在 playbook 约束下组织语言
+- 生成自然语言 reasoning
+
+#### 原则 2：playbook 是语义解释器，不是第二个分类器
+DeepResearch / literature / playbook 的作用不是覆盖模型，而是提供：
+
+- 每种性质在文献中的常见语义
+- 每种性质在任务中的常见作用背景
+- 常见 caution / anti-pattern
+- 合理的专业表述方式
+
+不应该让 playbook 直接代替模型做决策。
+
+#### 原则 3：global 与 local 必须分开建模、分开解释
+global 与 local 本来来自不同 teacher：
+
+- global = 单分子 EBM
+- local = 两个 pairwise EBM + 邻居聚合
+
+因此 reasoning 里也必须保留这两个来源的区分。
+
+#### 原则 4：先结构化，再自然语言化
+必须先抽 evidence objects，再做比较自然语言化的draft，再做自然语言。  
+不要直接从图、分数、CSV 生文本。
+
+#### 原则 5：不强行合理化错误样本
+如果最终 global 和 local 的预测都和 GT 不一致，很难形成高质量合理化解释，则应丢弃 sample，而不是强行扭转标签到GT label。
+
+---
+
+### 23.6 本阶段的总体产物
+
+本阶段要新增的核心产物是：
+
+#### 1. Evidence extraction outputs
+结构化证据对象，例如：
+- `outputs/reasoning_evidence/.../*.json`
+
+#### 2. Playbook / literature background
+任务级、property 级解释背景，例如：
+- `playbooks/BBB_Martins.md`
+- `playbooks/DILI.md`
+
+#### 3. LLM rewritten reasoning outputs
+单步生成的最终 reasoning，例如：
+- `outputs/reasoning_text/.../*.jsonl`
+- 每条含原始 evidence、中间draft、最终 reasoning、keep/drop 标记、元信息
+
+#### 4. Dataset filtering / quality control reports
+用于筛 SFT data 的质量控制结果，例如：
+- 保留率
+- global/local 一致性分布
+- 邻居支持强度分布
+- 被丢弃样本原因和数量统计
+
+---
+
+## 24. Reasoning 阶段的总体 pipeline
+
+### 24.1 输入
+输入不是原始 molecule，而是已经完成纯 ML 推理后的结果集合，包括：
+
+- global EBM bundle / per-sample feature contributions
+- pairwise EBM bundle / per-pair local effect contributions
+- neighbor retrieval 结果和 similarity 信息
+- local aggregation 结果
+- hybrid / local / global 的最终预测分数
+- GT label
+- task metadata
+
+### 24.2 中间步骤
+#### Step A：evidence extraction
+将纯 ML 结果抽取成结构化 evidence objects
+
+#### Step B：贡献大的feature的evidence hint还有最终的prediction连起来变成中间draft
+把每个重要feature的值，怎么推动最终决策变化连起来，加上最后的prediction，变成这个sample的中间draft
+
+#### Step C：LLM rewriting
+让 LLM 在 playbook 提供的指导下，将中间 draft 改写成自然语言 reasoning
+
+#### Step D：quality control (可选，第一版实现可以先不考虑这个)
+检查最终 reasoning 是否：
+- 忠于 evidence
+- 没有 hallucination
+- 没有自相矛盾
+- 语言质量足够高
+
+### 24.3 输出
+最终输出适用于 SFT 的样本，例如：
+
+- instruction
+- structured evidence
+- final reasoning
+- target label
+- metadata
+- keep/drop
+- chosen teacher
+
+---
+
+## 25. Playbook / literature 的目的是什么
+
+### 25.1 为什么需要 playbook
+单靠 EBM contribution 很难直接说出好的人类语言。  
+例如：
+
+- TPSA 的贡献为正
+- HBD 的贡献为负
+- 某个 pairwise `(base, delta)` interaction 推动正类
+
+这些都还只是“模型语言”，不是自然科学语言。
+
+playbook 的作用是把这些信号转成：
+- 极性负担
+- 氢键负担
+- 脂溶性平衡
+- efflux 风险
+- 电离倾向
+- 局部结构变化的可能机制
+
+### 25.2 playbook 的正确定位
+playbook 不是“另一个规则分类器”，而是：
+
+#### Property-level semantic prior
+例如：
+- 对 BBB，TPSA 一般和极性负担相关
+- 高 HBD/HBA 往往增加渗透障碍
+- 但单个 descriptor 从来不应该被当成绝对规则
+
+#### Task-level writing prior
+例如：
+- 对 BBB 的写法更偏 permeability / polarity / lipophilicity / H-bond burden
+- 对 DILI 的写法更偏 reactivity / metabolic liability / lipophilic burden / bioactivation risk
+
+#### Language normalization prior
+例如：
+- 如何用更自然、更稳健的表述方式改写“feature contribution”
+
+### 25.3 playbook 的组织形式
+
+每个任务都会有已经由 DeepResearch 系统生成好的playbook，你不用关注怎么生成playbook，所有playbook会分任务放在对应目录下面
+
+---
+
+## 26. Evidence objects 的设计（最关键）
+
+本阶段最重要的工程任务不是 prompt，而是 **evidence schema**。
+
+### 26.1 顶层样本对象
+每个 query molecule 最终应先被抽成一个统一 JSON 对象，建议包括：
+
+- `sample_id`
+- `task`
+- `split`
+- `smiles`
+- `gt_label`
+- `global_prediction`
+- `local_prediction`
+- `hybrid_prediction`
+- `global_score`
+- `local_score`
+- `hybrid_score`
+- `keep_for_reasoning`
+- `drop_reason`（若丢弃）
+- `global_decision_evidence`
+- `global_middle_draft`
+- `local_per_neighbor_decision_evidence`
+- `local_per_neighbor_middle_draft`
+- `local_summary_middle_draft`
+- `hybrid_summary_middle_draft`
+
+---
+
+### 26.2 Global evidence 的结构
+global 部分来自单分子 EBM。
+
+每个 query 应抽取贡献绝对值最大的若干个特征，无论将prediction最终推向哪个方向
+
+每个 global feature evidence 建议至少包括：
+
+- `feature_name`
+- `feature_value`
+- `contribution` (推向 label (A) 还是 (B) 的方向)
+- `contribution_rank`
+- `local_trend`（在当前值附近往上/往下的趋势，如果可提取）
+- `text_hint`
+
+#### 举例
+对于 TPSA：
+- 不是去说“落在第 428 个 bin”
+- 而是抽：
+  - 当前值
+  - 当前 contribution (保留正负号)
+  - 当前附近局部趋势
+  - 一个简短自然语言 text hint
+
+### 26.3 关于“很多 bins 的 feature”如何处理
+不要强行把所有 bins 合并成几个大区间再解释。  
+对于像 TPSA 这样近似连续、局部近似线性的曲线，更合理的方式是：
+
+#### 解释单位不是“bin”
+而是：
+- 当前点的数值
+- 当前点的 contribution
+- 当前点附近的局部斜率或局部变化趋势
+
+因此，在抽 evidence 时，对 global feature 要优先提取：
+
+1. 当前值
+2. 当前 contribution
+3. 当前附近的 local directional behavior
+
+而不是直接提取“粗暴区间标签”。
+
+---
+
+### 26.4 Local evidence 的结构
+local 部分来自两个 pairwise EBM 以及对应的 neighbors。
+
+每个 query 当前默认有：
+- 4 个 positive neighbors
+- 4 个 negative neighbors
+
+每个 neighbor 都应先单独抽取 evidence，但自然语言阶段不一定全部展开成长段。
+
+#### 每个 neighbor evidence 应至少包括
+- `neighbor_id`
+- `neighbor_SMILES`
+- `neighbor_label`
+- `neighbor_similarity`
+- `neighbor_scaffold`
+- `pair_model_type`（positive_neighbor_model / negative_neighbor_model）
+- `pair_score`
+- `top_pair_terms`
+
+#### 每个 pair term 应包括
+- `feature_name`
+- `base_value`
+- `delta_value`
+- `contribution` (推向 label (A) 还是 (B) 的方向)
+- `text_hint`
+
+#### 注意
+这里的 `text_hint` 仍然应是短的、模板化的、证据级描述，不是最终 polished reasoning。
+
+---
+
+### 26.5 Local summary evidence 的结构
+
+把原始 `weighted average` 语义化，而不是直接把数值写进 reasoning。
+
+---
+
+### 26.6 Final decision evidence 的结构
+最终还需要一个统一的 decision evidence，建议包括：
+
+- `teacher_selected`
+- `teacher_score`
+- `teacher_prediction`
+- `gt_label`
+- `global_local_relation`（agree / conflict / weak_agree / weak_conflict）
+- `final_stance`
+- `confidence`
+- `why_keep_or_drop`
+- `narrative_focus`（global / local / hybrid / mixed）
+
+---
+
+## 27. Sample keep/drop 策略
+
+如果所有 global 和 local prediciton 都和 GT 不一致，则丢弃
+
+---
+
+## 28. Global / Local / Hybrid 的 reasoning 写法建议
+
+### 28.1 Global reasoning
+global 部分建议写成：
+
+- 当前样本的全局 descriptor-level 趋势
+- 哪些 feature 提供支持
+- 哪些 feature 提供 caution
+- 这些 evidence 对应什么样的 property-level 语义
+
+不要写成：
+- “bin 428 对应 +0.137”
+
+应写成：
+- “整体上，这个分子的极性负担没有落入明显不利区域”
+- “有限的氢键负担与适度的脂溶性共同提供温和支持”
+- “也存在某些 caution signal，但强度较弱”
+
+### 28.2 Per-neighbor local reasoning
+每个邻居都需要先做结构化分析，但自然语言层面不一定要全部展开成长段。
+
+建议每个邻居先抽一个微分析对象，例如：
+- 一句话 summary
+- 1–2 个 top local effects
+- 该邻居总体是支持、谨慎还是反证
+
+### 28.3 Local summary reasoning
+local summary 应写成：
+
+- 多数邻居支持什么
+- 主要反证来自哪里
+- 邻居间是否一致
+- 为什么 local 证据总体支持或反对该标签
+
+不要直接写：
+- “weighted average = 0.73”
+
+而是写：
+- “多数相似邻居给出一致支持，主要集中在较低极性负担这一模式”
+- “虽然存在少量反证，但相似度更高的邻居总体仍偏向正类”
+
+### 28.4 Hybrid reasoning
+不需要在文本里显式出现 `lambda`。  
+原因：
+- `lambda` 是数值融合策略，不是人类语言层面的核心解释对象
+- reasoning 应表达的是“全局与局部如何相互印证、或哪一侧最终占上风”
+
+因此 hybrid 的文本重心应放在：
+- global 与 local 是否一致
+- 若不一致，哪边主导、为什么
+- 最终结论如何形成
+
+---
+
+## 29. 为什么要把 8 个邻居先都抽证据，但自然语言阶段不一定都展开
+
+当前 local 模块默认是：
+- 4 个正类邻居
+- 4 个负类邻居
+- 共 8 个 neighbor comparisons
+
+### 必须全部先抽结构化证据
+因为：
+- 最终 local summary 需要知道所有邻居的支持/反证格局
+- 后续 quality control 也需要看到完整局部证据分布
+
+### 但最终自然语言不一定 8 个都写成长段
+因为：
+- 太长
+- 太重复
+- 容易让 reasoning 变成机械复读
+- 会降低 SFT data 质量
+
+### 推荐做法
+#### 在 evidence 层面
+8 个邻居都保留
+
+#### 在最终文字层面
+- 可以只显式展开最重要的若干个邻居
+- 其余邻居通过 local summary 统一归纳
+
+例如：
+- 明确写 2 个最强支持邻居
+- 明确写 1 个最重要反证邻居
+- 剩下的用“其余相似邻居大体一致”进行总结
+
+---
+
+## 30. LLM 单步重写阶段怎么做
+
+### 30.1 输入
+LLM 输入应包括：
+
+- task name
+- GT label
+- selected teacher
+- keep/drop 标记
+- playbook relevant excerpts
+- structured global evidence
+- structured local evidence
+- structured local summary
+- structured final decision evidence
+
+### 30.2 输出
+LLM 单步输出建议至少包含：
+
+- `keep`
+- `teacher_used`
+- `main_support`
+- `main_caution`
+- `final_reasoning`
+
+也可以更丰富一点：
+
+- `global_stance`
+- `local_stance`
+- `global_local_relation`
+- `confidence`
+- `final_reasoning`
+
+### 30.3 对 LLM 的约束
+必须在 prompt 中明确要求：
+
+1. 不允许引入 evidence 中没有的新实验事实
+2. 不允许篡改 GT label
+3. 不允许改变 globle / local 的基本结论，但是可以根据实际 GT 改变 hybrid的结果确保SFT最终结论正确
+4. 不允许把弱证据写成决定性铁律
+5. 必须区分 global evidence 与 local evidence
+6. 必须体现支持证据与 caution / counterevidence
+7. 如果 evidence 冲突太高，应输出低质量或 drop，而不是硬写漂亮故事
+
+### 30.4 不要让 LLM 做什么
+不要让 LLM：
+- 重新做分类
+- 自己决定新的 label
+- 自己补充分子机制结论
+- 自己编造 feature effect
+
+LLM 在这一阶段只做：
+- 受约束的 evidence-to-reasoning rewriting
+
+---
+
+## 31. Reasoning 阶段的推荐目录与模块
+
+建议在现有 TRIM 项目中新增一个 reasoning 子系统。
+
+推荐新增结构例如：
+
+    src/trim/reasoning/
+    ├── playbooks/
+    │   ├── common_properties/
+    │   ├── tasks/
+    │   └── loaders.py
+    ├── evidence/
+    │   ├── global_evidence.py
+    │   ├── local_evidence.py
+    │   ├── local_summary.py
+    │   ├── teacher_selection.py
+    │   └── schemas.py
+    ├── prompts/
+    │   ├── reasoning_prompt_builder.py
+    │   └── prompt_templates.py
+    ├── generation/
+    │   ├── llm_rewrite.py
+    │   ├── validators.py
+    │   └── postprocess.py
+    ├── filtering/
+    │   ├── keep_drop_rules.py
+    │   └── quality_checks.py
+    └── pipelines/
+        ├── extract_reasoning_evidence.py
+        ├── build_reasoning_prompts.py
+        ├── generate_reasoning_text.py
+        └── build_sft_dataset.py
+
+---
+
+## 32. Reasoning 阶段的推荐开发顺序
+
+### Phase R1：定义 evidence schema
+目标：
+- 定义统一 JSON schema
+- 明确 global / local / final 三层 evidence 结构
+- 明确 keep/drop 和 teacher selection 字段
+
+这是整个 reasoning 阶段最关键的第一步。
+
+### Phase R2：实现 evidence extraction
+目标：
+- 从现有 global EBM bundle 中抽 global evidence
+- 从现有 pairwise EBM bundle + 邻居结果中抽 local evidence
+- 生成 local summary
+- 生成 final decision evidence
+
+### Phase R3：实现 filtering
+目标：
+- 实现 keep/drop 规则
+- 统计样本过滤结果
+
+### Phase R4：实现单步 LLM rewriting
+目标：
+- 中间 draft -> final reasoning
+- 确保输出不 hallucinate
+- 先做少量样本 sanity check
+
+### Phase R6：构建 reasoning SFT dataset
+目标：
+- 导出最终数据格式
+- 含 instruction / input / output / metadata
+- 可直接用于后续 SFT / distillation
+
+---
+
+## 33. 本阶段的成功标准
+
+### 工程层面
+1. 能从现有纯 ML 结果中稳定抽取 evidence objects 还有中间 draft
+2. playbook 能被程序化加载并注入 prompt
+3. teacher selection / filtering 能自动运行
+4. 能批量生成 reasoning 文本
+5. 能批量导出 reasoning SFT dataset
+
+### 数据质量层面
+1. 生成的 reasoning 忠于 evidence
+2. 不出现明显 hallucination
+3. global 与 local 证据边界清楚
+4. 样本中支持证据 / caution 证据 / 最终结论结构清晰
+5. 不把错误预测强行合理化
+
+### 研究层面
+1. 能回答“哪些纯 ML 样本值得转成 reasoning data”
+2. 能回答“global / local / hybrid 哪一种更适合作为 reasoning teacher”
+3. 能回答“playbook 是否真的提升了文本质量与稳定性”
+4. 能回答“哪些样本类型应该被过滤掉而不是保留”
+
+---
+
+## 34. 这一阶段明确暂时不要做的事
+
+1. 不要让 LLM 自由发挥重新做分类
+2. 不要跳过 evidence objects 还有中间draft直接从模型图写文本
+3. 不要把 literature / playbook 直接当第二个 classifier
+4. 不要为了文字好看而保留明显错误或 evidence 混乱的样本
+5. 不要急着做复杂的多阶段文本生成链条
+6. 不要把 bin id / heatmap cell 直接暴露到最终 reasoning 文本中
+
+---
+
+## 35. 给 Codex 的最终执行指令摘要（Reasoning 阶段）
+
+请按以下逻辑实现本阶段：
+
+1. 纯 ML 主线已经完成，当前阶段的任务是 **reasoning / CoT 重写**，而不是继续补基础 ML pipeline。
+2. 先实现 **evidence extraction layer**，把现有 global EBM、pairwise EBM、neighbor retrieval、aggregation / hybrid 结果转成统一的结构化 evidence objects。
+3. 不要直接把 EBM 的 bins、曲线、heatmap 原样翻成自然语言；必须先做 evidence abstraction。
+4. 对于 global 部分，不要粗暴依赖“大区间合并”；应优先抽取：
+   - 当前值
+   - 当前 contribution
+   - text hint
+5. 对于 local 部分：
+   - 8 个邻居都要先抽结构化证据
+   - 每个邻居保留 similarity、label、top local terms、stance
+   - 然后做 local summary
+7. 不要预设 hybrid 一定是最终 teacher。应实现动态 teacher selection：
+   - 根据 GT、一致性、证据强度和可写性来选择 global / local / hybrid
+8. 实现 keep/drop 规则：
+   - 如果 global,local,hybrid 的最终结果都和 GT 不一致，则丢弃，如果global,local中有一个和GT一样，则根据GT来合理化解释改写最终hybrid的过程并且最终预测为GT label确保结论正确且中间过程合理
+9. 最终采用两层产物：
+   - Level 1：structured evidence objects
+   - Level 2: global/local/hybrid的中间 draft
+   - Level 3：LLM 生成global evidence/local evidence/local summary/hybrid summary 的 polished reasoning
+10. 在 prompt 中严格限制 LLM：
+    - 不可 hallucinate
+    - 不可改 label
+    - 不可发明新证据
+    - 必须区分 global 与 local
+11. 最终导出 reasoning SFT dataset，供后续 SFT / distillation 使用。
+
+---
+
+## 36. 一个简明版本的 reasoning 阶段总结（可放在 README / AGENTS 末尾）
+
+在纯 ML 主线（global EBM、pairwise local EBM、local/hybrid aggregation）完成之后，项目正式进入 reasoning / CoT 重写阶段。本阶段的目标不是让 LLM 自主做分类，而是从现有可解释 ML 模型中抽取结构化 evidence objects，并结合 property-level 与 task-level playbook，把这些证据受约束地重写成高质量、忠于模型、可筛选的 reasoning SFT data。当前阶段的核心任务包括：evidence schema 设计、global/local 证据抽取、teacher selection、keep/drop 策略、playbook 构建、单步 LLM rewriting 以及最终 reasoning 数据集导出。

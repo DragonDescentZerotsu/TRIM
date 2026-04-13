@@ -32,9 +32,10 @@ FEATURE_SET_NAME = "fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1"
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Run local-only and hybrid test evaluation in parallel using existing pairwise bundles."
+        description="Run local-only and hybrid split evaluation in parallel using existing pairwise bundles."
     )
     parser.add_argument("--tasks", default=None, help="Comma-separated task names. Defaults to all tasks.")
+    parser.add_argument("--split", default="test")
     parser.add_argument("--python-executable", default=sys.executable)
     parser.add_argument("--max-parallel-tasks", type=int, default=16)
     parser.add_argument("--top-k", type=int, default=4)
@@ -118,7 +119,7 @@ def evaluate_task(task: str, args: argparse.Namespace, pair_root_overrides: dict
         "--task",
         task,
         "--split",
-        "test",
+        args.split,
         "--pos-bundle-path",
         str(pos_bundle_path),
         "--neg-bundle-path",
@@ -142,7 +143,7 @@ def evaluate_task(task: str, args: argparse.Namespace, pair_root_overrides: dict
         "--task",
         task,
         "--split",
-        "test",
+        args.split,
         "--pos-bundle-path",
         str(pos_bundle_path),
         "--neg-bundle-path",
@@ -161,7 +162,7 @@ def evaluate_task(task: str, args: argparse.Namespace, pair_root_overrides: dict
     ]
     run_and_log(hybrid_command, log_root / "run_hybrid_test.log")
 
-    hybrid_metrics_path = hybrid_task_root / f"{task}__test_molecule_level_metrics.json"
+    hybrid_metrics_path = hybrid_task_root / f"{task}__{args.split}_molecule_level_metrics.json"
     metrics_payload = load_json(hybrid_metrics_path)
     return {
         "task": task,
@@ -208,7 +209,7 @@ def main() -> int:
     pair_root_overrides = parse_pair_root_overrides(args.pair_root_override)
 
     print(
-        f"[batch-test] num_tasks={len(tasks)} max_parallel_tasks={args.max_parallel_tasks} "
+        f"[batch-eval] split={args.split} num_tasks={len(tasks)} max_parallel_tasks={args.max_parallel_tasks} "
         f"top_k={args.top_k} strict_cross_scaffold_pairs={args.strict_cross_scaffold}"
     )
 
@@ -239,6 +240,7 @@ def main() -> int:
     payload = {
         "config": {
             "tasks": tasks,
+            "split": args.split,
             "feature_config": FEATURE_CONFIG,
             "top_k": args.top_k,
             "strict_cross_scaffold_pairs": args.strict_cross_scaffold,
