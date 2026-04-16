@@ -318,6 +318,18 @@ If you are on `node002`, default to the `vllm` conda environment when you need R
       - `get_mol_properties_and_fg_payload(smiles)`
       - `compare_similar_mols_payload(smiles)`
       - 但正常给 agent 用时，优先使用文本返回版本，不要再让 agent 直接吃内部 payload dict
+    - 当前 tool payload cache 也已经正式接上：
+      - 默认根目录：`outputs/reasoning_agent_tools/tool_cache`
+      - 路径粒度是：
+        - `<feature_set_name>/<task>/<cache_namespace>/<tool_name>/<sha1(smiles)>.json`
+      - 其中：
+        - `compare_similar_mols` 是**按 task 隔离缓存**，不会跨任务复用
+        - 缓存 key 是 `task + smiles`，**不是**按 `train/valid/test` 单独分目录
+        - 同一 SMILES 若同时出现在多个 split，当前 query metadata 解析优先级是 `valid > test > train`
+      - 文件名与中间目录看起来像“乱码”是正常的：
+        - `cache_namespace` 是 manifest / bundle / similarity cache 文件签名的哈希，用来自动隔离不同版本配置
+        - 最终文件名是 `sha1(smiles)`，避免原始 SMILES 太长或包含不适合做文件名的字符
+      - 每个缓存 JSON 内部仍然保留原始 `smiles` 字段，便于排查
     - OpenAI function-calling / Responses API 侧的 schema 与 runtime helper 已单独整理：
       - schema 定义：
         - `src/trim/reasoning/agent_tools/openai_schemas.py`
@@ -339,6 +351,12 @@ If you are on `node002`, default to the `vllm` conda environment when you need R
         - 先 `build_task_bound_openai_tool_bundle(task=\"BBB_Martins\")`
         - 把 `bundle.tools` 传给 OpenAI
         - 收到 function call 后，用 `bundle.call_tool(...)` 或 `bundle.call_openai_function_call(...)` 执行
+      - 该脚本现在还额外支持：
+        - `--task`
+        - `--smiles`
+        - `--skip-schema`
+        - `--tool-cache-root`
+      - 当前 `example` 末尾会自动打印两类 tool 的 cache timing demo，用于快速确认“首次生成缓存”和“第二次直接读缓存”的耗时差
     - 一个最小代码片段如下：
       - ```python
         from trim.reasoning.agent_tools import build_task_bound_openai_tool_bundle
@@ -362,6 +380,30 @@ If you are on `node002`, default to the `vllm` conda environment when you need R
         }
         local_text = bundle.call_openai_function_call(tool_call)
         ```
+    - 已新增批量预热脚本与 helper，供后续正式跑 agent / SFT 前先把 tool cache 热起来：
+      - `src/trim/reasoning/agent_tools/prewarm.py`
+        - 入口：
+          - `prewarm_agent_tool_cache(...)`
+          - `prewarm_agent_tool_cache_for_task(...)`
+        - 主要职责：
+          - 按 task 扫描 `train/valid/test`
+          - 在 task 内对重复 SMILES 去重
+          - 复用与 agent SFT builder 类似的 `ProcessPoolExecutor` worker 模式并行预热两个 tool
+          - 默认跳过已有缓存；显式 `force_refresh=True` 时重算
+      - `scripts/prewarm_agent_tool_cache.py`
+        - 用于一条命令预热所有 task 的所有唯一 SMILES
+        - 常用命令：
+          - `/data1/tianang/anaconda3/envs/vllm/bin/python scripts/prewarm_agent_tool_cache.py --max-concurrency 16`
+        - 默认 summary 输出：
+          - `outputs/reasoning_agent_tools/tool_cache_prewarm/<feature_set_name>/manifest.json`
+    - 对外推荐的最简集成方式仍然是：
+      - 直接调用 `build_task_bound_openai_tool_bundle(task=...)`
+      - 若外部项目要复用，优先把 TRIM 当依赖或 submodule，而不是单独拷走 `tools.py`
+      - 因为 runtime 同时依赖：
+        - task manifests
+        - processed splits
+        - similarity cache
+        - global / pos / neg model bundles
 - 当前状态判断：
   - **纯 ML 主线任务已经完成**
   - **以后默认 feature 版本是 core-pKa no-fr counts**
