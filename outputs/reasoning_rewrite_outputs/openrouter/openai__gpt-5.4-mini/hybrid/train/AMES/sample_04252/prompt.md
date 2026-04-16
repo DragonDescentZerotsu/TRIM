@@ -1,0 +1,56 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that, taken together, lean away from Ames mutagenicity. It has aminal count 4, which is not itself a recognized mutagenicity alert and is more consistent with a structurally modified, potentially less reactive scaffold. The QED drug-likeness is high at 0.8482, which is not a mutagenicity rule but is compatible with a generally drug-like profile rather than an obvious toxicophore-rich one. Indoline is present (1), and by itself this ring system is not a standard Ames alert. The neutral fraction is low at 0.0994, suggesting the molecule is largely ionized at the configured pH, which can limit passive bacterial uptake and reduce effective exposure. The fraction of sp3 carbons is 0.5333, indicating a moderately saturated, less purely flat scaffold, which is not a classic sign of polycyclic planar mutagenic systems. Pyrrolidine is present (1), again not a direct mutagenicity alert and more consistent with a basic, ionizable motif that may affect uptake rather than DNA reactivity.
+
+At the same time, there are a few features that could increase concern. The ring count is 3, which means the scaffold is fairly ring-rich; while ring count alone is not a mutagenicity cutoff, more aromatic or rigid ring systems can sometimes accompany mutagenic substructures. Urethane is present (1), and although urethanes are not among the strongest canonical Ames alerts, their presence can still add chemical complexity and occasionally correlate with problematic reactivity in some contexts. The minimum absolute partial charge is 0.4104, indicating a noticeable charge distribution, and the estimated logP is 1.7739, which is moderate rather than extreme; neither of these is a direct alert, but they do not suggest a highly exposure-limiting, extremely polar scaffold either.
+
+Overall, the stronger signals are the high QED drug-likeness, the low neutral fraction, the moderate saturation, and the absence of a clear classical mutagenicity toxicophore such as nitro, nitroso, aziridine, epoxide, or polycyclic fused aromatic systems. Although the ring count of 3, urethane presence, and partial-charge pattern add some ambiguity, the balance of evidence supports option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately favorable comparison for a non-mutagenic call. The query has indoline once while the neighbor has none, and that difference is associated with a negative shift here (query-minus-neighbor delta +1, effect -0.5687). The query also has a higher ring count, 3 versus 1 (delta +2), which in this local context favors mutagenicity, but that is offset by the shared urethane motif, which is neutral in the delta sense because both have it. More importantly, the query is slightly lower in minimum absolute partial charge, 0.4104 versus 0.412 (delta -0.0016), and it also has four aminal groups versus none in the neighbor (delta +4), both of which are associated with a non-mutagenic direction in this comparison. The query’s QED drug-likeness is also a bit higher, 0.8482 versus 0.8296 (delta +0.0186), and that higher drug-likeness again aligns with the non-mutagenic side here. Overall, despite the ring-count signal, the indoline, aminal, partial-charge, and QED pattern makes Neighbor 1 support option (A). Neighbor 2 is also clearly aligned with option (A). Relative to this mutagenic neighbor, the query has much higher QED drug-likeness, 0.8482 versus 0.6694 (delta +0.1788), which is strongly associated here with non-mutagenic similarity. The query also has a much higher fraction of sp3 carbons, 0.5333 versus 0.0625 (delta +0.4708), and a much lower estimated logD, 0.7712 versus 3.7112 (delta -2.94); both of those differences point away from the mutagenic neighbor. The ring count is the same at 3, which by itself carries a mutagenic-associated signal in this pair, but the query has only 1 aromatic ring versus 3 in the neighbor (delta -2), and it again has indoline while the neighbor does not (delta +1), both of which favor the non-mutagenic side. Neighbor 3 is the same overall story: the query remains farther from the mutagenic neighbor on several key axes. The query’s QED is much higher, 0.8482 versus 0.4232 (delta +0.4251), and it lacks the neighbor’s peroxo group (query-minus-neighbor delta -1), both supporting option (A). Although both molecules have ring count 3, the query has a higher maximum partial charge, 0.4118 versus 0.3075 (delta +0.1043), and a higher minimum absolute partial charge, 0.4104 versus 0.3075 (delta +0.1028); in this local comparison those charge shifts are split, with maximum partial charge favoring option (A) and minimum absolute partial charge favoring option (B). The indoline difference remains important as well: the query has it once while the neighbor has none (delta +1), again favoring option (A). Taken together, Neighbor 2 and Neighbor 3 both look more like mutagenic references that the query does not match well, especially because the query lacks the neighbor-specific aromatic/peroxo features and has a much higher QED profile.
+
+Neighbor 4 continues to favor option (A). Both molecules contain urethane, so that feature does not separate them, but the query still differs in several ways that reduce similarity to this non-mutagenic neighbor. The query has higher QED drug-likeness, 0.8482 versus 0.6585 (delta +0.1898), which in this local setting is associated with the non-mutagenic side. It also has a larger ring count, 3 versus 1 (delta +2), which moves away from the neighbor on a feature that here leans mutagenic. At the same time, the query has a much lower neutral fraction, 0.0994 versus 0.9999 (delta -0.9005), a shift that is consistent with lower passive exposure, and it has four aminal groups versus none (delta +4), again a non-mutagenic-associated difference in this comparison. The query also has a higher fraction of sp3 carbons, 0.5333 versus 0.125 (delta +0.4083), which further separates it from the neighbor’s less sp3-rich profile. Even though the ring count alone points the other way, the exposure-leaning and aminal/QED pattern keeps Neighbor 4 on the non-mutagenic side overall. Neighbor 5 is similar and also supports option (A). The query has higher QED drug-likeness, 0.8482 versus 0.7897 (delta +0.0585), while both structures share urethane. The query’s neutral fraction is much lower, 0.0994 versus a fully neutral 1 (delta -0.9006), and its fraction of sp3 carbons is slightly higher, 0.5333 versus 0.4167 (delta +0.1167); both differences align with the non-mutagenic direction in this pair. The query also has four aminal groups versus none (delta +4), and it has a slightly lower strongest acidic pKa, 12.1845 versus 12.2362 (delta -0.0517). None of these changes create a mutagenic pattern against this neighbor; instead they keep the query closer to the non-mutagenic side. Neighbor 6 is the weakest match among the negative neighbors, but it still ends up favoring option (A). The query again has higher QED drug-likeness, 0.8482 versus 0.6346 (delta +0.2136), a strong non-mutagenic-associated difference in this local comparison. The maximum partial charge is essentially unchanged, 0.4118 versus 0.4115 (delta +0.0004), while both molecules share urethane and ring count 3; those shared features do not separate them, but the ring-count equality still carries a mutagenic-leaning local signal. The query also has four aminal groups versus none (delta +4), and it has a much lower estimated logP, 1.7739 versus 5.2111 (delta -3.4372), which is consistent with less extreme hydrophobicity and better exposure behavior than the neighbor. Even with the shared ring count and urethane motif, the higher QED, added aminal content, and lower logP keep Neighbor 6 closer to the non-mutagenic side overall.
+
+Putting all six neighbors together, the three mutagenic neighbors are all handled by the same pattern: the query departs from them through higher QED, higher sp3 fraction, lower logD or logP where relevant, and absence of the neighbor-specific peroxo feature in Neighbor 3, along with the recurring indoline difference. The three non-mutagenic neighbors likewise stay on the non-mutagenic side overall because the query consistently shows the same exposure- and desirability-related profile, especially the high QED and the aminal-rich, lower-logD/logP character, even when ring count or urethane provide some opposing signal. The balance of evidence therefore supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

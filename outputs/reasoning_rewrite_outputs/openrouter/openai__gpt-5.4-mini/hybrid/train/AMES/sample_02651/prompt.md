@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has a nitroso group (1), which is a well-recognized mutagenicity toxicophore and strongly raises concern for an Ames-positive outcome. It also contains a diaryl ether motif (1), and while that group is not by itself a standard mutagenicity alert, it adds aromatic character to a structure already showing other concerning features. The fraction of sp3 carbons is 0, indicating a very flat, fully unsaturated scaffold, and that kind of planarity can be consistent with DNA-interacting aromatic systems. The aromatic ring count is 2, which is not extreme on its own, but together with the flat character it supports an aromatic framework. Estimated logD is 3.8768 and estimated logP is 3.8768, both in a moderate lipophilicity range that does not obviously limit exposure; if anything, this suggests the compound should be sufficiently able to reach bacterial cells. At the same time, QED drug-likeness is 0.7034, which is reasonably favorable and does not specifically argue for mutagenicity, and the heteroatom count is 3, which is fairly modest. The ring count is 2, also not especially high, and the number of basic sites is absent (0), so there is no ionizable basic nitrogen that would be expected to enhance Gram-negative accumulation. Even with those moderating features, the presence of the nitroso toxicophore dominates the interpretation, and the overall balance of evidence favors a mutagenic outcome. Final prediction: B, mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly close mutagenic analog at similarity 0.600, and several shared features line up with the mutagenic side: both molecules have nitroso, which is a recognized mutagenic toxicophore, and the query’s presence of that same group keeps that concern intact. The query is also more negative in minimum partial charge (−0.4574 vs −0.1448; delta −0.3126), slightly more hydrophobic in the relevant direction for logP/logD comparisons (estimated logP 3.8768 vs 4.2357; delta −0.3589 and estimated logD 3.8768 vs 4.2357; delta −0.3589), all of which are consistent with the mutagenic side in this local comparison. Two features temper that signal: the query has a slightly lower QED drug-likeness (0.7034 vs 0.7166; delta −0.0132), which here leans away from mutagenicity, and the higher maximum absolute partial charge in the query (0.4574 vs 0.1448; delta +0.3126) leans toward the nonmutagenic side. Even with those offsets, the shared nitroso motif and the charge/lipophilicity pattern make Neighbor 1 overall supportive of the mutagenic label.
+
+Neighbor 2, at similarity 0.531, also supports the mutagenic assignment despite having a few countervailing descriptors. Again, both molecules have nitroso, which is the strongest single structural alert in this set. The query’s QED is higher than the neighbor’s (0.7034 vs 0.5852; delta +0.1182), and in this comparison that shift favors the nonmutagenic side. However, the query is much higher in estimated logD and estimated logP (both 3.8768 vs 2.0931; delta +1.7837), which in this local analog frame aligns with the mutagenic side; the ring count is also higher (2 vs 1; delta +1), which here leans nonmutagenic, but the query has a lower fraction of sp3 carbons (0 vs 0.1429; delta −0.1429), restoring some mutagenic weight because flatter, less sp3-rich chemistry often co-travels with Ames-positive alerts. Taken together, the nitroso alert plus the logD/logP and sp3 pattern outweigh the opposing QED and ring-count differences.
+
+Neighbor 3, similarity 0.505, is another mutagenic neighbor that keeps the query on the same side overall. The nitroso group is again shared, which is the clearest common mutagenic feature. The query has lower QED than the neighbor (0.7034 vs 0.7613; delta −0.0579), which favors the nonmutagenic side, but the comparison is also informative in the ionization descriptors: the neighbor has a strongest basic pKa of 4.5864 while the query has no basic site, so the delta is not defined, and that absence of a basic site is treated here as unfavorable to the nonmutagenic interpretation. The query is also more negative in minimum partial charge (−0.4574 vs −0.3555; delta −0.1019), while both molecules are at fraction of sp3 carbons 0, which in this local setting still supports the mutagenic side. Finally, the query is fully neutralized at the configured pH relative to the neighbor’s neutral fraction 0.9984, a tiny increase (delta +0.0016) that also trends toward mutagenicity in this comparison. Overall, Neighbor 3 remains supportive of the mutagenic label because the shared nitroso alert is reinforced by the ionization and flatness pattern.
+
+Neighbor 4 is a negative neighbor at similarity 0.386, but its comparison to the query is still net mutagenic. The most important difference is that the neighbor lacks nitroso while the query has it once (delta +1), and that alone is a strong reason to favor mutagenicity. The query also has a much higher QED drug-likeness (0.7034 vs 0.4672; delta +0.2362), which in this local comparison leans nonmutagenic. Yet the query’s estimated logP is lower than the neighbor’s (3.8768 vs 5.375; delta −1.4982), which here aligns with the mutagenic side, and the query has fewer benzene copies (2 vs 3; delta −1) and no alkene whereas the neighbor has one (delta −1); both of those differences lean mutagenic in this specific analog context. The fraction of sp3 carbons is 0 in both molecules, so that feature is neutral here. Even though the logP and QED differences point in opposite directions, the appearance of nitroso in the query relative to a nonmutagenic neighbor makes this comparison favor the mutagenic label.
+
+Neighbor 5, also a negative neighbor at similarity 0.364, again ends up supporting mutagenicity. The query has nitroso once whereas the neighbor does not have nitroso at all (delta +1), which is the dominant structural alert in the comparison. The query’s QED is higher (0.7034 vs 0.5011; delta +0.2023), and that difference leans nonmutagenic, but several other changes favor the mutagenic side: the query has fewer benzene copies than the neighbor (2 vs 3; delta −1), lower fraction of sp3 carbons (0 vs 0.0952; delta −0.0952), and a much smaller heavy-atom count (15 vs 24; delta −9), all of which align with the mutagenic side in this local analog view. The neighbor and query also have the same heteroatom count of 3, and that shared value slightly favors the nonmutagenic side here. Even so, the nitroso gain plus the smaller, flatter scaffold keeps the overall comparison on the mutagenic side.
+
+Neighbor 6, at similarity 0.363, is the last negative neighbor and it also supports the mutagenic prediction. Both molecules have nitroso, so the key toxicophore remains present in the query. The query has higher QED drug-likeness than the neighbor (0.7034 vs 0.5243; delta +0.1791), which points away from mutagenicity, but that is counterbalanced by the query’s lower fraction of sp3 carbons (0 vs 0.1429; delta −0.1429), the presence of diaryl ether in the query when the neighbor lacks it (delta +1), a higher maximum absolute partial charge (0.4574 vs 0.1448; delta +0.3126), and a higher rotatable-bond count (3 vs 1; delta +2). In this comparison, the flatter sp3 pattern, the diaryl ether feature, and the extra flexibility all move the analog set toward the mutagenic side despite the more favorable QED. Because nitroso is retained and multiple structural descriptors remain aligned with the mutagenic neighbors, Neighbor 6 still supports option (B).
+
+Across all six neighbors, the pattern is consistent enough to favor option (B): is mutagenic. The three mutagenic neighbors all retain the nitroso alert and show supportive local shifts in lipophilicity, flatness, ionization, or charge pattern. The three nonmutagenic neighbors are not close enough to overturn that signal, because each of them still becomes more mutagen-like once the query’s nitroso group is considered, and in two of them the query also picks up additional features that align with the mutagenic side in this analog context. The balance of evidence therefore supports the final prediction that the query is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

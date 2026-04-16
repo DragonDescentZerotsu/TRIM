@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows mixed signals, but the balance leans toward a non-mutagenic interpretation. Its QED drug-likeness value of 0.7381 suggests a reasonably drug-like profile rather than an obviously problematic one. The neutral fraction absent (0) implies a fully ionized state under the configured conditions, which can reduce passive bacterial exposure. The thiol present (1) is a possible concern because sulfur-containing functionality can sometimes participate in reactivity, and the topological polar surface area of 77.84 together with the estimated logP of 1.7393 indicates a molecule that is not extremely polar but still has enough polarity and moderate lipophilicity to support exposure. Against that, the phenol present (1) is not itself a strong mutagenicity alert and the tertiary amide present (1) is generally consistent with a more stable, nonreactive motif. The heteroatom count of 7 reflects a fairly heteroatom-rich structure, but the minimum absolute partial charge of 0.3268 and Labute surface area of 125.9297 do not suggest an especially extreme or highly electrophilic scaffold. Overall, while the thiol, TPSA, heteroatom count, and moderate logP introduce some concern, the neutral fraction of 0, phenol present (1), tertiary amide present (1), and the favorable drug-likeness score of 0.7381 together support a final call of option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close positive neighbor and several of its features differ from the query in ways that are consistent with lower mutagenicity. The query has a much higher QED drug-likeness, 0.7381 versus 0.4064 in the neighbor, with a delta of +0.3317, and that shift is associated here with a negative adjustment toward mutagenicity. The query also lacks the neighbor’s neutral fraction signal: the neighbor is 0.7424 while the query is absent (0), giving a delta of -0.7424 and again favoring the non-mutagenic side because loss of the neighbor’s more neutral state changes the exposure profile. At the same time, the query is more heteroatom-rich, 7 versus 4, delta +3, which is the main feature in this comparison that moves in the mutagenic direction. The query’s maximum partial charge is also slightly higher, 0.3268 versus 0.2779, delta +0.0489, and the query has no basic site where the neighbor has a strongest basic pKa of 4.3045; that absence is treated as a delta not defined but still aligns with the non-mutagenic side in this pair. Both structures have phenol, so that shared motif does not separate them. Overall, Neighbor 1 still looks more like the non-mutagenic side once the stronger QED, neutral fraction, and charge/basic-site differences are weighed against the heteroatom increase.
+
+Neighbor 2 is another positive neighbor, and again the comparison is mixed but overall leans away from mutagenicity. The query’s fraction of sp3 carbons is higher, 0.3846 versus 0.125, delta +0.2596, which in this case is associated with the non-mutagenic direction rather than the flatter, more aromatic pattern. The query also has more heteroatoms, 7 versus 3, delta +4, which favors mutagenicity in this local comparison. Its neutral fraction is lower because the neighbor is 0.989 and the query is absent (0), delta -0.989, which again aligns with the non-mutagenic side. The query’s topological polar surface area is larger, 77.84 versus 46.53, delta +31.31, and that higher polarity is here paired with the mutagenic side, while shared phenol still contributes a non-mutagenic similarity. The query’s QED is also higher, 0.7381 versus 0.6144, delta +0.1237, and that difference is associated with the non-mutagenic side. So Neighbor 2 contains some mutagenic-looking shifts in heteroatom count and TPSA, but the lower neutral fraction, higher sp3 character, and higher QED collectively keep the comparison tilted toward the non-mutagenic label.
+
+Neighbor 3, also among the positive neighbors, similarly gives a mixed picture that still ends up closer to non-mutagenic. The query again lacks the neighbor’s neutral fraction, with the neighbor at 0.1622 and the query at 0, delta -0.1622, and that difference strongly favors the non-mutagenic side here. The neighbor has two ketone groups while the query has none, a delta of -2, and losing those ketones is also aligned with the non-mutagenic direction in this comparison. On the other hand, the query has more heteroatoms, 7 versus 3, delta +4, which points toward mutagenicity, and its topological polar surface area is higher, 77.84 versus 54.37, delta +23.47, which also favors the mutagenic side locally. Shared phenol again does not distinguish the pair, and the query’s QED is higher, 0.7381 versus 0.6363, delta +0.1019, which here moves toward non-mutagenicity. Taken together, Neighbor 3 still supports the non-mutagenic label because the loss of neutral fraction and ketone functionality, along with the improved QED, outweigh the polarity-related increases.
+
+Neighbor 4 is the first negative neighbor, so it is important that the query differs from a non-mutagenic reference in a way that is not enough to overturn the final label. The query has much higher QED, 0.7381 versus 0.2649, delta +0.4732, which in this comparison strongly aligns with the non-mutagenic side. The query also contains phenol once while the neighbor lacks it, delta +1, and that addition is associated with the non-mutagenic direction here. Neutral fraction is absent in both molecules, delta +0, so there is no separation on that feature. However, the query has thiol once where the neighbor has none, delta +1, and that feature is associated with mutagenicity in this pair. The query’s estimated logP is also much higher, 1.7393 versus -3.0682, delta +4.8075, which locally points toward mutagenicity, and the neighbor has nitroso while the query does not, delta -1, another feature favoring mutagenicity because nitroso is a known mutagenic motif. Even so, the much lower QED of the neighbor and the query’s phenol presence keep this comparison overall closer to the non-mutagenic side, despite the thiol, logP, and nitroso offsets.
+
+Neighbor 5 is another negative neighbor and gives a more balanced but still non-mutagenic-leaning comparison. Neutral fraction is absent in both, delta +0, so it does not distinguish the pair. The query has thiol once while the neighbor has none, delta +1, which favors mutagenicity locally. But the query’s QED is higher, 0.7381 versus 0.6103, delta +0.1279, and that difference points toward non-mutagenicity in this comparison. The query also has more heteroatoms, 7 versus 3, delta +4, a feature associated here with mutagenicity, and the maximum absolute partial charge is almost unchanged, 0.5076 versus 0.5071, delta +0.0005, yet that small increase is still aligned with the mutagenic side in the local model behavior. Estimated logP is also higher, 1.7393 versus 1.0904, delta +0.6489, again favoring mutagenicity here. Even with those mutagenicity-leaning shifts, the higher QED and the overall similarity to a reasonably drug-like non-mutagenic neighbor leave this comparison supporting the non-mutagenic label more than the mutagenic one.
+
+Neighbor 6, the final negative neighbor, is similar in spirit to Neighbor 4. The query has phenol once while the neighbor has none, delta +1, and that difference is associated with the non-mutagenic side. Neutral fraction is absent in both molecules, delta +0, so again there is no separation there. The query also has thiol once while the neighbor has none, delta +1, which points toward mutagenicity locally. Its estimated logP is higher, 1.7393 versus -0.7489, delta +2.4882, and that also favors mutagenicity in this pair. By contrast, the neighbor has a lactam while the query does not, delta -1, and that absence aligns with the non-mutagenic side. The minimum absolute partial charge is identical, 0.3268 in both molecules, delta +0, so that feature is neutral here. Overall, the phenol addition and lactam absence weigh against mutagenicity enough that Neighbor 6 still resembles the non-mutagenic side, even though thiol and logP move the other way.
+
+Putting all six neighbors together, the three positive neighbors consistently show that the query shares or improves on several non-mutagenic features such as higher QED, lower neutral fraction relative to the neighbors’ values, and in one case higher sp3 character, even though heteroatom count and polarity-related measures sometimes move toward mutagenicity. The three negative neighbors also fail to form a strong mutagenic case against the query: each has one or more mutagenicity-associated differences such as thiol, higher logP, nitroso absence/presence, or higher heteroatom count, but the query repeatedly offsets these with higher QED and phenol presence, and one negative neighbor also loses a lactam. Taken together, the neighborhood evidence is more consistent with the query being not mutagenic, so the final prediction is option (A).
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

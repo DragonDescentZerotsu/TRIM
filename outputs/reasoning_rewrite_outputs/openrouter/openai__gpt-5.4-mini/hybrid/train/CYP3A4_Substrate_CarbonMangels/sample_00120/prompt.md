@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+Quinoline is present (1), which is a heteroaromatic scaffold often associated with compounds that can engage CYP3A4. A tertiary aliphatic amine is present (1), and a secondary mixed amine is also present (1); this combination of basic functionality is commonly seen among CYP3A4 substrates, even though it can also increase polarity and protonation. The estimated logP is 4.8106, which is fairly high and indicates substantial hydrophobicity, a property that can support membrane access and enzyme interaction. An aryl chloride is present (1), adding lipophilic character and a motif often found in metabolically accessible drug-like molecules. At the same time, the neutral fraction is only 0.002, so the molecule is overwhelmingly ionized at physiological conditions, and the strongest basic pKa is 10.0888, meaning that the amine is strongly protonated at pH 7.4. Those charge-state features would usually reduce passive permeability and can work against substrate behavior. The minimum absolute partial charge is 0.0737 and the maximum partial charge is 0.0737, both suggesting a relatively pronounced localized charge environment that is consistent with the ionized basic centers. The aliphatic ring count is 0, so there is no aliphatic ring system to add saturation or reduce polarity through a more three-dimensional scaffold. Overall, the aromatic heterocycle, tertiary and secondary amine motifs, and the relatively high logP support CYP3A4 substrate behavior, but this is tempered by the very low neutral fraction and strongly basic pKa, which make the molecule more charged and less freely permeable. On balance, the model’s final call is option (B): the compound is a substrate to CYP3A4, with score 0.5698.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive analog overall. It differs from the query by having no secondary mixed amine while the query has one once (delta +1), and that added amine-like feature aligns with the substrate side here. The same is true for quinoline, which is absent in the neighbor but present once in the query (delta +1). The query also has a higher fraction of sp3 carbons, 0.5 versus 0.3125 (delta +0.1875), which makes the query more saturated and more consistent with the substrate-like side of this comparison. The query has more basicity-related burden as well, with number of basic sites increasing from 2 to 3 (delta +1), again matching the substrate direction in this local comparison. Two features work against substrate assignment: maximum partial charge rises from 0.0478 in the neighbor to 0.0737 in the query (delta +0.0259), and topological polar surface area rises from 16.13 to 28.16 (delta +12.03), both of which are interpreted here as unfavorable shifts. Even so, the positive effects from the added secondary mixed amine, quinoline, higher sp3 fraction, and extra basic site outweigh those negative shifts for this neighbor, so it supports the substrate label.
+
+Neighbor 2 is more mixed, but it still provides important substrate-like signals. As with Neighbor 1, the query has a secondary mixed amine and quinoline that the neighbor lacks, each appearing once in the query versus not present in the neighbor (delta +1 for both), and both align with the substrate side. The query also has the same tertiary aliphatic amine status as the neighbor, so there is no penalty there. Topological polar surface area is higher in the query, 28.16 versus 23.47 (delta +4.69), and in this comparison that higher PSA is treated as favorable. However, the query’s strongest basic pKa is also higher, 10.0888 versus 9.5668 (delta +0.522), and that shift works against substrate assignment here. The minimum absolute partial charge moves sharply downward from 0.3883 to 0.0737 (delta -0.3146), which is the other unfavorable change in this neighbor. Because the substrate-like structural additions are partially offset by the basicity and charge-pattern shifts, this neighbor is less clean than Neighbor 1, but it still contains meaningful substrate-like evidence.
+
+Neighbor 3 again leans toward the substrate label. The query has the secondary mixed amine that the neighbor lacks (delta +1) and also has quinoline while the neighbor does not (delta +1), matching the same substrate-associated structural pattern seen in the other positive neighbors. The fraction of sp3 carbons is higher in the query, 0.5 versus 0.3333 (delta +0.1667), which supports the substrate side in this local comparison. The tertiary aliphatic amine is shared, so that feature is neutral rather than differentiating. The main opposing signal is maximum partial charge, which drops from 0.0923 in the neighbor to 0.0737 in the query (delta -0.0186), and that shift is unfavorable here. Topological polar surface area is again higher in the query, 28.16 versus 23.47 (delta +4.69), which favors the substrate side in this comparison. Overall, the repeated gains from secondary mixed amine, quinoline, higher sp3 fraction, and maintained tertiary aliphatic amine make this neighbor supportive of the substrate label despite the partial-charge penalty.
+
+Neighbor 4 is a negative neighbor by label, but the local comparison still contains several substrate-like similarities. Both the neighbor and the query have a secondary mixed amine, and both have a tertiary aliphatic amine, so those features do not separate them. The query also has quinoline once while the neighbor lacks it (delta +1), and that is favorable for substrate assignment. Estimated logP is lower in the query, 4.8106 versus 5.9724 (delta -1.1618), which in this comparison is favorable as well. The one feature that goes the other way is neutral fraction, which is extremely low in both molecules but rises slightly from 0.0017 in the neighbor to 0.002 in the query (delta +0.0003); that tiny increase is treated as unfavorable here. Maximum partial charge also falls from 0.1192 to 0.0737 (delta -0.0455), and that reduction is favorable. So even though this neighbor is labeled as a non-substrate, the comparison itself contains several substrate-like shifts, especially the shared amine pattern, added quinoline, lower logP, and lower maximum partial charge; the tiny neutral-fraction increase is the main opposing point.
+
+Neighbor 5 is another negative neighbor whose local chemistry still resembles the substrate side in several ways. The neighbor has a secondary aromatic amine, while the query does not (delta -1), and in this comparison that absence in the query is favorable for substrate assignment. The query also has a higher fraction of sp3 carbons, 0.5 versus 0.25 (delta +0.25), which supports a more saturated profile. Estimated logP is lower in the query, 4.8106 versus 5.1792 (delta -0.3686), and that is again favorable here. The tertiary aliphatic amine is shared, and quinoline is also shared, so those features do not separate the two. The main unfavorable shift is maximum absolute partial charge, which drops from 0.5076 in the neighbor to 0.382 in the query (delta -0.1256), and that is the one factor pulling away from the substrate side in this comparison. Despite the neighbor being a non-substrate, the combination of losing the secondary aromatic amine, increasing sp3 fraction, and lowering logP makes the query look more substrate-like overall here.
+
+Neighbor 6, like Neighbor 5, is labeled as a non-substrate, but the comparison still contains several substrate-favoring features. The neighbor has an imine that the query lacks (delta -1), and that absence is unfavorable for the neighbor and favorable for the query. The query also has quinoline once while the neighbor does not (delta +1), and both molecules share the tertiary aliphatic amine. The fraction of sp3 carbons is higher in the query, 0.5 versus 0.3333 (delta +0.1667), which again supports the substrate side. Two features go the opposite way: neutral fraction is lower in the query, 0.002 versus 0.013 (delta -0.011), and maximum partial charge is also lower, 0.0737 versus 0.2482 (delta -0.1745); both of those shifts are treated as unfavorable in this comparison. Even with those penalties, the loss of the imine and the gain of quinoline, together with the higher sp3 fraction and shared tertiary amine, keep the local evidence leaning toward substrate behavior.
+
+Taken together, the three positive neighbors consistently emphasize the same substrate-associated pattern: the query has a secondary mixed amine, usually also quinoline, a higher fraction of sp3 carbons, and in one case an extra basic site, while the charge and polarity terms are mixed but do not fully reverse that pattern. The three negative neighbors are not uniformly opposing; each one still contains multiple substrate-like similarities or favorable query shifts, including quinoline additions, loss of an imine or secondary aromatic amine, higher sp3 fraction, lower logP, and shared tertiary aliphatic amine or secondary mixed amine. Although some charge-related features such as maximum partial charge, minimum absolute partial charge, strongest basic pKa, and neutral fraction create localized counterpressure, the overall neighborhood evidence is more consistent with the query belonging to the substrate class. The final prediction is therefore option (B), is a substrate to the enzyme CYP3A4.
+
+Input 3. Target final label semantics
+option (B): is a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

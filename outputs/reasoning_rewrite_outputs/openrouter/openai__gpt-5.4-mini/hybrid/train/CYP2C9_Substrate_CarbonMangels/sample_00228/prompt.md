@@ -1,0 +1,52 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed pattern, but several of the strongest descriptors lean away from CYP2C9 substrate behavior. Its fraction of sp3 carbons is very low at 0.0588, which suggests a relatively flat, aromatic-rich scaffold rather than a more 3D, flexible structure. The aromatic framework is substantial, with an aromatic ring count of 4 and an aromatic heterocycle count of 2, which is compatible with binding in a hydrophobic pocket and can support substrate recognition. The presence of benzimidazole (1) also fits that heteroaromatic, π-interacting motif. However, the molecule contains imidazole (1), and while heteroaromatic nitrogens can sometimes support binding, this feature here is associated with a less favorable substrate call. Aryl chloride is present (1), adding a hydrophobic halogenated aromatic motif, but that alone does not establish CYP2C9 substrate status. More importantly, the compound lacks dialkyl ether (0), which slightly favors substrate-like chemistry in this context, yet the charge-related descriptors are not strongly supportive: the strongest basic pKa is 6.3363, while the neutral fraction is high at 0.9205, meaning the molecule is predominantly neutral under physiological conditions rather than presenting the anionic character often associated with classic CYP2C9 substrates. The maximum partial charge is 0.0954, which also does not suggest a strongly favorable anionic anchor. Taken together, the aromatic/heterocyclic features could support binding, but the high neutral fraction and the overall charge pattern make a CYP2C9 substrate less likely overall. Therefore the molecule is better classified as option (A): is not a substrate to the enzyme CYP2C9.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is only a modest positive analog, and several of its shared features line up with a non-substrate pattern. The shared imidazole group is associated with a negative shift here, and the neighbor and query both have it with query-minus-neighbor delta +0, giving a -0.7417 effect. The query also has slightly lower fraction of sp3 carbons than the neighbor (0.0588 vs 0.1111, delta -0.0523), which again goes in the non-substrate direction. The strongest basic pKa is higher in the query than in the neighbor (6.3363 vs 5.2956, delta +1.0407), and that comparison is also unfavorable. Although the query and neighbor both lack dialkyl ether, that shared absence is mildly favorable for substrate status, and the query’s lower aliphatic ring count (0 vs 1, delta -1) and higher aromatic heterocycle count (2 vs 1, delta +1) are also favorable. Even so, the stronger signals from imidazole, sp3 character, and basic pKa leave this neighbor overall leaning toward non-substrate behavior. Neighbor 2 is similar in that it contains features associated with non-substrate chemistry: it has 4H-1,2,4-triazole, which the query lacks (delta -1), and it also has piperazine and urea, both absent in the query. Those three differences each favor the non-substrate side. Counterbalancing that, both molecules lack dialkyl ether, the query has a lower aliphatic ring count than the neighbor (0 vs 1, delta -1), and the query has a higher aromatic heterocycle count (2 vs 1, delta +1), which are favorable to substrate status. But the triazole, piperazine, and urea differences are the more decisive features in this neighbor, so the comparison still supports the non-substrate label. Neighbor 3 mixes a few favorable hydrophobic/shape features with a stronger charge-related warning. The neighbor has a much higher strongest basic pKa than the query (9.4148 vs 6.3363, delta -3.0785), and that comparison favors substrate status in this instance. It also shares the absence of dialkyl ether, and the query has lower aliphatic ring count (0 vs 1, delta -1) plus more aromatic heterocycles (2 vs 0, delta +2), both of which help. However, the query’s neutral fraction is much higher than the neighbor’s (0.9205 vs 0.0096, delta +0.9109), and that strongly cuts against substrate status in this pair. The query also has imidazole while the neighbor does not (delta +1), which is unfavorable. Overall, the high neutral fraction and imidazole difference outweigh the favorable pKa and ring-pattern effects, so Neighbor 3 still leans toward non-substrate behavior.
+
+Neighbor 4 is a stronger negative analog and matches the non-substrate label well. It has four aryl chlorides while the query has one (delta -3), which is a major structural difference favoring the non-substrate side. Both molecules have imidazole, and that shared feature also favors non-substrate behavior here. The neighbor is much heavier in heavy-atom molecular weight (402.023 vs 295.668, delta -106.355), which is unfavorable for substrate status in this comparison, and its topological polar surface area is lower than the query’s (27.05 vs 46.5, delta +19.45), another unfavorable shift. The query does have a better QED drug-likeness than the neighbor (0.6204 vs 0.4617, delta +0.1587), and the neighbor has dialkyl ether while the query does not (delta -1), both of which are favorable to substrate status. But the strong aryl chloride burden, the shared imidazole, and the size/polarity pattern dominate, making this comparison clearly supportive of the non-substrate class. Neighbor 5 is also a negative analog overall, despite a few features that individually look substrate-favorable. The query’s strongest basic pKa is much higher than the neighbor’s (6.3363 vs 2.1203, delta +4.216), and that shift favors the non-substrate side in this case. The neighbor also has 1H-1,2,3-triazole while the query does not (delta -1), which is another non-substrate-leaning difference. On the other hand, the query has lower topological polar surface area than the neighbor (46.5 vs 61.42, delta -14.92), which is favorable, and lower fraction of sp3 carbons (0.0588 vs 0.125, delta -0.0662), which is unfavorable. Neither molecule has dialkyl ether, and neither has piperidine, both neutral comparisons. Taken together, the very low strongest basic pKa in the neighbor and the triazole difference provide the stronger non-substrate signal. Neighbor 6 repeats the same pattern as Neighbor 4 and reinforces the non-substrate decision. It again has four aryl chlorides versus one in the query (delta -3), both molecules again contain imidazole, and the neighbor is substantially larger in heavy-atom molecular weight (402.023 vs 295.668, delta -106.355). The neighbor also has lower topological polar surface area than the query (27.05 vs 46.5, delta +19.45), and the query’s higher QED drug-likeness (0.6204 vs 0.4617, delta +0.1587) is not enough to overcome those structural differences. As in Neighbor 4, the neighbor has dialkyl ether while the query does not (delta -1), which is the main favorable counterpoint, but it is comparatively weak. The repeated aryl chloride, imidazole, MW, and PSA pattern makes this comparison strongly consistent with the non-substrate class.
+
+Putting the six neighbors together, the three positive neighbors are actually mixed and each contains several features that still lean away from CYP2C9 substrate behavior, while the three negative neighbors are more consistently characterized by non-substrate-associated structure: multiple aryl chlorides, imidazole, higher bulk, and in one case triazole/piperazine/urea. The few substrate-favoring signals, such as dialkyl ether absence in some cases, lower sp3 fraction, or better QED, are not strong enough to outweigh the repeated non-substrate signals. The combined neighbor evidence therefore supports option (A): is not a substrate to the enzyme CYP2C9.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP2C9
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

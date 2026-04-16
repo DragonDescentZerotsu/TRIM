@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule looks poorly suited for oral bioavailability above 20%. It contains phenol count 6, which is a substantial phenolic burden and is often associated with rapid conjugation and low exposure. It also has oxoarene 2 and benzene 8, indicating a heavily aromatic scaffold; that level of aromatic content is typically unfavorable for developability and can hurt solubility. The QED drug-likeness value is 0.1233, which is very low and suggests the overall property balance is poor for an oral candidate. Aromatic carbocycle count 8 and ring count 8 further reinforce a highly ring-rich, rigid structure rather than a compact, balanced oral-drug-like scaffold. Although fraction of sp3 carbons is 0.0667, which is a small favorable point because it adds a little 3D character, it is far too low to offset the overall aromatic dominance. Labute surface area 209.9585 is also fairly large, consistent with a sizable molecule that may face permeability and solubility challenges. The minimum partial charge of -0.5071 suggests a notably polar site, and estimated logD 3.7255 is on the lipophilic side, which can also become problematic when paired with such a large, aromatic structure. Taken together, the very low QED, extensive aromatic/phenolic content, low sp3 character, and large surface area outweigh the small favorable effect from fraction of sp3 carbons, so the molecule is more consistent with oral bioavailability < 20%.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor with similarity 0.212, but it still looks much more bioavailability-favorable than the query on the key structural liabilities that matter here. The neighbor has 2 phenols versus 6 in the query (delta +4), and that larger phenolic burden in the query is consistent with poorer exposure because phenolic motifs are often vulnerable to rapid conjugation. The query is also much lower in QED drug-likeness, 0.1233 versus 0.3871 (delta -0.2638), which is a broad sign of weaker oral drug-likeness. In addition, the query has 2 oxoarene groups versus 0 in the neighbor (delta +2) and 8 benzene rings versus 2 (delta +6), both pointing to a much more aromatic, less developable structure. The only feature leaning the other way is neutral fraction, where the query is slightly higher at 0.0441 versus 0.0031 (delta +0.041), and fraction of sp3 carbons is slightly lower in the query, 0.0667 versus 0.0714 (delta -0.0048), which is a very small shift. Overall, this neighbor comparison still favors the low-bioavailability class because the query carries substantially more phenol, more aromatic material, more oxoarene content, and much worse QED.
+
+Neighbor 2, also a positive neighbor with similarity 0.199, gives the same overall picture. The query again has 6 phenols versus the neighbor’s 1 (delta +5), which is a major increase in a liability-prone functional group. Its QED is also far lower, 0.1233 versus 0.7863 (delta -0.6629), showing a pronounced drop in overall drug-likeness. The query has 2 oxoarene groups versus 0 (delta +2) and 8 benzene rings versus 2 (delta +6), both of which add to the aromatic burden. The neutral fraction is higher in the query, 0.0441 versus 0.0135 (delta +0.0306), but that increase is still paired with the same low-QED, high-aromaticity profile. Minimum partial charge is essentially unchanged at -0.5071 in both molecules, with only a tiny delta of -0.0001, so it does not offset the stronger unfavorable signals. Taken together, Neighbor 2 strongly supports the <20% bioavailability class.
+
+Neighbor 3, with similarity 0.197, again aligns with the low-bioavailability outcome. The query has 6 phenols versus 2 in the neighbor (delta +4), and 8 benzene rings versus 1 (delta +7), both indicating much more aromatic and phenolic content. Neutral fraction is also higher in the query, 0.0441 versus 0 (delta +0.0441), which does not compensate for the much heavier aromatic/phenolic load in this comparison. The query has 2 oxoarene groups versus 0 (delta +2), and its minimum partial charge is slightly more negative, -0.5071 versus -0.5043 (delta -0.0029), a small shift in the unfavorable direction. The one feature that helps the query is fraction of sp3 carbons: 0.0667 versus 0.3 in the neighbor (delta -0.2333). Lower sp3 character is not helpful here, but the magnitude of the phenol, benzene, and oxoarene differences still leaves the overall comparison strongly on the side of poorer oral bioavailability.
+
+Neighbor 4 is a negative neighbor with similarity 0.180, and it is more directly exposing the same liabilities in the query. The query has 2 oxoarene groups versus 0 in the neighbor (delta +2), 6 phenols versus 2 (delta +4), and 8 benzene rings versus 2 (delta +6). It also has a much larger aromatic carbocycle count, 8 versus 2 (delta +6). These are all consistent with a more aromatic, less developable scaffold. QED is also lower in the query, 0.1233 versus 0.3132 (delta -0.1898), reinforcing the poor drug-likeness picture. The one counterpoint is topological polar surface area: the neighbor’s TPSA is 40.46 versus 155.52 for the query (delta +115.06). A much higher TPSA usually hurts passive absorption, so this single feature leans toward lower bioavailability for the query, but in the supplied comparison the much larger phenol/aromatic burden still dominates the overall analog judgment and leaves this neighbor as a low-bioavailability reference rather than a rescue case.
+
+Neighbor 5, another negative neighbor with similarity 0.175, shows the same pattern. The query has 2 oxoarene groups versus 0 (delta +2), 6 phenols versus 2 (delta +4), and much more aromaticity overall, including 8 benzene rings versus 1 (delta +7) and aromatic carbocycle count 8 versus 1 (delta +7). Its QED is also much lower, 0.1233 versus 0.4724 (delta -0.3491), again indicating weak drug-likeness. Fraction of sp3 carbons is lower in the query, 0.0667 versus 0.25 (delta -0.1833), which is not favorable from a 3D-character standpoint. The negative neighbor has the more favorable aromaticity pattern, while the query is much more heavily phenolic and aromatic, so the comparison still points toward oral bioavailability below 20%.
+
+Neighbor 6, with similarity 0.169, provides a final negative reference with the same direction. The query again has 2 oxoarene groups versus 0 (delta +2), 6 phenols versus 2 (delta +4), 8 benzene rings versus 1 (delta +7), and aromatic carbocycle count 8 versus 1 (delta +7). QED is lower in the query, 0.1233 versus 0.6291 (delta -0.5057), which is a strong disadvantage. Fraction of sp3 carbons is also much lower, 0.0667 versus 0.5 (delta -0.4333), so the query is markedly less 3D and more aromatic than this neighbor. None of these features relieve the overall structural burden; instead, they reinforce that the query sits in a poorer oral-bioavailability region.
+
+Across all six neighbors, the pattern is consistent: every comparison highlights the query’s much higher phenol count, more oxoarene units, more benzene rings, and lower QED, with only small or isolated offsets from neutral fraction, minimum partial charge, TPSA, or sp3 fraction. The positive neighbors already favor the <20% class because the query is more aromatic and less drug-like than bioavailable examples, and the negative neighbors make the same case even more directly. Taken together, these analogs support option (A): the molecule is more consistent with oral bioavailability below 20%.
+
+Input 3. Target final label semantics
+option (A): has oral bioavailability < 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

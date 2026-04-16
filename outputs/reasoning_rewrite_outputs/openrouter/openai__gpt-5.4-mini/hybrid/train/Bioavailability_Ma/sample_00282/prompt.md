@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features consistent with at least moderate oral exposure. A carboxylic acid is present (1), which can be a liability for passive permeability because acidic groups are often ionized at physiological pH, but the strongest basic pKa is 5.6716, suggesting the ionization balance is not extreme in a way that necessarily precludes absorption. The neutral fraction is very low at 0.0002, which on its face would usually argue against passive membrane crossing, yet the overall profile still contains compensating favorable elements. The topological polar surface area is 95.94, which is below the commonly cited upper range for acceptable oral absorption and therefore remains compatible with oral bioavailability ≥ 20%. QED drug-likeness is 0.601, a reasonably drug-like value that supports a balanced profile rather than an obviously problematic one. A lactam is present (1), which can be acceptable in oral molecules, and secondary hydroxyl is absent (0), avoiding an extra hydrogen-bond donor burden. There are also unfavorable signals: carboxylic ester is present (1), which does not by itself guarantee good exposure, and Labute surface area is 181.564, a fairly large surface area that can reflect a size/polarity burden and make absorption less efficient. Maximum partial charge is 0.3231, which is not obviously extreme enough to dominate the profile. Overall, despite some tension from the very low neutral fraction and the relatively large surface area, the moderate TPSA, decent drug-likeness, and the presence of a workable ionization balance make oral bioavailability ≥ 20% the more plausible outcome.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a strong positive analog for oral bioavailability ≥20%. The query has a slightly higher neutral fraction than the neighbor, 0.0002 vs 0.0001 with a delta of +0.0001, which favors passive permeability even though both values are very low. The query also lacks hydrazine, while the neighbor has hydrazine; that absence is favorable here because hydrazine is a polar, liability-prone motif. In the same direction, the query’s estimated logD is higher than the neighbor’s, -1.2419 vs -2.5682 with a delta of +1.3263, moving it closer to the more balanced lipophilicity region that is generally more compatible with oral exposure. The query and neighbor both have one basic site, which is not helpful for the query in this comparison, but the query’s QED is slightly lower, 0.601 vs 0.6199, and the query’s topological polar surface area is slightly lower, 95.94 vs 99.18 with a delta of -3.24, both of which still fit the overall favorable direction for absorption-like behavior. Taken together, Neighbor 1 supports the higher-bioavailability label.
+
+Neighbor 2 also aligns with oral bioavailability ≥20%. The query has one lactam while the neighbor has none, and that added structural feature is favorable in this comparison. The neutral fraction again slightly favors the query, 0.0002 vs 0.0001 with a delta of +0.0001, suggesting a marginally larger neutral population. The neighbor has a tertiary amide, while the query does not, which is another favorable difference for the query because it avoids an additional polar amide burden. The topological polar surface area is the same, 95.94 in both molecules, so that feature is neutral here rather than decisive. The query and neighbor both have one basic site, which is the only feature in this comparison that leans against the query, but the query’s estimated logD is still higher, -1.2419 vs -1.4357 with a delta of +0.1938, and that modest shift remains favorable. Overall, Neighbor 2 still supports the ≥20% class.
+
+Neighbor 3 reinforces the same conclusion. As with Neighbor 2, the query has a lactam while the neighbor does not, which favors the query. The neutral fraction is again slightly higher for the query, 0.0002 vs 0.0001 with a delta of +0.0001, and the neighbor’s tertiary amide is absent from the query, both of which are favorable. Topological polar surface area is identical at 95.94, so that remains neutral. The query’s estimated logD is much higher than the neighbor’s, -1.2419 vs -2.4923 with a delta of +1.2504, which is a meaningful improvement toward a more orally compatible lipophilicity balance. The only counterweight is that both molecules have one basic site, which again slightly disfavors the query in this local comparison, but not enough to overcome the other favorable shifts. Neighbor 3 therefore also points to oral bioavailability ≥20%.
+
+Neighbor 4 is the first negative-labeled neighbor, but the detailed comparison still mostly favors the query. The query has one carboxylic acid whereas the neighbor has none, which is a structural difference that can sometimes hurt exposure, yet in this local comparison it is treated as favorable for the query. The neutral fraction is sharply lower for the query, 0.0002 vs 0.0537 with a delta of -0.0535, which means the query is much more ionized and would normally be less favorable for passive permeability. Even so, the query’s QED is lower, 0.601 vs 0.7915 with a delta of -0.1905, and that is the main feature in this comparison that argues against the query’s oral bioavailability. At the same time, the query has much higher topological polar surface area, 95.94 vs 23.55 with a delta of +72.39, and much lower estimated logD, -1.2419 vs 2.8664 with a delta of -4.1083; both of those differences are favorable to the higher-bioavailability label in the local scoring used here. The neighbor lacks lactam while the query has one, which is also favorable for the query. So even though Neighbor 4 is labeled as a low-bioavailability neighbor, the actual feature-by-feature comparison still leaves the query looking more compatible with ≥20% oral bioavailability overall.
+
+Neighbor 5 is another negative-labeled neighbor that still gives mixed but ultimately favorable evidence for the query. The query has one carboxylic acid and the neighbor has none, again a structural difference that is not automatically favorable in general, but it is treated as favorable in this comparison. The query’s QED is lower, 0.601 vs 0.7994 with a delta of -0.1984, which is the clearest feature here opposing the higher-bioavailability class. However, the query has much higher topological polar surface area, 95.94 vs 40.62 with a delta of +55.32, and that shift supports the label assignment in the local comparison. The query’s estimated logD is far lower, -1.2419 vs 2.5349 with a delta of -3.7768, which again is favorable in the neighborhood scoring because it moves away from the very lipophilic extreme. The query also has a much higher rotatable-bond count, 9 vs 1 with a delta of +8; although flexibility often becomes a liability in general oral-drug heuristics, in this specific neighbor comparison it still contributes in the positive direction. Finally, the neighbor has no basic site while the query has a strongest basic pKa of 5.6716, and that undefined delta is treated as unfavorable for the query. Even with those mixed signals, Neighbor 5 as a whole remains closer to the ≥20% class than to the <20% class.
+
+Neighbor 6 is the most challenging negative neighbor because it contains several features that lean against the query. The query again has one carboxylic acid while the neighbor has none, which is favorable in the local comparison framework. The query’s QED is lower, 0.601 vs 0.7582 with a delta of -0.1573, which is unfavorable for the query. The strongest acidic pKa is also much lower in the query, 3.5931 vs 13.8048 with a delta of -10.2117, indicating a much more acidic site in the query and therefore a less favorable ionization profile for passive absorption. At the same time, the query’s topological polar surface area is higher, 95.94 vs 49.77 with a delta of +46.17, and its estimated logD is lower, -1.2419 vs 3.0148 with a delta of -4.2567; both of those are favorable to the higher-bioavailability label in this local context. The neighbor has a secondary hydroxyl while the query does not, which also favors the query by removing an extra polar donor group. Neighbor 6 therefore contains the strongest counterevidence among the six, but even here the full set of comparisons does not overturn the overall pattern.
+
+Putting the six neighbors together, the three positive neighbors consistently support the query’s oral bioavailability being at least 20%, mainly through higher neutral fraction, more favorable estimated logD, and the absence of specific liabilities such as hydrazine or tertiary amide alongside the presence of lactam. The three negative neighbors are mixed: they do contain some features that are unfavorable for the query, especially the lower QED in Neighbors 4 through 6 and the much lower strongest acidic pKa in Neighbor 6, but they also show several favorable shifts for the query, including higher topological polar surface area in the local scoring context, lower estimated logD relative to the very lipophilic neighbors, and the absence of a secondary hydroxyl in Neighbor 6. Because the positive neighbors are internally consistent and the negative neighbors do not present an overriding opposite pattern, the overall comparison supports option (B): has oral bioavailability ≥20%.
+
+Input 3. Target final label semantics
+option (B): has oral bioavailability ≥ 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

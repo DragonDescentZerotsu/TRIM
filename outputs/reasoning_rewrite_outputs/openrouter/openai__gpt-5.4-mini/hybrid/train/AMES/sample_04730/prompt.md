@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several descriptors that are more consistent with reduced bacterial exposure and a lower likelihood of an Ames-positive result. The minimum partial charge is -0.1585, indicating a noticeable negative electrostatic character, and the minimum absolute partial charge is 0.0574, which is still fairly small in magnitude; together these suggest a polar charge distribution that may not especially favor strong nonspecific uptake. The heteroatom count is 2, which is relatively low and does not by itself indicate a highly heteroatom-rich, strongly polar scaffold. The topological polar surface area is 25.78, a low value that is generally compatible with some permeability, but the estimated logP is 1.6298, which is only moderately lipophilic rather than extreme, so there is no strong indication of excessive hydrophobicity that would dominate the picture. The presence of phthalazine, a fused nitrogen-containing aromatic heterocycle, adds a mixed structural signal: it is aromatic and planar, but this scaffold alone is not one of the classic high-risk mutagenicity toxicophores such as aromatic nitro, aziridine, or epoxide. The aromatic ring count is 2, which reflects some aromaticity but falls short of the more concerning polycyclic aromatic systems with three or more fused rings. The fraction of sp3 carbons is 0, so the molecule is completely flat and fully unsaturated, which can sometimes be associated with more aromatic, planar chemotypes, but that effect is only a weak proxy rather than a direct mutagenicity rule. The Labute surface area is 58.5208, which is not especially large and does not suggest a severely bulky scaffold. Overall, the combination of relatively low polarity burden, modest logP, low TPSA, only two aromatic rings, and the absence of obvious high-risk functional groups supports the conclusion that the compound is more likely not mutagenic, despite the planar aromatic character and some descriptor-level signals that could be associated with exposure or aromaticity-related risk. Therefore, the overall assessment is option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately mutagenicity-leaning analog. The query has more hydrogen-bond acceptor capacity than the neighbor, with HBA 2 versus 0 and delta +2, which aligns with the positive side of the comparison. The query also has a slightly higher maximum partial charge (0.0574 vs -0.0171, delta +0.0745), and that same electrostatic shift is treated as favorable for mutagenicity here. At the same time, the query is much less lipophilic than the neighbor, with estimated logD dropping from 5.1462 to 1.6298 (delta -3.5164), and logP likewise dropping by the same amount; both of those changes are treated as unfavorable for mutagenicity in this specific analog pair because the neighbor’s much more hydrophobic profile is part of what makes it the stronger mutagenic comparator. The query also contains phthalazine once whereas the neighbor lacks it, and that structural change is unfavorable in this pairwise context. Fraction of sp3 carbons is unchanged at 0, but it still supports the same overall comparison pattern. Overall, Neighbor 1 leans toward option (B) despite the hydrophobicity decrease because the acceptor and charge features dominate that specific matchup.
+
+Neighbor 2 also leans toward mutagenicity, though with a more balanced mix of evidence. The query again has higher maximum partial charge than the neighbor, 0.0574 versus 0.0347 with delta +0.0228, which favors option (B). The query also has phthalazine once while the neighbor has none, which in this comparison is the main feature pulling the other way. Labute surface area is substantially lower in the query, 58.5208 versus 92.6751, delta -34.1543, yet that reduction is still associated with the mutagenic side in this neighbor pair. Fraction of sp3 carbons remains unchanged at 0, again supporting the same structural context. Estimated logD is lower in the query, 1.6298 versus 3.9786, delta -2.3488, and that shift is unfavorable here because the neighbor’s higher logD is part of the more mutagenic reference pattern. Finally, the neighbor has 2 copies of isoquinoline while the query has 0, delta -2, and that loss is unfavorable for mutagenicity in this specific comparison. Taken together, the higher charge and the structural analog context outweigh the mixed size and lipophilicity changes, so Neighbor 2 still supports option (B).
+
+Neighbor 3 is more equivocal, but it also contains several mutagenicity-leaning signals. The query again has higher hydrogen-bond acceptor count, 2 versus 0 with delta +2, and higher maximum partial charge, 0.0574 versus -0.0105 with delta +0.068, both of which favor option (B) in this local comparison. The query has phthalazine once while the neighbor lacks it, which works against mutagenicity here. Fraction of sp3 carbons is unchanged at 0, maintaining the same flat aromatic context. Estimated logD is lower in the query, 1.6298 versus 3.993 with delta -2.3632, which is unfavorable for the mutagenic side in this pair. The query also has a higher maximum absolute partial charge, 0.1585 versus 0.0616 with delta +0.0969, and that specific electrostatic increase is treated as unfavorable for mutagenicity in this neighbor comparison. Even with that countervailing partial-charge effect, the overall pattern remains mixed rather than clearly protective, and the local evidence does not overturn the broader mutagenicity signal coming from acceptor count and positive charge character.
+
+Neighbor 4 is the clearest negative-neighbor analog and supports the non-mutagenic label. The query has lower maximum absolute partial charge than the neighbor, 0.1585 versus 0.2547 with delta -0.0962, which is favorable for option (A) here. The minimum partial charge also becomes less negative in the query, -0.1585 versus -0.2547 with delta +0.0962, again aligning with the non-mutagenic side. The neighbor lacks phthalazine while the query has it once, and in this comparison that structural difference still favors option (A). The query is smaller in molecular weight, 130.15 versus 163.607 with delta -33.457, which also supports the non-mutagenic side in this pair. Fraction of sp3 carbons stays at 0 on both sides, but that unchanged value is the one feature that leans mildly toward mutagenicity here. Heteroatom count is unchanged at 2, and that neutrality does not counter the stronger charge and size signals. Overall, Neighbor 4 is a strong non-mutagenic comparator.
+
+Neighbor 5 likewise supports option (A), though with some internal opposition from charge descriptors. The query has lower maximum absolute partial charge than the neighbor, 0.1585 versus 0.2532 with delta -0.0947, which favors the non-mutagenic side. The minimum partial charge is also less negative in the query, -0.1585 versus -0.2532 with delta +0.0947, and that again aligns with option (A). The neighbor lacks phthalazine while the query has it once, which in this comparison still supports option (A). By contrast, the query has a lower minimum absolute partial charge, 0.0574 versus 0.1416 with delta -0.0842, and a lower maximum partial charge, 0.0574 versus 0.1416 with delta -0.0842; both of those shifts are treated as mutagenicity-leaning in this specific analog pair. Fraction of sp3 carbons remains 0 on both molecules and again contributes a mild mutagenicity-leaning signal, but not enough to outweigh the stronger non-mutagenic charge pattern. Net effect: Neighbor 5 still supports option (A).
+
+Neighbor 6 is the most strongly non-mutagenic of the negative neighbors. The query has much lower maximum absolute partial charge than the neighbor, 0.1585 versus 0.5063 with delta -0.3478, and that is favorable for option (A). At the same time, the query’s minimum partial charge is much less negative, -0.1585 versus -0.5063 with delta +0.3478, which also aligns with the non-mutagenic side. The query again has phthalazine once while the neighbor lacks it, and in this pair that still supports option (A). The query also has lower maximum partial charge, 0.0574 versus 0.134 with delta -0.0766, another non-mutagenic-leaning change. Fraction of sp3 carbons remains 0, which is the one feature that leans toward mutagenicity here. Minimum absolute partial charge goes the other direction, 0.0574 versus 0.134 with delta -0.0766, and that is mutagenicity-leaning in this comparison, but it does not override the stronger absolute and signed charge differences. Neighbor 6 therefore strongly reinforces option (A).
+
+Across the three positive neighbors, the mutagenic evidence is mainly driven by higher hydrogen-bond acceptor count, higher maximum partial charge, and in some cases the phthalazine/isoquinoline context, even though lower logD and logP sometimes work against that direction. Across the three negative neighbors, the query repeatedly shows lower maximum absolute partial charge, less extreme minimum partial charge, smaller molecular weight in one case, and the same flat sp3-rich aromatic context, all of which more consistently support the non-mutagenic label. Because the negative neighbors provide the more coherent match to the query overall, the final prediction is option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

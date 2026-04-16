@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are less consistent with a typical CYP2D6 substrate profile. The presence of imidazole and thiourea is unfavorable, since these motifs often add polarity and can move the molecule away from the lipophilic basic character commonly associated with CYP2D6 substrates. The strongest basic pKa is low at 2.3095, which suggests there is not a strongly protonated basic center at physiological pH; that weakens a key substrate-like motif for CYP2D6. Neutral fraction present as 1 also indicates a largely neutral species, again making it less aligned with the usual protonatable basic nitrogen pattern. The maximum partial charge of 0.4198 and minimum absolute partial charge of 0.4198 do not provide a strong cationic signal either, so they do not compensate for the weak basicity. Aromatic carbocycle count is 0, which removes another commonly seen substrate-like aromatic/lipophilic element. On the other hand, topological polar surface area is 36.16, a moderate value that is compatible with substrate space and gives a small positive signal, and fraction of sp3 carbons is 0.4286, which adds some three-dimensional character that can be favorable. However, piperazine is absent, so there is no additional protonatable amine motif to support CYP2D6 recognition. Overall, the unfavorable lack of a strong basic center, the neutral character, and the heteroaromatic/thiourea features outweigh the modestly favorable PSA and sp3 content, so the molecule is better classified as not a substrate to CYP2D6.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a closer analog on overall similarity, but it still differs from the query in several ways that favor a non-substrate call. The query contains thiourea once and imidazole once, whereas the neighbor has neither; both of those differences are associated with option (A). In addition, the query’s strongest basic pKa is much lower than the neighbor’s, 2.3095 versus 7.8857, with a query-minus-neighbor delta of -5.5762, which weakens the typical protonatable basic-center pattern that often supports CYP2D6 substrate recognition. The query’s maximum partial charge is also slightly higher, 0.4198 versus 0.3161, delta +0.1037, and the query has a slightly higher topological polar surface area, 36.16 versus 29.54, delta +6.62; that PSA shift is the one feature here that leans toward substrate-like space, but it is outweighed by the loss of the stronger basic pKa signal and the thiourea/imidazole differences. The neighbor also has carboxylic ester while the query does not, adding another non-substrate-leaning contrast. Overall, Neighbor 1 still points more strongly to option (A).
+
+Neighbor 2 shows the same major structural mismatches and again supports the non-substrate label. The query has thiourea once and imidazole once, while the neighbor has neither, both favoring option (A). The query’s maximum partial charge is only slightly above the neighbor’s, 0.4198 versus 0.4093, delta +0.0106, but that small increase is associated with a non-substrate direction here. The topological polar surface area comparison goes the other way, with the query at 36.16 versus the neighbor at 42.43, delta -6.27, which is more favorable to substrate-like behavior because lower PSA is generally more compatible with CYP2D6 substrate space. However, the query’s strongest basic pKa is much lower than the neighbor’s, 2.3095 versus 4.3282, delta -2.0187, again weakening the protonatable basic-center pattern. The query also has a much smaller heavy-atom count, 12 versus 27, delta -15, which is a substrate-leaning size difference in this comparison, but it does not overcome the repeated unfavorable chemistry around thiourea, imidazole, and basicity. Neighbor 2 therefore still supports option (A).
+
+Neighbor 3 likewise favors option (A) despite a few mixed size/polarity features. As with the others, the query has thiourea once and imidazole once while the neighbor has neither, both of which align with non-substrate-like chemistry. The query’s topological polar surface area is 36.16 versus 38.33 for the neighbor, delta -2.17, a modest shift toward the lower-PSA region that can fit substrate-like molecules better. But the query’s strongest basic pKa is again lower, 2.3095 versus 4.7149, delta -2.4054, which weakens the basic-site feature commonly associated with CYP2D6 substrates. The neighbor also has a secondary amide while the query does not, and the query’s maximum partial charge is higher, 0.4198 versus 0.2207, delta +0.1991; that charge increase is not enough to offset the unfavorable basicity and the absence of the amide-related match. On balance, Neighbor 3 remains closer to option (A).
+
+Neighbor 4, one of the negative neighbors, is also consistent with the query being a non-substrate. The query again has thiourea once and imidazole once while the neighbor has neither, which is a recurring non-substrate signal across the nearest analogs. The topological polar surface area is almost the same, 36.16 for the query versus 35.53 for the neighbor, delta +0.63, so this feature is only weakly favorable to substrate-like behavior. But the query’s maximum partial charge is higher, 0.4198 versus 0.3494, delta +0.0704, and the query’s Labute surface area is much lower, 75.3738 versus 100.3129, delta -24.9392; that smaller surface area is not enough to reverse the overall pattern, especially because the neighbor has no basic site while the query’s strongest basic pKa is 2.3095, with delta not defined. In this comparison, the absence of a basic site on the neighbor does not make the query look more like a substrate, because the query’s own basicity is still very weak. Neighbor 4 therefore reinforces option (A).
+
+Neighbor 5 remains on the non-substrate side as well. Both the neighbor and the query have imidazole, so that feature does not separate them, but the query has thiourea once and the neighbor does not, which continues to favor option (A). The query’s maximum partial charge is slightly higher, 0.4198 versus 0.3561, delta +0.0637, and the query’s topological polar surface area is lower, 36.16 versus 44.12, delta -7.96; both changes are more compatible with substrate-like space than the neighbor’s values. The query also has a lower Labute surface area, 75.3738 versus 106.2271, delta -30.8533, which again reflects a smaller surface profile. However, the minimum absolute partial charge comparison, 0.4198 for the query versus 0.3561 for the neighbor, delta +0.0637, is interpreted here in a substrate-favorable direction, yet it is still outweighed by the persistent thiourea difference and the broader pattern of weak basicity in the query. Neighbor 5 overall continues to support option (A).
+
+Neighbor 6 provides the strongest negative-neighbor contrast for option (A). This neighbor contains multiple sulfur- and phosphorus-related groups that the query does not have: sulfenic derivative, sulfide, phosphoric acid derivative, 3 copies of phosphonic acid derivative, and 2 copies of oxy, each with the query-minus-neighbor delta negative for those features. Each of those absences aligns with a non-substrate comparison in this case. The neighbor also lacks thiourea while the query has it once, again favoring option (A). Taken together, these structural differences make the query look less like the neighbor, and not in a direction that would support substrate behavior. Neighbor 6 is therefore strongly consistent with option (A).
+
+Across all six neighbors, the same overall pattern repeats: the query is repeatedly separated from substrate-like chemistry by thiourea and imidazole differences, and its strongest basic pKa is consistently much lower than in the positive neighbors, which weakens the classic protonated-basic-center motif associated with CYP2D6 substrates. Although a few comparisons show lower PSA, lower surface area, or smaller size that can resemble substrate-like space, those features do not outweigh the repeated non-substrate-leaning structural and basicity signals. The full set of neighbor comparisons therefore supports the final prediction: option (A), is not a substrate to the enzyme CYP2D6.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP2D6
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

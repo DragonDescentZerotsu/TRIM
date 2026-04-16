@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are consistent with BBB penetration. Its QED drug-likeness is high at 0.9079, suggesting an overall favorable physicochemical profile. The presence of a piperidine ring (1) is also supportive, since a single weakly basic center can be compatible with brain entry when the rest of the properties are balanced. The estimated logD of 2.8489 sits in a moderate lipophilicity range that is generally favorable for BBB permeation, and the neutral fraction of 0.7626 is high enough to support passive diffusion across the barrier. The aliphatic carbocycle count of 2 adds some structural rigidity without obviously making the molecule too large or too polar, which can be beneficial. Taken together, these features suggest a compound with reasonable permeability potential.
+
+At the same time, there are clear polar and ionization-related liabilities. The strongest acidic pKa is 8.2154, which indicates an ionizable acidic site that may reduce the neutral species available for membrane passage. The maximum absolute partial charge is 0.508, the minimum partial charge is -0.508, and the maximum partial charge is again reflected as 0.1801, all pointing to a molecule with notable charge separation and polar character. The presence of a phenol (1) is another unfavorable sign for BBB crossing, since phenolic groups add hydrogen-bonding and polarity burden. These factors partially counter the more favorable lipophilicity and neutral fraction.
+
+Overall, the balance still favors BBB crossing because the molecule combines a strong drug-likeness score, a moderate logD of 2.8489, a high neutral fraction of 0.7626, and a piperidine-containing scaffold, despite the polar penalties from the acidic pKa of 8.2154, the phenol (1), and the charge-related descriptors. The net result is a prediction of option (B): crosses the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close analog that supports BBB penetration. The query keeps very favorable drug-likeness, with QED 0.9079 versus 0.8916 in the neighbor (delta +0.0163), and its estimated logD is higher at 2.8489 versus 1.4927 (delta +1.3562), which is still in a CNS-relevant moderate lipophilicity window rather than an obviously poor region. The query also has a larger topological polar surface area, 40.54 versus 23.47 (delta +17.07), but that still sits well below the usual BBB-unfavorable high-PSA range and remains within a generally compatible zone for BBB entry. Estimated logP is slightly lower in the query, 2.9666 versus 3.3264 (delta -0.3598), which can be acceptable because BBB penetration often favors moderate rather than extreme lipophilicity. The one clear downside is ketone presence: the neighbor lacks a ketone while the query has one once (delta +1), and that modestly weakens permeability. Even so, the shared piperidine in both structures helps keep the comparison aligned with a BBB-crossing profile, so overall Neighbor 1 favors option (B).
+
+Neighbor 2 likewise supports BBB crossing. Here the QED values are essentially identical, 0.9079 for the query versus 0.9078 for the neighbor (delta +0.0001), so drug-likeness is preserved. The query’s estimated logD is 2.8489 versus 2.401 (delta +0.4479), again staying in a moderate range consistent with brain penetration. Although the query’s estimated logP is lower, 2.9666 versus 4.1066 (delta -1.14), that move away from very high lipophilicity is not necessarily harmful in BBB contexts. The fraction of sp3 carbons is slightly lower in the query, 0.6111 versus 0.7 (delta -0.0889), which modestly reduces saturation/3D character, but the query still remains reasonably aliphatic. The topological polar surface area is higher in the query, 40.54 versus 23.47 (delta +17.07), yet this is still far from the PSA values typically associated with poor BBB permeability. As with Neighbor 1, the ketone present in the query but absent in the neighbor is the main unfavorable shift, but it is outweighed by the overall favorable balance, so Neighbor 2 also points to option (B).
+
+Neighbor 3 gives the same overall message. The query has slightly higher QED, 0.9079 versus 0.8335 (delta +0.0744), which is favorable for drug-likeness. Its estimated logD is also higher, 2.8489 versus 2.4658 (delta +0.3831), keeping ionization-aware lipophilicity in a brain-compatible range. Estimated logP is lower in the query, 2.9666 versus 3.8826 (delta -0.916), but again this is a shift away from a more lipophilic neighbor rather than into an obviously unfavorable low-lipophilicity regime. The query’s topological polar surface area is higher, 40.54 versus 23.47 (delta +17.07), yet still not so large as to clearly block BBB entry. The query again introduces one ketone where the neighbor has none, which is a mild penalty, but both structures retain piperidine, and that shared basic motif helps maintain similarity in a BBB-permissive scaffold. Taken together, Neighbor 3 remains supportive of option (B).
+
+Neighbor 4 is a negative-neighbor example, but even this comparison still ends up close to BBB-crossing chemistry overall. The query has much better QED, 0.9079 versus 0.7572 (delta +0.1507), and it also gains an aliphatic heterocycle, 1 versus 0 (delta +1), plus piperidine, which the neighbor lacks. Those changes generally move toward a more CNS-like scaffold. However, the minimum partial charge is unchanged at -0.508 in both molecules (delta +0), so that polarity-related aspect does not improve. The query’s topological polar surface area is only slightly higher, 40.54 versus 40.46 (delta +0.08), but even that tiny increase is described as unfavorable here, and the query also has a lower strongest acidic pKa, 8.2154 versus 10.1134 (delta -1.898), which shifts the scaffold toward a more readily ionizable acidic profile and works against BBB penetration. Because of those two features, Neighbor 4 is the main counterexample among the negative neighbors, but the broader scaffold similarity and improved QED still keep the overall comparison leaning toward option (B).
+
+Neighbor 5 is similar to Neighbor 4 and remains overall supportive of BBB crossing despite a couple of unfavorable descriptors. The query again has much better QED, 0.9079 versus 0.718 (delta +0.1899), and it adds the same aliphatic heterocycle gain, 1 versus 0 (delta +1), along with piperidine that the neighbor lacks. But the minimum partial charge is again unchanged at -0.508 (delta +0), and the maximum partial charge is higher in the query, 0.1801 versus 0.1303 (delta +0.0497), which is unfavorable in this comparison because it indicates a more polar/charged extreme. The topological polar surface area is also slightly higher in the query, 40.54 versus 40.46 (delta +0.08), which here is treated as a small negative shift. Even with those liabilities, the strong improvements in overall drug-likeness and the added piperidine/aliphatic heterocycle keep Neighbor 5 closer to a BBB-compatible analog than to a clearly non-penetrant one, so it still supports option (B) overall.
+
+Neighbor 6 is the strongest negative-neighbor support for BBB crossing. The query’s QED is far higher, 0.9079 versus 0.392 (delta +0.5159), indicating a major improvement in drug-likeness. It also has more aliphatic carbocycles, 2 versus 0 (delta +2), which can reduce flexibility and support a more BBB-friendly shape, and its estimated logD is higher at 2.8489 versus 1.1758 (delta +1.6731), again landing in a more favorable moderate range. The neighbor contains imidazolidine and dialkyl ether, both absent in the query, and those losses in the query are favorable here because they remove more polar features. The one shared drawback is that the minimum partial charge is unchanged at -0.508 (delta +0), so that specific polarity measure does not improve. Even so, the much better lipophilicity/polarity balance and the more rigid carbocyclic character make Neighbor 6 a clear positive for option (B).
+
+Across all six neighbors, the pattern is consistent: the three closest neighbors all support BBB crossing through favorable QED, moderate estimated logD, acceptable TPSA around 40.54 in the query, and shared piperidine, with only a modest ketone penalty; the three negative neighbors also mostly remain supportive because the query improves drug-likeness and lipophilicity balance, adds aliphatic heterocycle or carbocycle features, and removes more polar substituents, even though there are a few localized liabilities such as unchanged minimum partial charge, slightly higher TPSA in two cases, higher maximum partial charge in one case, and lower strongest acidic pKa in one case. Since the dominant theme across the neighborhood is a query scaffold that looks sufficiently moderate in polarity and lipophilicity for CNS exposure, the combined evidence supports option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several exposure-related features that lean away from detectable mutagenicity in the Ames assay. A topological polar surface area of 0 and hydrogen-bond acceptor count of 0 suggest a very nonpolar, weakly polar structure with limited capacity for passive interactions that would favor strong bacterial exposure. The estimated logP of 2.9726 is moderate rather than extreme, so there is no obvious signal of severe hydrophobicity-driven insolubility, but the overall polarity profile still looks low. The minimum partial charge of -0.0984, maximum partial charge of -0.019, and maximum absolute partial charge of 0.0984 indicate only a small charge range, consistent with a relatively simple, not strongly polarized scaffold. A ring count of 1 also suggests a fairly compact framework rather than a highly fused aromatic system. Those factors together support lower likelihood of a reactive or highly bioavailable mutagen.
+
+There are, however, a few mixed structural signals. A fraction of sp3 carbons of 0 means the molecule is completely non-sp3, so it is entirely unsaturated and lacks three-dimensional saturation; that kind of flatness can sometimes align with more aromatic or planar chemotypes that are more concerning. Labute surface area at 61.512 is not especially large, but it does reflect a moderate surface footprint, so it is not a trivial fragment either. The alkene count of 2 adds some unsaturation, which prevents the scaffold from being fully saturated. Even so, none of the clearly recognized mutagenic toxicophores are present from the reported descriptors, and the overall pattern is still dominated by low polarity, low acceptor capacity, and a single-ring structure rather than by a strongly alerting electrophilic motif.
+
+Overall, the balance of evidence favors option (A), is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor with similarity 0.300, but several of its key properties are more favorable to a non-mutagenic interpretation than the query. The neighbor has topological polar surface area 34.14 versus 0 for the query, with delta -34.14, and that lower polar surface area in the query is consistent with weaker exposure-related support for mutagenicity. The same pattern appears for maximum partial charge, where the neighbor is 0.194 and the query is -0.019, delta -0.213, and for heteroatom count, where the neighbor has 2 versus 0 in the query, delta -2; both shifts reduce the kinds of polarity and heteroatom burden that can accompany bacterial exposure. The neighbor also has 2 ketones versus 0 in the query, delta -2, which again differs from the query in a way that does not favor a mutagenic readout here. Only minimum absolute partial charge goes in the other direction: the neighbor is 0.194 and the query is 0.019, delta -0.175, and that feature leans toward mutagenicity in this comparison. Hydrogen-bond acceptor count is also lower in the query, with 2 in the neighbor versus 0 in the query, delta -2, another shift that does not support mutagenicity. Overall, Neighbor 1 still looks more compatible with option (A) because the main polarity and heteroatom differences outweigh the one opposing charge feature.
+
+Neighbor 2 is also a positive neighbor, similarity 0.295, and it likewise provides mixed but mostly non-mutagenic support. Hydrogen-bond acceptor count is unchanged at 0 versus 0, delta 0, so that feature does not help separate the query from this mutagenic neighbor. The more important contrast is aromatic ring count: the neighbor has 3 aromatic rings while the query has 1, delta -2. Since higher fused aromaticity can be associated with mutagenic polycyclic systems, the query being less aromatic here is favorable to option (A). Maximum absolute partial charge is 0.0616 in the neighbor and 0.0984 in the query, delta +0.0368, and that higher charge magnitude in the query moves away from the neighbor’s mutagenic profile. Fraction of sp3 carbons is 0 in both cases, delta 0; although lower sp3 character can sometimes track aromatic toxicophore-rich structures, there is no separation here. QED drug-likeness is 0.4564 in the neighbor versus 0.577 in the query, delta +0.1206, and the higher query QED is again more compatible with the less concerning side of the comparison. Heavy-atom molecular weight also drops from 168.154 in the neighbor to 120.11 in the query, delta -48.044, which reduces size-related exposure concerns. Taken together, Neighbor 2 also leans toward option (A) because the query is smaller and less aromatic than the mutagenic neighbor.
+
+Neighbor 3, similarity 0.284, is the most mixed of the positive neighbors, but it still ends up favoring option (A). Hydrogen-bond acceptor count is 1 in the neighbor and 0 in the query, delta -1, so the query is slightly less polar by that measure. Neutral fraction is 0.9549 in the neighbor and present (1) in the query, delta +0.0451; that increase in neutral fraction can matter for exposure, but here it is not enough to overturn the broader comparison. Fraction of sp3 carbons moves from 0.1765 in the neighbor to 0 in the query, delta -0.1765, and this reduces the more three-dimensional character in the query, though by itself that is only a weak proxy. The neighbor has 1 heteroatom versus 0 in the query, delta -1, and ring count is 4 versus 1, delta -3; both point to the query being simpler and less ring-rich than this mutagenic analog. Maximum partial charge also shifts from 0.0562 in the neighbor to -0.019 in the query, delta -0.0752, another difference that does not strengthen the mutagenic profile. Even though neutral fraction and sp3 fraction individually point toward mutagenicity in this specific comparison, the lower heteroatom count, fewer rings, and less extreme partial charge in the query dominate. Neighbor 3 therefore still supports option (A) overall.
+
+Neighbor 4 is a negative neighbor with similarity 0.369, and its comparison is also consistent with a non-mutagenic outcome for the query. The one feature favoring mutagenicity is minimum absolute partial charge, where the neighbor is 0.0256 and the query is 0.019, delta -0.0066. But the query also has ring count 1 versus 2 in the neighbor, delta -1, which is a move away from a more ring-rich analog. Topological polar surface area is 0 in both cases, delta 0, so there is no penalty there. Minimum partial charge shifts from -0.0622 in the neighbor to -0.0984 in the query, delta -0.0362, and that more negative charge character in the query is not supportive of mutagenicity. The alkene count is the one structural feature that increases in the query: the neighbor has 1 alkene and the query has 2, delta +1, which is the main point in the mutagenic direction. Molecular weight also decreases from 180.25 to 130.19, delta -50.06, which reduces the size/exposure context. On balance, Neighbor 4 still aligns with option (A) because the query is smaller, less ring-rich, and not more polar in a way that would outweigh the single extra alkene.
+
+Neighbor 5, similarity 0.292, is another negative neighbor that ultimately supports option (A), despite a couple of mutagenicity-leaning differences. Fraction of sp3 carbons is 0.0526 in the neighbor and 0 in the query, delta -0.0526, which can look somewhat more flattened in the query and is one of the few B-leaning features here. Minimum partial charge shifts from -0.0622 in the neighbor to -0.0984 in the query, delta -0.0362, again making the query more negative. However, estimated logP falls from 4.8668 in the neighbor to 2.9726 in the query, delta -1.8942, which reduces hydrophobicity and the risk of exposure-limiting precipitation. Maximum absolute partial charge is 0.0622 in the neighbor versus 0.0984 in the query, delta +0.0362, so the query is not more charge-extreme in the way that would mirror the neighbor. Ring count drops from 3 to 1, delta -2, and Labute surface area drops from 113.9105 to 61.512, delta -52.3986, both indicating a smaller, less expansive molecule than the mutagenic neighbor. Those latter differences are substantial and favor the non-mutagenic label. Neighbor 5 therefore still comes down on the side of option (A).
+
+Neighbor 6, similarity 0.273, also remains overall consistent with option (A), even though it includes one important mutagenicity-leaning structural alert. The query has minimum absolute partial charge 0.019 versus 0.1938 in the neighbor, delta -0.1748, which is a shift toward the B side for that feature. Topological polar surface area falls from 17.07 in the neighbor to 0 in the query, delta -17.07, and ring count decreases from 3 to 1, delta -2; both of these changes move away from the more exposed and more ring-rich reference. Hydrogen-bond acceptor count also decreases from 1 to 0, delta -1, another reduction in polarity. The strongest B-leaning point is that the neighbor contains fluorene while the query does not, delta -1. Fluorene is a more rigid polyaromatic motif than the query’s simpler scaffold, so its absence is a meaningful reason not to inherit the neighbor’s mutagenic behavior. Molecular weight also drops from 180.206 to 130.19, delta -50.016, further reducing size-related exposure concerns. Even with the minimum absolute partial charge difference and the fluorene absence in mind, the overall balance still favors option (A) because the query is much smaller, less ring-rich, and less polar than this negative neighbor.
+
+Putting the six comparisons together, the positive neighbors mostly show that the query is simpler, lighter, and less aromatic than their mutagenic reference structures, while the negative neighbors reinforce that the query lacks the more concerning ring systems and carries lower size/polarity burden overall. A few isolated features lean the other way, such as minimum absolute partial charge, alkene count, or the absence of fluorene, but they do not outweigh the repeated reductions in aromatic complexity, molecular size, surface area, and heteroatom-related properties. The combined neighbor evidence therefore supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains alkyl chloride count 2, which is a recognized mutagenicity-relevant halogenated alkyl motif and raises concern for a mutagenic outcome. However, that signal is counterbalanced by trifluoromethyl present 1 and alkyl fluoride count 2, both of which are more consistent with lower intrinsic concern here and can be associated with reduced mutagenicity likelihood in this context. The charge and polarity descriptors also lean away from mutagenicity: minimum partial charge is -0.1932 and maximum partial charge is 0.4557, suggesting charge distribution without an especially strong electrophilic pattern, while topological polar surface area is 0, hydrogen-bond acceptor count is 0, and fraction of sp3 carbons is 1, all consistent with a very nonpolar, saturated profile rather than a strongly reactive heteroatom-rich scaffold. Although heteroatom count is 7, which adds some polarity/heteroatom burden, ring count is 0, so there is no added concern from aromatic or fused-ring mutagenic scaffolds. Overall, the halogenated alkyl motif is the main positive signal, but the absence of polar acceptors, the zero polar surface area, the fully sp3 character, and the lack of rings together support the conclusion that the molecule is not mutagenic, with the overall balance favoring option (A).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is mostly driven by features that counterbalance each other, but the balance still leans toward a non-mutagenic outcome. The shared alkyl chloride motif is notable because both structures have 2 copies, so that feature does not separate them. Against that, the query is much more saturated at the carbon framework level: fraction of sp3 carbons rises from 0.1429 in the neighbor to 1.0 in the query, which is a +0.8571 change and is consistent with moving away from the flatter, more aromatic space that more often accompanies mutagenic alerts. The query also has no gain in hydrogen-bond acceptors relative to the neighbor, since both are 0, but that descriptor still sits in the exposure-limiting direction for the query context rather than supporting mutagenicity. Heteroatom count is higher in the query, 7 versus 2 in the neighbor, delta +5, which can increase polarity and alter exposure, but it is not a direct mutagenicity alert by itself. Finally, the query has one trifluoromethyl group and 2 alkyl fluorides, whereas the neighbor has none of either; those halogenated features are not enough here to outweigh the more rigid, saturated profile and the overall comparison ends up favoring option (A): is not mutagenic.
+
+Neighbor 2 gives a similar overall picture, with one opposing aromatic signal but several features favoring the non-mutagenic class. Both molecules again share 2 alkyl chlorides, so that feature is not discriminating. The query is much less lipophilic than the neighbor, with estimated logP 2.9877 versus 5.747, a delta of -2.7593. In Ames testing, extreme hydrophobicity can create exposure and solubility limitations, so this lower logP is compatible with better soluble exposure control and does not create a mutagenic alert. Hydrogen-bond acceptor count is still 0 in both cases. The query also has a much higher fraction of sp3 carbons, 1.0 versus 0.3333, delta +0.6667, again moving away from a flatter aromatic profile. The neighbor has 2 aromatic rings while the query has 0, delta -2, and that is an important difference because fused aromaticity is more often associated with mutagenic scaffolds than a fully non-aromatic framework. The query does have more heteroatoms, 7 versus 2, delta +5, which can raise polarity, but taken together the drop in logP and the loss of aromatic rings keep this neighbor comparison aligned with option (A): is not mutagenic.
+
+Neighbor 3 is the most mixed of the positive-neighbor set, because it contains several features that would typically raise concern, yet the structural context still ends up favoring mutagenicity only weakly relative to the query comparison. The query has much lower topological polar surface area, 0 versus 26.3 in the neighbor, delta -26.3, which can affect exposure but does not itself create a mutagenicity alert. Both structures share 2 alkyl chlorides, again not differentiating them. The neighbor has chloroalkene while the query does not, and that absence in the query removes one potentially more reactive halogenated unsaturation. The query also has a higher maximum partial charge, 0.4557 versus 0.3498, delta +0.106, which can influence electrostatics and transport, but this is still a context-dependent exposure modifier rather than a standalone mutagenicity driver. The query carries one trifluoromethyl group and 2 alkyl fluorides, whereas the neighbor has none, and those fluorinated substituents temper the concern from the remaining features. Overall, this neighbor is the one positive reference that leans toward option (B): is mutagenic, but only modestly.
+
+Neighbor 4 provides a strong negative-neighbor comparison for the query because the features that would raise concern are offset by several clear non-mutagenic differences. The query has 2 alkyl chlorides while the neighbor has none, which on its own could point toward mutagenicity. However, the query also has 2 alkyl fluorides while the neighbor has none, and that feature goes the opposite way in this comparison. Both structures have trifluoromethyl, so there is no separation there. The query is much more sp3-rich, with fraction of sp3 carbons 1.0 versus 0.1429, delta +0.8571, which again shifts away from the flatter aromatic space. The query also has more heteroatoms, 7 versus 4, delta +3, and the neighbor has 1 ring while the query has 0, delta -1. The net effect is that the query lacks the ringed, less saturated character seen in the neighbor, and that makes the overall comparison favor option (A): is not mutagenic despite the alkyl chloride motif.
+
+Neighbor 5 is essentially the same as Neighbor 4 and reinforces the same conclusion. The query again has 2 alkyl chlorides compared with 0 in the neighbor, but it also has 2 alkyl fluorides where the neighbor has none, and both share trifluoromethyl. The fraction of sp3 carbons remains 1.0 in the query versus 0.1429 in the neighbor, delta +0.8571, so the query is still much more saturated. Heteroatom count is higher in the query, 7 versus 4, delta +3, and ring count is lower, 0 versus 1, delta -1. Taken together, this comparison repeats the pattern that the query is less ringed and more saturated than the neighbor, and that overall supports option (A): is not mutagenic.
+
+Neighbor 6 is another negative-neighbor example that adds one important toxicophore difference: the neighbor has 2 nitro groups while the query has 0, which is a major reason this comparison favors the non-mutagenic label because nitro groups are well-recognized mutagenic toxicophores. The query still has 2 alkyl chlorides versus 0 in the neighbor, and 2 alkyl fluorides versus 0 in the neighbor, so there are some halogenated motifs present in the query. Both structures have trifluoromethyl, so that feature does not separate them. The query is again much more sp3-rich, with fraction of sp3 carbons 1.0 versus 0.1429, delta +0.8571, and it also has much lower topological polar surface area, 0 versus 86.28, delta -86.28. That lower PSA is another sign of a small, nonpolar surface profile rather than a strongly polar mutagenic scaffold. In this context, the absence of nitro groups in the query is especially important, and it outweighs the halogen differences, so this comparison also supports option (A): is not mutagenic.
+
+Across all six neighbors, the positive-neighbor references are mixed but mostly dominated by features that lower aromaticity, raise saturation, and reduce or redistribute polarity rather than clearly indicate a mutagenic toxicophore. Neighbor 3 is the only positive neighbor that leans toward mutagenicity, and even there the evidence is modest and context-dependent. The three negative neighbors are more consistent: all three highlight the query’s higher sp3 character and lack of ring burden, and Neighbor 6 adds the especially important absence of nitro groups. Taken together, the neighbor comparisons support the final prediction of option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

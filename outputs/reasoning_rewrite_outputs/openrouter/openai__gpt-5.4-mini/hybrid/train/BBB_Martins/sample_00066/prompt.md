@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are favorable for BBB penetration. The maximum absolute partial charge is 0.2237 and the minimum partial charge is -0.2237, suggesting a relatively modest charge distribution rather than extreme polarity. The neutral fraction is present (1), which is also favorable because a higher neutral fraction supports passive diffusion across the BBB. The molecule contains an aryl fluoride (1), a small lipophilic substituent that can support membrane permeability without adding much polar burden. It also has no acidic site, so the strongest acidic pKa is not defined, which is consistent with avoiding strongly ionized acidic behavior at physiological pH. The NH/OH group count is 0, removing hydrogen-bond donor liability, and the number of ionizable sites is absent (0), which further supports a more neutral, BBB-compatible profile. The exact molecular weight is 188.0307, which is well within the low-molecular-weight range typically associated with better BBB penetration. The estimated logP is 1.6193, a moderate value that is compatible with CNS penetration even though it is not especially high. There is, however, some mixed evidence: a sulfonyl group is present (1), which adds polarity and is unfavorable for BBB crossing. Even so, the overall balance of low donor burden, low molecular weight, presence of a neutral fraction, and only moderate lipophilicity makes the molecule more consistent with crossing the BBB than with being excluded. Overall, the compound is best classified as option (B): crosses the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close BBB-positive analog overall. The query has a less negative minimum partial charge than the neighbor (-0.2237 vs -0.3028, delta +0.0791), which aligns with a more permeable profile here, and the query also keeps the aryl fluoride present in both molecules. The query is smaller on heavy-atom molecular weight (179.151 vs 265.202, delta -86.051), which is favorable in the BBB context because lower size generally supports penetration. Topological polar surface area is also still in a CNS-relevant low range at 34.14, though it is higher than the neighbor’s 20.31 (delta +13.83); that increase is not ideal, but it remains well below the common ~90 Å² ceiling and does not outweigh the other favorable features. The main counterweight is the strongest basic pKa: the neighbor has a basic site at 9.6489 while the query has no basic site, and that absence is treated unfavorably in this specific comparison. The maximum partial charge is slightly higher in the query (0.1776 vs 0.1624, delta +0.0152), which is a small negative factor. Even with those caveats, the smaller size, low TPSA, and favorable partial-charge pattern make this neighbor supportive of BBB crossing.
+
+Neighbor 2 is another strong BBB-positive analog. The query has a much smaller maximum absolute partial charge than the neighbor (0.2237 vs 0.4613, delta -0.2376), which is favorable, and its minimum partial charge is correspondingly less negative than the neighbor’s (-0.2237 vs -0.4613, delta +0.2376), also supporting penetration. The neutral fraction is essentially maximal in both cases, with the query at 1 versus 0.9994 in the neighbor, so the comparison preserves a highly neutral profile that is consistent with BBB entry. The query again carries the aryl fluoride motif present in both structures, which is also favorable in this analog set. Two differences lean the other way: the neighbor has 2 ionizable sites while the query has none, and that reduction is unfavorable in this comparison, and the neighbor’s strongest basic pKa is 4.1839 while the query has no basic site, which also counts against the query here. Even so, the strong neutral character and reduced charge burden dominate, making this neighbor supportive of BBB crossing.
+
+Neighbor 3 is likewise a BBB-positive analog and perhaps the clearest size/polarity match among the positive neighbors. The query has lower maximum absolute partial charge than the neighbor (0.2237 vs 0.3383, delta -0.1146), while its minimum partial charge is less negative (-0.2237 vs -0.3383, delta +0.1146), both of which favor BBB crossing. The size difference is very large: heavy-atom molecular weight drops from 372.269 in the neighbor to 179.151 in the query (delta -193.118), a major move into the smaller, more BBB-friendly range. The query is fully neutral (neutral fraction 1) compared with the neighbor’s 0.3592, which is a substantial improvement for passive brain penetration. There is one unfavorable mismatch: the neighbor has a strongest acidic pKa of 13.9544 and the query has no acidic site, so that missing acidic-site comparison is treated adversely in this local context. The query also has one aryl fluoride versus two in the neighbor (delta -1), yet that does not offset the strong gains in size, neutrality, and charge profile. Overall this neighbor strongly supports the BBB-crossing label.
+
+Neighbor 4 is a BBB-negative analog, but its comparison is mixed because several query features still look favorable. The query adds one aryl fluoride relative to the neighbor, and that same fluorinated motif is usually consistent with the favorable side of the analog space. The neighbor and query both contain sulfonyl, so that feature is neutral in the comparison. The main reasons this neighbor falls on the BBB-negative side are that the neighbor has 4 NH/OH groups while the query has 0, and the query’s hydrogen-bond donor count is 0 versus 2 in the neighbor; the large drop in donor-bearing functionality is favorable for BBB penetration in general, but here the supplied comparison still marks the neighbor as the negative reference point. The query also has a lower maximum absolute partial charge (0.2237 vs 0.3987, delta -0.175), which is favorable, and the neighbor’s strongest acidic pKa is 13.626 while the query has no acidic site, another comparison that remains favorable in the raw chemistry sense even though the neighbor is still the negative analog. Taken together, this neighbor is useful mainly as a contrast set: it highlights how differences in polar substituent burden and donor count separate the query from a more BBB-limited structure, even though the local comparison still assigns the query a favorable direction on several of those features.
+
+Neighbor 5 is a BBB-negative analog, and the comparison emphasizes how the query is smaller and less polar than that reference. The query has a less negative minimum partial charge than the neighbor (-0.2237 vs -0.2698, delta +0.0461), which is favorable, and it adds one aryl fluoride where the neighbor has none. The query also has a much lower topological polar surface area: 34.14 versus 78.51 in the neighbor, a drop of 44.37 Å² that moves the query into a clearly more BBB-compatible PSA region and below the commonly used ~90 Å² ceiling. On size, the query is also lighter, with heavy-atom molecular weight 179.151 versus 290.239 (delta -111.088), and exact molecular weight 188.0307 versus 311.1304 (delta -123.0996); both shifts favor BBB penetration. The query’s maximum absolute partial charge is lower as well (0.2237 vs 0.3427, delta -0.119), which further reduces polarity burden. Because every one of these differences points toward a smaller, less polar, more permeable molecule, this neighbor strongly supports the BBB-crossing label even though it is itself part of the non-crossing set.
+
+Neighbor 6 is another BBB-negative analog, but again the query looks more BBB-friendly on the most relevant physicochemical dimensions. The neighbor lacks aryl fluoride while the query has it once, which is favorable in this local series. The query has a much lower maximum absolute partial charge than the neighbor (0.2237 vs 0.508, delta -0.2843), and its minimum partial charge is less negative (-0.2237 vs -0.508, delta +0.2843), both indicating a reduced charge burden. Neutral fraction is also slightly higher in the query, at 1 versus 0.9963, keeping the molecule in an essentially fully neutral state that supports passive diffusion. Against that, the neighbor has 2 ionizable sites while the query has none, and the comparison treats that reduction as unfavorable here; the neighbor also contains 2 phenol groups whereas the query has 0, which is a meaningful reduction in H-bonding liability and would ordinarily favor BBB crossing, even though the neighbor remains the negative reference. In context, the charge and ionization pattern of the query is still more compatible with BBB penetration than the phenol-rich negative analog.
+
+Across the six neighbors, the three BBB-positive analogs consistently resemble the query in the direction most associated with brain entry: lower size, low TPSA where reported, very high neutral fraction, and reduced partial-charge burden. The three BBB-negative analogs mainly underscore the same theme from the opposite side: the query is less polar, less ionizable, and generally smaller than those references, with added aryl fluoride and fewer donor-rich or phenol-rich features where those appear. Although a few individual comparisons are mixed, the dominant pattern is that the query sits closer to the BBB-crossing side of the local analog space. Taken together, the neighbor evidence supports option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

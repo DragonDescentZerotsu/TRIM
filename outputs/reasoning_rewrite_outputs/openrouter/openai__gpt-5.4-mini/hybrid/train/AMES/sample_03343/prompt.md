@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are consistent with mutagenic potential. A primary aromatic amine is present at count 4, which is a well-recognized mutagenicity toxicophore and can require metabolic activation, so this is a strong flag for a mutagenic outcome. The ring count is 3, and a higher aromatic/ring-rich scaffold can support the kinds of planar or polycyclic motifs often associated with mutagenicity. The NH/OH group count is 8, indicating substantial hydrogen-bonding capacity, and the fraction of sp3 carbons is 0, so the structure is highly unsaturated and flat; that kind of low-sp3 character often aligns with aromatic toxicophore-like chemistry rather than a more saturated, flexible scaffold. The ketone count is 2, the heteroatom count is 6, and the number of basic sites is 4, all of which indicate a heteroatom-rich, functionalized molecule that may have enough polarity and ionization complexity to influence how it behaves in the assay, but they do not by themselves argue against mutagenicity. The neutral fraction is 0.9972, meaning the molecule is overwhelmingly neutral at the configured pH, so passive exposure is not obviously limited by ionization. The estimated logP is 0.7908, which is not especially hydrophobic, so solubility and uptake are not obviously blocked by extreme lipophilicity either. The one clearly opposing signal is the number of ionizable sites at 12, which suggests a heavily ionizable molecule and could reduce effective bacterial permeability in some settings, potentially tempering exposure. Even with that caveat, the presence of the primary aromatic amine at count 4 together with the ring-rich, low-sp3 scaffold and multiple functional groups makes the overall profile more consistent with a mutagenic compound than a non-mutagenic one. Overall, the balance of evidence supports option (B): is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a strong mutagenic analog: the query has 4 primary aromatic amines versus 2 in the neighbor, and that larger burden of a well-recognized Ames toxicophore is the dominant difference. The query also has a slightly lower strongest basic pKa, 4.8435 versus 5.1592 (delta -0.3157), which does not offset the structural alert. In addition, the query is more heteroatom-rich, with heteroatom count 6 versus 2 (delta +4), and it also has more NH/OH groups, 8 versus 4 (delta +4), both of which can accompany higher polarity but here still sit alongside the mutagenic aromatic-amine pattern. The higher heavy-atom count in the query, 20 versus 8 (delta +12), is the one factor that leans the other way by potentially reducing exposure, yet the effect is outweighed by the much stronger toxicophore signal. The higher maximum partial charge in the query, 0.1983 versus 0.0547 (delta +0.1436), also fits a more strongly polarized molecule. Overall, this neighbor makes the query look more like a mutagenic compound.
+
+Neighbor 2 also supports mutagenicity. The query again has 4 primary aromatic amines versus 1 in the neighbor (delta +3), which is the clearest driver in the comparison. The query is smaller in heavy-atom molecular weight, 256.18 versus 392.307 (delta -136.127), which would not by itself favor a weaker exposure-limited profile, and the same mutagenic aromatic-amine motif remains much more abundant in the query. The strongest basic pKa is slightly higher in the query, 4.8435 versus 4.282 (delta +0.5615), and the strongest acidic pKa is dramatically higher, 12.83 versus 1.1607 (delta +11.6693), showing a very different ionization profile. The query also has a larger topological polar surface area, 138.22 versus 126.56 (delta +11.66), and more NH/OH groups, 8 versus 4 (delta +4). Even though those properties can affect permeability, the repeated enrichment for aromatic amine content makes this neighbor align with a mutagenic outcome.
+
+Neighbor 3 again points toward mutagenicity, but with one opposing charge-related feature. The query has 4 primary aromatic amines versus 2 in the neighbor (delta +2), which strongly favors the mutagenic class. The minimum absolute partial charge is higher in the query, 0.1983 versus 0.0345 (delta +0.1639), and in this comparison that feature goes the opposite direction, slightly weakening the mutagenic read. However, the query also has a lower strongest acidic pKa, 12.83 versus 13.9048 (delta -1.0748), more heteroatoms, 6 versus 2 (delta +4), more NH/OH groups, 8 versus 4 (delta +4), and a slightly higher neutral fraction, 0.9972 versus 0.9585 (delta +0.0387). Taken together, the larger aromatic-amine burden still dominates, so this neighbor remains consistent with mutagenicity.
+
+Neighbor 4 is another mutagenic neighbor. The query carries 4 primary aromatic amines versus 2 in the neighbor (delta +2), again keeping the toxicophore enrichment front and center. The query has a lower strongest acidic pKa, 12.83 versus 13.939 (delta -1.109), more NH/OH groups, 8 versus 4 (delta +4), and a higher neutral fraction, 0.9972 versus 0.9657 (delta +0.0315). It also has more ionizable sites, 12 versus 6 (delta +6), while its strongest basic pKa is lower, 4.8435 versus 5.951 (delta -1.1075). These ionization and polarity differences may influence exposure, but none of them outweigh the clear increase in aromatic amine content, so this comparison still supports the mutagenic label.
+
+Neighbor 5 is also consistent with a mutagenic query despite two opposing features. The query has 4 primary aromatic amines versus 2 in the neighbor (delta +2), more NH/OH groups, 8 versus 4 (delta +4), more ionizable sites, 12 versus 6 (delta +6), and one additional aliphatic carbocycle, 1 versus 0 (delta +1). Those differences keep the query in a more mutagenic-looking space. At the same time, the neighbor contains a sulfonyl group that the query lacks (delta -1), which leans away from mutagenicity here, and the query has more acidic sites, 8 versus 4 (delta +4), which in this comparison also moves the signal toward the nonmutagenic side. Even with those offsets, the increased aromatic amine content remains the stronger discriminator, so the overall comparison still favors mutagenicity.
+
+Neighbor 6 likewise supports the mutagenic assignment. The query has 4 primary aromatic amines versus 1 in the neighbor (delta +3), which is the main signal. The query also has more NH/OH groups, 8 versus 4 (delta +4), more ionizable sites, 12 versus 6 (delta +6), one more aliphatic carbocycle, 1 versus 0 (delta +1), and a higher ring count, 3 versus 1 (delta +2). As in Neighbor 5, the increased number of acidic sites in the query, 8 versus 4 (delta +4), goes the other way and is the main opposing feature in this comparison. Even so, the expanded aromatic-amine pattern and the more highly substituted ring system keep this neighbor on the mutagenic side.
+
+Taken together, all six neighbors are closer to mutagenic analogs than to nonmutagenic ones because the query repeatedly shows a higher burden of primary aromatic amines, along with several supporting polarity/ionization differences. A few features in individual comparisons point toward lower exposure or a nonmutagenic tendency, such as higher heavy-atom size in Neighbor 1, the sulfonyl absence and higher acidic-site count in Neighbor 5, the higher acidic-site count in Neighbor 6, and the charge-related offset in Neighbor 3. But those are secondary relative to the recurring aromatic amine enrichment across every neighbor. The combined analog evidence therefore supports option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several favorable oral-bioavailability features. A tertiary amide is present (1), which is generally consistent with a balanced, drug-like polarity profile. The QED drug-likeness score is high at 0.7994, suggesting overall favorable developability. A lactam is present (1), which can be compatible with oral drug-like space when the rest of the properties remain balanced. The secondary hydroxyl is absent (0), reducing one source of hydrogen-bond donation and polarity.
+
+At the same time, there are some liabilities that temper the picture. Piperazine is present (1), and that motif often increases basicity and polarity, which can hurt passive permeability. The topological polar surface area is 40.62, which is not especially high, but it still adds some polarity burden. The neutral fraction is present (1), indicating there is a neutral population available, which is favorable for absorption, although the raw signal here is not overwhelmingly strong. The strongest acidic pKa is not defined because there is no acidic site, so there is no acidic functionality adding extra ionization burden. The aliphatic ring count is 3, which adds some size and flexibility. The fraction of sp3 carbons is 0.5789, giving the molecule appreciable 3D character; that can be beneficial for drug-likeness, though in isolation it does not guarantee better oral exposure.
+
+Overall, the favorable drug-likeness and amide/lactam features outweigh the moderate polarity and piperazine-related liability, so the molecule is more consistent with oral bioavailability at or above 20%.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately unfavorable analog for oral bioavailability. It does show a higher QED drug-likeness for the query, with 0.7994 versus 0.601 for the neighbor, a delta of +0.1984, which is directionally favorable for reaching the ≥20% range. However, that advantage is outweighed by several permeability-related differences: the query’s topological polar surface area is much lower at 40.62 versus 95.94 (delta -55.32), the query’s neutral fraction is essentially fully neutral at 1 compared with 0.0002 in the neighbor (delta +0.9998), the query’s maximum absolute partial charge is lower at 0.332 versus 0.4799 (delta -0.1479), the query has piperazine once while the neighbor lacks it (delta +1), and the query has no basic sites where the neighbor has one (delta -1). Taken together, this neighbor still leans against the <20% class overall because the same comparison contains several features that the note itself associates with the lower-bioavailability side, despite the QED improvement.
+
+Neighbor 2 is also a mixed case, but it again ends up favoring the <20% label. The query has a fully present neutral fraction versus 0.0015 in the neighbor, which is a large shift of +0.9985, and that comparison is treated as unfavorable for bioavailability here. The query also has a higher aliphatic ring count, 3 versus 2, a delta of +1, and a higher estimated logD, 2.5349 versus 1.1096, a delta of +1.4253; both of those changes are associated with the lower-bioavailability direction in this pair. The strongest acidic pKa is also handled differently, with the neighbor at 13.875 and the query having no acidic site, which is described as an undefined delta but still aligned with the lower-bioavailability side in the comparison. On the positive side, the query has one lactam whereas the neighbor has none, and that feature is favorable for the ≥20% outcome. Even so, the combined balance of neutral-fraction, ring-count, logD, and acidic-site effects still makes this neighbor support the <20% prediction.
+
+Neighbor 3 again mixes favorable and unfavorable signals, but the unfavorable ones dominate. The query has neutral fraction present at 1 while the neighbor is absent at 0, a delta of +1, and that is associated with the lower-bioavailability side here. The query also has two fewer carboxylic acid groups than the neighbor, going from 2 to 0, a delta of -2, which is again unfavorable for the <20% class in this comparison. The query has a higher aliphatic ring count, 3 versus 2, delta +1, and a lower maximum absolute partial charge, 0.332 versus 0.4801, delta -0.1481; both of those changes align with the lower-bioavailability direction in the note. Two features go the other way: the query’s QED is higher, 0.7994 versus 0.6408, delta +0.1585, and the neighbor has hydrazine while the query does not, which is favorable for the ≥20% class. Even with those positives, the combined acid, ring, charge, and neutral-fraction pattern still weighs this neighbor toward the <20% outcome.
+
+Neighbor 4 is a clearer negative neighbor for the ≥20% class and therefore supports the final <20% label. The query’s QED is higher, 0.7994 versus 0.7213, delta +0.078, which is favorable for oral bioavailability. But the query also has fewer ionizable sites, going from 3 in the neighbor to 0 in the query, a delta of -3, and that shift is unfavorable here. The query’s fraction of sp3 carbons is substantially higher, 0.5789 versus 0.2941, delta +0.2848, which would normally be a positive structural change, yet in this comparison it is still associated with the lower-bioavailability side. The same applies to estimated logD: the query is slightly higher at 2.5349 versus 2.412, delta +0.1229, and that also favors the <20% side in the observed comparison. The query has more saturated ring character, with saturated ring count 2 versus 0, delta +2, another unfavorable shift here. The only clearly favorable feature for the ≥20% class is that the neighbor lacks tertiary amide while the query has one once, but that single positive is not enough to overturn the other features.
+
+Neighbor 5 also supports the <20% label overall. The query has more aliphatic ring content, 3 versus 1, a delta of +2, and that is unfavorable here. The query and neighbor both have tertiary amide, so that feature is neutral. The query has fewer ionizable sites, 0 versus 1, a delta of -1, and that aligns with the lower-bioavailability direction in this comparison. The query also has piperazine once while the neighbor lacks it, delta +1, which is unfavorable here. On the favorable side, the query’s minimum partial charge is slightly more negative, -0.332 versus -0.3093, delta -0.0227, and the query has lactam once while the neighbor has none; both of those are associated with the ≥20% side in the note. Even so, the stronger structural changes in ring content and ionizable-site pattern keep this neighbor on the <20% side overall.
+
+Neighbor 6 is the most strongly aligned with the <20% class among the negative neighbors. The neighbor has 2 lactams while the query has 1, delta -1, and the neighbor also has tertiary hydroxyl while the query does not, delta -1; both of those differences favor the lower-bioavailability side. The neighbor’s topological polar surface area is much higher at 118.21 compared with the query’s 40.62, a delta of -77.59, which is a major shift toward the same direction. The query and neighbor both have piperazine, so that feature is neutral. The query has higher estimated logD, 2.5349 versus 1.8056, delta +0.7293, and in this comparison that higher value still aligns with the lower-bioavailability side. The only positive counterweight is QED: the query is much higher at 0.7994 versus 0.4331, delta +0.3662, which favors the ≥20% class. But the large PSA gap together with the lactam and tertiary hydroxyl differences makes this neighbor clearly supportive of the <20% outcome.
+
+Across the six neighbors, the positive-neighbor set is internally mixed but not strong enough to override the recurring permeability and ionization liabilities seen against the query, while the negative-neighbor set repeatedly reinforces the lower-bioavailability class through PSA, ionizable-site, ring, and functional-group patterns. The query does have some favorable features, especially higher QED and, in one comparison, a lactam, but it also carries several changes that the nearest analogs associate with reduced oral exposure. Taken together, the neighborhood pattern is more consistent with option (A): has oral bioavailability < 20%.
+
+Input 3. Target final label semantics
+option (A): has oral bioavailability < 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

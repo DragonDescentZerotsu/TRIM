@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+Quinoxaline is present (1), and together with benzimidazole present (1) this places the molecule in a heteroaromatic framework that is often associated with Ames-positive space, especially when paired with other alerting substructures. The presence of a primary aromatic amine (1) is a clear mutagenicity concern, since aromatic amines are recognized mutagenic toxicophores. The neutral fraction is high at 0.9914, so the molecule is largely neutral at the configured pH, which would favor passive exposure in the assay rather than limiting it through ionization. The ring count is 3 and the aromatic ring count is 3, indicating a compact, aromatic scaffold; that kind of aromaticity can be consistent with mutagenic behavior when combined with reactive or bioactivated motifs. The strongest basic pKa is 5.3376, meaning the molecule has a moderately basic site that may be partly protonated under assay conditions, but not so strongly basic that it obviously suppresses exposure. Heavy-atom molecular weight is 226.178 and Labute surface area is 104.6725, both moderate values that do not suggest severe size-related barriers to bacterial access. There is one cautionary descriptor: QED drug-likeness is 0.6534, which is a reasonably drug-like value and by itself would not specifically indicate mutagenicity. However, the structural alerts dominate: the combination of quinoxaline (1), benzimidazole (1), and a primary aromatic amine (1), together with a fairly aromatic 3-ring scaffold and high neutral fraction (0.9914), is more consistent with a compound that can reach bacterial cells and present a mutagenic liability. Overall, the balance of evidence favors option (B): is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a moderately similar mutagenic analog, and several of its differences favor mutagenicity in the same way the query is organized. The query has a higher neutral fraction, 0.9914 versus 0.6773 in the neighbor, with delta +0.3141, and that aligns with a more unionized state at the relevant pH that can still support bacterial exposure in a context-dependent way. The query also has quinoxaline while the neighbor does not, which is an important structural addition because heteroaromatic ring systems can matter for Ames outcomes when they accompany reactive or bioactivation-prone motifs. The query is larger and more heteroatom-rich as well, with molecular weight 241.298 versus 161.208, delta +80.09, and heteroatom count 5 versus 3, delta +2; those shifts are not direct mutagenicity rules, but they can accompany structural complexity associated with mutagenic analogs. At the same time, the query has more basic and ionizable sites, 5 versus 3 for both number of basic sites and number of ionizable sites, and those deltas (+2 in each case) were unfavorable in this particular comparison because they likely reflect a different charge/exposure balance relative to the mutagenic neighbor. Overall, Neighbor 1 still supports option (B) because the quinoxaline addition, increased size, and higher neutral fraction outweigh the countervailing ionization-site differences.
+
+Neighbor 2 is also mutagenic, but here the comparison is mixed and ends up less favorable overall for the query. The query again has more basic sites, 5 versus 3, delta +2, and more ionizable sites, 5 versus 3, delta +2, both of which are unfavorable in this local comparison. The query’s QED is slightly higher, 0.6534 versus 0.6072, delta +0.0462, which in this setting does not help the mutagenic side because it is associated with a more drug-like profile rather than a specific Ames alert. The query also has a higher fraction of sp3 carbons, 0.3077 versus 0.125, delta +0.1827, which moves away from the flatter, more aromatic character that often accompanies Ames-positive motifs. Against that, the query has quinoxaline whereas the neighbor does not, which is the main mutagenicity-supporting feature here, and the query’s estimated logP is higher, 2.024 versus 1.1555, delta +0.8685, which can sometimes increase effective bacterial exposure depending on the setting. Even so, the overall balance for Neighbor 2 is weaker than for the other positive analogs because the exposure- or alert-like benefits are offset by the higher basic/ionizable-site burden and the higher sp3 fraction.
+
+Neighbor 3 gives a clearer mutagenic comparison. The ring count is the same, 3 versus 3, delta 0, but the query still aligns with mutagenic chemistry through several other features. The strongest basic pKa is lower in the query, 5.3376 versus 6.0997, delta -0.7621, which changes the ionization balance but does not remove the mutagenic signal in this case. The query has a slightly higher neutral fraction, 0.9914 versus 0.9523, delta +0.0391, and again carries quinoxaline while the neighbor does not. It also has higher heteroatom count, 5 versus 4, delta +1, consistent with a more heteroaromatic, nitrogen-rich scaffold. The only clearly opposing feature here is the higher number of ionizable sites in the query, 5 versus 4, delta +1, which is unfavorable if interpreted as a permeability modifier. Still, the quinoxaline presence, the heteroatom increase, and the neutral-fraction shift make Neighbor 3 support option (B) overall.
+
+Neighbor 4 is one of the non-mutagenic references, yet the query still looks more like the mutagenic side than this neighbor does. The query has a slightly higher strongest basic pKa, 5.3376 versus 5.0494, delta +0.2882, and a lower aromatic ring count, 3 versus 5, delta -2. Aromatic ring count by itself is not a universal rule, but in this context the neighbor’s greater aromatic burden is not enough to outweigh the query’s more relevant alert-like features. Both molecules have primary aromatic amine, so that structural alert is shared rather than distinguishing them. The query’s neutral fraction is slightly lower, 0.9914 versus 0.9956, delta -0.0042, while its QED is higher, 0.6534 versus 0.5106, delta +0.1428; neither of those changes removes the mutagenic concern. The maximum absolute partial charge is identical, 0.3692 in both, so there is no help from that descriptor either. Importantly, the earlier comparison evidence still favors the query’s mutagenic side because its quinoxaline-containing scaffold is absent from this non-mutagenic neighbor, making Neighbor 4 less persuasive against option (B) than its label might first suggest.
+
+Neighbor 5, despite being a non-mutagenic neighbor, actually resembles the query in several mutagenicity-relevant respects. The query has more basic sites, 5 versus 3, delta +2, which is one of the few unfavorable differences here. But the two compounds both have primary aromatic amine, and the query again has quinoxaline while the neighbor does not, both of which are features that align better with mutagenic analogs. The query’s minimum partial charge is less negative, -0.3692 versus -0.5079, delta +0.1387, suggesting a different charge distribution that is not inconsistent with the query’s observed behavior. The query’s strongest basic pKa is lower, 5.3376 versus 6.9041, delta -1.5665, and its estimated logP is higher, 2.024 versus 0.8611, delta +1.1629, which together shift it away from this non-mutagenic analog’s profile. Taken together, the shared primary aromatic amine does not rescue the neighbor’s non-mutagenic label once quinoxaline, the charge distribution, and the logP shift are considered; Neighbor 5 therefore still supports option (B) when used as an analog comparison.
+
+Neighbor 6 is the strongest of the non-mutagenic references for the query, but even here the query keeps several mutagenicity-associated features. The query’s strongest basic pKa is essentially unchanged from the neighbor, 5.3376 versus 5.3501, delta -0.0125, so there is no large ionization shift there. The query has fewer aromatic heterocycles, 2 versus 3, delta -1, and the neighbor has two pyridine rings while the query has none, which changes the heteroaromatic pattern but does not eliminate the mutagenic concern because the query still contains quinoxaline. Both molecules share primary aromatic amine, again keeping a recognized structural alert present in the query. The ring count is unchanged at 3 versus 3, delta 0, so size-by-ring-count does not explain the difference. The query also has quinoxaline while the neighbor does not, which is the main feature distinguishing the query from this non-mutagenic analog. Even though the neighbor has more pyridine, the query’s quinoxaline plus the shared aromatic amine make it closer to the mutagenic side than to a truly benign scaffold, so Neighbor 6 still fits option (B).
+
+Putting the six neighbors together, the three mutagenic analogs consistently highlight quinoxaline, heteroatom-rich aromatic character, and in some cases higher logP or neutral fraction as features that accompany the query. The three non-mutagenic analogs do introduce some countervailing points, especially the higher basic-site and ionizable-site counts in the query and the lower aromatic ring count versus Neighbor 4, but those do not dominate the comparisons because the query repeatedly retains the mutagenicity-linked quinoxaline scaffold and primary aromatic amine pattern. The overall neighborhood therefore remains closer to the mutagenic class, so the final prediction is option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

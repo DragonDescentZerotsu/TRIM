@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed toxicity profile, with several features that can be interpreted as unfavorable but also some properties that lean toward lower risk. A minimum partial charge of -0.4106 suggests a fairly polar atom environment, which can accompany stronger heteroatom character and occasionally support undesirable binding or ionization behavior. At the same time, the presence of an oxime (1) is a favorable sign relative to many reactive or highly lipophilic motifs, and the presence of an alkyne (1) does not by itself suggest obvious toxicity liability in this context. The tertiary hydroxyl (1) adds polarity and hydrogen-bonding capacity, which can be favorable for exposure balance, although it does not eliminate concern from other features.
+
+Several descriptors point in a more toxic direction. The estimated logP of 4.1437 is fairly high, indicating substantial lipophilicity, which can increase nonspecific interactions and developability concerns. The strongest basic pKa of 5.2764 is only moderately basic, so it does not strongly support cationic amphiphilic risk, but it still leaves some ionizable character. The hydrogen-bond acceptor count of 3 and the nitrogen/oxygen atom count of 3 are both modest, which is consistent with a not overly polar scaffold and can sometimes accompany higher membrane permeability, but in the setting of high logP this can also favor broader tissue distribution. The strongest acidic pKa of 11.8682 is quite high, implying the acidic functionality is weakly acidic and likely largely neutral under physiological conditions, which slightly reduces concern from excessive anionic burden.
+
+One notable mitigating factor is the ammonium status: ammonium is absent (0), so there is no obvious permanently cationic ammonium center to drive strong lysosomal trapping or similar cationic amphiphilic liabilities. Overall, the molecule combines some unfavorable lipophilicity and ionization features with a few polar and structurally acceptable elements, but the balance of evidence still supports a lower-risk profile. The final judgment is is not toxic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close toxic analog, but the comparison is mixed. The query has a slightly more negative minimum partial charge than the neighbor (query -0.4106 vs neighbor -0.3928, delta -0.0179), which by itself aligns with the toxic side here, and the same is true for the ammonium status since neither molecule has ammonium. However, the query also has one oxime where the neighbor has none, a lower hydrogen-bond acceptor count (3 vs 5, delta -2), a lower minimum absolute partial charge (0.1306 vs 0.1896, delta -0.059), and a lower fraction of sp3 carbons (0.7619 vs 0.8095, delta -0.0476). Those latter shifts all lean away from toxicity relative to this toxic neighbor, so overall the query looks somewhat less toxic than Neighbor 1 even though a couple of charge-related features point the other way.
+
+Neighbor 2 shows the same overall pattern. Again, the query is slightly more negative in minimum partial charge (delta -0.0179) and matches the neighbor on ammonium being absent, both of which resemble the toxic side of this local comparison. But the query’s oxime is present when the neighbor lacks it, its hydrogen-bond acceptor count is lower (3 vs 5, delta -2), its minimum absolute partial charge is lower (0.1306 vs 0.1896, delta -0.059), and it has the same tertiary hydroxyl pattern as the neighbor. The tertiary hydroxyl match does add some toxic weight, but the oxime and lower acceptor/polar-charge features still make the query look less concerning overall than Neighbor 2.
+
+Neighbor 3 is nearly the same as Neighbor 2, with a slightly more negative minimum partial charge in the query (neighbor -0.3897, query -0.4106, delta -0.0209), no ammonium in either structure, the same oxime difference favoring the query, and the same lower hydrogen-bond acceptor count in the query (3 vs 5, delta -2). The query also has a lower minimum absolute partial charge (0.1306 vs 0.1899, delta -0.0593), while both compounds again share the tertiary hydroxyl motif. Taken together, the few toxic-leaning features are outweighed by the oxime and lower acceptor/charge-burden pattern, so Neighbor 3 still supports the not-toxic label more than the toxic one.
+
+Neighbor 4 is a strong not-toxic analog overall, although it contains some mixed signals. Both molecules have an alkyne, which is the dominant shared feature in this comparison and favors the non-toxic side. The query does have a higher hydrogen-bond acceptor count than the neighbor (3 vs 2, delta +1), a higher maximum absolute partial charge (0.4106 vs 0.377, delta +0.0336), no ammonium in either molecule, and the same tertiary hydroxyl pattern, each of which is treated here as leaning toward toxicity. But the query also has an oxime that the neighbor lacks, and that feature goes back toward the non-toxic side. Because the shared alkyne and the added oxime outweigh the modest increases in acceptor count and charge extremity, Neighbor 4 still fits the not-toxic class.
+
+Neighbor 5 mirrors Neighbor 4 very closely. The alkyne is shared, which again favors the non-toxic side, while the query has one more hydrogen-bond acceptor than the neighbor (3 vs 2, delta +1), a higher maximum absolute partial charge (0.4106 vs 0.377, delta +0.0336), no ammonium in either molecule, and the same tertiary hydroxyl group, all of which lean toward toxicity in this local comparison. As before, the query also contains an oxime that the neighbor does not. So the comparison remains mixed, but the shared alkyne plus the added oxime keep Neighbor 5 aligned with the not-toxic class.
+
+Neighbor 6 is essentially the same as Neighbor 5 in the features that matter here. Both structures contain an alkyne, the query has a higher hydrogen-bond acceptor count (3 vs 2, delta +1), a higher maximum absolute partial charge (0.4106 vs 0.377, delta +0.0336), no ammonium in either case, the same tertiary hydroxyl pattern, and the query again carries an oxime absent from the neighbor. The higher acceptor count and charge extremum are the main toxic-leaning pieces, but the repeated alkyne match and oxime difference still make the query resemble the non-toxic side more closely than the toxic side.
+
+Putting the six neighbors together, the three toxic neighbors are countered by the same recurring features that favor the query being less concerning: lower hydrogen-bond acceptor burden, lower minimum absolute partial charge, the presence of oxime in the query, and in the toxic-neighbor comparisons a lower fraction of sp3 carbons relative to the toxic analogs. The three non-toxic neighbors are also consistent with the query because they share the alkyne and repeatedly differ only by modest increases in acceptor count or maximum partial charge, while the query’s oxime remains a favorable distinguishing feature. Overall, the neighborhood comparison supports option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -14,7 +14,9 @@ from trim.reasoning.evidence.global_evidence import (
     _format_number,
     _infer_value_phrase,
     _label_payload,
+    _missing_value_reason,
     _resolve_label_semantics,
+    _sanitize_json_value,
 )
 from trim.reasoning.evidence.schemas import REASONING_SCHEMA_VERSION
 from trim.reasoning.semantics import build_feature_semantics_map
@@ -54,6 +56,39 @@ def _render_pair_observed_value(value_text: str) -> str:
     return f"value {stripped}"
 
 
+def _pair_entity_value_clause(*, entity_name: str, feature_display_name: str, value_text: str) -> str:
+    if value_text == "no acidic site":
+        return f"the {entity_name} has no acidic site"
+    if value_text == "no basic site":
+        return f"the {entity_name} has no basic site"
+    if value_text == "missing value":
+        return f"{feature_display_name} is unavailable for the {entity_name}"
+    return f"the {entity_name}'s {feature_display_name} is {_render_pair_observed_value(value_text)}"
+
+
+def _delta_value_payload(
+    *,
+    base_value: object,
+    query_value: object,
+    semantics: dict[str, str],
+) -> tuple[object, str, str | None]:
+    base_reason = _missing_value_reason(base_value, semantics)
+    query_reason = _missing_value_reason(query_value, semantics)
+    if base_reason is None and query_reason is None:
+        delta_value = float(query_value) - float(base_value)
+        return delta_value, _delta_text(delta_value), None
+
+    if base_reason == "no_acidic_site" and query_reason == "no_acidic_site":
+        return None, "not defined because neither molecule has an acidic site", "no_acidic_site"
+    if base_reason == "no_basic_site" and query_reason == "no_basic_site":
+        return None, "not defined because neither molecule has a basic site", "no_basic_site"
+    if base_reason == "no_acidic_site" or query_reason == "no_acidic_site":
+        return None, "not defined because one molecule has no acidic site", "no_acidic_site"
+    if base_reason == "no_basic_site" or query_reason == "no_basic_site":
+        return None, "not defined because one molecule has no basic site", "no_basic_site"
+    return None, "not defined because one side has no available value", "missing_value"
+
+
 def _build_pair_term_text_hint(
     *,
     semantics: dict[str, str],
@@ -67,6 +102,11 @@ def _build_pair_term_text_hint(
     contribution_label: dict[str, object],
 ) -> str:
     source_family = semantics.get("source_family", "")
+    delta_value_export, delta_value_text, _ = _delta_value_payload(
+        base_value=base_value,
+        query_value=query_value,
+        semantics=semantics,
+    )
     if source_family == "fg_top_level":
         try:
             neighbor_count = int(round(float(base_value)))
@@ -90,16 +130,28 @@ def _build_pair_term_text_hint(
                     f"{query_count}"
                 )
             return (
-                f"{comparison_text} (query-minus-neighbor delta {_delta_text(delta_value)}). "
+                f"{comparison_text} (query-minus-neighbor delta {delta_value_text}). "
                 f"This pairwise contribution is {_format_number(contribution, decimals=4)}, which pushes toward "
                 f"option ({contribution_label['option']}): {contribution_label['text']}."
             )
 
-    rendered_base_value = _render_pair_observed_value(base_value_text)
-    rendered_query_value = _render_pair_observed_value(query_value_text)
+    neighbor_clause = _pair_entity_value_clause(
+        entity_name="neighbor",
+        feature_display_name=feature_display_name,
+        value_text=base_value_text,
+    )
+    query_clause = _pair_entity_value_clause(
+        entity_name="query",
+        feature_display_name=feature_display_name,
+        value_text=query_value_text,
+    )
+    if delta_value_export is None:
+        delta_clause = f"The query-minus-neighbor delta is {delta_value_text}"
+    else:
+        delta_clause = f"The query-minus-neighbor delta is {delta_value_text}"
     return (
-        f"{feature_display_name} has neighbor {rendered_base_value}, query {rendered_query_value}, and "
-        f"query-minus-neighbor delta {_delta_text(delta_value)}. This pairwise contribution is "
+        f"For {feature_display_name}, {neighbor_clause}, while {query_clause}. {delta_clause}. "
+        f"This pairwise contribution is "
         f"{_format_number(contribution, decimals=4)}, which pushes toward option ({contribution_label['option']}): "
         f"{contribution_label['text']}."
     )
@@ -125,40 +177,52 @@ def _extract_top_pair_terms(
         semantics = feature_semantics_map[raw_feature_name]
         base_value = neighbor_raw_row[raw_feature_name]
         query_value = query_raw_row[raw_feature_name]
-        delta_value = float(query_value) - float(base_value)
+        delta_value, delta_value_text, delta_missing_reason = _delta_value_payload(
+            base_value=base_value,
+            query_value=query_value,
+            semantics=semantics,
+        )
         contribution = float(term_contributions[term_index])
         contribution_label = _label_payload(1 if contribution >= 0.0 else 0, label_semantics)
         base_value_text = _infer_value_phrase(base_value, semantics)
         query_value_text = _infer_value_phrase(query_value, semantics)
 
-        terms.append(
-            {
-                **semantics,
-                "feature_name": raw_feature_name,
-                "base_value": base_value,
-                "query_value": query_value,
-                "delta_value": delta_value,
-                "base_value_text": base_value_text,
-                "query_value_text": query_value_text,
-                "contribution": contribution,
-                "contribution_abs": float(abs(contribution)),
-                "contribution_rank": rank,
-                "supports_label": int(contribution_label["label"]),
-                "supports_option": str(contribution_label["option"]),
-                "supports_text": str(contribution_label["text"]),
-                "text_hint": _build_pair_term_text_hint(
-                    semantics=semantics,
-                    feature_display_name=semantics["display_name"],
-                    base_value_text=base_value_text,
-                    query_value_text=query_value_text,
-                    base_value=base_value,
-                    query_value=query_value,
-                    delta_value=delta_value,
-                    contribution=contribution,
-                    contribution_label=contribution_label,
-                ),
-            }
-        )
+        term_payload = {
+            **semantics,
+            "feature_name": raw_feature_name,
+            "base_value": _sanitize_json_value(base_value),
+            "query_value": _sanitize_json_value(query_value),
+            "delta_value": delta_value,
+            "base_value_text": base_value_text,
+            "query_value_text": query_value_text,
+            "delta_value_text": delta_value_text,
+            "contribution": contribution,
+            "contribution_abs": float(abs(contribution)),
+            "contribution_rank": rank,
+            "supports_label": int(contribution_label["label"]),
+            "supports_option": str(contribution_label["option"]),
+            "supports_text": str(contribution_label["text"]),
+            "text_hint": _build_pair_term_text_hint(
+                semantics=semantics,
+                feature_display_name=semantics["display_name"],
+                base_value_text=base_value_text,
+                query_value_text=query_value_text,
+                base_value=base_value,
+                query_value=query_value,
+                delta_value=delta_value,
+                contribution=contribution,
+                contribution_label=contribution_label,
+            ),
+        }
+        base_missing_reason = _missing_value_reason(base_value, semantics)
+        query_missing_reason = _missing_value_reason(query_value, semantics)
+        if base_missing_reason is not None:
+            term_payload["base_value_missing_reason"] = base_missing_reason
+        if query_missing_reason is not None:
+            term_payload["query_value_missing_reason"] = query_missing_reason
+        if delta_missing_reason is not None:
+            term_payload["delta_value_missing_reason"] = delta_missing_reason
+        terms.append(term_payload)
     return terms
 
 
@@ -256,6 +320,292 @@ def _resolve_raw_feature_columns(model_bundle: dict[str, object]) -> list[str]:
         if all(base_columns):
             return base_columns
     return [str(column) for column in model_bundle["raw_feature_columns"]]
+
+
+def _join_with_and(items: list[str]) -> str:
+    filtered = [str(item).strip() for item in items if str(item).strip()]
+    if not filtered:
+        return ""
+    if len(filtered) == 1:
+        return filtered[0]
+    if len(filtered) == 2:
+        return f"{filtered[0]} and {filtered[1]}"
+    return f"{', '.join(filtered[:-1])}, and {filtered[-1]}"
+
+
+def _dominant_support_payload(
+    support_weight_by_label: dict[int, float],
+    label_semantics: dict[int, dict[str, str]],
+) -> tuple[str, dict[str, object] | None]:
+    nonzero_labels = [label for label, weight in support_weight_by_label.items() if weight > 0.0]
+    if not nonzero_labels:
+        return "none", None
+    if len(nonzero_labels) == 1:
+        label = nonzero_labels[0]
+        return "single", _label_payload(label, label_semantics)
+
+    label0_weight = float(support_weight_by_label.get(0, 0.0))
+    label1_weight = float(support_weight_by_label.get(1, 0.0))
+    total = label0_weight + label1_weight
+    if total <= 0.0:
+        return "none", None
+
+    dominant_label = 1 if label1_weight >= label0_weight else 0
+    dominant_ratio = max(label0_weight, label1_weight) / total
+    if dominant_ratio < 0.65:
+        return "mixed", None
+    return "mostly", _label_payload(dominant_label, label_semantics)
+
+
+def _aggregate_neighbor_group_terms(
+    *,
+    group_name: str,
+    neighbor_evidence_list: list[dict[str, object]],
+    label_semantics: dict[int, dict[str, str]],
+) -> dict[str, object]:
+    feature_buckets: dict[str, dict[str, object]] = {}
+
+    for neighbor_rank, neighbor_evidence in enumerate(neighbor_evidence_list, start=1):
+        neighbor_similarity = float(neighbor_evidence["neighbor_similarity"])
+        for term in neighbor_evidence.get("top_pair_terms", []):
+            feature_name = str(term["feature_name"])
+            bucket = feature_buckets.setdefault(
+                feature_name,
+                {
+                    "feature_name": feature_name,
+                    "display_name": str(term["display_name"]),
+                    "description": str(term.get("description", "")),
+                    "source_family": str(term.get("source_family", "")),
+                    "raw_name": str(term.get("raw_name", "")),
+                    "occurrence_count": 0,
+                    "neighbor_ranks": [],
+                    "neighbor_ids": [],
+                    "neighbor_similarities": [],
+                    "support_weight_by_label": {0: 0.0, 1: 0.0},
+                    "total_abs_contribution": 0.0,
+                    "total_weighted_evidence": 0.0,
+                    "term_instances": [],
+                },
+            )
+            evidence_weight = float(term["contribution_abs"]) * max(neighbor_similarity, 0.0)
+            support_label = int(term["supports_label"])
+            bucket["occurrence_count"] += 1
+            bucket["neighbor_ranks"].append(int(neighbor_rank))
+            bucket["neighbor_ids"].append(str(neighbor_evidence["neighbor_id"]))
+            bucket["neighbor_similarities"].append(neighbor_similarity)
+            bucket["support_weight_by_label"][support_label] += evidence_weight
+            bucket["total_abs_contribution"] += float(term["contribution_abs"])
+            bucket["total_weighted_evidence"] += evidence_weight
+            bucket["term_instances"].append(
+                {
+                    "neighbor_rank": int(neighbor_rank),
+                    "neighbor_id": str(neighbor_evidence["neighbor_id"]),
+                    "neighbor_similarity": neighbor_similarity,
+                    "pair_score": float(neighbor_evidence["pair_score"]),
+                    "pair_prediction": int(neighbor_evidence["pair_prediction"]),
+                    "pair_prediction_semantics": dict(neighbor_evidence["pair_prediction_semantics"]),
+                    "contribution": float(term["contribution"]),
+                    "contribution_abs": float(term["contribution_abs"]),
+                    "contribution_rank": int(term["contribution_rank"]),
+                    "supports_label": support_label,
+                    "supports_option": str(term["supports_option"]),
+                    "supports_text": str(term["supports_text"]),
+                    "text_hint": str(term["text_hint"]),
+                }
+            )
+
+    shared_evidence: list[dict[str, object]] = []
+    single_neighbor_evidence: list[dict[str, object]] = []
+    for bucket in feature_buckets.values():
+        support_mode, dominant_payload = _dominant_support_payload(
+            bucket["support_weight_by_label"],
+            label_semantics,
+        )
+        normalized_bucket = {
+            "feature_name": bucket["feature_name"],
+            "display_name": bucket["display_name"],
+            "description": bucket["description"],
+            "source_family": bucket["source_family"],
+            "raw_name": bucket["raw_name"],
+            "occurrence_count": int(bucket["occurrence_count"]),
+            "neighbor_ranks": [int(rank) for rank in bucket["neighbor_ranks"]],
+            "neighbor_ids": list(bucket["neighbor_ids"]),
+            "neighbor_similarities": [float(value) for value in bucket["neighbor_similarities"]],
+            "support_weight_by_label": {
+                "0": float(bucket["support_weight_by_label"][0]),
+                "1": float(bucket["support_weight_by_label"][1]),
+            },
+            "support_mode": support_mode,
+            "dominant_support": dominant_payload,
+            "total_abs_contribution": float(bucket["total_abs_contribution"]),
+            "total_weighted_evidence": float(bucket["total_weighted_evidence"]),
+            "term_instances": list(bucket["term_instances"]),
+        }
+        if int(bucket["occurrence_count"]) >= 2:
+            shared_evidence.append(normalized_bucket)
+        else:
+            single_instance = dict(bucket["term_instances"][0])
+            single_neighbor_evidence.append(
+                {
+                    **normalized_bucket,
+                    "neighbor_rank": int(single_instance["neighbor_rank"]),
+                    "neighbor_id": str(single_instance["neighbor_id"]),
+                    "neighbor_similarity": float(single_instance["neighbor_similarity"]),
+                    "pair_score": float(single_instance["pair_score"]),
+                    "pair_prediction": int(single_instance["pair_prediction"]),
+                    "pair_prediction_semantics": dict(single_instance["pair_prediction_semantics"]),
+                    "contribution": float(single_instance["contribution"]),
+                    "contribution_abs": float(single_instance["contribution_abs"]),
+                    "contribution_rank": int(single_instance["contribution_rank"]),
+                    "supports_label": int(single_instance["supports_label"]),
+                    "supports_option": str(single_instance["supports_option"]),
+                    "supports_text": str(single_instance["supports_text"]),
+                    "text_hint": str(single_instance["text_hint"]),
+                }
+            )
+
+    shared_evidence.sort(
+        key=lambda item: (
+            -int(item["occurrence_count"]),
+            -float(item["total_weighted_evidence"]),
+            str(item["display_name"]),
+        )
+    )
+    single_neighbor_evidence.sort(
+        key=lambda item: (
+            -float(item["neighbor_similarity"]),
+            -float(item["contribution_abs"]),
+            int(item["neighbor_rank"]),
+            str(item["display_name"]),
+        )
+    )
+
+    return {
+        "group_name": group_name,
+        "num_neighbors": int(len(neighbor_evidence_list)),
+        "num_shared_features": int(len(shared_evidence)),
+        "num_single_neighbor_features": int(len(single_neighbor_evidence)),
+        "shared_evidence": shared_evidence,
+        "single_neighbor_evidence": single_neighbor_evidence,
+    }
+
+
+def _shared_evidence_clause(
+    *,
+    shared_payload: dict[str, object],
+    num_neighbors: int,
+) -> str:
+    display_name = str(shared_payload["display_name"])
+    occurrence_count = int(shared_payload["occurrence_count"])
+    support_mode = str(shared_payload["support_mode"])
+    dominant_support = shared_payload.get("dominant_support")
+
+    if support_mode == "mixed" or dominant_support is None:
+        return (
+            f"{display_name}, which recurs in {occurrence_count} of {num_neighbors} neighbor comparisons, "
+            f"but with mixed direction"
+        )
+
+    return (
+        f"{display_name}, which recurs in {occurrence_count} of {num_neighbors} neighbor comparisons and "
+        f"{'consistently' if support_mode == 'single' else 'mostly'} pushes toward option "
+        f"({dominant_support['option']}): {dominant_support['text']}"
+    )
+
+
+def _single_neighbor_clause(single_payload: dict[str, object]) -> str:
+    text_hint = str(single_payload["text_hint"]).rstrip()
+    if text_hint.endswith("."):
+        text_hint = text_hint[:-1]
+    if text_hint:
+        text_hint = text_hint[0].lower() + text_hint[1:]
+    return (
+        f"With neighbor {int(single_payload['neighbor_rank'])} "
+        f"(similarity {_format_number(float(single_payload['neighbor_similarity']))}), the comparison shows that "
+        f"{text_hint}."
+    )
+
+
+def _build_group_summary_middle_draft(
+    *,
+    group_summary: dict[str, object],
+    group_label: str,
+) -> str:
+    num_neighbors = int(group_summary["num_neighbors"])
+    shared_evidence = list(group_summary.get("shared_evidence", []))
+    single_neighbor_evidence = list(group_summary.get("single_neighbor_evidence", []))
+
+    if num_neighbors == 0:
+        return f"No {group_label} were available for this sample."
+
+    sentences: list[str] = []
+    if shared_evidence:
+        shared_clauses = [
+            _shared_evidence_clause(shared_payload=payload, num_neighbors=num_neighbors)
+            for payload in shared_evidence
+        ]
+        sentences.append(
+            f"Across the {group_label}, shared local signals include {_join_with_and(shared_clauses)}."
+        )
+    else:
+        sentences.append(f"Across the {group_label}, no feature repeated across multiple neighbor comparisons.")
+
+    if single_neighbor_evidence:
+        sentences.append(
+            f"The remaining one-off signals from the {group_label} are all kept explicitly for downstream rewriting."
+        )
+        sentences.extend(_single_neighbor_clause(payload) for payload in single_neighbor_evidence)
+
+    return " ".join(sentences)
+
+
+def _build_local_summary_middle_draft(
+    *,
+    pos_evidence: list[dict[str, object]],
+    neg_evidence: list[dict[str, object]],
+    local_score: float,
+    s_pos: float | None,
+    s_neg: float | None,
+    local_prediction: int,
+    label_semantics: dict[int, dict[str, str]],
+) -> dict[str, object]:
+    pos_group_summary = _aggregate_neighbor_group_terms(
+        group_name="positive_neighbors",
+        neighbor_evidence_list=pos_evidence,
+        label_semantics=label_semantics,
+    )
+    neg_group_summary = _aggregate_neighbor_group_terms(
+        group_name="negative_neighbors",
+        neighbor_evidence_list=neg_evidence,
+        label_semantics=label_semantics,
+    )
+
+    pos_draft = _build_group_summary_middle_draft(
+        group_summary=pos_group_summary,
+        group_label="positive neighbors",
+    )
+    neg_draft = _build_group_summary_middle_draft(
+        group_summary=neg_group_summary,
+        group_label="negative neighbors",
+    )
+
+    predicted_payload = _label_payload(local_prediction, label_semantics)
+    score_clauses = [f"local score {_format_number(local_score)}"]
+    if s_pos is not None:
+        score_clauses.append(f"positive-neighbor aggregate {_format_number(s_pos)}")
+    if s_neg is not None:
+        score_clauses.append(f"negative-neighbor aggregate {_format_number(s_neg)}")
+
+    conclusion_clause = (
+        f"Taken together, these local analog comparisons support option ({predicted_payload['option']}): "
+        f"{predicted_payload['text']} with {_join_with_and(score_clauses)}."
+    )
+
+    return {
+        "positive_neighbors": pos_group_summary,
+        "negative_neighbors": neg_group_summary,
+        "middle_draft": f"{pos_draft} {neg_draft} {conclusion_clause}",
+    }
 
 
 def _extract_neighbor_group(
@@ -443,6 +793,17 @@ def extract_local_evidence_for_split(
         )
         local_score = float(aggregated["s_local"])
         local_prediction = 1 if local_score >= 0.5 else 0
+        s_pos = float(aggregated["s_pos"]) if not math.isnan(float(aggregated["s_pos"])) else None
+        s_neg = float(aggregated["s_neg"]) if not math.isnan(float(aggregated["s_neg"])) else None
+        local_summary_middle_draft = _build_local_summary_middle_draft(
+            pos_evidence=pos_evidence,
+            neg_evidence=neg_evidence,
+            local_score=local_score,
+            s_pos=s_pos,
+            s_neg=s_neg,
+            local_prediction=local_prediction,
+            label_semantics=label_semantics,
+        )
 
         records.append(
             {
@@ -459,8 +820,8 @@ def extract_local_evidence_for_split(
                 "local_prediction_semantics": _label_payload(local_prediction, label_semantics),
                 "local_prediction_correct": int(local_prediction) == query_label,
                 "local_score": local_score,
-                "s_pos": float(aggregated["s_pos"]) if not math.isnan(float(aggregated["s_pos"])) else None,
-                "s_neg": float(aggregated["s_neg"]) if not math.isnan(float(aggregated["s_neg"])) else None,
+                "s_pos": s_pos,
+                "s_neg": s_neg,
                 "keep_for_reasoning": True,
                 "drop_reason": None,
                 "local_per_neighbor_decision_evidence": {
@@ -485,6 +846,7 @@ def extract_local_evidence_for_split(
                         for neighbor_payload in neg_evidence
                     ],
                 },
+                "local_summary_middle_draft": local_summary_middle_draft,
             }
         )
 

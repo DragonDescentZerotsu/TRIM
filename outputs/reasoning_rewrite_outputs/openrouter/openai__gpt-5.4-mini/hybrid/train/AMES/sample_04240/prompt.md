@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a clear mutagenicity signal from the nitro group being present (1), since aromatic nitro motifs are a well-recognized Ames-positive toxicophore. At the same time, the aminal count of 4 and the oxime being present (1) are more consistent with reduced concern, as these features are not classic mutagenic alerts and can coincide with less reactive chemistry. The structure is also fairly sp3-rich, with a fraction of sp3 carbons of 0.7273, which suggests a less planar scaffold and is less suggestive of the fused aromatic systems often associated with mutagenicity. The ring count is only 1, so there is no sign of a larger polycyclic aromatic system that would raise concern. Polarity-related descriptors are somewhat mixed: the heteroatom count of 8 and the nitrogen/oxygen atom count of 8 indicate a heteroatom-rich molecule, and the neutral fraction of 0.9948 means it is mostly neutral at the configured pH, while the estimated logP of 0.9106 is only modest. Low heteroatom burden would not be expected here, but these values do not by themselves establish a mutagenic mechanism. The QED drug-likeness value of 0.2434 is low, which can coincide with less favorable overall drug-like properties and sometimes enrichment for problematic substructures. Balancing the positive nitro alert against the mostly non-alarming ring system, the high sp3 character, and the presence of oxime and aminal functionality, the overall picture remains more consistent with is not mutagenic, even though there are some features that could still support mutagenic concern.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is close enough to be informative, but its features are mixed and overall lean away from mutagenicity. The query has oxime once whereas the neighbor lacks it, and that structural difference is one of the stronger pieces of evidence favoring non-mutagenic behavior here. At the same time, the query is more heteroatom-rich than the neighbor (heteroatom count 8 vs 5, delta +3), which can increase polarity and reduce passive exposure, but in this comparison it is associated with a mutagenic-side shift. The query is also less sp3-rich (fraction of sp3 carbons 0.7273 vs 1, delta -0.2727), which makes it a bit flatter and more unsaturated than the neighbor, again favoring the non-mutagenic direction in this pair. QED is slightly lower in the query (0.2434 vs 0.305, delta -0.0616), and the maximum partial charge is also lower (0.2185 vs 0.3425, delta -0.124); those electronic and desirability changes do not outweigh the oxime difference and the overall comparison still lands on the non-mutagenic side. The neighbor also has nitroso while the query does not (delta -1), which is a clear mutagenic toxicophore in general, so losing that feature strongly supports option (A).
+
+Neighbor 2 gives a similar overall picture. Again, the query has oxime once while the neighbor has none, favoring the non-mutagenic label. The query also has a lower maximum partial charge (0.2185 vs 0.3671, delta -0.1485), which is consistent with a less strongly polarized profile in this specific comparison. Against that, the query has a higher heteroatom count (8 vs 5, delta +3), and QED is only marginally higher (0.2434 vs 0.2414, delta +0.002), which in this setting is treated as a small mutagenic-side shift. The query is again less sp3-saturated (0.7273 vs 1, delta -0.2727), and the neighbor carries two alkyl chlorides that the query lacks (delta -2); since aliphatic halides are a known mutagenic toxicophore class, removing them supports non-mutagenicity. Taken together, the oxime difference, the lower partial charge, the lower sp3 fraction, and the absence of alkyl chlorides outweigh the modest heteroatom and QED shifts, so this neighbor also supports option (A).
+
+Neighbor 3 is the least favorable of the three positive neighbors, but it still remains on the non-mutagenic side overall. The query again has oxime once while the neighbor lacks it, which is an important structural advantage for option (A). However, the query also has a higher QED drug-likeness value (0.2434 vs 0.2279, delta +0.0155) and more heteroatoms (8 vs 4, delta +4), both of which are associated with mutagenic-side movement in this comparison. The query remains less sp3-rich than the neighbor (0.7273 vs 1, delta -0.2727), which still supports the non-mutagenic direction. The neighbor contains an alkyl chloride that the query does not (delta -1), again removing a mutagenic toxicophore class, while the query has a much larger heavy-atom count (19 vs 7, delta +12), which generally can reduce uptake and exposure. Even though the QED and heteroatom changes lean the other way, the combination of oxime presence in the query, loss of alkyl chloride, higher size, and lower sp3 fraction keeps Neighbor 3 aligned with option (A).
+
+Neighbor 4 is the first of the three non-mutagenic neighbors and it is mixed internally, but still ends up supporting option (A) overall. The query has nitro once whereas this neighbor has none, which by itself would favor mutagenicity because aromatic nitro is a classic toxicophore. The query and the neighbor both have oxime, so there is no discriminating effect there. The query has a slightly higher heteroatom count (8 vs 7, delta +1), which again trends toward the mutagenic side in this comparison. But the neighbor also has four aminal groups and the query has the same count, so that feature does not separate them. More importantly, the query lacks a primary amide that the neighbor has, and the query has a lower ring count (1 vs 2, delta -1). The lower ring count and the loss of the amide both make the query somewhat less like the neighbor in a way that is compatible with non-mutagenicity. Even though nitro and heteroatom count pull in the opposite direction, the overall comparison remains on the non-mutagenic side for this neighbor.
+
+Neighbor 5 is the strongest non-mutagenic neighbor and it gives a clearly mutagenic-leaning contrast that the query still does not overcome. Both the neighbor and the query have nitro, so the shared presence of a strong toxicophore does not distinguish them and keeps concern on both sides. The query is much larger in heavy-atom count (19 vs 7, delta +12), which can reduce effective exposure, but it also has many more nitrogen/oxygen atoms (8 vs 3, delta +5) and a much larger topological polar surface area (91.44 vs 43.14, delta +48.3). Those increases in polarity and surface area can reduce permeability and bacterial exposure, which would ordinarily help a non-mutagenic outcome, but in the supplied comparison they are interpreted as accompanying a mutagenic-side shift. The query also has lower QED (0.2434 vs 0.3396, delta -0.0962), which is consistent with a less drug-like profile here, and higher heteroatom count (8 vs 3, delta +5), again matching the mutagenic-leaning direction. Even though the larger size could limit exposure, the combined changes in nitro, N/O atom count, TPSA, QED, and heteroatom count make this neighbor the clearest case favoring option (B).
+
+Neighbor 6 is also mutagenic-leaning, mainly because the neighbor is much more nitro-rich than the query. The neighbor has six nitro groups compared with one in the query (delta -5), and that large loss of a classic mutagenic toxicophore strongly supports the non-mutagenic label for the query relative to this neighbor. The query has fewer heteroatoms than the neighbor (8 vs 12, delta -4), which goes the other direction from the previous neighbors and slightly favors non-mutagenicity here. The query also has lower estimated logP (0.9106 vs -0.3824, delta +1.293), meaning it is more lipophilic than the neighbor in this pair; the comparison treats that shift as mutagenic-side, while the lower lipophilicity of the neighbor would be more exposure-limiting. The query again lacks oxime relative to the neighbor's absence/presence pattern in this pair? Here the neighbor lacks oxime and the query has one (delta +1), which supports option (A). Finally, the query has a basic site present while the neighbor has none (delta +1), and the presence of an ionizable nitrogen can improve Gram-negative accumulation and reveal mutagenicity if a reactive motif is present. Even so, the dominant signal in this comparison is the huge excess of nitro groups in the neighbor, so the query looks less mutagenic than Neighbor 6 overall.
+
+Putting the six neighbors together, the three closer positive neighbors mostly share the same pattern of oxime in the query, loss of alkyl chloride or nitroso relative to the neighbors, and lower sp3 fraction or lower partial charge, which collectively supports non-mutagenicity. Among the three negative neighbors, Neighbor 4 is mixed but not enough to overturn the picture, Neighbor 5 is the most mutagenic-leaning because of nitro plus increased polarity-related features, and Neighbor 6 is also mutagenic-leaning because of its very heavy nitro burden. Even with those negative neighbors, the query repeatedly avoids or reduces key toxicophores such as nitroso and alkyl chloride while retaining oxime and showing features consistent with lower exposure in several comparisons. Overall, the balance of analog evidence supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

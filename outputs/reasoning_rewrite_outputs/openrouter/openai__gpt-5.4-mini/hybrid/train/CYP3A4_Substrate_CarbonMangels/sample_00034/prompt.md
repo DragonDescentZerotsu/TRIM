@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The compound looks poorly suited to CYP3A4 substrate behavior overall. Its estimated logD of -1.2651 is very low, indicating a highly polar molecule with weak membrane partitioning, and the estimated logP of 0.3506 is also low, reinforcing limited hydrophobicity. That polarity is consistent with the small molecular size: heavy-atom molecular weight is 170.103, molecular weight is 183.207, exact molecular weight is 183.0895, and heavy-atom count is 13, all of which place it in a relatively small chemical space rather than the more balanced mid-sized region often seen for orally accessible substrates. The Labute surface area of 76.4588 is modest as well, again suggesting limited overall size and contact area. The neutral fraction is only 0.0242, so the molecule is overwhelmingly nonneutral under physiological conditions, which would further reduce passive permeability. Although the strongest basic pKa of 9.0025 indicates a fairly strong basic center that could be substantially protonated near physiological pH, this does not offset the very low neutral fraction and low hydrophobicity. The ring count of 1 is also minimal, so there is little additional hydrophobic or scaffold complexity to support substrate-like behavior. Taken together, the low logD and logP, small size, very low neutral fraction, and limited surface area all favor poor access to CYP3A4, so the molecule is predicted to be not a substrate to the enzyme CYP3A4.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor for CYP3A4 substrate activity, but the query is much less favorable on several of the same accessibility-like descriptors. The estimated logD drops from 1.0056 in the neighbor to -1.2651 in the query, a delta of -2.2707, which is a strong move toward a more polar and less membrane-friendly profile and therefore away from substrate behavior. The Labute surface area also falls from 114.9766 to 76.4588, delta -38.5178, and the exact molecular weight declines from 255.1623 to 183.0895, delta -72.0728, with the same direction seen for molecular weight itself, 255.361 to 183.207, delta -72.154; all of these shifts make the query substantially smaller and less exposure-friendly than this substrate neighbor. The one feature that leans the other way is strongest basic pKa, which decreases from 10.1182 to 9.0025, delta -1.1157, and that specific change was associated with substrate behavior in this comparison, but it is outweighed by the large losses in logD, size, and surface area. Overall, Neighbor 1 still resembles a substrate template more than the query does.
+
+Neighbor 2 shows the same general pattern. Its estimated logD is 1.8617 versus -1.2651 for the query, delta -3.1268, again placing the query far below a substrate-like hydrophobicity window. Heavy-atom molecular weight also falls sharply, from 291.187 to 170.103, delta -121.084, and the Labute surface area drops from 127.4732 to 76.4588, delta -51.0144, both consistent with a much smaller and less contact-rich query. The shared secondary aliphatic amine feature is unchanged, but in this comparison that shared motif still carried a negative signal for substrate activity. Two features partially offset that: maximum partial charge is lower in the query, 0.1573 versus 0.4159, delta -0.2587, and that was favorable to substrate behavior here; however, this is not enough to overcome the strong non-substrate leaning from hydrophobicity and size. The same is true for molecular weight, which drops from 309.331 to 183.207, delta -126.124, again moving well away from the substrate neighbor’s profile. Neighbor 2 therefore remains much closer to the non-substrate side for the query overall.
+
+Neighbor 3 again supports the non-substrate label overall, even though one descriptor moves in a substrate-favoring direction. The estimated logD decreases from 0.9578 to -1.2651, delta -2.2229, and heavy-atom molecular weight falls from 242.216 to 170.103, delta -72.113, both unfavorable for substrate-like accessibility. The shared secondary aliphatic amine is again unchanged and was treated as a negative signal in this pair. Strongest basic pKa is lower in the query, 9.0025 versus 10.268, delta -1.2655, and that change was favorable to substrate behavior in this specific comparison. The query also has a higher fraction of sp3 carbons, 0.3333 versus 0.2632, delta +0.0702, which is another substrate-favoring shift here. Even so, the combined losses in logD, size, and Labute surface area, 76.4588 versus 120.8975, delta -44.4387, dominate the comparison and keep Neighbor 3 aligned with the non-substrate direction for the query.
+
+Neighbor 4 is one of the negative neighbors and it matches the final label very closely. The query has much lower estimated logP, 0.3506 versus 2.1354, delta -1.7848, which is a move toward a more hydrophilic, less membrane-partitioning compound. Estimated logD also drops from 0.3869 to -1.2651, delta -1.652, reinforcing the same direction. Molecular weight is lower as well, 328.412 versus 183.207, delta -145.205, and Labute surface area falls from 141.6828 to 76.4588, delta -65.224; both changes make the query much smaller and less hydrophobic-contact rich than the non-substrate neighbor. The neighbor has a primary amide while the query does not, and that missing amide also favors the non-substrate comparison in this pair. The shared secondary aliphatic amine is unchanged and was still associated with the non-substrate side here. Taken together, Neighbor 4 gives a clear non-substrate comparison for the query.
+
+Neighbor 5 is also a negative neighbor, and several of its features strongly favor the non-substrate label for the query. The neighbor contains 2 copies of Aryl fluoride, while the query has 0, delta -2, and that feature in this comparison strongly supports the non-substrate side. Estimated logD is dramatically lower in the query, -1.2651 versus 4.6485, delta -5.9136, which is a very large shift away from the highly hydrophobic substrate-like neighbor. Molecular weight also drops from 292.325 to 183.207, delta -109.118, and exact molecular weight falls from 292.1275 to 183.0895, delta -109.0379, both consistent with a much smaller query. Neutral fraction is also far lower in the query, 0.0242 versus 0.9445, delta -0.9203, which means the query is much less neutral than this neighbor and therefore less similar to the substrate-favoring profile in this pair. The one opposing feature is that the neighbor lacks secondary aliphatic amine while the query has it once, delta +1, and that was favorable to substrate behavior here. Even so, the very large losses in logD, neutral fraction, and size dominate, so Neighbor 5 still aligns with the non-substrate class for the query.
+
+Neighbor 6 is the one negative neighbor that points in the opposite direction, but its main signals are weaker than the stronger non-substrate evidence from the other neighbors. The query has higher estimated logD than this neighbor, -1.2651 versus -2.5953, delta +1.3302, and that comparison was unfavorable to the non-substrate label because it moves the query toward the more substrate-like side relative to this neighbor. Several other features also favor substrate behavior in this pair: rotatable-bond count is much lower, 3 versus 12, delta -9; hydrogen-bond donor count is lower, 4 versus 8, delta -4; NH/OH group count is also lower, 4 versus 8, delta -4; and minimum absolute partial charge is lower, 0.1573 versus 0.2, delta -0.0428. Maximum partial charge is likewise slightly lower, 0.1573 versus 0.2, delta -0.0428. In this particular comparison, all of those lower values were associated with the substrate side. So Neighbor 6 does provide a genuine substrate-leaning counterexample. However, it is only one neighbor, and its similarity is modest compared with the stronger and more numerous non-substrate comparisons.
+
+Putting the six neighbors together, three substrate neighbors and three non-substrate neighbors do not vote uniformly, but the strongest and most repeated pattern is that the query is much smaller, less hydrophobic, and less surface-rich than the substrate-like neighbors, with very low estimated logD and low logP standing out repeatedly. The two strongest non-substrate neighbors, Neighbor 4 and Neighbor 5, match this pattern especially well, while Neighbor 1, Neighbor 2, and Neighbor 3 also lean non-substrate because the query falls far below them in logD, molecular size, and Labute surface area. Neighbor 6 points the other way through lower rotatable bonds, donor counts, and partial-charge extrema, but that single substrate-leaning comparison is not enough to overcome the broader shift toward a more polar, lower-logD profile. The overall balance therefore supports option (A): is not a substrate to the enzyme CYP3A4.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

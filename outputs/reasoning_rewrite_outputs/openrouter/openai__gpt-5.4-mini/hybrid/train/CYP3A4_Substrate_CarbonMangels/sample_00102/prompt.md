@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has estimated logD 4.0113, which sits in a fairly hydrophobic range and is compatible with good membrane exposure. Its Labute surface area of 199.7335 and estimated logP of 5.3513 also point to a fairly lipophilic, sizeable scaffold, both of which are consistent with a compound that can access CYP3A4. The heavy-atom molecular weight of 427.333, together with exact molecular weight 458.2482 and molecular weight 458.581, places it in a moderate-to-high size range that is still well within common drug-like space rather than being excessively large. The presence of a secondary mixed amine (1) is also compatible with many CYP3A4 substrates, since ionizable amines are common in metabolized compounds. Ring count 5 is a reasonable, not overly bulky ring system and does not by itself argue against substrate behavior. At the same time, the neutral fraction of 0.0457 is very low, indicating the molecule is mostly ionized at physiological pH, which tends to reduce passive permeability and can work against substrate accessibility. The aryl fluoride present (1) is another structural feature that can sometimes be associated with reduced metabolic turnover or soft-spot blocking, adding a small counterweight to the substrate-like profile. Overall, however, the favorable lipophilicity, surface area, size, and amine-containing scaffold outweigh the low neutral fraction, so the molecule is more consistent with being a CYP3A4 substrate.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly mixed but ultimately substrate-leaning analog. Its neutral fraction is 0.2912 versus the query’s 0.0457, a large drop of -0.2455 that makes the query much less neutral and therefore less permeability-friendly, which weighs against substrate behavior. At the same time, the query has secondary mixed amine once while the neighbor has none, and the query also has a higher estimated logD of 4.0113 versus 2.8223, with delta +1.189; both of those changes support better membrane exposure and are consistent with substrate-like behavior. The query also has one benzimidazole while the neighbor has none, which in this comparison is unfavorable for the non-substrate side, and the number of basic sites rises from 2 to 4, another change that is directionally substrate-supporting here. The minimum partial charge is essentially unchanged at about -0.496 (neighbor -0.4958, query -0.4968, delta -0.0009), so it is only a minor stabilizing detail. Overall, Neighbor 1 contains a strong anti-substrate signal from the much lower neutral fraction, but several other differences still lean toward a substrate call.
+
+Neighbor 2 is more clearly aligned with the substrate label. The query again carries secondary mixed amine once while the neighbor has none, and it also retains benzimidazole where the neighbor has the same motif, so those structural features are not opposing the substrate assignment here. The query does add Aryl fluoride once, which is one of the few unfavorable differences in this comparison, but the physicochemical changes are more persuasive: estimated logD jumps from 0.7481 to 4.0113, a delta of +3.2632, which is a substantial move into a more hydrophobic region that better supports access to CYP3A4. The neighbor has tertiary mixed amine while the query does not, and that difference is noted as unfavorable for the substrate side in this pairing, but the query also has two benzene rings versus none in the neighbor, which again fits a more substrate-like hydrophobic scaffold. Taken together, the strong rise in logD and the added aromatic/hydrophobic character outweigh the single Aryl fluoride and make Neighbor 2 supportive of option (B).
+
+Neighbor 3 also supports the substrate label despite a couple of opposing structural changes. The query has secondary mixed amine once, whereas the neighbor has none, which is favorable to substrate behavior in this local comparison. However, the query also has one benzimidazole where the neighbor has none, and the aromatic ring count rises from 3 to 4, both of which are unfavorable here for the substrate side. Those negatives are partly offset by the query’s higher estimated logD, 4.0113 versus 3.7039, delta +0.3074, along with a larger Labute surface area of 199.7335 versus 180.458, delta +19.2755, and a higher estimated logP of 5.3513 versus 4.8266, delta +0.5247. In this pair, the hydrophobicity and size increase are the more important changes, and they make Neighbor 3 overall consistent with a substrate-like query.
+
+Neighbor 4 is one of the clearest negative-neighbor comparisons in favor of the substrate label. The query has a much higher estimated logD, 4.0113 versus 2.2716, with delta +1.7397, which moves it into a more favorable hydrophobic window for contacting CYP3A4. It also lacks the neighbor’s 1H-indole, and that absence is favorable here. The query has a much larger Labute surface area, 199.7335 versus 153.7642, delta +45.9692, and a much larger molecular weight, 458.581 versus 347.462, with exact molecular weight 458.2482 versus 347.1998, both around +111. These increases place the query in a larger, more hydrophobic chemical space than the non-substrate neighbor, and they strongly support option (B). The query also has alkyl aryl ether once while the neighbor has none, which fits the same direction.
+
+Neighbor 5 remains substrate-leaning even though it contains one opposing feature. The neighbor has 2 copies of benzimidazole while the query has 1, so the query is less burdened by that motif, and the query also has fewer aromatic rings, 4 versus 6, which is a favorable shift away from an overly aromatic scaffold. Estimated logD is slightly higher in the query, 4.0113 versus 3.649, delta +0.3623, and that again favors substrate behavior. The query also has alkyl aryl ether once whereas the neighbor has none, and its estimated logP is lower at 5.3513 versus 7.2644, delta -1.9131, which is a more balanced hydrophobicity level than the very high-logP neighbor. The one feature working against the substrate call is that the neighbor has carboxylic acid while the query does not, and in this pair that absence is labeled as unfavorable for option (A), meaning the query is less acid-driven and more compatible with substrate behavior. Overall, Neighbor 5 still points toward the substrate label because the query looks less excessively aromatic and less extreme in hydrophobicity while retaining favorable heteroaromatic and ether features.
+
+Neighbor 6 provides another strong substrate-supporting comparison. The query does not have the neighbor’s tertiary mixed amine, but it does have higher estimated logD, 4.0113 versus 1.2161, a very large delta of +2.7952, which is one of the strongest pro-substrate shifts among the neighbors. The query also lacks pyridine, and that difference is counted as favorable for option (B) in this comparison. It has a much larger Labute surface area, 199.7335 versus 126.531, delta +73.2024, and a much larger exact molecular weight, 458.2482 versus 285.1841, delta +173.0641, both of which place the query well outside the smaller, less substrate-like space of the neighbor. The only clearly opposing difference is that the query has saturated ring count 1 while the neighbor has 0, and here that increment is the one feature leaning away from the substrate label. Even so, the very large gains in logD, size, and surface area dominate, so Neighbor 6 remains supportive of option (B).
+
+Across all six neighbors, the comparisons are not uniformly one-sided, but the balance is consistent: the query repeatedly shows higher estimated logD, larger surface area, and larger molecular size than the non-substrate neighbors, while also carrying substrate-associated hydrophobic/aromatic features relative to the substrate neighbors. A few local features, such as the much lower neutral fraction in Neighbor 1, the Aryl fluoride in Neighbor 2, the extra benzimidazole and aromatic ring in Neighbor 3, and the saturated ring increment in Neighbor 6, add some caution. Even so, the strongest recurring pattern is that the query sits in a more hydrophobic, larger, and more CYP-accessible region than the negative neighbors, and the positive neighbors do not contradict that picture. Taken together, the six comparisons support option (B): is a substrate to the enzyme CYP3A4.
+
+Input 3. Target final label semantics
+option (B): is a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

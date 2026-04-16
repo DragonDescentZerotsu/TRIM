@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a nitrile group (1), which is not itself one of the classic carcinogenic structural alerts and is more consistent with a less reactive scaffold. It also contains a pyridine ring (1), and the presence of a heteroaromatic nitrogen can moderate lipophilicity and does not by itself indicate a carcinogenic alert. The neutral fraction is high at 0.9607, suggesting that the compound is mostly neutral under physiological conditions, which can favor passive distribution but does not specifically indicate carcinogenicity. On the other hand, the scaffold has no aliphatic rings or aliphatic heterocycles, with aliphatic ring count at 0 and aliphatic heterocycle count at 0, which removes some structural complexity but also leaves a relatively simple framework. The estimated logD is 2.3374, a moderate lipophilicity level that is compatible with reasonable exposure without being extreme. A guanidine group is present (1), which is strongly basic and can be associated with substantial ionization and polarity, again affecting exposure and distribution more than directly signaling carcinogenicity. The aromatic heterocycle count is 1, and the saturated ring count is 0; together these indicate a fairly unsaturated, heteroaromatic structure rather than a heavily saturated or highly rigid one. The aliphatic carbocycle count is 0, so there are no aliphatic carbocyclic ring systems contributing additional hydrophobic bulk. Overall, the molecule lacks the more decisive carcinogenic alerts such as nitroso, nitro-aromatic, epoxide, aziridine, quinone, aldehyde, or PAH motifs, and the observed features are more consistent with a moderately lipophilic, mostly neutral heteroaromatic compound. Taking all of this together, the balance of evidence favors option (A): is not a carcinogen.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close carcinogen example, but it differs from the query in several ways that lean away from carcinogenicity for the query. The query has nitrile once while the neighbor has none, and that single nitrile difference is associated with a negative shift. The neighbor also contains pyridazine, which the query lacks, and that again favors the non-carcinogen side for the query relative to this carcinogenic neighbor. Two features are shared without difference, namely alkyl aryl ether is absent in both molecules and both have aliphatic heterocycle count 0 and aliphatic ring count 0; those shared zero values do not separate them much. The main physicochemical contrast is estimated logD: the neighbor is at -0.4825 while the query is much higher at 2.3374, a delta of +2.8199. In this comparison that higher logD difference aligns with the non-carcinogen side. Taken together, Neighbor 1 supports option (A) because the query keeps the nitrile but avoids the pyridazine present in the carcinogen neighbor, and the higher logD comparison also moves the relationship toward the non-carcinogen label.
+
+Neighbor 2 is also a carcinogen neighbor and again the query looks less like it on the key structural side. The query has nitrile once while the neighbor does not, which separates the query from this carcinogenic analog in the same direction as above. The strongest lipophilicity contrast is estimated logP: the neighbor is extremely high at 9.944 versus 2.3548 for the query, and estimated logD is also far higher in the neighbor at 8.6957 versus 2.3374 for the query. Those very large shifts are informative, but in this specific neighbor comparison the logP difference is unfavorable for the carcinogen label while the logD difference points the other way, so the physicochemical evidence is mixed. The neighbor’s maximum partial charge is 0.2583 compared with 0.2115 in the query, a small decrease in the query that again leans away from the carcinogen side here. Alkyl aryl ether is absent in both molecules, and aliphatic heterocycle count is 0 for both, so those features do not create a meaningful separation. Overall, Neighbor 2 still supports option (A) because the nitrile difference and the lower maximum partial charge are aligned with the non-carcinogen side, even though the logD comparison is less straightforward.
+
+Neighbor 3, another carcinogen neighbor, reinforces the same broad pattern. The query has nitrile once while the neighbor has none, which remains an important difference. The neutral fraction is much higher in the query, 0.9607 versus 0.003 in the neighbor, a delta of +0.9577; that makes the query far more neutral in this pairing. The strongest basic pKa also drops from 9.9187 in the neighbor to 5.9765 in the query, a delta of -3.9422, so the query is less strongly basic than the carcinogen neighbor. Alkyl aryl ether is again absent in both, and estimated logP is slightly lower in the query, 2.3548 versus 2.5713 in the neighbor. Aliphatic heterocycle count is 0 in both molecules. These comparisons do not create a carcinogen-like profile for the query; instead, the query differs substantially in ionization behavior and keeps the nitrile without the neighbor’s other structural context. Neighbor 3 therefore also favors option (A).
+
+Neighbor 4 is a non-carcinogen neighbor, so it is especially useful for checking whether the query resembles a safer analog. Here the query has pyridine once while the neighbor has none, and the query also has nitrile once while the neighbor has none; both differences separate the query from this non-carcinogen neighbor. The neighbor contains benzimidazole and urethane, while the query does not, so the query lacks two features present in this non-carcinogen example. QED drug-likeness is lower in the query, 0.4763 versus 0.836, which would normally make the query look less drug-like in this pair, while neutral fraction is also slightly lower in the query, 0.9607 versus 0.985. Because the neighbor is already a non-carcinogen, these differences do not rescue a carcinogen label for the query; instead, they simply show that the query is not a close match to this particular benign analog. The overall comparison still sits on the side of option (A), because the query lacks the neighbor’s benzimidazole and urethane and the presence of pyridine/nitrile distinguishes it from this non-carcinogen reference.
+
+Neighbor 5 is another non-carcinogen neighbor and provides a similar but slightly different picture. The query has pyridine once, nitrile once, and guanidine once, while the neighbor has none of these groups. Those three structural additions make the query distinct from this safe analog in a way that is not obviously reassuring for carcinogenicity, but the key point is that the query is not simply matching the non-carcinogen structure. Estimated logD is much higher in the query, 2.3374 versus -0.8073, a delta of +3.1447, and that greater lipophilicity/distribution burden separates the query from the neighbor. QED drug-likeness is lower in the query, 0.4763 versus 0.7202, which again makes the query less attractive on a general developability scale. Aliphatic ring count is 0 in both, so that feature does not distinguish them. This neighbor therefore does not supply strong support for a carcinogen label; instead, it shows that the query differs from a non-carcinogen through the added pyridine, nitrile, and guanidine together with a higher estimated logD, which is still consistent with the final non-carcinogen call when viewed across the full set of neighbors.
+
+Neighbor 6 is the last non-carcinogen neighbor and it gives the strongest contrast on the ionization and lipophilicity side. The query has a much higher neutral fraction, 0.9607 versus 0.604, while the neighbor is more ionized overall. The query also has nitrile once and guanidine once, whereas the neighbor has neither of those groups. Estimated logP is higher in the query, 2.3548 versus 1.6645, and estimated logD is also higher, 2.3374 versus 1.4455, so the query is more lipophilic than this non-carcinogen neighbor. The neighbor has one aliphatic ring while the query has none, which is another structural difference, and that same neighbor lacks guanidine while the query contains it. In this pair the query looks more basic/functionalized and more lipophilic than the safe reference, but again it is not matching a carcinogenic structural alert pattern from the neighbor evidence itself. Neighbor 6 therefore does not overturn the non-carcinogen direction; it simply indicates that the query is a more lipophilic, differently ionizable analog than this benign neighbor.
+
+Putting all six neighbors together, the three carcinogen neighbors consistently show that the query differs from them by the presence of nitrile and, in one case, by the absence of pyridazine, with additional shifts in neutral fraction, basic pKa, maximum partial charge, logP, and logD that do not establish a carcinogen-like profile. The three non-carcinogen neighbors likewise show that the query is not an exact match to those safer structures, because it adds pyridine, nitrile, and guanidine and often has higher logD or lower QED than the benign analogs. Across both sets, the clearest common thread is that the query is structurally and physicochemically distinct from the carcinogen neighbors without acquiring a decisive carcinogenic alert pattern from the evidence given. The balance of analog evidence therefore favors option (A): is not a carcinogen.
+
+Input 3. Target final label semantics
+option (A): is not a carcinogen
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

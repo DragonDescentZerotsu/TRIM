@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed profile, with several exposure-reducing features but also a few properties that could support bacterial uptake or raise concern. It contains morpholine count 2, which is a relatively polar, ionizable heterocycle and can be consistent with reduced passive permeability. Likewise, sulfenic amide count 2 and fraction of sp3 carbons value 1 suggest a fairly saturated, nonplanar scaffold rather than an obviously flat polycyclic aromatic system. The topological polar surface area at 24.94 is low, and estimated logP at 0.8622 is only modest, so the compound is not especially lipophilic overall. On the other hand, maximum partial charge value 0.0603 and minimum absolute partial charge value 0.0603 indicate a noticeable charge distribution, and heteroatom count 6, saturated heterocycle count 2, and hydrogen-bond acceptor count 6 together give the molecule a fairly heteroatom-rich, acceptor-containing character. Those features can sometimes support bacterial interaction or uptake, even though they do not by themselves imply intrinsic mutagenicity. Overall, the balance of the evidence favors non-mutagenic behavior, and the final prediction is option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately inhibitory analog for mutagenicity: it has one morpholine while the query has two, a change of +1 with a strong negative effect from that feature, which supports the non-mutagenic side. At the same time, the query is larger and more heteroatom-rich than the neighbor, with heteroatom count rising from 2 to 6 (+4), heavy-atom molecular weight increasing from 102.072 to 220.234 (+118.162), and heavy-atom count increasing from 8 to 14 (+6). Those shifts are operationally relevant because larger, more polar molecules can have reduced bacterial exposure, but here the comparison still contains some features that lean the other way: ring count rises from 1 to 2 (+1), which is unfavorable in this pairing, and QED increases only modestly from 0.4883 to 0.5324 (+0.044), which in this context is associated with the non-mutagenic side. Overall, the morpholine-related similarity and the smaller-ring, lower-weight neighbor make Neighbor 1 better aligned with the non-mutagenic class.
+
+Neighbor 2 is also more consistent with a non-mutagenic analog overall. Again, the query has one additional morpholine copy relative to the neighbor (+1), and that same feature strongly favors the non-mutagenic side. The neighbor also contains nitroso while the query does not, and that absence in the query removes a mutagenic toxicophore-like feature from the comparison. Against that, the query is more lipophilic, with estimated logP moving from 0 to 0.8622 (+0.8622), and it is also larger and more heteroatom-rich, with heteroatom count going from 4 to 6 (+2) and heavy-atom molecular weight from 108.056 to 220.234 (+112.178). Those size and polarity shifts can modulate exposure, but in this comparison they are not enough to outweigh the strong non-mutagenic signal from the morpholine enrichment and the loss of nitroso. The only countervailing structural simplification is that ring count rises from 1 to 2 (+1), which is unfavorable, yet the overall neighbor relationship still sits on the non-mutagenic side.
+
+Neighbor 3 shows the most explicit tradeoff between a few mutagenicity-associated changes and several non-mutagenic ones. The neighbor has oxetane while the query does not, and that is a strong move away from a known reactive strained heterocycle, favoring the non-mutagenic label. The query is also much larger and more polar in surface terms, with Labute surface area increasing from 25.5768 to 92.9459 (+67.369), maximum partial charge increasing from 0.0488 to 0.0603 (+0.0116), heavy-atom molecular weight jumping from 52.032 to 220.234 (+168.202), topological polar surface area increasing from 9.23 to 24.94 (+15.71), and heteroatom count rising from 1 to 6 (+5). Even though some of those electrostatic and heteroatom increases are the kinds of changes that can accompany stronger interaction potential, the size and polar-surface shifts here are more consistent with reduced passive exposure than with a clearer mutagenic signature. Taken together, the absence of oxetane remains the most chemically salient contrast, so Neighbor 3 still supports the non-mutagenic outcome.
+
+Neighbor 4, one of the non-mutagenic neighbors, is informative because several of its features match the query closely while still leaving the query in a less favorable exposure regime. The query has two sulfenic amide groups versus zero in the neighbor (+2), and its maximum absolute partial charge is essentially unchanged at 0.3787 versus 0.3788 in the neighbor. Fraction of sp3 carbons is identical at 1 versus 1, which indicates no shift in that structural descriptor. The query is again much larger, with heavy-atom molecular weight increasing from 90.061 to 220.234 (+130.173), heteroatom count from 2 to 6 (+4), and estimated logP from -0.0516 to 0.8622 (+0.9138). Those changes are relevant because higher size and lipophilicity can change bacterial uptake and solubility, but the overall similarity to this non-mutagenic neighbor remains strong because the query does not acquire a clear reactive alert in this comparison, and the closest shared features are not pushing toward mutagenicity.
+
+Neighbor 5 further reinforces the same pattern. The query has two morpholine groups while the neighbor has none (+2), which again favors the non-mutagenic side. The neighbor carries dialkyl thioether while the query does not, and that missing feature matters because it differentiates the two scaffolds in a way that does not strengthen a mutagenic interpretation for the query. The query also has two sulfenic amides versus zero in the neighbor (+2), identical fraction of sp3 carbons at 1 versus 1, and higher topological polar surface area at 24.94 versus 9.23 (+15.71), all of which fit a more polar, less freely permeating profile. Maximum partial charge is only slightly higher in the query, 0.0603 versus 0.0557 (+0.0047), but that small electrostatic shift does not outweigh the larger structural differences. On balance, Neighbor 5 again sits closer to the non-mutagenic side.
+
+Neighbor 6 is the closest of the non-mutagenic neighbors to a mixed case, because the query differs in several directions at once. The query has one more sulfenic amide than the neighbor (+1), which favors the non-mutagenic side, but it also has a lower QED drug-likeness score at 0.5324 versus 0.7673 (-0.2349), which in this comparison is unfavorable. Maximum absolute partial charge is unchanged at 0.3787 versus 0.3787, while maximum partial charge is lower in the query at 0.0603 versus 0.1658 (-0.1055). Ring count is also lower in the query, 2 versus 3 (-1), and heteroatom count is slightly higher, 6 versus 5 (+1). This neighbor therefore contains a genuine balance of effects, but the absence of any clearly mutagenic structural alert in the query and the continued presence of the sulfenic amide motif keep it aligned with the non-mutagenic class overall.
+
+Putting the six neighbors together, the strongest recurring signals are the query’s extra morpholine and sulfenic amide content and the loss of obvious reactive motifs such as nitroso and oxetane in the key analogs, while the larger size, higher heteroatom burden, and moderate polarity changes mostly act as exposure-modifying features rather than direct mutagenic evidence. Although a few descriptors in individual neighbors lean toward mutagenicity, the positive and negative neighbor sets both point more consistently to the non-mutagenic outcome, so the final prediction is option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

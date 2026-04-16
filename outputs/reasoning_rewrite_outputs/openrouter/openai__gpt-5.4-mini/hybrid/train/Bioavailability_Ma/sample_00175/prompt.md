@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several strong liabilities for oral bioavailability. It contains a sulfenic derivative present at 1, a sulfide present at 1, and gold present at 1, all of which are unfavorable structural signals for an orally exposed compound. It also has a carboxylic ester count of 4, which adds substantial lipophilic and functional-group burden and often correlates with poor overall drug-likeness. The QED drug-likeness value is 0.148, which is very low and supports an unfavorable oral profile. Labute surface area is 200.5556, indicating a fairly large surface burden, and the molecular weight is 678.491, well above the usual range associated with good oral exposure, which further argues against efficient absorption. The neutral fraction is present at 1, so there is at least some neutral population available, and the topological polar surface area is 114.43, which is not extreme and could still allow some permeability. However, that modestly favorable polarity signal is outweighed by the large size, low drug-likeness, multiple ester groups, and the presence of sulfenic, sulfide, and gold-related motifs. The molecule has no acidic site, so strongest acidic pKa is not defined, which removes one potential source of anion-driven liability, but that does not compensate for the other unfavorable properties. Overall, the balance of evidence favors poor oral bioavailability, so the molecule is predicted to have oral bioavailability < 20%.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly strong analog for the low-bioavailability side despite its positive-label status, because the query carries several liabilities that the neighbor lacks: sulfide is present once in the query but absent in the neighbor, gold is present once in the query but absent in the neighbor, and sulfenic derivative is also present once in the query but absent in the neighbor. Those three differences all point in the unfavorable direction for oral exposure. The query also has 4 carboxylic ester groups versus 0 in the neighbor, which is another substantial structural increase relative to a compound with oral bioavailability at least 20%. The one feature that partially offsets this is that the neighbor’s QED drug-likeness is high at 0.7386 while the query’s QED is only 0.148, a large drop of -0.5906 that is consistent with much poorer overall drug-likeness in the query. The only favorable-looking item is minimum absolute partial charge: the neighbor has 0.333 while the query is unavailable, so that comparison itself cannot be used as a direct disadvantage for the query. Overall, though, the chemical pattern is dominated by the query’s extra sulfide, gold, sulfenic derivative, and ester burden together with much lower QED, so this neighbor still supports oral bioavailability < 20%.
+
+Neighbor 2 tells a very similar story. Again the query has sulfide (+1), gold (+1), and sulfenic derivative (+1) that the neighbor does not have, all of which weigh against better oral bioavailability. This neighbor also adds a neutral-fraction difference: the neighbor has neutral fraction absent (0) while the query has it present (1), and the query-minus-neighbor delta is +1. In isolation, having a detectable neutral fraction can sometimes help passive permeability, but here it does not overcome the much broader structural liabilities already present. The query also has 4 carboxylic ester groups versus 0 in the neighbor, adding another clear mismatch. The minimum absolute partial charge comparison is again not directly usable because the neighbor has 0.3562 and the query is unavailable, so that feature does not rescue the query. Taken together, this second positive-bioavailability neighbor still ends up looking worse than the query on the dominant features, and it remains consistent with oral bioavailability below 20%.
+
+Neighbor 3 is even more decisive. It shares the same unfavorable structural pattern with the query having sulfide (+1), gold (+1), and sulfenic derivative (+1) absent from the neighbor, but here the query also looks much less drug-like overall: the neighbor’s QED is 0.767 versus the query’s 0.148, a large decrease of -0.619. That kind of drop is hard to reconcile with good oral exposure. There are two features that lean in the opposite direction. First, the neighbor’s minimum absolute partial charge is 0.3161 while the query value is unavailable, so that descriptor cannot be used to argue against the query directly. Second, the neighbor’s topological polar surface area is only 29.54, while the query’s TPSA is 114.43, a large increase of +84.89. From the oral-absorption perspective, TPSA around the higher end of the common favorable window becomes a liability as it climbs, and a value of 114.43 is much more polar than the neighbor’s. Even though that higher TPSA comparison is the one feature that points toward better bioavailability for the query relative to the neighbor, the much lower QED and the repeated appearance of sulfide, gold, and sulfenic derivative in the query still make this comparison fit the low-bioavailability class.
+
+Neighbor 4 comes from the low-bioavailability group and again aligns with the query having the same three extra functional features: sulfenic derivative (+1), gold (+1), and sulfide (+1) relative to the neighbor. The query also has 4 carboxylic ester groups versus 1 in the neighbor, which is another substantial increase in a molecule already associated with poor oral exposure. QED is also strongly unfavorable: the neighbor’s QED is 0.5037, while the query’s is only 0.148, a delta of -0.3557. On the other hand, the neighbor’s maximum absolute partial charge is 0.4613 and the query value is unavailable, so this does not provide a direct structural advantage to the query. Even with that caveat, the combination of extra sulfide/sulfenic derivative/gold features, substantially higher ester count, and much lower QED supports the conclusion that the query remains in the <20% bioavailability regime.
+
+Neighbor 5 reinforces the same overall conclusion. It again lacks sulfenic derivative, gold, and sulfide, each of which is present once in the query, so the query carries the same trio of added liabilities. The query also has 4 carboxylic ester groups compared with 1 in the neighbor, keeping the ester burden elevated. QED remains much lower in the query: 0.148 versus 0.672 in the neighbor, a decrease of -0.524, which again signals poorer drug-likeness. As with Neighbor 4, the one counterpoint is maximum absolute partial charge, where the neighbor is 0.4622 and the query is unavailable. That missing value prevents using this descriptor as a strong counterargument, and it is not enough to offset the multiple structural features that are worse in the query. So this comparison also fits better with oral bioavailability < 20%.
+
+Neighbor 6 is the same pattern with a slightly different balance of supporting descriptors. The query again has sulfenic derivative (+1), gold (+1), and sulfide (+1) relative to the neighbor, and it also has 4 carboxylic ester groups versus 1 in the neighbor. The QED gap remains unfavorable: 0.148 for the query compared with 0.4789 for the neighbor, a delta of -0.3309. The only feature that partially favors the query is maximum absolute partial charge, where the neighbor’s value is 0.4613 and the query is unavailable; the missing query value means this cannot be turned into a structural advantage. On balance, the query still looks more heavily functionalized and less drug-like than this lower-bioavailability neighbor, so the comparison supports the same low oral bioavailability outcome.
+
+Putting the six neighbors together, the three positive-bioavailability neighbors and the three low-bioavailability neighbors all show the same core pattern: the query repeatedly carries sulfide, gold, and sulfenic derivative features that the neighbors lack, plus a much higher carboxylic ester count and much lower QED. One positive neighbor also shows the query with neutral fraction present, but the larger picture is still dominated by the repeated structural liabilities and the severe drop in drug-likeness. The TPSA comparison in Neighbor 3 does not overturn that conclusion, because the query’s higher polarity appears alongside several other unfavorable differences. Overall, the nearest-neighbor evidence consistently fits the label option (A): has oral bioavailability < 20%.
+
+Input 3. Target final label semantics
+option (A): has oral bioavailability < 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

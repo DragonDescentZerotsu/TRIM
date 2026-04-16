@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several exposure-related properties that lean away from bacterial mutagenicity. Its Labute surface area is 156.3588, which is fairly large and can limit bacterial uptake; the neutral fraction is very low at 0.0022, meaning it is mostly ionized at the configured pH and may penetrate bacterial membranes less readily. The fraction of sp3 carbons is 0.7143, indicating a relatively saturated, less flat structure rather than a highly planar aromatic one. The ring count is only 1, so there is no obvious polycyclic aromatic system that would raise concern for a mutagenic planar scaffold. The secondary hydroxyl is present (1), and the estimated logP is 3.6412, which is moderate rather than extremely hydrophobic, so there is no strong sign of an exposure-enhancing lipophilicity extreme. The molecular weight is 366.498, which is not especially high, but the rotatable-bond count is 12, suggesting a fairly flexible molecule that may not accumulate especially well in bacteria. The saturated carbocycle count is 1, again consistent with a more saturated, non-planar structure. Against that mostly favorable exposure/shape profile, the QED drug-likeness value of 0.362 is somewhat modest and does not by itself suggest a clean benign profile, so there is a small countervailing signal. Overall, the combination of low neutral fraction, relatively large surface area, high sp3 character, low ring count, and lack of obvious aromatic planar alerting features supports a conclusion of not mutagenic, option (A), with high confidence.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close mutagenic analog, but several changes on the query side move away from that outcome. The query has more rotatable bonds, 12 versus 8 in the neighbor (delta +4), and the eNTRy-style permeability heuristic makes lower flexibility more favorable for Gram-negative accumulation, so this shift is unfavorable for mutagenicity. The query also has a slightly higher neutral fraction, 0.0022 versus 0.0015 (delta +0.0007), which is still extremely low overall, but the direction here is toward less exposure rather than more. Most importantly, the query lacks the neighbor’s nitroso group, a well-recognized mutagenic toxicophore, and that removal strongly supports the non-mutagenic class. The query is also larger, with heavy-atom count 26 versus 13 (delta +13), and slightly lower fraction of sp3 carbons, 0.7143 versus 0.875 (delta -0.1607), giving it a somewhat flatter profile; however, the big exposure-limiting changes and especially loss of the nitroso group dominate. The only feature that favors mutagenicity here is the higher topological polar surface area, 94.83 versus 69.97 (delta +24.86), since higher polarity can sometimes reduce passive permeability less predictably, but in this comparison the overall balance still leans to option (A): is not mutagenic.
+
+Neighbor 2 is also mutagenic, and the comparison is mixed in a way that still ends up favoring option (A). The query has a lower QED drug-likeness score, 0.362 versus 0.4654 (delta -0.1034), which in isolation can enrich for less favorable chemical space and partly supports mutagenicity. But the query is much larger, with heavy-atom count 26 versus 12 (delta +14), and has more rotatable bonds, 12 versus 7 (delta +5); both changes tend to reduce efficient bacterial accumulation and thus weigh against a positive Ames call. The neutral fraction is again slightly higher in the query, 0.0022 versus 0.0015 (delta +0.0007), which is still very low but directionally consistent with reduced passive exposure. The neighbor’s nitroso group is absent from the query, removing a clear mutagenic alert. The query also has higher topological polar surface area, 94.83 versus 69.97 (delta +24.86), which can further limit permeability. Taken together, the loss of the nitroso toxicophore plus the larger, more flexible, more polar profile outweigh the lower QED, so this neighbor comparison supports option (A): is not mutagenic.
+
+Neighbor 3 is mutagenic, but its differences also lean overall toward the non-mutagenic label. The query has a much lower QED, 0.362 versus 0.7423 (delta -0.3803), which by itself is less drug-like and can correlate with unfavorable structural features, but the more important physical-property shifts point away from bacterial uptake: Labute surface area rises from 98.0542 to 156.3588 (delta +58.3046), heavy-atom count rises from 16 to 26 (delta +10), and estimated logD falls from 3.0191 to 0.9918 (delta -2.0273). That combination suggests a larger, more polar molecule with weaker hydrophobic character and likely less membrane penetration. The query also has one secondary hydroxyl group while the neighbor has none (delta +1), and although the heteroatom count is higher in the query, 5 versus 2 (delta +3), that increase mainly adds polarity rather than a clear mutagenic alert. The mixed QED and heteroatom changes could raise concern, but the substantially larger surface area, higher size, added hydroxyl, and lower logD all point to reduced effective exposure, so this comparison still favors option (A): is not mutagenic.
+
+Neighbor 4 is a non-mutagenic analog, yet several query features are less favorable while the overall size/shape profile still supports option (A). The query has fewer rotatable bonds than the neighbor, 12 versus 15 (delta -3), which by itself could increase rigidity and exposure potential, and it also has one aliphatic carbocycle versus none in the neighbor (delta +1) and one saturated carbocycle versus none (delta +1). Those ring additions can make the query somewhat more structured, and the query also has one tertiary hydroxyl group versus none in the neighbor (delta +1), which adds polarity. However, the query’s Labute surface area is higher, 156.3588 versus 125.2094 (delta +31.1494), and heavy-atom count is higher, 26 versus 20 (delta +6), both of which are consistent with a larger molecule that may have more difficulty crossing bacterial barriers. In this comparison, the ring and hydroxyl changes are not enough to outweigh the exposure-limiting size increase, so the neighbor remains a better match to option (A): is not mutagenic.
+
+Neighbor 5 is another non-mutagenic analog, and the query again differs in several ways that make the comparison a bit mixed but still overall consistent with option (A). The neighbor has a very high estimated logP of 5.8845, whereas the query is lower at 3.6412 (delta -2.2433), and moving away from extreme lipophilicity can improve soluble exposure rather than weaken it; here, the lower logP is not a reason for mutagenicity. The query also has fewer rotatable bonds, 12 versus 14 (delta -2), which can modestly increase rigidity. But the query still carries one aliphatic carbocycle while the neighbor has none (delta +1), and it has one tertiary hydroxyl group while the neighbor has none (delta +1), both of which add structural differentiation and polarity. The neighbor has 2 alkene copies and the query also has 2, so there is no change there, and the query again has a larger Labute surface area, 156.3588 versus 124.5198 (delta +31.839), which points to a bulkier molecule. Despite the somewhat more rigid and less lipophilic profile, the larger surface area and the fact that the structurally similar non-mutagenic neighbor lacks the query’s extra ring and tertiary hydroxyl keep this comparison aligned with option (A): is not mutagenic.
+
+Neighbor 6 is also non-mutagenic and is perhaps the clearest of the negative analogs in supporting the final label. The query has fewer rotatable bonds, 12 versus 15 (delta -3), and lower estimated logP, 3.6412 versus 5.0793 (delta -1.4381), both of which can affect exposure, but again not in a way that directly creates a mutagenic alert. What stands out is that the query has one aliphatic carbocycle and one saturated carbocycle, while the neighbor has none of each (delta +1 for both), and it also has one tertiary hydroxyl while the neighbor has none (delta +1). Those additions make the query more ring-rich and more functionalized, but not in a way tied to any specific Ames toxicophore from the comparison itself. The query also has a higher Labute surface area, 156.3588 versus 130.0037 (delta +26.3551), which again marks it as the larger structure. Even though the negative direction on logP and rotatable bonds is not by itself decisive, the absence of any mutagenic alert in the query and the similarity to this non-mutagenic neighbor keep the overall evidence on the non-mutagenic side.
+
+Across all six neighbors, the strongest recurring themes are that the query lacks the mutagenic nitroso group seen in the positive neighbors, while also being larger, more polar, and generally less permeable by the size and flexibility descriptors. The positive neighbors mostly become less concerning when the nitroso alert is removed and when the query’s higher heavy-atom count, larger surface area, and greater rotatable-bond burden are considered. The negative neighbors, which the query resembles well overall, show the same larger surface area and substantial structural elaboration without introducing any clear mutagenic toxicophore. Taken together, these analog comparisons support the provided label: option (A) is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

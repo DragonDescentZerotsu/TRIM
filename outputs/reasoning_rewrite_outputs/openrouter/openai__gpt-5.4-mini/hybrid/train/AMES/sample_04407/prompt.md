@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mix of features, but the balance favors a non-mutagenic AMES outcome. A sulfuric monoamide is present (1), which is not itself a classic mutagenicity toxicophore and is more consistent with a polar, exposure-limiting motif than a DNA-reactive alert. The number of ionizable sites is high at 8, which would tend to increase ionization and reduce passive bacterial uptake, supporting a negative result. The neutral fraction is absent (0), again pointing to a highly ionized species at the test pH, and the estimated logD of -7.3022 is extremely low, consistent with very poor lipophilicity and limited membrane permeation. The strongest acidic pKa is -0.1256, indicating a very strong acid and therefore substantial anionic character under assay conditions, which further disfavors bacterial exposure. These same exposure-limiting properties are reinforced by the nitrogen/oxygen atom count of 9 and the heteroatom count of 10, both of which indicate a highly heteroatom-rich, polar molecule.
+
+There are, however, a few features that could raise concern. Quinoxaline is present (1), and the ring count is 3, which adds aromatic character and could be associated with more planar, heteroaromatic chemistry that sometimes appears in mutagenic scaffolds. The heteroatom count of 10 and nitrogen/oxygen atom count of 9 also indicate a fairly dense heteroatom framework, which can sometimes accompany reactive heteroaromatic motifs. Still, the molecule also contains a primary hydroxyl (1), which is generally more consistent with increased polarity rather than a direct mutagenic alert, and there is no obvious high-risk structural alert such as nitro, nitroso, aziridine, epoxide, or an aromatic amine/nitro group.
+
+Overall, despite the quinoxaline and aromatic ring content introducing some mutagenicity concern, the combination of very low logD (-7.3022), absent neutral fraction (0), strong acidity (pKa -0.1256), and high ionization burden (8 ionizable sites) suggests limited bacterial penetration and reduced effective exposure. Taken together, the molecule is more likely to be not mutagenic, corresponding to option (A).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor with similarity 0.356, but the query differs in several ways that look less favorable for mutagenicity: it has sulfuric monoamide once where the neighbor has none (delta +1), it has more ionizable sites (8 vs 5, delta +3), and it has primary hydroxyl once where the neighbor has none (delta +1). Those changes are all consistent with a more polar, more ionized profile that can reduce passive bacterial exposure. The ring count is unchanged at 3, which by itself does not separate the pair, but the query also has neutral fraction absent/0 versus 0.9991 in the neighbor and a much lower estimated logD (-7.3022 vs 2.0795, delta -9.3817). In this comparison, the strong drop in neutral fraction and logD, together with the added ionizable and hydroxyl functionality, outweigh the shared ring count and make the query look less like this mutagenic neighbor.
+
+Neighbor 2 is also a positive neighbor with similarity 0.340, and the same exposure-limiting pattern appears. The query again has sulfuric monoamide once, more ionizable sites (8 vs 5, delta +3), and primary hydroxyl once, while the neighbor lacks those features. The ring count is again the same at 3, but the query’s estimated logD is far lower (-7.3022 vs 1.89, delta -9.1922), which is a large shift toward a much more hydrophilic, less permeable state. The one feature that trends the other way is heteroatom count: the query has 10 versus 5 in the neighbor (delta +5), which can sometimes co-occur with mutagenicity-relevant chemistry, but here the overall effect is still dominated by the more ionized and less lipophilic profile. So this neighbor comparison still ends up supporting the non-mutagenic label.
+
+Neighbor 3 is the third positive neighbor with similarity 0.320. It matches the same pattern on sulfuric monoamide, ionizable sites, and primary hydroxyl: the query has sulfuric monoamide once versus none, ionizable sites 8 vs 5 (delta +3), and primary hydroxyl once versus none. The ring count is again identical at 3. Two features here point more toward mutagenicity in isolation: the query has a higher minimum absolute partial charge (0.3593 vs 0.2029, delta +0.1565), and that can reflect a more pronounced electrostatic profile, while the estimated logD is again much lower (-7.3022 vs 2.1537, delta -9.4559), which still suggests reduced passive exposure. Even with the partial-charge change, the repeated pattern across the positive neighbors is that the query is much more polar and less lipophilic than the mutagenic analogs, so this comparison also leans away from mutagenicity overall.
+
+Neighbor 4 is a negative neighbor with similarity 0.283. Here the query again has sulfuric monoamide once and more ionizable sites (8 vs 5, delta +3), both of which make it more polar than the neighbor. However, the neighbor has a higher aromatic ring count, 5 versus 3 in the query (delta -2), and the query has more heteroatoms (10 vs 5, delta +5). Both of those differences can be relevant because more aromaticity can align with mutagenic structural space, while more heteroatoms can increase polarity and ionization. The query also has much higher topological polar surface area, 130.23 vs 69.62 (delta +60.61), and it has primary hydroxyl once where the neighbor has none. Taken together, the higher PSA and added hydroxyl/ionizable character fit better with lower permeability than with a stronger mutagenic profile, so even though the aromatic-ring and heteroatom differences go in mixed directions, the overall comparison still supports the non-mutagenic label.
+
+Neighbor 5 is another negative neighbor with similarity 0.250. The query has sulfuric monoamide once versus none, more ionizable sites (8 vs 7, delta +1), and a neutral fraction of 0 versus 0.9787 in the neighbor, again pointing to a strongly ionized, less passively permeable molecule. The strongest basic pKa also shifts downward from 5.7373 in the neighbor to 3.9268 in the query (delta -1.8105), which changes the protonation profile and is consistent with a more weakly basic, less neutral state at the relevant pH. At the same time, the query has more heteroatoms (10 vs 4, delta +6) and more hydrogen-bond acceptors (7 vs 4, delta +3). Those additions increase polarity and can reduce uptake, even though they also create a denser heteroatom pattern. Overall, the comparison still favors the non-mutagenic side because the query looks much less likely to enter bacterial cells efficiently than this negative neighbor.
+
+Neighbor 6 is the last negative neighbor with similarity 0.239. Again the query has sulfuric monoamide once and more ionizable sites (8 vs 4? no, the note gives basic sites instead: the neighbor has number of basic sites 3 versus 5 in the query, delta +2), plus a neutral fraction of 0 versus 0.7299 in the neighbor and a much lower estimated logD (-7.3022 vs 0.7244, delta -8.0266). Those changes all reinforce a strongly polar, highly ionized molecule. The query also has more heteroatoms (10 vs 4, delta +6) and the presence of quinoxaline once where the neighbor lacks it. Quinoxaline can be a chemically notable heteroaromatic feature, but here the much stronger overall signal is the sharp drop in neutral fraction and logD together with the higher basic-site count, which makes the query less comparable to this negative neighbor in terms of exposure and uptake. That keeps the comparison aligned with a non-mutagenic outcome.
+
+Across the three positive neighbors, the query consistently shows much lower estimated logD, very low or absent neutral fraction, and more ionizable functionality, which makes it less like those mutagenic analogs despite sharing the same ring count. Across the three negative neighbors, the query is again more polar and more ionized, with higher PSA, more heteroatoms, and in one case a lower strongest basic pKa and in another more basic sites, all of which favor reduced bacterial exposure rather than a stronger mutagenic signal. The aromatic-ring difference in Neighbor 4 and the quinoxaline in Neighbor 6 are not enough to override the repeated exposure-limiting pattern. Taken together, the nearest-neighbor evidence supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

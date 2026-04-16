@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several structural features that are more consistent with mutagenicity. A ring count of 3 and an aromatic ring count of 3 suggest a fairly aromatic scaffold, and the fraction of sp3 carbons is only 0.0909, indicating a very flat, low-sp3 structure that can be compatible with aromatic toxicophores. The presence of benzimidazole (1) is also notable, since heteroaromatic systems can be associated with mutagenic liability when they contain problematic substructures or support activation pathways. In addition, hydroxylamine is present (1), which is a concerning functional group for Ames mutagenicity because it can be associated with reactive chemistry. The molecule also has number of basic sites 4 and a strongest basic pKa of 6.2496, so at assay-relevant pH it is likely to have appreciable ionization; this can affect bacterial accumulation and does not remove concern from the structural alerts. The hydrogen-bond acceptor count is 5 and estimated logP is 1.9226, which are not especially extreme, so they do not strongly argue for poor exposure. There is some counterbalance from QED drug-likeness of 0.6074, which is moderately drug-like and not itself a mutagenicity signal, but that is outweighed by the structural liabilities. Overall, the aromatic heterocycle, hydroxylamine, and low-sp3 features support a prediction of is mutagenic (B).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately favorable analog for mutagenicity. The strongest shared signal is hydroxylamine being present in both molecules, and the query matches the neighbor on ring count exactly at 3, both of which are consistent with the mutagenic side of the comparison. Against that, the query lacks quinoxaline (query-minus-neighbor delta -1), has one fewer basic site (neighbor 5 vs query 4, delta -1), a slightly lower neutral fraction (0.9773 to 0.9277, delta -0.0496), and a slightly lower QED drug-likeness (0.6201 to 0.6074, delta -0.0127). Those latter shifts point toward somewhat reduced exposure or a less drug-like profile, but they are smaller in magnitude than the shared hydroxylamine and ring-count evidence, so Neighbor 1 still supports option (B).
+
+Neighbor 2 is more clearly aligned with the mutagenic label. The query again keeps the ring count at 3, and in addition it has more heteroatoms (2 to 5, delta +3), a slightly higher fraction of sp3 carbons (0 to 0.0909, delta +0.0909), the presence of hydroxylamine that the neighbor lacks (delta +1), and a higher strongest basic pKa (3.5934 to 6.2496, delta +2.6562). Although the query also has a higher QED drug-likeness (0.497 to 0.6074, delta +0.1104), which by itself would lean away from mutagenicity, the overall pattern still looks like a stronger match to the mutagenic side because the heteroatom burden, hydroxylamine, and basicity changes dominate this comparison.
+
+Neighbor 3 also favors option (B), though with some balancing features. Here the query has much higher QED drug-likeness than the neighbor (0.4275 to 0.6074, delta +0.1798), which would be the main factor pulling away from mutagenicity. But the query also has more heteroatoms (2 to 5, delta +3), a slightly higher fraction of sp3 carbons (0 to 0.0909, delta +0.0909), hydroxylamine present in the query but absent in the neighbor (delta +1), and a lower ring count in the sense that the neighbor has 4 rings while the query has 3 (delta -1). The estimated logD is also much lower in the query (3.9359 to 1.89, delta -2.0459), which can reflect a substantial shift in physicochemical balance. Taken together, the hydroxylamine and higher heteroatom content outweigh the more drug-like QED and lower logD, so Neighbor 3 still reinforces the mutagenic class.
+
+Neighbor 4 is a negative neighbor, but its comparison still ends up supporting the mutagenic label overall. The query contains hydroxylamine while the neighbor does not, which is a strong mutagenicity-associated feature. The query also has a higher maximum partial charge (0.0724 to 0.2274, delta +0.155) and a lower strongest basic pKa than the neighbor (6.5887 to 6.2496, delta -0.3391), both of which shift the physicochemical profile in a way that remains compatible with the positive neighbors. Although the query has a slightly lower QED drug-likeness (0.647 to 0.6074, delta -0.0396) and fewer ionizable sites (6 to 5, delta -1), those are modest exposure-oriented differences. The topological polar surface area is also higher in the query (50.94 to 62.97, delta +12.03), which could reduce permeability, but this neighbor still does not outweigh the mutagenic structural signal from hydroxylamine and the charge/basicity pattern.
+
+Neighbor 5 is another negative neighbor that nevertheless fits the mutagenic outcome. The query again has hydroxylamine while the neighbor does not, and that same motif is the most direct mutagenicity-linked difference here. The query also has more heteroatoms (3 to 5, delta +2), a slightly less negative minimum partial charge (-0.3257 to -0.3116, delta +0.0141), and a larger heavy-atom molecular weight (176.134 to 204.148, delta +28.014), all of which make the query a more heteroatom-rich and larger molecule. The counterweights are that the query has more basic sites (2 to 4, delta +2) and more ionizable sites (3 to 5, delta +2), both of which can increase ionization and reduce passive permeation. Even so, the hydroxylamine plus the greater heteroatom burden and size keep this comparison aligned with option (B).
+
+Neighbor 6, despite being listed among the negative neighbors, is one of the clearest pieces of support for the mutagenic label. The query contains hydroxylamine while the neighbor does not, both molecules have a ring count of 3, and both contain benzimidazole. In addition, the query has a higher strongest basic pKa (3.9373 to 6.2496, delta +2.3123) and a higher estimated logP (1.0396 to 1.9226, delta +0.883), which together suggest a more basic and more lipophilic profile than the neighbor. The only notable opposing feature is that the query has a lower QED drug-likeness (0.683 to 0.6074, delta -0.0757), but that does not offset the repeated hydroxylamine signal and the matching ring/benzimidazole framework. This neighbor therefore strongly supports mutagenicity.
+
+Putting the six comparisons together, the mutagenic side is reinforced by a repeated hydroxylamine motif in the query, consistent ring-count matching around 3, higher heteroatom content in several comparisons, and additional basicity/lipophilicity differences that are compatible with the positive class. The opposing features, mainly higher QED in some neighbors and several exposure-related shifts such as lower neutral fraction or higher TPSA, are not strong enough to overturn the repeated structural alert. Overall, the neighbors collectively support option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

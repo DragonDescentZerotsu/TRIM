@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several favorable oral-availability features. Its QED drug-likeness is 0.8412, which is quite strong and consistent with overall drug-like balance. The topological polar surface area is 39.72, a relatively low value that supports passive permeability and is well within commonly favorable oral ranges. It also has alkyl aryl ether count 2, suggesting a modest ether-containing scaffold that does not appear overly polar. The absence of any acidic site means the strongest acidic pKa is not defined, so there is no obvious acidic functionality driving the molecule toward an anionic state at physiological pH. The neutral fraction is 0.1481, which is not especially high and therefore indicates only a limited neutral population, a mixed signal for passive absorption. The strongest basic pKa is 8.1598, implying a moderately basic center that may be substantially protonated, which can work against permeability. The maximum partial charge is 0.1608 and the minimum absolute partial charge is 0.1608, indicating some localized polarity but not an extreme charge pattern. Labute surface area is 101.8707, which is not excessive and is compatible with a molecule of manageable size and surface burden. Secondary hydroxyl is absent (0), which reduces hydrogen-bonding burden and is favorable for absorption. Taken together, the low TPSA, strong QED, manageable surface area, and limited hydrogen-bond donor burden support oral bioavailability at or above 20%, although the modest neutral fraction and moderately basic pKa temper that conclusion somewhat.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly strong positive analog overall. The query has much better QED drug-likeness, 0.8412 versus 0.6504 for the neighbor, with a +0.1907 delta, which is consistent with a more drug-like profile. The query also has a far lower estimated logD, 0.6231 versus 4.9252, a -4.3021 change that moves it away from the very lipophilic end and into a more balanced range that is generally more compatible with oral exposure. In the same direction, the query has fewer alkyl aryl ether groups, 2 versus 4, and the comparison treats that reduction as favorable. The query also differs by having one basic site where the neighbor has none, and it has a much smaller Labute surface area, 101.8707 versus 173.1764, with a -71.3057 delta; both of those changes are part of the favorable side of the comparison. The only unfavorable item here is estimated logP, where the query is still lower, 1.4525 versus 4.9252, giving a -3.4727 delta that is treated as the one feature leaning the other way in this pair. Even with that single counterpoint, the overall resemblance is to a compound more compatible with oral bioavailability ≥20%.
+
+Neighbor 2 is also positive overall, but it shows a more mixed balance. The query again has much higher QED, 0.8412 versus 0.5538, with a +0.2874 delta, and its Labute surface area is lower, 101.8707 versus 166.3992, which is favorable. The topological polar surface area is also much lower in the query, 39.72 versus 99.88, a -60.16 change that is chemically important because lower polar surface area generally supports better passive absorption; this is one of the strongest favorable shifts in the comparison. Against that, the query has morpholine once while the neighbor has none, and the comparison treats that as unfavorable. The query also has a higher fraction of sp3 carbons, 0.5385 versus 0.4, with a +0.1385 delta, but here that shift is also treated as unfavorable in this local analog context. Finally, the neighbor has a strongest acidic pKa of 10.0345 while the query has no acidic site, and the comparison explicitly notes that the delta is not defined because one molecule has no acidic site; that feature is also treated as unfavorable here. Even with those mixed local effects, the strong improvements in QED, TPSA, and surface area keep this neighbor aligned with the higher-bioavailability side.
+
+Neighbor 3 remains positive overall and is especially helpful because several features are either favorable or neutral. The query has higher QED, 0.8412 versus 0.6705, with a +0.1707 delta, which is favorable. It matches the neighbor on alkyl aryl ether count, 2 versus 2, so there is no penalty there. The query does have morpholine once while the neighbor has none, which is treated as unfavorable, and it also lacks the alkene present in the neighbor; that absence is likewise unfavorable in this comparison. On the other hand, the neighbor has a secondary hydroxyl while the query does not, and that absence is favorable here. The number of basic sites is the same in both molecules, 1 versus 1, so this descriptor does not separate them. Taken together, the positive QED and the lack of some more polar functionality leave this neighbor in the higher-bioavailability camp despite a couple of local liabilities.
+
+Neighbor 4 is a negative analog in the sense that the comparison is less supportive of the target label, even though several descriptors favor the query. The query has higher QED, 0.8412 versus 0.7385, and more alkyl aryl ether groups, 2 versus 1, both of which are favorable. It also has a substantially higher fraction of sp3 carbons, 0.5385 versus 0.3333, but here that shift is treated as unfavorable. The same is true for the charge descriptors: the query’s maximum partial charge is 0.1608 versus 0.1223 in the neighbor, and its minimum absolute partial charge is also 0.1608 versus 0.1223; both of those increases are unfavorable. The neutral fraction is higher in the query as well, 0.1481 versus 0.0005, yet that comparison is also treated as unfavorable in this neighborhood. So although the query looks better on QED and ether count, the charge-related and neutral-fraction shifts make this neighbor behave as a counterexample rather than a clean positive match.
+
+Neighbor 5 is the same kind of negative analog with a mixed profile that still leaves some room for the higher-bioavailability label. The query’s QED is much higher, 0.8412 versus 0.4865, with a +0.3546 delta, which is strongly favorable. It also has one more alkyl aryl ether group, 2 versus 1, and it has a secondary hydroxyl absent from the neighbor; both of those differences are favorable. The query does not have the ketone present in the neighbor, which is also favorable. However, the strongest acidic pKa comparison is unfavorable: the neighbor has 13.8133 while the query has no acidic site, and that undefined contrast is treated as a penalty here. The topological polar surface area is also higher in the neighbor, 58.56 versus 39.72 for the query, with a -18.84 delta; that lower query TPSA is favorable, but in this neighborhood the overall negative analog status is driven by the mixture of acidic-site and polar-property context around the neighbor. Even so, the query still looks more drug-like and more consistent with acceptable oral exposure than the neighbor.
+
+Neighbor 6 is another negative analog, though again the query carries several favorable shifts. The query’s QED is higher, 0.8412 versus 0.6937, with a +0.1475 delta, and it has one more alkyl aryl ether group, 2 versus 1, both favorable. The query also lacks the secondary hydroxyl present in the neighbor, which is favorable. But the strongest acidic pKa comparison is unfavorable again: the neighbor’s value is 13.8852 while the query has no acidic site, and that undefined contrast is penalized in this local comparison. The query’s topological polar surface area is slightly lower, 39.72 versus 41.49, yet that -1.77 delta is still treated as unfavorable here, and the neutral fraction is higher in the query, 0.1481 versus 0.0231, which is likewise treated as unfavorable. So even though the query looks better on QED and ether count, this neighbor still sits on the less supportive side because the local balance of acidic-site, polar-surface, and neutral-fraction effects does not line up as cleanly with oral bioavailability ≥20%.
+
+Putting the six comparisons together, the two strongest global signals are the very high QED of the query and, especially, its much lower topological polar surface area and lower Labute surface area relative to several neighbors. Those features repeatedly line up with the more orally favorable side across the positive neighbors. Some negative-neighbor comparisons introduce penalties from charge descriptors, acidic-site context, morpholine, and neutral-fraction shifts, but they do not outweigh the recurring favorable pattern from drug-likeness, reduced polar burden, and reduced surface-area burden. Overall, the neighborhood balance supports option (B): has oral bioavailability ≥ 20%.
+
+Input 3. Target final label semantics
+option (B): has oral bioavailability ≥ 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

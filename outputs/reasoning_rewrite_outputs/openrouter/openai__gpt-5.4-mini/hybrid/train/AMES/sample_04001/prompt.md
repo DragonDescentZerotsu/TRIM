@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows some features that could be consistent with mutagenicity, but the overall balance is more compatible with a non-mutagenic outcome. A ring count of 3 and an aromatic ring count of 2 suggest a moderately aromatic scaffold, and greater aromaticity can sometimes accompany planar toxicophoric motifs. The aliphatic carbocycle count of 1 also adds some ring complexity, which does not argue strongly against activity. However, the polar and charge-related descriptors are notably unfavorable for bacterial exposure: a topological polar surface area of 0, a hydrogen-bond acceptor count of 0, and a number of basic sites of 0 all indicate a very nonpolar, non-ionizable profile, which can reduce effective uptake in the assay. The estimated logP of 2.9384 is only moderately lipophilic rather than extreme, so it does not strongly favor either strong accumulation or severe solubility limitation. The charge descriptors are mixed but mostly point away from a highly reactive or highly exposed species: maximum partial charge is -0.012, maximum absolute partial charge is 0.0614, and minimum partial charge is -0.0614. Although the negative minimum partial charge provides a small opposing signal, the charge magnitudes are overall quite small, which does not suggest a strongly activated electrophilic pattern. Taken together, the modest aromaticity is outweighed by the very low polarity, absence of basic functionality, and generally weak charge features, so the more likely classification is option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close but imperfect mutagenic analog: it has much higher estimated logP and logD than the query (5.8358 vs 2.9384 for both, delta -2.8974), and those large hydrophobicity differences are consistent with the query being less prone to the exposure/uptake limitations that can accompany very lipophilic molecules. It also matches the query on hydrogen-bond acceptor count at 0, and the comparison notes that this zero delta still favors the non-mutagenic side in that pairing. The main counterweights are the identical maximum absolute partial charge (0.0614 vs 0.0614, delta 0) and the fact that the query has fewer aromatic rings and fewer total rings than the neighbor (aromatic ring count 2 vs 5, delta -3; ring count 3 vs 6, delta -3), which in that comparison adds some mutagenic weight. Even so, the stronger hydrophobicity mismatch and the overall direction of the neighbor-level comparison make Neighbor 1 more supportive of option (A) than of a mutagenic call.
+
+Neighbor 2 is more mixed, but it still gives important context for option (A). The query again matches the neighbor on hydrogen-bond acceptor count at 0, and the topological polar surface area is also 0 vs 0, so there is no increase in polar functionality that would offset the analog relationship. Against that, the query has a slightly higher maximum absolute partial charge (0.0614 vs 0.061, delta +0.0003), and the query is lower in ring count and aromatic ring count (3 vs 4, delta -1; 2 vs 4, delta -2), both of which are treated in that comparison as leaning mutagenic. However, the query also has a much better QED drug-likeness value (0.547 vs 0.3659, delta +0.1811), and in this pair that improvement aligns with the non-mutagenic side. Taken together, Neighbor 2 is not a clean one-way signal, but the better drug-likeness and the unchanged polarity descriptors keep it from overturning the non-mutagenic leaning.
+
+Neighbor 3 resembles Neighbor 1: the neighbor is substantially more lipophilic than the query, with estimated logP 5.7372 vs 2.9384 and estimated logD 5.7372 vs 2.9384, both with delta -2.7988. Those large decreases for the query fit the idea that the query is less extreme in the hydrophobicity window where exposure and solubility issues can matter in bacterial assays. As in the other positive neighbors, hydrogen-bond acceptor count is unchanged at 0 vs 0, while maximum absolute partial charge is essentially the same (0.061 vs 0.0614, delta +0.0003). The query also has fewer aromatic rings and fewer total rings than the neighbor (aromatic ring count 2 vs 5, delta -3; ring count 3 vs 5, delta -2), and those features in this comparison lean mutagenic. Still, the very large reductions in logP and logD dominate the analog contrast, so Neighbor 3 also fits better with option (A) than with a mutagenic outcome.
+
+Neighbor 4 is one of the stronger negative-side analogs for option (A). The query and neighbor both have topological polar surface area 0, hydrogen-bond acceptor count 0, and heteroatom count 0, so the query does not introduce extra polarity or heteroatom burden relative to this non-mutagenic analog. The minimum partial charge is very similar but slightly less negative in the query (-0.0614 vs -0.062, delta +0.0006), and the maximum absolute partial charge is also slightly lower (0.0614 vs 0.062, delta -0.0006); both of those small charge differences point in the same non-mutagenic direction in this comparison. The query also has one more benzene copy than the neighbor, with 2 vs 1 and delta +1, and that specific change is treated here as favoring the non-mutagenic side. Overall, Neighbor 4 reinforces option (A) by showing that the query can stay close to a non-mutagenic profile even with a modest increase in benzene copies.
+
+Neighbor 5 is the clearest counterexample among the negative neighbors and is the main reason the final judgment cannot be one-sidedly low-risk on the basis of the negative set alone. The query has one more aliphatic carbocycle than the neighbor (1 vs 0, delta +1), and that comparison is associated with the mutagenic side. Ring count is the same at 3 vs 3, again not separating the pair. The query is much lower in maximum absolute partial charge (0.0614 vs 0.3982, delta -0.3369), and lower in minimum absolute partial charge as well (0.012 vs 0.04, delta -0.028), both of which favor the non-mutagenic side in this specific pairing. But the neighbor also has three benzene copies versus two in the query (delta -1), which in this comparison leans mutagenic, and the query has much lower topological polar surface area (0 vs 26.02, delta -26.02), which again is treated here as favoring mutagenicity relative to that neighbor. Because the positive and negative signals split, Neighbor 5 does not settle the label by itself, but it does keep a mutagenic possibility in view.
+
+Neighbor 6 also gives a mixed but ultimately non-mutagenic comparison. The minimum partial charge is almost the same, with the query slightly less negative (-0.0614 vs -0.0616, delta +0.0003), which favors the non-mutagenic side. The query lacks the 2,3-dihydro-1H-indene motif that the neighbor has, and that absence is treated as mutagenic in the raw comparison, but the query also has clearly lower estimated logP (2.9384 vs 4.4817, delta -1.5433), which is a more favorable hydrophobicity shift for option (A). The query’s minimum absolute partial charge is a bit higher (0.012 vs 0.0102, delta +0.0017), and the maximum absolute partial charge is slightly lower (0.0614 vs 0.0616, delta -0.0003); both of those are small but are counted on the non-mutagenic side here. Topological polar surface area is unchanged at 0 vs 0. With the hydrophobicity decrease and the mostly neutral charge profile outweighing the missing indene motif in the overall analog judgment, Neighbor 6 supports option (A).
+
+Across all six neighbors, the three positive neighbors are not uniformly mutagenic once the specific value changes are considered: each of Neighbors 1, 2, and 3 contains strong hydrophobicity-related differences that favor the query being less exposure-limited than the mutagenic analogs, and all three end up leaning toward option (A) overall despite some aromatic-ring-count counterpressure. Among the negative neighbors, Neighbor 4 clearly supports option (A), Neighbor 5 is mixed but not decisive, and Neighbor 6 again leans non-mutagenic because of the lower logP and favorable charge profile. Put together, the comparison set tilts toward the query being the less mutagenic analog, so the final prediction is option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

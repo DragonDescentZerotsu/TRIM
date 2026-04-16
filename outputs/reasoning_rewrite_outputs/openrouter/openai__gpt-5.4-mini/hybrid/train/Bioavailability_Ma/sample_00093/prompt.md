@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that support oral exposure, but also some liabilities. A phosphinic ester is present (1), which is often associated with better developability than a fully ionized phosphinic acid because esterification can reduce the immediate anionic burden. A tertiary amide is present (1), and while amides add polarity, a single tertiary amide is still commonly compatible with oral drugs when the overall balance is reasonable. The topological polar surface area is 110.21, which is moderately high but still below the classic 140 Å² oral bioavailability guideline, so polarity is not extreme enough by itself to rule out good absorption. The neutral fraction is 0.0001, which is very low and suggests the molecule is largely ionized at the relevant pH; that would normally be unfavorable for passive permeability, so this is a clear concern. On the other hand, the molecule contains a carboxylic acid (1), which can be a liability for permeability, yet it also has a pyrrolidine ring (1), adding a basic, saturated nitrogen-containing motif that can sometimes help with overall drug-likeness and balance. The rotatable-bond count is 14, which is above the usual favorable range and indicates substantial flexibility, a recognized drawback for oral bioavailability. QED drug-likeness is 0.1256, which is quite low and signals poor overall drug-like balance. Labute surface area is 232.8203, a fairly large surface area that is consistent with a bulky, potentially permeability-limiting molecule. A carboxylic ester is present (1), which can sometimes help mask polarity, but here it appears alongside substantial flexibility and surface area burden rather than enough compensating hydrophobic efficiency. Overall, the molecule has some favorable polarity and ionization balance signals, but the combination of high flexibility, low QED, large surface area, and very low neutral fraction makes the case for limited oral bioavailability stronger; still, the polar surface area is not excessively high, and the ester/amide architecture suggests the molecule is not completely outside orally viable space. Taken together, the balance slightly favors oral bioavailability ≥ 20%.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor and is fairly aligned with the query on several key features: both have phosphinic ester count at 1 versus 0 in the neighbor (query-minus-neighbor delta +1), both have tertiary amide (delta +0), and both have the same extremely low neutral fraction at 0.0001 (delta +0). The neighbor also has azocane while the query does not (delta -1), which is another structural difference in the query’s favor for this local comparison. The main counterpoint is Labute surface area: the query is larger, 232.8203 versus 177.3258 for the neighbor, with delta +55.4945. Larger surface area can sometimes track a more demanding size/polarity burden, so that aspect is unfavorable. The number of basic sites also differs, with the neighbor having 1 and the query 0 (delta -1), which in this comparison is another small negative feature for the query. Even with those liabilities, the shared neutral fraction and tertiary amide plus the phosphinic ester difference make Neighbor 1 overall support oral bioavailability at or above 20%.
+
+Neighbor 2 is also a positive neighbor and again shares the same favorable core features: the query has phosphinic ester once while the neighbor has none (delta +1), both have tertiary amide (delta +0), and both have neutral fraction 0.0001 (delta +0). The neighbor has 1 basic site while the query has 0 (delta -1), which is a modest disadvantage for the query. Two additional features help the query here: topological polar surface area is 110.21 in the query versus 95.94 in the neighbor, delta +14.27, and the observed comparison favors the query in this local setting despite the usual need to keep polarity balanced for permeability. On the other hand, fraction of sp3 carbons is higher in the query, 0.7 versus 0.55, delta +0.15, and in this specific comparison that is treated as unfavorable relative to the neighbor. Overall, the stronger shared structural alignment and the phosphinic ester / tertiary amide / neutral-fraction pattern still make Neighbor 2 favor the ≥20% label.
+
+Neighbor 3 is the third positive neighbor and follows the same pattern as Neighbor 1, but with a somewhat stronger size penalty. The query again has phosphinic ester once while the neighbor has none (delta +1), both share tertiary amide (delta +0), and both have neutral fraction 0.0001 (delta +0). The neighbor has 1 basic site while the query has 0 (delta -1), which again is a small disadvantage for the query. The main negative difference is Labute surface area, where the query is 232.8203 and the neighbor is 187.929, giving delta +44.8914; that larger surface area is less favorable in this local match. Fraction of sp3 carbons is also higher in the query, 0.7 versus 0.4, delta +0.3, and here that higher value is treated as unfavorable relative to the neighbor. Even so, the repeated advantages from phosphinic ester presence, matching tertiary amide, and identical very low neutral fraction keep Neighbor 3 on the side of oral bioavailability at or above 20%.
+
+Neighbor 4 is a negative neighbor, but the comparison is mixed. The query has phosphinic ester once while the neighbor has none (delta +1), which supports the higher-bioavailability side, and the query also has carboxylic acid once while the neighbor has none (delta +1), another structural difference favoring the query in this local match. Neutral fraction is much lower in the query, 0.0001 versus 0.0537 in the neighbor, delta -0.0536; a lower neutral fraction can be a liability for passive absorption, yet in this pair it is still treated as favoring the higher-bioavailability side. The query also shares tertiary amide with the neighbor (delta +0), and the query’s topological polar surface area is much higher, 110.21 versus 23.55, delta +86.66, which is also favorable in this particular comparison. The strongest negative signal is QED drug-likeness, where the query is much lower, 0.1256 versus 0.7915, delta -0.6659, indicating a substantial loss of overall drug-likeness. Even with that low QED, the combination of phosphinic ester, carboxylic acid, lower neutral fraction, shared tertiary amide, and much higher polar surface area makes Neighbor 4 still end up supporting the ≥20% class overall.
+
+Neighbor 5 is another negative neighbor, yet most of the differences still line up on the side of the higher-bioavailability class. The query has phosphinic ester once and the neighbor has none (delta +1). The neighbor has 3 copies of secondary amide while the query has 0 (delta -3), so the query avoids multiple secondary amides, which is favorable here. The query also has carboxylic acid once while the neighbor has none (delta +1), and the neighbor has primary amide while the query does not (delta -1); both differences are favorable to the query in this local context. Likewise, the neighbor has secondary hydroxyl while the query does not (delta -1), another favorable simplification for the query. One clear structural drawback for the query is that the neighbor has decahydroisoquinoline while the query does not (delta -1), which in this comparison works against the higher-bioavailability side. Taken together, though, the query’s avoidance of the amide and hydroxyl burden, plus the phosphinic ester and carboxylic acid differences, leave Neighbor 5 overall on the ≥20% side.
+
+Neighbor 6 is the final negative neighbor and is again mixed but still leans toward the higher-bioavailability class. The query has phosphinic ester once while the neighbor has none (delta +1), and the query also has carboxylic acid once while the neighbor has none (delta +1). The neighbor lacks pyrrolidine while the query has it once (delta +1), another feature favoring the query in this comparison. The query also shares tertiary amide with the neighbor (delta +0), and the query’s topological polar surface area is 110.21 versus 40.62 in the neighbor, delta +69.59, which is again favorable in this local match. The main opposing signal is QED drug-likeness: the query is 0.1256 versus 0.7994 for the neighbor, delta -0.6737, showing a large drop in overall drug-likeness. Even so, the combination of phosphinic ester, carboxylic acid, shared tertiary amide, higher polar surface area, and the pyrrolidine difference keeps Neighbor 6 aligned with the ≥20% outcome overall.
+
+Putting the six neighbors together, the three positive neighbors are consistently supportive because they repeatedly share the query’s phosphinic ester, tertiary amide, and extremely low neutral fraction, with only moderate penalties from surface area, basic-site differences, or higher fraction sp3. The three negative neighbors are more mixed, but each still contains several features that favor the query’s higher-bioavailability label, especially the phosphinic ester and carboxylic acid differences, shared tertiary amide, and in two cases the much higher topological polar surface area. Although QED is clearly weak for the query in some of the negative-neighbor matches, the overall neighborhood evidence still tilts toward option (B): has oral bioavailability ≥ 20%.
+
+Input 3. Target final label semantics
+option (B): has oral bioavailability ≥ 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

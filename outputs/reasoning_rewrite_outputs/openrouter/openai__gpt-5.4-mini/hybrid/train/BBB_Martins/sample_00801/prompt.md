@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that support BBB penetration. It has imidazole present (1), which introduces some polarity and can work against CNS entry, but the overall ionization profile is favorable because the neutral fraction is very high at 0.9994. A neutral fraction this close to 1 suggests that the molecule should spend most of its time in a membrane-permeable form at physiological pH, which is a strong advantage for BBB crossing. The estimated logD is 2.8079, a moderate lipophilicity range that is generally compatible with brain penetration rather than being too low for permeability or so high that it becomes problematic. The maximum partial charge is 0.3561 and the minimum partial charge is -0.4613, indicating a moderate charge distribution rather than an extreme polar surface, and the minimum absolute partial charge of 0.3561 is not especially large, though it still reflects some localized polarity. The molecule also has no acidic site, so a lack of acidic functionality removes a common barrier to BBB permeation, and the NH/OH group count is 0, meaning there are no obvious hydrogen-bond donors to penalize passive diffusion. Aryl fluoride is present (1), which is often consistent with a more lipophilic, BBB-friendly scaffold, and the QED drug-likeness value of 0.7957 further supports a compact, drug-like profile. At the same time, imidazole present (1) and the nontrivial partial charges remind us that there is still some polar character. Balancing these features, the strong neutral fraction, moderate logD, absence of NH/OH donors, and lack of acidic groups outweigh the polarity-related liabilities, so the molecule is best classified as crossing the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a moderately similar BBB-positive analog, and several of its features line up with the query in ways that favor brain penetration. The query’s minimum absolute partial charge is slightly lower than the neighbor’s, 0.3561 vs 0.3584 (delta -0.0023), which is directionally favorable for BBB crossing because a smaller charge burden can support passive permeation. The two molecules both contain imidazole and both contain aryl fluoride, so those substructures themselves do not separate them, but the shared aryl fluoride is still part of the broader analog space that remains compatible with BBB crossing. The query also has neutral fraction 0.9994 versus 1.000 for the neighbor, a tiny decrease of -0.0006 that still keeps the molecule essentially neutral, and its estimated logD is higher, 2.8079 vs 1.7737 (delta +1.0342), which moves it into a more favorable ionization-aware lipophilicity region for BBB penetration. Estimated logP also increases by +1.0345 to 2.8082, but here the effect in this pair is unfavorable relative to the neighbor, so that feature tempers the comparison. Overall, Neighbor 1 still resembles a BBB-crossing analog more than a non-crossing one.
+
+Neighbor 2 also supports BBB crossing despite a mixed feature pattern. The query has a higher maximum partial charge, 0.3561 vs 0.3376 (delta +0.0185), and a slightly higher neutral fraction, 0.9994 vs 0.9990 (delta +0.0004), both of which align with better passive brain entry. It again has a higher estimated logD, 2.8079 vs 1.4451 (delta +1.3628), which is favorable because moderate logD is commonly associated with BBB permeability. The query lacks the neighbor’s hydrogen-bond donor count of 1 and instead has 0 donors, matching the BBB heuristic that fewer donors are better; that change, delta -1, is clearly favorable. The counterweights are that the query contains imidazole once while the neighbor does not, and that substitution is treated unfavorably here, and the query’s minimum absolute partial charge is slightly higher, 0.3561 vs 0.3376 (delta +0.0185), which is unfavorable. Even with those penalties, the stronger neutrality, higher logD, and lower donor burden make this neighbor comparison overall supportive of option B.
+
+Neighbor 3 is more mixed, but the balance still leans toward BBB crossing. On one hand, the query’s minimum absolute partial charge is higher, 0.3561 vs 0.3170 (delta +0.0391), which is unfavorable here, and the neighbor’s neutral fraction is much lower, 0.3592 vs the query’s 0.9994 (delta +0.6402), a large gain in neutrality that strongly favors the query. The query also has no acidic site while the neighbor has a strongest acidic pKa of 13.9544, so the delta is not defined; that acidic-site difference is treated unfavorably for the query in this comparison. At the same time, the query has much lower Labute surface area, 110.3926 vs 171.0592 (delta -60.6666), which is a favorable size/surface-area reduction for BBB penetration. The query has one aryl fluoride versus two in the neighbor, delta -1, and that difference is favorable here, while the query does have imidazole once where the neighbor has none, which is unfavorable. Taken together, the reduced surface area, far higher neutral fraction, and lower aryl fluoride count make this neighbor comparison still support the BBB-crossing label despite the acidic-site and imidazole penalties.
+
+Neighbor 4 is a BBB-negative analog overall, but when compared with the query it actually highlights several features that are more BBB-friendly in the query. The query contains one aryl fluoride while the neighbor has none, and that difference is favorable here. The query’s topological polar surface area is much lower, 44.12 vs 64.63 (delta -20.51), which sits in a more BBB-compatible region because lower TPSA is generally better for brain penetration. The query also has a slightly better QED drug-likeness score, 0.7957 vs 0.7964 (delta -0.0007), though that difference is tiny. On the unfavorable side, the query has a higher minimum absolute partial charge, 0.3561 vs 0.3362 (delta +0.0199), and a slightly higher minimum partial charge, -0.4613 vs -0.4656 (delta +0.0043), both of which are less favorable in this analog comparison. The query also contains imidazole once while the neighbor does not, which is unfavorable here. Even though the neighbor itself is labeled BBB-negative, the query is the less polar and more favorable analog on the major surface-area and aryl-fluoride features, so this comparison still supports option B.
+
+Neighbor 5 is another BBB-negative analog, but again the query preserves several features associated with better BBB penetration. The query has one aryl fluoride while the neighbor has none, which is favorable. The query also has no imidazole while the neighbor lacks imidazole as well, so that feature does not help distinguish them directly in this pair. The neighbor carries an aryl chloride and the query does not; that difference is favorable here, and both molecules have no acidic site, so the strongest acidic pKa comparison is effectively neutral in terms of site presence, though it is still noted as favorable for the query in the supplied comparison. Against these positives, the query’s minimum absolute partial charge is slightly higher, 0.3561 vs 0.3494 (delta +0.0067), and its maximum partial charge is also higher, 0.3561 vs 0.3494 (delta +0.0067), both of which are unfavorable in this pair. The neighbor therefore provides a mixed but still BBB-supportive contrast because the query keeps the halogen pattern more favorable while matching the neutral acidic-site status, leaving the overall comparison on the side of option B.
+
+Neighbor 6 is especially informative because it is a BBB-negative analog with much poorer general drug-likeness than the query. The query’s QED drug-likeness is substantially higher, 0.7957 vs 0.4882 (delta +0.3075), which is a strong favorable shift. The query also has one aryl fluoride while the neighbor has none, again favorable. The main counterarguments are that the query has a higher minimum absolute partial charge, 0.3561 vs 0.3362 (delta +0.0199), lacks the donor present in the neighbor, and contains imidazole once where the neighbor has none; those changes are treated unfavorably in this pair. The minimum partial charge is also slightly less favorable for the query, -0.4613 vs -0.4656 (delta +0.0043). Still, the very large QED gain together with the aryl-fluoride difference makes the query resemble the BBB-crossing side of the neighborhood much more than the non-crossing side.
+
+Putting all six neighbors together, the three BBB-crossing neighbors are not isolated cases: they repeatedly pair the query’s very high neutral fraction, higher ionization-aware logD, reduced surface area or donor burden, and favorable halogen pattern with BBB-compatible behavior. The three BBB-negative neighbors are also informative because the query often looks better than them on TPSA, QED, neutral fraction, or halogen substitution, even when some charge- and imidazole-related features are mixed. The local evidence therefore converges on option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are commonly associated with CYP2D6 substrates. It contains guanidine present (1), which is a strongly basic, protonatable functionality and fits the usual CYP2D6 preference for a basic center. It also has nitrile present (1), and pyridine present (1), both of which add heteroatom-rich functionality while still leaving a plausible basic/aromatic heterocycle motif. The strongest basic pKa is 5.9765, which is only moderately basic rather than strongly protonated at physiological pH, so that weakens the classic substrate-like cationic signal somewhat. The topological polar surface area is 73.1, which is fairly high and suggests a relatively polar molecule; that is less consistent with the lower-PSA, more lipophilic profile often seen for CYP2D6 substrates. The neutral fraction is 0.9607, indicating the molecule is mostly neutral, again reducing the strength of the protonated-basic-center pattern. The fraction of sp3 carbons is 0.4615, giving it a moderate degree of saturation and three-dimensionality, which can be compatible with drug-like substrate space. The maximum partial charge is 0.2115, consistent with some localized polarity, but not enough by itself to overcome the higher PSA and mostly neutral character. Aromatic carbocycle count is 0, so it lacks an aromatic carbocycle, which is less aligned with the usual aromatic/lipophilic substrate motif. Piperazine is absent (0), so one common protonatable scaffold is missing. Balancing these signals, the molecule has some substrate-like basic and heteroaromatic features, but the relatively high polarity, high neutral fraction, and lack of an aromatic carbocycle make it less convincing as a CYP2D6 substrate overall. The final call is option (A): is not a substrate to the enzyme CYP2D6.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive substrate neighbor and it shares several substrate-favoring motifs with the query. The query has guanidine once while the neighbor has none, and it also has pyridine once while the neighbor has none; both differences are favorable because a protonatable basic nitrogen and an aromatic/lipophilic feature are common CYP2D6 substrate cues. The neighbor also lacks secondary hydroxyl, which is consistent with the query being less polar. Against that, the query’s minimum partial charge is less negative than the neighbor’s value (-0.3522 vs -0.4895, delta +0.1372), which works in the opposite direction here, and the query’s nitrile is unchanged relative to the neighbor, which the comparison treats as slightly unfavorable. Even with those counterweights, the higher estimated logP in the query (2.3548 vs 1.6861, delta +0.6687) reinforces the substrate-like side, so this neighbor overall supports option (B).
+
+Neighbor 2 is also a positive substrate neighbor and again matches the query on the key basic/aromatic pattern only in the query’s favor. The query has guanidine once and pyridine once, whereas the neighbor has neither, and it also has nitrile once where the neighbor has none; that combination aligns with substrate-like chemistry in the comparison. The query is also more sp3-rich, with fraction of sp3 carbons 0.4615 versus 0.125 in the neighbor (delta +0.3365), and that shift is treated as favorable in this specific pair. The main opposing feature is maximum absolute partial charge: the query is lower at 0.3522 compared with 0.508 in the neighbor (delta -0.1557), which works against substrate assignment here. Still, the query’s stronger basicity, with strongest basic pKa 5.9765 versus 4.6 (delta +1.3765), is a clear favorable signal, so the net comparison supports option (B).
+
+Neighbor 3 is the one positive substrate neighbor that contains a meaningful counterbalance against the query. The query again has guanidine once, pyridine once, and nitrile once while the neighbor lacks all three, which favors substrate status in the same way as the other positive neighbors. But this neighbor has two secondary amides while the query has none, and that polarity-heavy difference is unfavorable. The neighbor also has boronic acid while the query does not, another unfavorable contrast for the query. The topological polar surface area also matters here: the neighbor is much more polar at 124.44 Å², while the query is 73.1 Å², giving a delta of -51.34 and favoring the query because lower PSA is more compatible with the substrate-like region described in the task guidance. Even so, because this neighbor is the most polar and carries extra amide and boronic acid functionality, it provides a legitimate warning that the query is not universally simple; its overall similarity still leaves some uncertainty, but the strong presence of guanidine, pyridine, and nitrile keeps the comparison leaning toward substrate-like space only partially. Among the positive neighbors, this is the weakest one for (B), and it slightly tempers confidence while not overturning the overall pattern.
+
+Neighbor 4 is a negative substrate neighbor, but most of the raw similarity points actually resemble the query’s substrate-like profile. Both molecules have guanidine, and both have nitrile, which are favorable shared features. The query also has higher QED drug-likeness, 0.4763 versus 0.3089 (delta +0.1674), and a slightly lower fraction of sp3 carbons, 0.4615 versus 0.5 (delta -0.0385); in this local comparison those differences are not the main source of support, but they do not create a strong non-substrate signal either. The standout opposing feature is imidazole: the neighbor has imidazole while the query does not, and that absence is favorable for the query because imidazole-containing analogs here sit on the non-substrate side. The neighbor also has dialkyl thioether while the query does not, which in this comparison is actually favorable to the query and therefore does not explain the non-substrate label. Overall, this negative neighbor mostly shows that the query can match several substrate-like properties while differing from a non-substrate scaffold at imidazole, so it still supports option (B) when viewed as analog evidence.
+
+Neighbor 5 is another negative substrate neighbor, and it is quite informative because the query again retains the guanidine and nitrile pattern while also looking more substrate-like in polarity and flexibility. Both molecules have guanidine, the neighbor lacks nitrile while the query has it once, and the query has lower topological polar surface area at 73.1 versus 88.79 (delta -15.69), which is favorable because lower PSA fits the more substrate-associated polarity window. The query also has a higher fraction of sp3 carbons, 0.4615 versus 0.2727 (delta +0.1888), which again matches the more substrate-like side in this pair. The aryl chloride present in the neighbor but absent in the query is also treated as favorable for the query here. The only explicit counter-signal is minimum partial charge: the query is slightly less negative at -0.3522 versus -0.3693 (delta +0.0171), which works against substrate assignment in this local comparison. Even with that minor drawback, the overall pattern of shared guanidine plus lower PSA and added nitrile makes this negative neighbor look more like the substrate-like query than a true contradiction, so it still supports option (B).
+
+Neighbor 6 is the strongest of the negative neighbors and still ends up favoring the substrate label for the query. The neighbor has secondary aromatic amine and urea, while the query has neither, and those absences are favorable because they avoid the more polar, non-substrate-leaning features carried by the neighbor. The query also has guanidine once, which the neighbor lacks, again strengthening the basic-center motif associated with CYP2D6 substrates. The strongest acidic pKa is much higher in the query, 9.9143 versus 4.0308 (delta +5.8835), which indicates a very different ionization profile and is treated as favorable for the query in this comparison. The query also has lower topological polar surface area, 73.1 versus 100.19 (delta -27.09), and higher fraction of sp3 carbons, 0.4615 versus 0.25 (delta +0.2115), both of which align better with the substrate-like side than the neighbor’s more polar scaffold. This negative neighbor therefore acts as a strong contrast against a polar, heteroatom-rich non-substrate pattern while still matching the query’s guanidine-centered profile, so it reinforces option (B).
+
+Taken together, the three positive neighbors consistently favor the query on the substrate-associated features of guanidine, pyridine, nitrile, higher logP, higher basicity, and lower PSA in the relevant cases, while the three negative neighbors mostly differ by having more polar or non-substrate-leaning motifs such as imidazole, secondary amide, boronic acid, urea, and secondary aromatic amine. The query repeatedly retains the basic, aromatic, and lipophilic features that fit the CYP2D6 substrate profile, and the few unfavorable partial-charge or polarity contrasts are not enough to outweigh that repeated pattern. The combined evidence therefore supports option (B): is a substrate to the enzyme CYP2D6.
+
+Input 3. Target final label semantics
+option (B): is a substrate to the enzyme CYP2D6
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

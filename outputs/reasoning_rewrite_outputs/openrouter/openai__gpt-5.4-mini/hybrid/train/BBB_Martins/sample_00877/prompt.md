@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mix of features relevant to BBB penetration. Its topological polar surface area is 83.09 Å², which is within a range that can still be compatible with CNS exposure but is toward the higher end of the preferred BBB window, making passive penetration less favorable than for lower-PSA compounds. The estimated logD of 2.8716 is in a moderate, generally BBB-friendly range, supporting membrane permeation. The neutral fraction being present (1) is also favorable, since a greater neutral component at physiological pH tends to improve BBB passage. The QED drug-likeness value of 0.8325 is strong and is consistent with an overall drug-like profile that can support BBB compatibility. At the same time, the structure contains alkyl aryl ether count 4 and oxoarene 1, which add heteroatom-containing functionality and polarity, and the maximum absolute partial charge of 0.4927 together with the minimum partial charge of -0.4927 suggests a noticeable charge distribution that can make membrane crossing less easy. The strongest acidic pKa is 13.8073, which indicates that the strongest acidic site is very weakly acidic and therefore unlikely to be heavily ionized under physiological conditions; that is not a major barrier to BBB entry by itself. The aliphatic carbocycle count of 1 is a modest rigidifying feature that can be compatible with BBB permeation. Overall, the moderate lipophilicity and presence of a neutral fraction support brain entry, but the relatively elevated TPSA and the polar heteroatom-rich motifs temper that expectation. Taken together, the balance of properties still favors option (B), meaning the compound is predicted to cross the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive analog overall, but it contains a mix of helpful and unfavorable shifts. The query has one more alkyl aryl ether than the neighbor (4 vs 3, delta +1), and that extra ether burden is unfavorable for BBB penetration because it adds heteroatom/polarity load. Against that, the query is slightly more favorable on neutral fraction (1 vs 0.9999, delta +0.0001) and on the strongest acidic pKa (13.8073 vs 13.5928, delta +0.2145), both of which are directionally consistent with better BBB compatibility. Those gains are partly offset by the same maximum absolute partial charge as the neighbor (0.4927 vs 0.4927, delta 0), which does not improve the comparison, and by a higher TPSA in the query (83.09 vs 70.78, delta +12.31). Since BBB penetration is usually helped by keeping TPSA in the lower range, the higher surface polarity is an important negative factor. The extra aliphatic carbocycle count in the query (1 vs 0, delta +1) helps by adding rigidity/shape without adding polarity. Taken together, Neighbor 1 still leans toward BBB crossing, but only moderately because the TPSA increase and extra alkyl aryl ether work against that.
+
+Neighbor 2 is also a positive analog and shows a similar balance. The query again has more alkyl aryl ether than the neighbor (4 vs 3, delta +1), which is unfavorable, but this is countered by the neighbor having azocane while the query does not (delta -1), a change that favors BBB crossing in this pair. The neutral fraction is unchanged at 1 vs 1, so there is no penalty there, and the query matches the neighbor on maximum absolute partial charge (0.4927 vs 0.4927, delta 0), which again does not help. The query’s aliphatic carbocycle count is higher (1 vs 0, delta +1), which is favorable for a more rigid, permeability-friendly shape. The minimum partial charge is also unchanged at -0.4927 vs -0.4927, delta -0, so the charge profile is stable. Overall, the positive effects from losing azocane and gaining an aliphatic carbocycle outweigh the persistent ether burden and the unchanged charge features, so this neighbor remains supportive of BBB crossing.
+
+Neighbor 3 stays on the positive side as well, with the same repeated pattern and one additional lipophilicity feature. The query has more alkyl aryl ether than the neighbor (4 vs 3, delta +1), which is unfavorable, while neutral fraction is unchanged at 1 vs 1 and maximum absolute partial charge is unchanged at 0.4927 vs 0.4927, so those two factors do not shift the comparison. The query again has one more aliphatic carbocycle than the neighbor (1 vs 0, delta +1), a favorable rigidity/shape change. Minimum partial charge is unchanged at -0.4927 vs -0.4927, delta -0. The additional feature here is estimated logP, which is higher in the query (2.8716 vs 1.3106, delta +1.561). In the BBB context, moderate lipophilicity is often helpful, and this shift is directionally favorable even though very high lipophilicity can become problematic. Here, the increased logP helps balance the ether burden, so Neighbor 3 still supports the BBB-crossing label.
+
+Neighbor 4 is a negative analog, and its differences are more mixed but still informative. The query has much higher strongest acidic pKa than the neighbor (13.8073 vs 13.0607, delta +0.7466), which by itself is not the main barrier, but the key unfavorable change is the large increase in TPSA from 29.46 to 83.09 (delta +53.63). That moves the query much closer to the higher-polarity region that is less favorable for BBB penetration. The query also has more alkyl aryl ether than the neighbor (4 vs 1, delta +3), again adding polar heteroatom burden. On the other hand, the neighbor lacks secondary amide while the query has one (delta +1), which here is treated as favorable for the query, and the query has fewer saturated carbocycles than the neighbor (0 vs 2, delta -2), which in this comparison is also favorable. The query’s rotatable-bond count is higher (5 vs 1, delta +4), and despite flexibility often being a liability in BBB heuristics, this specific comparison assigns that change a favorable direction for the query. Even with those countervailing features, the very large TPSA increase and extra ether content make the neighbor comparison overall consistent with a BBB-crossing query, but it is clearly a less clean fit than the positive neighbors.
+
+Neighbor 5 is another negative analog, but it strongly supports BBB crossing for the query through a different polarity/lipophilicity balance. The query’s estimated logD is much higher than the neighbor’s (-3.8365 vs 2.8716, delta +6.7081), a major shift toward a more membrane-compatible ionization-aware lipophilicity profile. The query also has neutral fraction present while the neighbor lacks it (1 vs 0, delta +1), which is favorable because a higher neutral fraction usually helps passive BBB diffusion. The query has one more aliphatic carbocycle than the neighbor (1 vs 0, delta +1), again supporting a more rigid and BBB-friendly shape. The neighbor has azetidin-2-one while the query does not (delta -1), which also favors the query here. Offsetting this, the query has a slightly less negative minimum partial charge than the neighbor (-0.4927 vs -0.4958, delta +0.0031), and that change is unfavorable in this pair. The strongest acidic pKa is much higher in the query (13.8073 vs 2.6144, delta +11.1929), which in this specific comparison is also unfavorable. Even so, the large improvement in logD together with the restored neutral fraction and the aliphatic carbocycle gain make Neighbor 5 a strong positive piece of evidence for BBB crossing.
+
+Neighbor 6 is the most clearly favorable of the negative neighbors. The query’s QED drug-likeness is much higher than the neighbor’s (0.8325 vs 0.3757, delta +0.4568), which is a strong positive sign in this comparison. The query also has more alkyl aryl ether (4 vs 1, delta +3), which is unfavorable, and it has a secondary amide while the neighbor does not (delta +1), which is favorable here. The neighbor has two phenol groups while the query has none (delta -2), a major reduction in phenolic OH burden that strongly improves BBB compatibility because it lowers hydrogen-bond donor load and polarity. The query’s NH/OH group count is far lower than the neighbor’s (1 vs 5, delta -4), which is exactly the kind of reduction expected to aid BBB penetration. The estimated logD is also higher in the query (2.8716 vs -0.2596, delta +3.1312), reinforcing the more permeable profile. Although the minimum partial charge shifts slightly in an unfavorable direction (-0.4927 vs -0.4958, delta +0.0031), the large reductions in phenols and NH/OH count, together with the better logD and higher QED, make this neighbor strongly consistent with BBB crossing.
+
+Putting the six neighbors together, the three positive neighbors all support the BBB-crossing label through a combination of preserved neutral fraction, added rigidity via aliphatic carbocycle count, and in one case higher logP. The three negative neighbors are especially informative because they show that the query is not dominated by high donor burden or poor ionization state: it has higher neutral fraction or logD in the relevant comparisons, far fewer phenolic and NH/OH groups than one neighbor, and a more favorable overall drug-likeness profile. The main counterweight is the elevated TPSA and repeated alkyl aryl ether burden, especially in Neighbor 4, but across the full set the more permeability-friendly features dominate. The combined evidence therefore best matches option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several exposure-favorable properties that lean toward a negative Ames outcome: a relatively high QED drug-likeness value of 0.9077 suggests an overall drug-like profile, estimated logP of 3.6883 is moderate rather than extreme, and the ring system is not especially large, with aromatic ring count 2 and total ring count 2. The heavy-atom molecular weight of 243.654 is also modest, and the Labute surface area of 102.5886 does not indicate a particularly bulky or highly surface-expanded structure. In the same vein, the presence of 2 basic sites could increase ionization and does not by itself imply a mutagenic toxicophore. Structurally, 2,1-benzisothiazole is present, which can be a meaningful heteroaromatic motif, and the secondary amide is present, but neither of those alone is a classic strong Ames alert. The aryl chloride is present as well, yet an aryl chloride substituent by itself is not the same as a strongly activating alkyl halide toxicophore. Overall, the strongest signals here are the comparatively favorable physicochemical and size-related descriptors, while the more suspicious structural elements are limited and not clearly dominant. Taken together, that balance supports a prediction of option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is an important mixed case: the query has a much higher QED drug-likeness than the neighbor, 0.9077 versus 0.7564, with a delta of +0.1513, and that shift favors the non-mutagenic side because the lower-QED neighbor looks less drug-like. At the same time, the query carries 2,1-benzisothiazole once while the neighbor lacks it, which is a mutagenicity-relevant structural alert and supports mutagenicity. The query also has a very different ionization profile, with neutral fraction 0.9999 versus 0.002 in the neighbor; that large increase in neutral character can improve passive exposure and makes the comparison more compatible with a mutagenic readout if a reactive motif is present. The query is smaller too, with heavy-atom count 16 versus 22, yet the comparison note treats that shift as favoring mutagenicity in this local neighborhood rather than as a general size rule. Finally, minimum absolute partial charge rises from 0.0737 to 0.2245, which in this case weighs toward non-mutagenicity, while Labute surface area drops from 138.2302 to 102.5886, again favoring mutagenicity in this matched context. Overall, Neighbor 1 contains both suppressing and promoting signals, but the structural alert and exposure-related shifts keep it aligned with mutagenicity.
+
+Neighbor 2 is essentially the same pattern as Neighbor 1. The query again has higher QED drug-likeness, 0.9077 versus 0.7564, delta +0.1513, which by itself looks less concerning, but the query also has 2,1-benzisothiazole once where the neighbor has none, a strong local mutagenicity cue. The neutral fraction change is the same extreme jump, from 0.002 to 0.9999, which can increase effective exposure relative to the more ionized neighbor. The query’s heavy-atom count is lower, 16 versus 22, yet that local comparison still aligns with the mutagenic side, and the minimum absolute partial charge increases from 0.0737 to 0.2245, which here works against mutagenicity. Labute surface area also falls from 138.2302 to 102.5886, again in the direction associated with the mutagenic neighbor set. Taken together, Neighbor 2 reinforces the same conclusion as Neighbor 1: despite some drug-likeness and charge features leaning away from mutagenicity, the benzisothiazole alert plus the accompanying exposure pattern keep the comparison on the mutagenic side.
+
+Neighbor 3 is more balanced but still ends up near the non-mutagenic boundary. The query has a higher QED drug-likeness than the neighbor, 0.9077 versus 0.6403, delta +0.2674, which strongly favors the non-mutagenic side in this pair. The query also has 2,1-benzisothiazole once while the neighbor lacks it, which pulls toward mutagenicity. In addition, the query’s maximum absolute partial charge is slightly lower, 0.3159 versus 0.3422, and that local decrease is treated as favoring mutagenicity here. However, the neighbor contains benzimidazole while the query does not, delta -1, and that absence in the query favors non-mutagenicity in this comparison. The query also has more hydrogen-bond acceptors, 3 versus 1, delta +2, which again is interpreted here as moving toward mutagenicity, while estimated logP rises from 2.5247 to 3.6883, delta +1.1636, and that higher lipophilicity works against mutagenicity in this local analog context. Because the QED increase and benzimidazole difference counterbalance the alert-containing features, Neighbor 3 contributes a more neutral-to-nonmutagenic comparison overall.
+
+Neighbor 4 shifts the balance back toward mutagenicity. The query has 2,1-benzisothiazole once while the neighbor lacks it, which is the dominant structural reason for a mutagenic comparison. The query also has a slightly higher QED drug-likeness, 0.9077 versus 0.8283, delta +0.0794, and that modest increase favors non-mutagenicity. But the neutral fraction difference is striking: 0.9999 in the query versus 0.0015 in the neighbor, delta +0.9984, indicating the query is far less ionized and potentially more available to the assay. Minimum absolute partial charge drops from 0.3034 to 0.2245, delta -0.0788, and that local decrease supports non-mutagenicity. The query’s minimum partial charge is less negative, -0.3159 versus -0.4812, delta +0.1653, and maximum absolute partial charge is also lower, 0.3159 versus 0.4812, delta -0.1653; both charge-shape changes are treated here as favoring mutagenicity in this neighborhood. So despite the somewhat better QED, Neighbor 4 still sits on the mutagenic side because the benzisothiazole alert and the exposure-linked neutral/charge pattern dominate.
+
+Neighbor 5 is also clearly supportive of mutagenicity overall. The query again contains 2,1-benzisothiazole once while the neighbor does not, so the same structural alert is present. The neighbor has a QED drug-likeness of 0.8097, and the query is slightly higher at 0.9077, delta +0.0981, which would normally lean away from mutagenicity. The neighbor and query both have a secondary amide, so that feature does not distinguish them. The query’s minimum partial charge is slightly less negative, -0.3159 versus -0.3261, delta +0.0101, which is a small but mutagenic-leaning shift in this comparison. Heavy-atom molecular weight is also higher in the query, 243.654 versus 209.011, delta +34.643, and that larger size is treated here as favoring mutagenicity in the local comparison rather than as a universal rule. The neighbor has two aryl chlorides while the query has one, delta -1, and that lower aryl chloride count supports non-mutagenicity. Even so, the benzisothiazole alert together with the size and charge pattern makes Neighbor 5 a mutagenicity-supporting analog.
+
+Neighbor 6 is very similar to Neighbor 4 and remains mutagenicity-supporting. The query has 2,1-benzisothiazole once while the neighbor lacks it, again providing the key structural alert. QED drug-likeness is slightly higher in the query, 0.9077 versus 0.8762, delta +0.0316, which points toward non-mutagenicity, and minimum absolute partial charge falls from 0.3034 to 0.2245, delta -0.0788, also favoring non-mutagenicity. But the query’s neutral fraction is 0.9999 versus 0.0012 in the neighbor, delta +0.9987, indicating a much more neutral state and potentially greater effective exposure. The minimum partial charge becomes less negative, -0.3159 versus -0.4812, delta +0.1653, and the maximum absolute partial charge decreases from 0.4812 to 0.3159, delta -0.1653; both of those charge differences are interpreted locally as favoring mutagenicity. Neighbor 6 therefore, like Neighbor 4, combines the benzisothiazole alert with exposure-related and charge-related shifts that fit a mutagenic profile.
+
+Putting the six comparisons together, the three positive neighbors and the three negative neighbors all leave the query with repeated support from the 2,1-benzisothiazole structural alert, while the opposing signals mainly come from higher QED and a few charge or lipophilicity features. In the mutagenic neighbors, the alert is consistently present in the query where it is absent in the neighbor, and the neutral-fraction and charge differences often align with that same direction. The one more balanced case, Neighbor 3, is softened by its higher QED and the absence of benzimidazole in the query, but it does not outweigh the repeated benzisothiazole-driven signal seen across the other comparisons. Overall, the local evidence is more consistent with option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

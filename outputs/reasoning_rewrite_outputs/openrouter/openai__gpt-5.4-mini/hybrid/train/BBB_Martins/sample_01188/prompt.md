@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows some BBB-compatible structural elements, but the overall polarity burden is very high. The acetal count is 5, which can be consistent with a more permeable scaffold, and the tetrahydropyran count is 5, another feature that can support a more compact, less flexible shape. The 1,2-diol count is 3, however, and the secondary hydroxyl count is 3, both of which add substantial hydrogen-bonding capacity. That is reflected in the NH/OH group count of 11 and the hydrogen-bond donor count of 11, which are both far above the usual CNS-friendly range and strongly unfavorable for passive BBB penetration. The topological polar surface area is 358.2, which is extremely high and well beyond the range generally considered compatible with BBB crossing. The strongest acidic pKa is 5.6182, indicating an ionizable acidic site that will tend to remain charged to a meaningful extent near physiological pH, further reducing neutral fraction and membrane permeability. The number of acidic sites is 11, which is a mixed signal because some acidic functionality can be tolerated only when limited, but here the overall acidic burden still sits alongside the very high TPSA and donor count. Phenol count is 2, adding more polar hydrogen-bonding functionality and reinforcing the unfavorable polarity profile. Taken together, despite a few ring- and acetal-related features that could aid permeability, the molecule is dominated by a very high polar and hydrogen-bonding load, so it is more consistent with not crossing the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately BBB-favoring analog. The query is much more polar by several descriptors than the neighbor: nitrogen/oxygen atom count rises from 13 to 24, a +11 change that generally increases polarity burden and would usually hurt BBB penetration, yet that same comparison was associated with a favorable effect in the local model. Hydrogen-bond acceptor count also increases from 14 to 24, a +10 shift that would normally be less favorable for BBB entry because more acceptors increase desolvation cost, and NH/OH group count jumps from 3 to 11, a +8 change that is clearly unfavorable for BBB crossing. Saturated heterocycle count also increases from 3 to 5, which adds further polar heterocyclic character. Against that, the query has a much larger Labute surface area, 438.7143 versus 266.562, a +172.1523 shift, and the neutral fraction collapses from 0.9968 to 0.0163, which is a major move away from the neutral state usually preferred for BBB permeation. Taken together, Neighbor 1 supplies both favorable and unfavorable analog evidence, but the final local comparison still lands on the BBB-crossing side overall.
+
+Neighbor 2 shows a similar mixed pattern, again with a net BBB-favoring outcome. The query has far more saturated heterocycles, 5 versus 0, a +5 change that generally adds heteroatom-rich ring character and is unfavorable for BBB penetration. It also has 2 phenol groups versus 0, another polar functionality increase that usually works against BBB crossing. At the same time, the query lacks pyrazole where the neighbor has one, and that difference was favorable in the comparison. The query also has 3 copies of 1,2-diol versus 0 in the neighbor, and despite diols usually being polar, this specific local comparison associated that change with a favorable shift. The Labute surface area again increases strongly, from 229.1119 to 438.7143, a +209.6023 change, while NH/OH group count rises from 2 to 11, a +9 increase that is clearly unfavorable because BBB penetration is generally better when hydrogen-bond donor burden is low. Even with the donor penalty, the overall neighbor-level evidence still favors the BBB-crossing class.
+
+Neighbor 3 is also informative because it contrasts a more BBB-favoring scaffold with the query’s more polar one. The query has more saturated heterocycles, 5 versus 1, a +4 increase that is unfavorable. In the opposite direction, the query has fewer aliphatic carbocycles, 1 versus 5, a -4 change that in this local comparison is favorable, likely reflecting a shift away from the neighbor’s bulkier ring system. The estimated logD drops sharply from 4.7039 to -2.0382, a -6.7421 change; that is a major move toward a much less lipophilic profile and is unfavorable for passive BBB permeation. The query also has 2 phenol groups versus 0, and 3 1,2-diol groups versus 0, both adding polar functionality that generally works against BBB entry. Even so, the query’s Labute surface area is much larger, 438.7143 versus 231.2577, a +207.4566 shift that aligns with the local favorable side of the comparison, and the net outcome for this neighbor still supports the BBB-crossing label.
+
+Neighbor 4, one of the negative-neighbor examples, is especially helpful because several of the query’s properties move in directions that are usually favorable for BBB penetration even though the overall comparison remains close enough to support the final class. The query has 3 copies of 1,2-diol versus 0, a +3 change, and that specific difference was favorable in this pairwise context. Fraction of sp3 carbons also rises from 0.4444 to 0.7692, a +0.3248 increase, which often reflects a more saturated, less aromatic shape that can be compatible with BBB entry. Hydrogen-bond donor count increases from 5 to 11, a +6 shift that is clearly unfavorable because donor burden is typically detrimental to BBB penetration. Hydrogen-bond acceptor count also rises from 11 to 24, a +13 change that adds polarity, though in this local comparison it was associated with a favorable direction. Number of ionizable sites increases from 5 to 11, a +6 change that usually reduces the neutral fraction and hurts BBB permeation. The neighbor also has 2 phenol groups while the query has 2, so there is no difference there. Overall, this negative-neighbor comparison still ends on the BBB-crossing side, showing that the query can resemble BBB-permeable chemistry despite its polar liabilities.
+
+Neighbor 5 reinforces that same pattern. The query again has 3 copies of 1,2-diol versus 0, a +3 shift that was favorable in this comparison. Phenol count is unchanged at 2 versus 2, so that feature does not separate the molecules. Hydrogen-bond donor count rises from 5 to 11, a +6 increase that is unfavorable for BBB crossing, and number of ionizable sites rises from 5 to 11 as well, another +6 change that also hurts BBB penetration by lowering the neutral fraction. NH/OH group count increases from 6 to 11, a +5 change that further adds donor burden and is unfavorable. In contrast, fraction of sp3 carbons increases from 0.4231 to 0.7692, a +0.3462 shift that again favors the more saturated query. Even with the donor and ionizable-site penalties, the local comparison still favors the BBB-crossing class overall.
+
+Neighbor 6 is similar to Neighbor 5 but with stronger acceptor-side contrast. The query has 3 copies of 1,2-diol versus 0, again a +3 change that was favorable in this specific analog relationship. Phenol count remains 2 versus 2, so there is no difference there. Hydrogen-bond acceptor count increases from 12 to 24, a +12 change that adds substantial polarity; the comparison nevertheless associated that change with a favorable direction. Hydrogen-bond donor count rises from 6 to 11, a +5 increase that is unfavorable for BBB penetration, and number of ionizable sites rises from 6 to 11, another +5 change that also disfavors BBB crossing. Fraction of sp3 carbons again rises from 0.4444 to 0.7692, a +0.3248 increase, which is the consistent favorable shape shift seen across the negative-neighbor set. So although this neighbor contains clear polarity and ionization penalties, the overall analog relationship still supports the BBB-crossing label.
+
+Across all six neighbors, the main pattern is that the query repeatedly carries strong polarity and hydrogen-bonding liabilities relative to some neighbors—higher NH/OH burden, more ionizable sites, more saturated heterocycles, and in one case a very low neutral fraction and low logD—yet it also shows several local features that the nearby BBB-crossing examples align with, including increased Labute surface area in the positive-neighbor set and a more saturated, higher-sp3 profile in the negative-neighbor set. Because both the positive and negative neighbors repeatedly end up on the BBB-crossing side after weighing these mixed effects, the combined evidence supports option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

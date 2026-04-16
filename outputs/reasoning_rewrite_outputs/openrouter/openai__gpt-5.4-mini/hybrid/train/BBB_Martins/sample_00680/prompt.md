@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several strong features that are unfavorable for BBB penetration. A carboxylic acid is present (1), and the strongest acidic pKa is 2.2053, indicating a readily ionized acidic group at physiological pH; both of these are typically associated with poor BBB permeability. The topological polar surface area is 122.46, which is well above the usual CNS-favorable range and strongly suggests excessive polarity for passive brain entry. Heteroatom burden is also high, with a heteroatom count of 10, adding to hydrogen-bonding capacity and desolvation cost. The presence of a sulfonyl group (1) further increases polarity, and the 1H-1,2,3-triazole present (1) adds another heteroaromatic, polar motif. The molecule also contains azetidin-2-one (1), which contributes additional polarity through the amide-like lactam functionality. Saturated heterocycle count is 2, which by itself is not decisive, but in this context it does not offset the strong polar features. The neutral fraction is absent (0), consistent with a compound that is not favorably neutral at physiological pH, and the minimum partial charge is -0.4797, supporting a pronounced polar/charged character. Overall, the combination of high TPSA 122.46, acidic functionality with pKa 2.2053, carboxylic acid 1, sulfonyl 1, triazole 1, azetidin-2-one 1, heteroatom count 10, and neutral fraction 0 points clearly toward poor BBB penetration. The final assessment is that this molecule does not cross the BBB (A), with high confidence.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately unfavorable analog for BBB penetration. It matches the query on azetidin-2-one, and that shared substructure is associated here with a negative shift for BBB crossing. The query does look better on estimated logP: the neighbor is at -0.2403 while the query is lower at -1.5232, a delta of -1.2829, which is the one feature in this pair that favors BBB entry because very low lipophilicity is usually problematic. However, the rest of the comparison is more damaging: the query has lower saturated heterocycle count (2 vs 3, delta -1), lower topological polar surface area is not the case here because TPSA is still high at 122.46 versus 156.43 in the neighbor, so although the query is somewhat improved by being 33.97 Å² lower, it remains above the practical BBB-favorable region; the query also has lower nitrogen/oxygen atom count (9 vs 12, delta -3), which helps somewhat, but not enough to overcome the overall polarity burden. The neutral fraction is absent in both, so there is no compensating advantage there. Overall, Neighbor 1 still looks more like a non-penetrant scaffold than a BBB-crossing one, despite the isolated logP improvement.
+
+Neighbor 2 is even more clearly unfavorable for BBB crossing because the query becomes much more polar than a good CNS-like reference. Here the query gains an azetidin-2-one group that the neighbor lacks, and that single difference is strongly associated with reduced BBB permeability in this comparison. The largest issue is TPSA: the neighbor is at 37.38 Å², which sits in a much more BBB-friendly zone, whereas the query jumps to 122.46 Å², a +85.08 increase that lands well above the usual BBB-favorable range and strongly disfavors passive penetration. The query again has a lower estimated logP than the neighbor (1.333 to -1.5232, delta -2.8562), which is unfavorable from a permeability standpoint because it moves the molecule away from the moderate lipophilicity window typically associated with BBB entry. The charge descriptors also move in the wrong direction: minimum partial charge becomes more negative (-0.2849 to -0.4797, delta -0.1947), maximum absolute partial charge increases (0.2849 to 0.4797, delta +0.1947), and the query loses the present neutral fraction seen in the neighbor. Taken together, this is a strongly BBB-unfavorable comparison, and the one lipophilicity feature cannot offset the much higher polarity and charge burden.
+
+Neighbor 3 is also a poor BBB analog overall, even though a couple of features are directionally mixed. The query has azetidin-2-one while the neighbor does not, which again is unfavorable. TPSA rises from 69.64 to 122.46 Å², a +52.82 increase that moves the query from a more intermediate region into a clearly high-polarity region that is much less compatible with BBB crossing. The neutral fraction also drops from 0.4185 in the neighbor to absent in the query, which reduces the neutral species available for passive diffusion. The query does have a lower Labute surface area (154.9357 to 113.6371, delta -41.2986), which by itself could help with permeability, and the neighbor’s imide and pyrimidine features are absent in the query, each of which in this local comparison had favorable direction for BBB entry. Even so, the dominant picture remains unfavorable because the query is still much too polar overall and carries the azetidin-2-one feature in a way that aligns with the non-BBB side of the comparison. So Neighbor 3, despite a few offsetting structural differences, still supports the non-crossing label more than the crossing one.
+
+Neighbor 4 provides a very direct non-BBB comparison. The query and neighbor both have azetidin-2-one, so that unfavorable shared element does not offer any rescue. The query’s estimated logD is much lower, moving from -3.9309 to -6.7179 with a delta of -2.787, which is a strong shift toward poorer ionization-aware lipophilicity and therefore poorer membrane passage. Estimated logP also moves lower in the direction that would otherwise favor permeability in isolation, from 0.8608 to -1.5232 with a delta of -2.384, but the rest of the molecular environment does not support BBB entry. The partial charge descriptors are essentially unchanged but still unfavorable for a crossing molecule: minimum absolute partial charge is 0.3274 versus 0.3277, and maximum partial charge is 0.3274 versus 0.3277, both tiny deltas that do not create a meaningful improvement. Neutral fraction is absent in both. Altogether, the strong drop in logD, the persistent azetidin-2-one, and the lack of any compensating polarity advantage make this neighbor a clear non-BBB match.
+
+Neighbor 5 is essentially the same as Neighbor 4 and reinforces the same conclusion. It shares azetidin-2-one with the query, again keeping the comparison tied to a non-crossing structural context. Estimated logD drops from -3.9309 to -6.7179, the same -2.787 shift that points away from BBB penetration. Estimated logP again falls from 0.8608 to -1.5232, which is the one feature that would ordinarily help permeability, but here it is outweighed by the very unfavorable ionization-aware surface and charge context. The minimum absolute partial charge and maximum partial charge both shift only trivially upward from 0.3274 to 0.3277, and neutral fraction remains absent in both molecules. Since nothing else in the comparison offsets the low logD and shared azetidin-2-one, Neighbor 5 also supports the non-BBB label.
+
+Neighbor 6 follows the same pattern, with one additional structural difference that still does not rescue BBB entry. The query and neighbor both have azetidin-2-one, and the query is again much lower in estimated logD, from -3.6086 to -6.7179, a -3.1093 change that is strongly unfavorable for crossing the BBB. Minimum absolute partial charge is nearly unchanged, 0.3274 in the neighbor versus 0.3277 in the query, and maximum partial charge is likewise nearly identical, so the charge pattern does not provide a permeability advantage. Neutral fraction is absent in both. The only structurally favorable difference is that the neighbor has imidazolidine while the query does not, and that absence had a positive direction for BBB crossing in the local comparison. But that single benefit is not enough to overcome the strongly unfavorable logD shift and the persistent azetidin-2-one context, so Neighbor 6 still aligns with the non-crossing class.
+
+Across all six neighbors, the more persuasive evidence is on the non-BBB side. The positive neighbors are not truly supportive of BBB crossing: Neighbor 1 still has high TPSA, low neutral fraction, and a reduced but still poor polarity profile; Neighbor 2 becomes much worse on TPSA, charge, and neutral fraction despite a lower logP; Neighbor 3 also remains highly polar even with a lower Labute surface area and the absence of imide and pyrimidine. The negative neighbors are more uniform and more compelling: Neighbors 4, 5, and 6 all share azetidin-2-one with the query and all show very low estimated logD values, with no meaningful charge or neutral-fraction compensation, and only a minor offset in one case from the absence of imidazolidine. Taken together, the local analog set is dominated by high polarity, unfavorable ionization-aware lipophilicity, and loss of neutral fraction, which fits option (A): does not cross the BBB.
+
+Input 3. Target final label semantics
+option (A): does not cross the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

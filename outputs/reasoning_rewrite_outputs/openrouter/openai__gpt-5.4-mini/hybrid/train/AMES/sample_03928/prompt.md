@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are more consistent with mutagenic potential, but there is also some exposure-related counterweight. A ring count of 3, together with an aromatic ring count of 3 and an aromatic carbocycle count of 3, suggests a relatively aromatic scaffold, and that kind of aromaticity can be associated with mutagenic behavior, especially when fused or planar aromatic systems are present. The very low fraction of sp3 carbons at 0.0526 also indicates a flat, aromatic-rich structure, which is another pattern often seen in mutagenic chemotypes. In addition, the benzene count of 3 reinforces that the scaffold is heavily benzenoid, which further supports concern for mutagenicity.
+
+The electronic descriptors are mixed. The maximum partial charge of 0.0339 and the minimum partial charge of -0.0622 indicate only modest charge extremes, so there is no strong sign here of a highly ionized, highly polar molecule that would clearly suppress uptake. However, the topological polar surface area of 0 and hydrogen-bond acceptor count of 0 point to an extremely nonpolar, nonpolar-accepting structure, which is compatible with good passive access to bacterial cells. That said, the estimated logP of 4.8668 is fairly high and sits near the upper end of lipophilicity, which can sometimes limit effective soluble exposure in an assay and can therefore oppose mutagenicity detection. Even so, that exposure-limiting effect is not strong enough here to outweigh the aromaticity-based concern.
+
+Overall, the combination of three aromatic rings, three benzene rings, very low sp3 character, and a nonpolar surface makes the structure look more like a mutagenic aromatic scaffold than a clearly non-mutagenic one. The net assessment is option (B): is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close analog with several features aligned toward a non-mutagenic interpretation. The query matches the neighbor on hydrogen-bond acceptor count at 0 versus 0, but the neighbor has heteroatom count 2 while the query has 0 (delta -2), and the neighbor also contains 2 alkyl chloride groups that are absent in the query (delta -2). Those substructures can matter for mutagenicity, so their absence in the query weakens a mutagenic readout. At the same time, the query is slightly lower on minimum absolute partial charge (0.0339 vs 0.1001; delta -0.0661), which is the one feature here that favors mutagenicity, and it is also lower on maximum absolute partial charge (0.0622 vs 0.1323; delta -0.0701), which favors the non-mutagenic side. The query is much larger in heavy-atom count, 19 versus 9 (delta +10), and larger size can reduce exposure in Ames, so that also leans toward option (A) overall for this comparison.
+
+Neighbor 2 is similar in the same general direction, though with a few mixed signals. Again, hydrogen-bond acceptor count is 0 versus 0 and heteroatom count is 2 in the neighbor versus 0 in the query (delta -2), both favoring the non-mutagenic side. The neighbor carries 2 alkyl bromide groups that the query lacks (delta -2), which is another structural difference supporting the non-mutagenic interpretation for the query relative to this mutagenic analog. The query is lower in QED drug-likeness, 0.5767 versus 0.7167 (delta -0.14), and lower maximum absolute partial charge, 0.0622 versus 0.0912 (delta -0.029); both of those comparisons also point away from the mutagenic neighbor. The main feature that points the other way is estimated logD, where the query is higher at 4.8668 versus 3.5175 (delta +1.3493). Very high logD can sometimes reduce usable exposure, but in this comparison the surrounding evidence still leaves the neighbor as the more mutagenic analog and the query as more consistent with option (A).
+
+Neighbor 3 is the most mixed of the positive neighbors because one physicochemical feature goes in a mutagenic direction while the rest do not. The query has a less negative minimum partial charge, -0.0622 versus -0.2792 (delta +0.217), which by itself favors mutagenicity. However, the query is much more lipophilic, with estimated logD 4.8668 versus 2.7319 (delta +2.1349), and that higher exposure-limiting lipophilicity does not strengthen a mutagenic argument here. The neighbor also has more heteroatoms, 3 versus 0 (delta -3), more hydrogen-bond acceptors, 1 versus 0 (delta -1), and it contains an alkyl chloride that the query does not (delta -1). Finally, the query has lower QED drug-likeness, 0.5767 versus 0.5159 (delta +0.0608), which does not compensate for the stronger structural differences. Taken together, the absence of those heteroatom-rich and alkyl chloride features makes the query look less like this mutagenic neighbor and keeps the comparison leaning toward option (A).
+
+Neighbor 4, by contrast, is a clear negative neighbor that looks more mutagenic than the query. The query has substantially higher estimated logD, 4.8668 versus 2.81 (delta +2.0568), and the query also has a higher minimum absolute partial charge, 0.0339 versus 0.0219 (delta +0.0121). It is more ring-rich as well, with ring count 3 versus 1 (delta +2), and it has 3 benzene copies versus 1 in the neighbor (delta +2). The query’s fraction of sp3 carbons is much lower, 0.0526 versus 0.3333 (delta -0.2807), meaning the query is much flatter and more aromatic. Since polycyclic aromatic planar systems and related fused aromatic features are a recognized mutagenicity anchor, this combination of more rings, more benzene, and much lower sp3 character makes the query look more concerning than this neighbor.
+
+Neighbor 5 reinforces that same concern. The query again has lower fraction of sp3 carbons, 0.0526 versus 0.25 (delta -0.1974), which is unfavorable in the context of a flatter, more aromatic structure. It also has an alkyl chloride absent from the query comparison direction in the other direction: the neighbor has alkyl chloride and the query does not (delta -1), and here that structural contrast helps the query look more mutagenic relative to a less concerning neighbor scaffold. The query is higher in ring count, 3 versus 1 (delta +2), and higher in estimated logD, 4.8668 versus 2.9864 (delta +1.8804), both of which fit the more hydrophobic, more aromatic profile that can accompany mutagenic structural alerts. The only opposing feature is minimum partial charge, where the query is less negative at -0.0622 versus -0.1181 (delta +0.0559), which favors non-mutagenic interpretation, but the ring and lipophilicity differences dominate this comparison and make the query look closer to option (B) than to this neighbor.
+
+Neighbor 6 is similar to Neighbor 5 and also highlights the query’s more aromatic, less saturated character. The query has fraction of sp3 carbons 0.0526 versus 0.25 in the neighbor (delta -0.1974), again indicating a flatter structure. It is higher in estimated logD, 4.8668 versus 1.7399 (delta +3.1269), and has a higher ring count, 3 versus 1 (delta +2), both of which are consistent with the mutagenic-side analogs. At the same time, the query has a higher estimated logP, 4.8668 versus 1.7399 (delta +3.1269), which is more exposure-limiting and leans away from straightforward bacterial uptake, and its topological polar surface area is lower, 0 versus 20.23 (delta -20.23), which also changes the exposure profile. The neighbor has one hydrogen-bond acceptor while the query has none (delta -1), another difference that is not sufficient to offset the query’s much more aromatic, lower-sp3 scaffold. So even though logP and TPSA complicate the exposure picture, the overall structure here still resembles the mutagenic side more than this neighbor.
+
+Putting the six neighbors together, the three mutagenic neighbors are mostly distinguished by the query’s lack of their alkyl halides and heteroatom-rich features, while the three non-mutagenic neighbors show that the query is consistently more ring-rich, more aromatic, and often more lipophilic than those safer analogs. The strongest recurring structural theme is the query’s very low fraction of sp3 carbons with elevated ring count and benzene content, which aligns more with mutagenic aromatic scaffolds than with the non-mutagenic comparisons. Even so, the positive-neighbor analogs with alkyl halides and heteroatom features, along with the query’s larger size in one comparison, do not establish a strong mutagenic case overall. Balancing the full neighborhood, the better-supported final label is option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -16,10 +16,14 @@ def fit_feature_preprocessor(
     train_df: pd.DataFrame,
     *,
     scale_features: bool = False,
+    drop_any_nan_columns: bool = False,
 ) -> dict[str, object]:
     train_df = _coerce_numeric_frame(train_df)
     input_columns = train_df.columns.tolist()
-    surviving_columns = train_df.columns[~train_df.isna().any(axis=0)].tolist()
+    if drop_any_nan_columns:
+        surviving_columns = train_df.columns[~train_df.isna().any(axis=0)].tolist()
+    else:
+        surviving_columns = train_df.columns[~train_df.isna().all(axis=0)].tolist()
     if not surviving_columns:
         raise ValueError("No usable feature columns remain after dropping NaN columns from training data.")
 
@@ -38,6 +42,7 @@ def fit_feature_preprocessor(
         "imputer": imputer,
         "scaler": scaler,
         "scale_features": scale_features,
+        "drop_any_nan_columns": drop_any_nan_columns,
     }
 
 
@@ -56,4 +61,3 @@ def transform_feature_frame(
 
     transformed_df = pd.DataFrame(transformed, columns=surviving_columns, index=frame.index)
     return aligned_frame, transformed_df
-

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains several strong mutagenicity-associated structural alerts. The presence of thiazole, hydrazine, and nitro groups is particularly concerning because each of these motifs is well aligned with known Ames-positive chemistry, especially when nitro or hydrazine functionality is involved in reactive or metabolically activated pathways. The furan ring adds another heteroaromatic feature that can be associated with bioactivation risk. In addition, the molecule has a heteroatom count of 9 and a nitrogen/oxygen atom count of 8, both of which indicate a heteroatom-rich and relatively polar scaffold; that kind of composition can sometimes reduce passive permeability, but here it does not outweigh the direct structural-alert signals. The fraction of sp3 carbons is 0, so the structure is fully unsaturated and quite flat, which is often consistent with more aromatic, planar chemistry and can accompany mutagenic scaffolds. The estimated logP of 1.3842 is moderate and does not suggest extreme hydrophobicity, while the number of basic sites is 1, indicating at least one ionizable nitrogen that could support bacterial uptake. The strongest basic pKa is 1.9267, which is quite low, so that basic center is only weakly protonated under typical conditions; that weak basicity may limit some exposure-related effects, but it is not enough to counter the presence of the clear toxicophores. Overall, the combination of nitro, hydrazine, thiazole, and furan features, together with the heteroatom-rich and planar character of the molecule, supports a mutagenic outcome. Therefore the molecule is predicted to be mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is clearly aligned with the mutagenic label overall. The strongest shared signal is thiazole: both the neighbor and the query have thiazole, and that alignment carries a large positive effect. The query also has hydrazine once where the neighbor has none, and hydrazine is a mutagenic structural alert, so that difference supports the mutagenic side as well. In addition, the query has higher minimum absolute partial charge, moving from 0.3046 in the neighbor to 0.399 in the query, with delta +0.0944, and the query also has a slightly higher heteroatom count, 9 versus 8, delta +1; both changes reinforce the idea of a more polar, heteroatom-rich scaffold that stays consistent with the positive neighbors. The main offsetting feature is furan: the neighbor lacks furan while the query has it once, delta +1, and that particular shift works against mutagenicity in this comparison. The maximum partial charge also rises from 0.3242 to 0.4331, delta +0.1089, and that change acts in the opposite direction. Even with those counterweights, the thiazole match, hydrazine presence, and the polarity/heteroatom shifts leave Neighbor 1 closer to the mutagenic side than the non-mutagenic side.
+
+Neighbor 2 tells the same general story. Again, thiazole is shared between neighbor and query, which is a strong mutagenic anchor, and the query again contains hydrazine once while the neighbor has none. The query’s minimum absolute partial charge is also higher here, going from 0.269 to 0.399 with delta +0.13, which is a larger shift than in Neighbor 1 and reinforces the same direction. The heteroatom count is higher in the query as well, 9 versus 7, delta +2, and that extra heteroatom burden is consistent with the mutagenic side in this local comparison. The strongest basic pKa also increases slightly, from 1.8728 in the neighbor to 1.9267 in the query, delta +0.0539, again nudging the comparison toward the mutagenic label. As before, the only clear opposing factor is furan: the neighbor does not have furan, while the query has it once, and that particular change works against the mutagenic call. But the combined effect of shared thiazole, added hydrazine, higher minimum absolute partial charge, higher heteroatom count, and slightly higher strongest basic pKa makes Neighbor 2 strongly support the mutagenic outcome.
+
+Neighbor 3 is even more decisively on the mutagenic side. The query and neighbor both have furan, and that shared feature is strongly favorable here. The neighbor has 1,3,5-triazine, while the query does not, with delta -1; that absence still lands on the mutagenic side in this comparison because the neighbor’s triazine is part of the contrast being used. The query also has hydrazine once where the neighbor has none, and the query has thiazole once where the neighbor has none; both of those are mutagenicity-associated features and both support the B label. The heteroatom count is unchanged at 9 versus 9, delta +0, so there is no penalty there, and the maximum partial charge is essentially identical at 0.4331 versus 0.4331, delta -0.0001, with only a small opposing effect. Since the major structural features here all line up with the mutagenic side and there is no meaningful loss in heteroatom count or charge pattern, Neighbor 3 is a strong positive analog.
+
+Neighbor 4, although listed among the non-mutagenic neighbors, still actually resembles the mutagenic query more than it resembles a clean non-mutagenic pattern. The neighbor has phenazine while the query does not, delta -1, and phenazine is a polycyclic aromatic system that fits a known mutagenic toxicophore pattern. The query also has hydrazine once where the neighbor has none, and the query has thiazole once where the neighbor has none; both features support the mutagenic side. The query’s heteroatom count is higher, 9 versus 8, delta +1, which again is directionally consistent with the mutagenic set of analogs already seen. The neighbor has 2 copies of nitro while the query has 1, delta -1, but nitro itself is a mutagenic alert, so the comparison still does not favor a non-mutagenic interpretation in any strong way. The main counterweight is maximum partial charge, which rises from 0.2966 in the neighbor to 0.4331 in the query, delta +0.1365, and that shift is the one feature here that works against mutagenicity. Even so, the presence of phenazine in the neighbor, together with the query’s hydrazine, thiazole, and higher heteroatom count, makes this neighbor effectively reinforce the mutagenic class rather than oppose it.
+
+Neighbor 5 is likewise closer to the mutagenic pattern. Thiazole is shared between the query and neighbor, and that shared heteroaromatic motif is strongly aligned with the positive side. The query has hydrazine once while the neighbor has none, and the neighbor also contains nitro while the query has nitro as well; nitro is a classic mutagenic toxicophore, so its presence in both structures keeps the comparison inside the mutagenicity-enriched space. The neighbor has sulfonamide while the query does not, delta -1; that difference is not the main driver here, but it does not outweigh the stronger alerts. The query also shows a higher minimum absolute partial charge, from 0.2826 to 0.399 with delta +0.1164, which continues the same polarity/electrostatics pattern seen in the other positive analogs. The fraction of sp3 carbons is low in both molecules, with the neighbor at 0.0909 and the query at 0, delta -0.0909, preserving a flat, aromatic-leaning scaffold that is compatible with the mutagenic set rather than arguing against it. Taken together, Neighbor 5 remains a strong mutagenic comparator despite the sulfonamide difference.
+
+Neighbor 6 also supports the mutagenic label. The query again has hydrazine once while the neighbor has none, which is an important recurring positive feature across the neighbor set. The query’s minimum absolute partial charge is higher, moving from 0.2583 to 0.399 with delta +0.1407, and that is one of the larger shifts in the series. The query also has thiazole once while the neighbor has none, and both nitro and the query’s much larger nitrogen/oxygen atom count are notable: the neighbor has N/O atom count 3, while the query has 8, delta +5. The heteroatom count likewise jumps from 3 to 9, delta +6. Those increases are consistent with a more heteroatom-rich, polarity-shifted scaffold that matches the mutagenic neighborhood better than the non-mutagenic one. No counterbalancing non-mutagenic feature is introduced here; the whole pattern stacks toward B.
+
+Putting the six comparisons together, the three positive neighbors all contain the same core mutagenicity-associated pattern: shared thiazole in Neighbors 1, 2, and 5; hydrazine appearing in the query across those neighbors; and repeated support from higher heteroatom burden and higher minimum absolute partial charge. Neighbor 3 adds further support through shared furan and the query’s added hydrazine and thiazole. The three negative neighbors do not overturn that picture: Neighbor 4 still contains phenazine and the query adds hydrazine and thiazole; Neighbor 5 retains nitro and thiazole and still favors the mutagenic side; and Neighbor 6 again highlights hydrazine, thiazole, and much higher N/O and heteroatom counts in the query. Although a few individual contrasts, such as furan in Neighbors 1 and 2 or the maximum partial charge increases in Neighbors 1 and 4, work against the label, the repeated presence of mutagenic structural alerts and the overall heteroatom-rich, aromatic/heteroaromatic pattern make the final prediction best match option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

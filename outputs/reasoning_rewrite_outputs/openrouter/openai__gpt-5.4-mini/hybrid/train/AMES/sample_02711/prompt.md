@@ -1,0 +1,50 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an alkyl bromide, which is a recognized mutagenicity alert because alkyl halides can act as electrophilic, DNA-reactive toxicophores. It also has four benzene rings and an aromatic ring count of 4, which raises concern for a relatively aromatic, planar scaffold; polycyclic aromatic systems are a known mutagenicity anchor, and even when the rings are not necessarily fully fused, a high aromatic burden can still be consistent with mutagenic behavior. The fraction of sp3 carbons is very low at 0.0526, reinforcing that this is a flat, aromatic-rich structure, which is often seen in compounds with mutagenicity alerts. The QED drug-likeness is low at 0.2277, which is not itself a mutagenicity rule, but it is compatible with a less drug-like profile that can co-occur with problematic structural features. The ring count is 4, again pointing to a fairly ring-rich scaffold, and the estimated logP is high at 6.0411, which suggests strong lipophilicity; that can sometimes limit effective exposure, but here it does not outweigh the structural alert from the alkyl bromide. On the other hand, the minimum partial charge is -0.0876, which is not strongly extreme, and the topological polar surface area is 0 with a hydrogen-bond acceptor count of 0, indicating a very nonpolar, weakly polar molecule with little capacity for hydrogen-bonding. Those properties can reduce passive permeability constraints in some contexts, but they do not remove the direct concern raised by the alkyl bromide alert and the heavily aromatic scaffold. Taken together, the presence of the alkyl bromide, the high aromatic/ring content, and the very low sp3 character make a mutagenic outcome more likely, despite the low polarity and high lipophilicity. The overall assessment is option (B): is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is overall consistent with a mutagenic reading. The query has slightly higher QED drug-likeness than the neighbor (0.2277 vs 0.163, delta +0.0647), and that same direction is associated here with the positive side. The shared alkyl bromide is also important: both molecules have it, so there is no difference there, but the motif itself is a known mutagenicity-relevant alert and still supports the B side. By contrast, the hydrogen-bond acceptor count is unchanged at 0, which offers no help either way and is treated as unfavorable here. The query is less lipophilic than the neighbor, with estimated logD 6.0411 vs 7.2231 (delta -1.182) and estimated logP 6.0411 vs 7.2231 (delta -1.182); in this comparison that lower hydrophobicity slightly offsets the mutagenic signal, but not enough to outweigh the other features. The query also has fewer aromatic rings, 4 vs 6 (delta -2), yet that reduction does not reverse the overall direction because this neighbor still remains strongly similar around a brominated, highly lipophilic aromatic scaffold. Neighbor 2 tells a similar story: the query again has higher QED (0.2277 vs 0.1816, delta +0.046), retains the alkyl bromide, and has higher estimated logD than the neighbor by the same kind of lipophilicity comparison used above? Actually here the query has lower logD/logP, 6.0411 vs 6.6321, delta -0.591 for estimated logP and -0.591 for estimated logD, which is the main counterweight and points away from B in isolation. Still, the shared bromide and the higher QED again favor B, and the aromatic ring count is lower in the query, 4 vs 5 (delta -1), which is not enough to remove the mutagenic concern. The unchanged hydrogen-bond acceptor count at 0 remains neutral-to-unhelpful, so the total comparison still leans mutagenic. Neighbor 3 is even more clearly aligned with the B label: the query again has a slightly higher QED (0.2277 vs 0.1888, delta +0.0388), it contains alkyl bromide while the neighbor does not (delta +1), and it has fewer aromatic rings, 4 vs 5 (delta -1), which here is not enough to offset the added bromide alert. The query is less lipophilic than the neighbor, with estimated logP 6.0411 vs 6.476 (delta -0.4349) and estimated logD 6.0411 vs 6.476 (delta -0.4349), so exposure-related considerations are mixed rather than purely favorable; the unchanged hydrogen-bond acceptor count at 0 again contributes little. Even with that small decrease in lipophilicity, the new alkyl bromide and the overall aromatic scaffold keep this neighbor comparison on the mutagenic side.
+
+Neighbor 4 is a negative-neighbor comparison, but it still ends up favoring the mutagenic label for the query. The strongest differences are that the query has alkyl bromide once while the neighbor has none (delta +1), and the query also has slightly higher QED (0.2277 vs 0.1888, delta +0.0388), both of which support B. The query has one fewer aromatic carbocycle, 4 vs 5 (delta -1), and one fewer benzene copy, 4 vs 5 (delta -1), which slightly reduces the comparison burden, but those are outweighed by the bromide alert. The only feature that points the other way is the minimum partial charge: the query is less negative at the minimum, -0.0876 vs -0.1215 (delta +0.0339), and that specific electrostatic shift is associated here with the non-mutagenic side. Even so, the overall structure of the comparison still favors B because the bromide difference dominates. Neighbor 5 is another negative neighbor that nonetheless supports B. The query has alkyl bromide once while the neighbor has none (delta +1), and the query also has lower aromatic carbocycle count, 4 vs 5 (delta -1), fewer benzene copies, 4 vs 5 (delta -1), and lower aromatic ring count, 4 vs 5 (delta -1). Those all indicate that the query is not more aromatic than the neighbor, which could have argued against mutagenicity on exposure grounds. However, the query’s QED is actually lower than the neighbor’s here, 0.2277 vs 0.3295 (delta -0.1019), which in this pair still sits on the mutagenic side of the local comparison. The topological polar surface area also differs sharply: the query is 0 versus 20.23 for the neighbor (delta -20.23), and that large drop is the main feature opposing B in this comparison. Even so, the presence of alkyl bromide and the aromatic scaffold differences keep the net direction on the mutagenic side. Neighbor 6 also remains aligned with B despite being a negative neighbor. The query again has alkyl bromide while the neighbor does not (delta +1), fewer aromatic carbocycles (4 vs 5, delta -1), fewer benzene copies (4 vs 5, delta -1), and fewer aromatic rings (4 vs 5, delta -1), all of which keep the query in the same general chemical family but with the bromide alert added. The minimum absolute partial charge is larger in the query, 0.0295 vs 0.0099 (delta +0.0196), and that electrostatic difference is treated here as favorable to the mutagenic side. QED is also very close, 0.2277 vs 0.2302 (delta -0.0025), with only a slight shift that still does not change the overall picture. Taken together, the six neighbors are coherent: all three positive neighbors support mutagenicity, and even the three nominally negative neighbors still compare the query toward B because the query consistently carries alkyl bromide and remains an aromatic, highly lipophilic structure with only small counterbalancing shifts in charge or polarity. Those local analogs therefore support the final prediction of option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

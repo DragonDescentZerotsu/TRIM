@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several properties that are unfavorable for BBB penetration. Its fraction of sp3 carbons is 0.8333, indicating a highly saturated, 3D-rich scaffold, but that alone is not enough to overcome the polarity-related liabilities. The strongest acidic pKa is 4.7295, consistent with an acidic site that is likely substantially ionized near physiological pH, which generally reduces passive BBB permeability. A ketone count of 3 adds further polar carbonyl burden, and the presence of 1 carboxylic acid is a particularly strong negative signal because carboxylic acids are usually poorly suited for BBB crossing. The topological polar surface area is 88.51 Å², which is near the upper end of the commonly favorable CNS range and close to the point where BBB penetration becomes less reliable. The neutral fraction is only 0.0021, showing that the molecule is overwhelmingly ionized rather than neutral, which is unfavorable for passive entry into the brain. The maximum absolute partial charge of 0.4812 and minimum partial charge of -0.4812 also suggest a strongly polarized structure. Against these negatives, the aliphatic carbocycle count of 4 and the estimated logP of 4.0733 both support membrane permeability to some extent, since the scaffold is fairly hydrophobic and ring-rich. However, the low neutral fraction, the acidic functionality, the carboxylic acid, the ketones, and the relatively high TPSA collectively outweigh that benefit. Overall, the balance of evidence supports option (A): does not cross the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is the strongest positive-neighbor comparator, but most of its feature differences actually favor the non-BBB side for the query. The query has one more ketone than the neighbor (3 vs 2, delta +1), which is unfavorable for BBB passage, and it also has a carboxylic acid once where the neighbor has none, another clear polarity liability. The query’s topological polar surface area is a bit lower than the neighbor’s (88.51 vs 93.06, delta -4.55), and its estimated logD is also lower (1.4019 vs 2.7227, delta -1.3208); both shifts move away from the more BBB-friendly window of moderate lipophilicity and lower polarity burden. The only feature here that goes the other way is hydrogen-bond donor count, where the query has 1 versus the neighbor’s 2, and that reduced donor burden is favorable for BBB penetration. Even so, the overall comparison remains mixed and leans against BBB crossing because the added ketone and carboxylic acid, together with lower logD, outweigh the donor improvement.
+
+Neighbor 2 is even more clearly aligned with the non-BBB interpretation. The query is more polar and larger on the key descriptors that matter most for BBB penetration: topological polar surface area jumps from 17.07 in the neighbor to 88.51 in the query (delta +71.44), heavy-atom molecular weight rises from 136.109 to 368.259 (delta +232.15), and exact molecular weight rises from 152.1201 to 402.2406 (delta +250.1205). Those changes move the query far away from the smaller, less polar space that is generally more compatible with BBB entry. The query also has a more negative minimum partial charge (-0.4812 vs -0.2991, delta -0.1822), which is another sign of stronger polar character. In addition, the query again has two extra ketones (3 vs 1, delta +2), and it has a very low neutral fraction (0.0021 versus 1 in the neighbor), which is unfavorable for passive BBB diffusion. Every feature in this comparison points in the same direction, so it supports the non-BBB label very strongly.
+
+Neighbor 3 is mixed, but it still does not overturn the overall non-BBB picture. The query again has one extra ketone relative to the neighbor (3 vs 2, delta +1), and its topological polar surface area is higher (88.51 vs 74.6, delta +13.91), both of which are unfavorable for BBB crossing. The query does have a larger Labute surface area (172.5499 vs 149.9263, delta +22.6236), which in isolation can sometimes reflect a size/surface-space shift that is less restrictive, but that benefit is not enough to offset the more direct polarity liabilities here. The query also has a very low neutral fraction (0.0021 vs 1), and it contains a carboxylic acid once whereas the neighbor has none, both of which make passive brain entry harder. Its estimated logD is also lower than the neighbor’s (1.4019 vs 2.7466, delta -1.3447), again moving away from a more favorable lipophilicity window for BBB permeation. So although the Labute surface area difference helps somewhat, the net message of Neighbor 3 still leans toward does not cross the BBB.
+
+Neighbor 4, among the non-BBB neighbors, is a particularly important match because several of the query’s features are worse than this already non-BBB comparator. The query has more ketones (3 vs 2, delta +1), a carboxylic acid that the neighbor lacks, and a much higher topological polar surface area (88.51 vs 34.14, delta +54.37), all of which are unfavorable for BBB entry. The query also has a slightly higher fraction of sp3 carbons (0.8333 vs 0.8095, delta +0.0238), but that does not compensate for the major polarity increase. Its minimum partial charge is more negative (-0.4812 vs -0.2997, delta -0.1815), and its neutral fraction is again very low (0.0021 vs 1). Overall, this neighbor shows the query as substantially more polar and more functionally burdened than a molecule already classified as not BBB-crossing, which supports the non-BBB label.
+
+Neighbor 5 is similar in structure to Neighbor 4 in the comparisons that matter. The query again has more ketones (3 vs 2, delta +1), a carboxylic acid absent from the neighbor, a higher topological polar surface area (88.51 vs 74.6, delta +13.91), and a very low neutral fraction (0.0021 vs 1). The query also has a higher estimated logP (4.0733 vs 2.6667, delta +1.4066), which by itself could support permeability, but here it appears alongside the extra ketone and acid functionality and the low neutral fraction, so it does not rescue the BBB outlook. In other words, the lipophilicity increase is offset by added polar liabilities and ionization-related disadvantage. Because this comparator is itself a non-BBB neighbor, the query looking more polar and more functionally burdened than it does not support a BBB-crossing conclusion.
+
+Neighbor 6 gives a very direct non-BBB signal as well, despite one offsetting flexibility feature. The query has two more ketones than the neighbor (3 vs 1, delta +2), a carboxylic acid where the neighbor has none, and a much lower strongest acidic pKa (4.7295 vs 13.9513, delta -9.2218), which is consistent with a much more acidic and thus more ionized profile at physiological pH. The query also has a very low neutral fraction (0.0021 vs 1), again unfavorable for passive membrane passage. Its fraction of sp3 carbons is slightly lower than the neighbor’s (0.8333 vs 0.8421, delta -0.0088), which is not a meaningful rescue here. The one favorable difference is that the query has more rotatable bonds (4 vs 0, delta +4), and in BBB heuristics lower flexibility is usually preferred, but in this specific comparison that flexibility gain is outweighed by the extra ketone burden, the acid, the much lower acidic pKa, and the near-zero neutral fraction. So this neighbor also supports the non-BBB label overall.
+
+Taken together, the six comparisons are dominated by the same pattern: the query repeatedly looks more polar, more functionally loaded, and less neutral than the neighbors, with higher ketone burden, a carboxylic acid, higher TPSA in several cases, and a very low neutral fraction. The few counterbalancing features, such as lower hydrogen-bond donor count in Neighbor 1, higher Labute surface area in Neighbor 3, higher logP in Neighbor 5, and higher rotatable-bond count in Neighbor 6, are not enough to overcome the repeated polarity and ionization disadvantages. The combined neighbor evidence therefore supports option (A): does not cross the BBB.
+
+Input 3. Target final label semantics
+option (A): does not cross the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

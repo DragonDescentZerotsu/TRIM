@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has several features that look relatively benign for ClinTox-style risk assessment, but also a few properties that increase concern. The presence of a hemiacetal (1) is consistent with a more oxygen-rich, less classically lipophilic motif, and the presence of a lactam (1) also tends to fit a more polar, drug-like scaffold. In the same direction, a dialkyl ether count of 3 and an alkene count of 3 can be compatible with a fairly ordinary medicinal chemistry structure rather than an obviously hazardous one. The molecule also has an ammonium absent (0) state, so it lacks a permanent cationic center, which slightly reduces concern for a cationic amphiphilic liability profile.
+
+At the same time, there are several features that increase toxicity risk proxy signals. A minimum partial charge of -0.4559 indicates a strongly negative site, which usually reflects substantial polarity and heteroatom influence. The hydrogen-bond acceptor count of 12 is high, and the estimated logP of 4.639 is also on the lipophilic side; together, that combination can indicate a molecule that is fairly hydrophobic yet still heavily heteroatom-substituted, a balance that can worsen developability and off-target risk. The tetrahydropyran present (1) and lactone present (1) add ring and carbonyl functionality that can raise polarity and structural complexity, but they do not fully offset the high acceptor burden and high lipophilicity.
+
+Overall, the evidence is mixed, with some polar heterocycle and lactam features looking favorable, but the high hydrogen-bond acceptor count, relatively high logP, and strongly negative minimum partial charge make the molecule look more like a compound with nontrivial toxicity risk. On balance, the final prediction is option (A): is not toxic, with score 0.9769.
+
+Input 2. Polished multi-molecule comparison analysis
+Among the three positive neighbors, Neighbor 1 is the clearest non-toxic analog. It shares the same general base-like profile but the query has more dialkyl ether groups (3 vs 1, delta +2), it has a hemiacetal that the neighbor lacks (+1), and it adds a lactam (+1); all three of those differences are associated with the query-side behaving less like the toxic neighbor and more like the not-toxic class. The remaining features go the other way—ammonium is present on neither side, the query is slightly more negative at minimum partial charge (-0.4559 vs -0.3917, delta -0.0642), and the estimated logP is higher in the query (4.639 vs 3.438, delta +1.201), which is a mild toxicity-leaning shift—but the overall balance for Neighbor 1 still lands on the not-toxic side because the structural differences dominate.
+
+Neighbor 2 is similar in the same direction. Again the query carries more dialkyl ether content (3 vs 0, delta +3), plus hemiacetal (+1) and lactam (+1), all of which align the query away from the toxic neighbor. Against that, the query is somewhat more polar in one sense but also more accumulation-prone in others: minimum partial charge is nearly unchanged (-0.4559 vs -0.4622, delta +0.0063), ammonium is absent on both sides, and the query has a much higher hydrogen-bond acceptor count (12 vs 5, delta +7). In the ClinTox setting, that higher acceptor burden can matter through polarity and exposure balance, but here the stronger structural overlap with the non-toxic side still makes Neighbor 2 support option (A).
+
+Neighbor 3 gives the same overall picture but with a slightly different balance. The query again has more dialkyl ether (3 vs 0, delta +3), hemiacetal (+1), and lactam (+1), which all favor the non-toxic side relative to the toxic neighbor. The toxic-leaning features are a higher minimum partial charge in the query (-0.4559 vs -0.5068, delta +0.0509) and a small increase in hydrogen-bond acceptor count (12 vs 11, delta +1). Even though the acceptor increase is modest here, the extra polar functionality still does not outweigh the stronger match to the not-toxic analog through the ether/hemiacetal/lactam pattern.
+
+The three negative neighbors reinforce the same conclusion. Neighbor 4 lacks lactam and hemiacetal, whereas the query has one of each, and that difference is strongly favorable for the query side. The neighbor also has more tetrahydropyran rings (4 vs 1, delta -3), while the query is slightly higher in minimum absolute partial charge (0.329 vs 0.316, delta +0.013). Ammonium is absent from both, and both share lactone, which is a neutral point. Taken together, the larger ring-system difference plus the added lactam and hemiacetal make Neighbor 4 look distinctly less like the query, so it supports the not-toxic label.
+
+Neighbor 5 is also informative because it contrasts a very lipophilic toxic neighbor with the query. The query has lactam where the neighbor does not (+1), while the neighbor’s estimated logP is extremely low (-1.3398 vs 4.639 in the query, delta +5.9788). The query also has lower maximum absolute partial charge (0.4559 vs 0.5497, delta -0.0937), the neighbor contains ammonium whereas the query does not (delta -1), and the query has a higher minimum partial charge (-0.4559 vs -0.5497, delta +0.0937). Although the query also has a very high neutral fraction (0.998 vs 0, delta +0.998), which is favorable for the non-toxic side, the dominant message is that the neighbor’s highly ionic, highly polar profile is quite different from the query’s and that this comparison still fits better with option (A) than with toxic behavior.
+
+Neighbor 6 further supports the same decision. The query again has lactam (+1) and hemiacetal (+1) where the neighbor lacks them, and it also has more dialkyl ether (3 vs 0, delta +3). The query is more saturated by fraction of sp3 carbons (0.7727 vs 0.5238, delta +0.2489), which is generally more consistent with a less flat, less problematic scaffold, while the neighbor is much smaller in hydrogen-bond acceptor count (3 vs 12, delta +9). Ammonium is absent on both sides. Even though the higher acceptor count can increase polarity, the combination of added lactam/hemiacetal, higher sp3 character, and extra ether content makes the query closer to the not-toxic analog than to the toxic one.
+
+Putting the six comparisons together, the same pattern repeats: the query repeatedly matches the not-toxic neighbors through lactam, hemiacetal, and dialkyl ether features, while the toxic neighbors tend to differ in ways associated with greater lipophilicity, stronger ionization or higher acceptor burden. The toxic-leaning signals such as higher estimated logP, ammonium differences, and acceptor/partial-charge shifts are present, but they do not outweigh the repeated alignment with the non-toxic side. Overall, the neighbor evidence supports option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

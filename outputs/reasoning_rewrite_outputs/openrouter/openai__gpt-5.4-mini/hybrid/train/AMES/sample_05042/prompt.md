@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a nitro group, which is a well-recognized mutagenicity toxicophore and strongly supports a mutagenic outcome. It also has benzimidazole present, together with an aromatic ring count of 2, which adds further aromatic heterocycle character compatible with a DNA-reactive scaffold. The fraction of sp3 carbons is 0, so the structure is fully flat and highly unsaturated, a pattern that can accompany mutagenic aromatic systems rather than more saturated, 3D chemotypes. The estimated logP is 1.4711, which is not especially extreme, but it still reflects a moderately lipophilic molecule that should not severely hinder bacterial exposure. The number of basic sites is 1, and the strongest basic pKa is 2.8368, indicating only weak basicity overall; that is a mixed feature because limited protonation may reduce accumulation, but the presence of a basic center can still support bacterial uptake in some contexts. The maximum partial charge is 0.4328 and the Labute surface area is 67.1949, both consistent with a structured heteroaromatic scaffold, while the topological polar surface area is 71.82, suggesting moderate polarity rather than strong permeability limitation. Taken together, the clearest structural alert is the nitro group, reinforced by the flat aromatic heterocycle framework, so the overall assessment is that the molecule is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close mutagenic analog at similarity 0.423, and several aligned features support that label. The query has a higher strongest basic pKa than the neighbor, 2.8368 versus 1.3646, with a delta of +1.4722, which is consistent with a more ionizable/basic nitrogen context that can improve bacterial accumulation and make mutagenic behavior more apparent when a DNA-reactive motif is present. The query also has higher minimum absolute partial charge, 0.3898 versus 0.2583, delta +0.1315, and the same nitro alert is present in both molecules, while the fraction of sp3 carbons remains 0 in both. Although the query’s maximum partial charge is also higher, 0.4328 versus 0.2712, delta +0.1615, that feature goes in the opposite direction for this comparison and slightly tempers the signal. The ring count is lower in the query, 2 versus 3, delta -1, but the overall pattern still resembles the mutagenic neighbor because the shared nitro group and the more basic, charge-differentiated profile are the dominant cues.
+
+Neighbor 2, at similarity 0.413, shows the same general pattern. The query again has a higher strongest basic pKa, 2.8368 versus 1.627, delta +1.2098, and a higher minimum absolute partial charge, 0.3898 versus 0.2582, delta +0.1316, both of which are consistent with increased ionizable character and potentially better bacterial exposure. The query and neighbor both carry the nitro group, and both have fraction of sp3 carbons at 0. The query’s ring count is lower, 2 versus 3, delta -1, which by itself would not favor mutagenicity, but that is outweighed by the nitro alert and the more basic, more strongly charged profile. Here the maximum partial charge is 0.4328 in the query versus 0.2966 in the neighbor, delta +0.1362, and that specific shift is unfavorable in this pairing, so the evidence is mixed at the feature level yet still net-supportive of the mutagenic class.
+
+Neighbor 3, similarity 0.400, is very similar in structure and repeats the same core relationship. The query’s strongest basic pKa is higher, 2.8368 versus 1.5182, delta +1.3186, and the query’s minimum absolute partial charge is also higher, 0.3898 versus 0.2582, delta +0.1316. The fraction of sp3 carbons stays at 0 in both molecules, and the ring count again drops from 3 in the neighbor to 2 in the query, delta -1. In addition, the query’s maximum absolute partial charge is higher, 0.4328 versus 0.2966, delta +0.1362. The maximum partial charge term is unfavorable here because it rises from 0.2966 to 0.4328 with a negative effect in this pairing, but the combined profile still tracks the mutagenic analog more closely than a non-mutagenic one because the query remains nitro-containing, basic, and highly polarized.
+
+Neighbor 4, similarity 0.409, is annotated as not mutagenic, yet the comparison still actually leans toward the mutagenic side for the query. The neighbor has phenazine, which the query lacks, and that absence matters because phenazine-like fused aromatic chemistry is a strong mutagenicity-related structural cue. The neighbor also has 2 nitro groups while the query has 1, and the query’s strongest basic pKa is higher, 2.8368 versus 1.2487, delta +1.5881. The query’s Labute surface area is much lower, 67.1949 versus 110.54, delta -43.3451, which suggests a smaller framework, but that does not erase the mutagenic implications of retaining one nitro group and a more basic site. The query’s maximum partial charge is higher, 0.4328 versus 0.2966, delta +0.1362, and that is the one feature in this pairing that works against mutagenicity. Even so, this neighbor still supports the final mutagenic call because the query retains a nitro alert and a more ionizable/basic profile relative to the non-mutagenic analog.
+
+Neighbor 5, similarity 0.353, again provides net support for mutagenicity despite one opposing descriptor. The query has a higher minimum absolute partial charge, 0.3898 versus 0.2583, delta +0.1315, and it still contains nitro while the neighbor also contains nitro, so the key toxicophore is preserved. The query additionally has a basic site present, whereas the neighbor has none, delta +1, which fits with a more ionizable molecule that may accumulate better in bacteria. The query’s estimated logP is slightly lower, 1.4711 versus 1.5948, delta -0.1237, but that is a modest shift and not enough to outweigh the structural alert plus the added basicity. As before, the maximum partial charge is higher in the query, 0.4328 versus 0.2689, delta +0.1639, and that specific feature is unfavorable in this pairing. Even with that counterweight, the presence of nitro and a basic site makes the query look more like a mutagenic analog than a non-mutagenic one.
+
+Neighbor 6, similarity 0.351, is another non-mutagenic analog that still leaves the query on the mutagenic side overall. Both molecules contain nitro, so the shared structural alert remains central. The query has higher maximum partial charge, 0.4328 versus 0.334, delta +0.0988, and the fraction of sp3 carbons remains 0 in both. The query’s topological polar surface area is slightly lower, 71.82 versus 79.16, delta -7.34, which could modestly favor exposure, but the ring count is also lower in the query, 2 versus 3, delta -1, and the molecular weight is lower as well, 163.136 versus 228.207, delta -65.071. Those latter two shifts work against a simple size-driven mutagenicity argument and are the main reasons this comparison is not one-sided. Still, because the nitro group is retained and the charge profile remains more extreme in the query, this neighbor does not overturn the broader mutagenic pattern.
+
+Taken together, the three mutagenic neighbors and the three non-mutagenic neighbors all point to the same conclusion: the query consistently retains the nitro alert and shows a more basic, more ionizable charge environment than its close analogs. Some size and shape features move in the opposite direction, such as lower ring count, lower Labute surface area, lower TPSA, and lower molecular weight in certain comparisons, but these are secondary exposure-related modifiers rather than a stronger counterargument than the preserved nitro functionality and the increased basicity/charge profile. Across all six neighbors, the mutagenic analogs are matched more closely on the decisive chemistry, so the final prediction is option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

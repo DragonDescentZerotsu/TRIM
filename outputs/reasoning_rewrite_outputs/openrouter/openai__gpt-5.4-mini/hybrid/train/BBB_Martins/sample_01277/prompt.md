@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are often compatible with brain penetration. It contains urea (1), piperidine (1), aryl fluoride (1), and 1H-indole (1); taken together, these motifs can support a mixed polarity/lipophilicity balance, and the observed estimated logP of 4.6276 and estimated logD of 3.0971 are both in a range that can still permit passive membrane permeation. The partial-charge profile is also not excessively extreme: the minimum partial charge is -0.3362, the maximum absolute partial charge is 0.3362, and the minimum absolute partial charge is 0.3171, which suggests a moderate electrostatic surface rather than a highly polarized scaffold. At the same time, there is some BBB-unfavorable polarity burden from the saturated heterocycle count value of 2, since additional saturated heterocycles can add heteroatom-related polarity and work against penetration. Even so, the overall pattern is more favorable than unfavorable: a piperidine ring can be consistent with a basic, CNS-relevant scaffold when the rest of the molecule remains sufficiently lipophilic, and the presence of aryl fluoride and 1H-indole adds hydrophobic character. Balancing these effects, the molecule is more consistent with BBB crossing than with exclusion, so the final prediction is option (B): crosses the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close positive analog and overall supports BBB crossing. It lacks benzimidazole compared with the query (query-minus-neighbor delta -1), which in this local comparison aligns with the BBB-favorable side. The query is also larger in Labute surface area, 185.9269 versus 172.6393 with delta +13.2876, yet the comparison still favors the query, so that surface-area shift is not enough to negate the other favorable features here. The query also has a higher strongest acidic pKa, 13.9329 versus 11.3779 with delta +2.555, again aligning with the BBB-crossing side in this pair. The main opposing point is neutral fraction: the query is lower at 0.0295 versus 0.0923, delta -0.0628, and lower neutral fraction is generally less favorable for passive BBB entry. Even so, the shared aryl fluoride and urea features both support the BBB-crossing label in this neighbor, so the net comparison still leans toward option (B).
+
+Neighbor 2 is another positive analog and also supports BBB crossing. It again lacks benzimidazole relative to the query (delta -1), and the query has a higher Labute surface area, 185.9269 versus 171.8242 with delta +14.1027, which is treated favorably in this local match. The query’s strongest acidic pKa is also higher, 13.9329 versus 11.382 with delta +2.5509, reinforcing the same direction. As with Neighbor 1, the neutral fraction is lower for the query, 0.0295 versus 0.0931 with delta -0.0636, which is the main counterpoint because lower neutral fraction can hurt passive permeability. But this neighbor also shows the query’s topological polar surface area dropping sharply from 70.13 to 40.51, delta -29.62, and that reduction is strongly consistent with better BBB penetration under the CNS polarity heuristics. Together with the shared aryl fluoride motif, these features make this neighbor clearly favor option (B).
+
+Neighbor 3 is the strongest of the positive neighbors and points clearly toward BBB crossing. The query again lacks benzimidazole relative to the neighbor (delta -1), and it has a much lower estimated logP, 4.6276 versus 6.5104 with delta -1.8828. Within the BBB/CNS range guidance, moving away from an excessively high logP can be favorable when it brings the molecule closer to a more balanced permeability profile. The query also has a higher strongest acidic pKa, 13.9329 versus 11.4213 with delta +2.5116, which stays on the favorable side for this pair. In addition, the query has fewer aryl fluoride copies, 1 versus 2 with delta -1, and fewer aromatic carbocycles, 2 versus 3 with delta -1; both shifts are treated favorably here. The topological polar surface area is nearly unchanged and slightly lower in the query, 40.51 versus 41.03 with delta -0.52, keeping the molecule in a low-TPSA region that is favorable for BBB penetration. This combination makes Neighbor 3 a strong positive analog for option (B).
+
+Neighbor 4 is a negative neighbor overall, but most of its evidence still actually resembles the BBB-crossing side, with one important exception. The query has one urea while the neighbor has none (delta +1), and that feature is treated favorably here. The query also has higher estimated logP, 4.6276 versus 2.7189 with delta +1.9087, which in this comparison is the main unfavorable shift because it is the one feature explicitly favoring option (A). At the same time, the query has higher estimated logD, 3.0971 versus 1.2937 with delta +1.8034, which is favorable for BBB penetration in the local comparison. The query’s maximum partial charge is slightly lower, 0.3171 versus 0.3407 with delta -0.0237, and that shift is unfavorable here. Finally, the query has much lower TPSA, 40.51 versus 65.78 with delta -25.27, which is strongly favorable because lower polarity generally aligns with better BBB passage. The shared aryl fluoride pattern also favors the BBB-crossing side. So although this neighbor is labeled negative in the reference set, the comparison still mostly points toward option (B), with the higher logP and maximum partial charge being the main cautions.
+
+Neighbor 5 is another negative neighbor, yet its detailed comparison still largely favors BBB crossing. The query has urea once while the neighbor has none (delta +1), which is favorable here. The neighbor has benzimidazole while the query does not (delta -1), another favorable difference for the query in this local match. Both share piperidine, so that feature does not separate them. The query has a less negative minimum partial charge, -0.3362 versus -0.4968 with delta +0.1606, a higher maximum partial charge, 0.3171 versus 0.2039 with delta +0.1131, and the same higher value for minimum absolute partial charge, 0.3171 versus 0.2039 with delta +0.1131; all of these charge-related shifts are treated favorably in this comparison. Although this is a negative neighbor, the evidence it provides still leans toward option (B) rather than option (A).
+
+Neighbor 6 is the weakest similarity among the negative neighbors, but it too mostly supports BBB crossing. The query has urea once while the neighbor has none (delta +1), and the query also has one aryl fluoride while the neighbor has none (delta +1); both are favorable differences in this pair. The query’s estimated logD is higher, 3.0971 versus 1.8347 with delta +1.2624, which is consistent with better BBB penetration in this local context. The query also has lower TPSA, 40.51 versus 61.6 with delta -21.09, another important BBB-favorable shift because the molecule sits well within the low-polarity region associated with CNS entry. Its maximum partial charge is slightly higher, 0.3171 versus 0.2272 with delta +0.0898, and the query also has piperidine while the neighbor does not (delta +1), which again supports the BBB-crossing side in this comparison. So despite being drawn from the non-crossing set, Neighbor 6 still gives a mostly positive analog signal for option (B).
+
+Taken together, the six neighbors form a consistent pattern: all three positive neighbors favor BBB crossing, and even the three negative neighbors contain multiple features that align more closely with the BBB-crossing query than with the non-crossing reference molecules. The most recurrent favorable signals are lower TPSA, the absence of benzimidazole, the presence of urea and aryl fluoride, and generally more favorable logP/logD and charge patterns in the query. There is some counterweight from the lower neutral fraction in the query and, in Neighbor 4, the higher estimated logP, but these do not outweigh the broader set of BBB-favorable analog relationships. The combined neighbor evidence supports option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

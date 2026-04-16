@@ -2,7 +2,14 @@
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
+
+THIS_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = THIS_DIR.parent
+SRC_ROOT = PROJECT_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
 
 from trim.reasoning.evidence.local_evidence import (
     build_default_local_evidence_output_dir,

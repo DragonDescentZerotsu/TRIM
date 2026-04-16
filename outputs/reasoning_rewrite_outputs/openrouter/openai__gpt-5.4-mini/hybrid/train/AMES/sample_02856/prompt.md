@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several exposure-friendly descriptors that are more consistent with a negative Ames result than with intrinsic mutagenicity. Its QED drug-likeness of 0.6332 is moderate, which is not a mutagenicity signal by itself but is compatible with a generally balanced property profile rather than an obviously alert-rich one. The fraction of sp3 carbons is high at 0.8667, indicating a fairly saturated, three-dimensional scaffold; that is not a direct Ames rule, but it is less suggestive of the flat, aromatic chemotypes often associated with mutagenic toxicophores. Likewise, the ring count is only 1 and the aromatic ring count is 0, so there is no obvious polycyclic aromatic system or other fused aromatic motif that would raise concern for DNA intercalation or PAH-like activation. The estimated logP of 3.3775 sits in a moderate lipophilicity range, which does not point to extreme hydrophobicity or obvious solubility-limited exposure problems. The maximum partial charge of 0.3054 is also not especially extreme, suggesting no strong electrostatic outlier that would by itself imply unusual reactivity or transport behavior.
+
+There are, however, a few features that add some tension. The heavy-atom molecular weight of 244.161 is not large in an absolute sense, but size-related descriptors can still modestly affect uptake, and this feature is not strongly protective. The saturated heterocycle count of 1 indicates one saturated heterocyclic ring, which is neutral overall but can sometimes accompany more complex scaffolds. The Labute surface area of 115.3927 reflects a moderately sized surface, again not inherently mutagenic but not especially small either. Also, the presence of 1 basic site means the molecule has at least one ionizable nitrogen-like center, which can sometimes improve bacterial accumulation and exposure, but here that effect is not accompanied by any clear mutagenic structural alert. In contrast, the absence of aromatic rings, the single ring overall, and the high sp3 character all weigh against a mutagenic, planar electrophilic scaffold.
+
+Taken together, the balance of descriptors favors option (A): is not mutagenic, with the main support coming from the lack of aromatic toxicophore-like structure and the relatively saturated, non-planar character of the molecule.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor with similarity 0.571, and its comparison is mixed but overall leans away from mutagenicity. The query is much larger than the neighbor, with heavy-atom count rising from 5 to 19 (delta +14) and heavy-atom molecular weight rising from 68.031 to 244.161 (delta +176.13), which in Ames terms can reduce effective uptake and exposure. The query also has much higher estimated logP, from -0.0667 to 3.3775 (delta +3.4442), again suggesting a more hydrophobic profile that can limit soluble test exposure rather than indicate intrinsic DNA reactivity. Against that, the query lacks an oxetane that the neighbor has, and oxetane is an electrophilic strained ring that can be mutagenic; losing that motif should reduce concern. The query also has a higher QED drug-likeness, from 0.3744 to 0.6332 (delta +0.2588), which is not itself an Ames rule but is consistent with a somewhat more drug-like profile. Labute surface area is much higher too, from 29.7384 to 115.3927 (delta +85.6544), which is a size/shape change that may affect exposure. Taken together, the size and lipophilicity shifts, plus loss of oxetane, make this neighbor compare more like a non-mutagenic analog.
+
+Neighbor 2 is another positive neighbor at similarity 0.280, and it also weighs toward the non-mutagenic side overall. Here the query again lacks oxetane, while the neighbor has it, removing a clear electrophilic ring alert. The query has higher QED drug-likeness, from 0.4158 to 0.6332 (delta +0.2173), and higher estimated logP, from 0.5694 to 3.3775 (delta +2.8081), both of which are more consistent with an exposure-limited comparison than with a stronger mutagenic structural alert. The query is also much larger, with heavy-atom molecular weight increasing from 92.053 to 244.161 (delta +152.108) and heavy-atom count from 7 to 19 (delta +12), again pointing to a bigger, more cumbersome molecule that may be less readily taken up by bacteria. One feature goes the other way: minimum partial charge changes only slightly from -0.464 to -0.462 (delta +0.0019), and that tiny shift is not enough to outweigh the loss of oxetane and the overall size/exposure pattern. This neighbor therefore still supports option (A).
+
+Neighbor 3, also positive with similarity 0.280, is similar in spirit. The query lacks oxetane again, which removes the neighbor’s strained ring liability. It also has much greater heavy-atom count, from 6 to 19 (delta +13), higher heavy-atom molecular weight, from 80.042 to 244.161 (delta +164.119), and higher estimated logP, from 0.3218 to 3.3775 (delta +3.0557); all three changes are consistent with a larger, more hydrophobic compound whose bacterial exposure may be less straightforward. QED drug-likeness also rises from 0.3967 to 0.6332 (delta +0.2364), which again is not a mutagenicity driver but fits the same general direction of a more developed molecule. Labute surface area increases sharply from 36.1033 to 115.3927 (delta +79.2894), reinforcing the size/shape shift. Although the larger surface area could be associated with better apparent contact in some contexts, the dominant structural comparison here is still the absence of oxetane plus the much larger, more hydrophobic query, so this neighbor also aligns better with option (A).
+
+Neighbor 4 is a negative neighbor with high similarity 0.824, so it deserves careful attention. This comparison is more mixed. The query has a slightly higher fraction of sp3 carbons, from 0.8333 to 0.8667 (delta +0.0333), which does not create a strong mutagenicity signal by itself. The query also has higher QED drug-likeness, from 0.4407 to 0.6332 (delta +0.1925), and higher heavy-atom count, from 8 to 19 (delta +11), both consistent with a larger, more drug-like scaffold. Ring count is unchanged at 1, so there is no added ring burden. But two features cut toward mutagenicity: the neighbor has oxepane and the query does not, and the neighbor has one lactone while the query has two. In this local context, losing oxepane and increasing lactone count appear to be the more relevant differences, so this single close neighbor does add some counterweight toward option (B). Even so, its overall comparison was still judged to favor option (A) because the size and drug-likeness differences dominate.
+
+Neighbor 5, another negative neighbor at similarity 0.288, again mixes opposing effects but finishes on the non-mutagenic side. The query lacks oxetane, which is a favorable change away from a strained reactive ring. It also has higher heavy-atom count, from 6 to 19 (delta +13), higher QED drug-likeness, from 0.3981 to 0.6332 (delta +0.2351), and higher fraction of sp3 carbons, from 0.25 to 0.8667 (delta +0.6167), all of which make the query look larger and more saturated than the neighbor. Those shifts are generally consistent with reduced concern for a small, highly strained alert-driven molecule. The query also has 2 lactones versus 0 in the neighbor, which is a structural difference that can matter in either direction depending on context, but here it was not enough to overturn the broader non-mutagenic pattern. Minimum absolute partial charge changes only slightly, from 0.318 to 0.3054 (delta -0.0126), which is too small to carry much weight. Although oxetane absence is the one feature that points toward mutagenicity in the original sign convention, the overall chemistry of this neighbor still ends up supporting option (A).
+
+Neighbor 6, the last negative neighbor at similarity 0.267, is similar to Neighbor 5 in being mixed but ultimately aligned with non-mutagenicity. The query again has much higher heavy-atom count, from 6 to 19 (delta +13), much higher molecular weight, from 84.074 to 270.369 (delta +186.295), and much higher QED drug-likeness, from 0.3889 to 0.6332 (delta +0.2442), all suggesting a substantially larger compound. The fraction of sp3 carbons also rises sharply, from 0.25 to 0.8667 (delta +0.6167), so the query is far less flat and aromatic-like than the neighbor. On the other hand, the neighbor has an alkene that the query does not, and the query has one more lactone, from 1 to 2. Those two features are the main mutagenicity-facing differences in this pair, but they are outweighed by the much larger size, higher saturation, and higher drug-likeness of the query. As with the other low-similarity negatives, the local comparison still resolves in favor of option (A).
+
+Putting the six neighbors together, the three positive neighbors consistently show the query as a much larger, more hydrophobic molecule that lacks the neighbor’s oxetane and therefore looks less concerning than those mutagenic analogs. The three negative neighbors do contain a few features that can point toward risk, such as oxepane, lactone, or alkene differences, but each of those comparisons is still dominated by the query’s larger size, higher QED, and more saturated scaffold, so even those neighbors end up supporting option (A) overall. The balance of the neighborhood therefore favors the label that the query is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

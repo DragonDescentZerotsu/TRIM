@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a sulfuric diester, which is a concerning electrophilic/sulfonate-type motif and is a strong structural alert for mutagenicity. That strongly favors an Ames-positive outcome. At the same time, several descriptors point in the opposite direction through exposure and permeability effects: fraction of sp3 carbons = 1 indicates a very saturated, 3D-rich scaffold rather than a flat aromatic system, ring count = 1 is modest, aromatic ring count = 0 means there is no obvious polycyclic aromatic framework, and number of basic sites = 0 suggests there is no ionizable nitrogen that would aid bacterial accumulation. The saturated heterocycle count = 1 adds some ring complexity, but it is not by itself a classic mutagenicity alert. The Labute surface area = 54.0987 is not especially large, so it does not argue strongly against uptake, but minimum partial charge = -0.2481 shows a noticeably negative electrostatic site, which can be consistent with polarity and reduced passive permeation. Neutral fraction = 1 suggests the molecule is fully neutral at the configured pH, so it is not being suppressed by ionization, and estimated logP = 0.0566 is near neutral, indicating no severe hydrophobicity or solubility penalty either way. Overall, the direct structural alert from the sulfuric diester outweighs the weaker countervailing descriptors, so the molecule is most likely mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is overall consistent with a mutagenic direction. The query has a sulfuric diester that the neighbor lacks once (query-minus-neighbor delta +1), and that difference is the strongest signal here, since sulfuric diester functionality is a clear structural alert for mutagenicity. The same comparison also shows offsets in the opposite direction: the neighbor has oxetane while the query does not (delta -1), the query’s maximum partial charge is higher at 0.3996 versus 0.3093 in the neighbor (delta +0.0903), and the query’s heteroatom count is higher at 5 versus 2 (delta +3). Higher heteroatom burden can often increase polarity and reduce exposure, so that part is not uniformly pro-mutagenic. The query also has a lower estimated logD, 0.0566 versus 0.3218 (delta -0.2652), which again is not a simple mutagenicity rule by itself and can reflect altered exposure. Even with those counterweights, the sulfuric diester difference dominates, so this neighbor supports option (B).
+
+Neighbor 2 is essentially the same pattern as Neighbor 1 and again favors mutagenicity. The query carries the sulfuric diester once while the neighbor has none (delta +1), which is the major positive alert. Against that, the neighbor has oxetane while the query does not (delta -1), the query’s maximum partial charge is higher at 0.3996 versus 0.3093 (delta +0.0903), and the query’s heteroatom count is 5 versus 2 (delta +3). The query’s estimated logD is lower, 0.0566 versus 0.3218 (delta -0.2652), and the ring count is unchanged at 1 versus 1 (delta 0). As with Neighbor 1, these modifiers do not outweigh the strong sulfuric diester alert, so Neighbor 2 also points toward option (B).
+
+Neighbor 3 still ends up on the mutagenic side, though the balance is a little more mixed. The query again has the sulfuric diester and the neighbor does not (delta +1), which remains the clearest driver toward mutagenicity. The query also has a higher estimated logP, 0.0566 versus -0.2635 (delta +0.3201), which is a modest shift toward the mutagenic side in this local comparison. At the same time, the ring count is unchanged at 1 versus 1 (delta 0), and the query’s maximum partial charge is higher at 0.3996 versus 0.2669 (delta +0.1327), which in this comparison works against the mutagenic label. The neighbor has 1,2-oxathiolane while the query does not (delta -1), and the query’s Labute surface area is larger, 54.0987 versus 42.4113 (delta +11.6875), which can matter as a size/shape correlate rather than a direct mechanism. Even with the mixed secondary descriptors, the sulfuric diester plus the supporting logP shift keep Neighbor 3 aligned with option (B).
+
+Neighbor 4 is a negative neighbor, but it still shows the query as more mutagenic than the neighbor on several key points. The query has the sulfuric diester once while the neighbor lacks it (delta +1), and the neighbor also has thiirane while the query does not (delta -1); both differences favor mutagenicity. In addition, the query has higher nitrogen/oxygen atom count, 4 versus 0 (delta +4), higher minimum absolute partial charge, 0.2481 versus 0.011 (delta +0.2371), and higher topological polar surface area, 52.6 versus 0 (delta +52.6). Those polarity-related shifts can affect exposure and uptake, but they do not erase the stronger alerting features present in the query. The fraction of sp3 carbons is unchanged at 1 versus 1 (delta 0), so that feature does not help separate the pair. Overall, Neighbor 4 is still consistent with option (B), despite its being listed among the negative neighbors.
+
+Neighbor 5 is another negative neighbor that nevertheless supports the mutagenic label for the query. The query has the sulfuric diester that the neighbor lacks (delta +1), which again is the major alerting difference. The neighbor has two ketone copies while the query has none (delta -2), a feature that in this local comparison favors the non-mutagenic side, and the query’s maximum absolute partial charge is higher at 0.3996 versus 0.2909 (delta +0.1087), which also leans away from the mutagenic label here. But the query has a higher heteroatom count, 5 versus 2 (delta +3), and a lower saturated carbocycle count, 0 versus 1 (delta -1), which in this comparison still leaves the balance on the mutagenic side. The ring count is unchanged at 1 versus 1 (delta 0), so there is no compensating ring-based distinction. Taken together, Neighbor 5 remains consistent with option (B).
+
+Neighbor 6 again favors the query as mutagenic overall, although it includes some countervailing exposure-like descriptors. The query has the sulfuric diester once while the neighbor has none (delta +1), which is the strongest mutagenicity signal. The neighbor has fraction of sp3 carbons 0.8571 versus the query’s 1.0 (delta +0.1429), and in this comparison that shift works against the mutagenic label. The query also has no acidic site while the neighbor’s strongest acidic pKa is 13.8503, with the delta described as not defined because one molecule has no acidic site; that still favors the query in the local model. The ring count is equal at 1 versus 1 (delta 0), so it does not separate the molecules. The neighbor has 2-oxazolidone while the query does not (delta -1), which points away from mutagenicity for the query, and the neighbor’s minimum absolute partial charge is 0.4098 versus 0.2481 in the query (delta -0.1617), another difference that does not add to the mutagenic side. Even so, the sulfuric diester alert and the acidic-site comparison leave Neighbor 6 on the mutagenic side overall.
+
+Across all six neighbors, the same central pattern repeats: the query contains a sulfuric diester that the neighbors lack, and that structural alert is the dominant feature separating it from both the positive and negative neighbors. Several secondary descriptors move in mixed directions—partial charge, heteroatom count, logD/logP, surface area, ring count, and specific ring systems such as oxetane, thiirane, 1,2-oxathiolane, and 2-oxazolidone—but none of those offsets overturn the repeated sulfuric diester signal. Since every neighbor-level comparison ultimately remains more compatible with the mutagenic side, the final prediction is option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

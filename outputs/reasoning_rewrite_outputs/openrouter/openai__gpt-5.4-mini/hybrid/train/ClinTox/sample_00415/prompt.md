@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed but overall favorable safety profile from its physicochemical pattern. The ammonium count of 5 suggests substantial ionizable/basic functionality, which can sometimes raise concern for cationic amphiphilic behavior, yet the estimated logP of -7.5303 is extremely low and strongly argues against lipophilic accumulation or membrane partitioning. Likewise, the estimated logD of -10.0046 is very low, supporting a highly polar, strongly water-preferring compound with limited nonspecific tissue distribution. The fraction of sp3 carbons is 1, indicating a fully saturated and three-dimensional scaffold, which is generally more favorable than a flat aromatic-rich structure. The strongest acidic pKa of 12.9615 indicates a very weakly acidic site, but that alone does not suggest a toxic liability here. There are some cautionary features: minimum partial charge of -0.3872 reflects a strongly polarized atom, tertiary hydroxyl is present at 1, tetrahydropyran count is 2, and number of basic sites is 5, all of which indicate a heavily functionalized, ionizable molecule that could in some contexts raise exposure or nonspecific-interaction concerns. However, acetal count of 2 is a relatively benign structural element, and the very low lipophilicity dominates the interpretation. Overall, the combination of extremely low estimated logP and logD, along with a saturated sp3-rich scaffold, outweighs the localized alerts, so the molecule is more consistent with option (A): is not toxic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close analog that leans toward the not-toxic class overall. The query has 5 ammonium groups versus 0 in the neighbor, and that large increase is associated here with a negative shift toward not toxic, likely reflecting a more strongly ionized, highly polar profile. The query also has a much lower estimated logP, -7.5303 compared with 1.0289 in the neighbor (delta -8.5592), which strongly favors the not-toxic side because the molecule is far less lipophilic than the reference. Although the query’s minimum partial charge is slightly less negative (-0.3872 vs -0.5068, delta +0.1197), which in this comparison points toward toxicity, that effect is outweighed by the very favorable drop in lipophilicity and the higher fraction of sp3 carbons. The query’s fraction of sp3 carbons is 1 versus 0.4444 in the neighbor (delta +0.5556), and that more saturated, less flat character is generally more compatible with better developability. The query also has 2 acetal groups versus 1 (delta +1), and its estimated logD is much lower, -10.0046 versus -0.8315 (delta -9.1731), which again supports the not-toxic side by indicating a much less lipophilic distribution profile. Taken together, Neighbor 1 is overall more consistent with option (A).
+
+Neighbor 2 tells a very similar story and again supports option (A) despite one opposing signal. As with Neighbor 1, the query has 5 ammonium groups versus 0 in the neighbor, and that large difference favors not toxicity in this local comparison. The estimated logP is also far lower in the query, -7.5303 versus 0.0013 (delta -7.5316), which is a strong not-toxic signal because the query is much less lipophilic. The query again has a higher fraction of sp3 carbons, 1 versus 0.4444 (delta +0.5556), reinforcing the more saturated and less flat profile that generally aligns with better developability. The query has 2 acetal groups versus 1 (delta +1), which also matches the same favorable direction. There are two features that move the other way: the minimum partial charge is less negative in the query (-0.3872 vs -0.5068; delta +0.1197), and the query has 5 basic sites versus 1 in the neighbor (delta +4), which here is associated with a toxicity-leaning signal. Even so, the very low logP together with the saturated character and the ammonium/acetal pattern dominate, so Neighbor 2 still supports the not-toxic label.
+
+Neighbor 3 continues the same overall pattern, with a few mixed local signals. The query has 5 ammonium groups while the neighbor has 0, again aligning with the not-toxic side in this comparison. The query is also much more saturated, with fraction of sp3 carbons of 1 versus 0.5581 (delta +0.4419), and that higher 3D character supports the benign label. The estimated logP drops sharply from 3.2596 in the neighbor to -7.5303 in the query (delta -10.7899), which is a strong not-toxic indicator because the query is dramatically less lipophilic. The query has 2 tetrahydropyran groups versus 0 (delta +2), and it also has 5 basic sites versus 0 (delta +5); in this local comparison those features are treated as toxicity-leaning. The minimum partial charge is again slightly less negative in the query (-0.3872 vs -0.4557; delta +0.0686), which also points toward toxicity. Even with those opposing pieces, the large reduction in logP and the higher sp3 fraction are the more prominent similarities, so Neighbor 3 still ends up favoring option (A).
+
+Neighbor 4 is a stronger negative-neighbor example and also supports option (A) overall. Here the query and neighbor both have 5 ammonium groups, so there is no difference on that feature. The query lacks the enolether present in the neighbor, and that absence is favorable in this local context. The query’s fraction of sp3 carbons is 1 versus 0.9048 in the neighbor (delta +0.0952), so the query is slightly more saturated, which again fits the not-toxic direction. The minimum partial charge becomes less negative in the query (-0.3872 vs -0.4571; delta +0.0699), which in this comparison points toward toxicity, and the maximum absolute partial charge also shifts in the unfavorable direction, 0.3872 versus 0.4571 (delta -0.0699). In addition, both the neighbor and the query have a tertiary hydroxyl, so that feature does not separate them and is locally associated with a toxicity-leaning signal here. Still, the shared ammonium count, the absence of enolether in the query, and the slightly higher sp3 fraction make the query look cleaner than the neighbor, so Neighbor 4 supports option (A).
+
+Neighbor 5 also favors option (A), even though a few physicochemical features move toward toxicity. The query has a much higher estimated logP than this neighbor, -7.5303 versus -13.1961 (delta +5.6658), and in this local comparison that shift is treated as toxicity-leaning. The query and neighbor both have fraction of sp3 carbons of 1, so there is no difference there. The neighbor has 2 copies of 1,2-diol while the query has none (delta -2), and that reduction is favorable in this comparison. The query’s maximum absolute partial charge is 0.3872 versus 0.3936 in the neighbor (delta -0.0064), which is only a small shift but is still treated as toxicity-leaning here. The query also has 2 acetal groups versus 3 in the neighbor (delta -1), which again favors not toxicity. Most importantly, the query’s Labute surface area is lower, 194.9769 versus 241.0249 (delta -46.048), and that smaller surface-area burden is favorable from a developability standpoint. So although the logP and partial-charge signals are not uniformly benign, the reduced 1,2-diol burden, fewer acetal groups, and lower Labute surface area make Neighbor 5 overall align with option (A).
+
+Neighbor 6 is very similar to Neighbor 5 and also supports option (A). The ammonium count is identical at 5 in both molecules, so that feature is neutral here. The query again has a much higher estimated logP than the neighbor, -7.5303 versus -12.4457 (delta +4.9154), which is locally read as a toxicity-leaning shift. The fraction of sp3 carbons is 1 in both, so that does not separate them. The neighbor has 2 copies of 1,2-diol while the query has 0 (delta -2), and that reduction favors the query. The query’s maximum absolute partial charge is slightly lower, 0.3872 versus 0.3936 (delta -0.0064), which here is again a small toxicity-leaning change. Finally, the neighbor has 3 acetal groups while the query has 2 (delta -1), which is favorable for the query. Even with the higher logP and the small partial-charge shift pointing the wrong way, the loss of 1,2-diol groups and one acetal group keeps the query closer to the not-toxic side than the neighbor.
+
+Across all six neighbors, the most consistent pattern is that the query is far less lipophilic than the toxic references, with extremely low estimated logP and logD, while also showing a saturated, high-sp3 profile and several features that match the safer neighbors more closely than the toxic ones. Some local descriptors such as minimum partial charge, maximum absolute partial charge, basic-site count, and tertiary hydroxyl can point toward toxicity in individual comparisons, but those are outweighed by the repeated favorable evidence from ammonium-rich but highly hydrophilic character, lower logP/logD, higher sp3 fraction, and the loss of some potentially unfavorable substituent patterns relative to the not-toxic neighbors. Taken together, the six neighbor comparisons support option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

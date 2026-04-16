@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule looks unfavorable for CYP2C9 substrate recognition overall. Its heavy-atom molecular weight is 52.032, which is very small and suggests limited size and surface area for productive binding in the active pocket. The neutral fraction is 1, so it is fully neutral rather than presenting an anionic species that could support the weak-acid/anion interaction commonly associated with CYP2C9 substrates. Consistent with that, the estimated logP is 0.5953, which is only modestly hydrophobic and not especially suited to the hydrophobic pocket environment. The aromatic ring count is 0 and benzene is absent at 0, so there is no aromatic scaffold for π–π or hydrophobic positioning that often helps CYP2C9 substrates bind. The hydrogen-bond acceptor count is only 1, and although that alone does not exclude substrate status, it indicates a very simple polar pattern rather than a richer binding motif. The ketone is present at 1, which adds polarity without providing the acidic anionic anchor typically favorable for CYP2C9. The QED drug-likeness is 0.3982, a middling value that does not compensate for the weak CYP2C9-relevant binding features. The molecular weight is 58.08, again extremely small and consistent with a minimal scaffold that is less likely to make the set of interactions needed for CYP2C9 turnover. One feature, the dialkyl ether being absent at 0, is mildly favorable for substrate status, but that single point is outweighed by the lack of aromaticity, the fully neutral state, the low hydrophobicity, and the very small molecular size. Taken together, the balance of evidence supports option (A): is not a substrate to the enzyme CYP2C9.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is only a weak analog by similarity (0.230), and its comparison is dominated by size and mass mismatches: the neighbor has molecular weight 151.165 versus the query at 58.08, exact molecular weight 151.0633 versus 58.0419, and heavy-atom molecular weight 142.093 versus 52.032, with large negative query-minus-neighbor deltas of -93.085, -93.0215, and -90.061. Those differences all favor the non-substrate side because the query is much smaller than a known CYP2C9 substrate-like neighbor. There are also two countervailing features: neither molecule has dialkyl ether, which is a small positive cue for substrate-like chemistry here, and the query’s fraction of sp3 carbons is higher (0.6667 vs 0.125, delta +0.5417), which leans toward more three-dimensional character and slightly toward substrate-like behavior. But that is outweighed by the charge-related shift in minimum partial charge: the neighbor is more negative at -0.508, while the query is less negative at -0.3003, delta +0.2076, and that change still ends up favoring the non-substrate side in this comparison. Overall, Neighbor 1 supports option (A).
+
+Neighbor 2, at similarity 0.195, gives an even clearer non-substrate signal from the same size/shape axis. The neighbor’s molecular weight is 180.159 versus 58.08 for the query, exact molecular weight is 180.0423 versus 58.0419, Labute surface area is 74.7571 versus 25.6307, and heavy-atom molecular weight is 172.095 versus 52.032; all of these large negative deltas (-122.079, -122.0004, -49.1264, and -120.063) point strongly away from substrate-like space. Again, the absence of dialkyl ether on both molecules is a minor substrate-like cue, and the query’s higher fraction of sp3 carbons (0.6667 vs 0.1111, delta +0.5556) adds some 3D character. But those favorable points do not overcome the much smaller query size and lower surface area relative to this substrate neighbor. Neighbor 2 therefore also supports option (A).
+
+Neighbor 3, with similarity 0.186, is similar in overall shape/size logic but includes one important ionization-related contrast. The neighbor is almost fully neutral with neutral fraction 0.9979, while the query is fully neutral at 1, so the delta is only +0.0021; despite being tiny, that comparison was still associated here with a strong non-substrate direction. The rest of the comparison is again dominated by the query’s much lower molecular weight (58.08 vs 179.219, delta -121.139), exact molecular weight (58.0419 vs 179.0946, delta -121.0528), and Labute surface area (25.6307 vs 77.7161, delta -52.0854), all pointing away from the substrate-like neighbor. As before, both molecules lack dialkyl ether, which is mildly favorable, and the query has fewer hydrogen-bond acceptors than the neighbor (1 vs 2, delta -1), a change that is treated here as slightly substrate-like. Even with those small offsets, the very large size and surface-area gap keep Neighbor 3 on the non-substrate side.
+
+Neighbor 4 is one of the three negative neighbors by label, and it reinforces the same conclusion. Its exact molecular weight is 135.0684 versus 58.0419 for the query, and the molecular weight is 135.166 versus 58.08, so the query-minus-neighbor deltas of -77.0265 and -77.086 again show that the query is much smaller than this non-substrate analog. The Labute surface area is also far larger in the neighbor (59.8727 vs 25.6307, delta -34.242), which is another clear non-substrate-style difference. The query does have a higher fraction of sp3 carbons (0.6667 vs 0.125, delta +0.5417), which is a modest counterweight toward substrate-like chemistry, but not enough to offset the size and surface-area differences. The neighbor also has higher heavy-atom molecular weight (126.094 vs 52.032, delta -74.062), and its QED drug-likeness is 0.6228 versus 0.3982 for the query, delta -0.2246, meaning the query is less drug-like by this composite measure. Taken together, Neighbor 4 strongly supports option (A).
+
+Neighbor 5, at similarity 0.186, is another non-substrate analog that points the same way. It shows large decreases from neighbor to query in exact molecular weight (149.0841 vs 58.0419, delta -91.0422), Labute surface area (66.0276 vs 25.6307, delta -40.397), heavy-atom molecular weight (138.105 vs 52.032, delta -86.073), and molecular weight (149.193 vs 58.08, delta -91.113). Those are all substantial shifts away from the neighbor’s non-substrate-like size regime. The neutral fraction is also informative here: the neighbor is only 0.2725 neutral while the query is fully neutral at 1, delta +0.7275, yet that shift still aligns with the non-substrate direction in this local comparison. The QED drug-likeness is likewise higher in the neighbor (0.6422 vs 0.3982, delta -0.244), which again leaves the query less favorable on broad developability grounds. Neighbor 5 therefore remains consistent with option (A), even though it does not introduce any opposing feature beyond the query’s small size.
+
+Neighbor 6, with the lowest similarity among the six at 0.152, is still another non-substrate reference and provides the strongest charge/state contrast. The neighbor is much larger in exact molecular weight (214.0397 vs 58.0419, delta -155.9978), Labute surface area (87.2637 vs 25.6307, delta -61.6331), and heavy-atom molecular weight (203.56 vs 52.032, delta -151.528), all of which strongly separate it from the query. It is also strikingly different in neutral fraction: the neighbor is essentially fully non-neutral at 0.0001, while the query is fully neutral at 1, delta +0.9999, and that shift is still associated here with the non-substrate direction for this pair. The fraction of sp3 carbons is higher in the query (0.6667 vs 0.3, delta +0.3667), which again adds some 3D character in the substrate-like direction, and both molecules lack dialkyl ether, which is a small favorable shared feature. Even so, the combination of much lower mass, much smaller surface area, and the extreme neutral-fraction difference keeps Neighbor 6 aligned with option (A).
+
+Across all six neighbors, the dominant pattern is consistent: every close analog in the set, including the three positive-labeled neighbors and the three negative-labeled neighbors, has substantially larger molecular weight and surface area than the query, while the query is much smaller and more compact. The query does gain some favorable points from its higher fraction of sp3 carbons and the shared absence of dialkyl ether, but those effects are secondary and do not overcome the repeated size/surface-area mismatch. Because both the substrate-like and non-substrate-like neighbors converge on the same local interpretation, the overall evidence supports the final prediction that the query is not a substrate to CYP2C9.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP2C9
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

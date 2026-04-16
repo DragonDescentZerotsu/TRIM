@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several structural features that are consistent with mutagenicity. A ring count of 3, together with an aromatic ring count of 3, suggests a fairly aromatic scaffold, and the presence of carbazole (1) is especially concerning because fused aromatic systems and related polycyclic motifs are recognized mutagenicity alerts. The fraction of sp3 carbons is 0, so the structure is completely flat and unsaturated, which further fits an aromatic, planar framework that can be associated with DNA-interacting or bioactivated mutagenic chemotypes. The maximum partial charge of 0.0464 and the minimum absolute partial charge of 0.0464 indicate a modest but nonzero charge distribution, which can accompany a reactive or strongly polarized aromatic system. The number of basic sites is present (1), which may improve bacterial accumulation if the site is a suitably ionizable nitrogen. There is some opposing evidence: the hydrogen-bond acceptor count is 0 and the heteroatom count is 1, both of which suggest a relatively low heteroatom burden and may limit polarity-driven uptake. The estimated logP of 3.3211 is moderate rather than extreme, so it does not strongly argue for poor exposure or for strong hydrophobicity-driven suppression of activity. Overall, the fused aromatic carbazole core, complete lack of sp3 character, and aromatic ring content outweigh the weaker counter-signals, making mutagenicity more likely than not.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is overall more consistent with a mutagenic analog, but several key descriptors also temper that signal. The query matches the neighbor at ring count 3 and fraction of sp3 carbons 0, both features that are compatible with a fairly flat aromatic scaffold, and the unchanged ring count still carries the same mutagenic-leaning weight seen in this comparison. The query also has neutral fraction present (1) versus 0.6759 in the neighbor, which is a sizable increase of +0.3241 and can reflect greater neutral character; in Ames terms that can matter through exposure and bioavailability rather than intrinsic reactivity. At the same time, the query is lower in hydrogen-bond acceptor count, 0 versus 1, with delta -1, which leans away from mutagenicity by reducing polarity-related exposure, and the strongest acidic pKa is slightly higher, 13.8941 versus 13.7274, delta +0.1667, which also moves in the non-mutagenic direction in this comparison. The 6-azaindole difference is another clear structural point: the neighbor has 6-azaindole and the query does not, so that loss of the azaindole motif weakens the positive-neighbor match to a mutagenic scaffold. Taken together, Neighbor 1 is a mixed but still slightly positive analog, with the query lacking one potentially relevant heteroaromatic motif while also being less H-bond accepting and somewhat more neutral.
+
+Neighbor 2 is the strongest positive-neighbor match for mutagenicity. The clearest signal is that the neighbor contains 7-azaindole while the query does not, which is a meaningful structural loss because that heteroaromatic motif is part of the positive analog set. The query also has a lower heteroatom count, 1 versus 3, delta -2, and fewer hydrogen-bond acceptors, 0 versus 2, delta -2; both changes reduce polarity and may lower exposure, which on their own would lean away from mutagenicity. But those effects are countered by the large negative shift in minimum absolute partial charge: 0.0464 in the query versus 0.1403 in the neighbor, delta -0.0939. In this comparison, that charge difference aligns with the mutagenic side. The ring count is again 3 in both molecules, preserving a shared aromatic scaffold that does not weaken the comparison. The strongest acidic pKa is slightly higher in the query, 13.8941 versus 13.34, delta +0.5541, which here is unfavorable to the mutagenic analog match. Even so, the presence of 7-azaindole and the charge pattern leave Neighbor 2 as a clear positive comparator for the B label.
+
+Neighbor 3 is more ambiguous but still contains several mutagenic-leaning anchors. As in the other positive neighbors, the ring count remains 3, so the query shares the same ring-rich scaffold. The query is lower in heteroatom count, 1 versus 2, delta -1, and lower in hydrogen-bond acceptor count, 0 versus 1, delta -1; both changes again point toward reduced polarity and potentially lower effective exposure, favoring the non-mutagenic side. The query also lacks 6-azaindole, which removes another positive-neighbor feature. The strongest acidic pKa is slightly higher in the query, 13.8941 versus 13.7395, delta +0.1546, which modestly supports the non-mutagenic interpretation. However, the maximum partial charge is lower in the query, 0.0464 versus 0.0681, delta -0.0216, and in this comparison that charge shift aligns with the mutagenic side. So Neighbor 3 does not strongly force the label either way, but its retained aromatic scaffold and the positive charge-related signal keep it from being a clean non-mutagenic analog.
+
+Neighbor 4 is a negative neighbor and it supports the A label reasonably well. The topological polar surface area is identical at 15.79, so there is no exposure-related shift there. The heteroatom count is also unchanged at 1, and hydrogen-bond acceptor count is unchanged at 0, so the main polarity features are tightly matched. The query and neighbor both have fraction of sp3 carbons 0, but in this comparison that shared flatness is paired with a mutagenic-leaning term rather than a decisive structural alert. The key points favoring A are the lower strongest acidic pKa in the query, 13.8941 versus 14.0507, delta -0.1566, and the very small increase in minimum absolute partial charge, 0.0464 versus 0.0453, delta +0.0011, both of which are not enough to offset the overall non-mutagenic likeness. Since the neighbor itself is labeled non-mutagenic, this close match on PSA, heteroatom count, and H-bond acceptors supports the A outcome.
+
+Neighbor 5 is another negative neighbor and provides a strong non-mutagenic comparison despite a few opposing features. The neighbor has 2 copies of lactam while the query has 0, so the query loses that motif entirely, delta -2. The query is much more lipophilic, with estimated logP 3.3211 versus 0.2164, delta +3.1047, which can reduce soluble exposure and is consistent with the non-mutagenic side in this context. The query also contains a basic site where the neighbor has none, delta +1, and the neighbor carries phthalazine while the query does not, delta -1; those structural differences partly favor the positive side because ionizable nitrogens and certain heteroaromatic systems can alter accumulation. The query’s maximum partial charge is far lower, 0.0464 versus 0.27, delta -0.2236, and minimum absolute partial charge is also far lower, 0.0464 versus 0.2674, delta -0.221, which in this comparison points toward the mutagenic side. Even with those charge-related signals, the loss of lactams and phthalazine plus the much higher logP make Neighbor 5 overall a better non-mutagenic analog.
+
+Neighbor 6 is the other negative comparator and again leans toward A overall. The query has fewer hydrogen-bond acceptors, 0 versus 1, delta -1, which lowers polarity and is consistent with the non-mutagenic side here. It also has a much lower topological polar surface area, 15.79 versus 41.81, delta -26.02, a substantial shift that would generally increase passive permeability, yet in this specific comparison it still belongs to the negative neighbor set. At the same time, the query is lower in heteroatom count, 1 versus 2, delta -1, while the fraction of sp3 carbons is lower, 0 versus 0.2, delta -0.2, and both of those differences are associated with the mutagenic side in this particular analog pair. The neutral fraction is also much higher in the query, present (1) versus 0.0046, delta +0.9954, which is a major change in ionization state and could alter exposure. Finally, the minimum absolute partial charge is slightly higher, 0.0464 versus 0.0456, delta +0.0008, also matching the mutagenic direction here. Even with those mixed signals, the fact that the neighbor itself is non-mutagenic and that the query retains a low-acceptor, low-heteroatom profile makes this comparison fit the A side overall.
+
+Putting the six neighbors together, the three positive neighbors show that the query shares some ring-rich, heteroaromatic context associated with mutagenic analogs, especially through the repeated ring count of 3 and the azaindole-related comparisons. But across those same positive neighbors, the query often loses heteroatoms, acceptors, and specific positive structural motifs, and it also shows charge and pKa shifts that are not uniformly supportive of B. The three negative neighbors are at least as compelling for the opposite class: the query matches or improves on several polarity and size-related features in ways that fit the non-mutagenic analogs, and the strongest exposure-limiting signals such as the much higher logP in Neighbor 5 and the very low PSA in Neighbor 6 do not overturn the fact that the nearest non-mutagenic references remain structurally closer overall. On balance, the negative-neighbor evidence slightly outweighs the positive-neighbor evidence, so the query is best classified as option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,52 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a tertiary mixed amine (1) and a tertiary aliphatic amine (1), so it has basic functionality that can support CYP3A4 binding and metabolism; the presence of pyridine (1) also adds a heteroaromatic motif that is often compatible with substrate-like chemistry. At the same time, the strongest basic pKa is 8.8189, which means that site is substantially protonated near physiological pH and therefore the compound is not especially neutral. The neutral fraction is only 0.0367, which is very low and indicates that the molecule is mostly ionized under physiological conditions; that low neutral fraction generally weakens passive permeability and makes enzyme access less favorable. The estimated logD is 1.2147, which is on the lower, more polar side of the usual balanced range, and both the exact molecular weight at 255.1735 and the molecular weight at 255.365 are moderate but not especially small enough to overcome the polarity penalty. The heavy-atom molecular weight of 234.197 likewise suggests a fairly compact but still heteroatom-rich scaffold rather than a strongly hydrophobic substrate-like one. Labute surface area is 115.0525, which is consistent with a modest-sized, moderately polar molecule rather than a highly hydrophobic, membrane-partitioning compound. Taken together, the strong ionization at physiological pH, low neutral fraction, modest logD, and only moderate size outweigh the substrate-supporting amine and pyridine features, so the molecule is more likely to be classified as not a CYP3A4 substrate.
+
+Input 2. Polished multi-molecule comparison analysis
+Among the positive neighbors, Neighbor 1 is mixed but leans away from substrate behavior on balance. It differs from the query by lacking the tertiary mixed amine that the query has once, and that absence was associated with a sizable shift toward non-substrate behavior. The query also has a higher maximum partial charge than this neighbor, 0.1283 versus 0.0478 with a delta of +0.0805, and a lower estimated logD, 1.2147 versus 2.0293 with a delta of -0.8146; both of those changes are unfavorable for substrate assignment here. Although the query has one more basic site, 3 versus 2, and shares tertiary aliphatic amine with the neighbor, those effects were not enough to offset the stronger non-substrate signals. The minimum absolute partial charge is also higher in the query, 0.1283 versus 0.0478 with a delta of +0.0805, again aligning with the same direction as the other unfavorable features. Neighbor 2 is more balanced toward substrate behavior, because it shares the tertiary aliphatic amine and the query lacks the neighbor’s 1H-indazole and pyridine motifs, changes that favor substrate assignment in this comparison. The query also has a slightly lower estimated logD, 1.2147 versus 1.4473 with a delta of -0.2326, which works against substrate behavior, but the query’s lower maximum partial charge, 0.1283 versus 0.2403 with a delta of -0.112, is favorable and helps offset that. Even so, the strong negative effect of introducing tertiary mixed amine relative to the neighbor, together with the overall balance, leaves this neighbor only modestly supportive. Neighbor 3 is the clearest of the positive set for non-substrate behavior. The query again has the tertiary mixed amine while the neighbor does not, and that is a strong unfavorable shift. The query also has a slightly higher maximum partial charge, 0.1283 versus 0.1189 with a delta of +0.0094, and a lower neutral fraction, 0.0367 versus 0.0875 with a delta of -0.0508; both changes point away from substrate behavior. The query has three basic sites versus one in the neighbor, a delta of +2, which in this local context also supports the non-substrate side, even though both share tertiary aliphatic amine. The only clear favorable factor is the higher fraction of sp3 carbons in the query, 0.3125 versus 0.2308 with a delta of +0.0817, but it is not enough to overturn the other opposing signals.
+
+Among the negative neighbors, Neighbor 4 still ends up supporting the non-substrate label overall. The neighbor has an alkyne that the query lacks, and that difference favored substrate behavior in isolation, but several stronger effects go the other way. The query has the tertiary mixed amine that the neighbor lacks, which is unfavorable here, and the query’s neutral fraction is far lower, 0.0367 versus 0.9404 with a delta of -0.9037, a very large shift away from the neutral, highly permeable end of the scale. The query also has a higher minimum absolute partial charge, 0.1283 versus 0.0599 with a delta of +0.0684, and a higher strongest basic pKa, 8.8189 versus 6.2016 with a delta of +2.6173; both changes align with the same non-substrate tendency in this pair. Sharing tertiary aliphatic amine adds a smaller favorable offset, but it is not enough to reverse the overall direction. Neighbor 5 is also informative for the non-substrate side. Here the query shares tertiary mixed amine and pyridine with the neighbor, but the neighbor’s strongest basic pKa is lower, 6.8096 versus 8.8189 with a delta of +2.0093 for the query, and in this local comparison that higher basicity is unfavorable. The query also lacks 2,4-thiazolidinedione, which favors substrate behavior in isolation, and it has tertiary aliphatic amine while the neighbor does not, another favorable feature. However, the query’s topological polar surface area is much lower, 19.37 versus 71.53 with a delta of -52.16, and that change is specifically associated here with the non-substrate direction. Taken together, the balance still lands on the non-substrate side. Neighbor 6 is the strongest negative-neighbor support for the final label. The query has tertiary aliphatic amine and tertiary mixed amine while the neighbor lacks both, but the rest of the comparison is consistently unfavorable for substrate behavior: the query’s neutral fraction is far lower, 0.0367 versus 1 with a delta of -0.9633; its minimum absolute partial charge is higher, 0.1283 versus 0.0307 with a delta of +0.0976; its maximum partial charge is higher, 0.1283 versus -0.0307 with a delta of +0.159; and its minimum partial charge is more negative, -0.351 versus -0.0622 with a delta of -0.2888. Each of those shifts points in the same direction, so despite the amine features, this neighbor clearly supports the non-substrate assignment.
+
+Putting the six comparisons together, the positive neighbors do not supply enough substrate-like support to outweigh the repeated non-substrate signals from the amine pattern, reduced neutral fraction, pKa/charge shifts, TPSA reduction in the one relevant comparison, and the logD and sp3 differences where they appear. The negative neighbors, especially Neighbor 4 and Neighbor 6, reinforce that the query’s overall local analog profile is more consistent with option (A) than with a CYP3A4 substrate. The final prediction is therefore that the query is not a substrate to the enzyme CYP3A4.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

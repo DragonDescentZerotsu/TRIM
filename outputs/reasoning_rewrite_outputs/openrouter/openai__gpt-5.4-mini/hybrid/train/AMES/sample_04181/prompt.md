@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an alkyl iodide, which is a clear mutagenicity alert because aliphatic halides can act as alkylating electrophiles and are commonly associated with Ames-positive outcomes. There is some counterbalancing evidence of a more polar, less exposed profile: heteroatom count is 2, hydrogen-bond acceptor count is 1, and topological polar surface area is only 9.23, all of which suggest limited polarity-driven permeability issues are not the dominant feature here, while estimated logP is 4.2431, indicating moderate-to-high lipophilicity that could still support membrane passage. The aromatic content is modest but not absent, with aromatic ring count 2 and ring count 2, so there is no strong polycyclic aromatic toxicophore signal, but the structure is not completely aliphatic either. Labute surface area is 115.9587, consistent with a nontrivial molecular size/shape that may influence exposure, and number of basic sites is absent (0), so there is no ionizable basic nitrogen that would be expected to aid bacterial accumulation. Neutral fraction is present (1), which indicates the molecule is fully neutral under the configured conditions and may therefore penetrate passively more readily than a heavily ionized species. Taken together, the strong alkyl iodide alert outweighs the modest exposure-limiting signals, so the molecule is more likely mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly strong mutagenic analog because the query has one alkyl iodide while the neighbor has none, and that exact structural alert is one of the clearest Ames-positive motifs. The query is also more lipophilic here, with estimated logD rising from 2.3846 to 4.2431 (delta +1.8585), which can increase exposure to hydrophobic bacterial targets, even though high logD can sometimes be limited by solubility. Some of the charge descriptors are mixed: the query has a more negative minimum partial charge, from -0.2813 to -0.4889 (delta -0.2076), and the maximum partial charge is lower, from 0.2215 to 0.1193 (delta -0.1021), while estimated logP also rises from 2.3846 to 4.2431 (delta +1.8585). The ring count also increases from 1 to 2 (delta +1). Those latter charge and ring changes are less clearly supportive on their own, but the alkyl iodide and the higher logD make Neighbor 1 overall a positive analog for option (B).
+
+Neighbor 2 is also overall aligned with mutagenicity. Again, the query carries alkyl iodide once while the neighbor does not, which is a major B-leaning difference. The query is much more lipophilic, with estimated logP increasing from 1.602 to 4.2431 (delta +2.6411), and the molecular size is much larger as well: molecular weight goes from 164.204 to 338.188 (delta +173.984), and exact molecular weight from 164.0837 to 338.0168 (delta +173.933). In Ames, higher size and lipophilicity do not directly mean mutagenicity, but they can change exposure and uptake. This neighbor also has two hydrogen-bond acceptors while the query has one (delta -1), which slightly lowers polarity on the query side. There is one countervailing detail: the neighbor has a dialkyl ether that the query lacks, which is an offsetting difference favoring the non-mutagenic side. Even with that, the alkyl iodide and the larger, more lipophilic query make Neighbor 2 a net positive analog for option (B).
+
+Neighbor 3 is the clearest positive neighbor of the first three. The same alkyl iodide difference is present: the query has one, the neighbor has none. The query also has higher estimated logD, 4.2431 versus 2.3136 (delta +1.9295), again indicating a more hydrophobic state that can alter bacterial exposure. The charge pattern is more supportive of mutagenicity here: maximum partial charge rises from 0.0585 to 0.1193 (delta +0.0609), while minimum partial charge becomes more negative, from -0.2322 to -0.4889 (delta -0.2567). Neutral fraction also changes from 0.9587 in the neighbor to present as 1 in the query, with delta +0.0413. Those shifts are modest individually, but together with the alkyl iodide and higher logD they make Neighbor 3 strongly consistent with option (B).
+
+Neighbor 4 is the main counterexample among the negative neighbors, because it still ends up leaning toward mutagenicity despite being in the non-mutagenic neighbor set. The query’s maximum partial charge is higher, 0.1193 versus 0.0036 (delta +0.1158), and the minimum absolute partial charge is also higher, 0.1193 versus 0.0036 (delta +0.1158), while estimated logD rises from 2.6641 to 4.2431 (delta +1.579). These are all compatible with a more exposure-altering, more hydrophobic query. Both molecules have alkyl iodide, so there is no difference there to separate them. The main opposing signals are that the query has a more negative minimum partial charge, -0.4889 versus -0.086 (delta -0.4029), and a higher maximum absolute partial charge, 0.4889 versus 0.086 (delta +0.4029), both of which tilt away from mutagenicity in this local comparison. Even so, the shared alkyl iodide together with the higher logD and partial-charge changes leave Neighbor 4 only weakly negative overall and closer to the mutagenic side than a true non-mutagenic counterexample.
+
+Neighbor 5 again looks mutagenic overall. The query has alkyl iodide while the neighbor does not, which is the strongest single difference. The neighbor also has a chloroformate that the query lacks, and that feature on the neighbor side is itself a reactive alert, so its absence in the query does not cancel the alkyl iodide concern; rather, the comparison still keeps the query in a chemically suspicious space. The query’s maximum absolute partial charge is slightly higher, 0.4889 versus 0.4488 (delta +0.0401), estimated logD is higher as well, 4.2431 versus 2.562 (delta +1.6811), and those factors support greater hydrophobic exposure. At the same time, the query has lower topological polar surface area, 9.23 versus 26.3 (delta -17.07), and fewer hydrogen-bond acceptors, 1 versus 2 (delta -1), both of which can increase permeability and exposure in some settings. Taken together, the alkyl iodide and the overall exposure profile make Neighbor 5 another positive analog for option (B), despite the query being more polar by some individual descriptors than the neighbor set average would suggest.
+
+Neighbor 6 also supports the mutagenic label. The query has alkyl iodide while the neighbor does not, which again is a strong B-leaning structural difference. The query is much larger in heavy-atom molecular weight, 323.068 versus 112.087 (delta +210.981), and slightly less sp3-rich, with fraction of sp3 carbons dropping from 0.25 to 0.2 (delta -0.05), which is consistent with a flatter, more aromatic-like character. The query has a more negative minimum partial charge, -0.4889 versus -0.396 (delta -0.0929), and lower topological polar surface area, 9.23 versus 20.23 (delta -11), both of which can affect exposure. The strongest acidic pKa is also treated differently: the neighbor has 13.8213, while the query has no acidic site, and that undefined delta still favors the mutagenic side in the comparison. Even with these mixed physicochemical shifts, the alkyl iodide plus the size and acidity differences make Neighbor 6 a positive analog for option (B).
+
+Across all six neighbors, the same structural alert keeps reappearing: the query has alkyl iodide where Neighbors 1, 2, 3, 5, and 6 do not, and even Neighbor 4 shares that motif with the query while still showing several exposure-related differences. Several of the supporting physicochemical changes also point in the same direction: higher logD and logP, larger molecular weight or heavy-atom molecular weight, lower TPSA, and fewer acceptors appear repeatedly in the comparisons. Some charge descriptors are mixed and occasionally cut against mutagenicity, but they do not outweigh the recurring alkyl iodide alert. Taken together, the positive neighbors dominate the local analog set, and the overall comparison is best assigned to option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

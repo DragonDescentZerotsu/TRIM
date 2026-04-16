@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+2H-chromen-2-one is present (1), which by itself is not a classic high-risk mutagenicity toxicophore. The molecule also has a fairly favorable QED drug-likeness of 0.7864, which is more consistent with a generally balanced profile than with an obviously problematic, highly alert-rich structure. Minimum absolute partial charge is 0.336, suggesting a moderate charge distribution rather than an extreme electrostatic pattern, and estimated logP is 2.8416, a middle-range lipophilicity that should not strongly compromise exposure through excessive hydrophobicity. Heteroatom count is 3, which is modest, and the number of basic sites is 1, so there is some ionizable functionality that could support bacterial uptake without implying any specific reactive mechanism. The aromatic ring count is 2, which adds some aromatic character but falls short of the more concerning fused polycyclic aromatic patterns typically associated with stronger mutagenic concern. Neutral fraction is 0.9908, so the molecule is predominantly neutral at the configured pH, which can favor passive permeability, and the strongest acidic pKa of 13.7183 indicates any acidic functionality is very weak and unlikely to be significantly ionized under typical assay conditions. Maximum partial charge is 0.336, again indicating no extreme charge imbalance. Overall, the profile contains some features that could support bacterial exposure, but it lacks a clear mutagenicity toxicophore and the overall physicochemical balance is not especially alarming, so the molecule is predicted to be not mutagenic (A) with score 0.7994.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is broadly informative for the not-mutagenic side. The query differs from this mutagenic neighbor by lacking 2H-chromen-2-one in the comparison sense described, and that structural difference is paired with several property shifts that mostly favor option (A): the query has lower minimum partial charge in the relevant direction (neighbor -0.5079 vs query -0.4226, delta +0.0853), higher maximum partial charge (0.1172 vs 0.336, delta +0.2188), lower QED-like drug-likeness is not the case here because the query is higher (0.6783 vs 0.7864, delta +0.1081), and a stronger acidic pKa shift (10.3155 to 13.7183, delta +3.4028) is one of the few features leaning the other way. Overall, though, the low pairwise score and the repeated A-favoring directions make this neighbor closer to a non-mutagenic analog than a mutagenic one.
+
+Neighbor 2 is mixed but still ends up favoring option (A). Here the query lacks the two tetrahydroquinoline copies present in the mutagenic neighbor, which is a B-leaning structural difference, yet the query also matches the neighbor on 2H-chromen-2-one and shows higher QED drug-likeness (0.6787 to 0.7864, delta +0.1077), both of which favor A. The strongest basic pKa is slightly lower in the query (5.7329 to 5.3658, delta -0.3671), and the neutral fraction is slightly higher (0.9789 to 0.9908, delta +0.0119), which in this comparison points toward B because it suggests a more neutral species. But the net picture remains more aligned with the non-mutagenic label because the shared chromenone scaffold and the higher QED outweigh those smaller B-leaning shifts.
+
+Neighbor 3 also supports option (A) overall. The query and neighbor both contain 2H-chromen-2-one, and the query is more drug-like by QED (0.5864 to 0.7864, delta +0.2), which is an A-leaning difference here. The query’s minimum absolute partial charge and maximum partial charge are essentially unchanged relative to the neighbor (0.3357 to 0.336 and 0.3357 to 0.336, both tiny positive deltas), while the presence of a basic site in the query versus none in the neighbor (0 to 1, delta +1) is the main B-leaning feature. The heteroatom count also drops from 4 to 3 (delta -1), which slightly favors A in this comparison. Taken together, the modest B signal from adding one basic site is not enough to overcome the stronger A-leaning similarities.
+
+Neighbor 4 is a clear non-mutagenic analog and strongly reinforces option (A). The neighbor has the iminoarene motif that the query lacks, and that difference is a major A-leaning factor here. The query also has much higher QED drug-likeness (0.3146 to 0.7864, delta +0.4718), and it contains 2H-chromen-2-one once while the neighbor does not, yet that chromenone change is still associated with the non-mutagenic side in this local comparison. The estimated logP drops sharply from 5.9604 to 2.8416 (delta -3.1188), which moves the query away from extreme lipophilicity and is consistent with the lower-exposure, A-leaning pattern seen here. The strongest acidic pKa shifts only slightly downward (13.783 to 13.7183, delta -0.0647), which is the one feature that leans B, but it is minor relative to the rest. The minimum absolute partial charge also falls a bit (0.338 to 0.336, delta -0.002), again supporting the overall A-side analogy.
+
+Neighbor 5 tells the same story as Neighbor 4. It also has iminoarene while the query does not, which favors the non-mutagenic label in this context. The query again has 2H-chromen-2-one once while the neighbor lacks it, and the query is much more drug-like by QED (0.2791 to 0.7864, delta +0.5073). As before, the strongest acidic pKa is only slightly lower in the query (13.7812 to 13.7183, delta -0.0629), which is a small B-leaning shift, but the much lower estimated logP in the query (6.3505 to 2.8416, delta -3.5089) and the small decrease in minimum absolute partial charge (0.3382 to 0.336, delta -0.0023) both fit better with the non-mutagenic side in this comparison. This neighbor therefore remains a strong A-supporting analog.
+
+Neighbor 6 is the main negative-neighbor counterweight, but it still does not overturn the overall conclusion. The query has higher QED drug-likeness (0.4251 to 0.7864, delta +0.3613), which is A-leaning, and it shares 2H-chromen-2-one with the neighbor. At the same time, the query has a much higher neutral fraction (0.2239 to 0.9908, delta +0.7669), which in this local setting points toward B; it also has secondary mixed amine present where the neighbor does not, and it gains one basic site (0 to 1), both of which are B-leaning. The hydrogen-bond donor count drops from 3 to 1 (delta -2), which favors A by reducing donor burden. Because this neighbor contains several explicit B-leaning changes, it is the strongest challenge to the non-mutagenic call, but the higher QED and lower donor burden still leave it as a mixed analog rather than a decisive mutagenic match.
+
+Putting the six neighbors together, the positive-neighbor comparisons are mostly consistent with non-mutagenicity, and the negative-neighbor comparisons are also largely pulled back toward the non-mutagenic class despite a few B-leaning features such as higher neutral fraction, a basic site, or secondary mixed amine in Neighbor 6. The repeated presence of 2H-chromen-2-one in the query, the higher QED values, the lower lipophilicity in the most non-mutagenic analogs, and the absence of the stronger mutagenic motifs seen in the mutagenic neighbors all support the final prediction: option (A), is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

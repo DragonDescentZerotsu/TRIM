@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a 2H-chromen-2-one scaffold, which is a structural motif often associated with more complex aromatic character and can sometimes weigh against oral exposure. It also has a phenol present (1), and phenolic hydroxyls are a liability for oral bioavailability because they can undergo rapid conjugation and clearance. The very low neutral fraction of 0.0012 is also unfavorable, since such a tiny neutral population suggests limited passive membrane permeation at physiological pH. On the other hand, several properties look supportive of oral exposure: the ketone is present (1), QED drug-likeness is 0.7476, fraction of sp3 carbons is 0.1579, topological polar surface area is 67.51, and Labute surface area is 132.552. A TPSA of 67.51 is comfortably within a range that is generally compatible with oral absorption, and a QED of 0.7476 is a strong overall drug-likeness signal. The low fraction of sp3 carbons at 0.1579 suggests a fairly flat, aromatic-heavy structure, which is not ideal, but it is not by itself prohibitive here. The charge descriptors are more mixed: minimum partial charge is -0.5066 and maximum absolute partial charge is 0.5066, indicating a fairly polarizable molecule with some localized charge, which can hurt permeability, yet the values are not extreme enough on their own to dominate the full profile. Balancing these factors, the favorable TPSA, QED, surface area, and neutral/physicochemical profile outweigh the liabilities from the phenol and chromenone motif, so the overall prediction is oral bioavailability ≥ 20% (B).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is overall supportive of oral bioavailability at or above 20% despite a few mixed signals. The query has lower fraction of sp3 carbons than the neighbor, 0.1579 versus 0.2727, with a delta of -0.1148, and that lower 3D character is paired with a favorable directional effect here. QED is also a bit lower in the query, 0.7476 versus 0.7965 (delta -0.0488), but it still remains in a fairly drug-like range. Against that, the query contains 2H-chromen-2-one once while the neighbor lacks it, and that single presence is unfavorable in this comparison. The query also has lower topological polar surface area, 67.51 versus 104.64 (delta -37.13), which is generally consistent with better permeability, although the sign in this specific comparison is opposite to the raw difference. The minimum absolute partial charge is lower in the query, 0.3434 versus 0.404 (delta -0.0606), while the maximum partial charge is also lower, 0.3434 versus 0.404 (delta -0.0606); these charge-related shifts are treated differently here, but taken together Neighbor 1 still ends up favoring option (B).
+
+Neighbor 2 also leans toward option (B) on balance. The query again has 2H-chromen-2-one once while the neighbor does not, and that is the main unfavorable feature in this comparison. However, the query shows much higher topological polar surface area than the neighbor, 67.51 versus 12.03, with a delta of +55.48, and in this case that aligns with the favorable direction. The query also has a much larger minimum absolute partial charge, 0.3434 versus 0.0104 (delta +0.333), which is unfavorable here. Set against that are a higher neutral fraction in the query, 0.0012 versus 0.0002 (delta +0.001), a lower fraction of sp3 carbons, 0.1579 versus 0.4 (delta -0.2421), and a lower QED, 0.7476 versus 0.8142 (delta -0.0666), all of which are treated favorably in this neighbor-specific comparison. Taken together, the favorable polarity, ionization, and 3D-shape shifts outweigh the chromenone and charge liabilities, so Neighbor 2 supports option (B).
+
+Neighbor 3 is similarly positive for option (B). The query contains 2H-chromen-2-one once while the neighbor does not, which is the main adverse structural feature. Even so, the query has a slightly higher fraction of sp3 carbons, 0.1579 versus 0.125 (delta +0.0329), a slightly higher neutral fraction, 0.0012 versus 0.0008 (delta +0.0004), a higher estimated logP, 3.6096 versus 3.1057 (delta +0.5039), and a higher topological polar surface area, 67.51 versus 54.37 (delta +13.14); all of these are treated favorably in this specific analog comparison. The only clearly unfavorable item besides the chromenone is that both molecules have no basic site, so the query-minus-neighbor delta is +0 and that neutral comparison is counted unfavorably here. Even with that, the aggregate of the listed features still favors option (B) for Neighbor 3.
+
+Neighbor 4 is a negative-label neighbor, but the detailed comparison still ends up favoring option (B) overall. The query has a much higher QED, 0.7476 versus 0.5302 (delta +0.2174), and both structures share 2H-chromen-2-one, which is favorable. The main liability is size: the query has a heavy-atom molecular weight of 292.205 versus 140.097 for the neighbor, a delta of +152.108, and that increase is unfavorable in this comparison. The query also has higher topological polar surface area, 67.51 versus 30.21 (delta +37.3), which is favorable here, but it also has a higher fraction of sp3 carbons, 0.1579 versus 0 (delta +0.1579), and that shift is unfavorable in this local pairing. Finally, the query has 4 rotatable bonds versus 0 in the neighbor, delta +4, and that flexibility change is favorable in this comparison. So although the neighbor is labeled as having oral bioavailability below 20%, the local evidence here is mixed and still tilts to option (B) because the QED, shared chromenone scaffold, polar surface area, and flexibility all counter the size penalty.
+
+Neighbor 5 is another negative-label neighbor that still ends up supporting option (B) by the end of the comparison. The query has 2H-chromen-2-one once whereas the neighbor does not, and that structural difference is strongly unfavorable here. The query also has a more negative minimum partial charge, -0.5066 versus -0.3265, with a delta of -0.1801, which is adverse in this comparison. On the favorable side, the query has much higher topological polar surface area, 67.51 versus 0, and a somewhat higher QED, 0.7476 versus 0.6741; both of those point toward option (B). The query also has lower fraction of sp3 carbons, 0.1579 versus 0.4 (delta -0.2421), which is favorable here, and a much lower estimated logD, 0.6857 versus 4.6934 (delta -4.0077), which is also favorable in this specific pairing. Even though the chromenone and minimum partial charge are strong negatives, the broader balance of polarity and drug-likeness still makes Neighbor 5 align with option (B).
+
+Neighbor 6 likewise starts from the negative class but still comes out favoring option (B) overall. The query has higher QED, 0.7476 versus 0.5037 (delta +0.2439), which is strongly favorable. It also contains 2H-chromen-2-one once while the neighbor does not, another adverse structural difference. The query’s strongest acidic pKa is 4.4766 versus 13.8115 for the neighbor, a delta of -9.3349, and that lower acidic pKa is unfavorable here. At the same time, the query has zero saturated rings versus three in the neighbor, delta -3, which is favorable in this comparison, and it has ketone once whereas the neighbor lacks ketone, which is also favorable. For strongest basic pKa, both molecules have no basic site, so the delta is not defined and that neutral comparison is treated unfavorably here. Even with the acidic-pKa drawback and the chromenone presence, the higher QED together with the saturated-ring and ketone differences keeps Neighbor 6 leaning toward option (B).
+
+Putting all six neighbors together, the three positively labeled neighbors consistently favor option (B), and the three negatively labeled neighbors are not strong enough to overturn that direction because each of them also contains several local features that look more like the higher-bioavailability side of the comparison. The query repeatedly shows favorable drug-likeness, manageable polarity, and in several cases a better balance of shape and flexibility, so the combined neighborhood evidence supports option (B): has oral bioavailability ≥ 20%.
+
+Input 3. Target final label semantics
+option (B): has oral bioavailability ≥ 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

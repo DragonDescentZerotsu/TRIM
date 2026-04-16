@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+Phenothiazine is present (1), which is an aromatic heterocyclic scaffold, and the molecule also contains an alkyl aryl ether (1) and a tertiary aliphatic amine (1). Taken together, those features are consistent with a developability-friendly, drug-like profile rather than an obviously reactive carcinogenic scaffold. The QED drug-likeness value is 0.8027, which is high and supports an overall favorable balance of physicochemical properties. The estimated logD is 2.7174, which sits in a moderate lipophilicity range and is not excessively high. The estimated logP is 4.4956, which is somewhat elevated and suggests increased hydrophobicity, so there is some countervailing concern for non-specific binding or broader exposure-related risk. The molecule has saturated ring count 0, aliphatic carbocycle count 0, and saturated heterocycle count 0, which indicates a lack of saturated ring content and a relatively planar, unsaturated ring system. The minimum partial charge is -0.4967, showing a moderately negative local charge environment but nothing here suggests a strongly reactive electrophilic alert such as nitroso, nitro-aromatic, epoxide, hydrazine, mustard, quinone, aldehyde, or other classic carcinogenic substructure. Overall, the favorable drug-likeness and moderate logD, together with the presence of phenothiazine, alkyl aryl ether, and tertiary aliphatic amine, outweigh the less favorable high logP and low saturated-ring content, so the compound is best classified as option (A): is not a carcinogen.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is one of the positive-carcinogen references, but several of its key differences favor the non-carcinogen label here. The query has alkyl aryl ether once while the neighbor lacks it, and that delta of +1 is associated with a strong shift toward option (A). The same is true for phenothiazine: the query has it once and the neighbor has none, again a +1 difference favoring option (A). On the property side, the query’s estimated logD is 2.7174 versus 2.4097 for the neighbor, a +0.3077 increase that still falls in the mid-lipophilicity region rather than an extreme, but in this local comparison it is treated as unfavorable for carcinogenicity. The query’s estimated logP is 4.4956 compared with 4.6546 in the neighbor, so the query is slightly less lipophilic by 0.159, which moves toward option (B) in isolation. However, that small opposing signal is outweighed by the shared tertiary aliphatic amine feature, which is present in both molecules and still favors option (A) here, and by the lower minimum absolute partial charge in the query, 0.1205 versus 0.3024, a delta of -0.1819 that also aligns with option (A). Overall, Neighbor 1 remains a positive-neighbor comparison, but its feature pattern still leans toward the query being a non-carcinogen.
+
+Neighbor 2 gives a similar picture, with the query again carrying alkyl aryl ether once and phenothiazine once while the neighbor lacks both, and both deltas again favor option (A). This neighbor also has pyridazine, which the query does not, and that absence in the query is another shift toward option (A). The charge-related descriptors are also in the same direction: the neighbor’s maximum partial charge is 0.1623 versus 0.1205 in the query, so the query-minus-neighbor delta is -0.0417, and that small reduction is aligned with option (A). The strongest basic pKa is higher in the query, 9.1709 versus 6.5838, with a delta of +2.5871; although stronger basicity often matters for ionization and distribution, in this local comparison it is still associated with option (A). The query also has fewer basic sites, 2 versus 4, a delta of -2, which further supports option (A). Taken together, Neighbor 2 is another positive-carcinogen reference whose key local differences mostly point away from carcinogenicity in the query.
+
+Neighbor 3 mixes one strong opposing property with several features that still favor option (A). The query again has alkyl aryl ether once while the neighbor lacks it, which strongly supports option (A), but now the query’s estimated logP is much higher: 4.4956 versus 2.5713, a delta of +1.9243. That move into a more lipophilic region is interpreted here as favoring option (B). The query also has phenothiazine once while the neighbor has none, again favoring option (A). The query’s minimum absolute partial charge is 0.1205 versus 0.3134 for the neighbor, a delta of -0.1929, which also supports option (A). For strongest basic pKa, the query is lower at 9.1709 versus 9.9187, a delta of -0.7478, and in this comparison that change favors option (B). Finally, the neighbor has 2 copies of carboxylic ester while the query has 0, a delta of -2, which again favors option (A). So Neighbor 3 contains one clear lipophilicity-driven signal toward carcinogenicity, but the recurring structural differences and ester count still make the overall comparison lean toward the non-carcinogen side.
+
+Neighbor 4 is the first non-carcinogen reference and it mostly reinforces the final label through several structural contrasts. The neighbor has piperazine while the query does not, a delta of -1 that favors option (A). The query again has alkyl aryl ether once and phenothiazine once while the neighbor has neither, so both of those deltas continue to favor option (A). In the same comparison, the neighbor has diaryl thioether and alkyl aryl thioether while the query has neither, with both -1 deltas also favoring option (A). The only opposing feature is minimum partial charge: the neighbor’s minimum partial charge is -0.3038 versus -0.4967 in the query, and the query-minus-neighbor delta of -0.1929 is associated with option (B). Even so, the multiple structural absences in the neighbor and the query’s presence of alkyl aryl ether and phenothiazine make Neighbor 4 clearly consistent with the non-carcinogen label overall.
+
+Neighbor 5 again supports the same conclusion despite a couple of mixed charge-related signals. The query has alkyl aryl ether once and phenothiazine once while the neighbor lacks both, so those two deltas favor option (A). The neighbor has diaryl thioether while the query does not, another -1 delta favoring option (A). On strongest basic pKa, the query is slightly higher at 9.1709 versus 9.0477, a delta of +0.1232, which in this local context favors option (B). The query also has a much higher QED drug-likeness, 0.8027 versus 0.5919, a +0.2108 difference that here favors option (A), suggesting the query is overall more developable-like than the neighbor. Finally, the query’s minimum partial charge is -0.4967 versus -0.3057, a delta of -0.191, which again favors option (B). Even with those two opposing charge-related features, the structural differences and the higher QED make Neighbor 5 align better with a non-carcinogen interpretation.
+
+Neighbor 6 is also a negative-carcinogen reference and provides a somewhat different mix of evidence. The query has a slightly higher QED drug-likeness, 0.8027 versus 0.7778, with a delta of +0.0249 that favors option (A). The query also has phenothiazine once while the neighbor lacks it, which again supports option (A). At the same time, the neighbor has no acidic site in the query sense, while the neighbor’s strongest acidic pKa is 13.8797 and the query has no acidic site; that undefined delta is still treated here as favoring option (B). The query’s estimated logP is much higher, 4.4956 versus 2.5416, a delta of +1.954 that also favors option (B), consistent with greater lipophilicity. By contrast, the query’s topological polar surface area is much lower, 15.71 versus 37.38, a delta of -21.67, which favors option (A) by indicating a less polar profile in this local comparison. The maximum partial charge is identical at 0.1205 for both molecules, so that delta of 0 does not separate them, but the comparison still assigns it to option (A). Netting these features together, Neighbor 6 is mixed, but the balance still leans toward the non-carcinogen label.
+
+Across all six neighbors, the strongest repeated patterns are the query’s recurring alkyl aryl ether and phenothiazine features relative to the positive neighbors, the absence of piperazine and thioether motifs relative to the non-carcinogen neighbors, and a generally high QED with only moderate-to-high logP/logD shifts. Some individual descriptors, especially logP and basicity-related measures, occasionally point toward carcinogenicity in isolated comparisons, but they do not dominate the overall neighborhood pattern. The totality of the six analogs therefore supports option (A): is not a carcinogen.
+
+Input 3. Target final label semantics
+option (A): is not a carcinogen
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

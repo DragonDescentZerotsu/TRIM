@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+Hydrazine is present, which is a well-recognized mutagenicity toxicophore and strongly raises concern for an Ames-positive outcome. The molecule also has a primary aliphatic amine: number of basic sites is present (1), which can improve bacterial accumulation, and that is reinforced by the presence of a primary aliphatic amine (1), another feature associated with better Gram-negative uptake. Secondary amide is present (1) as well, adding heteroatom-rich functionality and polarity, and the NH/OH group count is 5, which is relatively donor-rich. The heteroatom count is 6, also indicating a fairly heteroatom-containing scaffold. The estimated logP is 0.3218, so the compound is not especially lipophilic; that does not suggest severe solubility-limited exposure, and it is compatible with some bacterial accessibility. At the same time, neutral fraction is absent (0), meaning the molecule is fully ionized rather than neutral under the configured conditions, which can reduce passive membrane permeation and partially limit exposure. The ring count is 1, so there is no large fused aromatic system here, which argues against polycyclic aromatic mutagenicity patterns. The minimum absolute partial charge is 0.32, suggesting notable charge separation, but that alone is not a direct mutagenicity alert. Overall, the clear structural alert from hydrazine, together with the amine/basic and heteroatom features, outweighs the permeability-limiting signals from zero neutral fraction and the lack of a large aromatic scaffold. Taken together, the molecule is predicted to be mutagenic, option (B), with score 0.6898.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately weak comparison for mutagenicity. The strongest basic pKa is almost unchanged between neighbor and query, 9.0946 versus 9.0625 with delta -0.0321, so this ionization feature does not separate them much even though the neighbor-level effect points toward mutagenic. The query lacks thiol where the neighbor has it, which is a favorable difference for non-mutagenicity, but the query also has hydrazine once while the neighbor has none, and hydrazine is a clear mutagenicity-relevant functional group. Minimum partial charge is identical at -0.4801 with delta 0, and neutral fraction is also unchanged at 0 with delta 0, so those do not add separation. The query has much higher estimated logP than the neighbor, 0.3218 versus -2.2061 with delta +2.5279, and very lipophilic character can affect exposure, but here that descriptor is not enough to outweigh the hydrazine signal. Overall, Neighbor 1 contains both an anti-mutagenic thiol difference and a stronger mutagenic hydrazine difference, so it is not a decisive match and slightly weakens the case for option (B).
+
+Neighbor 2 is more informative because several features favor mutagenicity while others pull the other way. Again, strongest basic pKa is nearly the same, 9.0901 versus 9.0625 with delta -0.0276, so the basicity comparison is essentially neutral except for the small neighbor tendency toward mutagenicity. The query has hydrazine once while the neighbor has none, which is a direct mutagenicity-relevant difference. On the other hand, the neighbor has heteroatom count 11 versus 6 in the query, delta -5, and that larger heteroatom burden would usually raise polarity and reduce permeability; similarly, estimated logD is -7.6026 in the neighbor versus -6.327 in the query, delta +1.2756, and the query is less extremely polar than the neighbor. Rotatable-bond count also drops from 12 in the neighbor to 6 in the query, delta -6, which can improve bacterial accumulation and thereby increase the chance of detecting a reactive motif. Minimum partial charge is nearly unchanged at -0.4809 versus -0.4801 with delta +0.0008. Taken together, Neighbor 2 is more hydrophilic and flexible than the query, but the query’s hydrazine and improved rigidity/exposure profile still make the comparison lean toward mutagenicity overall.
+
+Neighbor 3 also supports the mutagenic label despite some countervailing features. The query again contains hydrazine while the neighbor does not, which is an important positive signal. Minimum partial charge is identical at -0.4801 with delta 0, so there is no separation there. Neutral fraction is also absent in both, delta 0, so ionization state does not distinguish them. The neighbor has ring count 0 while the query has 1, delta +1, and a ring by itself is not a specific toxicophore, though added ring structure can contribute to shape and exposure. The query has higher heteroatom count, 6 versus 4 with delta +2, which increases polarity, but that is partly offset by the much lower fraction of sp3 carbons in the query, 0.2727 versus 0.8333 with delta -0.5606, meaning the query is much flatter and more aromatic-like. Since flatter, more aromatic systems can coincide with mutagenicity-relevant chemotypes, this supports option (B). Even with the added ring and higher heteroatom count, the hydrazine and lower sp3 fraction make Neighbor 3 overall favor mutagenicity.
+
+Neighbor 4 is a strong positive-neighbor comparison for mutagenicity. The query has hydrazine and the neighbor does not, which is the main structural alert here. Neutral fraction is again 0 in both, so no help from that descriptor. The query has NH/OH group count 5 versus 4 in the neighbor, delta +1, and hydrogen-bond donor count 4 versus 3, delta +1; both indicate a more hydrogen-bonding, more polar query. Estimated logD is also less extreme in the query, -6.327 versus -7.4657, delta +1.1387, consistent with the query being somewhat less trapped in a very polar regime. Minimum absolute partial charge is the same at 0.32 with delta 0, so charge magnitude does not separate them. These changes do not look like a universal mutagenicity rule by themselves, but in this local comparison they accompany the hydrazine alert and make the query more likely to be detected as mutagenic than Neighbor 4.
+
+Neighbor 5 strengthens the mutagenic case even further. The query again has hydrazine while the neighbor does not. Neutral fraction is the same at 0, so no distinction there. The query has NH/OH group count 5 versus 4 and hydrogen-bond donor count 4 versus 3, both deltas +1, which indicates slightly greater polarity and hydrogen-bonding capacity. The neighbor has 2 carboxylic acid groups while the query has 1, delta -1, so the query is less heavily acidified than the neighbor, which can matter for exposure but does not erase the mutagenic warning from hydrazine. Estimated logD is -6.327 in the query versus -7.8844 in the neighbor, delta +1.5574, again showing the query is less extremely polar than Neighbor 5. In this comparison, the reduction in carboxylic acid burden and the persistent hydrazine group make the query look more like the mutagenic side of the local neighborhood.
+
+Neighbor 6 is essentially the same pattern as Neighbor 5 and again supports option (B). The query has hydrazine once and the neighbor has none. Neutral fraction remains absent in both, so there is no difference there. NH/OH group count is 5 in the query versus 4 in the neighbor, delta +1, and hydrogen-bond donor count is 4 versus 3, delta +1, both keeping the query slightly more polar and donor-rich. The neighbor again has 2 carboxylic acids while the query has 1, delta -1, and estimated logD is less negative in the query, -6.327 versus -7.8844, delta +1.5574. Those exposure-related shifts do not create mutagenicity on their own, but together with hydrazine they make the query the more likely mutagenic analog in this local comparison.
+
+Across all six neighbors, the same structural alert recurs: the query contains hydrazine while the neighbors either lack it or differ in ways that do not cancel that alert. The negative-neighbor set is especially persuasive because Neighbors 4, 5, and 6 all show the query’s hydrazine together with a less extreme logD and modestly higher hydrogen-bonding capacity, plus one or two carboxylic acids in the neighbors that do not outweigh the query’s warning feature. The positive-neighbor set is more mixed, but even there the hydrazine signal appears alongside local changes in basicity, heteroatom burden, ring features, and sp3 fraction that do not decisively oppose mutagenicity. Taken together, the neighborhood evidence is more consistent with option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

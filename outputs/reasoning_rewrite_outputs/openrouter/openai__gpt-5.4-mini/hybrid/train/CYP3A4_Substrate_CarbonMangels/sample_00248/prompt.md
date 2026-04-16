@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are consistent with CYP3A4 substrate behavior. It contains enamine count 2, which suggests a chemically reactive and potentially metabolically accessible motif. It also has carboxylic ester count 3, and multiple ester groups are commonly associated with compounds that are readily handled by metabolic enzymes. The hydrophobicity-related descriptors are fairly high: estimated logD 4.4025 and estimated logP 4.4025 both indicate a lipophilic molecule, which usually supports membrane partitioning and access to the CYP3A4 environment. Neutral fraction 1 means the molecule is fully neutral under the referenced conditions, which also favors passive permeability relative to ionized compounds. The size and surface descriptors are moderate to large but still compatible with substrate-like chemical space: Labute surface area 195.0307, exact molecular weight 455.2308, molecular weight 455.551, heavy-atom molecular weight 422.287, and heavy-atom count 33 all point to a fairly sizeable but not extreme scaffold. Taken together, these properties describe a lipophilic, largely neutral, ester-rich molecule of moderate-high size that should be able to reach and interact with CYP3A4, so the overall assessment is that it is a substrate to the enzyme CYP3A4.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close positive analog with similarity 0.375, and its key features line up well with the query for a CYP3A4 substrate call. It matches the query on enamine count exactly at 2 copies (delta +0), shares the alkene feature, and sits in a similar hydrophobicity/permeability region with estimated logD 4.2592 versus 4.4025 for the query (delta +0.1433). The query also has 3 carboxylic esters versus 2 in the neighbor (delta +1), which further supports the same side of the comparison. Neutral fraction is present in both molecules (delta +0), and the query has a higher fraction of sp3 carbons, 0.4231 versus 0.2 (delta +0.2231), which makes the query look at least as compatible with the substrate-like region represented by this neighbor. Overall, this neighbor strongly supports option (B).
+
+Neighbor 2 is very similar to Neighbor 1, with similarity 0.366, and gives the same direction of evidence. It again matches on enamine count at 2 copies, keeps alkene present on both sides, and the query exceeds the neighbor in carboxylic ester count by 1 (3 versus 2). The query’s estimated logD is 4.4025 compared with 4.2758 in the neighbor (delta +0.1267), so the query remains in essentially the same high-logD zone, and neutral fraction is again present in both molecules (delta +0). The query also has a higher fraction of sp3 carbons, 0.4231 versus 0.2593 (delta +0.1638), which continues to support the same substrate-like neighborhood. Taken together, this second analog also favors option (B).
+
+Neighbor 3 is still a positive neighbor, though the similarity is lower at 0.301. It keeps the same 2-copy enamine pattern and the same 2-versus-3 carboxylic ester comparison, so the structural pattern remains aligned with the query. Here the query has lower estimated logD than the neighbor, 4.4025 versus 4.7528 (delta -0.3503), but that still stays within a hydrophobic, substrate-relevant range rather than moving into a clearly polar region. The query also has a higher fraction of sp3 carbons, 0.4231 versus 0.3333 (delta +0.0897), and a much higher neutral fraction, present (1) versus 0.0188 in the neighbor (delta +0.9812), both of which strengthen compatibility with the substrate-class analog. The one counterpoint is Labute surface area: the neighbor is larger at 264.2423 versus 195.0307 for the query (delta -69.2116), which goes the opposite way and slightly tempers the match. Even with that offset, the overall comparison still favors option (B).
+
+Neighbor 4 is one of the negative-labeled neighbors, similarity 0.272, but most of its local feature comparisons still resemble the substrate side. The neighbor has a tertiary mixed amine, nitro, and phosphonic diester, all of which the query lacks, while the query instead has more carboxylic ester groups, 3 versus 1 in the neighbor (delta +2). The neighbor also has 2 copies of enamine, matching the query exactly, so that portion remains aligned. The only feature here that clearly moves away from the substrate side is aromatic burden: the neighbor has 3 benzene rings while the query has 1 (delta -2), and that drop in benzene content is the main part of this comparison that supports non-substrate behavior. Because most other listed differences still resemble the positive analogs, this neighbor weakly points toward option (B) overall, despite its negative label.
+
+Neighbor 5 is another negative-labeled neighbor with similarity 0.261, and it also looks more substrate-like than the label on its own would suggest. The query has 3 carboxylic esters versus 1 in the neighbor (delta +2), much higher estimated logD at 4.4025 versus 1.6046 (delta +2.7979), and a neutral fraction present versus 0.2463 in the neighbor (delta +0.7537). It also has a much larger Labute surface area, 195.0307 versus 108.745 (delta +86.2857), and the query has no basic site while the neighbor’s strongest basic pKa is 7.8857, with the comparison explicitly noting that the delta is not defined because one molecule has no basic site. The exact molecular weight is also far higher for the query, 455.2308 versus 247.1572 (delta +208.0736). Within the ranges highlighted by the analogs, this combination is much closer to the substrate-favoring region than the neighbor’s lower-logD, smaller, less neutral profile, so this comparison strongly supports option (B).
+
+Neighbor 6 is the last negative-labeled neighbor, similarity 0.258, and it again supports the substrate side. The query has 3 carboxylic esters versus 2 in the neighbor (delta +1), the same 2-copy enamine pattern, and the neighbor has nitro while the query does not, yet the more decisive differences still favor the query: estimated logD is 4.4025 versus 3.7737 (delta +0.6288), estimated logP is 4.4025 versus 4.2104 (delta +0.1921), and neutral fraction is present versus 0.3658 (delta +0.6342). Those values keep the query in a more hydrophobic, substrate-relevant zone than the neighbor. So even though this neighbor is labeled non-substrate, its feature pattern still resembles the substrate side more closely, reinforcing option (B).
+
+Putting all six neighbors together, the three positive neighbors consistently show the query aligned with substrate-like analogs through shared enamine and alkene features, higher carboxylic ester count, similarly high estimated logD, preserved neutral fraction, and in some cases higher fraction of sp3 carbons. The three negative neighbors do not overturn that picture; instead, they mostly contain features that still make the query look more like the substrate side, with only isolated counter-signals such as lower benzene count in Neighbor 4 or lower Labute surface area in Neighbor 3. The combined analog evidence therefore supports the final prediction that the query is a substrate to CYP3A4, option (B).
+
+Input 3. Target final label semantics
+option (B): is a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

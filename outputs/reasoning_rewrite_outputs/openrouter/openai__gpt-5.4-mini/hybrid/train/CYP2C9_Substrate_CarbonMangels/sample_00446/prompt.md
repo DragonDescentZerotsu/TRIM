@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are consistent with CYP2C9 substrate behavior. Its neutral fraction is very low at 0.0008, which suggests it is not predominantly neutral and may exist in an ionized state under physiological conditions, a pattern that often fits CYP2C9 recognition. The strongest acidic pKa is 4.2821, placing it in the weak-acid range where a significant anionic fraction can form, which is a well-known favorable motif for CYP2C9 binding. The presence of a carboxylic acid (1) strongly supports that idea, since carboxylate-containing compounds commonly interact favorably with the enzyme’s anionic-recognition region. The aromatic character also looks favorable: benzene count 2 indicates two benzene rings, which can support hydrophobic and π-stacking interactions in the binding pocket. The QED drug-likeness is high at 0.8528, suggesting the molecule sits in a generally developable chemical space compatible with enzyme binding. A maximum partial charge of 0.3102 is consistent with a polarized charge distribution, and the hydrogen-bond acceptor count of 2 is modest rather than excessively polar, which may still allow productive binding. The absence of dialkyl ether (0) and the absence of piperidine (0) do not conflict with substrate-like behavior. One feature that slightly weakens the substrate picture is the ketone being present (1), since that can add polarity and was unfavorable in the model’s learned pattern. Overall, though, the low neutral fraction, weak-acid pKa of 4.2821, carboxylic acid presence, and aromatic ring content make the molecule look more like a CYP2C9 substrate than a non-substrate. The final prediction, however, is option (A), indicating the negative influence of the ketone and the overall descriptor balance outweigh the favorable acidic and aromatic signals.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly close positive analog at similarity 0.658, and several of its shared features align with CYP2C9 substrate chemistry. It shares carboxylic acid with the query, which is important because an acidic/anionic group is often favorable for CYP2C9 recognition. The query also has a slightly higher neutral fraction than the neighbor (0.0008 vs 0.0007, delta +0.0001), which remains in the very low, mostly ionizable regime rather than a strongly neutral one. QED is also very similar and slightly lower in the query (0.8528 vs 0.859, delta -0.0062), and the query has a slightly lower fraction of sp3 carbons (0.125 vs 0.1429, delta -0.0179), preserving a fairly flat, aromatic-leaning profile. The only explicitly noted structural difference is that the neighbor has thiophene while the query does not, and that absence matters here because thiophene contributes to the aromatic/hydrophobic pattern typical of many CYP2C9 substrates. Dialkyl ether is absent in both. Overall, Neighbor 1 looks like a substrate-like analog and therefore supports substrate status, even though the query is not perfectly matched on the thiophene feature.
+
+Neighbor 2 is also a positive neighbor at similarity 0.446, but its comparison is mixed. The query and neighbor both lack dialkyl ether, which keeps them aligned on that feature. The neutral fraction is again very low in both molecules, with the query slightly lower than the neighbor (0.0008 vs 0.001, delta -0.0002), and QED is also slightly lower in the query (0.8528 vs 0.8811, delta -0.0283). Both compounds have carboxylic acid, which continues to favor the anionic substrate pattern. Hydrogen-bond acceptor count is unchanged at 2 versus 2, so there is no penalty there. The main unfavorable difference is fraction of sp3 carbons: the neighbor has 0.2143 while the query has 0.125, a decrease of 0.0893, and in this comparison that lower sp3 content is associated with the non-substrate side. So Neighbor 2 still contains several substrate-like elements, but its shape/sp3 comparison weakens the case a bit and makes it less strongly supportive than Neighbor 1.
+
+Neighbor 3, at similarity 0.434, is again overall substrate-like but with a clearer mixed signal. Dialkyl ether is absent in both compounds, and the neutral fraction stays extremely low, with the query slightly below the neighbor (0.0008 vs 0.001, delta -0.0002). Both also have carboxylic acid, which is the key favorable functional group for CYP2C9 substrate recognition. The query has a higher hydrogen-bond acceptor count than the neighbor, 2 versus 1 (delta +1), and in this comparison that increase is unfavorable. On the other hand, the query has a slightly lower strongest acidic pKa than the neighbor, 4.2821 vs 4.4001 (delta -0.118), which remains in a weak-acid range and is favorable for forming the anionic species that CYP2C9 often recognizes. The query also has a slightly lower estimated logD, -0.0125 vs 0.0729 (delta -0.0854), staying near neutral and not moving into a strongly hydrophilic extreme. Taken together, Neighbor 3 still resembles a weak-acid substrate, but the extra acceptor burden in the query introduces some counterweight, making this positive evidence weaker than a simple one-directional match.
+
+Neighbor 4 is a negative neighbor at similarity 0.391, yet most of the specific feature shifts actually resemble substrate-favoring chemistry. The query has a more negative minimum partial charge than the neighbor (-0.4808 vs -0.3214, delta -0.1594), and the maximum absolute partial charge is correspondingly higher (0.4808 vs 0.3214, delta +0.1594), both of which are compatible with a stronger localized charge feature that can support CYP2C9 recognition. The query also has a higher QED value (0.8528 vs 0.6422, delta +0.2106), and both molecules lack dialkyl ether. The one clearly unfavorable feature is size: the query has much higher heavy-atom molecular weight, 240.173 vs 138.105, a delta of +102.068, and that larger size is associated with the non-substrate side in this comparison. The query also lacks the basic site present in the neighbor, with number of basic sites dropping from 1 to 0 (delta -1), which is substrate-favoring here. So Neighbor 4 is a negative analog by label, but the feature-level comparison actually contains several substrate-like signals and only a size penalty, making it less persuasive as a non-substrate argument than the positive neighbors are as substrate arguments.
+
+Neighbor 5 is another negative neighbor at similarity 0.322. It shares the absence of dialkyl ether with the query, and the query has a slightly higher maximum absolute partial charge than the neighbor (0.4808 vs 0.4526, delta +0.0282), again leaning toward the substrate side. The neighbor contains a urethane group that the query lacks, and that structural difference is also substrate-favoring in this comparison. QED is higher in the query (0.8528 vs 0.7275, delta +0.1253), and the query lacks a basic site while the neighbor has a strongest basic pKa of 4.7743; that contrast is explicitly treated as favorable to substrate status here. The main unfavorable feature is minimum absolute partial charge: the query is lower at 0.3102 vs 0.4132, delta -0.103, and that shift is the one feature that leans toward the non-substrate side. Even so, the balance of the listed features in Neighbor 5 is more substrate-like than not, so this negative-labeled neighbor does not strongly support the final non-substrate assignment.
+
+Neighbor 6 provides the clearest support for the non-substrate label. It is a negative neighbor at similarity 0.292, and unlike the earlier neighbors, it contains two strongly unfavorable shifts. The query has higher QED than the neighbor, 0.8528 vs 0.7965 (delta +0.0563), and much lower fraction of sp3 carbons, 0.125 vs 0.2727 (delta -0.1477); in this comparison, both of those changes point toward the non-substrate side. The query and neighbor both lack dialkyl ether, which is neutral here, and the query’s neutral fraction is far lower than the neighbor’s present state, moving from present 1 in the neighbor to 0.0008 in the query; that difference is treated as substrate-favoring, but it does not overcome the two strong non-substrate signals. The query also has a slightly higher maximum absolute partial charge (0.4808 vs 0.4489, delta +0.0319), which is favorable, but the minimum absolute partial charge is lower (0.3102 vs 0.404, delta -0.0938), again unfavorable. The overall effect is that Neighbor 6 remains the most convincing negative analog because its lower sp3 character and the QED shift both align with the non-substrate direction in this comparison.
+
+Putting the six neighbors together, the positive neighbors mostly highlight the classic CYP2C9 substrate pattern of a carboxylic acid, low neutral fraction, and generally substrate-like aromatic/physicochemical balance, while the negative neighbors show that the query does not cleanly satisfy every favorable analog condition and in at least one close comparison the lower sp3 fraction and QED shifts are more consistent with non-substrate behavior. The most decisive negative evidence comes from Neighbor 6, and the weaker but still relevant size- and charge-pattern differences in the negative set keep the balance from being fully substrate-like. Taken as a whole, the neighbor comparisons support the final prediction that the query is not a substrate to CYP2C9.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP2C9
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

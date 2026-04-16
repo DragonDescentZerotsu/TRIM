@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed safety profile, but the overall balance favors non-toxicity. A minimum partial charge of -0.3704 and a maximum absolute partial charge of 0.3704 suggest a moderate polar character rather than an extreme charged state. The ammonium group is absent (0), which removes one common cationic liability, although a secondary mixed amine is present (1), and that basic nitrogen can still introduce some risk when paired with a lipophilic scaffold. The strongest basic pKa is 4.0041, which is relatively low and argues against a strongly basic, lysosomotropic profile. The strongest acidic pKa is 9.013, indicating a typical ionizable acidic site but not an obviously alarming one by itself. The fraction of sp3 carbons is 0.1429, so the scaffold is quite flat and aromatic-leaning, which is less favorable for developability. The hydrogen-bond acceptor count is 5 and the nitrogen/oxygen atom count is 7, both moderate values that reflect some polarity but not an extreme hydrogen-bonding burden. The presence of 2 sulfonamide groups is a notable stabilizing feature here, since sulfonamides are often compatible with drug-like profiles and can help offset other liabilities. Taken together, there are some concerns from the low sp3 fraction and the presence of a secondary mixed amine, but the lack of a strongly basic ammonium, the low strongest basic pKa of 4.0041, and the moderate polarity descriptors make the compound lean toward option (A): is not toxic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly mixed positive-side analog, but the balance is only slightly supportive of the non-toxic label. The query and neighbor both lack ammonium, yet the query has one more sulfonamide group (2 vs 1, delta +1), which is a mild favorable shift here because the overall comparison lands near neutral. At the same time, the query has a more negative minimum partial charge (-0.3704 vs -0.2325, delta -0.1379), a higher hydrogen-bond acceptor count (5 vs 4, delta +1), and it also contains one secondary mixed amine while the neighbor has none (delta +1); those features point in a more toxic direction. The main offsetting factor is the much lower estimated logD in the query (-0.3619 vs 3.5116, delta -3.8735), which is a strong shift away from the lipophilic profile associated with higher safety risk. Taken together, Neighbor 1 is close to balanced but ends slightly on the not-toxic side.
+
+Neighbor 2 is similar in overall pattern and again ends up only weakly supportive of the non-toxic label. Here the query has a less negative minimum partial charge (-0.3704 vs -0.4939, delta +0.1235), both molecules still lack ammonium, and the query again has one more sulfonamide group (2 vs 1, delta +1), a higher hydrogen-bond acceptor count (5 vs 4, delta +1), and one secondary mixed amine where the neighbor has none. Those latter changes all lean toward the toxic side in this local comparison. The strongest counterweight is again the dramatic drop in estimated logD from 3.4972 in the neighbor to -0.3619 in the query (delta -3.8591), which is a substantial move away from a lipophilic, accumulation-prone profile. On balance, Neighbor 2 remains only slightly favorable to option A.
+
+Neighbor 3 also mixes unfavorable and favorable signals, but its net effect still favors the not-toxic class. The query is more saturated in one respect, with fraction of sp3 carbons going from 0.4286 in the neighbor to 0.1429 in the query (delta -0.2857), and the query has one additional hydrogen-bond acceptor (5 vs 4, delta +1) plus one secondary mixed amine while the neighbor has none; those are the main features that read as more concerning. The ammonium status is unchanged because neither molecule has ammonium. The query does, however, have far fewer rotatable bonds (1 vs 7, delta -6), which is a large structural simplification, and that helps counter the other toxic-leaning changes in this specific analog pair. Combined with the other effects, Neighbor 3 still comes out slightly on the non-toxic side.
+
+Neighbor 4 is a stronger negative-side comparator, but even here the query looks cleaner overall. The neighbor contains an amidine while the query does not, which is an unfavorable structural difference for the neighbor. The query also has a somewhat higher maximum absolute partial charge (0.3704 vs 0.3412, delta +0.0292) and the same ammonium status as the neighbor, which do not help the case for toxicity. On the favorable side, the query has much lower estimated logP (-0.3513 vs 2.4335, delta -2.7848), which is a major move away from lipophilic behavior, and it has a much higher neutral fraction (0.9758 vs 0.5402, delta +0.4356), consistent with a more neutral, less accumulation-prone profile. The fraction of sp3 carbons is nearly the same and slightly higher in the query (0.1429 vs 0.1333, delta +0.0095), but that is minor relative to the other shifts. Overall, Neighbor 4 supports option A.
+
+Neighbor 5 is another negative-side neighbor that still leans toward the not-toxic label after the full comparison is considered. The query has a slightly higher maximum absolute partial charge (0.3704 vs 0.3643, delta +0.0061), both molecules lack ammonium, the query has one more hydrogen-bond acceptor (5 vs 4, delta +1), and a higher heteroatom count (10 vs 8, delta +2); those are the main features that tilt toward the toxic side. The query also has slightly lower fraction of sp3 carbons (0.1429 vs 0.1875, delta -0.0446), which does not help. The decisive counterweight is the much lower estimated logP in the query (-0.3513 vs 2.7141, delta -3.0654), again shifting away from lipophilicity-driven liabilities. So even though several descriptors move in a concerning direction, Neighbor 5 still ends up favoring option A overall.
+
+Neighbor 6 is the most toxic-looking of the negative neighbors on several individual features, but the full comparison still does not overturn the not-toxic call. The query has more fraction of sp3 carbons than the neighbor (0.1429 vs 0, delta +0.1429), which in isolation is favorable, but it also has one more hydrogen-bond acceptor (5 vs 4, delta +1), a slightly lower strongest acidic pKa (9.013 vs 9.0289, delta -0.0159), one secondary mixed amine while the neighbor has none, and a higher maximum absolute partial charge (0.3704 vs 0.2391, delta +0.1313). Those are all the kinds of shifts that make this pair look more toxic on the surface. Still, this neighbor is only one comparator, and the query remains the same low-logP, high-neutral-fraction molecule seen above rather than the more lipophilic neighbor. Even with the unfavorable local shifts, the comparison does not outweigh the broader pattern established by the other neighbors.
+
+Putting all six neighbors together, the three positive-side comparisons are each weakly to modestly favorable for option A, mainly because the query repeatedly shows much lower estimated logD or logP than the higher-lipophilicity neighbors, even when some charge- and acceptor-related features look more toxic. The three negative-side comparisons are more mixed: they highlight amidine absence, lower lipophilicity, and higher neutral fraction as favorable, while also flagging several more concerning charge and heteroatom features. Across the whole set, the recurring reduction in logD/logP and the generally non-extreme overall profile are enough to keep the final judgment on the not-toxic side. The best-supported conclusion is option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

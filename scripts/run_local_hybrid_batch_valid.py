@@ -26,8 +26,8 @@ except ImportError:
         return iterable
 
 
-FEATURE_CONFIG = "configs/features/fg_top_level_plus_rdkit_descriptors_and_pka_easy_to_NLP_Lv1.json"
-FEATURE_SET_NAME = "fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1"
+DEFAULT_FEATURE_CONFIG = "configs/features/fg_top_level_plus_rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts.json"
+DEFAULT_FEATURE_SET_NAME = "fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts"
 
 
 def parse_args() -> argparse.Namespace:
@@ -36,18 +36,20 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--tasks", default=None, help="Comma-separated task names. Defaults to all tasks.")
     parser.add_argument("--exclude-tasks", default="BBB_Martins", help="Comma-separated task names to exclude.")
+    parser.add_argument("--feature-config", default=DEFAULT_FEATURE_CONFIG)
+    parser.add_argument("--feature-set-name", default=DEFAULT_FEATURE_SET_NAME)
     parser.add_argument("--python-executable", default=sys.executable)
     parser.add_argument("--max-parallel-tasks", type=int, default=4)
     parser.add_argument("--pair-n-jobs", type=int, default=64)
     parser.add_argument("--top-k", type=int, default=4)
     parser.add_argument("--allow-same-scaffold", action="store_true", default=True)
     parser.add_argument("--strict-cross-scaffold", action="store_true")
-    parser.add_argument("--pair-output-root", default="outputs/models/pair_ebm/all_other_tasks_topk4_same_scaffold_njobs64_fg_plus_rdkit")
-    parser.add_argument("--local-output-root", default="outputs/metrics/local_only/all_other_tasks_topk4_same_scaffold_njobs64_fg_plus_rdkit")
-    parser.add_argument("--hybrid-output-root", default="outputs/metrics/hybrid/all_other_tasks_topk4_same_scaffold_njobs64_fg_plus_rdkit")
-    parser.add_argument("--log-root", default="outputs/logs/local_hybrid_batch_valid")
-    parser.add_argument("--global-model-root", default="outputs/models/global_ebm/all_tasks_njobs16_parallel")
-    parser.add_argument("--summary-output", default="outputs/metrics/local_hybrid_batch_valid_summary_fg_plus_rdkit.json")
+    parser.add_argument("--pair-output-root", default="outputs/models/pair_ebm/all_tasks_topk4_same_scaffold_njobs16_fg_plus_rdkit_core_pka_no_fr_counts")
+    parser.add_argument("--local-output-root", default="outputs/metrics/local_only/all_tasks_topk4_same_scaffold_njobs16_fg_plus_rdkit_core_pka_no_fr_counts_valid")
+    parser.add_argument("--hybrid-output-root", default="outputs/metrics/hybrid/all_tasks_topk4_same_scaffold_njobs16_fg_plus_rdkit_core_pka_no_fr_counts_valid")
+    parser.add_argument("--log-root", default="outputs/logs/local_hybrid_batch_valid_core_pka_no_fr_counts")
+    parser.add_argument("--global-model-root", default="outputs/models/global_ebm/all_tasks_njobs16_parallel_core_pka_no_fr_keep_nan")
+    parser.add_argument("--summary-output", default="outputs/metrics/local_hybrid_batch_valid_summary_all16_fg_plus_rdkit_core_pka_no_fr_counts.json")
     return parser.parse_args()
 
 
@@ -88,7 +90,7 @@ def build_allow_same_scaffold_flag(strict_cross_scaffold: bool) -> list[str]:
 
 def run_task_pipeline(task: str, args: argparse.Namespace) -> dict[str, object]:
     allow_same_scaffold_flag = build_allow_same_scaffold_flag(args.strict_cross_scaffold)
-    pair_task_root = Path(args.pair_output_root) / task / FEATURE_SET_NAME
+    pair_task_root = Path(args.pair_output_root) / task / args.feature_set_name
     local_task_root = Path(args.local_output_root) / task
     hybrid_task_root = Path(args.hybrid_output_root) / task
     log_root = Path(args.log_root) / task
@@ -100,7 +102,7 @@ def run_task_pipeline(task: str, args: argparse.Namespace) -> dict[str, object]:
         "--tasks",
         task,
         "--feature-config",
-        FEATURE_CONFIG,
+        args.feature_config,
         "--top-k",
         str(args.top_k),
         "--n-jobs",
@@ -118,7 +120,7 @@ def run_task_pipeline(task: str, args: argparse.Namespace) -> dict[str, object]:
         "--tasks",
         task,
         "--feature-config",
-        FEATURE_CONFIG,
+        args.feature_config,
         "--top-k",
         str(args.top_k),
         "--n-jobs",
@@ -131,7 +133,7 @@ def run_task_pipeline(task: str, args: argparse.Namespace) -> dict[str, object]:
 
     pos_bundle_path = pair_task_root / "pos_model_bundle.pkl"
     neg_bundle_path = pair_task_root / "neg_model_bundle.pkl"
-    global_bundle_path = Path(args.global_model_root) / task / FEATURE_SET_NAME / "model_bundle.pkl"
+    global_bundle_path = Path(args.global_model_root) / task / args.feature_set_name / "model_bundle.pkl"
 
     local_command = [
         args.python_executable,
@@ -146,7 +148,7 @@ def run_task_pipeline(task: str, args: argparse.Namespace) -> dict[str, object]:
         "--neg-bundle-path",
         str(neg_bundle_path),
         "--feature-config",
-        FEATURE_CONFIG,
+        args.feature_config,
         "--top-k-pos",
         str(args.top_k),
         "--top-k-neg",
@@ -172,7 +174,7 @@ def run_task_pipeline(task: str, args: argparse.Namespace) -> dict[str, object]:
         "--global-bundle-path",
         str(global_bundle_path),
         "--feature-config",
-        FEATURE_CONFIG,
+        args.feature_config,
         "--top-k-pos",
         str(args.top_k),
         "--top-k-neg",
@@ -266,7 +268,8 @@ def main() -> int:
     payload = {
         "config": {
             "tasks": tasks,
-            "feature_config": FEATURE_CONFIG,
+            "feature_config": args.feature_config,
+            "feature_set_name": args.feature_set_name,
             "pair_n_jobs": args.pair_n_jobs,
             "top_k": args.top_k,
             "strict_cross_scaffold_pairs": args.strict_cross_scaffold,

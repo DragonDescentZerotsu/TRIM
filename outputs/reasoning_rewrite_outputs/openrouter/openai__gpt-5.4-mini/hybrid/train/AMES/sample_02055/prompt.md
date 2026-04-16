@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an alkyl bromide, which is a well-recognized mutagenicity toxicophore because bromides can act as reactive alkylating groups, so that is the strongest structural alert here and it favors mutagenicity. At the same time, several broader descriptor-level properties look more compatible with lower bacterial exposure than with a strongly mutagenic profile: the QED drug-likeness value is 0.6524, the fraction of sp3 carbons is 0.8571, the ring count is 0, the heteroatom count is 3, the hydrogen-bond acceptor count is 1, and the aromatic ring count is 0. These values suggest a relatively saturated, non-aromatic, and not especially heteroatom-rich scaffold, which does not add much additional concern for classic planar aromatic mutagenicity. The estimated logP of 1.6845 is moderate rather than extreme, so it does not suggest a strong solubility or permeability penalty either way. The strongest acidic pKa is 13.8434, indicating the molecule is not a strongly acidic species, and the presence of a secondary amide adds polarity and some exposure-modifying character without being a direct mutagenic alert. Balancing the explicit alkyl bromide alert against the otherwise fairly non-aromatic, saturated descriptor profile, the molecule is predicted to be mutagenic overall.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately slightly unfavorable match. The query has a higher strongest acidic pKa than the neighbor, 13.8434 versus 12.8121, with a delta of +1.0313, and that feature is associated with a positive shift toward mutagenicity in this comparison. The alkyl bromide is shared by both molecules, which is important because aliphatic halides are a recognized mutagenicity alert. However, several other features go the opposite way: the query has a much higher fraction of sp3 carbons, 0.8571 versus 0.2222, delta +0.6349, and that lower-aromatic, more saturated character is linked here to a not-mutagenic direction; the query also has lower QED drug-likeness, 0.6524 versus 0.7734, delta -0.121, and a slightly more negative minimum partial charge, -0.3505 versus -0.3251, delta -0.0254, both of which favor the not-mutagenic side. The strongest basic pKa also matters because the neighbor has a basic site at 3.9516 while the query has no basic site, giving a not-defined delta and a small not-mutagenic tilt in this case. Overall, Neighbor 1 leans slightly toward option (A): is not mutagenic.
+
+Neighbor 2 is also overall more consistent with option (A), despite one important mutagenic alert being shared. Again, alkyl bromide is present in both molecules, which supports mutagenicity. The query has a higher strongest acidic pKa, 13.8434 versus 13.7545, delta +0.0889, and that difference is associated with a mutagenic direction here, but the effect is modest. In contrast, the query has a much higher fraction of sp3 carbons, 0.8571 versus 0.3, delta +0.5571, which strongly favors the not-mutagenic side in this comparison. The query also lacks the one-ring scaffold seen in the neighbor, with ring count 0 versus 1, delta -1, and it has lower QED drug-likeness, 0.6524 versus 0.8076, delta -0.1552; both of those changes point toward not mutagenic. Estimated logD is also lower in the query, 1.6845 versus 2.0862, delta -0.4017, but here that shift is associated with a mutagenic direction. Even so, the larger balance of evidence in this neighbor still favors option (A): is not mutagenic.
+
+Neighbor 3 remains aligned with option (A) overall. The query again has much higher fraction of sp3 carbons, 0.8571 versus 0.3, delta +0.5571, which is the strongest not-mutagenic signal in this comparison. It also has lower QED drug-likeness, 0.6524 versus 0.8452, delta -0.1928, fewer rings, 0 versus 1, delta -1, and fewer heteroatoms, 3 versus 4, delta -1; all of these changes support the not-mutagenic direction here. The shared alkyl bromide still adds a mutagenic alert, and the lower estimated logP in the query, 1.6845 versus 2.7396, delta -1.0551, is associated with a mutagenic shift in this specific comparison. Even with those countervailing factors, the combination of higher sp3 character, lower ring count, lower heteroatom burden, and lower QED makes Neighbor 3 closer to option (A): is not mutagenic.
+
+Neighbor 4 is the clearest negative-neighbor example and strongly supports option (A). The neutral fraction is essentially unchanged, with the query at 1 versus the neighbor at 0.9998, delta +0.0002, but the model associates that tiny increase with a strong not-mutagenic shift here. The shared alkyl bromide still contributes mutagenic pressure, and the stronger acidic pKa is higher in the query, 13.8434 versus 12.9689, delta +0.8745, which is mutagenically oriented in this comparison. Even so, the query has fewer rings, 0 versus 1, delta -1, lower QED drug-likeness, 0.6524 versus 0.8194, delta -0.167, and a lower Labute surface area, 70.5078 versus 99.2, delta -28.6922. Those latter shifts collectively fit a smaller, less favorable exposure profile and, in this comparison, they outweigh the mutagenic signals. Neighbor 4 therefore aligns with option (A): is not mutagenic.
+
+Neighbor 5 is the main negative-neighbor that supports option (B), so it runs against the final label. The query has alkyl bromide once while the neighbor has none, delta +1, and the neighbor also has alkyl chloride while the query does not, delta -1; both halogenated motifs are treated as mutagenicity-relevant in this context. The stronger acidic pKa is again slightly higher in the query, 13.8434 versus 13.7594, delta +0.084, which points toward the mutagenic side, and the same is true for the maximum absolute partial charge, where the query is slightly lower in magnitude at 0.3505 versus 0.3508, delta -0.0002, but that feature is associated with a not-mutagenic shift here. The query also has fewer rings, 0 versus 1, delta -1, and lower QED drug-likeness, 0.6524 versus 0.7377, delta -0.0853, both of which would normally favor not mutagenic. However, in this particular neighbor the new alkyl bromide together with the retained halogen pattern and the acidic-pKa shift dominate, so Neighbor 5 points to option (B): is mutagenic.
+
+Neighbor 6 also favors option (B), and it does so with several exposure and size-related features. Both molecules share alkyl bromide, which is a mutagenicity alert. The query has a higher strongest acidic pKa, 13.8434 versus 13.5118, delta +0.3316, and that change is mutagenically oriented here. It also has lower molecular weight, 208.099 versus 242.116, delta -34.017, and lower heavy-atom count, 10 versus 13, delta -3; in this comparison those reductions are associated with a mutagenic direction rather than the more usual exposure-limiting intuition. The query’s maximum absolute partial charge is slightly higher at 0.3505 versus 0.3249, delta +0.0257, which here favors the not-mutagenic side, and the neighbor also has one ring while the query has none, delta -1, which favors not mutagenic. Even with those offsets, the halogen alert together with the acidic-pKa, molecular-weight, and heavy-atom-count changes leave Neighbor 6 on the mutagenic side.
+
+Taken together, the six neighbors are split: the three positive neighbors are all closer to option (A), with repeated support from higher sp3 fraction, lower QED, fewer rings, and other exposure-limiting shifts, while two of the three negative neighbors lean to option (B) because of the shared or newly introduced alkyl bromide/halogen alerts and accompanying acidic-pKa or size-related changes. The strongest overall pattern is that the query resembles several non-mutagenic analogs more than the mutagenic ones, especially through its higher sp3 character, lower ring burden, and lower QED, so the final prediction is option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

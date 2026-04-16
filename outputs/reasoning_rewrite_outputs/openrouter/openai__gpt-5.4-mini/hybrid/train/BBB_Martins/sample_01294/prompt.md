@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule looks BBB-compatible overall. A diaryl thioether scaffold is often consistent with a more lipophilic, permeable structure, and here it is accompanied by an extremely low topological polar surface area of 3.24, which is far below the usual BBB-favorable range and strongly supports passive brain entry. The ionization-related descriptors also look favorable: the minimum partial charge is -0.3091 and the maximum absolute partial charge is 0.3091, both suggesting a relatively limited charge separation, which is consistent with easier membrane permeation. The estimated logD of 2.9017 is in a moderate range that is generally compatible with BBB penetration, and the estimated logP of 4.5346 is still within a lipophilic space that can support permeability, even if it is somewhat higher than the most commonly cited CNS sweet spot. Polarity is further reduced by a nitrogen/oxygen atom count of 1 and an NH/OH group count of 0, both of which indicate very little hydrogen-bonding burden. The molecule has no acidic site, so there is no strongly ionized acidic functionality to hinder entry at physiological pH, and the presence of one tertiary aliphatic amine can still be compatible with BBB penetration when the overall polarity remains low. Taken together, the very low TPSA, minimal hydrogen-bonding capacity, modest ionization burden, and favorable lipophilicity make crossing the BBB highly likely. Final prediction: crosses the BBB (B).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a strong BBB-permeable analog: its minimum absolute partial charge is 0.0238 versus 0.0201 for the query (delta -0.0037), its maximum partial charge is 0.0238 versus 0.0201 (delta -0.0037), and its estimated logP is 4.6757 versus 4.5346 (delta -0.1411). Those values sit in a fairly lipophilic regime, and the query remains very close to that profile. The topological polar surface area is identical at 3.24 for both molecules, which is far below the usual BBB-unfavorable PSA region and keeps polarity very low. The query also has one diaryl thioether while the neighbor has none, and its estimated logD is slightly higher at 2.9017 versus 2.7739 (delta +0.1278). Overall, this is a closely matched BBB-crossing analog and supports the B label.
+
+Neighbor 2 tells a similar story. Its estimated logP is 4.5538 versus 4.5346 for the query (delta -0.0192), again placing both molecules in a lipophilic range compatible with BBB entry when polarity is low. TPSA is the same at 3.24, and the query has one diaryl thioether while the neighbor has none. The query has fewer alkenes, with 1 instead of 2 (delta -1), while estimated logD is higher for the query at 2.9017 versus 2.6191 (delta +0.2826). The nitrogen/oxygen atom count is unchanged at 1. Taken together, this neighbor remains very consistent with a BBB-crossing profile and reinforces option B.
+
+Neighbor 3 is also aligned with BBB penetration. Its estimated logP is 4.7093 versus 4.5346 for the query (delta -0.1747), TPSA is again identical at 3.24, and the query has the diaryl thioether motif once while the neighbor lacks it. The query’s minimum absolute partial charge is slightly higher at 0.0201 versus 0.0158 (delta +0.0042), and the strongest basic pKa is essentially unchanged, 9.0227 versus 9.0105 (delta +0.0122). Nitrogen/oxygen atom count stays at 1 in both structures. This is still a very close analog with low polar surface area and comparable ionization/lipophilicity features, so it also supports BBB crossing.
+
+Neighbor 4 is the first non-crossing neighbor, but the comparison still favors the query as the more BBB-like molecule. The neighbor lacks diaryl thioether while the query has it once, its minimum partial charge is -0.3094 versus -0.3091 for the query (delta +0.0003), and its nitrogen/oxygen atom count is 2 versus 1 for the query (delta -1). More importantly, its TPSA is 16.13 compared with only 3.24 for the query, a much more polar value, and its estimated logD is lower at 1.3395 versus 2.9017 for the query (delta +1.5622). The neighbor has 0 aliphatic rings while the query has 1 (delta +1). Even though this neighbor is labeled as not crossing the BBB, the query is consistently less polar and more lipophilic here, which supports the B assignment.
+
+Neighbor 5 provides a useful contrast because it also does not cross the BBB, but its descriptors are mixed relative to the query. Its TPSA is 28.6 versus 3.24 for the query, a much higher polar surface area that is unfavorable for BBB entry. It also lacks diaryl thioether while the query has it once, and its minimum absolute partial charge is 0.1283 versus 0.0201 for the query (delta -0.1082), again indicating a less favorable polarity profile. However, this neighbor has estimated logP of 2.6584 versus 4.5346 for the query, and that lower logP is explicitly the one feature that aligns with the non-BBB label here. Its estimated logD is also lower at 1.2161 versus 2.9017 (delta +1.6856), while its minimum partial charge is -0.4968 versus -0.3091 for the query (delta +0.1877). So although this neighbor is a non-crossing example, the query is more lipophilic and otherwise more BBB-like on the dominant polarity features, which still argues for option B.
+
+Neighbor 6 is another non-crossing analog, but again the query looks more BBB-permeable by the same key features. The neighbor has TPSA 12.47 versus 3.24 for the query, lacks diaryl thioether while the query has it once, has minimum absolute partial charge 0.1157 versus 0.0201 for the query (delta -0.0956), and has nitrogen/oxygen atom count 2 versus 1 for the query (delta -1). Its estimated logD is much higher at 3.9828 versus 2.9017 for the query (delta -1.0811), which would normally be a favorable lipophilicity shift, but its maximum partial charge is 0.1157 versus 0.0201 for the query (delta -0.0956), and that feature in this comparison points away from BBB crossing. Even with this mixed behavior, the query remains markedly less polar on TPSA and heteroatom burden while retaining the diaryl thioether motif, so the overall analog relationship still favors BBB penetration.
+
+Putting all six neighbors together, the three BBB-crossing neighbors are extremely close matches and share the query’s very low TPSA, high lipophilicity, low nitrogen/oxygen count, and similar partial-charge patterns. The three non-crossing neighbors mainly differ by having substantially higher TPSA and/or higher heteroatom burden, while the query itself stays in the more favorable low-polarity, higher-logP/logD space. Even where one non-crossing neighbor shows a more favorable logP/logD pattern, the query’s overall profile remains closer to the crossing analogs. The combined neighbor evidence therefore supports option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -40,10 +40,27 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--random-state", type=int, default=42)
     parser.add_argument("--ebm-jobs", type=int, default=1)
     parser.add_argument("--scale-features", action="store_true")
+    nan_group = parser.add_mutually_exclusive_group()
+    nan_group.add_argument(
+        "--keep-nan-columns",
+        dest="keep_nan_columns",
+        action="store_true",
+        help=(
+            "Keep feature columns that contain some NaN values in the train split. "
+            "This is now the default behavior."
+        ),
+    )
+    nan_group.add_argument(
+        "--drop-nan-columns",
+        dest="keep_nan_columns",
+        action="store_false",
+        help="Drop any feature column that contains a NaN value in the train split.",
+    )
     parser.add_argument(
         "--output-dir",
         default="outputs/models/global_ebm/default_experiment",
     )
+    parser.set_defaults(keep_nan_columns=True)
     return parser.parse_args()
 
 
@@ -55,7 +72,7 @@ def main() -> int:
         else list_tasks(args.data_root)
     )
     feature_configs = args.feature_configs or [
-        "configs/features/fg_top_level_plus_rdkit_descriptors_and_pka_easy_to_NLP_Lv1.json"
+        "configs/features/fg_top_level_plus_rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts.json"
     ]
     feature_bundle = build_feature_source_bundle(feature_configs)
     ebm_params = build_ebm_params(
@@ -75,6 +92,7 @@ def main() -> int:
                 valid_split_name=args.valid_split,
                 ebm_params=ebm_params,
                 scale_features=args.scale_features,
+                drop_any_nan_columns=not args.keep_nan_columns,
                 output_dir=args.output_dir,
             )
         )
@@ -84,4 +102,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

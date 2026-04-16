@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule appears unlikely to cross the BBB. Its topological polar surface area is very high at 165.98, which is well above the usual CNS-friendly range and strongly disfavors passive brain penetration. The heteroatom burden is also substantial, with a heteroatom count of 13, consistent with a highly polar scaffold. In the same direction, there are 3 secondary hydroxyl groups, which increase hydrogen-bond donor load and desolvation cost, making BBB permeation less favorable. The structure is further enriched in saturated heterocycle count of 4 and aliphatic heterocycle count of 4, along with tetrahydropyran count of 2 and acetal count of 2; while these motifs can add three-dimensionality, in this context they likely also contribute additional polarity and oxygenated functionality. The presence of a lactone (1) adds another polar carbonyl-containing ring system. Although the fraction of sp3 carbons is high at 0.9429, indicating a very saturated scaffold, that degree of saturation does not compensate for the strong polarity penalty here. The QED drug-likeness value is also low at 0.2742, which is consistent with an overall less BBB-permeable profile. Taken together, the combination of very high TPSA, high heteroatom content, multiple hydroxyl groups, and several oxygen-rich ring features supports classification as option (A): does not cross the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close analog that is informative in a mixed way, but the heavier polarity burden dominates. The neighbor has 11 acidic sites versus 3 in the query, so the query-minus-neighbor delta is -8; that large reduction in acidic functionality is favorable for BBB penetration because acidic sites generally work against passive brain entry. The query also has one fewer saturated heterocycle, with 4 in the query versus 5 in the neighbor (delta -1), which modestly helps by slightly reducing heterocycle burden. In addition, the query has 0 1,2-diol motifs versus 3 in the neighbor and 2 acetal groups versus 5 in the neighbor, both deltas of -3, and those changes also move toward a less polar, more BBB-friendly profile. The one feature that goes the other way is strongest acidic pKa: the query is much less acidic here, 13.2792 versus 5.6182 in the neighbor, with a delta of +7.661, which is favorable for BBB entry because strongly acidic behavior is generally unfavorable. The query also has one fewer ketone, 1 versus 2 (delta -1), again reducing polar burden. Overall, Neighbor 1 is still an analog whose lower acidic-site burden and fewer polar oxygenated motifs are more consistent with a molecule that does not cross the BBB.
+
+Neighbor 2 also mainly supports the non-BBB label because the query is substantially more polar overall, even though there is one surface-area feature moving in the opposite direction. Here the query has 4 saturated heterocycles versus 0 in the neighbor (delta +4), which is unfavorable since additional heterocycles often add heteroatom burden and polarity. The query also has one fewer ketone, 1 versus 2 (delta -1), but that is outweighed by the much higher topological polar surface area: 165.98 in the query versus 80.67 in the neighbor, a delta of +85.31. That TPSA level is well above the common BBB-friendly region of roughly below 90 Å² and sits in the clearly unfavorable range for passive BBB penetration. The query’s Labute surface area is higher too, 285.3844 versus 176.2883 (delta +109.0961), which by itself could reflect larger size, but here it does not offset the strong polarity penalty. The query also has fewer aliphatic carbocycles, 0 versus 4 (delta -4), and lower QED drug-likeness, 0.2742 versus 0.6946 (delta -0.4204), both consistent with a less BBB-like profile. Taken together, Neighbor 2 is a strong negative analog for BBB crossing.
+
+Neighbor 3 points even more clearly toward non-BBB behavior because several descriptors worsen together. The query has 4 saturated heterocycles versus 0 in the neighbor, a delta of +4, again adding heteroatom-rich ring content that is generally less favorable for BBB permeation. The query also has one fewer ketone, 1 versus 2 (delta -1), but that small gain is overshadowed by the higher heteroatom count: 13 in the query versus 9 in the neighbor, delta +4. More heteroatoms usually mean more hydrogen-bonding capacity and greater polarity, which is unfavorable for brain entry. Although the query’s Labute surface area is higher, 285.3844 versus 202.4588 (delta +82.9256), that size-related change does not compensate for the polarity increase. The query also has fewer aliphatic carbocycles, 0 versus 4 (delta -4), and lacks the alkyl fluoride motifs present in the neighbor, 0 versus 2 (delta -2). Overall, Neighbor 3 reinforces that the query is structurally more polar and less BBB-compatible.
+
+Neighbor 4 remains aligned with the non-BBB label, even though one small structural feature goes in the favorable direction. The query has 4 saturated heterocycles versus 3 in the neighbor (delta +1), which adds ring heteroatom burden rather than improving BBB compatibility. Fraction of sp3 carbons is slightly lower in the query, 0.9429 versus 0.9459 (delta -0.0031), a minor shift that does not meaningfully rescue permeability. The query’s topological polar surface area is actually a bit lower than the neighbor’s, 165.98 versus 173.68 (delta -7.7), and that is directionally favorable, but the absolute TPSA remains high and still well outside the usual BBB-favorable zone. The query also has one more aliphatic heterocycle, 4 versus 3 (delta +1), and slightly lower QED drug-likeness, 0.2742 versus 0.2836 (delta -0.0094), both mild disadvantages. The query does contain one oxirane while the neighbor has none (delta +1), which is a small favorable counterpoint, but it is not enough to offset the overall polar and heterocycle-heavy profile. So Neighbor 4 still supports the conclusion that the query does not cross the BBB.
+
+Neighbor 5 shows the same overall pattern. The query again has 4 saturated heterocycles versus 3 in the neighbor (delta +1), which is not helpful for BBB penetration. Its fraction of sp3 carbons is slightly lower, 0.9429 versus 0.9474 (delta -0.0045), and QED is slightly higher this time, 0.2742 versus 0.2658 (delta +0.0084), but these are small shifts. The query also has 4 aliphatic heterocycles versus 3 in the neighbor (delta +1), so it remains a bit more heterocycle-rich overall. It has one fewer dialkyl ether, 1 versus 2 (delta -1), which is a modest reduction in ether content, but again not enough to offset the broader polarity profile. As in Neighbor 4, the query has one oxirane while the neighbor has none (delta +1), a limited favorable change. Even with that, the net comparison still leaves the query looking too heterocycle- and heteroatom-heavy for BBB crossing.
+
+Neighbor 6 is consistent with Neighbor 5 and Neighbor 4: there are a few small favorable shifts, but the overall scaffold still looks non-BBB-like. The query has 4 saturated heterocycles versus 3 in the neighbor (delta +1), and 4 aliphatic heterocycles versus 3 (delta +1), both of which add ring heteroatom burden. Fraction of sp3 carbons is slightly lower in the query, 0.9429 versus 0.9459 (delta -0.0031), and QED is somewhat higher, 0.2742 versus 0.2379 (delta +0.0363), but those changes are minor relative to the structural heterocycle increase. The query again has one oxirane while the neighbor has none (delta +1), which is the same small favorable feature seen in the other negative neighbors. The maximum partial charge is essentially unchanged, 0.3111 in the query versus 0.3112 in the neighbor (delta -0.0001), so there is no meaningful charge-based improvement. Taken together, Neighbor 6 still matches a molecule that does not cross the BBB.
+
+Across the three positive neighbors, the query consistently looks less BBB-friendly where it matters most: it has many more acidic sites than Neighbor 1, and it is substantially higher in TPSA, heteroatom count, and heterocycle burden than Neighbors 2 and 3. Against the three negative neighbors, the query does pick up a few small favorable changes such as the presence of oxirane, slightly lower TPSA in one case, and modest shifts in QED or sp3 character, but these are too weak to overcome the consistently high polarity and heterocycle-rich character. The most decisive descriptor is TPSA, which is 165.98 Å², far above the commonly cited BBB-favorable range below about 90 Å². Combined with the elevated acidic/heteroatom burden and multiple saturated and aliphatic heterocycles, the overall evidence supports option (A): does not cross the BBB.
+
+Input 3. Target final label semantics
+option (A): does not cross the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

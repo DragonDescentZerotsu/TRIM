@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an alkyl bromide, which is a recognized mutagenicity alert and is the strongest structural reason to suspect an Ames-positive outcome. That said, several properties point in the opposite direction. The minimum partial charge is -0.0928, indicating only modestly negative electrostatic character rather than a strongly reactive or highly polarized surface. The heavy-atom count is 4, so the molecule is very small, and the topological polar surface area is 0, consistent with an extremely nonpolar, compact structure. The Labute surface area is 35.3367, which is also consistent with a small molecular profile rather than a bulky, highly interactive one. The fraction of sp3 carbons is 1, showing a fully saturated carbon framework, and the hydrogen-bond acceptor count is 0 with heteroatom count 1, both of which suggest very limited functionality beyond the halide. The ring count is 0, so there is no aromatic or fused-ring system to support the kinds of planar toxicophores often associated with mutagenicity. The estimated logP is 1.7913, which is moderate and does not suggest an extreme hydrophobicity problem. Overall, the alkyl bromide alert provides a mutagenic signal, but the molecule is otherwise very small, simple, non-aromatic, and poorly functionalized. On balance, the non-mutagenic profile dominates, so the prediction is option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately not strongly mutagenic comparator. It is much more heteroatom-rich than the query, with heteroatom count 6 versus 1, delta -5, and that reduction in heteroatom burden is unfavorable for mutagenicity because it lowers polarity/ionization-related exposure limits. The query is also smaller in heavy atoms, 4 versus 16, delta -12, which by itself could reduce uptake and favor a non-mutagenic call, but this is partly offset by the query having one alkyl bromide while the neighbor has two copies, delta -1, since alkyl bromide is a mutagenic toxicophore class. The query also lacks the neighbor’s two tertiary amides, delta -2, which removes some of the neighbor’s polar functionality, again not a strong reason to call the query mutagenic. On the charge descriptors, the query has a much lower maximum partial charge, 0.0029 versus 0.223, delta -0.2202, and a less negative minimum partial charge, -0.0928 versus -0.3391, delta +0.2463; both changes are aligned with the query being less electrostatically extreme. Overall, even though the alkyl bromide comparison adds some mutagenic concern, the lower heteroatom count and the charge pattern make this neighbor comparison lean away from mutagenicity for the query.
+
+Neighbor 2 is also overall more consistent with a non-mutagenic query. The strongest signal is the much lower maximum partial charge in the query, 0.0029 versus 0.2252, delta -0.2223, which suggests less extreme electrostatics and less opportunity for the kinds of exposure/interaction effects associated with charged molecules. The query does contain one alkyl bromide while the neighbor has none, delta +1, and that is a clear mutagenicity-associated feature to keep in mind. However, the query also has a less negative minimum partial charge, -0.0928 versus -0.3099, delta +0.2171, along with a very low topological polar surface area of 0 versus 25.06, delta -25.06, and zero hydrogen-bond acceptors versus 2, delta -2. Those latter differences indicate a very small, very nonpolar profile rather than a polar, exposure-rich one. The query’s Labute surface area is only slightly lower than the neighbor’s, 35.3367 versus 36.0495, delta -0.7128, which is a minor shift compared with the charge and polarity differences. Taken together, this neighbor remains more supportive of a non-mutagenic classification for the query.
+
+Neighbor 3 again favors the non-mutagenic side despite one important mutagenic alert. The query is fully saturated in carbon framework here, with fraction of sp3 carbons 1 versus 0.1429, delta +0.8571, which contrasts with a much flatter, more aromatic neighbor and generally points away from the kind of planar chemistry that often accompanies mutagenicity. The query also has a smaller Labute surface area, 35.3367 versus 57.6639, delta -22.3272, and a lower ring count, 0 versus 1, delta -1; both changes indicate a simpler, less ring-rich scaffold. It is important that both the query and the neighbor contain alkyl bromide, delta 0, so the mutagenic halide alert is present on both sides and does not distinguish the query as worse. The query also has the same hydrogen-bond acceptor count as the neighbor, 0 versus 0, delta 0, and a lower minimum absolute partial charge, 0.0029 versus 0.0283, delta -0.0254, which is consistent with a less charge-differentiated molecule. Even though the Labute surface area shift alone would not favor the query, the overall pattern of higher sp3 character, fewer rings, and no additional halide burden makes this comparison support the non-mutagenic label.
+
+Neighbor 4 is the first negative comparator, and it is useful because it shows why the query can still be classified as non-mutagenic even though it carries an alkyl bromide. Here the query has alkyl bromide once while the neighbor has none, delta +1, and that is clearly a mutagenic structural alert. The query is also smaller, with heavy-atom count 4 versus 13, delta -9, which could reduce exposure, but the smaller size alone is not enough to explain the activity pattern. What matters more is that the query has a much more saturated carbon framework, fraction of sp3 carbons 1 versus 0.25, delta +0.75, and a lower ring count, 0 versus 1, delta -1; both changes point away from a planar aromatic-like scaffold. The query and neighbor both have topological polar surface area of 0, delta 0, so there is no added polarity to offset the halide concern. Finally, the query’s estimated logP is far lower, 1.7913 versus 6.0615, delta -4.2702, meaning the neighbor is much more lipophilic and potentially more prone to the exposure/solubility issues that can complicate assay interpretation. Despite the neighbor being non-mutagenic, its overall profile is not a better mutagenicity match than the query; the query’s overall low-size, low-ring, and lower-logP pattern still supports the non-mutagenic label.
+
+Neighbor 5 is another non-mutagenic comparator, but it actually contains several features that make it look more concerning than the query. The query again has one alkyl bromide versus two in the neighbor, delta -1, and the neighbor’s higher halide burden is the more concerning mutagenicity-associated feature. The neighbor is also much larger and more surface-exposed, with Labute surface area 77.8964 versus 35.3367, delta -42.5597, heavy-atom count 10 versus 4, delta -6, and molecular weight 263.96 versus 122.993, delta -140.967; these are all size/exposure-related differences that make the neighbor the less compact molecule. By contrast, the query has a fully saturated framework, fraction of sp3 carbons 1 versus 0.25, delta +0.75, and no rings versus one ring, delta -1, which are both features that move away from the more planar, ring-containing chemistry often associated with mutagenic alerts. The neighbor therefore looks more burdened by the mutagenicity-linked halide pattern and larger molecular profile than the query does. Even though the neighbor itself is not mutagenic, this comparison still supports the query as the less concerning, non-mutagenic molecule.
+
+Neighbor 6 repeats the same overall pattern as Neighbor 5. The query has one alkyl bromide while the neighbor has two, delta -1, so again the neighbor carries the stronger mutagenic halide burden. The neighbor is also larger on every size-related descriptor listed: Labute surface area 77.8964 versus 35.3367, delta -42.5597; heavy-atom count 10 versus 4, delta -6; and molecular weight 263.96 versus 122.993, delta -140.967. Those features point to a bulkier, more exposed scaffold than the query. At the same time, the query has a much higher fraction of sp3 carbons, 1 versus 0.25, delta +0.75, and a lower ring count, 0 versus 1, delta -1, which again makes the query look more saturated and less ring-rich. As in Neighbor 5, the combination of a stronger alkyl bromide burden in the neighbor and the neighbor’s larger scaffold makes the query look comparatively less mutagenic, even though the neighbor itself is labeled non-mutagenic.
+
+Putting all six comparisons together, the positive neighbors already lean toward the query being less concerning because they repeatedly emphasize lower heteroatom burden, lower or less extreme partial charge, low polar surface area, and very small size, with only isolated alkyl bromide concern. The negative neighbors are especially informative because they show that the query remains non-mutagenic-like even when compared with non-mutagenic molecules that are larger, more lipophilic, more ring-rich, and often carry the same or greater alkyl bromide burden. Across both sets, the query consistently looks compact, highly sp3-rich, low in polarity, and not especially enriched in the kinds of features that would override the final non-mutagenic call. The balance of evidence therefore supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

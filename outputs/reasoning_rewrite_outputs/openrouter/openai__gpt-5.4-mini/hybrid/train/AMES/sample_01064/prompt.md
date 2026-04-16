@@ -1,0 +1,56 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed profile, but several exposure-limiting and non-alert features favor a non-mutagenic interpretation. Its QED drug-likeness is 0.6905, which is reasonably drug-like and does not by itself suggest a strong mutagenicity concern. The neutral fraction is absent (0), so the compound is fully ionized under the configured conditions, which can reduce passive bacterial uptake. The estimated logD of -5.8994 is extremely low, consistent with very high hydrophilicity and poor membrane partitioning, again pointing toward limited bacterial exposure. A ring count of 1 is modest and does not indicate the kind of highly fused aromatic system that is classically associated with mutagenicity. The heteroatom count is 3, also fairly limited, which does not raise a strong polarity-based alert on its own.
+
+At the same time, there are a few features that could increase exposure somewhat or are at least not clearly protective. The estimated logP is 0.641, which is only mildly lipophilic and not especially concerning, but it is directionally more favorable for uptake than the very negative logD. The number of basic sites is 1, and a primary aliphatic amine is present (1); ionizable amines can sometimes improve Gram-negative accumulation and therefore increase exposure to the assay system. However, the charge descriptors are not extreme: the minimum absolute partial charge is 0.3203 and the maximum partial charge is 0.3203, which do not suggest an unusual electrostatic pattern that would strongly override the low-exposure picture.
+
+Overall, the most prominent signals are the very low logD of -5.8994, absent neutral fraction (0), and modest ring/heteroatom content, all of which are more consistent with limited bacterial bioavailability than with a clear mutagenic alert. The presence of one basic site and one primary aliphatic amine adds some opposing weight, but not enough to outweigh the stronger exposure-limiting features. Taken together, the molecule is best classified as option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is highly similar and overall favors the non-mutagenic label. The query has higher QED drug-likeness than the neighbor, 0.6905 versus 0.4244, with a delta of +0.2661, and that shift is associated with a strong move away from mutagenicity. The query also lacks a thiol that the neighbor has, which is another difference favoring option (A). On the exposure side, the query is less hydrophobic by estimated logD, moving from -6.8464 in the neighbor to -5.8994 in the query (delta +0.947), and both compounds have neutral fraction absent at 0. The only feature in this comparison that leans the other way is minimum partial charge, where both are at -0.4801 with essentially no change, yet that neutral charge comparison is not enough to outweigh the combined non-mutagenic pattern. The ring count also increases from 0 in the neighbor to 1 in the query (delta +1), which in this local context still aligns with the overall non-mutagenic direction rather than a specific mutagenic alert. Neighbor 2 shows the same pattern and is essentially a duplicate of Neighbor 1: higher query QED at 0.6905 versus 0.4244 (delta +0.2661), absence of the neighbor’s thiol in the query, higher estimated logD from -6.8464 to -5.8994 (delta +0.947), neutral fraction unchanged at 0, minimum partial charge unchanged at -0.4801, and ring count increasing from 0 to 1. Taken together, that neighbor again supports option (A) more than option (B). Neighbor 3 also points the same way overall, even though it contains one feature with a mutagenic-leaning local effect. The query again has higher QED, 0.6905 versus 0.4572 (delta +0.2333), lower ring count context remains favorable with the neighbor at 0 and the query at 1, and neutral fraction stays absent at 0. The query has a much lower fraction of sp3 carbons than the neighbor, 0.2222 versus 0.8333, with delta -0.6111, which here is associated with the non-mutagenic side. The two features that lean toward option (B) are minimum partial charge, which is identical at -0.4801 and therefore gives a local B-leaning signal in the comparison, and topological polar surface area, where the query is lower at 63.32 than the neighbor’s 89.34 (delta -26.02), which in this setting is also associated with a mutagenic-leaning effect. Even with those two opposing signals, the stronger overall pattern in Neighbor 3 still favors option (A).
+
+Neighbor 4 is a negative-neighbor comparison but still ends up supporting option (A) overall. The query matches the neighbor on neutral fraction, both absent at 0, and has lower ring count, 1 versus 2 (delta -1), both of which favor the non-mutagenic side in this local comparison. The query’s strongest basic pKa is slightly higher, 8.7735 versus 8.7219 (delta +0.0516), and that small shift leans toward option (B). The query also has slightly lower QED, 0.6905 versus 0.7006 (delta -0.0101), and lower topological polar surface area, 63.32 versus 79.11 (delta -15.79), with the latter leaning toward option (B) in this comparison. Minimum absolute partial charge is unchanged at 0.3203 and contributes a non-mutagenic-leaning match. Despite the small opposing pKa and TPSA signals, the broader profile of lower ring count, matching neutral fraction, and only a minimal QED change keeps this neighbor aligned with option (A). Neighbor 5 is effectively the same as Neighbor 4 and therefore gives the same kind of support: neutral fraction absent at 0 in both, ring count lower in the query at 1 versus 2 (delta -1), strongest basic pKa slightly higher at 8.7735 versus 8.7219 (delta +0.0516), QED slightly lower at 0.6905 versus 0.7006 (delta -0.0101), topological polar surface area lower at 63.32 versus 79.11 (delta -15.79), and minimum absolute partial charge unchanged at 0.3203. The overall balance again remains on the non-mutagenic side. Neighbor 6 is the most mixed of the negative neighbors, but it still does not overturn the overall conclusion. The query matches the neighbor on neutral fraction, absent at 0, and has a higher strongest basic pKa, 8.7735 versus 8.512 (delta +0.2615), which in this local comparison favors option (B). The query also has higher QED, 0.6905 versus 0.3942 (delta +0.2962), lower estimated logP by moving from -1.6094 to 0.641 (delta +2.2504), and higher estimated logD from -7.8275 to -5.8994 (delta +1.9281); these hydrophobicity shifts are each associated with mutagenic-leaning local effects in this comparison. Minimum absolute partial charge changes only slightly, from 0.3224 to 0.3203 (delta -0.0021), and that small difference leans back toward option (A). Even so, Neighbor 6 remains a single comparison and does not outweigh the three positive-neighbor comparisons, all of which individually favor option (A), nor the two additional negative-neighbor comparisons that also end on the non-mutagenic side.
+
+Putting all six neighbors together, the evidence is mixed at the feature level but not at the neighbor level: Neighbor 1, Neighbor 2, and Neighbor 3 each overall resemble a non-mutagenic outcome, while Neighbor 4, Neighbor 5, and Neighbor 6 are also net non-mutagenic despite containing a few locally mutagenic-leaning descriptor shifts. The consistent theme is that the query’s profile more often aligns with lower-risk local analogs than with the mutagenic ones, so the combined comparison supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

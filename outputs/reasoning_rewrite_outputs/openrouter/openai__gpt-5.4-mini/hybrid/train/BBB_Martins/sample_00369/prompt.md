@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has quinazoline present (1), which adds a recognized aromatic heterocyclic scaffold but does not, by itself, outweigh the rest of the permeability profile. Its estimated logD is 3.2565 and estimated logP is 3.2565, both in a moderately lipophilic range that is generally compatible with brain penetration rather than being excessively low or excessively high. The neutral fraction is present (1), which is favorable because a meaningful neutral species can support passive diffusion across the BBB. The charge profile is also modest: maximum absolute partial charge is 0.2682, minimum partial charge is -0.2682, and minimum absolute partial charge is 0.2655, suggesting no extreme polarity burden from localized charges. In the same direction, NH/OH group count is 0, so there are no obvious hydrogen-bond donors to penalize membrane permeation. The molecule has no acidic site, so strongest acidic pKa is not defined, which avoids an ionized acidic functionality that would usually hinder BBB crossing. It also contains a lactam present (1), which can add polarity, but here that does not appear strong enough to override the otherwise favorable lipophilicity and neutrality. Overall, the combination of moderate logD/logP at 3.2565, neutral fraction present (1), zero NH/OH groups, limited charge magnitude, and no acidic site supports a BBB-penetrant profile, so the molecule is best classified as crosses the BBB (B).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close positive analog, and several of its features line up with BBB penetration. The query has a neutral fraction of 1 versus 0.9995 in the neighbor, so the comparison is essentially neutral on ionization and still sits in the highly neutral regime that favors passive entry. The shared quinazoline scaffold also supports the same BBB-crossing tendency in this pair. Against that, the query’s Labute surface area is lower, 117.0758 versus 150.6629 in the neighbor, which is favorable because smaller surface area generally aligns better with BBB permeation; however, the note treats that feature as unfavorable in this specific pairwise direction. The query also has lower estimated logP, 3.2565 versus 4.2595, and the change is described as favorable here, consistent with staying in a moderate lipophilicity window rather than becoming overly lipophilic. Offsetting that, the identical maximum absolute partial charge at 0.2682 and the higher fraction of sp3 carbons in the query, 0.1765 versus 0.0455, are each described as unfavorable in this comparison. Even with those counterweights, the overall Neighbor 1 comparison is still supportive of BBB crossing.
+
+Neighbor 2 is another positive analog and again highlights a mix of favorable polarity and scaffold features. The query’s minimum partial charge is less negative, -0.2682 versus -0.335, and that shift is favorable here. The shared quinazoline motif again matches the neighbor. The neutral fraction remains extremely high, 1 versus 0.9968, which is consistent with a strongly neutral molecule at physiological pH and supports BBB entry. The query’s topological polar surface area is lower, 34.89 versus 60.91, and that is an especially important improvement because lower TPSA is generally associated with better BBB permeability and the query is comfortably in the low-PSA region. Two features go the other way: the fraction of sp3 carbons rises from 0 to 0.1765, and the query lacks the amine that the neighbor has. In this comparison those changes are treated as unfavorable, but they do not outweigh the favorable reduction in TPSA together with the neutral, quinazoline-containing scaffold.
+
+Neighbor 3 is also a positive analog and gives some of the strongest direct support for BBB crossing. The query’s topological polar surface area is 34.89 compared with 0 in the neighbor, and although the absolute numbers differ from an unusual zero baseline, the comparison note treats this as favorable for the query. The query also has quinazoline once whereas the neighbor has none, which favors the BBB-crossing class in this pair. Neutral fraction is 1 for both molecules, keeping the comparison in the favorable neutral regime. The query’s estimated logD is higher, 3.2565 versus 2.249, and that increase is described as favorable, fitting a more permeable ionization-aware lipophilicity balance. The query does have a higher maximum partial charge, 0.2655 versus -0.0307, which is unfavorable here, but the neighbor also lacks lactam while the query has one once, and that feature is still counted as favorable in this comparison. Taken together, Neighbor 3 remains strongly aligned with the BBB-crossing label.
+
+Neighbor 4 is listed among the noncrossing neighbors, but the individual feature comparisons mostly favor the query over that neighbor. The query has quinazoline once and lactam once, while the neighbor has neither, both of which are favorable for the BBB-crossing class in this pair. The query’s estimated logD is much higher, 3.2565 versus 0.5081, and the note treats that as favorable, consistent with moving from a very low-lipophilicity neighbor toward a more BBB-compatible range. The neutral fraction also rises from 0.0008 to 1, which is a major shift toward the highly neutral state that supports passive permeation. The only explicitly unfavorable feature in this comparison is the fraction of sp3 carbons, where the query is slightly higher, 0.1765 versus 0.1579. The neighbor’s oxoarene is absent in the query, and that absence is also favorable here. So although this neighbor belongs to the noncrossing class, the query is chemically shifted in the more BBB-permissive direction across the listed features.
+
+Neighbor 5, also from the noncrossing set, again shows the query moving toward the BBB-crossing side on the most relevant properties. The query has quinazoline and lactam once each, whereas the neighbor lacks both, and both of those absences in the neighbor favor the query. The query’s minimum partial charge is less negative, -0.2682 versus -0.4775, which is favorable; this is paired with a lower maximum absolute partial charge, 0.2682 versus 0.4775, which is unfavorable in the comparison note because it goes the opposite way from the feature tendency observed for this neighbor. The query also has a much higher neutral fraction, 1 versus 0.0485, a very strong shift toward the neutral state that is favorable for BBB penetration. The fraction of sp3 carbons is lower in the query, 0.1765 versus 0.25, and that is unfavorable in this specific pair, but it is not enough to counter the strong gains in neutrality and the presence of the quinazoline/lactam motifs.
+
+Neighbor 6 is the final noncrossing analog and again the listed features mostly favor the query. The query has quinazoline and lactam once each, while the neighbor lacks both, and those are favorable changes for the BBB-crossing side. The query also has a much better QED drug-likeness value, 0.7118 versus 0.3321, which supports overall developability in this comparison. The minimum partial charge is less negative in the query, -0.2682 versus -0.3452, again favorable. The query’s topological polar surface area is lower, 34.89 versus 59.81, which is favorable and places it deeper into the CNS-oriented low-PSA range. The only explicitly unfavorable feature is the slightly higher fraction of sp3 carbons, 0.1765 versus 0.1379. Even with that counterpoint, the overall direction remains consistent with BBB crossing because the query is more neutral, less polar, and carries the same quinazoline/lactam scaffold features that repeatedly favored the BBB-crossing neighbors.
+
+Across all six neighbors, the pattern is coherent: the three positive neighbors align with a query that is highly neutral, has low TPSA, moderate logD/logP, and carries quinazoline, while the three negative neighbors mostly show the query improving in those same BBB-relevant dimensions relative to the noncrossing analogs. The few unfavorable shifts, such as slightly higher sp3 fraction in several comparisons or a higher maximum partial charge in one case, are secondary to the repeated favorable signals from neutrality, lower polar surface area, and the quinazoline/lactam scaffold context. Taken together, the neighbor evidence supports option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

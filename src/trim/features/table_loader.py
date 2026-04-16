@@ -53,6 +53,7 @@ def load_task_feature_matrices(
     smiles_key: str = DEFAULT_SMILES_FIELD,
     label_key: str = DEFAULT_LABEL_FIELD,
     scale_features: bool = False,
+    drop_any_nan_columns: bool = False,
 ) -> dict[str, object]:
     train_split: BinaryTaskSplit = load_tdc_split(
         task,
@@ -71,7 +72,11 @@ def load_task_feature_matrices(
 
     raw_train_df = feature_source.load(train_split.smiles)
     raw_valid_df = feature_source.load(valid_split.smiles)
-    preprocessor = fit_feature_preprocessor(raw_train_df, scale_features=scale_features)
+    preprocessor = fit_feature_preprocessor(
+        raw_train_df,
+        scale_features=scale_features,
+        drop_any_nan_columns=drop_any_nan_columns,
+    )
     _, x_train_df = transform_feature_frame(raw_train_df, preprocessor)
     _, x_valid_df = transform_feature_frame(raw_valid_df, preprocessor)
 

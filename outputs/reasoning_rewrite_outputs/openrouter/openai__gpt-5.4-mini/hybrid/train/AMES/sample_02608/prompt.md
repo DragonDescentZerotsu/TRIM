@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has several features that raise concern for Ames mutagenicity. It contains heteroatom count 8, which reflects a fairly heteroatom-rich structure and can be consistent with higher polarity and the presence of functional groups associated with reactivity. The ring count is 3, and a moderately ringed, more aromatic scaffold can be compatible with known mutagenic chemotypes when it supports planarity or bioactivation. Importantly, hydroxylamine is present (1), which is a recognized mutagenicity alert, and the NH/OH group count is 5, giving multiple hydrogen-bonding sites that fit with a functionalized, potentially bioactive scaffold. The nitrogen/oxygen atom count is 8 as well, reinforcing that the structure is heavily functionalized with heteroatoms.
+
+There are also features that argue for lower effective exposure or reduced permeability, which tempers the mutagenicity signal. The neutral fraction is absent (0), so the molecule is not predominantly neutral under the configured conditions, which can limit passive membrane permeation. The Labute surface area is 148.6324, a relatively large surface area that can also be consistent with less efficient bacterial uptake. The minimum absolute partial charge is 0.3353, suggesting a charge distribution that may not strongly favor passive traversal. In addition, 1,2-diol is count 2, which adds polar functionality and can further increase hydrophilicity.
+
+Even with those exposure-limiting features, the mutagenicity-associated signals dominate overall. The estimated logP is 0.4414, which is not especially lipophilic, but it does not offset the presence of the hydroxylamine alert and the heteroatom-rich, ring-containing scaffold. Taken together, the structure still looks more consistent with a mutagenic compound than a non-mutagenic one, so the final call is B: is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close mutagenic analog overall despite several opposing descriptors. The query has a much higher topological polar surface area than the neighbor, 130.69 versus 40.54 with a delta of +90.15, and that large increase can reduce passive permeability and alter exposure in a way that the Ames assay often captures operationally. The same pattern appears for heteroatom count, where the query is higher at 8 versus 3, delta +5, again making the molecule more polar. Against that, the query is also more hydrogen-bond donor rich, with 5 donors versus 1, delta +4, and more donor capacity usually works against bacterial penetration. The query’s estimated logD is far lower, -4.0288 versus 3.5705, delta -7.5993, and estimated logP is also lower, 0.4414 versus 3.5991, delta -3.1577; both changes point to a much more polar and ionized profile than the neighbor, which can cut exposure. The minimum partial charge is also more negative, -0.4792 versus -0.2809, delta -0.1983, reinforcing a stronger electrostatic character. Even with those counterweights, the comparison to this mutagenic neighbor still leaves the query in the more mutagenic direction because the very large TPSA shift and the higher heteroatom burden outweigh the permeability-limiting effects.
+
+Neighbor 2 tells a similar story. The query again has a much higher topological polar surface area, 130.69 versus 40.54, delta +90.15, and a higher heteroatom count, 8 versus 3, delta +5, both consistent with a substantially more polar structure. At the same time, the query’s estimated logD drops from 2.9944 to -4.0288, delta -7.0232, which is a very large shift toward a far more hydrophilic and ionized state; the estimate for neutral fraction also goes from 0.6102 in the neighbor to absent in the query, delta -0.6102. These exposure-related changes are tempered by the query’s higher hydrogen-bond donor count, 5 versus 1, delta +4, and the more negative minimum partial charge, -0.4792 versus -0.2811, delta -0.1981, both of which also tend to reduce passive uptake. Even so, because the comparison starts from another mutagenic analog and the query preserves the strong increase in polarity while keeping the same elevated heteroatom burden, the overall pattern still aligns better with mutagenicity.
+
+Neighbor 3 is particularly informative because the query differs in a mixed but still mutagenicity-favoring way. The query has far more heteroatoms, 8 versus 1, delta +7, which is a large polarity increase. It also has more hydrogen-bond donors, 5 versus 0, delta +5, a change that usually reduces passive diffusion. The ring count is unchanged at 3 versus 3, delta 0, so there is no offset from losing ring content. The query’s Labute surface area is higher, 148.6324 versus 89.3261, delta +59.3063, and the estimated logD is again much lower, -4.0288 versus 3.4249, delta -7.4537, both indicating a much less lipophilic and more highly exposed polarity profile. The number of acidic sites also rises from absent to 5, delta +5, which further increases ionization. Although that acidic-site increase and the donor increase can suppress penetration, the overall comparison to a mutagenic neighbor still supports the mutagenic side because the query is much more heteroatom-rich and remains in the same ring-count class while shifting strongly toward a more polar, highly ionizable structure.
+
+Neighbor 4 is a negative neighbor, but its comparison actually looks more mutagenic than the neighbor itself. The query has fewer aromatic carbocycles, 2 versus 5, delta -3, and fewer aromatic rings, 2 versus 5, delta -3; by themselves those reductions remove some aromatic bulk. However, the query also has hydroxylamine present once whereas the neighbor lacks it, delta +1, and hydroxylamine is the more concerning feature here because it is a reactive nitrogen-oxygen motif often associated with mutagenic behavior. The query also has a slightly higher NH/OH group count, 5 versus 4, delta +1, and a slightly higher heteroatom count, 8 versus 7, delta +1. Neutral fraction is unchanged at absent versus absent, delta 0. Taken together, the presence of hydroxylamine plus the extra heteroatom and NH/OH burden makes the query look more, not less, compatible with mutagenicity than this negative neighbor.
+
+Neighbor 5 shows the same pattern as Neighbor 4. Again the query has fewer aromatic carbocycles, 2 versus 5, delta -3, and fewer aromatic rings, 2 versus 5, delta -3, but it also contains hydroxylamine once while the neighbor does not, delta +1. The NH/OH group count is higher at 5 versus 4, delta +1, and heteroatom count is higher at 8 versus 7, delta +1. Neutral fraction remains absent in both, delta 0. So even though the aromatic ring system is smaller than the neighbor’s, the added hydroxylamine and the slightly higher heteroatom and donor-rich profile are the more salient features for the mutagenicity comparison, again favoring the mutagenic label.
+
+Neighbor 6 is essentially the same as Neighbor 5 and reinforces the same conclusion. The query again has aromatic carbocycle count 2 versus 5, delta -3, and aromatic ring count 2 versus 5, delta -3, which removes some aromatic bulk, but it also has hydroxylamine once while the neighbor has none, delta +1. The NH/OH group count is 5 versus 4, delta +1, heteroatom count is 8 versus 7, delta +1, and neutral fraction is absent in both, delta 0. The repeated presence of hydroxylamine, together with the higher heteroatom and NH/OH burden, keeps the query closer to a mutagenic pattern than to the negative neighbor.
+
+Putting the six comparisons together, the three mutagenic neighbors all show the query moving toward a more polar, heteroatom-rich, highly ionizable structure with much lower estimated logD and higher TPSA, and that pattern is consistent with the provided mutagenic label even when some exposure-limiting features appear. The three non-mutagenic neighbors do not reverse that picture, because despite their lower aromaticity, the query carries hydroxylamine along with slightly higher heteroatom and NH/OH content, which keeps the overall analog evidence aligned with option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

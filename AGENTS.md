@@ -10,6 +10,22 @@ If you are on `node002`, default to the `vllm` conda environment when you need R
 
 - 已在 `TRIM` 下建立新的项目骨架与脚本入口。
 - 已把 clean split data、RDKit/pKa feature、FG feature、similarity cache 接到 `TRIM` 本地路径下，目前大文件先采用 soft link 方式迁移。
+- 现在**默认使用最简单的 core pKa + no-fr version**，即：
+  - `configs/features/fg_top_level_plus_rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts.json`
+  - `configs/features/rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts.json`
+  - `data/features/rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts/tdc_no_conflict_labels_salt_removed_unique_smiles_rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts.csv`
+  - 对应脚本：`scripts/build_rdkit_pka_core_pka_no_fr_counts.py`
+  - 该版本保留全部非 `rdkit__fr_*` 的 RDKit descriptor，但只保留 7 个核心 pKa 字段：
+    - `pka__fraction_neutral`
+    - `pka__logd_estimate`
+    - `pka__num_acidic_sites`
+    - `pka__num_basic_sites`
+    - `pka__num_ionizable_sites`
+    - `pka__most_acidic_pka`
+    - `pka__most_basic_pka`
+  - `global` 训练现在**默认保留含 NaN 的列**；只有 train 中整列全 NaN 的 feature 才会被丢掉
+    - 脚本入口：`scripts/train_global_ebm.py`
+    - 显式回到旧行为时使用：`--drop-nan-columns`
 - 已跑通 global-only EBM 训练/保存/重放评估流程。
 - 已用 `n_jobs=16` 跑完当前 16 个二分类任务的 global EBM，并拿到 valid set `macro_f1` 结果。
 - 已完成 `BBB_Martins` 的一轮 pairwise/local valid 实验：`top_k=4`、`strict_cross_scaffold_pairs=False`、`n_jobs=64`，并拿到 pair-level 与 molecule-level 的 local-only / hybrid 指标。
@@ -24,6 +40,41 @@ If you are on `node002`, default to the `vllm` conda environment when you need R
   - test 上 16 任务平均 `macro_f1`：`global=0.6564`、`local=0.6917`、`hybrid=0.6784`
   - 目前 test 上整体最强的是 `local-only`，不是 `hybrid`
   - `hybrid` 虽然在 test 上仍普遍不差于 global，但没有维持 valid 上那种平均最优的优势
+- 已完成 16 个任务的 `FG + RDKit/pKa without rdkit__fr_*` 版本 global/local/hybrid 复现实验，并生成总表：
+  - `outputs/metrics/local_hybrid_batch_valid_summary_all16_fg_plus_rdkit_no_fr_counts.csv`
+  - `outputs/metrics/local_hybrid_batch_valid_summary_all16_fg_plus_rdkit_no_fr_counts.json`
+  - `outputs/metrics/local_hybrid_batch_test_summary_all16_fg_plus_rdkit_no_fr_counts.csv`
+  - `outputs/metrics/local_hybrid_batch_test_summary_all16_fg_plus_rdkit_no_fr_counts.json`
+- 已完成 16 个任务的 `FG + RDKit/core-pKa without rdkit__fr_*` 版本 global/local/hybrid 复现实验，并生成总表：
+  - `outputs/metrics/local_hybrid_batch_valid_summary_all16_fg_plus_rdkit_core_pka_no_fr_counts.csv`
+  - `outputs/metrics/local_hybrid_batch_valid_summary_all16_fg_plus_rdkit_core_pka_no_fr_counts.json`
+  - `outputs/metrics/local_hybrid_batch_test_summary_all16_fg_plus_rdkit_core_pka_no_fr_counts.csv`
+  - `outputs/metrics/local_hybrid_batch_test_summary_all16_fg_plus_rdkit_core_pka_no_fr_counts.json`
+- 对 `core-pKa + no-fr` 的补充结论：
+  - 这版把总特征从 `95` 压到 `36`，其中 pKa 从 `66` 压到 `7`
+  - 在旧的 `drop-any-NaN-columns` global 设定下：
+    - valid 上 16 任务平均 `macro_f1`：`global=0.6500`、`local=0.6974`、`hybrid=0.7050`
+    - test 上 16 任务平均 `macro_f1`：`global=0.6645`、`local=0.6857`、`hybrid=0.6811`
+  - 在当前默认的 `keep-NaN-columns` global 设定下：
+    - valid 上 16 任务平均 `macro_f1`：`global=0.6506`
+    - test 上 16 任务平均 `macro_f1`：`global=0.6674`
+    - 汇总文件：
+      - `outputs/metrics/global_only_batch_valid_summary_all16_fg_plus_rdkit_core_pka_no_fr_keep_nan.json`
+      - `outputs/metrics/global_only_batch_test_summary_all16_fg_plus_rdkit_core_pka_no_fr_keep_nan.json`
+    - 对应默认 global bundle 根目录：
+      - `outputs/models/global_ebm/all_tasks_njobs16_parallel_core_pka_no_fr_keep_nan`
+  - 相比 `no-fr` 基线：
+    - valid 上 `hybrid` 略升，`local` 略升
+    - test 上 `hybrid` 略升，`global` 略升，但 `local-only` 有所下降
+  - 尽管 `local-only` teacher 质量略掉，但考虑到 feature 数量和后续 agent/tool-calling 的上下文成本，这一版仍作为**默认版本**
+- `core-pKa + no-fr` 之外，还额外试过一个 `core-pKa + 4 summary` 的中间版本：
+  - `configs/features/fg_top_level_plus_rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_plus4_no_fr_counts.json`
+  - 该版本保留 11 个 pKa 字段，但最终**不作为默认**
+- `no-fr` 的基础结论（full pKa retained）：
+  - valid 上 16 任务平均 `macro_f1`：`global=0.6637`、`local=0.6877`、`hybrid=0.7035`
+  - test 上 16 任务平均 `macro_f1`：`global=0.6610`、`local=0.6993`、`hybrid=0.6784`
+  - 去掉 `rdkit__fr_*` 后，平均性能**没有下降**；`global` 略升，`local` 在 test 上提升更明显，`hybrid` 基本持平
+  - 该版本仍可作为对照基线，但**不再是默认版本**
 - 已新增 EBM 可视化函数：
   - `src/trim/evaluation/ebm_visualization.py`
   - `scripts/visualize_ebm_trends.py`
@@ -41,12 +92,275 @@ If you are on `node002`, default to the `vllm` conda environment when you need R
   - `scripts/run_local_hybrid_batch_valid.py`
     - 用已有或新训练的 pairwise bundle 批量跑多任务 valid
     - 支持 task 级并行，并自动汇总 `global/local/hybrid` 指标与 `lambda`
+    - 现在默认指向 `FG + RDKit/core-pKa no-fr` 配置与对应输出目录
   - `scripts/run_local_hybrid_batch_test.py`
     - 复用已有 pairwise bundle，批量跑多任务 test
     - 支持为特定任务覆盖 pair bundle 根目录，例如 `BBB_Martins`
+    - 现在默认指向 `FG + RDKit/core-pKa no-fr` 配置与对应输出目录
+- 已进入 reasoning / tool-calling 阶段，并完成第一批基础设施：
+  - 已实现 per-sample `global_decision_evidence`、`global_middle_draft`
+  - 已实现 per-neighbor `local_per_neighbor_decision_evidence`、`local_per_neighbor_middle_draft`
+  - 已实现 `local_summary_middle_draft`
+  - 已完成 16 个任务的 middle draft 结构回归检查，并导出 sample-0 preview 文件
+  - 已经**抛弃 task-specific union 压缩步骤**；原因是当前默认 `core-pKa + no-fr` dense feature 池只有 `36` 个，而大多数任务的 local manifest 已几乎覆盖全部 36 个 dense features，继续做 union 裁剪收益很小
+  - 相关脚本包括：
+    - `scripts/build_agent_tool_manifests.py`
+      - 生成简化版 task manifest，只记录 bundle 路径、label semantics、neighbor/top-k 配置，以及固定的 dense feature 列表
+    - `scripts/export_agent_tool_previews.py`
+      - 导出 `get_mol_properties_and_fg(SMILES)` 与 `compare_similar_mols(SMILES)` 的真实 preview JSON
+  - 相关实现包括：
+    - `src/trim/reasoning/evidence/global_evidence.py`
+    - `src/trim/reasoning/evidence/local_evidence.py`
+    - `src/trim/reasoning/agent_tools/manifests.py`
+    - `src/trim/reasoning/agent_tools/tools.py`
+  - 已完成 reasoning rewrite phase-1 基础设施：
+    - 在 rewrite 前先做 sample-level merge/filter；只有 `global_prediction_correct == true` 或 `local_prediction_correct == true` 的样本才会进入后续 rewrite，`both_wrong` 会在任何 LLM 改写前被筛掉
+    - 已新增 rewrite helper 模块：
+      - `src/trim/reasoning/rewrite/playbooks.py`
+      - `src/trim/reasoning/rewrite/candidates.py`
+      - `src/trim/reasoning/rewrite/rendering.py`
+    - 已新增 rewrite/build/render 脚本：
+      - `scripts/filter_rewrite_samples.py`
+        - 对齐 global/local reasoning evidence
+        - 仅依据 `global_prediction_correct OR local_prediction_correct` 做 pre-rewrite 过滤
+        - 当前已跑通 16 个任务的 `train` split，并输出到 `outputs/reasoning_rewrite_filters/train/<task>/`
+        - 根 summary 在 `outputs/reasoning_rewrite_filters/summary.json`
+      - `scripts/build_rewrite_candidates.py`
+        - 合并 global/local reasoning evidence
+        - 加载 task playbook
+        - 过滤 `both_wrong`
+        - 产出 `global_rewrite` / `local_rewrite` / `hybrid_rewrite` 三类最小输入 candidate JSON
+      - `scripts/render_rewrite_prompts.py`
+        - 从单条 candidate JSON 渲染 filled prompt
+        - 支持 `global|local|hybrid` 三种 mode
+      - `scripts/render_rewrite_prompts_batch.py`
+        - 从 `outputs/reasoning_rewrite_filters/<split>/<task>/kept_records.json` 出发，批量重建 candidates 并渲染 filled prompts
+        - 当前 `global/local` 可以直接批量 fill
+        - `hybrid` 需要先存在对应的 polished rewrite 输出后才能批量 fill
+        - 默认输出根目录是 `outputs/rewrite_prompts/<mode>/<split>/<task>/sample_xxxxx.md`
+      - `scripts/run_reasoning_rewrites.py`
+        - 从已经 `both_wrong` 过滤过的目录出发，自动构建 candidates、渲染 prompts、调用 LLM、解析 JSON、并保存 rewrite 输出
+        - 当前支持两种 backend：
+          - `openrouter`：默认走 `https://openrouter.ai/api/v1/chat/completions`
+          - `vllm`：默认走本地 OpenAI-compatible 接口 `http://127.0.0.1:8000/v1/chat/completions`
+        - 当前支持 `global|local|hybrid|all` 四种运行模式；`all` 会顺序执行 global、local、hybrid
+        - `OPENROUTER_API_KEY` 现在默认优先从 repo 根目录 `.env` 读取；若 `.env` 未提供，再回退到 shell 环境变量；显式 `--api-key` 仍然最高优先级
+        - 默认数据来源是 `outputs/reasoning_rewrite_filters/<split>/<task>/kept_records.json`
+        - 默认 candidate cache 根目录是 `outputs/reasoning_rewrite_candidates/from_filters`
+        - 默认 rewrite 输出根目录是 `outputs/reasoning_rewrite_outputs/<provider>/<model_slug>/<mode>/<split>/<task>/`
+        - 当前正式输出布局已改为 **每个 sample 一个子目录**：
+          - `.../<mode>/<split>/<task>/sample_00000/result.json`
+          - `.../<mode>/<split>/<task>/sample_00000/prompt.md`
+          - `.../<mode>/<split>/<task>/sample_00000/response.txt`
+        - `mode=all` 现在已经实跑验证过：会先生成 polished `single-molecule`、再生成 polished `neighbor-comparison`、最后把这两段真正喂给 final integration template 生成 `hybrid`
+      - `scripts/fix_local_prompt_neighbor_typo.py`
+        - 扫描 local prompt/template artifacts，把误写的 `Nrighbor` 统一替换为 `Neighbor`
+        - 当前主要用于修正 `prompt_templates/reasoning_sft` 与已生成的 `outputs/rewrite_prompts` / `outputs/reasoning_rewrite_examples` / `outputs/reasoning_rewrite_outputs`
+    - `scripts/extract_reasoning_evidence_all_tasks.py`
+        - 从 task manifest index 批量导出 16 个任务的 global/local reasoning evidence
+        - 默认按清晰的 `task/split/sample_xxxxx.json` 结构分别写到：
+          - `outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan`
+          - `outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts`
+        - 并在两个根目录下各自写出 `summary.json`
+    - 已新增 reasoning rewrite prompt templates：
+      - `prompt_templates/reasoning_sft/rewrite_global_reasoning.md`
+      - `prompt_templates/reasoning_sft/rewrite_local_reasoning.md`
+      - `prompt_templates/reasoning_sft/rewrite_hybrid_reasoning.md`
+    - 当前 rewrite template 约定：
+      - `global_rewrite` 只输入 task playbook 和 `global_middle_draft`
+        - 现在 template 的自然语言表述已经去掉 `global` 这种系统内部术语，改成更自然的 `single-molecule analysis notes`
+      - `local_rewrite` 输入 task playbook、6 个 neighbor similarity、6 个 `local_per_neighbor_middle_draft`，以及 `local_prediction`
+        - 现在 template 的自然语言表述已经去掉 `local` 这种系统内部术语，改成更自然的 `neighbor-based molecule comparison` / `per-neighbor comparison notes`
+      - `hybrid_rewrite` 输入已合理化的单分子分析、已合理化的多分子比较分析、以及最终标签语义
+        - 现在 template 的自然语言表述已经去掉 `global/local/hybrid reasoning` 这种系统内部术语，改成：
+          - `single-molecule analysis`
+          - `multi-molecule comparison analysis`
+          - `final integration-layer reasoning`
+        - `hybrid` template 现在明确强调：这里只写**最后的融合层**，不要重写完整 end-to-end reasoning
+      - `local_rewrite` 的当前强化约束是：最终文本必须显式覆盖 `Neighbor 1` 到 `Neighbor 6`，不能漏、不能合并、不能数错 neighbor，而且每个 neighbor 只能使用它自己 draft 中已经给出的证据
+      - `local_rewrite` 现在还显式要求：
+        - descriptor 的解释必须是 **baseline-aware / range-aware / neighbor-specific**
+        - 不能把同一 descriptor 在不同 neighbors 上的方向硬压成全局单调规律
+      - `global/local/hybrid` 三类 rewrite 现在都显式禁止在最终文本里出现元话语，例如：
+        - `draft`
+        - `playbook`
+        - `prompt`
+        - `input`
+        - `instruction`
+        - `contribution`
+        - `pair score`
+    - 当前 rewrite 输出 JSON schema 也已统一简化：
+      - `global` / `local` / `hybrid` 三类最终文本字段现在都统一使用 `parsed_output.reasoning`
+      - 不再继续扩展或依赖 `global_reasoning` / `local_reasoning` / `hybrid_reasoning` 这套旧字段命名
+      - `hybrid` 的 quality check 也已改成更自然的命名：
+        - `consistent_with_single_molecule_analysis`
+        - `consistent_with_multi_molecule_comparison`
+        - `final_label_matches_target`
+        - `does_not_explicitly_reference_ground_truth`
+    - 当前 rewrite pipeline 已新增通用 post-check 机制：
+      - 位置：`src/trim/reasoning/rewrite/pipeline.py`
+      - 入口：`collect_reasoning_post_checks(...)`
+      - 当前对 `global` / `local` / `hybrid` 三种 mode 复用同一套逻辑
+      - 主要用于自动检查最终 `reasoning` 里是否还残留元话语
+      - 每条 rewrite output 的 `result.json` 里都会保存：
+        - `post_checks.reasoning_key`
+        - `post_checks.meta_reference_free`
+        - `post_checks.meta_terms_found`
+    - 当前 JSON 解析器也做过一轮稳健性增强：
+      - 位置：`src/trim/reasoning/rewrite/llm.py`
+      - `extract_json_from_response_text(...)` 现在对“模型返回近似 JSON、但字符串内部混入未转义换行/控制字符”的情况有 fallback 修复
+      - 已通过测试覆盖，避免后续批量 rewrite 时因为格式小瑕疵直接整条失败
+    - 已新增 repo 内 playbook 入口：
+      - `playbooks/BBB_Martins.md`
+      - `playbooks/AMES.md`
+      - `playbooks/Bioavailability_Ma.md`
+      - `playbooks/Carcinogens_Lagunin.md`
+      - `playbooks/ClinTox.md`
+      - `playbooks/CYP2C9_Substrate_CarbonMangels.md`
+      - 默认约定所有 task playbook 放在 `playbooks/<task>.md`
+      - 当前真正能跑 rewrite 的 task 仍取决于对应 playbook 是否已经补齐；运行前应先检查目标 task 的 playbook 是否存在
+    - 已新增 playbook research prompt 基础设施：
+      - `prompt_templates/playbooks/deepresearch_threshold_playbook_prompt_template.md`
+        - 用于为单个 task 生成“36 个默认 RDKit/pKa properties 的文献阈值/范围 + 官能团定性 notes”的 DeepResearch prompt
+      - `src/trim/playbook_prompt.py`
+        - 统一负责加载默认 36 个 properties、渲染单任务 prompt、以及按 manifest index 批量渲染
+      - `scripts/render_playbook_research_prompt.py`
+        - 渲染单个 task 的 filled prompt
+      - `scripts/render_playbook_research_prompts_batch.py`
+        - 从默认 `core_pka_no_fr_counts` manifest index 批量渲染当前 16 个任务
+      - 默认输出目录：
+        - `outputs/playbook_research_prompts/<task>/deepresearch_threshold_playbook_prompt_filled.md`
+        - 根 summary：`outputs/playbook_research_prompts/render_summary.json`
+    - 当前 local prompt renderer 已兼容逐邻居展开的最小输入格式，会为 `rewrite_local_reasoning.md` 正确填入：
+      - `TASK_DESCRIPTION`
+      - `POSITIVE_LABEL_SEMANTICS`
+      - `NEGATIVE_LABEL_SEMANTICS`
+      - `NEIGHBOR_1..6_SIMILARITIES`
+      - `NEIGHBOR_1..6_LOCAL_MIDDLE_DRAFT`
+    - `outputs/reasoning_evidence` 下旧的 smoke / preview / check 目录已经清理；当前正式的 full reasoning evidence 输出以这两套目录为准：
+      - `outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan`
+      - `outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts`
+    - 当前正式导出已经覆盖 16 个任务的 `train/valid/test` 三个 split，并按简洁的 `task/split/sample_xxxxx.json` 结构保存，同时在 global/local 两个根目录下各自写出 `summary.json`
+    - 当前还另外保存了一套 `BBB_Martins train sample_00000` 的 rewrite demo：
+      - candidate: `outputs/reasoning_rewrite_candidates/train_demo/BBB_Martins/sample_00000/sample_00000.json`
+      - filled prompts + rewritten outputs: `outputs/reasoning_rewrite_examples/BBB_Martins/train/sample_00000/`
+    - 当前还保存了一套从 `both_wrong` 过滤结果直接 batch render 出来的 prompt 示例：
+      - `outputs/rewrite_prompts/global/train/BBB_Martins/sample_00000.md`
+      - `outputs/rewrite_prompts/local/train/BBB_Martins/sample_00000.md`
+      - 当前 `hybrid` 也已经可以用真实的 polished `single-molecule` + polished `neighbor-comparison` reasoning 做 end-to-end 实跑，并输出到：
+        - `outputs/reasoning_rewrite_outputs/openrouter/openai__gpt-5.4-mini/hybrid/train/BBB_Martins/sample_00000/result.json`
+    - 已新增 task-level user prompt 资产，供后续 agent `messages` 数据直接复用：
+      - `src/trim/reasoning/task_user_prompts.py`
+        - 统一加载/渲染每个 task 的标准 user message template
+      - `scripts/build_task_user_cot_prompts.py`
+        - 从旧项目 `TDC_{train,valid,test}_prompts_label_scaffold/*.jsonl` 反推出稳定模板并写入 repo
+      - 当前正式 prompt 资产目录：
+        - `data/prompts/tdc_cot_user_messages/<task>.json`
+        - 根 manifest：`data/prompts/tdc_cot_user_messages/manifest.json`
+    - 已新增 agent reasoning SFT messages builder：
+      - `src/trim/reasoning/agent_sft.py`
+        - 把 task user prompt、tool text 返回、以及 polished `global/local/hybrid` reasoning 组装成最终 OpenAI-style `messages`
+        - 当前 transcript 结构是：
+          - `user`
+          - `assistant(tool_call=get_mol_properties_and_fg)`
+          - `tool(get_mol_properties_and_fg result)`
+          - `assistant(global reasoning + tool_call=compare_similar_mols)`
+          - `tool(compare_similar_mols result)`
+          - `assistant(local reasoning + hybrid reasoning + final Answer)`
+        - 当前 agent SFT builder **不再遍历全 split 全部 sample**，而是只消费 `global/local/hybrid` 三类 rewrite 输出都真实存在的 sample index 交集；因此 `both_wrong` 被过滤掉、或某类 rewrite 尚未成功的 sample，不会再让后续 SFT 构建报错
+      - `scripts/build_agent_reasoning_sft_messages.py`
+        - 按 task 批量导出最终 agent SFT `messages` 数据
+      - 正式输出目录：
+        - `data/sft/agent_reasoning_messages/<provider>/<model_slug>/<split>/<task>.jsonl`
+        - 同目录 manifest：`data/sft/agent_reasoning_messages/<provider>/<model_slug>/<split>/manifest.json`
+      - preview 输出目录：
+        - `data/sft/agent_reasoning_messages/previews/<provider>/<model_slug>/<split>/<task>/sample_xxxxx.json`
+      - 当前已保存一条真实 preview：
+        - `data/sft/agent_reasoning_messages/previews/openrouter/openai__gpt-5.4-mini/train/BBB_Martins/sample_00000.json`
+    - `scripts/run_reasoning_rewrites.py` / `src/trim/reasoning/rewrite/pipeline.py` 最近又补过一轮可用性增强，后续批量跑时不要忘：
+      - 已支持 `max_concurrency`，按 sample 级并发请求 API；单 sample 内仍保持 `global -> local -> hybrid` 顺序
+      - 已支持 `max_retries` 与 `retry_delay_s`
+      - 现在不仅 API/解析异常会重试，`post_checks.meta_reference_free == false` 这类 post-check 不合格也会被当成失败并触发重试
+      - 单条 sample 多次失败后不会中断整 task；失败会记录进对应 task 的 rewrite `manifest.json`
+      - 当前每个 task 都会显示 `tqdm` 进度条
+  - agent tool 侧的当前约定：
+    - tool 现在直接返回固定的全部 dense features，即 `36` 个 `core-pKa + no-fr` properties，而不再按任务做 union 白名单裁剪
+    - `fg_top_level` 不进 dense properties；global 只返回非 0 functional groups，local 只返回 neighbor/query 的 FG differences
+    - `rdkit__fr_*` 也不再进入默认 dense properties；后续若需要，和 FG 一样按稀疏方式单独返回，而不是放进大表
+    - manifest 仍然保留，但现在主要只是任务配置文件，不再承担 union 压缩的职责
+    - 对于 `most_acidic_pka` / `most_basic_pka` 这类因“没有酸性/碱性位点”而缺失的值，tool/evidence JSON 里不再直接输出 `NaN`
+      - 现在统一导出为 `null` + 更自然的文本语义，例如 `no acidic site` / `no basic site`
+      - local comparison 中若一侧无定义值，`delta_value` 也会导出为 `null`，并附带自然语言说明，而不是 `NaN`
+    - 当前对外给 LLM / agent 真正调用的返回值已经改成**纯文本字符串**，而不是结构化 dict
+      - `get_mol_properties_and_fg(smiles)`：
+        - 输入只有 `smiles`
+        - 输出是 plain text
+        - 主体是 36 个 dense properties，每行 `display_name: value`
+        - 最后补一段 `functional groups:`，只列非 0 FG 及其计数
+        - 对 `strongest acidic pKa` / `strongest basic pKa`，若缺失则输出 `not applicable (no acidic/basic site)`
+      - `compare_similar_mols(smiles)`：
+        - 输入只有 `smiles`
+        - 但这个 `smiles` 必须属于当前 task；tool 会利用 task 上下文去当前 task 的 train split 检索 neighbors
+        - 输出是 plain text
+        - 开头先给一句 `query / neighbor / delta` 的定义
+        - 然后给 `positive neighbors:` 和 `negative neighbors:`
+        - 默认是 3 个正类邻居 + 3 个负类邻居，总编号连续为 `Neighbor 1..6`
+        - 每个 neighbor 下会列 36 个 dense properties，格式是：
+          - `display_name: neighbor=... | query=... | delta=...`
+        - 最后补 `functional group differences:`
+    - 当前仍保留内部 payload builder 供调试与 preview 导出：
+      - `src/trim/reasoning/agent_tools/tools.py`
+      - `get_mol_properties_and_fg_payload(smiles)`
+      - `compare_similar_mols_payload(smiles)`
+      - 但正常给 agent 用时，优先使用文本返回版本，不要再让 agent 直接吃内部 payload dict
+    - OpenAI function-calling / Responses API 侧的 schema 与 runtime helper 已单独整理：
+      - schema 定义：
+        - `src/trim/reasoning/agent_tools/openai_schemas.py`
+        - 入口：
+          - `build_openai_agent_tool_schemas(task=...)`
+          - `OPENAI_AGENT_TOOL_SCHEMAS`
+      - task 绑定后的 runtime helper：
+        - `src/trim/reasoning/agent_tools/openai_runtime.py`
+        - 入口：
+          - `build_task_bound_openai_tool_bundle(task=...)`
+          - `OpenAITaskAgentToolBundle`
+      - 这个 helper 的用途是把两件事绑在一起：
+        - `bundle.tools`：直接喂给 OpenAI agent 的 tool JSON
+        - `bundle.call_tool(...)` / `bundle.call_openai_function_call(...)`：执行 agent 发起的 tool call 并返回文本结果
+      - 这样能保证 schema、task 上下文、真实执行逻辑三者一致，方便新人上手，也减少调错配的概率
+    - 最简使用示例：
+      - `scripts/example_openai_agent_tools.py`
+      - 用法是：
+        - 先 `build_task_bound_openai_tool_bundle(task=\"BBB_Martins\")`
+        - 把 `bundle.tools` 传给 OpenAI
+        - 收到 function call 后，用 `bundle.call_tool(...)` 或 `bundle.call_openai_function_call(...)` 执行
+    - 一个最小代码片段如下：
+      - ```python
+        from trim.reasoning.agent_tools import build_task_bound_openai_tool_bundle
+
+        bundle = build_task_bound_openai_tool_bundle(task="BBB_Martins")
+        tools = bundle.tools
+
+        # 直接执行某个 tool
+        text_result = bundle.call_tool(
+            "get_mol_properties_and_fg",
+            {"smiles": "CC(C)(C)OC(=O)CCCc1ccc(N(CCCl)CCCl)cc1"},
+        )
+
+        # 或执行 OpenAI 风格的 function call payload
+        tool_call = {
+            "type": "function_call",
+            "function": {
+                "name": "compare_similar_mols",
+                "arguments": "{\"smiles\": \"CC(C)(C)OC(=O)CCCc1ccc(N(CCCl)CCCl)cc1\"}",
+            },
+        }
+        local_text = bundle.call_openai_function_call(tool_call)
+        ```
 - 当前状态判断：
   - **纯 ML 主线任务已经完成**
-  - 后续若继续推进，重点应转到 **reasoning 重写**，或做更细的补充分析（例如 AD / similarity 分桶），而不是继续补基础的 pure ML pipeline
+  - **以后默认 feature 版本是 core-pKa no-fr counts**
+  - 后续若继续推进，重点应转到 **reasoning 重写 / agent tool calling**，或做更细的补充分析（例如 AD / similarity 分桶），而不是继续补基础的 pure ML pipeline
 
 ## 1. 项目背景
 
@@ -1113,27 +1427,32 @@ global 部分来自单分子 EBM。
 local 部分来自两个 pairwise EBM 以及对应的 neighbors。
 
 每个 query 当前默认有：
-- 4 个 positive neighbors
-- 4 个 negative neighbors
+- 3 个 positive neighbors
+- 3 个 negative neighbors
 
 每个 neighbor 都应先单独抽取 evidence，但自然语言阶段不一定全部展开成长段。
 
 #### 每个 neighbor evidence 应至少包括
-- `neighbor_id`
-- `neighbor_SMILES`
+- `neighbor_smiles`
 - `neighbor_label`
 - `neighbor_similarity`
 - `neighbor_scaffold`
 - `pair_model_type`（positive_neighbor_model / negative_neighbor_model）
 - `pair_score`
-- `top_pair_terms`
+- `top_pair_feature_names`
+- `feature_comparisons`
 
 #### 每个 pair term 应包括
 - `feature_name`
-- `base_value`
+- `neighbor_value`
+- `query_value`
 - `delta_value`
 - `contribution` (推向 label (A) 还是 (B) 的方向)
 - `text_hint`
+
+当前实现补充约定：
+- dense comparison features 现在直接使用固定的全部 dense feature 列表，而不再按任务做 union 白名单裁剪
+- `fg_top_level` 不在 dense comparison features 里；它们单独进入 `functional_group_differences`
 
 #### 注意
 这里的 `text_hint` 仍然应是短的、模板化的、证据级描述，不是最终 polished reasoning。
@@ -1221,19 +1540,19 @@ local summary 应写成：
 
 ---
 
-## 29. 为什么要把 8 个邻居先都抽证据，但自然语言阶段不一定都展开
+## 29. 为什么要把 6 个邻居先都抽证据，但自然语言阶段不一定都展开
 
 当前 local 模块默认是：
-- 4 个正类邻居
-- 4 个负类邻居
-- 共 8 个 neighbor comparisons
+- 3 个正类邻居
+- 3 个负类邻居
+- 共 6 个 neighbor comparisons
 
 ### 必须全部先抽结构化证据
 因为：
 - 最终 local summary 需要知道所有邻居的支持/反证格局
 - 后续 quality control 也需要看到完整局部证据分布
 
-### 但最终自然语言不一定 8 个都写成长段
+### 但最终自然语言不一定 6 个都写成长段
 因为：
 - 太长
 - 太重复
@@ -1242,7 +1561,7 @@ local summary 应写成：
 
 ### 推荐做法
 #### 在 evidence 层面
-8 个邻居都保留
+6 个邻居都保留
 
 #### 在最终文字层面
 - 可以只显式展开最重要的若干个邻居
@@ -1428,8 +1747,8 @@ LLM 在这一阶段只做：
    - 当前 contribution
    - text hint
 5. 对于 local 部分：
-   - 8 个邻居都要先抽结构化证据
-   - 每个邻居保留 similarity、label、top local terms、stance
+   - 6 个邻居都要先抽结构化证据（3 个正类邻居 + 3 个负类邻居）
+   - 每个邻居保留 similarity、label、top local features、stance
    - 然后做 local summary
 7. 不要预设 hybrid 一定是最终 teacher。应实现动态 teacher selection：
    - 根据 GT、一致性、证据强度和可写性来选择 global / local / hybrid

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a quinazoline core, and the presence of this heteroaromatic scaffold is consistent with drug-like oral properties. It also has a primary aromatic amine, which can support polarity balance and maintain some favorable physicochemical character. The structure includes three alkyl aryl ether groups, adding substituents that can help tune lipophilicity and overall oral drug-likeness. A tertiary hydroxyl is present as well, which can contribute to solubility while still remaining compatible with oral exposure when the rest of the profile is balanced. The QED drug-likeness score is 0.6832, which is a favorable composite value and supports an orally developable profile. The strongest basic pKa is 6.3659, suggesting a moderately basic site rather than an extremely strong one, which is generally more compatible with retaining a useful neutral fraction near physiological pH. The neutral fraction is 0.9154, indicating that most of the molecule is neutral under the configured conditions, a favorable feature for passive permeability. However, there are also liabilities: urethane is present, and piperazine is present, both of which can add polarity and ionization complexity that may hinder oral exposure. The Labute surface area is 180.1953, which is fairly large and suggests a substantial surface burden that could work against absorption. Overall, the favorable heteroaromatic core, amine functionality, multiple ether substituents, tertiary hydroxyl, good QED, moderate basicity, and high neutral fraction outweigh the polarity and surface-area liabilities, so the molecule is more consistent with oral bioavailability at or above 20%.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly strong positive analog overall: it matches the query on quinazoline and primary aromatic amine, and both of those shared motifs are favorable in this comparison because the raw deltas are zero while their pairwise effects are positive. It also has 2 copies of alkyl aryl ether versus 3 in the query, so the query-minus-neighbor delta of +1 still supports the oral-bioavailability-≥20% side here. The main offsets are that the query has lower QED drug-likeness than this neighbor (0.6832 vs 0.8306, delta -0.1474) and a higher minimum absolute partial charge (0.4095 vs 0.2513, delta +0.1582), and both of those differences are unfavorable. Even so, Neighbor 1 also lacks the tertiary amide that the query has, and that missing amide favors the higher-bioavailability class. Taken together, this neighbor still leans clearly toward option (B).
+
+Neighbor 2 is also supportive of option (B). It again shares quinazoline and primary aromatic amine with the query, and those matched features remain favorable. The query has 3 alkyl aryl ether groups versus 2 in the neighbor, so the +1 delta is again on the favorable side. This neighbor’s QED is 0.7266 compared with the query’s 0.6832, so the query is slightly lower here, but the difference is modest and still the neighbor is overall a good analog. The query also has more fraction of sp3 carbons, 0.55 versus 0.3158 in the neighbor, a +0.2342 shift that is unfavorable in this specific comparison. Even with that flexibility increase, the shared scaffold features and the presence of the tertiary amide in the neighbor absence in the query keep this comparison net positive for oral bioavailability ≥20%.
+
+Neighbor 3 follows the same overall pattern and is another positive example. Quinazoline and primary aromatic amine are both shared exactly, and the query has a slightly higher QED drug-likeness than the neighbor, 0.6832 vs 0.6335, with delta +0.0498, which is favorable here. The query also has fewer alkyl aryl ether groups than the neighbor, 3 versus 4, so the delta of -1 still falls on the favorable side in this specific comparison. The main counterweight is minimum absolute partial charge: the query is higher at 0.4095 versus 0.2669, delta +0.1426, which is unfavorable. But the neighbor also has tertiary amide while the query does not, and that feature again supports the higher-bioavailability class. Overall, Neighbor 3 still points to option (B).
+
+Neighbor 4 is a negative-neighbor comparison by similarity group, but the feature-by-feature evidence is mixed and still ends up favoring option (B). The neighbor lacks quinazoline and primary aromatic amine, while the query has each once, and both of those deltas (+1 and +1) are strongly favorable for the query. The neighbor does have lactone, while the query does not, and that absence in the query is unfavorable because the delta is -1 on a feature that this comparison treats as lowering oral bioavailability. The query also has 3 copies of alkyl aryl ether versus 0 in the neighbor, another favorable +3 shift. It has 0 copies of piperidine versus 2 in the neighbor, so the -2 delta is also favorable here. The main unfavorable point is minimum absolute partial charge: 0.4095 in the query versus 0.4147 in the neighbor, a small delta of -0.0052 that goes against the higher-bioavailability side. Even so, the balance of the comparison remains on option (B).
+
+Neighbor 5 is another low-similarity negative-neighbor example, but it still compares favorably overall. As with Neighbor 4, the query has quinazoline once and primary aromatic amine once while the neighbor has neither, so both +1 deltas are strong positives. The neighbor has nitrile and the query does not, so the -1 delta is favorable in this comparison. The query also has fewer alkyl aryl ether groups than the neighbor, 3 versus 5, so the delta of -2 remains favorable. Two descriptors work against the query: minimum absolute partial charge is higher in the query, 0.4095 versus 0.2028, giving a +0.2067 delta that is unfavorable here, and the query has piperazine once while the neighbor lacks it, another +1 delta that is unfavorable. Even with those offsets, the shared scaffold and the favorable shifts in aromatic amine/quinazoline and alkyl aryl ether keep Neighbor 5 aligned with option (B).
+
+Neighbor 6 is the clearest case where polarity-related differences are especially favorable to the query. The query has quinazoline and primary aromatic amine while the neighbor lacks both, so both +1 deltas support the higher-bioavailability class. The query also has 3 copies of alkyl aryl ether versus 1 in the neighbor, a +2 delta that is favorable. Two additional raw descriptors are especially important here: the query has 11 nitrogen/oxygen atoms versus 3 in the neighbor, and 132.5 topological polar surface area versus 35.53, so both deltas (+8 for N/O count and +96.97 for TPSA) are large. In this comparison, those increases are treated as favorable rather than harmful, indicating that the query’s polar functionality is not being penalized here. The main negative term is again minimum absolute partial charge, where the query is higher at 0.4095 versus 0.3494, delta +0.0601, which works against the label. Even so, the strong positive evidence from the shared motifs, alkyl aryl ether count, N/O count, and TPSA leaves Neighbor 6 supporting option (B).
+
+Putting the six comparisons together, all three close neighbors are positive for oral bioavailability ≥20%, and even the three lower-similarity neighbors still end up favoring the same class once the full set of matched and mismatched features is considered. The recurring quinazoline and primary aromatic amine features, along with the favorable alkyl aryl ether differences and the generally supportive polarity-related shifts in the weaker neighbors, outweigh the few adverse signals from QED, minimum absolute partial charge, and fraction of sp3 carbons. The combined neighbor evidence therefore supports option (B): has oral bioavailability ≥ 20%.
+
+Input 3. Target final label semantics
+option (B): has oral bioavailability ≥ 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

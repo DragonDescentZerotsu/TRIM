@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an oxetane ring, which is a chemically strained heterocycle and therefore a concerning structural alert for mutagenicity. That concern is reinforced by the low molecular weight of 72.063, the small heavy-atom count of 5, and the modest Labute surface area of 29.7384, all of which are compatible with a compact structure that can still fit well into bacterial systems. The low QED drug-likeness value of 0.3744 also suggests an overall less drug-like profile, and in this context it can coincide with the presence of reactive or alerting motifs. On the other hand, the fraction of sp3 carbons is 0.6667, which means the scaffold is fairly saturated and not especially flat or polyaromatic, and that somewhat tempers concern from a planarity/intercalation standpoint. The heavy-atom molecular weight of 68.031, heteroatom count of 2, and ring count of 1 are all relatively low and by themselves do not indicate a highly complex or highly heteroatom-rich framework. Still, the presence of a lactone ring is an additional alerting feature because cyclic ester functionality can be associated with reactivity in mutagenicity contexts, especially when combined with other suspicious motifs. Balancing the mostly small, simple scaffold against the oxetane and lactone alerts, the overall picture is more consistent with a mutagenic compound than a clearly non-mutagenic one. The final assessment is option (B), mutagenic, with score 0.7609.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly direct mutagenic analog overall. The query has one oxetane while the neighbor has none, and that structural difference is the strongest single cue here. The query is also much smaller and less bulky than the neighbor, with Labute surface area dropping from 90.1197 to 29.7384 (delta -60.3813) and heavy-atom count dropping from 15 to 5 (delta -10), both consistent with a less imposing scaffold. Even though the query also has fewer heteroatoms (2 vs 9, delta -7), lower molecular weight (72.063 vs 254.566, delta -182.503), and slightly lower maximum partial charge (0.3088 vs 0.4172, delta -0.1084), the net comparison still stays on the mutagenic side because the oxetane difference and the strongly favorable size/shape contrast dominate. In the analog set, that makes Neighbor 1 support option (B).
+
+Neighbor 2 also supports mutagenicity, and it does so through a mixed pattern. Again, the query has oxetane once while the neighbor has none, which is the clearest mutagenic-leaning feature. The neighbor also has 2 copies of bromoalkene while the query has 0, another feature that favors mutagenicity in this comparison. Against that, the query is more three-dimensional, with fraction of sp3 carbons rising from 0.25 to 0.6667 (delta +0.4167), and it is less heteroatom-rich, with heteroatom count falling from 4 to 2 (delta -2). Both of those changes lean the other way in this pair. The fact that both molecules have lactone keeps a shared structural context, and the lower maximum partial charge in the query, 0.3088 versus 0.346 (delta -0.0373), slightly reduces the mutagenic weight of the comparison. Still, the oxetane plus bromoalkene differences outweigh the opposing polarity/sp3 changes, so Neighbor 2 remains a positive analog for option (B).
+
+Neighbor 3 is the most balanced of the positive neighbors, but it still ends up on the mutagenic side in the source comparison. The query again has oxetane once while the neighbor has none, which is the main favorable difference. At the same time, the query is much lighter and less bulky than the neighbor, with heavy-atom molecular weight falling from 150.948 to 68.031 (delta -82.917), and Labute surface area dropping from 56.0202 to 29.7384 (delta -26.2819); both of those size reductions favor the mutagenic side in this particular analog pairing. The query also has a higher fraction of sp3 carbons, 0.6667 versus 0.25 (delta +0.4167), and fewer heteroatoms, 2 versus 4 (delta -2), which work against mutagenicity in this comparison. Both molecules have lactone, so that feature is neutral here. Taken together, the oxetane and the favorable size/shape differences outweigh the more saturated character and lower heteroatom count, making Neighbor 3 still align with option (B).
+
+Neighbor 4 is a negative-side analog by class, but its comparison still leans mutagenic overall. The query has oxetane once while the neighbor has none, which is a strong shared cue with the positive neighbors. The neighbor has 2 lactones whereas the query has 1, so the query is slightly less lactone-rich, but that does not overturn the overall pattern. The query also has lower QED drug-likeness, 0.3744 versus 0.6332 (delta -0.2588), which in this comparison is treated as more compatible with mutagenic behavior, and it has much lower Labute surface area, 29.7384 versus 115.3927 (delta -85.6544), again matching the direction associated with the mutagenic side here. The maximum partial charge is nearly unchanged, 0.3088 versus 0.3054 (delta +0.0034), which slightly favors the nonmutagenic side, and the query’s fraction of sp3 carbons is lower than the neighbor’s, 0.6667 versus 0.8667 (delta -0.2), which also leans away from mutagenicity. Even with those counterweights, the oxetane, reduced QED, and much smaller surface area leave Neighbor 4 closer to option (B).
+
+Neighbor 5 similarly sits in the negative-neighbor group but still behaves like a mutagenic analog overall. The query has oxetane once while the neighbor has none, which is again the most prominent difference. The neighbor contains oxepane, which the query does not, and that feature also aligns with the mutagenic side in this comparison. The query is smaller by heavy-atom molecular weight, 68.031 versus 104.064 (delta -36.033), and by total molecular weight, 72.063 versus 114.144 (delta -42.081), both of which lean toward lower exposure and thus away from mutagenicity. However, the query also has lower Labute surface area, 29.7384 versus 48.8332 (delta -19.0948), which in this pairing supports the mutagenic side, and both molecules share lactone, so that part is neutral. Overall, the oxetane and oxepane-related features, together with the surface-area shift, outweigh the size-related counterarguments, so Neighbor 5 still supports option (B).
+
+Neighbor 6 is the clearest of the negative neighbors for mutagenicity. Both the query and the neighbor have oxetane, so that important structural feature is shared rather than differential. The query is slightly smaller in heavy-atom molecular weight, 68.031 versus 80.042 (delta -12.011), and in Labute surface area, 29.7384 versus 35.4137 (delta -5.6753), while also having a higher heavy-atom count difference of 5 versus 6 (delta -1) that still favors the mutagenic direction in this comparison. The maximum absolute partial charge is higher in the query, 0.465 versus 0.4307 (delta +0.0342), which also supports the mutagenic side here. The one clear countervailing feature is that the neighbor has enolester while the query does not, and that difference favors the nonmutagenic side. Even so, the shared oxetane plus the query’s smaller size and higher charge character make Neighbor 6 a net mutagenic analog.
+
+Putting the six neighbors together, the positive set gives three consistent mutagenic analogs, each anchored by oxetane and reinforced by size/shape or related structural differences. The negative set is not actually opposing the label strongly: all three negative neighbors still end up on the mutagenic side once the same oxetane-centered comparison and the size, surface-area, QED, or charge differences are considered. The few counterbalancing features, such as higher fraction of sp3 carbons, more heteroatoms, or the presence of enolester, are not enough to overturn the repeated mutagenic pattern. Taken as a whole, the nearest analogs support option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

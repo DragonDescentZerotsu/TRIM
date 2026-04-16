@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed liability profile, but the balance still favors a non-toxic classification. The presence of ammonium (1) suggests a cationic center that can increase polarity and sometimes raise concern for cationic-amphiphilic behavior, yet that alone is not determinative. The topological polar surface area of 94.4 is moderate rather than extreme; it is somewhat above the common very-high-absorption range, but still not so large that it clearly signals a severe permeability problem. The nitrogen/oxygen atom count of 5 and hydrogen-bond acceptor count of 4 are both modest, which is generally compatible with a reasonable balance of polarity and drug-likeness. The strongest acidic pKa of 9.5727 indicates a relatively strong acidic site, and the strongest basic pKa of 6.8768 shows a basic center that is only moderately ionizable at physiological pH, so the ionization pattern is not obviously extreme. The minimum partial charge of -0.5043, minimum absolute partial charge of 0.3675, and maximum partial charge of 0.3675 indicate noticeable charge separation, consistent with a polar, ionizable scaffold, but not necessarily an intrinsically toxic one. Phenol count 2 adds some polarity and can contribute to hydrogen-bonding burden, though phenolic functionality by itself is common in drug-like molecules and is not a definitive toxicity alert. Overall, the molecule has several moderately polar and ionizable features, but none of the descriptors here clearly indicate the high-lipophilicity, strongly cationic amphiphilic, or highly aromatic patterns that often raise toxicity concern. Taken together, the most reasonable conclusion is option (A): is not toxic, with high confidence (score 0.9786).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close positive analog overall, and several of its features line up with a less toxic profile despite a few opposing charge-related signals. The query has ammonium once while the neighbor has none, which is an unfavorable difference for toxicity risk because the comparison note assigns that change toward the non-toxic side. At the same time, the query is only slightly more negative at the extremes of charge, with minimum partial charge shifting from -0.4939 to -0.5043 (delta -0.0104) and maximum absolute partial charge from 0.4939 to 0.5043 (delta +0.0104), and those small shifts are treated in the toxic direction. But the query also has a much lower estimated logD, dropping from 3.4972 in the neighbor to 0.0872 in the query (delta -3.41), which is consistent with a more moderate distribution profile rather than the higher-lipophilicity state that often raises safety concerns. The hydrogen-bond acceptor count is unchanged at 4, and the query also has a lower QED than the neighbor, 0.5175 versus 0.7602 (delta -0.2427), which is another shift toward a less drug-like but not necessarily more toxic profile in this pair. Taken together, Neighbor 1 still ends up supporting the non-toxic label because the ammonium absence in the neighbor and the lower logD in the query outweigh the small charge-extremum effects.
+
+Neighbor 2 is also a positive neighbor and again shows a mixed pattern with the same broad conclusion. The query has ammonium once while the neighbor has none, which again favors the non-toxic side. The charge extrema move only slightly, with minimum partial charge changing from -0.4932 to -0.5043 (delta -0.0111) and maximum absolute partial charge from 0.4932 to 0.5043 (delta +0.0111), both treated as toxic-leaning shifts. In addition, the neighbor contains 2,4-thiazolidinedione while the query does not, a difference that is interpreted toward the non-toxic side for this comparison. The strongest acidic pKa rises from 6.461 in the neighbor to 9.5727 in the query (delta +3.1117), and the minimum absolute partial charge also increases from 0.2859 to 0.3675 (delta +0.0815); both of those are treated as toxicity-leaning changes in the comparison. Even so, the overall balance still favors the non-toxic class because the ammonium difference and the absence of 2,4-thiazolidinedione outweigh the more modest charge and acidity shifts.
+
+Neighbor 3 is the third positive neighbor and provides a strong non-toxic counterweight, even though some physicochemical descriptors move in the toxic direction. The neighbor has 2 copies of secondary aliphatic amine while the query has 0, and the neighbor also has 2 copies of primary hydroxyl while the query has 0; both of those reductions in the query are explicitly treated as helping the non-toxic side in the comparison. The neighbor also lacks ammonium, whereas the query has it once, which again supports the non-toxic interpretation. Against that, the query has a slightly less negative minimum partial charge, shifting from -0.5072 to -0.5043 (delta +0.0029), and it has higher estimated logP, from -0.1392 in the neighbor to 0.204 in the query (delta +0.3432); both of those changes are treated as toxic-leaning. The strongest acidic pKa also increases from 7.1467 to 9.5727 (delta +2.426), again in the toxic direction. Even with those opposing shifts, the loss of the two secondary aliphatic amines, the two primary hydroxyls, and the ammonium-free state in the neighbor makes this a clearly supportive positive analog for the non-toxic label.
+
+Neighbor 4 is one of the negative neighbors, but it still resembles the query in a way that overall supports the non-toxic class. The neighbor has 4 phenols while the query has 2, so the query is lower by 2, and that difference is treated as favorable for non-toxicity. The query also has much lower estimated logP, 0.204 versus 3.5664 in the neighbor (delta -3.3624), which is a strong shift away from a more lipophilic, higher-risk profile. The neighbor does not have ammonium while the query has it once, and that change is again favorable for the non-toxic side in this comparison. There are two opposing charge-related differences: maximum partial charge rises from 0.1572 to 0.3675 (delta +0.2103), and minimum absolute partial charge rises from 0.1572 to 0.3675 (delta +0.2103); both are treated as toxicity-leaning. The strongest acidic pKa also moves slightly upward from 9.5024 to 9.5727 (delta +0.0703), which is again read as unfavorable. Still, the much lower logP and reduced phenol count, together with the ammonium difference, keep Neighbor 4 aligned with the non-toxic prediction overall.
+
+Neighbor 5 is another negative neighbor, and here the evidence is even more directly compatible with the non-toxic label. Both the neighbor and the query have ammonium, so there is no difference there. The query has fewer phenols, 2 versus 3 in the neighbor (delta -1), which is favorable for non-toxicity. The query does show higher maximum partial charge, 0.3675 versus 0.1572 (delta +0.2103), and a higher hydrogen-bond acceptor count, 4 versus 3 (delta +1); both of those are treated as toxic-leaning in this pair. The strongest basic pKa drops substantially from 10.3378 in the neighbor to 6.8768 in the query (delta -3.461), which supports the non-toxic side, and the neutral fraction rises sharply from 0.0011 to 0.7642 (delta +0.7631), also favoring the non-toxic interpretation. So even though there are some polarity and acceptor-count changes in the toxic direction, the lower basicity, higher neutral fraction, and fewer phenols make Neighbor 5 a strong non-toxic analog.
+
+Neighbor 6 is the clearest negative neighbor still pointing away from toxicity overall, because several exposure- and polarity-related differences favor the non-toxic class despite higher polar surface area. The query has hydrogen-bond acceptor count 4 versus 2 in the neighbor (delta +2), minimum absolute partial charge 0.3675 versus 0.3165 (delta +0.051), and maximum absolute partial charge 0.5043 versus 0.4653 (delta +0.039); each of those differences is read as toxic-leaning. The query also has 2 phenol groups while the neighbor has none (delta +2), and its topological polar surface area is much higher, 94.4 versus 30.74 (delta +63.66), both of which are also treated as toxic-leaning shifts. However, the neighbor lacks ammonium while the query has it once, and that difference is explicitly favorable for the non-toxic side in this comparison. Given the size of the non-toxic signal from ammonium plus the fact that the positive neighbors already support the same label, Neighbor 6 still fits better with the non-toxic class overall.
+
+Putting all six neighbors together, the three positive neighbors consistently favor the non-toxic label through the ammonium difference, lower logD or logP where present, and in one case a much simpler functional-group profile with fewer secondary amines and hydroxyls. The three negative neighbors are mixed, but each still contains at least one strong non-toxic signal: lower phenol burden and much lower logP in Neighbor 4, lower basicity and much higher neutral fraction in Neighbor 5, and the ammonium difference in Neighbor 6 alongside the fact that the query’s higher PSA and charge features do not fully overturn the broader pattern. The toxic-leaning features that recur across neighbors are mostly modest charge-extremum changes, higher acceptor counts, or higher acidity/basicity shifts, but they do not dominate the overall analog evidence. The combined comparison therefore supports option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

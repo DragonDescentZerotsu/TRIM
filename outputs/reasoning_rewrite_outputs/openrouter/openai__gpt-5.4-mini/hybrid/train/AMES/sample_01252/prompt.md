@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an alkyl chloride (1), which is a recognized mutagenicity alert and raises concern for DNA-reactive behavior, so that feature supports a mutagenic outcome. However, several size and exposure-related descriptors are on the small/low side: the molecular weight is 80.514, the exact molecular weight is 80.0029, the heavy-atom molecular weight is 75.474, and the heavy-atom count is 4. Such low molecular size can be compatible with good exposure, but here the rest of the profile does not strongly reinforce a mutagenic pattern. The presence of a primary hydroxyl (1) tends to increase polarity and can reduce membrane permeation, which leans away from mutagenicity as an exposure-limiting feature. The fraction of sp3 carbons is 1, indicating a fully saturated, non-aromatic scaffold rather than a flat polycyclic aromatic system, and the ring count is 0, so there is no ring-based structural alert such as a fused aromatic toxicophore. The Labute surface area is 30.2017, which is modest, and the maximum partial charge is 0.0566, both consistent with a small polar molecule rather than a strongly electrophilic, highly aromatic system. Taken together, the clearest mutagenicity concern is the alkyl chloride (1), but the very small size, the primary hydroxyl (1), the high saturation (fraction of sp3 carbons = 1), and the absence of rings make the overall profile less suggestive of a mutagenic compound. Overall, the balance of evidence favors option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close mutagenic analog overall. The query has alkyl chloride once while the neighbor has none, and that added alkyl chloride is the strongest mutagenicity-relevant difference here, since alkyl halides are a recognized toxicophore class. The query is also slightly higher in strongest acidic pKa (13.9034 vs 13.8244, delta +0.079), which is a minor shift but still aligns with the mutagenic side in this comparison. Against that, the query is a bit smaller and lighter, with lower exact molecular weight (80.0029 vs 87.0684, delta -7.0655) and lower heavy-atom molecular weight (75.474 vs 78.05, delta -2.576), and both compounds have the same primary hydroxyl group. The query also has lower Labute surface area (30.2017 vs 37.3823, delta -7.1806), which by itself would favor the non-mutagenic side. Even so, the alkyl chloride difference and the pKa shift dominate, so this neighbor still supports mutagenicity.
+
+Neighbor 2 is more mixed and slightly leans non-mutagenic overall despite some mutagenicity-favoring features. The neighbor has three alkyl chlorides while the query has one, and that lower alkyl chloride burden in the query goes toward non-mutagenicity here. The query is also much smaller in Labute surface area (30.2017 vs 85.8086, delta -55.6069) and heavy-atom count (4 vs 12, delta -8), which by exposure logic can reduce bacterial uptake rather than increase it. The query does have one primary hydroxyl while the neighbor has none, and that added hydroxyl is a non-mutagenic-leaning difference because it increases polarity. On the other hand, the query has a lower minimum absolute partial charge (0.0566 vs 0.1769, delta -0.1203), which in this local comparison favors mutagenicity, while its minimum partial charge is more negative (-0.3951 vs -0.3211, delta -0.0741), which favors non-mutagenicity. Taken together, the extra alkyl chlorides in the neighbor and the smaller query size make this a weaker mutagenic analog than Neighbor 1, but the local evidence remains somewhat conflicted.
+
+Neighbor 3 is essentially the same as Neighbor 2, so it provides the same kind of mixed but slightly non-mutagenic-local contrast. Again, the neighbor has three alkyl chlorides and the query has one, which reduces the mutagenicity-associated halide burden in the query. The query is much smaller in Labute surface area (30.2017 vs 85.8086, delta -55.6069) and heavy-atom count (4 vs 12, delta -8), both of which point toward lower exposure. The query also has one primary hydroxyl where the neighbor has none, a polarity increase that leans away from mutagenicity. Counterbalancing that, the lower minimum absolute partial charge in the query (0.0566 vs 0.1769, delta -0.1203) still supports mutagenicity in this local setting, while the more negative minimum partial charge (-0.3951 vs -0.3211, delta -0.0741) again leans the other way. Because the same pattern repeats, Neighbor 3 reinforces that the query is not simply a uniformly stronger mutagenic analog than every close positive neighbor; the evidence is mixed.
+
+Neighbor 4 is the clearest negative-neighbor comparison supporting mutagenicity. The query has alkyl chloride once while this neighbor has none, which is a direct mutagenicity-favoring difference. The query is also much smaller in Labute surface area (30.2017 vs 54.9555, delta -24.7538), and the size difference is even more striking in molecular weight: 80.514 for the query versus 122.167 for the neighbor, delta -41.653. The query also has a fully saturated sp3-rich framework (fraction of sp3 carbons 1 vs 0.25, delta +0.75) and no ring count at all versus one ring in the neighbor. Those latter two differences favor non-mutagenicity, but the halide plus the much lower size/surface-area profile make the query look more like the mutagenic side than this neighbor does. Overall, this comparison supports option B more than option A.
+
+Neighbor 5 is also a negative-neighbor comparison that still leans mutagenic overall. The query again has alkyl chloride once while the neighbor has none, which is the dominant favorable difference for mutagenicity. The query is far smaller in molecular weight (80.514 vs 142.585, delta -62.071) and heavy-atom burden (75.474 heavy-atom molecular weight vs 135.529, delta -60.055), and it has lower Labute surface area (30.2017 vs 58.8938, delta -28.6922); those changes are all consistent with reduced bulk and different exposure behavior. As in Neighbor 4, the query is more saturated in sp3 character (1 vs 0.1429, delta +0.8571) and has no rings versus one ring in the neighbor, both of which lean away from mutagenicity. Even so, the presence of alkyl chloride in the query and the overall contrast with this larger, more ring-containing neighbor keep the comparison on the mutagenic side.
+
+Neighbor 6 is the strongest negative-neighbor evidence for mutagenicity. The query has alkyl chloride once while the neighbor has none, and the neighbor comparison also shows a much smaller heavy-atom count for the query (4 vs 13, delta -9), which in this local context again aligns with the mutagenic side. The query’s QED drug-likeness is lower (0.4469 vs 0.8245, delta -0.3776), which here is associated with the mutagenic outcome, and its Labute surface area is also much smaller (30.2017 vs 241.501? No—the comparison is against the neighbor’s 241.501 molecular weight? No, the Labute surface area is 30.2017 for the query versus a much larger neighbor value of 0.201? Actually the stated pair is 30.2017 vs 241.501 for molecular weight, while Labute surface area is not listed in this neighbor; the surface-area and size signals in this comparison are therefore mainly the molecular weight and ring/shape features. The query is much lighter (80.514 vs 241.501, delta -160.987), and it has lower fraction of sp3 carbons favoring the neighbor? No, the comparison states the neighbor has fraction of sp3 carbons 0.25 while the query has 1 (delta +0.75), which leans away from mutagenicity, and the neighbor has one ring while the query has none, which also leans away from mutagenicity. Even with those opposing features, the alkyl chloride difference, lower QED, and lower size/atom-count profile make this neighbor the most mutagenic-supportive of the negative set.
+
+Taken together, the six neighbors show a consistent mutagenicity signal from the query’s alkyl chloride and from several local size/shape and drug-likeness contrasts, even though some of the very small, highly sp3-rich, ring-free features pull in the opposite direction. The three mutagenic neighbors all remain supportive once the query’s alkyl chloride and local physicochemical profile are considered, and the three non-mutagenic neighbors still show enough mutagenicity-linked differences to keep option B plausible. Because the most repeated and chemically salient contrast is the query’s alkyl chloride, with additional support from the negative-neighbor comparisons and lower QED in Neighbor 6, the overall prediction is option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

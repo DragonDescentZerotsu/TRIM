@@ -1,0 +1,52 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mix of signals, but the balance leans toward mutagenicity. A ring count of 3 and an aromatic ring count of 2 suggest a fairly ring-rich scaffold, which can sometimes align with planar or fused aromatic features associated with Ames-positive behavior, although ring counts alone are not determinative. The very low neutral fraction of 0.038 suggests the compound is mostly ionized at the configured pH, which can reduce passive bacterial uptake and could work against mutagenicity detection. However, other descriptors point the opposite way: a fraction of sp3 carbons of 0.0667 indicates a very flat, low-sp3 structure, which is more consistent with aromatic, planar chemistry than with a highly saturated scaffold. The heteroatom count of 6 and hydrogen-bond acceptor count of 6 indicate a heteroatom-rich molecule, and the maximum absolute partial charge of 0.5078 suggests notable electrostatic character; these properties can be compatible with reactive or strongly interacting structures rather than a simple inert hydrocarbon. The estimated logP of 1.5928 is moderate, so the compound is not extremely lipophilic, and the phenol count of 4 also adds polar functionality that could temper passive permeability. Still, the presence of a ketone count of 2 provides carbonyl functionality that adds to the overall heteroatom-containing scaffold, and together with the low sp3 fraction and aromatic ring content, the structure looks more consistent with a chemically alert, planar, heteroatom-substituted system than with a clearly benign one. Overall, despite the low neutral fraction and the phenolic/polar features that could limit exposure, the stronger collective pattern favors option (B): is mutagenic, with a confidence score of 0.8034.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly close mutagenic analog, and the comparison is dominated by features that remain aligned with the mutagenic side. The query lacks the neighbor’s enolether, which is the clearest single structural reason to be less concerning than the neighbor, but several other shared features still favor mutagenicity: both molecules have 2 ketones, the maximum absolute partial charge is essentially identical at 0.5078, and the query still sits in a similar low-sp3, low-heavy-atom regime with fraction of sp3 carbons decreasing from 0.1111 in the neighbor to 0.0667 in the query and heavy-atom count dropping from 25 to 21. The only clearly anti-mutagenic change here is that the query’s neutral fraction is slightly higher, 0.038 versus 0.0256, a small shift that could modestly reduce exposure concerns, but it is not enough to outweigh the structural similarity to a positive analog. Neighbor 2 is the same kind of case: it again lacks enolether in the query, which is favorable relative to the mutagenic neighbor, yet the rest of the comparison still looks more like the mutagenic side than the non-mutagenic side. The query remains lower in neutral fraction at 0.038 versus 0.0256, and it is again more flattened in the sense of lower fraction of sp3 carbons, 0.0667 compared with 0.1111, while also staying at the same 2 ketones and the same maximum absolute partial charge of 0.5078. The smaller heavy-atom count, 21 versus 25, suggests slightly reduced size, but that does not offset the overall resemblance to the positive analog, so this neighbor still supports mutagenicity overall. Neighbor 3 is mixed, but the mutagenic features remain prominent. The query lacks the neighbor’s 2 copies of 1,2-diol, which removes a feature that had been associated with the positive neighbor, but the query also lacks tetrahydropyran, and in this comparison that absence goes in the opposite direction because tetrahydropyran was the feature favoring the non-mutagenic neighbor. The query’s minimum partial charge is slightly more negative at -0.5078 versus -0.5071, which is a small shift toward the non-mutagenic side, and it also has one fewer hydrogen-bond donor, 4 versus 5, another modestly anti-mutagenic change in terms of exposure. Even so, the query still shares 2 ketones with the neighbor, and it is much smaller, with heavy-atom molecular weight falling from 396.222 to 276.159, which keeps the comparison from looking truly safe. Overall, Neighbor 3 still leaves the query closer to the mutagenic pattern than to a clearly non-mutagenic one.
+
+Neighbor 4 is a strong negative-neighbor comparison for mutagenicity because the query differs from a very large, more aromatic, less drug-like analog in a way that is partly favorable but not decisive enough to overturn the overall picture. The query has fewer ketones, 2 instead of 4, which is favorable, and it also has lower heavy-atom molecular weight, 276.159 versus 520.32, and fewer benzene rings, 2 versus 4; all of these differences would normally move away from the heavier, more aromatic neighbor. The query also has higher QED drug-likeness, 0.4664 versus 0.1797, which is consistent with being less extreme chemically. However, the maximum absolute partial charge and minimum partial charge are still essentially the same in magnitude, with only tiny shifts around 0.5071–0.5078 and -0.5071 to -0.5078, so the electronic profile remains close. Because the neighbor itself is a negative example, these changes are informative, but they do not establish a strong enough non-mutagenic profile for the query to override the many positive-neighbor similarities. Neighbor 5 is another negative-neighbor comparison, and here the query again looks closer to the mutagenic side on several structural dimensions. The query has more phenol groups, 4 versus 2, which in this comparison is the clearest anti-mutagenic difference, but it simultaneously has fewer ketones, 2 versus 4, more alkenes absent in the query versus 2 in the neighbor, and a slightly lower fraction of sp3 carbons, 0.0667 versus 0.0909. The charge descriptors stay very similar, with maximum absolute partial charge at 0.5078 versus 0.5071 and minimum partial charge at -0.5078 versus -0.5071. Even though the extra phenol count points away from mutagenicity in this specific analog pair, the added unsaturation context and the persistent carbonyl-rich, low-sp3 character keep the query from looking strongly non-mutagenic overall. Neighbor 6 is the most clearly mixed of the negative neighbors, but it still leaves the query with several features that are compatible with the mutagenic side. The query has more phenol groups again, 4 versus 2, which is favorable relative to the neighbor, and it also has one aliphatic carbocycle versus none in the neighbor, 1 versus 0. At the same time, the query has more ketones, 2 versus 0, more hydrogen-bond acceptors, 6 versus 4, lower fraction of sp3 carbons, 0.0667 versus 0.1, and a lower maximum partial charge, 0.2016 versus 0.336. In this pair, the balance is not simply about one favorable feature; the query combines extra polarity and carbonyl functionality with a more rigid, less sp3-rich scaffold, which makes the comparison still lean toward the positive side despite the higher phenol count.
+
+Taken together, the three mutagenic neighbors show that the query retains several structural hallmarks of positive analogs: it stays carbonyl-rich with 2 ketones, remains low in sp3 character, and keeps similar charge features while only modestly changing size and polarity. The three non-mutagenic neighbors do provide some counterweight, especially through the higher phenol count and the higher QED in Neighbor 4, but those comparisons still do not remove the stronger mutagenic pattern seen in the positive analogs. On balance, the nearest analog evidence supports option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

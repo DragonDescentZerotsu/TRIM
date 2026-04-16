@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has an ammonium group (1), which makes it clearly ionizable and cationic, but the overall pattern is not dominated by a high-burden basic, lipophilic profile. The minimum partial charge is -0.5077, showing the presence of a fairly negative site and some polarity, while the minimum absolute partial charge is 0.1185, which is not especially extreme. The scaffold includes a thiophene (1), which can be a structural alert in some contexts, but by itself it is not determinative. The hydrogen-bond acceptor count is 2 and the nitrogen/oxygen atom count is 2, both of which are modest and consistent with limited heteroatom burden. The topological polar surface area is 24.67, which is low and generally favorable for permeability, and the estimated logP is 2.8486, sitting in a moderate lipophilicity range rather than an obviously risky extreme. The strongest acidic pKa is 10.4317, indicating the molecule is not strongly acidic, and the estimated logD is 1.2935, also a relatively moderate value at physiological pH. Overall, there are a few mild liability signals from the ammonium/ionizable character, the thiophene, and the somewhat positive lipophilicity features, but they are outweighed by the low polar surface area, modest heteroatom content, and generally balanced ionization profile. Taken together, the molecule is more consistent with option (A): is not toxic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor because several of the query’s changes move it away from the neighbor’s more polar, more highly substituted profile. The query has ammonium once while the neighbor has none (delta +1), and the query also has thiophene once while the neighbor has none (delta +1); both of those differences were associated with a lower-risk direction in this comparison. The query’s hydrogen-bond acceptor count is 2 versus 3 in the neighbor (delta -1), and its topological polar surface area is much lower at 24.67 versus 72.63 (delta -47.96). In addition, the query has a lower strongest acidic pKa, 10.4317 versus 13.5617 (delta -3.13), and a slightly more negative minimum partial charge, -0.5077 versus -0.4572 (delta -0.0504), which in this specific comparison was treated as an offsetting toxic-leaning feature. Overall, the lower acceptor burden and much lower polar surface area make the query look less toxic than Neighbor 1 despite those smaller countervailing charge/pKa effects.
+
+Neighbor 2 shows the same broad pattern. The query again has ammonium once while the neighbor has none (delta +1), and it also has thiophene once while the neighbor has none (delta +1), both favoring the not-toxic side in this local comparison. The query has fewer nitrogen/oxygen atoms, 2 versus 3 (delta -1), and fewer hydrogen-bond acceptors, 2 versus 3 (delta -1), which also points toward a less polar, less heavily heteroatom-substituted profile. By contrast, the query’s minimum partial charge is slightly more negative, -0.5077 versus -0.4968 (delta -0.0109), and its maximum partial charge is slightly higher, 0.5077 versus 0.4968 (delta +0.0109); those charge changes were treated as mildly toxic-leaning in this neighbor. Even so, the repeated reductions in heteroatom/acceptor burden and the presence of ammonium and thiophene in the query still make this neighbor comparison overall favor the not-toxic label.
+
+Neighbor 3 is also aligned with the not-toxic label, although one feature runs the other way. The query has ammonium once versus none in the neighbor (delta +1) and thiophene once versus none in the neighbor (delta +1), both again appearing in the favorable direction here. The query’s hydrogen-bond acceptor count is much lower, 2 versus 5 (delta -3), and its topological polar surface area is far lower, 24.67 versus 68.29 (delta -43.62), which is a strong shift toward a more permeable, less burdened molecule. The query also lacks 2,4-thiazolidinedione that is present in the neighbor (delta -1), another favorable difference in this local analog set. The only opposing feature is QED drug-likeness: the query is slightly higher at 0.8415 versus 0.8253 (delta +0.0162), and in this specific neighbor that was associated with the toxic side. But the much lower polarity and acceptor count, together with absence of the thiazolidinedione motif, dominate and keep Neighbor 3 aligned with not toxic.
+
+Neighbor 4, one of the negative neighbors, still supports the not-toxic prediction because the query is less polar and somewhat less heteroatom-rich. The neighbor has heteroatom count 5 versus 3 in the query (delta -2), hydrogen-bond acceptors 3 versus 2 (delta -1), and topological polar surface area 33.98 versus 24.67 (delta -9.31), all of which are shifts toward a smaller, less polar query. The query also has ammonium once while the neighbor has none (delta +1), but in this local comparison that did not outweigh the reductions in heteroatoms, acceptors, and PSA. The query’s minimum partial charge is more negative, -0.5077 versus -0.3822 (delta -0.1254), which was favorable here. The one counterpoint is Labute surface area: the query is lower at 136.9616 versus 166.2971 (delta -29.3355), and that feature was treated in the toxic direction for this neighbor. Even with that single unfavorable surface-area signal, the overall pattern still favors not toxic because the query is notably less polar and less heteroatom-heavy.
+
+Neighbor 5 is another negative neighbor that nevertheless leans toward not toxic overall. Here the query and neighbor both have ammonium, so there is no difference on that motif. The query has a higher hydrogen-bond acceptor count, 2 versus 1 (delta +1), and a much higher estimated logP, 2.8486 versus 1.4286 (delta +1.42); in this comparison both of those moves were associated with the toxic side. However, the query lacks indoline that the neighbor has (delta -1), which was favorable, and its strongest basic pKa is lower, 8.9424 versus 9.9161 (delta -0.9737), also favorable here. The query also has thiophene once while the neighbor has none (delta +1), another not-toxic-leaning feature in this local context. Because the toxic-leaning increases in HBA and logP are counterbalanced by the loss of indoline, the lower basic pKa, and the added thiophene, this neighbor still ends up closer to the not-toxic side overall.
+
+Neighbor 6 likewise remains consistent with not toxic despite a high logP signal. The query and neighbor both have ammonium, so there is no difference there. The query’s hydrogen-bond acceptor count is unchanged at 2 versus 2 (delta +0), which keeps that feature neutral. The query’s estimated logP is higher, 2.8486 versus 1.4328 (delta +1.4158), and that higher lipophilicity is the main toxic-leaning feature in this comparison. Yet the query has a much lower topological polar surface area, 24.67 versus 44.9 (delta -20.23), which favors the not-toxic label, and it also has thiophene once while the neighbor has none (delta +1), another favorable difference in this local analog. Finally, the neighbor has 2 copies of phenol while the query has 1 (delta -1), and that reduction also supports the not-toxic side. So although the logP rise is a concern, the lower PSA together with fewer phenol groups and the thiophene difference make Neighbor 6 still support the not-toxic class.
+
+Taken together, the three positive neighbors and the three negative neighbors point in the same final direction. Across all six comparisons, the query repeatedly looks less polar by having lower topological polar surface area and lower acceptor burden, while the ammonium/thiophene pattern and the absence of some more burdened motifs often favor the not-toxic side in these local analogs. A few features do lean toxic in individual neighbors, especially higher logP, slightly more negative partial charge, or the higher QED in Neighbor 3, but those signals are not strong enough to overcome the repeated reductions in polarity and heteroatom burden. The combined neighbor evidence therefore supports option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

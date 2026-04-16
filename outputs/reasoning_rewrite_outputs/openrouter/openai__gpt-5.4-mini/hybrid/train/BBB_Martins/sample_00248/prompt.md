@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has a quinazoline ring system, which provides a relatively compact heteroaromatic scaffold that can support brain penetration when the rest of the polarity profile is controlled. The minimum partial charge of -0.335 and the maximum absolute partial charge of 0.335 suggest a modest, well-distributed charge pattern rather than an extreme polar surface. The neutral fraction of 0.9968 is especially favorable, since a molecule that is overwhelmingly neutral at physiological conditions is more able to passively diffuse across the BBB. The exact molecular weight of 211.0746 is also comfortably low for CNS exposure, and the rotatable-bond count of 0 indicates a very rigid structure, which generally helps permeability. There is also no acidic site, so the strongest acidic pKa is not defined; that absence of acidic functionality is consistent with avoiding ionization penalties. The lactam present (1) adds some polarity, which is a mild counterweight, and the estimated logP of 1.2635 is somewhat modest rather than strongly lipophilic, but it is still within a range that can support membrane passage when paired with low size and high neutrality. QED drug-likeness at 0.4496 is only moderate, so it does not strongly reinforce BBB penetration on its own, but the overall balance of low molecular weight, zero rotatable bonds, very high neutral fraction, and limited net charge makes the molecule look BBB-permeable. Taken together, the evidence favors option (B): crosses the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close positive analog and shares the same quinazoline and lactam motifs as the query, which is helpful for BBB crossing in this comparison. It also has a neutral fraction essentially at 1 versus the query’s 0.9968 (delta -0.0032), so that small decrease still stays in a highly neutral, permeability-friendly region. The main offsets are that the query is slightly less flexible, with rotatable bonds dropping from 1 to 0 (delta -1), and it is much less lipophilic, with estimated logP falling from 3.0025 to 1.2635 (delta -1.739) and estimated logD from 3.0025 to 1.2621 (delta -1.7404). Even though the lower flexibility and high neutral fraction are favorable, the reduced lipophilicity makes this neighbor only a moderately supportive analogy overall.
+
+Neighbor 2 is another positive analog with the same quinazoline and neutral fraction pattern, again supporting BBB penetration. Here the query still keeps neutral fraction near unity (1 to 0.9968, delta -0.0032), but compared with the neighbor it loses some permeability-friendly lipophilicity: estimated logP drops from 3.3475 to 1.2635 (delta -2.084) and estimated logD from 3.3475 to 1.2621 (delta -2.0854). The query also becomes less flexible, going from 1 rotatable bond to 0 (delta -1), which is favorable for BBB passage, but it is slightly less saturated in the sp3 sense, with fraction of sp3 carbons decreasing from 0.0667 to 0 (delta -0.0667). The net effect is still positive because the shared core and high neutral fraction remain supportive, though the lower logP/logD and reduced sp3 character temper that advantage.
+
+Neighbor 3 is also a positive neighbor and again matches the query on quinazoline and lactam, with the same near-complete neutral fraction of 1 versus 0.9968 (delta -0.0032). As in the other positive neighbors, the query is less lipophilic than the neighbor, with estimated logP falling from 3.2565 to 1.2635 (delta -1.993) and estimated logD from 3.2565 to 1.2621 (delta -1.9944). The query also has lower QED drug-likeness, from 0.7118 down to 0.4496 (delta -0.2622), which is not directly a BBB rule but signals a less broadly drug-like profile. Even so, the retained quinazoline/lactam scaffold and high neutral fraction keep this comparison on the BBB-favorable side overall.
+
+Neighbor 4 is a negative neighbor, but several of the raw structural comparisons actually make the query look more BBB-like than the neighbor: the query gains quinazoline and lactam where the neighbor lacks them, heavy-atom molecular weight rises from 140.097 to 202.152 (delta +62.055), and benzene appears in the query where it is absent in the neighbor. Those shifts generally move the query toward a more substantial, scaffolded CNS-like profile. The features that work against the query in this comparison are that QED drug-likeness drops from 0.5302 to 0.4496 (delta -0.0806) and maximum partial charge falls from 0.3357 to 0.279 (delta -0.0567), which in this local context are the only pieces supporting the negative label. Because the scaffold addition and larger size still look favorable for BBB passage, this neighbor is only weakly inconsistent with BBB crossing.
+
+Neighbor 5 is also labeled negative, yet the query again gains quinazoline and lactam relative to the neighbor, which favors BBB crossing. The query is heavier as well, with heavy-atom molecular weight increasing from 152.116 to 202.152 (delta +50.036), another change that aligns with the more CNS-relevant scaffold present in the query. The main unfavorable shifts are a lower QED drug-likeness, from 0.4806 to 0.4496 (delta -0.031), fewer rotatable bonds, from 1 to 0 (delta -1), and slightly lower topological polar surface area, from 63.83 to 60.91 (delta -2.92). TPSA around 60–70 Å² is still within a commonly discussed BBB-friendly region, so this small decrease does not clearly negate the query’s overall BBB-compatible profile. This neighbor therefore still leans toward BBB crossing despite the negative neighbor label.
+
+Neighbor 6 is the strongest negative-label comparator, but even here the query carries the more BBB-favorable scaffold features: it has quinazoline and lactam while the neighbor does not, which strongly favors the query. The query is far less lipophilic than the neighbor, with estimated logP dropping from 6.0277 to 1.2635 (delta -4.7642) and estimated logD from 5.9959 to 1.2621 (delta -4.7338), and those values put the query into a much more moderate ionization-aware lipophilicity zone that is generally more compatible with BBB penetration than an extreme high-logP profile. The two adverse shifts here are lower fraction of sp3 carbons, from 0.1379 to 0 (delta -0.1379), and a slight increase in TPSA, from 59.81 to 60.91 (delta +1.1); both are modest compared with the very large favorable drop in logP/logD and the gain of the quinazoline/lactam scaffold. So even this negative neighbor still leaves the query looking more BBB-permissive than the neighbor.
+
+Taken together, the three positive neighbors consistently support BBB crossing through shared quinazoline/lactam scaffolds, near-unity neutral fraction, and lower flexibility, while the three negative neighbors are not truly contradictory because the query usually gains the more favorable scaffold elements and moves from very different or less relevant comparator states toward a moderately lipophilic, highly neutral profile. The main cautionary signals are the reduced logP/logD versus the positive neighbors and small drops in QED or sp3 character, but the overall balance of scaffold similarity, neutral fraction, limited rotatable-bond count, and TPSA around 60 Å² is more consistent with option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

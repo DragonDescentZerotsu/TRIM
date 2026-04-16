@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+Phenothiazine is present at 1, which is consistent with a lipophilic aromatic scaffold and can support BBB penetration when other polarity constraints are not excessive. Piperidine is present at 1, adding a basic center, but a single basic site can still be compatible with brain entry if the molecule retains a sufficient neutral fraction. The strongest acidic pKa is 13.8306, which is very weakly acidic and effectively limits acidic ionization concerns at physiological pH. The estimated logD is 2.8944, a moderate ionization-aware lipophilicity that is generally favorable for BBB permeation. At the same time, the neutral fraction is only 0.0083, which is low and argues against passive BBB diffusion because very little of the molecule is uncharged at physiological pH. The strongest basic pKa is 9.4784, indicating a moderately basic site that will still be substantially protonated at pH 7.4, but not so strongly basic as to completely preclude brain entry. The maximum partial charge is 0.1594 and the minimum partial charge is -0.3964, showing a noticeable charge distribution that reflects some polar character, which can work against BBB crossing. The rotatable-bond count is 7, which is somewhat flexible but still within a range that can be tolerated for CNS penetration. The aliphatic carbocycle count is 0, so there is no added saturated carbocyclic framework to offset polarity. Taken together, the scaffold is fairly lipophilic and has several features consistent with BBB penetration, but the very low neutral fraction and the presence of a basic center introduce mixed evidence. Overall, the balance of descriptors still favors crossing the BBB, so the molecule is predicted to be option (B).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly strong BBB-positive analog overall. It matches the query on phenothiazine, and that shared scaffold feature is favorable here. The main offsets are mixed: the query has a much lower neutral fraction (0.0083 vs 0.404, delta -0.3957), which is unfavorable for BBB passage because very low neutral fraction generally weakens passive permeability; the query also has a higher strongest basic pKa (9.4784 vs 7.5688, delta +1.9096), which can make the basic center more ionized at physiological pH and is less favorable in isolation. Still, the query also has a lower strongest acidic pKa change that is essentially negligible (13.8306 vs 13.8374, delta -0.0068), and its estimated logD is 2.8944 versus 3.0983 (delta -0.2039), which remains in a moderate CNS-relevant region even though the local shift is slightly downward. The estimated logP is higher in the query (4.9764 vs 3.4919, delta +1.4845), and in this comparison that higher lipophilicity is treated as unfavorable, but the shared phenothiazine and the favorable logD/acidic-pKa context keep Neighbor 1 aligned overall with BBB crossing.
+
+Neighbor 2 also supports the BBB-crossing label, though with some countervailing features. It again shares phenothiazine with the query, which is favorable. The query has the same markedly low neutral fraction pattern relative to the neighbor (0.0083 vs 0.4037, delta -0.3954), and that remains a negative point because the neutral species fraction is tiny. The strongest basic pKa is higher in the query (9.4784 vs 7.5694, delta +1.909), and the strongest acidic pKa is also slightly lower (13.8306 vs 13.8432, delta -0.0126); both of those shifts are still consistent with the same general BBB-positive scaffold context. The maximum partial charge is a touch lower in the query (0.1594 vs 0.1622, delta -0.0028), which in this comparison is not helpful, and the estimated logP is higher in the query (4.9764 vs 3.882, delta +1.0944), which is unfavorable here. Even so, the phenothiazine match plus the overall pattern of moderate lipophilicity and favorable pKa context keeps Neighbor 2 on the BBB-crossing side overall.
+
+Neighbor 3 is the cleanest positive analog of the three BBB-crossing neighbors. It shares phenothiazine, and the strongest basic pKa is essentially unchanged between neighbor and query (9.4764 vs 9.4784, delta +0.002), which keeps the ionization profile closely aligned. The estimated logD is higher in the query (2.8944 vs 2.3636, delta +0.5308), moving it into a more BBB-compatible lipophilicity window, and the estimated logP is also higher (4.9764 vs 4.4436, delta +0.5328), again preserving the same general hydrophobic character. The main negative here is that the neutral fraction is identical and extremely low in both molecules (0.0083 vs 0.0083, delta +0), which does not add BBB advantage, and the query contains one primary hydroxyl whereas the neighbor has none, which is unfavorable because added hydroxyl character increases polarity. Even with that drawback, the close scaffold match and the more favorable logD/logP balance make Neighbor 3 strongly supportive of BBB crossing.
+
+Neighbor 4 is a useful negative-neighbor comparison because it still ends up aligning with the BBB-crossing label despite being drawn from the non-crossing set. The query adds phenothiazine here, going from none to one copy (delta +1), and that is the strongest favorable feature in the comparison. Both molecules also have piperidine, so that does not separate them. The query has a slightly lower maximum partial charge (0.1594 vs 0.1637, delta -0.0043), which is unfavorable in this local comparison, and it also has a higher heteroatom count (5 vs 3, delta +2), which would usually add polarity and work against BBB entry. QED drug-likeness is higher in the query (0.6526 vs 0.5363, delta +0.1162), but in this comparison that change is not enough to offset the other factors. The query and neighbor differ in acidic functionality as well: the neighbor has no acidic site, while the query has a strongest acidic pKa of 13.8306, and that defined acidic-site comparison still lands in the favorable direction for the query. Taken together, the added phenothiazine and the favorable acidic-site context outweigh the heteroatom and partial-charge penalties, so Neighbor 4 still supports the BBB-crossing label.
+
+Neighbor 5 is another negative-neighbor case that nonetheless points toward the BBB-crossing outcome. The query again adds phenothiazine relative to the neighbor, which is favorable. The neighbor has a stronger acidic pKa of 13.9049 versus 13.8306 in the query (delta -0.0743), and in this specific comparison that shift is unfavorable for the query. However, the query removes two tertiary amides relative to the neighbor (0 vs 2, delta -2), and that is a major advantage because tertiary amides add polarity and can hinder BBB penetration. The query also has a much higher estimated logD (2.8944 vs -0.1038, delta +2.9982), moving from a clearly unfavorable low-logD region into a much more BBB-compatible window, and its topological polar surface area is substantially lower (43.78 vs 64.09, delta -20.31). That TPSA drop is important because BBB penetration is generally favored by lower polar surface area, especially well below the broad ~90 Å² ceiling. Finally, the query adds piperidine relative to the neighbor (delta +1), which in this context is treated as favorable. Even though the acidic-pKa shift goes the wrong way, the much better logD, lower TPSA, fewer tertiary amides, and added piperidine make Neighbor 5 strongly consistent with BBB crossing.
+
+Neighbor 6 likewise comes from the non-crossing side but still favors the BBB-crossing label for the query. The query again adds phenothiazine and piperidine relative to the neighbor, which are both favorable scaffold features in this local comparison. The estimated logD rises sharply from 0.1362 to 2.8944 (delta +2.7582), moving the query from a very low, unfavorable region into a much more permeable range. The topological polar surface area also falls substantially from 67.25 to 43.78 (delta -23.47), which is a clear BBB-positive shift and places the query in a more desirable polar-surface region. The main counterweights are small: the minimum partial charge is slightly more negative in the query (-0.3964 vs -0.395, delta -0.0013), and QED drug-likeness is lower (0.6526 vs 0.7276, delta -0.075). Those are not enough to override the large logD gain and TPSA reduction, so Neighbor 6 still supports the BBB-crossing assignment.
+
+Across all six neighbors, the positive-neighbor set is consistent with BBB crossing, especially because the query maintains the phenothiazine scaffold and shows a generally favorable balance of logD, pKa, and low polar surface area despite a very low neutral fraction. The negative-neighbor set is also informative: even when compared against neighbors labeled as non-crossing, the query repeatedly improves in the most BBB-relevant directions, especially by lowering TPSA versus Neighbor 5 and 6, raising logD into a more favorable range, and retaining the phenothiazine motif. A few local penalties appear repeatedly, such as the very low neutral fraction, higher estimated logP in some comparisons, and added heteroatom or hydroxyl burden in isolated cases, but the dominant pattern is still a molecule with stronger BBB-compatible permeability and polarity characteristics than its non-crossing neighbors. Taken together, the six comparisons support option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

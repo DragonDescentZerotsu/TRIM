@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows mixed signals for CYP2C9 substrate likelihood. On the one hand, the neutral fraction is very low at 0.0054, which suggests only a small neutral population and is often compatible with CYP2C9 recognition when a compound can exist in an ionizable form. Related to that, the strongest basic pKa is 9.6615, indicating a strongly basic site that would tend to be protonated under physiological conditions; however, CYP2C9 is not primarily a basic-drug enzyme, so this does not strongly favor substrate behavior. The maximum partial charge is 0.3142, which does not suggest a strongly anionic anchor of the kind often associated with classic CYP2C9 substrates. In addition, the presence of a carboxylic ester at 1 and a piperidine at 1, together with a saturated heterocycle count of 1, points away from the classic weak-acid, anion-forming substrate pattern. The estimated logP is 2.0853, which is a moderate hydrophobicity level that could support binding, and the QED drug-likeness of 0.8123 is also consistent with generally drug-like chemical space. The absence of a dialkyl ether at 0 and the absence of a secondary hydroxyl at 0 slightly reduce polarity-related complexity, but these are not enough to outweigh the more unfavorable features. Overall, despite moderate hydrophobicity and generally favorable drug-likeness, the lack of a clear acidic/anionic motif and the presence of a basic piperidine-containing scaffold make the molecule look more like a non-substrate than a typical CYP2C9 substrate. Final answer: A.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately unfavorable analog. The query adds piperidine once where the neighbor has none, and that absence-to-presence change (delta +1) is associated with a negative shift of -0.4652. The query also adds one carboxylic ester, which again is unfavorable here with a -0.1137 effect. On the other hand, the query and neighbor both lack dialkyl ether, which is mildly favorable at 0.2498, and the query has a higher fraction of sp3 carbons, 0.5 versus 0.1579 (delta +0.3421), which is also favorable at 0.2141. The neutral fraction is slightly higher in the query, 0.0054 versus 0.0012 (delta +0.0042), and that adds a smaller favorable effect of 0.1124. But the minimum partial charge shifts from -0.5066 in the neighbor to -0.4685 in the query (delta +0.0381), which is unfavorable at -0.1553. Taken together, this neighbor leans away from substrate status because the piperidine and ester changes outweigh the weaker favorable features.
+
+Neighbor 2 shows a similarly mixed but still unfavorable comparison. Again, the query introduces piperidine where the neighbor has none, and that is strongly unfavorable at -0.4652. The query also has a carboxylic ester while the neighbor does not, adding another -0.1137 unfavorable signal. The query has slightly lower QED, 0.8123 versus 0.8461 (delta -0.0337), which is favorable here at 0.1836, and its estimated logD is higher, -0.1786 versus -0.6038 (delta +0.4252), also favorable at 0.0967. However, the query has one more hydrogen-bond acceptor, 3 versus 2 (delta +1), and that is unfavorable at -0.1126. In the context of CYP2C9, which often favors weakly acidic/anionic substrates but still needs a workable hydrophobic fit, this neighbor still ends up supporting the non-substrate label overall because the piperidine and ester changes are stronger than the modest favorable shifts in QED and logD.
+
+Neighbor 3 is also overall aligned with the non-substrate class. The query again differs by having piperidine where the neighbor does not, which is a strong negative at -0.4652. Here the neighbor additionally has a secondary aliphatic amine that the query lacks, and that difference is also unfavorable at -0.4474. The query and neighbor both lack dialkyl ether, which is mildly favorable at 0.2498, and the query has slightly lower QED, 0.8123 versus 0.849 (delta -0.0367), which is favorable at 0.1829. But the query has a lower strongest basic pKa, 9.6615 versus 10.1182 (delta -0.4567), which is unfavorable at -0.1686, and a much lower estimated logD, -0.1786 versus 1.0056 (delta -1.1842), which is also unfavorable at -0.1491. Since CYP2C9 substrate recognition is not driven by basicity alone and this comparison also shows lower hydrophobicity together with the piperidine and amine differences, Neighbor 3 ends up supporting the non-substrate call.
+
+Neighbor 4 is a strong negative neighbor and is highly consistent with the final label. Both molecules have piperidine, and that exact match is strongly unfavorable here at -0.7781. The neighbor has a quinoline ring that the query lacks, which is another strong unfavorable difference at -0.7161. The query has a higher strongest basic pKa, 9.6615 versus 9.0385 (delta +0.623), and that is unfavorable at -0.511. The neighbor is also much heavier in heavy-atom molecular weight, 362.188 versus 214.159 for the query (delta -148.029), which is unfavorable at -0.4985 when moving to the lighter query. Finally, the neighbor carries two trifluoromethyl groups while the query has none (delta -2), and that too is unfavorable at -0.4628. The only favorable shared feature is that neither molecule has dialkyl ether, giving a modest +0.2872. Even with that, Neighbor 4 remains one of the clearest examples favoring the non-substrate class.
+
+Neighbor 5 also supports the non-substrate label. The query again has piperidine once while the neighbor has none, which is strongly unfavorable at -0.8234. The query’s strongest basic pKa is much higher, 9.6615 versus 2.7489 (delta +6.9126), and that is unfavorable here at -0.7601 rather than helpful. The two molecules both lack dialkyl ether, a modest favorable match at 0.2872. The query has a higher fraction of sp3 carbons, 0.5 versus 0.2727 (delta +0.2273), but in this comparison that shift is unfavorable at -0.2307. By contrast, the query has a slightly higher maximum absolute partial charge, 0.4685 versus 0.4489 (delta +0.0196), and that is favorable at 0.1931. The neighbor is fully neutral while the query has a neutral fraction of 0.0054, and that difference is favorable at 0.1861. Even with those two favorable terms, the very strong penalties tied to piperidine and the large basic-pKa increase make this neighbor support the non-substrate outcome.
+
+Neighbor 6 is another strong non-substrate analog. Both molecules have carboxylic ester, and that shared feature is strongly unfavorable at -0.948. The query also has piperidine once while the neighbor has none, adding another large negative of -0.8234. The query’s strongest basic pKa is higher, 9.6615 versus 5.3753 (delta +4.2862), which is unfavorable at -0.7483. The query is much lighter in heavy-atom molecular weight, 214.159 versus 348.229 (delta -134.07), and that is unfavorable at -0.4957. Its estimated logD is also much higher, -0.1786 versus -2.4923 (delta +2.3137), which is unfavorable at -0.4625 in this comparison. The only favorable signal is the higher QED of the query, 0.8123 versus 0.6358 (delta +0.1765), contributing 0.3583 in the favorable direction. But the combined pattern remains strongly negative because the ester, piperidine, pKa, size, and logD differences all point away from CYP2C9 substrate behavior.
+
+Putting all six neighbors together, the positive-neighbor set is not actually supportive of substrate status once the specific query-vs-neighbor differences are accounted for: Neighbor 1, Neighbor 2, and Neighbor 3 each contain several unfavorable changes, especially the repeated introduction of piperidine and, in some cases, ester or secondary amine differences, alongside weaker hydrophobicity or less favorable charge/basicity shifts. The negative-neighbor set is even more decisive: Neighbor 4, Neighbor 5, and Neighbor 6 all show strong analog patterns where the query retains or adds features associated with the non-substrate side of the comparison, such as piperidine, ester, quinoline absence/presence differences, higher strongest basic pKa, and in several cases less favorable size or logD context. Overall, the balance of these local analogs supports option (A): is not a substrate to the enzyme CYP2C9.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP2C9
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

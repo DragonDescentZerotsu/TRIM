@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a hydroxamic acid group, which is a concerning structural element for mutagenicity because it can participate in reactive chemistry and is often treated as a potential toxicophore. It also contains a phenol, which by itself is not a strong Ames-positive alert and can be compatible with non-mutagenic behavior. However, the structure is fairly flat overall, with fraction of sp3 carbons = 0, and low sp3 character can coincide with aromatic, planar motifs that are more often associated with mutagenic liabilities. The ring count is 1, so there is not an obvious polycyclic aromatic system here, which tempers the concern somewhat. Even so, the estimated logP = 0.5112 suggests the molecule is not especially hydrophobic, and the presence of number of basic sites = 1 may support bacterial accumulation to some extent. The maximum absolute partial charge = 0.5071 and minimum partial charge = -0.5071 indicate a fairly polarized electronic structure, which can be consistent with a chemically reactive scaffold. The neutral fraction = 0.7424 means most of the molecule is neutral at the configured pH, so passive permeability should not be severely limited. The Labute surface area = 63.0502 is moderate, again not indicating a strong exposure barrier. Balancing the mixed signals, the hydroxamic acid and the more planar, polarized character of the scaffold outweigh the relatively modest size and the presence of a phenol, so the molecule is better classified as mutagenic, option (B).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is informative because it combines a strong mutagenicity-associated feature with several offsets in the opposite direction. The query has hydroxamic acid once while the neighbor has none, a difference of +1, and that is the clearest positive signal here because the absent-to-present change aligns with the mutagenic side of the comparison. At the same time, the query loses two ketones relative to the neighbor (neighbor 2 vs query 0; delta -2), has more ionizable sites overall (neighbor 1 vs query 4; delta +3), and shares the phenol feature with no difference (delta +0). The ionizable-site increase and the ketone decrease both soften the case, and the same is true for the neutral phenol match, but the combination still leans to mutagenicity because the hydroxamic acid difference is the most prominent structural change in that pair, with only a modest counterweight from the fraction of sp3 carbons being unchanged at 0 versus 0 and the presence of one basic site in the query versus none in the neighbor.
+
+Neighbor 2 follows the same general pattern. Again, the query has hydroxamic acid once and the neighbor has none, which is the strongest favorable difference for mutagenicity. The neighbor also has two ketones while the query has zero, which works against that signal, but the overall comparison still favors option B because the query is less lipophilic and less drug-like than the neighbor: estimated logD drops from 0.9624 in the neighbor to 0.3818 in the query (delta -0.5806), and QED drops from 0.6287 to 0.4064 (delta -0.2223). Those shifts are consistent with a less favorable general profile, while the fraction of sp3 carbons remains unchanged at 0 and the query again has one basic site versus none in the neighbor. Taken together, the hydroxamic acid difference dominates the local analog logic, with the lower logD and lower QED reinforcing the mutagenic side rather than reversing it.
+
+Neighbor 3 is similar but slightly cleaner because the supporting features are more consistent. The query still adds hydroxamic acid relative to a neighbor that lacks it, while the neighbor again carries two ketones and the query has none. The fraction of sp3 carbons stays at 0 in both molecules, and the query has one basic site while the neighbor has none, so the structural comparison keeps the same pattern of an added ionizable/basic feature on the query side. This neighbor also shows the query at lower QED than the neighbor, 0.4064 versus 0.5881 (delta -0.1817), and lower estimated logP, 0.5112 versus 1.8732 (delta -1.362). Both of those shifts are consistent with a more polar, less drug-like profile, which does not erase the hydroxamic-acid signal and instead supports the same mutagenic direction for this analog pair.
+
+Neighbor 4 still supports option B overall even though one feature points the other way. The query again has hydroxamic acid while the neighbor does not, so that same mutagenic-associated difference is present. Against it, the query has fewer rings than the neighbor, with ring count 1 versus 2 (delta -1), and the maximum partial charge is slightly lower in the query, 0.2779 versus 0.3468 (delta -0.0689), both of which lean away from the mutagenic side in this comparison. But the query also has a higher number of basic sites, 1 versus 0, and the maximum absolute partial charge is essentially unchanged at 0.5071 versus 0.5071 (delta +0.0001), which does not weaken the overall case. Although the ring-count and charge differences add some resistance, the hydroxamic acid change still keeps the comparison on the mutagenic side when viewed as a whole.
+
+Neighbor 5 is very close to Neighbor 4 in structure logic, and it also ends up favoring mutagenicity overall. The query has hydroxamic acid once while the neighbor has none, which remains the main positive difference. The neighbor has a higher QED, 0.8253 versus 0.4064 in the query (delta -0.4189), and a larger Labute surface area, 114.1443 versus 63.0502 (delta -51.0941), both of which separate the neighbor from the query in a way that supports the mutagenic side in this local comparison. At the same time, ring count is again lower in the query, 1 versus 2 (delta -1), which is the main feature that pulls against option B here. The query also has one basic site versus none in the neighbor, and the maximum absolute partial charge is unchanged at 0.5071 versus 0.5071 (delta +0.0001). Even with the ring-count opposition, the hydroxamic acid difference plus the lower QED and lower surface area keep this neighbor aligned with mutagenicity.
+
+Neighbor 6 repeats Neighbor 5 almost exactly, so it contributes the same kind of evidence. The query has hydroxamic acid once and the neighbor has none, QED is again lower in the query at 0.4064 versus 0.8253 (delta -0.4189), ring count is lower in the query at 1 versus 2 (delta -1), Labute surface area is lower at 63.0502 versus 114.1443 (delta -51.0941), and the query has one basic site versus none in the neighbor. The maximum absolute partial charge is once more essentially identical at 0.5071 versus 0.5071 (delta +0.0001). As with Neighbor 5, the reduced ring count is the main counterpoint, but the combined pattern of added hydroxamic acid and lower QED/surface area still leaves the comparison leaning toward mutagenicity.
+
+Across all six neighbors, the same core motif recurs: the query repeatedly gains hydroxamic acid relative to the mutagenic neighbors, and that signal outweighs the smaller opposing effects from ketones, ring count, and charge-related differences. The nonmutagenic neighbors do not overturn that pattern, because even where ring count is lower in the query, the hydroxamic acid difference remains paired with lower QED and, in two cases, lower estimated logD or Labute surface area in a way that is still more consistent with the mutagenic side of the local analog set. Taken together, the six comparisons support option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

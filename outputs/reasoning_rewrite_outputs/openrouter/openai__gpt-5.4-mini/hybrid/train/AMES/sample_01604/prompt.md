@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a dialkyl ether count of 3, which by itself is not a known mutagenicity alert and is more consistent with a neutral, non-reactive scaffold than with a classic Ames toxicophore. Its fraction of sp3 carbons is 1, indicating a fully saturated, highly three-dimensional framework rather than a flat polycyclic aromatic system, and the aromatic ring count is 0 with ring count 0, so there is no obvious planar aromatic core or fused polycyclic motif to suggest DNA intercalation-type mutagenicity. The heteroatom count is 3, which adds some polarity but does not by itself create a recognized mutagenic warning pattern. The estimated logP of 2.6364 is moderate rather than extreme, so there is no strong indication of severe lipophilicity-driven solubility or exposure problems, and the rotatable-bond count of 12 suggests a fairly flexible molecule rather than a rigid, accumulation-prone scaffold. The partial-charge descriptors are somewhat mixed: the maximum partial charge is 0.0701 and the minimum absolute partial charge is 0.0701, which are modest values, but the maximum absolute partial charge is 0.3791, showing some localized charge separation. Even so, these charge features are not themselves mutagenicity alerts; they mainly reflect polarity and transport behavior. Taken together, the absence of aromatic rings or known electrophilic toxicophores, along with the saturated character and only moderate lipophilicity, supports a non-mutagenic interpretation, though the charge-related features introduce a small amount of ambiguity. Overall, the balance of evidence favors option (A): is not mutagenic, with a score of 0.8164.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor, and several of the differences relative to the query are aligned with lower mutagenicity. The neighbor contains a nitroso group, whereas the query does not, so that removes an important mutagenic toxicophore from the query-versus-neighbor comparison. The neighbor also has ring count 1 while the query has ring count 0, and the neighbor’s rotatable-bond count is 5 compared with 12 for the query, so the query is much more flexible. In addition, the neighbor has 0 dialkyl ether copies while the query has 3, which is another structural difference in the same direction as a less mutagenic profile here. The one feature that leans the other way is maximum partial charge: the neighbor’s value is 0.1189 versus 0.0701 in the query, with delta -0.0488, and in this comparison that smaller charge character is associated with the mutagenic side. Fraction of sp3 carbons also matters here: the neighbor is at 0.4 while the query is at 1, delta +0.6, and the higher sp3 fraction again favors the less mutagenic side in this local comparison. Overall, Neighbor 1 still sits on the not-mutagenic side once all of those features are considered together.
+
+Neighbor 2, another positive neighbor, tells a very similar story. The query has a higher rotatable-bond count than the neighbor, 12 versus 6, with delta +6, and that large increase is associated with the not-mutagenic side in this local analog pair. The neighbor again carries nitroso while the query does not, which is an absent mutagenic alert in the query. Fraction of sp3 carbons is 0.4545 in the neighbor versus 1 in the query, delta +0.5455, and that higher sp3 fraction continues to favor the less mutagenic outcome here. The neighbor has ring count 1 while the query has 0, and the neighbor has 0 dialkyl ether copies versus 3 in the query; both of those differences are also aligned with the not-mutagenic side in this specific comparison. As in Neighbor 1, maximum partial charge runs the other way: 0.1189 in the neighbor versus 0.0701 in the query, delta -0.0488, which is the one feature that leans mutagenic. Even so, the overall balance of the listed differences still supports the not-mutagenic label.
+
+Neighbor 3 remains a positive neighbor, but the pattern is a little more mixed. The query has a higher rotatable-bond count than the neighbor, 12 versus 9, delta +3, and that again favors the not-mutagenic side. The query also has fraction of sp3 carbons 1 versus 0.5882 in the neighbor, delta +0.4118, which in this local comparison continues to lean away from mutagenicity. The neighbor has alkyl chloride while the query does not, and that missing halide alert in the query is favorable to the not-mutagenic label. Ring count is again 1 in the neighbor and 0 in the query. The feature that points toward mutagenicity here is minimum absolute partial charge: the neighbor is 0.2433 versus 0.0701 in the query, delta -0.1732, and that lower value for the query is associated with the mutagenic side in this pair. The neighbor also has tertiary amide while the query does not, which is another structural difference included in the comparison and is aligned with the less mutagenic side here. Taken together, Neighbor 3 still slightly favors the not-mutagenic class overall, even though the charge-related feature points the other way.
+
+Neighbor 4 is a negative neighbor, so it is important to separate the opposing signals. The query has fraction of sp3 carbons 1 versus 0.5 in the neighbor, delta +0.5, and in this specific comparison that higher sp3 fraction is associated with the mutagenic side. The query also has a higher rotatable-bond count, 12 versus 9, delta +3, which here favors the not-mutagenic side. Maximum partial charge is 0.0701 in the query versus 0.3437 in the neighbor, delta -0.2736, and that lower charge in the query is again aligned with mutagenicity in this local pair. Ring count is 0 in the query versus 1 in the neighbor, delta -1, which supports the not-mutagenic side. The neighbor has 2 Aryl chloride groups while the query has none, and that absence in the query is favorable to mutagenicity relative to this neighbor. Finally, the neighbor has 1 dialkyl ether versus 3 in the query, delta +2, which in this pair favors the not-mutagenic side. Because the mutagenic-leaning signals from sp3 fraction, maximum partial charge, and Aryl chloride outweigh the opposite signals, Neighbor 4 is the strongest negative-neighbor argument for mutagenicity.
+
+Neighbor 5 is also a negative neighbor and gives a largely similar but slightly different balance. The query again has more rotatable bonds, 12 versus 8, delta +4, which here favors the not-mutagenic side. Maximum partial charge is 0.0701 in the query versus 0.3385 in the neighbor, delta -0.2684, and that lower query charge is associated with mutagenicity in this pair. Fraction of sp3 carbons is 1 in the query versus 0.5 in the neighbor, delta +0.5, which again favors the mutagenic side locally. Ring count is 0 in the query versus 1 in the neighbor, delta -1, which goes the other direction and favors the not-mutagenic side. The neighbor has 2 carboxylic ester groups while the query has none, and that absent ester burden in the query is part of the not-mutagenic comparison here. Minimum absolute partial charge is also lower in the query, 0.0701 versus 0.3385, delta -0.2684, and that feature is again aligned with the mutagenic side in this neighbor pair. Even with the rotatable-bond and ring-count differences helping the not-mutagenic side, the charge-related and sp3-related comparisons make Neighbor 5 overall lean toward mutagenicity.
+
+Neighbor 6 is the last negative neighbor and it mostly supports the not-mutagenic outcome rather than the mutagenic one. The query has rotatable-bond count 12 versus 10 in the neighbor, delta +2, which favors the not-mutagenic side here. Ring count is 0 in the query versus 1 in the neighbor, delta -1, which also favors the not-mutagenic side. The query’s estimated logP is 2.6364 compared with 4.8069 in the neighbor, delta -2.1705, so the query is substantially less lipophilic; in this local comparison that lower logP is associated with the not-mutagenic side rather than with the neighbor’s mutagenic status. Fraction of sp3 carbons is 1 in the query versus 0.5714 in the neighbor, delta +0.4286, and that higher sp3 fraction is the one feature that leans toward mutagenicity in this pair. The query also has lower topological polar surface area, 27.69 versus 44.76, delta -17.07, and lower molecular weight, 218.337 versus 286.308, delta -67.971; both of those differences are associated with the mutagenic side in this specific analog comparison. Even so, the stronger combined effect of lower logP, fewer rings, and more rotatable bonds keeps Neighbor 6 overall on the not-mutagenic side.
+
+Putting the six neighbors together, the three positive neighbors consistently share several features with the query that are locally compatible with not mutagenic behavior, including the absence of nitroso or other mutagenic alerts and multiple exposure-related shifts such as higher rotatable-bond counts and higher sp3 fraction. Among the negative neighbors, Neighbor 4 is the clearest mutagenic analog because of the combination of lower sp3 fraction, lower maximum partial charge, and the presence of Aryl chloride, while Neighbor 5 also leans mutagenic mainly through the charge and sp3 signals. Neighbor 6, however, is more mixed and overall still supports the not-mutagenic class. Considering all six analogs together, the balance favors option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has a QED drug-likeness value of 0.7127, which is reasonably favorable and can be consistent with a more balanced property profile, but by itself it does not rule out mutagenicity. A more concerning sign is the presence of a tertiary mixed amine (1), since an ionizable nitrogen can support Gram-negative accumulation and increase effective bacterial exposure. That concern is reinforced by the very low topological polar surface area of 3.24, which suggests limited polarity and potentially better passive permeability into bacteria. The estimated logD of 3.9213 is moderately lipophilic and could also support exposure in the assay, rather than suppressing it. The heteroatom count of 1 is low, but low heteroatom content alone is not protective if the molecule still has an ionizable nitrogen and sufficient lipophilicity. The maximum partial charge of 0.0361 and the minimum absolute partial charge of 0.0361 indicate a small but nonzero charge separation, which is compatible with a molecule that can participate in electrostatic interactions relevant to uptake or efflux behavior. The hydrogen-bond acceptor count of 1 is also low, which again suggests limited polarity and less of an exposure barrier. The neutral fraction of 0.9962 is very high, meaning the molecule is mostly neutral at the configured pH; that favors passive membrane permeation and can increase bacterial bioavailability. The number of basic sites is 1, which means there is at least one ionizable basic center, consistent with the tertiary amine and with improved accumulation in bacteria. Overall, despite the somewhat favorable QED and low polarity descriptors, the combination of a mostly neutral molecule, one basic site, low TPSA, moderate logD, and an ionizable nitrogen supports sufficient bacterial exposure, so the model’s final call is option (B): is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor with moderate similarity (0.544), and the comparison is mixed but overall leans mutagenic. The query has slightly higher QED drug-likeness than the neighbor (0.7127 vs 0.6575, delta +0.0552), which by itself favors the non-mutagenic side because higher drug-likeness often tracks with more balanced properties. However, several features point the other way: the query has fewer tertiary mixed amines than the neighbor (1 vs 2, delta -1), the minimum absolute partial charge is slightly lower (0.0361 vs 0.0362, delta -0.0001), and the query contains an alkene that the neighbor lacks (delta +1). In addition, the query has a higher ring count (2 vs 1, delta +1), while heteroatom count is lower in the query (1 vs 2, delta -1), which tempers the signal but does not erase it. Taken together, Neighbor 1 still looks more similar to a mutagenic analog because the alkene and mixed-amine differences align with the positive class more than the modest QED and heteroatom changes favor the negative class.
+
+Neighbor 2 is also a positive neighbor (similarity 0.516), and here the evidence is more clearly split but still ends up supporting mutagenicity. The neighbor has more heteroatoms than the query (3 vs 1, delta -2), and the query’s QED is slightly lower than the neighbor’s (0.7127 vs 0.7204, delta -0.0077); both of those changes favor the non-mutagenic side. But the query has a lower strongest basic pKa than the neighbor (4.983 vs 5.4448, delta -0.4618), a lower maximum partial charge (0.0361 vs 0.0858, delta -0.0497), and again contains an alkene that the neighbor lacks (delta +1). The topological polar surface area is also much lower in the query (3.24 vs 27.96, delta -24.72), which can change exposure behavior, but in this specific comparison the alkene and charge/basicity shifts are the more class-relevant differences. Overall, Neighbor 2 remains supportive of the mutagenic label despite the higher heteroatom burden and slightly better QED in the neighbor.
+
+Neighbor 3, another positive neighbor (similarity 0.485), gives a stronger mutagenic pattern. The query has a lower strongest basic pKa than the neighbor (4.983 vs 5.2498, delta -0.2668), a higher estimated logD (3.9213 vs 2.058, delta +1.8633), and an alkene absent from the neighbor (delta +1). The query and neighbor have essentially the same minimum absolute partial charge (0.0361 vs 0.0361, delta +0), so that feature does not separate them, while the query has a higher ring count (2 vs 1, delta +1), which is a counterweight toward the non-mutagenic side. The query also has a substantially better QED drug-likeness than the neighbor (0.7127 vs 0.5694, delta +0.1433), which again pulls away from mutagenicity. Even so, the combined effect of higher logD, lower basic pKa, and the presence of an alkene keeps Neighbor 3 aligned with the mutagenic class.
+
+Neighbor 4 is one of the negative neighbors and has the highest similarity among the negatives (0.611), so it is important. Here the query has a slightly higher strongest basic pKa than the neighbor (4.983 vs 4.8216, delta +0.1614), a much lower minimum absolute partial charge (0.0361 vs 0.1854, delta -0.1493), and a slightly lower neutral fraction (0.9962 vs 0.9974, delta -0.0012). The query also has both tertiary mixed amine present, matching the neighbor exactly, and it has an alkene that the neighbor lacks. These features all make the query look less separated from the mutagenic side. The main counterweights are the query’s higher QED drug-likeness (0.7127 vs 0.6104, delta +0.1023) and much lower topological polar surface area (3.24 vs 20.31, delta -17.07), both of which favor the non-mutagenic side. Even with those offsets, Neighbor 4 still sits closer to the mutagenic pattern overall because the basicity, charge, neutral fraction, amine class match, and alkene all point in that direction.
+
+Neighbor 5 is another negative neighbor with high similarity (0.610), and it also leans mutagenic. The query has a lower strongest basic pKa than the neighbor (4.983 vs 5.0839, delta -0.1009), an alkene that the neighbor does not have (delta +1), and a much higher estimated logD (3.9213 vs 1.7505, delta +2.1708). The query also shares tertiary mixed amine with the neighbor, which keeps the two structures close on that feature. Against that, the query has a higher QED drug-likeness (0.7127 vs 0.5468, delta +0.1659) and identical topological polar surface area (3.24 vs 3.24, delta +0), both of which do not support a mutagenic call. Still, the combination of higher lipophilicity, lower basic pKa, alkene presence, and shared amine class makes Neighbor 5 a strong negative-neighbor example that remains closer to the mutagenic side than to the non-mutagenic side.
+
+Neighbor 6 is the strongest-similarity negative neighbor in this set (0.590) and is especially informative because it contains an aldehyde, while the query does not. The query has a slightly higher strongest basic pKa than the neighbor (4.983 vs 4.9382, delta +0.0448), a much higher estimated logD (3.9213 vs 1.9632, delta +1.9581), a lower maximum partial charge (0.0361 vs 0.1424, delta -0.1063), and a lower topological polar surface area (3.24 vs 20.31, delta -17.07). It also has higher QED drug-likeness than the neighbor (0.7127 vs 0.5168, delta +0.196). The aldehyde difference is the most explicit structural distinction here, since the neighbor has aldehyde and the query does not. Even though the higher QED and lower TPSA favor the non-mutagenic side, the high logD and the presence of the aldehyde-associated negative neighbor context keep this comparison from overturning the overall mutagenic pattern.
+
+Across the full set, the three positive neighbors consistently show that the query shares or exceeds several features associated with the mutagenic side in these comparisons, especially the alkene and, in some cases, higher logD or lower basic pKa. The three negative neighbors are not a clean match for the non-mutagenic class either: although the query often has higher QED and lower TPSA, it repeatedly shows the mutagenicity-associated pattern of an alkene, relatively lipophilic character, and basicity/charge differences that keep it closer to the positive analogs. Taken together, the neighbor evidence supports option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

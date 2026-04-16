@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are unfavorable for oral bioavailability: ammonium is present (1), which suggests a strongly ionized basic center that can hinder passive permeability, and urethane is present (1), adding polar functionality that can further raise the permeability burden. The topological polar surface area is 29.54, which is not especially high and by itself would not be a major absorption liability, so this point is somewhat favorable. QED drug-likeness is 0.7171, which is a relatively strong drug-like value and supports the possibility of acceptable oral exposure. However, the maximum partial charge is 0.4142 and the minimum absolute partial charge is 0.41, both indicating notable charge localization, and the neutral fraction is present (1), which is not enough to overcome the ionization-related concerns from the ammonium group. The molecule has no acidic site, so strongest acidic pKa is not defined; that removes one potential source of acidity, but it does not offset the basic, ionized character. Labute surface area is 96.6258, which is moderate and not obviously prohibitive, and secondary hydroxyl is absent (0), which slightly reduces donor burden. Even with a decent QED and a moderate polar surface area, the combination of ammonium, urethane, and charge-localization signals points to reduced passive absorption overall, so the balance of evidence favors oral bioavailability < 20%.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly close positive example, but several of its properties still sit on the unfavorable side relative to the query. The query has ammonium once while the neighbor has none, a +1 change that is unfavorable here because the model associates the ammonium-containing query with poorer oral bioavailability. The query also has a much larger neutral fraction: the neighbor is at 0.0008 versus the query being present at 1, a +0.9992 shift that again weighs against the higher-bioavailability class because the comparison is treating the neighbor’s near-complete lack of neutral population as a helpful contrast. QED is also lower in the query, 0.7171 versus 0.8894 for the neighbor, a -0.1723 difference that weakens drug-likeness. Topological polar surface area is better in the query, 29.54 versus 46.53, with a -16.99 delta, and estimated logD is higher in the query, 1.9437 versus 0.5961, with a +1.3476 delta; both of those would normally be helpful for oral exposure, but in this specific analog comparison they do not overcome the stronger liabilities. The neighbor also lacks diaryl ether while the query does not, and that missing diaryl ether feature is the one element moving toward the higher-bioavailability side. Overall, Neighbor 1 still ends up closer to the low-bioavailability side because the ammonium, neutral-fraction, QED, TPSA, and logD differences dominate despite the diaryl ether contrast.
+
+Neighbor 2 is another positive neighbor, but it also highlights several liabilities in the query. Again, the query has ammonium once while the neighbor has none, and that +1 delta is unfavorable. The query’s topological polar surface area is 29.54 versus 21.7 for the neighbor, a +7.84 increase, which is not helpful because the comparison treats the higher polar surface burden as a disadvantage. The query’s QED is slightly lower, 0.7171 versus 0.7424, with a -0.0254 delta; although small, that still works against the higher-bioavailability side. The query also has a higher minimum absolute partial charge, 0.41 versus 0.2531, a +0.1569 change that signals a more extreme charge profile and is unfavorable for passive exposure. In addition, the neighbor has one basic site while the query has none, so the -1 delta in basic-site count is another feature favoring the neighbor over the query in this local comparison. The query’s fraction of sp3 carbons is 0.4167 versus 0.25 for the neighbor, a +0.1667 increase, but here that change is not enough to offset the charge and polarity-related disadvantages. Taken together, Neighbor 2 still reads as closer to the low-bioavailability side because the ammonium, polar-surface, charge, and basic-site differences outweigh the modest QED and sp3 advantages.
+
+Neighbor 3, like the other positive neighbors, also ends up supporting the lower-bioavailability label for the query. The query again has ammonium once while the neighbor has none, which is an unfavorable +1 difference. For strongest acidic pKa, the neighbor has a value of 13.977, while the query has no acidic site; that missing acidic-site context and the associated -0.5988 effect still favor the neighbor in this comparison. The query’s topological polar surface area is 29.54 versus 32.7 for the neighbor, a -3.16 delta that is mildly favorable to the query, but not enough to dominate. The neighbor has a tertiary hydroxyl and the query does not, a -1 difference that also matters locally. The query’s maximum partial charge is 0.4142 versus 0.1187 for the neighbor, a +0.2955 increase, indicating a more extreme charge distribution that is unfavorable for oral exposure. Finally, the query’s neutral fraction is present at 1 versus 0.0069 for the neighbor, a +0.9931 difference, which again marks the query as more ionized/less neutral in the way this comparison is being used. Even with the slightly lower TPSA, Neighbor 3 still sits on the side favoring lower bioavailability for the query because ammonium, acidic-site context, tertiary hydroxyl, maximum partial charge, and neutral-fraction differences all remain unfavorable.
+
+Turning to the negative neighbors, Neighbor 4 is especially informative because it is closer overall and still points the same way. The query has ammonium once and the neighbor has none, a +1 difference that is unfavorable. The query’s QED is higher, 0.7171 versus 0.5934, with a +0.1237 delta, which is one of the few favorable contrasts. But the neighbor has one ionizable site while the query has none, giving a -1 delta in ionizable-site count that still hurts the query in this local framing. Estimated logD is also much higher in the query, 1.9437 versus 0.5715, a +1.3722 difference; although higher lipophilicity often helps, here it is not enough to undo the other liabilities. Both molecules have urethane, so that feature is neutral between them. The minimum absolute partial charge is also nearly the same, 0.41 for the query versus 0.4038 for the neighbor, a tiny +0.0062 shift. Even with the better QED and logD, Neighbor 4 remains a low-bioavailability analog because the ammonium and ionizable-site differences are unfavorable and the overall comparison still lands on the <20% side.
+
+Neighbor 5 strengthens that same conclusion. The query again has ammonium once while the neighbor has none, a +1 change that is unfavorable. The query’s QED is substantially better, 0.7171 versus 0.4653, with a +0.2518 delta, so this is a meaningful favorable difference. However, the neighbor has 2 copies of urethane while the query has 1, a -1 difference, and the neighbor also has 2 copies of pyridine while the query has none, a -2 difference; both of those structural contrasts are unfavorable for the query in this comparison. The neighbor’s topological polar surface area is 66.84 versus 29.54 for the query, so the query is lower by 37.3, which would normally be advantageous, but here it still does not overturn the other liabilities. The minimum absolute partial charge is essentially unchanged at 0.41 for the query versus 0.4038 for the neighbor, a +0.0062 delta. Neighbor 5 is therefore still aligned with the lower-bioavailability side overall, because the ammonium, urethane, and pyridine differences dominate despite the better QED and much lower TPSA in the query.
+
+Neighbor 6 is the weakest positive analog and still points to the same final class. The query has ammonium once while the neighbor has none, a +1 difference that is unfavorable. The neighbor has a minimum absolute partial charge of 0.4104 versus 0.41 for the query, a tiny -0.0004 delta, so charge magnitude is essentially matched. The query’s QED is lower, 0.7171 versus 0.8482, a -0.1312 difference that weakens drug-likeness. The neighbor has 3 ionizable sites while the query has none, a -3 difference that again favors the neighbor in terms of local analog structure. Estimated logD is higher in the query, 1.9437 versus 0.7712, a +1.1725 delta, but the query’s topological polar surface area is also lower, 29.54 versus 44.81, a -15.27 change. Even with those more favorable physicochemical values, the ammonium, ionizable-site count, and QED differences keep Neighbor 6 on the low-bioavailability side overall.
+
+Putting the six neighbors together, the pattern is consistent: all three positive neighbors and all three negative neighbors still provide net support for the <20% class. The query does have some favorable features in places, such as higher logD than several neighbors and lower TPSA than some of them, but these are repeatedly offset by the ammonium presence and by charge/ionization-related contrasts, along with weaker QED in several comparisons and additional structural liabilities such as urethane, pyridine, or ionizable-site burden. Because the nearest analogs still mostly align with the lower-bioavailability profile, the most consistent prediction is option (A): has oral bioavailability < 20%.
+
+Input 3. Target final label semantics
+option (A): has oral bioavailability < 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

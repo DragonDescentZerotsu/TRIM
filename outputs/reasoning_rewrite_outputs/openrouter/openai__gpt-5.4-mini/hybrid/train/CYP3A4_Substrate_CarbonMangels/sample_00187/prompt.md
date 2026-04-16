@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several properties that point in opposite directions. A sulfonamide is present, and this acidic/polar functionality tends to lower neutral fraction and permeability, which makes CYP3A4 substrate behavior less likely. That is reinforced by the very low neutral fraction of 0.0332, indicating the compound is overwhelmingly ionized under physiological conditions and therefore less able to passively reach the enzyme. The strongest basic pKa is 8.863, so there is also a substantial basic site that is likely protonated near pH 7.4, adding further ionization burden and again working against easy membrane access. The estimated logD of 0.8622 is relatively low, which suggests a fairly polar compound with limited hydrophobicity, another factor that generally disfavors substrate-like exposure. On the other hand, the size and flexibility descriptors are more compatible with CYP3A4 substrates: exact molecular weight 408.1719 and molecular weight 408.52 are both in a moderate range that can still fit typical orally accessible chemical space, heavy-atom molecular weight 380.296 indicates substantial nonhydrogen mass, rotatable-bond count 11 is only moderately flexible, Labute surface area 166.3992 reflects a reasonably large molecular surface, and alkyl aryl ether count 3 suggests multiple hydrophobic/heteroatom-linked motifs that can support recognition by the enzyme. Balancing these mixed signals, the low ionization-driven accessibility and low logD are weighed against the moderate size and structural features, but the overall profile is still more consistent with a CYP3A4 substrate than a clearly non-substrate compound.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a relatively close positive example, and several of its features line up with a substrate-like profile. The query lacks carbazole here (query-minus-neighbor delta -1), which removes one aromatic scaffold that in this comparison favored the non-substrate side, and the query also has a higher fraction of sp3 carbons, 0.4 versus 0.25 (delta +0.15), which is a more saturated and generally more developability-friendly profile. The query matches the neighbor on secondary aliphatic amine and on alkyl aryl ether count, so those shared motifs do not separate the two. The main opposing signal is neutral fraction: the query is much lower, 0.0332 versus 0.1543 (delta -0.1211), meaning it is far less neutral and therefore more ionized, which tends to reduce accessibility. Minimum partial charge is only slightly more negative in the query, -0.4953 versus -0.4929 (delta -0.0025), and that tiny shift favors the substrate side in this comparison. Overall, Neighbor 1 still ends up supporting option (B), but it is a mixed comparison with the low neutral fraction being the main drawback.
+
+Neighbor 2 is also a positive example, and here the balance is stronger for substrate-like behavior despite a few countervailing polarity/charge signals. The query again has a much lower neutral fraction, 0.0332 versus 0.1409 (delta -0.1077), which by itself would argue against easy accessibility. But the query also has a much larger topological polar surface area, 99.88 versus 39.72 (delta +60.16), and in this local comparison that larger polar surface area is associated with the substrate label. The query has one secondary aliphatic amine while the neighbor has none, which also aligns with the substrate side here. Against that, the query has more basic sites, 2 versus 1 (delta +1), and a higher maximum partial charge, 0.2412 versus 0.1618 (delta +0.0795); both of those features favor the non-substrate side in this matched pair because they indicate greater ionization/charge burden. Even with those negatives, the heavy-atom molecular weight is larger in the query, 380.296 versus 290.213 (delta +90.083), and that size shift supports the substrate classification in this comparison. Taken together, Neighbor 2 leans clearly toward option (B).
+
+Neighbor 3 is another positive neighbor, but it shows a more balanced tug-of-war between permeability-related factors. The query and neighbor both have a secondary aliphatic amine, so that feature is neutral as a differentiator here. The query has a lower estimated logD, 0.8622 versus 1.5529 (delta -0.6907), which is a less hydrophobic, more polar profile and in this pair is unfavorable for substrate behavior. The query again has a much higher topological polar surface area, 99.88 versus 58.56 (delta +41.32), which in this comparison supports the substrate label. At the same time, the query has more basic sites, 2 versus 1 (delta +1), and a higher maximum partial charge, 0.2412 versus 0.1664 (delta +0.0748); both of those shifts favor the non-substrate side. The query’s heavy-atom molecular weight is also larger, 380.296 versus 314.235 (delta +66.061), which supports the substrate side. So Neighbor 3 is mixed, but the larger polar surface area and larger heavy-atom molecular weight keep it on the side of option (B) overall.
+
+Neighbor 4 is a negative example, but most of the direct comparisons actually make the query look more substrate-like. The query has far more hydrogen-bond acceptors, 6 versus 1 (delta +5), which is a substantial increase in polarity; in this pair that increase aligns with option (B). The query also has three alkyl aryl ethers versus none in the neighbor (delta +3), another feature that here supports the substrate side. The query and neighbor both contain a secondary aliphatic amine, so that is not separating them, and the secondary aliphatic amine itself is the one feature in this comparison that favors the non-substrate side. The neighbor contains trifluoromethyl while the query does not (delta -1), and in this local comparison that absence in the query points toward substrate behavior. The query’s topological polar surface area is much higher, 99.88 versus 12.03 (delta +87.85), again favoring option (B), and the rotatable-bond count is also higher, 11 versus 4 (delta +7), which in this specific pair likewise supports the substrate label. Because nearly every separating feature except the shared secondary aliphatic amine moves in the substrate direction, Neighbor 4 strongly supports option (B) even though it comes from the non-substrate neighbor set.
+
+Neighbor 5 is another negative example with the same overall pattern: the query appears more substrate-like on most of the explicit comparisons. It again has far more hydrogen-bond acceptors, 6 versus 1 (delta +5), and three alkyl aryl ethers versus none (delta +3), both of which in this pair support option (B). The query also has a much larger topological polar surface area, 99.88 versus 12.03 (delta +87.85), which is the same strong substrate-leaning shift seen with Neighbor 4. In addition, the query and neighbor both have a secondary aliphatic amine, and that shared feature here favors the non-substrate side. The query is also very different on partial-charge extrema: minimum absolute partial charge is 0.2412 versus 0.0076 (delta +0.2336), and maximum partial charge is 0.2412 versus 0.0076 (delta +0.2336); both of these charge-related shifts point toward option (A) in this local comparison. Even so, the substrate-supporting changes in HBA, alkyl aryl ether count, and TPSA are substantial, so Neighbor 5 still ends up favoring option (B) overall.
+
+Neighbor 6 is the clearest negative-neighbor support for the substrate label. The query has a secondary aliphatic amine while the neighbor does not, which in this comparison favors option (B). The query also has a slightly lower maximum partial charge, 0.2412 versus 0.2546 (delta -0.0134), which supports option (B) here, and the neighbor has a secondary amide while the query does not (delta -1), another substrate-favoring difference in this pair. The query is larger on Labute surface area, 166.3992 versus 136.3955 (delta +30.0037), and has higher estimated logP, 2.3409 versus 0.5567 (delta +1.7842); both of those shifts indicate a less polar, more hydrophobic profile that in this local comparison aligns with the substrate side. The neighbor has pyrrolidine while the query does not (delta -1), which also favors option (B) here. Taken together, Neighbor 6 is a strong negative-neighbor match for the substrate label.
+
+Across the six neighbors, the positive-neighbor set is not only consistent with option (B) but also shows repeated support from higher topological polar surface area, larger heavy-atom molecular weight, and other substrate-leaning structural features in the local comparisons. The negative-neighbor set is even more decisive: Neighbor 4, Neighbor 5, and Neighbor 6 each contain multiple query-vs-neighbor differences that favor the substrate label, especially the much higher hydrogen-bond acceptor count, greater alkyl aryl ether count, and much larger topological polar surface area, with additional support from Labute surface area, estimated logP, and the presence or absence of the specific amide/amine/ring features noted above. Although some charge-related and ionization-related features in Neighbor 1 through Neighbor 3 are mixed and occasionally favor the non-substrate side, the total pattern across all six analogs is stronger for option (B): the query repeatedly looks more like a compound that can reach and be handled by CYP3A4 than like a clear non-substrate.
+
+Input 3. Target final label semantics
+option (B): is a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

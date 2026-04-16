@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several structural elements that can support BBB penetration: halogenmethylen ester is present (1), alkyl fluoride count is 2, and carbothioic S ester is present (1), all of which are consistent with a more lipophilic, membrane-permeable scaffold. The aliphatic carbocycle count is 4 and the saturated carbocycle count is 3, suggesting a fairly rigid, nonpolar framework that can favor passive diffusion. A neutral fraction is present (1), which is helpful for BBB passage because neutral species cross membranes more readily. The strongest acidic pKa is 12.4578, indicating the scaffold is not strongly acidic and is less likely to be heavily ionized at physiological pH. However, there are also features that work against brain penetration: the topological polar surface area is 80.67, which is still within a borderline-to-moderate CNS range but is high enough to start limiting permeability, and the heteroatom count is 9, which increases polarity and hydrogen-bonding capacity. The QED drug-likeness value of 0.4307 is also only moderate rather than strongly favorable. Overall, the lipophilic, largely neutral, and rigidifying features outweigh the moderate polarity burden, so the molecule is more consistent with crossing the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is an overall favorable analog for BBB crossing. It matches the query on alkyl fluoride exactly, with 2 copies in both molecules (delta +0), and that shared halogenated motif is aligned with the more BBB-permissive side of the comparison. The query also has 1 halogenmethylen ester and similar feature where the neighbor has none (delta +1), and it has the same 2 alkene copies and the same neutral fraction present (1) as the neighbor. Although the query has only 1 ketone while the neighbor has 2 (delta -1), which is the main counterweight here, the rest of the shared or gained features leave this neighbor leaning toward the BBB-crossing class overall.
+
+Neighbor 2 is also a favorable analog, but it is more mixed because one property works against BBB penetration. It again matches the query on alkyl fluoride at 2 copies (delta +0), while the query has 1 halogenmethylen ester and similar where the neighbor has none (delta +1), and both molecules have 2 alkenes and neutral fraction present (1). However, the query’s estimated logP is 4.6993 versus 2.9934 for the neighbor, so the query is higher by 1.7059. Given BBB heuristics that favor only moderate lipophilicity rather than very high values, that upward shift makes this particular comparison less favorable on logP even though the other matched features still support crossing. The lower ketone count in the query (1 versus 2, delta -1) also remains a relevant difference in the same direction as Neighbor 1.
+
+Neighbor 3 is the strongest of the positive neighbors because it adds a surface-area advantage on top of the shared structural features. The query and neighbor again match on alkyl fluoride at 2 copies, the neighbor has 2 ketones while the query has 1 (delta -1), and the query carries 1 halogenmethylen ester and similar feature absent from the neighbor (delta +1). Both also share 2 alkenes and neutral fraction present (1). The key extra point is Labute surface area: the neighbor is at 185.1942 while the query is 207.2451, a rise of 22.0509. Smaller surface area is generally more compatible with BBB entry, so this larger surface-area burden in the query is a meaningful adverse shift, but it is not enough to overturn the otherwise BBB-favorable pattern shared with the other positive neighbors.
+
+Neighbor 4 is the most important of the negative neighbors, and it is still not enough to reverse the overall conclusion. The query has 1 halogenmethylen ester and similar feature where the neighbor has none (delta +1), and 2 alkyl fluoride copies where the neighbor has 0 (delta +2), both of which are favorable for crossing in this local comparison. The query also has 1 carbothioic S ester where the neighbor has none (delta +1), and the minimum partial charge is slightly more negative in the query, -0.4491 versus -0.3885, with delta -0.0607, which is also associated with the BBB-crossing side here. The two features that cut the other way are the lower QED drug-likeness in the query, 0.4307 versus 0.7848 (delta -0.3541), and those unfavorable drug-likeness and charge-related shifts make this neighbor less straightforward. Even so, the collection of BBB-favoring structural features still outweighs the downside in this specific comparison.
+
+Neighbor 5 is another negative neighbor, but it still ends up aligning with BBB crossing more than not. The query again has the added halogenmethylen ester and similar feature (delta +1), 2 alkyl fluoride copies versus 0 in the neighbor (delta +2), and 1 carbothioic S ester where the neighbor has none (delta +1). Against that, the query has lower fraction of sp3 carbons, 0.72 versus 0.8095 (delta -0.0895), and lower QED drug-likeness, 0.4307 versus 0.696 (delta -0.2653). Those two shifts are the main unfavorable elements here, but the more BBB-supportive structural features still dominate this analog relationship, so the comparison remains on the crossing side.
+
+Neighbor 6 is the clearest negative analog in the set because it contains a feature absent from the query that strongly disfavors BBB entry. The neighbor has oxirane while the query does not (delta -1), and that is the major factor pulling this comparison toward the non-crossing side. The query still has 1 halogenmethylen ester and similar feature where the neighbor has none (delta +1), 2 alkyl fluoride copies versus 0 (delta +2), 4 aliphatic carbocycles versus 0 (delta +4), and 1 carbothioic S ester where the neighbor has none (delta +1), all of which are favorable for BBB crossing in this local context. The query also has lower fraction of sp3 carbons, 0.72 versus 0.9024 (delta -0.1824), which is another unfavorable shift. Even with that, the strong oxirane penalty is not enough to overturn the many BBB-favoring differences shared by the query.
+
+Taken together, the six neighbors point more often toward the BBB-crossing side than the non-crossing side. The three positive neighbors all support option (B), with shared alkyl fluoride and alkene features, the added halogenmethylen ester and similar and carbothioic S ester features in the query, and in one case a smaller Labute surface area advantage relative to the neighbor. Among the negative neighbors, two still end up favoring crossing despite lower QED and lower fraction of sp3 carbons, while the third has an oxirane feature that is more consistent with non-crossing but is outweighed by the other query features. The balance of these local analog comparisons therefore supports option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

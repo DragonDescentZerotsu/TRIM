@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that can support oral exposure: it has amine count 2, includes a tertiary aliphatic amine, contains a nitro group, and has a dialkyl thioether, all of which can fit a structurally diverse drug-like scaffold. Its topological polar surface area is 83.33, which is below common permeability concern thresholds such as 131–140 Å², so the polarity burden is not excessive. The neutral fraction is 0.6196, indicating a substantial neutral population that should help passive permeation. The Labute surface area is 132.5219, which is not obviously extreme and is compatible with a manageable size/surface profile. QED drug-likeness is 0.38, which is somewhat modest and suggests the overall scaffold is not especially optimized for drug-likeness, so that is a weakness. The fraction of sp3 carbons is 0.5833, giving the molecule decent 3D character, although that alone does not guarantee better oral exposure. There is no acidic site, so strongest acidic pKa is not defined, which avoids a clear anionic liability from acidic functionality. Taken together, the favorable balance of amines, moderate polarity, and a reasonably neutral fraction appears more important here than the lower QED score, so the molecule is more consistent with oral bioavailability at or above 20%.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is overall mildly supportive of oral bioavailability ≥ 20% because several descriptors are favorable or neutral, even though a couple of features lean the other way. The query and neighbor both have 2 copies of amine, so there is no difference there. The query also matches the neighbor at rotatable-bond count 10, which sits right at the classic Veber-style limit, so flexibility is not clearly worse here. The query’s QED is 0.38 versus 0.3841 for the neighbor, a tiny decrease of -0.0041 that slightly weakens drug-likeness. At the same time, the query has more basicity-related capacity, with number of basic sites increasing from 1 to 2 and minimum partial charge shifting from -0.4638 to -0.3698, a +0.094 change that is directionally more favorable for exposure. Fraction of sp3 carbons also rises from 0.5385 to 0.5833, which is generally a useful 3D-leaning change, but here it is associated with a small unfavorable effect in the comparison. On balance, the matched amine count, unchanged rotatable bonds, and the gains in basic-site pattern and partial charge make Neighbor 1 lean toward the higher-bioavailability side overall.
+
+Neighbor 2 is also clearly supportive of the ≥ 20% class. The query has 2 amines versus 0 in the neighbor, a +2 delta that is favorable here. The query’s QED is lower, 0.38 versus 0.4206, with a -0.0406 change that is a liability because the neighbor is slightly more drug-like on that composite measure. However, the query’s strongest basic pKa is much higher, 7.1882 versus 3.5421, a +3.6461 shift that in this comparison favors the higher-bioavailability label. The query also contains one dialkyl thioether while the neighbor has none, and that +1 difference is favorable in the comparison. In addition, the neighbor has 2 nitro groups whereas the query has 1, so the query is lighter on that potentially problematic feature by -1. Finally, the query has 2 basic sites versus 1 in the neighbor, another +1 difference that again aligns with the higher-bioavailability side in this local contrast. Despite the lower QED, the combined pattern of more amine/basic functionality, the higher basic pKa, the thioether, and fewer nitro groups makes Neighbor 2 support option (B).
+
+Neighbor 3 likewise supports the ≥ 20% label. As in Neighbor 2, the query has 2 amines while the neighbor has 0, a +2 delta that is favorable. The query’s QED is 0.38 versus 0.3294, so the query is more drug-like by about +0.0505 on that score, but here that QED increase is associated with a negative local effect, so it is not the dominant factor. The query has dialkyl thioether once whereas the neighbor has none, another favorable +1 change. The neighbor has 2 enamine groups and the query has 0, so the query is reduced by -2 on that feature, which is favorable in this comparison. The query also has 2 basic sites versus 1, a +1 difference that again helps the higher-bioavailability side. One counterpoint is that the neighbor has 2 carboxylic esters while the query has 0, a -2 change that is unfavorable here. Even with that offset, the stronger amine/basic-site profile and the loss of enamine/ester burden make Neighbor 3 net supportive of oral bioavailability ≥ 20%.
+
+Neighbor 4 is the first of the lower-bioavailability neighbors, but even here the comparison still ends up favoring the ≥ 20% class overall. The query has 2 amines versus 0 in the neighbor, a +2 delta that is favorable. The query’s QED is much lower, 0.38 versus 0.7968, a large -0.4168 difference that is unfavorable. However, the query’s topological polar surface area is 83.33 compared with only 19.37 for the neighbor, so the +63.96 increase is in a range that can still remain compatible with oral absorption and is explicitly favorable in this local comparison. The neighbor has a tertiary mixed amine, which the query lacks, giving a -1 change that is favorable for the query here. The query has one nitro group while the neighbor has none, a +1 difference that is favorable in this comparison. The query’s maximum partial charge is also higher, 0.2736 versus 0.1283, a +0.1452 shift that is favorable. So although the neighbor is intrinsically more drug-like by QED, the query’s much higher TPSA together with the added amines, the absence of tertiary mixed amine, the nitro difference, and the higher maximum partial charge collectively still make this negative-neighbor comparison point toward option (B).
+
+Neighbor 5 is also labeled as a lower-bioavailability neighbor, yet the local feature pattern again comes out in favor of the ≥ 20% class. The query has 2 amines while the neighbor has 0, a +2 delta that is favorable. The query’s strongest basic pKa is 7.1882 versus 5.275, so the +1.9132 increase is favorable in this comparison. The neighbor has azetidin-2-one, which the query lacks, so the -1 change is favorable for the query. The query’s fraction of sp3 carbons is 0.5833 versus 0.3077, a large +0.2756 increase, but here that difference is associated with a negative local effect. The neighbor lacks nitro while the query has one nitro, a +1 difference that is favorable in this comparison. Both neighbor and query have thiazole, so that feature is unchanged. Even with the unfavorable sp3 comparison, the higher basicity, the extra amines, the absence of azetidin-2-one, and the preserved thiazole pattern make Neighbor 5 still align overall with the higher-bioavailability label.
+
+Neighbor 6 follows the same general pattern. The query has 2 amines versus 0 in the neighbor, a +2 delta that is favorable. The query’s strongest basic pKa is 7.1882 versus 5.2231, a +1.9651 increase that is favorable. The neighbor has 2 carboxylic acids while the query has none, so the -2 change is favorable because it removes acidic burden. The neighbor also has azetidin-2-one and the query does not, another -1 difference that is favorable. Two features point the other way: the query has higher QED, 0.38 versus 0.1474, a +0.2326 change that is unfavorable in this local comparison, and the fraction of sp3 carbons rises from 0.3182 to 0.5833, a +0.2652 change that is also unfavorable here. Even so, the combined effect of more amines, stronger basic pKa, and loss of carboxylic acids and azetidin-2-one keeps Neighbor 6 on the side of oral bioavailability ≥ 20%.
+
+Taken together, all six neighbors are consistent with the final prediction of option (B): has oral bioavailability ≥ 20%. The three positively labeled neighbors already point that way directly, and the three negatively labeled neighbors are still overcome locally by the query’s more favorable basicity/amine pattern and the removal of acidic or otherwise unfavorable motifs, despite some offsets from QED, TPSA, rotatable-bond balance, and sp3-related effects. The overall neighborhood therefore supports the higher oral-bioavailability class.
+
+Input 3. Target final label semantics
+option (B): has oral bioavailability ≥ 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

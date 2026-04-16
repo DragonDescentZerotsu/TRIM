@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains piperidine, which is an ionizable nitrogen motif often associated with improved bacterial accumulation, so that alone does not suggest an obvious mutagenic alert. Its QED drug-likeness is 0.795, a relatively favorable value, which is more consistent with a balanced, exposure-friendly profile than with a compound enriched in obvious problematic liabilities. The neutral fraction is very low at 0.0047, indicating that the molecule is overwhelmingly ionized under the configured conditions; that increased ionization can reduce passive membrane permeation and lower bacterial exposure, which leans away from a mutagenic readout. The heteroatom count is 2, which is modest and does not by itself indicate a highly polar or highly reactive structure. Estimated logP is 1.8968, a moderate lipophilicity level that is not extreme enough to strongly suggest solubility or precipitation problems either way. The molecule has 1 basic site, consistent with the presence of the piperidine nitrogen, which can improve Gram-negative accumulation and may slightly increase exposure, but it is not itself a mutagenicity alert. The fraction of sp3 carbons is 0.4615, giving the scaffold a somewhat three-dimensional character rather than a highly flat polyaromatic one, which is less suggestive of classic mutagenic aromatic toxicophores. There is 1 saturated heterocycle, but saturated heterocycles are not inherently associated with mutagenicity unless they contain a specific reactive motif, which is not evident here. The ring count is 2 and the aromatic ring count is 1, so the structure does not show the kind of fused polycyclic aromatic system that is more concerning for mutagenicity. Taken together, the molecule lacks a clear mutagenicity toxicophore and instead shows several features more compatible with limited bacterial exposure and a non-mutagenic outcome, so the overall prediction is option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mutagenic analog, but the query differs in several ways that move the comparison away from that outcome. The query has a much higher fraction of sp3 carbons, 0.4615 versus 0.1 (delta +0.3615), which is associated here with a less flat, less aromatic profile; that change is linked to a strong shift toward the non-mutagenic side. The query also has a higher QED drug-likeness, 0.795 versus 0.5849 (delta +0.2102), which likewise favors the non-mutagenic side in this local comparison. The query contains piperidine once while the neighbor lacks it, and that presence also aligns with the non-mutagenic direction. Ring count is higher in the query, 2 versus 1 (delta +1), which slightly favors the non-mutagenic side here as well. The only feature in this neighbor that points the other way is the presence of one basic site in the query versus none in the neighbor, but that single signal is outweighed by the sp3, QED, piperidine, and ring-count differences. Even the minimum partial charge is slightly more negative in the query, -0.3166 versus -0.2952 (delta -0.0215), which also aligns with the non-mutagenic side in this comparison. Overall, Neighbor 1 supports option (A): is not mutagenic.
+
+Neighbor 2 is also mutagenic, yet the query again shows several features that favor the non-mutagenic label. The query has a higher QED drug-likeness, 0.795 versus 0.6939 (delta +0.1012), which leans toward the non-mutagenic side. The query also has piperidine once while the neighbor does not, again favoring the non-mutagenic direction. The query lacks an acidic site while the neighbor has a strongest acidic pKa of 13.7538, and that absence is treated here as non-mutagenicity-supporting. In addition, the query has fewer heteroatoms, 2 versus 3 (delta -1), which also points away from mutagenicity in this local context. Two features go in the opposite direction: the query has a much higher strongest basic pKa, 9.7279 versus 3.9765 (delta +5.7514), and its estimated logD is lower, -0.4331 versus 1.4138 (delta -1.8469), both of which are associated with the mutagenic side in this comparison. Even so, the overall pattern still favors option (A): is not mutagenic because the QED, piperidine, acidic-site absence, and lower heteroatom count collectively outweigh those opposing signals.
+
+Neighbor 3 is another mutagenic analog, and the same overall pattern holds. The query’s QED drug-likeness is higher, 0.795 versus 0.7266 (delta +0.0685), which favors the non-mutagenic side. The query again has piperidine once while the neighbor has none, and that is a non-mutagenic-leaning difference here. The query has fewer heteroatoms, 2 versus 3 (delta -1), which also supports the non-mutagenic label. One of the strongest opposing features is that the query has one basic site while the neighbor has none, a difference that leans mutagenic in this local setting. The query also has a higher estimated logP, 1.8968 versus 1.0917 (delta +0.8051), and that increased hydrophobicity points toward the mutagenic side in this comparison. As in Neighbor 2, the strongest acidic pKa comparison is not directly numeric in the same way because the query has no acidic site while the neighbor’s strongest acidic pKa is 13.7299, and that absence still supports the non-mutagenic side. Taken together, the QED increase, piperidine presence, and lower heteroatom count outweigh the basic-site and logP signals, so Neighbor 3 still favors option (A): is not mutagenic.
+
+Neighbor 4 is a non-mutagenic analog and its relationship to the query is also consistent with option (A). The query has a higher QED drug-likeness, 0.795 versus 0.517 (delta +0.278), which favors the non-mutagenic label. Piperidine is present in the query once and absent in the neighbor, again aligning with the non-mutagenic side. The query’s neutral fraction is much lower, 0.0047 versus 1 (delta -0.9953), indicating a far more ionized state, which in this context is treated as favoring the non-mutagenic outcome by reducing passive exposure. The query does have one basic site while the neighbor has none, and that specific difference leans mutagenic, but the surrounding features still dominate. The query also has a higher fraction of sp3 carbons, 0.4615 versus 0.125 (delta +0.3365), which here supports the non-mutagenic side, and its topological polar surface area is higher, 29.1 versus 17.07 (delta +12.03), another exposure-modifying shift that favors the non-mutagenic label. Because the non-mutagenic signals are consistent across QED, piperidine, neutral fraction, sp3 fraction, and TPSA, Neighbor 4 strongly supports option (A): is not mutagenic.
+
+Neighbor 5 is also non-mutagenic and gives a similar picture. The query has a much higher QED drug-likeness, 0.795 versus 0.4697 (delta +0.3254), and that is a strong non-mutagenic-leaning difference. Piperidine is present in the query once and absent in the neighbor, again favoring the same label. The query’s neutral fraction is 0.0047 versus 1 (delta -0.9953), so the query is far less neutral and more ionized, which in this context aligns with reduced bacterial exposure and the non-mutagenic side. The query also has a higher fraction of sp3 carbons, 0.4615 versus 0.1111 (delta +0.3504), another non-mutagenic-leaning feature. One basic site is present in the query and absent in the neighbor, which points toward mutagenicity, and the query has a lower maximum partial charge, 0.1399 versus 0.2278 (delta -0.0878), which in this comparison favors the mutagenic side. Even with those two opposing signals, the stronger and more numerous non-mutagenic indicators dominate, so Neighbor 5 still supports option (A): is not mutagenic.
+
+Neighbor 6 is the most mixed of the six, but it still ends up favoring the non-mutagenic label overall. The query has a much higher strongest basic pKa, 9.7279 versus 3.9444 (delta +5.7835), which is a mutagenic-leaning difference in this local comparison. However, the query also has a much lower neutral fraction, 0.0047 versus 0.9416 (delta -0.9369), which supports the non-mutagenic side by implying far less neutral character at the configured pH. QED drug-likeness is again higher in the query, 0.795 versus 0.4869 (delta +0.3082), which favors the non-mutagenic label. Piperidine is present in the query once and absent in the neighbor, also non-mutagenic-leaning here. The query has a higher fraction of sp3 carbons, 0.4615 versus 0.125 (delta +0.3365), again consistent with the non-mutagenic side. The query’s maximum partial charge is lower, 0.1399 versus 0.2471 (delta -0.1071), which points toward mutagenicity in this comparison, but it is not enough to offset the stronger set of non-mutagenic indicators. Taken as a whole, Neighbor 6 still favors option (A): is not mutagenic.
+
+Across all six neighbors, the mutagenic neighbors 1–3 are outweighed by repeated non-mutagenic-leaning differences in the query: higher QED, repeated piperidine presence, higher fraction of sp3 carbons, lower neutral fraction where relevant, and in some cases lower heteroatom burden or higher TPSA. The non-mutagenic neighbors 4–6 reinforce the same direction, even though a few individual features such as basic-site presence, higher basic pKa, lower logD, or lower maximum partial charge can point the other way. The net pattern is more consistent with option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

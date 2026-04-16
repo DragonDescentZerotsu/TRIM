@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a nitroso group (1), which is a well-recognized mutagenicity toxicophore and supports a mutagenic outcome. It also contains an amine (1), and aromatic amines can be mutagenic, although their activity can depend on metabolic activation. The presence of an aryl bromide (1) adds another potentially reactive halogenated aromatic motif, which can be associated with mutagenicity in some contexts. The charge-related descriptors are also not reassuring for a non-mutagenic call: the maximum absolute partial charge is 0.2595, the maximum partial charge is 0.0639, and the minimum absolute partial charge is 0.0639, indicating a noticeable charge distribution that may accompany the kind of polarity and electrophilic character seen in bioactive mutagenic scaffolds. The neutral fraction is present (1), which is also consistent with a form that can remain sufficiently uncharged to reach the bacterial assay environment. On the other hand, the molecule has ring count value 1, so it does not show a highly fused polycyclic aromatic pattern, and the estimated logP is 2.5623, which is a moderate lipophilicity rather than an extreme hydrophobicity. The number of basic sites is absent (0), so there is not strong evidence for additional ionizable basic functionality that would enhance accumulation. Even with those moderating factors, the combination of a nitroso toxicophore, an amine, and supportive charge features is more consistent with mutagenic behavior overall. Therefore, the molecule is predicted to be mutagenic (B).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is overall informative for mutagenicity because the shared nitroso group is a strong positive signal: the query and neighbor both have nitroso, with delta +0, and that feature carries a large favorable effect for option (B). The query also has one Aryl bromide while the neighbor has none, delta +1, which works in the opposite direction and slightly favors option (A). Still, the query’s maximum partial charge is a bit higher than the neighbor’s, 0.0639 versus 0.0521 with delta +0.0119, and that higher positive charge character is aligned with the mutagenic side here. Against that, the query is larger and more polar in the other descriptors: Labute surface area rises from 36.8938 to 79.4535, delta +42.5597; heavy-atom count rises from 6 to 12, delta +6; and QED drug-likeness rises from 0.3659 to 0.5889, delta +0.223. Those latter shifts are each associated with a move toward option (A) in this comparison, but the nitroso and charge signals keep Neighbor 1 on the mutagenic side overall.
+
+Neighbor 2 gives a similar but slightly stronger mutagenic picture. Again, nitroso is present on both molecules with delta +0, which is the strongest single positive feature in the comparison. The query also has one Aryl bromide where the neighbor has none, delta +1, and that goes the other way toward option (A). The query’s maximum partial charge is higher, 0.0639 versus 0.0521 with delta +0.0118, supporting option (B). At the same time, the query has a ring count of 1 compared with 0 for the neighbor, delta +1, and its QED drug-likeness is higher as well, 0.5889 versus 0.4026 with delta +0.1864; both of those changes are treated as moving toward option (A) in this local comparison. The query also has much greater heavy-atom molecular weight, 220.005 versus 118.075 with delta +101.93, which here is associated with option (B). Taken together, the retained nitroso motif plus the higher charge and larger size still leave Neighbor 2 supporting mutagenicity overall.
+
+Neighbor 3 reinforces that same conclusion. The query and neighbor again both contain nitroso with delta +0, a strong mutagenic anchor. The query also has one Aryl bromide while the neighbor has none, delta +1, which is an opposing signal toward option (A). The query’s maximum partial charge is higher, 0.0639 versus 0.0521 with delta +0.0119, favoring option (B). On the other hand, the query has a larger Labute surface area, 79.4535 versus 49.6237 with delta +29.8298, and a ring count of 1 versus 0 with delta +1; both changes are unfavorable for mutagenicity in this local comparison. Even so, the query’s heavy-atom molecular weight is far higher, 220.005 versus 104.068 with delta +115.937, and that shift supports option (B). The combination still comes out on the mutagenic side because the nitroso feature remains prominent and the higher molecular weight and charge offset the exposure-related negatives.
+
+Neighbor 4 is one of the negative neighbors, but even here the local comparison does not overturn the mutagenic pattern. The query and neighbor both have nitroso with delta +0, which again strongly favors option (B). The query differs by having one Aryl bromide where the neighbor has none, delta +1, and that leans toward option (A). The neighbor has ring count 2 versus the query’s 1, delta -1, and that lower ring count in the query is unfavorable for option (A) here. The query’s minimum absolute partial charge is slightly lower, 0.0639 versus 0.0646 with delta -0.0007, while its maximum partial charge is also slightly lower, 0.0639 versus 0.0646 with delta -0.0007; both small shifts are still described as favoring option (B). The query also has a slightly higher maximum absolute partial charge, 0.2595 versus 0.2521 with delta +0.0075, which again supports option (B). So although the neighbor is from the non-mutagenic set, the comparison still contains several mutagenic-leaning features, especially the shared nitroso and the partial-charge pattern.
+
+Neighbor 5 is another negative neighbor, but it actually aligns strongly with mutagenicity. The neighbor lacks nitroso while the query has one, delta +1, and the same is true for amine: the neighbor has none and the query has one, delta +1. Both of those are positive mutagenic indicators. The query’s ring count is 1 versus 2 for the neighbor, delta -1, which in this local comparison favors option (A), but the charge features are more decisive: the query’s maximum absolute partial charge is 0.2595 versus 0.2682, delta -0.0086; the minimum absolute partial charge is 0.0639 versus 0.0383, delta +0.0257; and the minimum partial charge is -0.2595 versus -0.2682, delta +0.0086. Those charge shifts, especially the increased minimum absolute partial charge and the presence of nitroso plus amine, collectively support option (B) more strongly than the ring-count difference supports option (A).
+
+Neighbor 6, despite being labeled non-mutagenic, also leaves the mutagenic explanation intact. Nitroso is shared by both molecules with delta +0, again a strong B-leaning feature. The query has ring count 1 versus 2 for the neighbor, delta -1, which is the main A-leaning element here. The query also has a higher fraction of sp3 carbons, 0.25 versus 0 with delta +0.25, and that shift is treated as favoring option (B). In contrast, the query’s maximum absolute partial charge is higher, 0.2595 versus 0.1975 with delta +0.0621, but here that particular shift is associated with option (A); the query’s minimum partial charge is lower, -0.2595 versus -0.1975 with delta -0.0621, which is also unfavorable for option (A). Finally, the minimum absolute partial charge is slightly lower, 0.0639 versus 0.0685 with delta -0.0045, and that is again favorable for option (B). So this neighbor is mixed, but the shared nitroso motif and the sp3/charge pattern still keep the comparison from favoring non-mutagenicity overall.
+
+Across all six neighbors, the recurring nitroso signal is the most consistent feature, and it repeatedly appears alongside charge and size patterns that support mutagenicity. The three positive neighbors all support option (B), even though each contains some opposing size or ring-count features. The three negative neighbors do not provide a strong counterargument: Neighbor 4 still contains shared nitroso and several B-leaning charge signals, Neighbor 5 is actually strongly B-leaning because the query gains nitroso and amine, and Neighbor 6 remains mixed but still preserves the same mutagenic anchor. Taken together, the neighbor evidence is more consistent with option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has a primary hydroxyl group, which is generally associated with increased polarity and better aqueous character rather than intrinsic DNA reactivity, so that feature leans toward a non-mutagenic outcome. It also has a high fraction of sp3 carbons at 0.9286, indicating a very saturated, non-flat scaffold; that is less suggestive of the planar aromatic systems often associated with Ames-positive behavior. The ring count is 0 and the aromatic ring count is 0, so there is no ring system here to support polycyclic aromatic mutagenic motifs or other aromatic structural alerts. The heteroatom count is 3, which is modest and more consistent with a relatively simple, polar molecule than with a densely functionalized electrophilic scaffold. There is also no basic site present, which means there is no ionizable nitrogen that would especially favor bacterial accumulation in the way some mutagenic compounds do. On the other hand, the strongest acidic pKa is 13.7785, suggesting the hydroxyl group is very weakly acidic and likely mostly neutral under typical assay conditions; that does not create a clear mutagenicity alert, but it also does not provide a strong ionization-based exposure penalty. The molecule contains a secondary amide, and amides are common stable polar motifs rather than classic mutagenic toxicophores, though they can contribute some H-bonding and polarity. The rotatable-bond count is 12, which indicates a fairly flexible molecule; together with the estimated logP of 3.0158, this suggests moderate lipophilicity but not an extreme hydrophobic profile. Overall, the lack of aromatic rings, the very high sp3 character, the absence of basic sites, and the simple functional-group pattern outweigh the weaker opposing signals, so the molecule is more consistent with being not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but overall reassuring analog. The query has one primary hydroxyl that the neighbor lacks, and that difference is associated with a strong shift toward the non-mutagenic side here. The query also has a higher strongest acidic pKa, 13.7785 versus 9.853, with delta +3.9255, which is favorable for the non-mutagenic label in this comparison. At the same time, the query is smaller on several structural/exposure-related descriptors: heavy-atom count drops from 22 to 17 (delta -5), ring count from 1 to 0 (delta -1), and heteroatom count from 4 to 3 (delta -1). The higher fraction of sp3 carbons in the query, 0.9286 versus 0.6111 (delta +0.3175), also aligns with the non-mutagenic side in this specific comparison. Although one of the size/polarity changes is favorable to mutagenicity, the dominant pattern for Neighbor 1 is that the query looks less like a mutagenic analog overall.
+
+Neighbor 2 gives another largely non-mutagenic comparison, despite a few opposing features. The query has a much higher QED drug-likeness, 0.5176 versus 0.1792 (delta +0.3384), which in this pair goes the mutagenic direction, but that is outweighed by several descriptors that favor the non-mutagenic label. The query has a much lower estimated logP, 3.0158 versus 7.6811 (delta -4.6653), which moves away from the very hydrophobic end that can be operationally problematic in Ames. It also has fewer aromatic rings, 0 versus 2 (delta -2), fewer rotatable bonds, 12 versus 13 (delta -1), and the presence of one primary hydroxyl where the neighbor has none. The large drop in heavy-atom count, from 30 to 17 (delta -13), is the strongest size-related difference and also favors the non-mutagenic side here. Taken together, Neighbor 2 is still closer to an A-like profile overall.
+
+Neighbor 3 again supports the non-mutagenic label. The query has one primary hydroxyl while the neighbor has none, and that difference is favorable to the non-mutagenic outcome in this pair. The query is also much more flexible on the count used here, with rotatable-bond count rising from 6 to 12 (delta +6), and that change is interpreted as favoring non-mutagenicity in this comparison. The query has no basic site while the neighbor has a strongest basic pKa of 4.3744, with the delta marked not defined; that absence is still associated with the non-mutagenic side here. In addition, the query has ring count 0 versus 1 (delta -1) and heteroatom count 3 versus 4 (delta -1), both of which align with the non-mutagenic direction in this neighbor pair. The only opposing signal is the neutral fraction, which is essentially fully neutral in the query (present as 1) versus 0.984 in the neighbor, delta +0.016, and that small shift points toward mutagenicity in this pair; however, it is too weak to overturn the broader non-mutagenic pattern.
+
+Neighbor 4 is one of the strongest non-mutagenic comparators. The query has a higher strongest acidic pKa, 13.7785 versus 12.2741 (delta +1.5044), which here strongly supports the non-mutagenic side. It also has more rotatable bonds, 12 versus 7 (delta +5), again favoring the non-mutagenic outcome in this specific analog comparison. The neighbor contains a 2,1-benzisothiazole motif that the query lacks, and that absence would normally be a mutagenicity-oriented difference, but the rest of the comparison offsets it. The query also has fewer rings, 0 versus 2 (delta -2), and lower estimated logP, 3.0158 versus 4.5953 (delta -1.5795), both of which support the non-mutagenic label here. Finally, the query has one primary hydroxyl while the neighbor has none, which also fits the non-mutagenic side in this pair. Overall, the lack of the benzisothiazole is the only notable mutagenic-leaning feature, but the balance of the comparison is clearly non-mutagenic.
+
+Neighbor 5 is a more mixed analog, but it still ends up favoring the non-mutagenic class overall. The query again has one primary hydroxyl whereas the neighbor has none, and that is non-mutagenic in this comparison. It also has a far higher strongest acidic pKa, 13.7785 versus 5.2078 (delta +8.5707), which strongly favors the non-mutagenic side here, and a lower ring count, 0 versus 1 (delta -1), which does the same. The neighbor has sulfonamide while the query does not, and that difference points toward mutagenicity in this pair. Likewise, the query has lower QED drug-likeness, 0.5176 versus 0.8008 (delta -0.2832), which here also leans mutagenic. The neutral fraction difference is especially important: the neighbor is mostly ionized at 0.0064 while the query is fully neutral at 1, delta +0.9936, and in this pair that change points toward mutagenicity. Even with those three mutagenic-leaning features, the stronger acidic pKa shift, the hydroxyl difference, and the simpler ring profile make the overall comparison still more consistent with the non-mutagenic label.
+
+Neighbor 6 is also non-mutagenic overall. The query has a lower estimated logP, 3.0158 versus 5.1608 (delta -2.145), which favors the non-mutagenic outcome here. It matches the neighbor at rotatable-bond count, 12 versus 12 (delta +0), but that shared flexibility does not create a mutagenic signal in this comparison. The query has fewer rings, 0 versus 1 (delta -1), one primary hydroxyl where the neighbor has none, and a higher fraction of sp3 carbons, 0.9286 versus 0.6 (delta +0.3286); all three of these differences are interpreted as non-mutagenic in this pair. The neighbor has two carboxylic ester groups while the query has none, with delta -2, and that absence is also aligned with the non-mutagenic side here. Taken together, Neighbor 6 looks less like a mutagenic analog on the whole.
+
+Across all six neighbors, the positive-neighbor set is actually not internally supportive of mutagenicity: Neighbor 1, Neighbor 2, and Neighbor 3 all end up closer to the non-mutagenic side after considering the full feature pattern. The negative-neighbor set reinforces that conclusion as well: Neighbor 4, Neighbor 5, and Neighbor 6 each provide an overall non-mutagenic comparison, even though Neighbor 4 and Neighbor 5 contain a few isolated mutagenic-leaning differences. The recurring themes are the query’s primary hydroxyl, reduced ring burden, generally lower logP where relevant, and several size/polarity shifts that consistently fit the non-mutagenic side in these analog matches. Taken together, the six neighbor comparisons support option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

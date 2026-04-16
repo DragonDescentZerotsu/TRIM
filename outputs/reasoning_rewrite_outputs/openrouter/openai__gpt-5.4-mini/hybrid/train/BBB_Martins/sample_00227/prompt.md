@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule presents a strongly non-CNS-like polarity profile. Its NH/OH group count is 15, which is very high and implies a large hydrogen-bonding burden. The topological polar surface area is 283.64 Å², far above the range generally associated with BBB penetration and consistent with poor passive membrane permeation. The hydrogen-bond donor count is 11, again indicating substantial desolvation cost and an unfavorable donor load for brain entry. The heteroatom count is 16, which reinforces the high polarity of the scaffold. The number of acidic sites is 6, adding further ionizable functionality that would reduce the neutral fraction at physiological pH. On top of that, the primary aliphatic amine count is 4, suggesting multiple basic centers that can also increase ionization and complicate BBB penetration. Structural descriptors are also not especially encouraging: the saturated heterocycle count is 3 and tetrahydropyran count is 3, indicating several oxygen-containing saturated rings, while the fraction of sp3 carbons is 1, which does not offset the overall polar burden enough to suggest a brain-penetrant profile. The QED drug-likeness value of 0.1494 is low, consistent with a generally unattractive physicochemical profile. Taken together, the very high polarity, multiple donors and ionizable groups, and the large TPSA make BBB penetration unlikely, so the molecule is best classified as option (A): does not cross the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close positive analog, but several of its key descriptors still sit in a very BBB-unfavorable region and the query is even less favorable on most of them. The neighbor has 9 acidic sites versus 6 in the query, so the query-minus-neighbor delta is -3; although that reduction slightly helps, the absolute acidic burden remains high enough to support non-penetration. The same pattern holds for primary aliphatic amines, where both molecules have 4 copies and the delta is 0, so there is no meaningful improvement in ionizable polar load. The query also has only 1 secondary hydroxyl versus 4 in the neighbor, delta -3, which is directionally helpful, but the query’s topological polar surface area is still very large at 283.64 Å² versus 331.94 Å², and the delta of -48.3 only moves it partway toward the BBB-favorable region; it remains far above the practical CNS range of roughly <90 Å². Fraction of sp3 carbons increases slightly from 0.9545 to 1.0, delta +0.0455, but that is only a minor shape change. The one feature that does favor BBB crossing is the strongest basic pKa, which drops from 9.8564 to 9.7331, delta -0.1233, but that shift is small and does not offset the still-extreme polarity. Overall, Neighbor 1 supports option (A) more than (B) because the query remains highly polar despite a few small improvements.
+
+Neighbor 2 is another positive analog, but it is even clearer that the query is not moving into BBB-permeable territory. The query’s estimated logP is -6.9493 compared with the neighbor’s -1.6424, a delta of -5.3069; while lower logP can sometimes reflect less nonspecific lipophilicity, values this low are far outside the moderate CNS-oriented logP window and are not supportive of passive BBB diffusion. The NH/OH group count jumps from 5 to 15, delta +10, which is a major increase in polar hydrogen burden and strongly unfavorable given the CNS preference for low donor counts. The number of basic sites rises from 0 in the neighbor to 5 in the query, delta +5, again adding ionizable functionality that tends to reduce neutral fraction at physiological pH. Hydrogen-bond donor count similarly increases from 5 to 11, delta +6, which is well beyond the usual CNS-friendly HBD range. Topological polar surface area also rises sharply from 119.61 Å² to 283.64 Å², delta +164.03, placing the query deep into the non-BBB region. Fraction of sp3 carbons goes from 0.5385 to 1.0, delta +0.4615, which is a favorable structural change in isolation, but it is far too small to compensate for the very large polarity and ionization penalties. So even though a couple of structural features look better, Neighbor 2 overall remains strong evidence for option (A).
+
+Neighbor 3, also among the positive neighbors, reinforces the same conclusion through a different mix of features. The query has 15 NH/OH groups versus 7 in the neighbor, delta +8, which is a substantial increase in polar hydrogens and clearly inconsistent with BBB penetration. The query also has 5 basic sites versus 0, delta +5, and 11 hydrogen-bond donors versus 7, delta +4; both changes increase ionization and desolvation burden, which is unfavorable for CNS entry. The neutral fraction is especially telling: it falls from 0.9935 in the neighbor to 0.0046 in the query, delta -0.9889, indicating the query is overwhelmingly ionized under physiological conditions and therefore poorly suited for passive BBB transport. One feature goes the other way: the neighbor has 12 alkyl chlorides while the query has 0, delta -12, which could be a small improvement in a lipophilic substituent pattern, but it does not overcome the strongly unfavorable polarity and ionization profile. The saturated heterocycle count also increases from 2 to 3, delta +1; on its own that is not decisive, but in this context it is another structural change that does not rescue the molecule. Taken together, Neighbor 3 still aligns much more with option (A) than option (B).
+
+Neighbor 4 is one of the negative analogs, and it also points toward non-crossing despite a couple of features that could superficially look favorable. The query’s estimated logP is -6.9493 versus -5.1156 for the neighbor, delta -1.8337; this shift goes in a direction that is not helpful for passive permeability because it remains extremely low relative to the moderate logP region usually associated with BBB entry. Fraction of sp3 carbons is unchanged at 1.0, delta 0, so there is no structural gain from that descriptor. Hydrogen-bond donor count rises from 8 to 11, delta +3, which worsens donor burden, and the number of ionizable sites rises from 8 to 11, delta +3, which further lowers the neutral fraction at pH 7.4. NH/OH group count also increases from 12 to 15, delta +3, adding yet more polar functionality. The one feature that does favor BBB crossing is estimated logD, which decreases from -7.8205 to -9.2844, delta -1.4639; however, at such negative values the lipophilicity/ionization balance is still far from the BBB-favorable window, so the effect is not enough to change the overall interpretation. Neighbor 4 therefore remains consistent with option (A).
+
+Neighbor 5, another negative analog, gives a very similar story. Fraction of sp3 carbons is again 1.0 in both molecules, delta 0, so shape saturation is not a differentiating factor here. The query’s estimated logP is -6.9493 compared with -6.2958 for the neighbor, delta -0.6535; both are extremely low, and the query is even less favorable on this axis. Topological polar surface area increases from 268.17 Å² to 283.64 Å², delta +15.47, which keeps the query deep in the high-PSA, BBB-unfavorable regime. Hydrogen-bond donor count rises from 10 to 11, delta +1, adding a bit more desolvation penalty. Estimated logD drops from -8.6677 to -9.2844, delta -0.6167, which again does not bring the molecule into the moderate logD range associated with CNS permeability. QED drug-likeness also decreases from 0.174 to 0.1494, delta -0.0246, a small but consistent sign that the overall property balance is not improving. On the whole, Neighbor 5 supports the same non-BBB label.
+
+Neighbor 6, the final negative analog, is likewise consistent with option (A). Fraction of sp3 carbons remains fixed at 1.0, delta 0, so no meaningful structural change is captured there. Estimated logD shifts from -9.639 to -9.2844, delta +0.3546, and topological polar surface area moves from 282.61 Å² to 283.64 Å², delta +1.03; both values stay in a very unfavorable zone for BBB passage. QED drug-likeness falls from 0.1669 to 0.1494, delta -0.0174, which is directionally worse. Saturated heterocycle count increases from 2 to 3, delta +1, but that does not compensate for the very polar profile. The only feature that modestly favors BBB crossing is strongest basic pKa, which decreases from 9.7456 to 9.7331, delta -0.0125, yet this is a negligible shift and the basicity remains high enough to keep ionization problematic. Taken together, Neighbor 6 still points to non-crossing.
+
+Across all six neighbors, the dominant pattern is that the query remains extremely polar, highly ionizable, and far outside the usual BBB-favorable ranges for TPSA, HBD/HBA-like burden, NH/OH count, ionizable sites, and logP/logD balance. A few individual comparisons contain small favorable shifts, such as slightly lower strongest basic pKa or lower neutral-polarity burden in some specific features, but these are too minor to offset the repeated large penalties from very high TPSA, many donors and ionizable groups, and very low lipophilicity/neutral fraction. The positive neighbors do not provide evidence that the query meaningfully approaches BBB-permeable space, and the negative neighbors remain fully aligned with non-crossing. The overall comparison therefore supports option (A): does not cross the BBB.
+
+Input 3. Target final label semantics
+option (A): does not cross the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

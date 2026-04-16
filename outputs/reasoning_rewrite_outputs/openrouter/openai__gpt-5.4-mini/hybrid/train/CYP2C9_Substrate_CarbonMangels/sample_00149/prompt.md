@@ -1,0 +1,66 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several structural elements that are not especially favorable for CYP2C9 substrate recognition. It contains a furan motif, which by itself does not strongly support the weak-acid/anionic binding pattern often associated with CYP2C9 substrates. A semicarbazone group is also present, and that adds polarity and an unusual heteroatom-rich functionality that can work against the more typical hydrophobic/aromatic binding picture. Although a hydantoin group is present and could suggest some compatibility with CYP2C9 metabolism, that signal is modest rather than decisive.
+
+Additional descriptors also lean away from substrate status. The saturated heterocycle count is 2, indicating a fairly heterocycle-rich scaffold that is not especially characteristic of the classic CYP2C9 weak-acid aromatic profile. The strongest basic pKa is 7.8953, so there is a reasonably basic site, but CYP2C9 selectivity is usually driven more by acidic or anion-forming functionality than by basicity alone. The presence of piperazine also indicates a basic, polar heterocycle, which does not strongly match the most common CYP2C9 substrate chemistry.
+
+Charge and global property descriptors continue to look unfavorable. The maximum partial charge is 0.3471, suggesting no especially strong charge-pairing feature that would support the anionic-anchor pattern favored by CYP2C9. Dialkyl ether is absent, which removes one more neutral flexible substituent that could otherwise help hydrophobic accommodation. QED drug-likeness is 0.3455, a relatively modest value that is consistent with a less optimized overall drug-like profile. The aliphatic heterocycle count is 2, adding further heterocyclic complexity without giving a clear CYP2C9-favorable acidic anchor.
+
+Taken together, the combination of furan, semicarbazone, higher heterocycle content, a relatively high basic pKa of 7.8953, and only weakly supportive hydantoin and piperazine signals makes the molecule look more like a non-substrate than a typical CYP2C9 substrate. The overall balance therefore favors option (A): is not a substrate to the enzyme CYP2C9.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is an analog with several key fragments missing relative to the query: the query has furan once while the neighbor has none (delta +1), semicarbazone once while the neighbor has none (delta +1), and hydantoin once while the neighbor has none (delta +1). On balance, the losses in furan and semicarbazone are associated with a move away from CYP2C9 substrate-like chemistry here, even though hydantoin and the shared piperazine are less supportive or mixed. The strongest basic pKa also rises from 7.448 in the neighbor to 7.8953 in the query (delta +0.4473), and that higher basicity is unfavorable in this comparison because it does not match the weak-acid/anionic tendency that often fits CYP2C9 substrates. Overall, Neighbor 1 slightly favors the non-substrate label.
+
+Neighbor 2 shows a similar pattern. The query again adds furan (+1) and semicarbazone (+1) relative to the neighbor, while hydantoin is present in the query but absent in the neighbor (+1). Dialkyl ether is absent in both molecules, so that feature does not separate them. The query also has a much larger neutral fraction, 0.2422 versus 0.0096 in the neighbor (delta +0.2326), which is less consistent with the very low-neutral-fraction space of the neighbor and, in this comparison, weakens substrate-like behavior. Piperazine is also present only in the query (+1), giving some counterweight, but not enough to offset the combined effect of the furan, semicarbazone, and neutral-fraction shifts. Neighbor 2 therefore also leans toward option A.
+
+Neighbor 3 is close in the same way and reinforces the pattern. The query has furan (+1), semicarbazone (+1), and hydantoin (+1) relative to the neighbor, while dialkyl ether is again shared with no difference. The query’s neutral fraction is 0.2422 compared with 0.0082 for the neighbor (delta +0.234), which is a substantial increase away from the neighbor’s very low neutral fraction. Piperazine is present in the query but absent in the neighbor (+1), which is the main feature giving some substrate-like support, but it does not outweigh the repeated losses in furan and semicarbazone together with the lower-neutral neighbor context. Neighbor 3 therefore still points to non-substrate behavior overall.
+
+Neighbor 4 is one of the clearer negative neighbors. Here the query has furan (+1) and semicarbazone (+1) relative to the neighbor, but the other descriptors lean the other way: the neighbor’s QED drug-likeness is 0.567 versus 0.3455 for the query (delta -0.2215), so the query is less drug-like by this composite measure, and that is unfavorable in this comparison. Dialkyl ether is absent in both molecules, giving no separation. Hydantoin is present in the query but absent in the neighbor (+1), which is a modest substrate-like point, but the strongest basic pKa also rises from 7.5429 to 7.8953 (delta +0.3524), again moving away from the neighbor’s more favorable basicity context. Taken together, Neighbor 4 supports the non-substrate label more strongly than it supports substrate status.
+
+Neighbor 5 is even more clearly aligned with the non-substrate class. The neighbor contains 8-azaspiro[4.5]decane-7,9-dione while the query does not (delta -1), and that structural difference is the strongest single unfavorable shift here. The query also adds furan (+1) and semicarbazone (+1), while hydantoin is present only in the query (+1). Dialkyl ether remains absent in both. The query’s QED drug-likeness, 0.3455, is again lower than the neighbor’s 0.5517 (delta -0.2062), reinforcing a move away from the neighbor’s more favorable profile. Even though hydantoin adds a small substrate-like signal, the loss of the spirodione fragment and the lower QED make Neighbor 5 a negative comparator overall.
+
+Neighbor 6 is the most mixed of the six, but it still ends up on the non-substrate side. The query lacks furan in the neighbor sense, so relative to the neighbor the query has furan (+1), and the query also has semicarbazone (+1). At the same time, the query has a much larger number of basic sites, 4 versus 1 in the neighbor (delta +3), which is the main feature here favoring substrate status. However, the query lacks tertiary hydroxyl and aryl fluoride that are present in the neighbor (both delta -1), and those changes are unfavorable in this comparison. Dialkyl ether is absent in both, so it does not separate the pair. Because the positive effect of having more basic sites is offset by the loss of tertiary hydroxyl and aryl fluoride and by the repeated furan/semicarbazone pattern, Neighbor 6 still ends up supporting option A.
+
+Putting the six comparisons together, every neighbor either directly favors the non-substrate label or contains only limited countervailing signals that do not overturn the overall pattern. The positive neighbors all show the same recurring query-versus-neighbor differences—especially furan and semicarbazone changes, along with higher basic pKa or higher neutral fraction in the query—that collectively lean away from CYP2C9 substrate behavior. The negative neighbors likewise remain negative after accounting for their mixed features, with lower QED in the query, loss of a spirodione fragment, and only partial compensation from hydantoin or increased basic-site count. Taken together, the neighbor evidence supports option (A): is not a substrate to the enzyme CYP2C9.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP2C9
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

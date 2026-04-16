@@ -1,0 +1,62 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has a ring-rich, fairly hydrophobic profile that can be consistent with mutagenic liability. A ring count of 4, together with an aromatic ring count of 3 and an aromatic carbocycle count of 3, suggests a highly aromatic scaffold; such fused or extended aromaticity is often associated with mutagenic risk because planar aromatic systems can participate in DNA interactions and metabolic activation pathways. The estimated logD of 5.3511 is high, which points to strong lipophilicity, and the estimated logP of 5.3511 is likewise high; that kind of hydrophobicity can sometimes limit soluble exposure, but it can also be compatible with aromatic toxicophores that are associated with mutagenicity. The heavy-atom molecular weight of 228.209 is not especially large, so size alone does not argue strongly against bacterial exposure, and the overall balance here is not dominated by poor uptake from molecular size.
+
+There are also a few descriptors that temper the interpretation somewhat. The topological polar surface area is 0 and the hydrogen-bond acceptor count is 0, which indicate a very nonpolar molecule with essentially no polar acceptor functionality; that can reduce aqueous compatibility and passive bacterial exposure, creating some uncertainty about how strongly the compound will be sensed in an assay. The minimum partial charge of -0.0616 and the maximum partial charge of -0.0073 are both only mildly negative, so there is no strong charge-based polarity signal to offset the hydrophobic aromatic character. Overall, the dominant pattern is a compact, highly aromatic, highly lipophilic scaffold, and that combination is more consistent with a mutagenic outcome than with a clearly non-mutagenic one. Therefore the molecule is predicted to be mutagenic, option (B), with score 0.7562.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive analog with similarity 0.551, and several of its shared physicochemical features lean away from mutagenicity: the query has a higher estimated logD than the neighbor (5.3511 vs 4.4303, delta +0.9208), which in this comparison is associated with a negative shift; the query also has a lower maximum partial charge (-0.0073 vs 0.163, delta -0.1703) and a less negative minimum partial charge (-0.0616 vs -0.2942, delta +0.2325), both of which favor the non-mutagenic side here. The query further lacks the neighbor’s hydrogen-bond acceptor count advantage (0 vs 1, delta -1), again supporting the non-mutagenic label. Although the ring count is the same at 4 and therefore gives a mutagenic-leaning signal on its own, the logD and charge differences dominate this neighbor, so it overall resembles a non-mutagenic analog.
+
+Neighbor 2, also a positive analog with similarity 0.526, gives a mixed picture but still ends up closer to non-mutagenic behavior. The query has a slightly less negative minimum partial charge than the neighbor (-0.0616 vs -0.0765, delta +0.0149), which here aligns with the non-mutagenic side. More importantly, the query contains 2,3-dihydro-1H-indene once while the neighbor has none, a difference that is unfavorable in this comparison, but the neighbor has indene and the query does not, which is favorable to mutagenicity. Against that, the query and neighbor both have zero hydrogen-bond acceptors, so there is no difference there, and the ring count is identical at 4. The query’s estimated logD is only slightly higher (5.3511 vs 5.2608, delta +0.0903), which here tilts mutagenic. Taken together, the non-mutagenic-leaning charge difference and the overall structural context keep this positive neighbor aligned more with option A than option B.
+
+Neighbor 3, the third positive analog with similarity 0.510, is the strongest of the positive-neighbor supports for option B on a local basis, but it still remains only one neighbor among several. The query again has 2,3-dihydro-1H-indene once while the neighbor has none, a change that is unfavorable to option A here. The query and neighbor both have zero hydrogen-bond acceptors, and the ring count is again tied at 4, which favors mutagenicity in this specific comparison. The query’s estimated logD is slightly lower than the neighbor’s (5.3511 vs 5.4546, delta -0.1035), which still points toward mutagenicity in this pairing, and the minimum absolute partial charge is also slightly higher in the query (0.0073 vs 0.007, delta +0.0003), again aligning with the mutagenic side. The one explicitly non-mutagenic-leaning descriptor here is the maximum absolute partial charge, which is the same in both molecules at 0.0616, so it does not offset the other local effects. Even so, this neighbor mainly shows that the query can resemble a mutagenic analog in a few structural and charge-related respects.
+
+Neighbor 4 is a negative analog with similarity 0.434, and it provides important counterweight. The query has 2,3-dihydro-1H-indene once while the neighbor has none, which in this comparison is non-mutagenic-leaning, but the neighbor also has three benzene copies versus two in the query, a difference that points toward mutagenicity. The query’s estimated logD is much higher than the neighbor’s (5.3511 vs 3.1492, delta +2.2019), which here is mutagenic-leaning, and the query has a less negative minimum partial charge (-0.0616 vs -0.3872, delta +0.3256), which favors non-mutagenicity. The query also has a much lower topological polar surface area than the neighbor (0 vs 52.99, delta -52.99), and the ring count is lower as well (4 vs 5, delta -1), both of which in this local context lean toward mutagenicity. Because this negative neighbor already resembles the query in some features while still being non-mutagenic overall, it suggests that the query does not need to be mutagenic simply because of higher logD or aromaticity-related features.
+
+Neighbor 5, another negative analog with similarity 0.397, is similar in spirit and reinforces the same theme. The query has 2,3-dihydro-1H-indene once while the neighbor has none, which is non-mutagenic-leaning; the neighbor again has three benzene copies versus two in the query, which leans mutagenic. The query has one aliphatic carbocycle while the neighbor has none, and this local change is mutagenic-leaning in the comparison. The query’s ring count is also higher (4 vs 3, delta +1), again favoring mutagenicity in this pair, while topological polar surface area is unchanged at 0 and therefore contributes a non-mutagenic-leaning signal here. The minimum absolute partial charge is the same at 0.0073, which aligns mutagenically in this comparison. Overall, this neighbor shows that even when the query has some features associated with mutagenicity, the negative class can still encompass molecules with very similar ring-rich scaffolds, so these features are not sufficient by themselves to force option B.
+
+Neighbor 6, the third negative analog with similarity 0.385, is the most informative counterexample because it matches the query on several polarity and ring features yet remains non-mutagenic. Here the neighbor has two copies of 2,3-dihydro-1H-indene while the query has one, a change that favors mutagenicity. At the same time, the query has lower topological polar surface area (0 vs 17.07, delta -17.07), fewer hydrogen-bond acceptors (0 vs 1, delta -1), a less negative minimum partial charge (-0.0616 vs -0.2941, delta +0.2325), fewer rings (4 vs 5, delta -1), and lower molecular weight (246.353 vs 272.347, delta -25.994). In this local comparison, lower PSA, fewer acceptors, lower mass, and a less negative minimum partial charge all align with the non-mutagenic side, even though the indene count and ring count point the other way. This neighbor is therefore a strong reminder that the query’s size, polarity, and charge profile can still be compatible with the non-mutagenic class.
+
+Putting the six neighbors together, the positive analogs are mixed but generally not overwhelming, with Neighbor 1 and Neighbor 2 leaning toward option A and Neighbor 3 leaning toward option B, while the negative analogs show that the query can sit in a non-mutagenic region despite having some ring-rich and hydrophobic features. The recurring pattern is that the query’s high estimated logD and low polarity do not automatically imply mutagenicity, and the local evidence from charge, hydrogen-bonding, and scaffold context is consistent with the non-mutagenic class overall. Taken as a whole, the nearest analogs support option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

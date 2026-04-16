@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are unfavorable for CYP3A4 substrate behavior. It contains aryl iodide count 3, which suggests a heavily halogenated aromatic portion that can alter size and metabolic stability, and it also has diaryl ether present 1, adding another hydrophobic aromatic motif. However, the most decisive signals are the polar and ionized functionalities: primary aliphatic amine present 1, strongest acidic pKa value 2.1913, and carboxylic acid present 1 all indicate strong ionization at physiological pH. Consistent with that, neutral fraction absent 0 and estimated logD value -2.2097 both point to a very low neutral, highly polar molecule with poor passive permeability, which makes it less likely to reach CYP3A4 effectively. The very large size, with heavy-atom molecular weight value 638.88, exact molecular weight value 650.7901, and molecular weight value 650.976, also places it well into a high-MW region where permeability and overall accessibility often become limiting. Although the heavy size and aromatic content could sometimes support enzyme interaction, the combination of low logD, no neutral fraction, a strong acid, a primary amine, and a carboxylic acid makes the compound look much more like a non-substrate overall. The final judgment is option (A): is not a substrate to the enzyme CYP3A4.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close positive example of a CYP3A4 substrate, but several of its defining features still resemble the non-substrate side more strongly than the substrate side when compared with the query. The query has a primary aliphatic amine once while the neighbor has none, and that difference is unfavorable for substrate behavior here. The query is also less saturated, with fraction of sp3 carbons dropping from 0.3 to 0.1333 (delta -0.1667), and much less lipophilic, with estimated logD falling from -1.2527 to -2.2097 (delta -0.957); both changes move away from the more accessible, membrane-compatible range. In addition, the query has 3 aryl iodides versus 0 in the neighbor, which is another strong structural mismatch in the same direction. Although the query’s topological polar surface area rises from 46.53 to 92.78 (delta +46.25), and higher TPSA can sometimes accompany substrate-like chemical space, that single favorable shift is outweighed here by the stronger decreases in saturation and logD together with the extra aryl iodides and the presence of a primary aliphatic amine. The shared carboxylic acid does not offset those disadvantages, so this neighbor still ends up supporting the non-substrate label overall.
+
+Neighbor 2 tells a similar story. The query again has a primary aliphatic amine once while the neighbor has none, which is unfavorable for the substrate call in this comparison. The query also has a much lower estimated logD, dropping from -0.166 to -2.2097 (delta -2.0437), and lower fraction of sp3 carbons, from 0.2632 to 0.1333 (delta -0.1298), both of which weaken the case for reaching and behaving like a CYP3A4 substrate. The query carries 3 aryl iodides versus 0 in the neighbor, adding another unfavorable structural difference. Its neutral fraction is absent in the query versus 0.0002 in the neighbor (delta -0.0002), which is directionally consistent with even less neutral character, and the neighbor comparison on heavy-atom molecular weight goes the other way: the query is much larger at 638.88 versus 341.665 (delta +297.215), which can sometimes support substrate-like accessibility. But that size increase does not overcome the combined penalty from very low logD, lower sp3 fraction, the amine difference, and the added aryl iodides. So this positive neighbor also remains aligned with the non-substrate outcome.
+
+Neighbor 3 strengthens the same conclusion. The query has a primary aliphatic amine once while the neighbor has none, and it has 3 aryl iodides versus 0, both of which are unfavorable here. The query is also much larger in heavy-atom molecular weight, 638.88 versus 132.074, and in heavy-atom count, 23 versus 10, with deltas of +506.806 and +13 respectively. Those size increases are not enough to rescue the comparison because the query also gains a basic site, going from absent to present (delta +1), which adds another ionizable feature that can complicate passive accessibility. The shared carboxylic acid keeps the comparison within the same acidic scaffold class, but that does not reverse the overall direction. Taken together, Neighbor 3 still points toward the non-substrate label, mainly because the amine, aryl iodide burden, and added ionizable functionality outweigh the size differences.
+
+Neighbor 4 is one of the negative neighbors, and it is also very informative for why the query should be called a non-substrate. Here the query again has 3 aryl iodides versus 0 in the neighbor, a large and unfavorable difference. Its estimated logD is much lower, -2.2097 versus 0.0729 (delta -2.2826), which is far outside the more hydrophobic region and therefore less favorable for exposure in membrane or enzyme environments. The query and neighbor both have carboxylic acid, so that shared acidic motif does not distinguish them. The query also has a primary aliphatic amine once while the neighbor has none, and its neutral fraction is absent versus 0.001 in the neighbor, again pointing to a more ionized and less neutral profile. One feature moves in the opposite direction: fraction of sp3 carbons falls from 0.4615 to 0.1333 (delta -0.3282), making the query less saturated than the neighbor. Even so, the very large losses in logD and the added aryl iodides, together with the amine and lower neutral fraction, make this negative neighbor strongly supportive of the non-substrate decision.
+
+Neighbor 5 gives the same overall message, with a bit more emphasis on size. The query has 3 aryl iodides versus 0 in the neighbor, and the neighbor also has a primary amide while the query does not, so the query lacks that additional polar amide feature but still carries the aryl iodides. The query has a primary aliphatic amine once whereas the neighbor has none, and its estimated logD is much lower, -2.2097 versus 0.3869 (delta -2.5966), again unfavorable for permeation and exposure. On the other hand, the query is much larger, with molecular weight 650.976 versus 328.412 and exact molecular weight 650.7901 versus 328.1787, so both size descriptors increase substantially. In this comparison, though, the larger size does not compensate for the much lower logD plus the amine and aryl iodide differences. The net effect is still clearly toward the non-substrate class.
+
+Neighbor 6 is the strongest negative neighbor of the set, and it also aligns with the final label. Both the query and the neighbor have a primary aliphatic amine, so that feature does not separate them here, but the query still has 3 aryl iodides versus 0 in the neighbor, which is a major unfavorable difference. Its estimated logD is lower, -2.2097 versus -1.2943 (delta -0.9154), and the partial-charge descriptors are also more extreme in the query: maximum partial charge rises from 0.0051 to 0.3203 and minimum absolute partial charge also rises from 0.0051 to 0.3203. Those changes are consistent with a more polarized molecule. The only favorable-looking shift is that topological polar surface area rises from 26.02 to 92.78 (delta +66.76), which can sometimes be compatible with substrate-like space, but here that does not outweigh the much lower logD, the much larger partial-charge extrema, and the heavy aryl iodide burden. Even in this negative-neighbor context, the query remains more polar, more charged, and less hydrophobic than the substrate-like analog, which supports the non-substrate assignment.
+
+Across all six comparisons, the same pattern repeats: the query is consistently penalized by 3 aryl iodides, a primary aliphatic amine in several neighbors, lower estimated logD, and generally a more polar and ionized profile, while only a few features such as higher TPSA or larger molecular size move in the opposite direction. The positive neighbors still end up favoring the non-substrate outcome because the query’s lower logD, lower sp3 fraction, and added aryl iodides outweigh the isolated favorable shifts. The negative neighbors reinforce that conclusion rather than contradict it. Taken together, the nearest analogs support option (A): the compound is not a substrate to CYP3A4.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a phosphoric monoester, which is a strongly polar, ionizable motif and is generally consistent with reduced passive membrane permeation. That interpretation is reinforced by the neutral fraction being absent (0), indicating that the compound is effectively not neutral under the configured conditions and is likely to be highly charged. The estimated logD is very low at -7.0761, again pointing to extreme hydrophilicity and poor passive uptake, and the strongest acidic pKa of 1.875 suggests a very strong acid that will remain largely deprotonated at neutral pH. The estimated logP is also low at -1.5511, which fits with low lipophilicity and further supports limited exposure in bacterial cells. The maximum partial charge is relatively high at 0.4692, consistent with a strongly polarized molecule rather than a neutral, membrane-permeable one. The fraction of sp3 carbons is 1, indicating a fully sp3-saturated carbon framework, and the ring count is 0, so there is no planar aromatic or polycyclic aromatic scaffold that would raise concern for classic aromatic mutagenic toxicophores. The heteroatom count is 7, which is substantial and fits the overall polar character of the molecule; combined with the low logD and low logP, this makes poor bacterial penetration the dominant theme. QED drug-likeness is 0.3822, which is only moderate and does not by itself indicate mutagenicity. Taken together, the structure is highly polar, strongly acidic, non-aromatic, and poorly lipophilic, so the most consistent interpretation is reduced bacterial bioavailability rather than a DNA-reactive profile. That overall pattern supports option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close mutagenic analogue, but several of the query’s changes relative to it favor the non-mutagenic class. The query has phosphoric monoester once where the neighbor has none, and that difference is associated with a strong shift toward option (A). The query is also much more polar in the logD sense, with estimated logD moving from -2.5214 in the neighbor to -7.0761 in the query, a delta of -4.5547; in Ames-like settings, such a large drop is consistent with weaker passive exposure. At the same time, the neighbor contains nitroso and amine features that the query lacks, and both of those are mutagenicity-relevant motifs. The query is lower on Labute surface area as well, 57.3092 versus 101.807, which is another sizable size/shape difference, and the neighbor alone has a dialkyl thioether that the query does not. Although the Labute surface area and thioether terms partly point the other way, the overall comparison to Neighbor 1 still leans clearly toward option (A).
+
+Neighbor 2 repeats essentially the same pattern as Neighbor 1. Again, the query has one phosphoric monoester while the neighbor has none, and the query’s estimated logD is far lower, -7.0761 versus -2.5214, with the same -4.5547 delta. The neighbor also carries nitroso and amine groups that are absent from the query, both of which are important mutagenic alerts. The query’s Labute surface area is again much smaller, 57.3092 versus 101.807, while the neighbor has dialkyl thioether and the query does not. As with Neighbor 1, a couple of the later terms point toward mutagenicity, but the stronger and repeated pattern from phosphoric monoester, much lower logD, and loss of nitroso/amine features makes Neighbor 2 align with option (A).
+
+Neighbor 3 is also a mutagenic neighbour, yet the query still looks less concerning on several exposure-related and structural dimensions. The query has phosphoric monoester once while the neighbor has none, and its estimated logD is much lower, -7.0761 compared with 1.3912, a delta of -8.4673, which is a very large shift toward a highly ionized, less membrane-permeable state. The query is fully sp3-rich relative to the neighbor, with fraction of sp3 carbons increasing from 0.3333 to 1 (delta +0.6667), and the query also has more heteroatom burden, 7 versus 5, plus a much higher maximum partial charge, 0.4692 versus 0.0907. In this neighbor, the heteroatom count and higher maximum partial charge are the features that lean toward mutagenicity, but the strong polarity change and the more saturated character keep the overall comparison on the non-mutagenic side. So Neighbor 3 still supports option (A).
+
+Neighbor 4 is one of the non-mutagenic neighbors and it matches the same overall direction. The query again has phosphoric monoester once while the neighbor has none, and that difference favors option (A). The query also has ring count 0 versus 2 in the neighbor, and neutral fraction is present in the neighbor but absent in the query, both of which fit a less permissive exposure profile in the query. The neighbor’s QED drug-likeness is 0.5013 versus 0.3822 for the query, which by itself points toward mutagenicity, and the query also has a higher maximum partial charge, 0.4692 versus 0.119. But the query’s lower ring count, the phosphoric monoester difference, and the neutral-fraction change outweigh those opposing signals here, so Neighbor 4 remains supportive of option (A).
+
+Neighbor 5 is another non-mutagenic analogue, and its comparison is more mixed but still ends on the same side. The query has phosphoric monoester once while the neighbor has none, which is favorable to option (A). The query also has a higher fraction of sp3 carbons, 1 versus 0.5, which in this comparison points toward mutagenicity, and the neighbor carries lactone and endiol groups that the query does not, both of which also lean toward option (B). The query’s estimated logP is only slightly lower, -1.5511 versus -1.4074, and that small shift is also taken as favoring mutagenicity in this pair. However, the neighbor has one ring while the query has none, and that ring-count difference offsets the other signals enough that the overall neighbor comparison still favors option (A).
+
+Neighbor 6 likewise supports the non-mutagenic label overall. The query has phosphoric monoester once versus none in the neighbor, which again favors option (A). The query’s fraction of sp3 carbons is higher, 1 versus 0.5, and both enol presence in the neighbor and the higher minimum absolute partial charge in the query, 0.3936 versus 0.3252, point toward mutagenicity in this comparison. The query also has a slightly lower estimated logP, -1.5511 versus -1.4074, which in this pair is treated as another mutagenicity-leaning shift. But the neighbor has hydroxy while the query does not, and that change favors option (A), while the recurrent phosphoric monoester difference remains a consistent non-mutagenic signal. Taken together, Neighbor 6 still ends up on the non-mutagenic side.
+
+Across the full set, the three mutagenic neighbors are each pulled toward option (A) by the query’s recurring phosphoric monoester feature, substantially lower logD in several comparisons, and in some cases by lower ring burden or loss of mutagenic functional groups such as nitroso and amine. The three non-mutagenic neighbors do contain a few features that lean toward mutagenicity, such as higher fraction of sp3 carbon, lactone, enol, or QED-related differences, but those are not strong enough to overcome the repeated non-mutagenic pattern. Overall, the neighbor evidence is more consistent with option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

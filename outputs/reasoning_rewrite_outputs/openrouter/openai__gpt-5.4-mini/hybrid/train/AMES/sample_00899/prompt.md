@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows some structural alerts that can be associated with mutagenicity, but the overall balance favors a non-mutagenic outcome. It contains aryl chloride count 2, which can sometimes appear in chemically activated frameworks, and carboxylic ester present (1), but these are not by themselves strong Ames-positive toxicophores. The heteroatom count value 6 indicates a moderately heteroatom-rich scaffold, which can increase polarity and sometimes be seen in more active compounds, yet that signal is countered by ring count value 1, a relatively simple ring system that does not suggest a highly planar polycyclic aromatic motif. The Labute surface area value 128.4596 is moderately sized rather than extreme, and estimated logP value 3.7321 is not so hydrophobic that it would imply major solubility or exposure issues; fraction of sp3 carbons value 0.5 also suggests a fairly balanced, not overly flat scaffold. Minimum absolute partial charge value 0.3437 does not stand out as a direct mutagenicity alert, and number of basic sites absent (0) removes one potentially exposure-enhancing ionizable nitrogen feature. Neutral fraction present (1) indicates a fully neutral form under the configured conditions, which can support passive uptake, but in this case that is not accompanied by a clear mutagenic toxicophore pattern. Overall, the favorable descriptors and the absence of a strong classic Ames alert outweigh the weaker positive signals, so the molecule is best classified as option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately unfavorable analog. The query has a much higher fraction of sp3 carbons than the neighbor, 0.5 versus 0.0714, with a delta of +0.4286, and that shift matters because lower sp3 content often accompanies flatter, more aromatic chemistry that can be associated with mutagenic toxicophore patterns. Here, though, the same comparison also shows the query has neutral fraction present at 1 versus 0.9439 in the neighbor, a small delta of +0.0561, and a lower estimated logD, 3.7321 versus 4.5027, delta -0.7706; both of those changes are consistent with less lipophilic, more bioavailable behavior that can sometimes favor mutagenic detection. But the structural differences go the other way overall: the neighbor has a diaryl ether that the query lacks, the query matches the neighbor at 2 aryl chlorides, and the query has one carboxylic ester while the neighbor has none. In that context, the strong negative effect from the higher sp3 fraction together with the absence of the diaryl ether makes this neighbor lean toward non-mutagenicity overall.
+
+Neighbor 2 is also mostly unfavorable for a mutagenic call. The query has lower QED drug-likeness than the neighbor, 0.5134 versus 0.8074, with a delta of -0.294, and lower QED can sometimes co-occur with less desirable structural features. The neighbor again contains a diaryl ether that the query does not, and the query matches the neighbor at 2 aryl chlorides. In addition, the neighbor has a strongest basic pKa of 4.8281 while the query has no basic site, so the delta is not defined; that absence of a basic site in the query removes one potential ionizable handle that might otherwise support uptake. The query also has a higher fraction of sp3 carbons, 0.5 versus 0, delta +0.5, and one carboxylic ester where the neighbor has none. Those features point more toward the current molecule being less like the mutagenic analog and more like a less active one, so this neighbor supports the non-mutagenic label overall despite the lower QED signal.
+
+Neighbor 3 continues the same pattern. The query has a substantially higher fraction of sp3 carbons than the neighbor, 0.5 versus 0.0714, delta +0.4286, and the neighbor again has the diaryl ether that the query lacks. The query and neighbor both have one carboxylic ester, so that feature does not separate them. The query also nearly matches the neighbor on minimum absolute partial charge, 0.3437 versus 0.3445, with only a tiny delta of -0.0008, and the aryl chloride count is the same at 2. The only opposing signal is that the query has lower estimated logD, 3.7321 versus 4.4805, delta -0.7484, which can increase exposure and sometimes favor detection of mutagenic liability. Even so, the stronger structural resemblance to a less aromatic, less mutagenic profile — especially the higher sp3 fraction and the absence of diaryl ether — makes this neighbor support the not-mutagenic outcome.
+
+Neighbor 4 is a clearer non-mutagenic comparator even though a couple of exposure-related features move in the mutagenic direction. The query has higher estimated logD than the neighbor, 3.7321 versus 2.1298, delta +1.6023, and higher heavy-atom molecular weight, 303.056 versus 128.086, delta +174.97; both of those can sometimes reduce effective bacterial exposure or complicate uptake, but in this case the direction stated for the comparison is toward mutagenicity for those two features. Against that, the query has 2 aryl chlorides while the neighbor has none, delta +2, and the query has a much larger Labute surface area, 128.4596 versus 62.5689, delta +65.8907, both of which separate the molecules substantially. The query also has a slightly higher maximum partial charge, 0.3437 versus 0.3053, delta +0.0385. Taken together, the structural and surface-property differences keep this neighbor closer to a non-mutagenic analog despite the higher size and logD.
+
+Neighbor 5 likewise favors the non-mutagenic side overall. The query has fewer rotatable bonds than the neighbor, 9 versus 15, delta -6, so the query is more rigid. The query also has one carboxylic ester while the neighbor has two, delta -1, and has 2 aryl chlorides where the neighbor has none, delta +2. On the other hand, the query has a higher heteroatom count, 6 versus 4, delta +2, and it has a dialkyl ether that the neighbor lacks. Those extra heteroatoms and the ether increase polarity and ionizability, which can sometimes change exposure in either direction, but here they do not outweigh the clear non-mutagenic signals from greater rigidity and the specific aryl chloride/carboxylic-ester pattern. This neighbor therefore still supports the A label.
+
+Neighbor 6 also leans to non-mutagenic overall, though it contains some features that could raise effective exposure. The query has fewer rotatable bonds than the neighbor, 9 versus 12, delta -3, which again indicates a more rigid structure. It also has a higher heteroatom count, 6 versus 3, delta +3, a higher maximum absolute partial charge, 0.4803 versus 0.3791, delta +0.1013, and it contains one carboxylic ester where the neighbor has none. At the same time, the query has 2 aryl chlorides while the neighbor has none, delta +2, and the neighbor lacks benzene while the query has one. Those aromatic and substituent differences are the more specific structural features here, while the charge and heteroatom increases mainly act as polarity/exposure modifiers. Overall, the pattern still aligns better with a non-mutagenic analog than with a clear mutagenic one.
+
+Putting the six comparisons together, the three mutagenic neighbors are not the closest matches in a way that overwhelms the observed structure, while the three non-mutagenic neighbors collectively resemble the query through the same recurring features: relatively high sp3 character, shared aryl chloride substitution, carboxylic ester presence, and, in several cases, greater rigidity or other polarity shifts that do not establish a strong mutagenic alert. The few mutagenicity-leaning signals, such as lower logD in some neighbors or the lower QED in Neighbor 2, are offset by the more consistent structural evidence favoring the non-mutagenic class. The overall prediction is therefore option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

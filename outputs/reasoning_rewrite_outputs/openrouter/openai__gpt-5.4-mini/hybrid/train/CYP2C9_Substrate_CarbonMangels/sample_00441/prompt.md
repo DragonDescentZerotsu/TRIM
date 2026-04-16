@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are not typical of a CYP2C9 substrate. An adenine moiety is present at value 1, and alongside that there are many ionizable elements: number of basic sites is 6 and number of ionizable sites is 10, both suggesting a highly basic and charge-rich scaffold rather than the weakly acidic/anion-forming pattern commonly associated with CYP2C9 substrates. The presence of a primary aromatic amine at value 1 also supports a more basic, polar profile. Its strongest acidic pKa is 13.2199, which is far too high to indicate a readily ionizable acidic group at physiological pH, so there is little sign of the acidic anchor that often favors CYP2C9 binding. The neutral fraction is 0.9817, meaning the molecule is overwhelmingly neutral under the relevant conditions, which further weakens the usual anionic-recognition motif for this enzyme. At the same time, there are a few features that could still permit some binding: strongest basic pKa is 5.6709, so there is at least a moderate basic center, and aromatic heterocycle count is 2, which can support aromatic/hydrophobic interactions. The molecule also has dialkyl ether absent at 0 and a primary hydroxyl present at 1, adding some polarity but not establishing the acidic chemistry that CYP2C9 often prefers. Overall, the strongly basic, largely neutral, and non-acidic character outweighs the limited aromatic-supporting features, so the molecule is more consistent with option (A), not being a CYP2C9 substrate.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close analog with mixed but overall unfavorable differences for substrate behavior. The query has adenine once while the neighbor has none, and that one-unit increase is associated here with a negative shift. The query also has fewer primary aromatic amines than the neighbor (1 vs 2, delta -1), which again favors the non-substrate side in this comparison. Although neither molecule has dialkyl ether, that neutral match does not overcome the negative signals from the amine and adenine-related differences. The query also has more basicity complexity, with number of basic sites rising from 4 to 6 (delta +2), and the neighbor comparison treats that increase as unfavorable. A small increase in aromatic heterocycle count from 1 to 2 is favorable, but it is minor relative to the other effects. The strongest acidic pKa is essentially unchanged at 13.2278 in the neighbor versus 13.2199 in the query, and that tiny shift still leans away from substrate status in this local comparison. Overall, Neighbor 1 supports the non-substrate label more than the substrate label.
+
+Neighbor 2 is also an unfavorable analog for substrate assignment. Again, the query contains adenine once while the neighbor has none, which is a strong negative difference in this neighborhood. The shared absence of dialkyl ether is not especially informative on its own. The query has many more ionizable sites than the neighbor (10 vs 4, delta +6), which makes the molecule more ionization-complex and is treated here as unfavorable. The query also has more rotatable bonds (4 vs 0), indicating greater flexibility, and a much larger Labute surface area (121.4583 vs 79.029, delta +42.4294), both of which move away from the more compact reference pattern. In addition, the query has more basic sites than the neighbor (6 vs 4, delta +2), again reinforcing the non-substrate side of the comparison. Taken together, Neighbor 2 aligns strongly with the final non-substrate label.
+
+Neighbor 3 continues the same pattern. The query again has adenine once while the neighbor has none, which is unfavorable in this local comparison. The two compounds both have primary hydroxyl groups, so that feature is neutral. Neither has dialkyl ether, which is again a weak positive but not enough to offset the negative effects. The query has much larger Labute surface area than the neighbor (121.4583 vs 68.6122, delta +52.8461), a substantial size/shape difference that here supports the non-substrate side. The neighbor has nitro while the query does not, and that absence is also treated negatively in this comparison. Finally, the query has far more ionizable sites than the neighbor (10 vs 3, delta +7), which again points away from substrate behavior. Neighbor 3 therefore also reinforces option (A).
+
+Neighbor 4, from the non-substrate side, is directly consistent with the final label and provides the clearest local counterexample set. The query has more basic sites than the neighbor (6 vs 4, delta +2), which is unfavorable here. The neighbor contains quinoline, while the query does not, and that structural difference is associated with the non-substrate reference. The query also has adenine once while the neighbor has none, again a negative difference in this local environment. The strongest acidic pKa is lower in the query than in the neighbor (13.2199 vs 13.7716, delta -0.5517), which is treated as unfavorable in this specific pairing. The query also has more aliphatic carbocycles (2 vs 0, delta +2), and the neighbor comparison treats that as moving away from the non-substrate reference pattern. The presence of imidazole in the neighbor, absent from the query, is another unfavorable difference for the query. Altogether, Neighbor 4 is strongly aligned with the non-substrate label.
+
+Neighbor 5 is also a non-substrate analog overall, even though one feature points the other way. The query and neighbor both contain adenine, so that aspect is neutral here. The neighbor has phosphonic acid while the query does not, which strongly differentiates the pair toward the non-substrate reference. The query has more aliphatic carbocycles (2 vs 0, delta +2), and that is unfavorable in this comparison. The query also has primary aromatic amine once while the neighbor has none, again a negative difference. The strongest acidic pKa is much higher in the query than in the neighbor (13.2199 vs 2.3712, delta +10.8487), and this local shift is favorable for substrate-like behavior, but it is outweighed by the other features. The query’s estimated logD is much higher as well (1.0843 vs -5.0866, delta +6.1709), and here that shift is treated as unfavorable relative to the non-substrate neighbor. Even with the pKa difference pointing the other way, Neighbor 5 overall still supports option (A).
+
+Neighbor 6 is the main positive-side counterexample, but it does not overturn the final decision. The query has fewer aryl bromides than the neighbor (0 vs 2, delta -2), and that difference is favorable for substrate behavior in this comparison. The query, however, also has more basic sites (6 vs 2, delta +4), which is strongly unfavorable. The query has adenine once while the neighbor has none, again a negative difference. The heavy-atom molecular weight is lower in the query (268.195 vs 359.964, delta -91.769), and that decrease is not enough to rescue substrate status here. The strongest acidic pKa is also lower in the query (13.2199 vs 13.4262, delta -0.2063), which is unfavorable in this pairing. The strongest basic pKa is lower in the query as well (5.6709 vs 9.1005, delta -3.4296), and unlike the other features this shift is favorable for substrate behavior. Even so, the combined effect of the basic-site increase, adenine presence, and the heavier neighbor scaffold keeps this comparison from favoring the substrate label overall.
+
+Putting all six neighbors together, the three substrate neighbors still mostly show that the query differs in ways associated with the non-substrate side: more adenine-related, more ionizable/basic complexity, larger surface area, and in several cases more flexibility or unfavorable structural motifs. The three non-substrate neighbors reinforce that same direction, especially through the repeated basic-site increase, the adenine difference, and the pKa/logD and scaffold features in Neighbors 4 and 5. Neighbor 6 supplies some opposing evidence, but it is not strong enough to outweigh the broader pattern across the analog set. The overall comparison therefore supports option (A): is not a substrate to the enzyme CYP2C9.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP2C9
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

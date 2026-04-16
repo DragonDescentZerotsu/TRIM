@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an alkyl chloride group, and that kind of aliphatic halide is a recognized mutagenicity alert because it can behave as an alkylating motif, so this is a meaningful positive signal for mutagenicity. It also has an aryl bromide, which is not as strong an alert as some other electrophilic groups, but it still adds some structural concern in a context where halogenated aromatic fragments are present. Against that, the minimum partial charge is -0.1216, which suggests only moderate negative charge character rather than an especially reactive or highly polarized pattern, and the maximum partial charge is 0.0474 with a minimum absolute partial charge of 0.0474, both of which indicate limited charge polarization overall. The topological polar surface area is 0, which is extreme and usually means very little polar surface is available; that can affect exposure and transport, but by itself it does not indicate a mutagenic structure. The QED drug-likeness value is 0.6179, a reasonably moderate value that is more consistent with a generally acceptable small molecule than with a strongly problematic, highly alerted compound. The hydrogen-bond acceptor count is 0 and the heteroatom count is 2, both of which point to a relatively simple, low-polarity framework. The ring count is 1, so the molecule lacks the kind of extended fused aromatic system that would more strongly raise concern for a planar polycyclic mutagenic scaffold. Putting these signals together, the clear mutagenicity alert from the alkyl chloride is balanced by several mostly neutral-to-favorable descriptors, and the overall profile is more consistent with a non-mutagenic outcome. Therefore, the molecule is predicted to be not mutagenic (A).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is the strongest positive analog for mutagenicity. It lacks alkyl chloride, whereas the query has one more alkyl chloride group (delta +1), and that structural alert aligns with a mutagenic tendency. The query is also less lipophilic than this neighbor, with estimated logP dropping from 5.7277 to 3.1879 (delta -2.5398), and in Ames-style interpretation lower hydrophobicity can sometimes reduce effective exposure, which would favor a nonmutagenic outcome. But that favorable effect is outweighed here by the alkyl chloride difference, the query being fully neutral while the neighbor’s neutral fraction is 0.9388 (delta +0.0612), the much smaller size of the query with heavy-atom count 9 versus 23 (delta -14), and the lower aromatic ring count of 1 versus 3 (delta -2), plus the query’s hydrogen-bond acceptor count of 0 versus 1 (delta -1). Even though several of those features would generally reduce exposure, this neighbor still ends up on the mutagenic side overall because the alkyl chloride alert is prominent.
+
+Neighbor 2 is more mixed and ends up slightly favoring the nonmutagenic class overall. Both the neighbor and the query contain alkyl chloride, so that alert does not separate them here. The query also gains aryl bromide relative to the neighbor (query-minus-neighbor delta +1), which would usually be an unfavorable structural change if it were treated as a mutagenic alert, but in this specific comparison the model note assigns it a negative direction. At the same time, the query has fewer aromatic rings, with ring count 1 versus 3 (delta -2), and a higher QED drug-likeness score of 0.6179 versus 0.4061 (delta +0.2118), both of which are consistent with a cleaner, less alert-enriched profile. The hydrogen-bond acceptor count stays at 0, matching the neighbor, and the minimum partial charge is unchanged at -0.1216 (delta -0), which does not create a new polarity contrast. Taken together, this neighbor is not a strong mutagenic match and slightly supports option A.
+
+Neighbor 3 also leans nonmutagenic overall. As with Neighbor 2, both molecules contain alkyl chloride, so that feature does not distinguish the pair. The query again has aryl bromide while the neighbor does not (delta +1), but here that change is offset by several features favoring option A: the query has a much lower QED drug-likeness score increase from 0.3167 to 0.6179 (delta +0.3012), a lower ring count of 1 versus 4 (delta -3), and a slightly smaller maximum partial charge, 0.0474 versus 0.048 (delta -0.0006). The hydrogen-bond acceptor count is again 0 in both molecules, so that does not separate them. With fewer rings and a more drug-like overall profile, this neighbor sits on the nonmutagenic side despite the presence of alkyl chloride and aryl bromide.
+
+Neighbor 4 is a negative analog overall, even though one feature points the other way. The query has alkyl chloride and the neighbor does not, which is the clearest mutagenic-style difference here. However, the query is less lipophilic, with estimated logP 3.1879 versus 5.2857 (delta -2.0978), has fewer rings, 1 versus 2 (delta -1), and has fewer hydrogen-bond acceptors, 0 versus 1 (delta -1). Its topological polar surface area is also 0 versus 0, so there is no polarity increase to offset the lower size/complexity. The Labute surface area is smaller in the query, 67.9672 versus 109.5831 (delta -41.6159), which also fits the smaller molecular envelope. Even with the alkyl chloride alert, the overall pattern in this comparison is still closer to the nonmutagenic reference.
+
+Neighbor 5 likewise supports option A. The query has alkyl chloride while the neighbor does not, but the rest of the comparison is dominated by the query’s simpler and less polar profile: ring count 1 versus 2 (delta -1), heteroatom count 2 versus 8 (delta -6), topological polar surface area 0 versus 18.46 (delta -18.46), and maximum absolute partial charge 0.1216 versus 0.4877 (delta -0.3661). The only feature that favors mutagenicity besides alkyl chloride is the lower minimum absolute partial charge, 0.0474 versus 0.1474 (delta -0.1), but that is not enough to overcome the much smaller heteroatom burden and essentially zero polar surface area. This makes the query look less like the nonmutagenic neighbor only through one alerting group, while the broader physicochemical profile remains compact and relatively nonpolar.
+
+Neighbor 6 is also a negative analog. The query again carries alkyl chloride while the neighbor does not, but that is balanced by several features pointing toward the nonmutagenic side: both molecules have aryl bromide, so that does not separate them; the query has fewer rings, 1 versus 2 (delta -1); smaller Labute surface area, 67.9672 versus 108.9228 (delta -40.9556); lower topological polar surface area, 0 versus 17.07 (delta -17.07); and fewer hydrogen-bond acceptors, 0 versus 1 (delta -1). In other words, aside from the alkyl chloride alert, the query is the smaller, less polar molecule in this pair, which keeps this comparison aligned with the nonmutagenic class.
+
+Putting all six neighbors together, the alkyl chloride feature is the main mutagenicity alert repeatedly seen in the query, but the surrounding context is mixed: some positive neighbors are driven by that alert despite offsetting exposure-limiting properties, while all three negative neighbors still resemble the query more strongly on size, polarity, ring count, and surface-area descriptors. Because the query repeatedly looks smaller, less polar, and less ring-rich than several reference molecules, the overall balance lands on option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has a pyrazole ring, which can add heteroaromatic complexity and is not inherently benign from a developability standpoint. It also contains a tertiary hydroxyl group, adding a polar functional handle, but that is offset by a fairly lipophilic profile with estimated logP 4.1181, which is on the high side and can increase nonspecific liability. The strongest basic pKa is only 3.6108, so it does not look like a strongly basic, lysosomotropic cationic amphiphile; that lowers concern for the kinds of basic-lipophilic trapping liabilities that often correlate with toxicity. The fraction of sp3 carbons is 0.8571, which is very high and generally suggests a more saturated, three-dimensional scaffold rather than a flat aromatic one, a favorable feature for overall developability. On the polarity side, the topological polar surface area is 48.91 and the hydrogen-bond acceptor count is 2, both of which are comfortably in a reasonable oral-drug-like range and support permeability balance. The nitrogen/oxygen atom count is 3, which is not excessive and is consistent with a moderate heteroatom burden. The main cautionary signals are the presence of pyrazole, the tertiary hydroxyl group, the relatively high logP of 4.1181, and the very negative minimum partial charge of -0.3896, which together indicate some polarity and lipophilicity-driven risk; however, the low strongest basic pKa of 3.6108, high sp3 fraction of 0.8571, modest TPSA of 48.91, and low H-bond acceptor count of 2 collectively look more favorable. Overall, the balance of properties is more consistent with a compound that is not toxic, so the prediction is option (A).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly close toxic analog, but several of its features line up less favorably than the query. The minimum partial charge is almost unchanged, with the neighbor at -0.3928 and the query at -0.3896, a tiny delta of +0.0032, yet that local comparison was associated with a toxic-leaning pattern. The same is true for the presence of pyrazole: the neighbor lacks pyrazole while the query has it once, delta +1, again aligning with the toxic side in that comparison. Neither molecule has ammonium, so the delta is 0 there, but that still sat on the toxic-leaning side in the local comparison. Counterbalancing that, the query has a much lower hydrogen-bond acceptor count, 2 versus 5 in the neighbor, delta -3, and a lower minimum absolute partial charge, 0.0675 versus 0.1896, delta -0.1221; both of those shifts are more consistent with the not-toxic side. The query also has slightly higher fraction of sp3 carbons, 0.8571 versus 0.8095, delta +0.0476, which is generally the more saturated and less flat direction. Overall, Neighbor 1 is mixed but slightly reassuring, and its close similarity supports the not-toxic label more than the toxic one.
+
+Neighbor 2 is similar to Neighbor 1 in the key descriptor pattern, but it adds a drug-likeness comparison that helps the not-toxic side. The minimum partial charge again is nearly the same, -0.3928 in the neighbor versus -0.3896 in the query, delta +0.0032, and that local difference aligned with the toxic side. The query again has pyrazole once while the neighbor has none, delta +1, and neither molecule has ammonium, delta 0; both of those were associated with the toxic side in the local comparison. Against that, the query has fewer hydrogen-bond acceptors, 2 instead of 5, delta -3, and a lower minimum absolute partial charge, 0.0675 instead of 0.1896, delta -0.1221, both favorable for the not-toxic side. The additional feature here is QED drug-likeness: the neighbor is at 0.6946 and the query at 0.7525, delta +0.0579. Higher QED is generally a better balanced property profile, so in isolation that would be the more drug-like direction, but in this local comparison it was one of the signals tied to the toxic side. Even with that, the overall neighborhood pattern still remains only weakly toxic and is offset by the lower acceptor burden and lower absolute charge extrema in the query, so Neighbor 2 still fits the not-toxic outcome better overall.
+
+Neighbor 3 follows the same general pattern but is even closer on the charge descriptors, which makes the saturating and acceptor differences more important. The minimum partial charge is essentially identical, -0.3897 in the neighbor and -0.3896 in the query, delta +0.0001, yet that tiny shift was associated with the toxic side. Pyrazole is again absent in the neighbor and present once in the query, delta +1, and ammonium is absent in both, delta 0; both aligned with the toxic side locally. The query has a lower hydrogen-bond acceptor count, 2 versus 5, delta -3, which favors the not-toxic side, and it also has a lower minimum absolute partial charge, 0.0675 versus 0.1899, delta -0.1224, another not-toxic-leaning shift. In addition, the neighbor’s maximum partial charge is 0.1899 while the query’s is 0.0675, delta -0.1224, so the query sits at a lower positive-charge extreme. Taken together, Neighbor 3 still contains the same toxic-leaning pyrazole and ammonium-pattern context, but the query’s lower acceptor burden and lower charge extremes make this comparison overall compatible with the not-toxic label.
+
+Neighbor 4 is a more clearly not-toxic analog, and the strongest contrast here comes from the charge extrema and the acceptor count. The neighbor has much larger maximum absolute partial charge, 0.8776 versus 0.3896 in the query, delta -0.488, and the minimum partial charge is also much more negative, -0.8776 versus -0.3896, delta +0.488. In this comparison, moving toward the query means reducing extreme partial-charge magnitude, which is a favorable shift. The fraction of sp3 carbons is unchanged at 0.8571 versus 0.8571, delta 0, so saturation does not distinguish the two here. The query also has pyrazole once while the neighbor has none, delta +1, which is the one toxic-leaning feature in this local pairing, and neither molecule has ammonium, delta 0, which also sat on the toxic side in the original comparison. But the query has fewer hydrogen-bond acceptors, 2 versus 3, delta -1, which is favorable. With the large reduction in charge extremes and the modestly lower acceptor count, Neighbor 4 supports the not-toxic prediction.
+
+Neighbor 5 is another not-toxic neighbor, and its comparison is driven by a tradeoff between stronger charge extremes on the neighbor and better saturation/acceptor profile in the query. The neighbor’s minimum partial charge is -0.4651 compared with -0.3896 in the query, delta +0.0755, and its maximum absolute partial charge is 0.4651 versus 0.3896 in the query, delta -0.0755; both of those local charge changes were associated with the toxic side. The query again has pyrazole once while the neighbor has none, delta +1, which also aligned with the toxic side, and neither molecule has ammonium, delta 0. On the favorable side, the query has a lower fraction of sp3 carbons than the neighbor? No—the neighbor is 0.9474 and the query is 0.8571, delta -0.0902, so the query is slightly less saturated than the neighbor, but in this local comparison that shift was still counted on the not-toxic side. The query also has fewer hydrogen-bond acceptors, 2 versus 3, delta -1, which is again favorable. Even though the pyrazole and charge-extreme terms lean toxic, the overall analog remains on the not-toxic side because the query’s smaller acceptor burden and the local saturation pattern keep it closer to the safer reference profile.
+
+Neighbor 6 is the clearest not-toxic analog among the negative neighbors because several features match closely or move in favorable directions. Hydrogen-bond acceptor count is identical at 2 versus 2, delta 0, and that exact match was associated with the not-toxic side. Fraction of sp3 carbons is also very close, 0.85 in the neighbor versus 0.8571 in the query, delta +0.0071, again favoring the not-toxic side. The query has pyrazole once while the neighbor has none, delta +1, which is the main toxic-leaning feature here. Maximum absolute partial charge is exactly the same at 0.3896 versus 0.3896, delta 0, and neither molecule has ammonium, delta 0; in this particular local comparison those neutral matches were tied to the toxic side. Both molecules also have tertiary hydroxyl, with delta 0, and that was another toxic-leaning signal locally. Even so, the exact match on acceptor count and the near-match on sp3 fraction make Neighbor 6 the strongest non-toxic reference among the negative set.
+
+Putting the six neighbors together, the toxic neighbors are only weakly separated from the query and are repeatedly offset by lower hydrogen-bond acceptor count, lower charge extremes, and slightly more favorable saturation. The not-toxic neighbors, especially Neighbor 4 and Neighbor 6, reinforce that the query’s combination of 2 hydrogen-bond acceptors, moderate charge values, and preserved sp3 character is closer to the safer side of the local chemical space. The pyrazole presence in the query appears in several comparisons as a toxic-leaning difference, but it is not enough to outweigh the broader pattern of improved acceptor burden and less extreme charge features. Taken together, the nearest analog evidence supports option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

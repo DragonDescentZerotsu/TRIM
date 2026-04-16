@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an enolether (1), which is a notable structural alert for mutagenicity, and it also has a secondary amide (1), a ketone count of 2, and one aliphatic carbocycle count (1), giving it several functionality-rich features that can accompany reactive or bioactivatable chemistry. The absence of aromatic rings (aromatic ring count 0) and the total ring count of 1 argue against a highly polycyclic aromatic mutagenic scaffold, so the structure does not look like a classic fused-aromatic intercalator. At the same time, the topological polar surface area is 72.47, which is moderate rather than extremely high, so permeability is not obviously so limited that the assay would completely miss a reactive compound. The molecule also has no basic sites (number of basic sites absent, 0), which removes one source of cationic character, but the minimum partial charge is -0.4896, indicating a fairly polarized atom that may reflect a reactive or strongly heteroatom-rich environment. Although the QED drug-likeness is 0.6679, suggesting reasonably drug-like overall properties, that does not override the presence of the enolether, the ketone functionality, the secondary amide, and the modest ring saturation pattern. Taken together, the balance of structural alerts and the presence of several polar, functionalized motifs make mutagenicity more likely than not, so the molecule is predicted to be mutagenic (B).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly close mutagenic analogue, and several of its differences still favor the mutagenic class. The query shares enolether with the neighbor, but the same pattern is already part of a mutagenic comparison, and the query also has a slightly less negative minimum partial charge (neighbor -0.49 vs query -0.4896, delta +0.0004), which is in the same direction as the mutagenic-side comparison. The query matches the neighbor on having 2 ketones, and it has lower estimated logD (0.0784 vs 0.4362, delta -0.3578), which can change exposure but does not outweigh the rest of the shared mutagenic-like features here. The query also has an alkene that the neighbor lacks (delta +1), while the neighbor has an imine that the query lacks (delta -1); taken together, this neighbor still looks chemically closer to the mutagenic side than to a clearly non-mutagenic profile.
+
+Neighbor 2 is also informative because it mixes one clearly non-mutagenic-leaning feature with several mutagenic-leaning ones. The query has lower QED drug-likeness than the neighbor (0.6679 vs 0.7186, delta -0.0507), which by itself would lean away from mutagenicity, but the query has enolether (neighbor absent, delta +1) and alkene (neighbor absent, delta +1), both matching the mutagenic-style analogs. The minimum partial charge is again slightly less negative in the query (-0.4896 vs -0.4917, delta +0.0021), which aligns with the mutagenic comparisons, while the neighbor’s strongest basic pKa is 4.8959 and the query has no basic site, making that delta not defined and favoring the non-mutagenic side in isolation. The ring count is the same at 1 for both molecules, so that feature does not separate them. Even with the QED and basic-site differences, the added enolether and alkene keep this comparison overall closer to the mutagenic analogs.
+
+Neighbor 3 strengthens that impression. The query again has enolether and alkene that the neighbor does not, both with delta +1, which mirrors the same mutagenic-associated structural pattern seen in the positive neighbors. Against that, the query has slightly higher QED drug-likeness (0.6679 vs 0.6256, delta +0.0423), which leans a bit toward non-mutagenic, and the neighbor’s strongest basic pKa is 3.9191 while the query has no basic site, so that comparison is not directly defined and is another point that can temper the mutagenic reading. The ring count is unchanged at 1, and the neighbor carries a nitro group that the query lacks (delta -1), which is a classic mutagenic toxicophore and makes the neighbor itself more concerning than the query. Still, the query’s shared alkene and enolether profile keeps it aligned with the mutagenic side overall.
+
+Neighbor 4, from the non-mutagenic group, actually resembles the query in a way that still supports mutagenicity. The query has much higher topological polar surface area than the neighbor (72.47 vs 29.1, delta +43.37), which can alter permeability, and the query also has an aliphatic carbocycle that the neighbor lacks (0 vs 1, delta +1), plus an alkene and enolether that the neighbor lacks (both delta +1). The query has 2 ketones versus 0 in the neighbor (delta +2), and its estimated logP is much lower (0.0786 vs 2.7698, delta -2.6912). Those changes make the query quite different from this non-mutagenic analogue, but most of the structural differences that dominate the comparison are the ones that were associated with the mutagenic neighbors: alkene, enolether, and the additional ketone content.
+
+Neighbor 5 makes the same point. The query again has the aliphatic carbocycle absent in the neighbor, along with alkene and enolether both present in the query and absent in the neighbor, and 2 ketones compared with 0. The query also has slightly higher topological polar surface area (72.47 vs 64.35, delta +8.12), which is not enough to reverse the structural contrast, while its QED drug-likeness is lower than the neighbor’s (0.6679 vs 0.7412, delta -0.0733), a modest non-mutagenic-leaning sign. Even so, the same recurring mutagenic-like structural additions in the query dominate this comparison and keep it closer to option B than option A.
+
+Neighbor 6 is another non-mutagenic analogue that the query departs from in the same direction. The query again adds the aliphatic carbocycle, alkene, enolether, and 2 ketones relative to the neighbor, all of which match the recurring pattern seen in the mutagenic comparisons. The countervailing features here are that the neighbor has a diaryl ether that the query lacks, and the neighbor has 2 rings while the query has 1, so the query is less ring-rich and lacks that diaryl ether motif. Still, the repeated presence in the query of alkene, enolether, and extra ketones makes this comparison fit better with the mutagenic side than with the non-mutagenic side.
+
+Putting the six neighbors together, the three mutagenic neighbors consistently align the query with enolether, alkene, slightly less negative minimum partial charge, and in one case a missing nitro on the neighbor side. The three non-mutagenic neighbors do contain some features that lean away from mutagenicity, such as higher QED in two cases, lower polar surface area in one case, a diaryl ether in one case, and a higher ring count in one case, but those do not outweigh the repeated mutagenic-leaning structural pattern shared across all six comparisons. The overall local analog evidence therefore supports option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has several features that are concerning for Ames mutagenicity. It contains ring count 4 and aromatic ring count 4, which indicate a fairly aromatic scaffold, and the presence of isoquinoline (1) together with carbazole (1) adds recognized heteroaromatic frameworks that can be associated with mutagenic behavior, especially when combined with a planar aromatic core. The strongest partial-charge-related signal is also notable: maximum partial charge 0.0503 and minimum absolute partial charge 0.0503 suggest a relatively small but nontrivial charge distribution, consistent with a molecule that can participate in interactions affecting bacterial exposure or reactivity. The strongest acidic pKa of 13.775 is very high, implying the molecule is not strongly acidic under assay conditions, so ionization does not obviously suppress exposure. At the same time, there are some mitigating descriptors: heteroatom count 2 is low, hydrogen-bond acceptor count 1 is also low, and estimated logP 4.4861 is moderately high but not extreme. Those features could support some degree of membrane permeation rather than excessive polarity, yet they do not offset the aromatic heterocycle pattern. Overall, the combination of multiple aromatic rings, fused heteroaromatic motifs such as isoquinoline and carbazole, and the associated charge pattern makes the molecule more consistent with a mutagenic outcome. The final assessment is option (B): is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive example and it is broadly consistent with mutagenicity. The query has a higher neutral fraction than the neighbor, 0.9638 versus 0.6759, with a delta of +0.2879, which aligns with the model’s B-leaning comparison here. It also has more rings, 4 versus 3, delta +1, and higher estimated logD, 4.4701 versus 2.546, delta +1.9241, both of which favor the mutagenic side in this local comparison. Although the query’s estimated logP is also higher, 4.4861 versus 2.7161, delta +1.77, that feature here is acting in the opposite direction and slightly offsets the other B-leaning changes. Structurally, the neighbor has 6-azaindole while the query does not, and the query instead has isoquinoline once, which is another local shift toward B. Overall, Neighbor 1 supports option (B): is mutagenic.
+
+Neighbor 2 is also a positive example and again the comparison leans toward B overall. The query has one more ring than the neighbor, 4 versus 3, delta +1, which is directionally favorable to B in this pair. The strongest basic pKa is lower in the query, 5.9753 versus 7.4353, delta -1.46, and in this local setting that also supports the mutagenic side. The query has isoquinoline once while the neighbor does not, and that structural difference is again B-leaning. The query’s minimum absolute partial charge is lower, 0.0503 versus 0.0681, delta -0.0177, which also lines up with the B direction in this comparison. The only notable counterweight is estimated logP: the query is higher at 4.4861 versus 3.0245, delta +1.4616, and that feature here works against B. Even with that offset, the overall resemblance to the mutagenic neighbors remains stronger, so Neighbor 2 still supports option (B).
+
+Neighbor 3 is the third positive example, and it is another B-leaning analog. The query again has one more ring, 4 versus 3, delta +1, which matches the mutagenic direction. Estimated logD is also substantially higher in the query, 4.4701 versus 2.2437, delta +2.2264, reinforcing the same side of the comparison. The minimum absolute partial charge drops from 0.1268 in the neighbor to 0.0503 in the query, delta -0.0765, which in this local model context also favors B. The strongest basic pKa is lower in the query, 5.9753 versus 7.9674, delta -1.9921, again consistent with the mutagenic side in this pair. The query lacks 6-azaindole, which is a negative shift relative to the neighbor, and the query also has lower heteroatom count, 2 versus 3, delta -1, which works against B. Still, the stronger B-leaning changes dominate, so Neighbor 3 remains supportive of option (B).
+
+Neighbor 4 is one of the negative examples, but it does not actually weaken the mutagenic call overall. The query has a much higher strongest basic pKa than the neighbor, 5.9753 versus 2.7321, delta +3.2432, and that is strongly B-leaning in this comparison. Both compounds have carbazole, so that shared feature does not distinguish them but still sits in a mutagenicity-relevant structural context. The query also has more rings, 4 versus 3, delta +1, and a higher minimum absolute partial charge, 0.0503 versus 0.0464, delta +0.0039, each of which points toward B here. The maximum absolute partial charge and strongest acidic pKa are both slightly lower in the query, 0.3543 versus 0.3545 and 13.775 versus 13.8941, with deltas of -0.0002 and -0.1191, and those two features lean toward A. But those are small counterweights compared with the larger B-leaning shifts, so Neighbor 4 still ends up reinforcing the mutagenic label rather than undermining it.
+
+Neighbor 5 is another negative example, yet it is one of the clearest supports for option (B). The query’s strongest basic pKa is much higher, 5.9753 versus 2.3648, delta +3.6105, which is a strong B-leaning shift in this comparison. The query also shares carbazole with the neighbor, has one more ring, 4 versus 3, delta +1, and has higher estimated logD, 4.4701 versus 2.6444, delta +1.8257; all of these are consistent with the mutagenic side here. The neighbor contains nitro while the query does not, but in this local comparison that structural difference still sits among the features that were associated with B overall. Taken together, Neighbor 5 is a strong mutagenic analog despite being labeled non-mutagenic in the reference set, so it does not pull the prediction away from B.
+
+Neighbor 6 is the remaining negative example, and it is mixed but still ends up favoring B overall. The query has lower estimated logP than the neighbor, 4.4861 versus 6.017, delta -1.5309, and that one feature points toward A in this pair. However, the query has the same ring count, 4 versus 4, delta +0, which stays on the B side, and it has a much higher minimum absolute partial charge, 0.0503 versus 0.0067, delta +0.0436, also supporting B here. The fraction of sp3 carbons is slightly lower in the query, 0.1176 versus 0.1429, delta -0.0252, and the maximum absolute partial charge is much higher, 0.3543 versus 0.0616, delta +0.2926; both of those comparisons align with the mutagenic direction in this local neighborhood. Aromatic ring count is equal at 4 versus 4, delta +0, so it does not separate the compounds. Even though the lower logP slightly favors A, the other descriptor shifts dominate, so Neighbor 6 still leans toward B overall.
+
+Putting the six neighbors together, the three positive neighbors all point toward the mutagenic class, and the three negative neighbors do not provide a consistent enough counterargument to overturn that pattern. The strongest recurring signals are higher ring count, higher logD, lower or shifted basic pKa in several of the comparisons, and the presence of mutagenicity-relevant structural context such as isoquinoline or carbazole in the local analog set. Although a few features like higher logP in some cases or the lower logP in Neighbor 6 lean the other way, the net evidence across the neighbors is more compatible with option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

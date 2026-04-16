@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several properties that are unfavorable for BBB penetration. A topological polar surface area of 98.82 Å² is above the commonly cited CNS-friendly range, so it suggests excessive polarity for passive brain entry. The estimated logD of -1.6234 is also very low, indicating poor lipophilicity and weak membrane permeability, which further argues against BBB crossing. In addition, the presence of 2 secondary amides and 2 lactams adds polar, hydrogen-bonding functionality that typically raises desolvation cost and makes brain penetration harder. The pyrrolidine count of 2 and saturated heterocycle count of 2 indicate a heterocycle-rich scaffold, which in this case appears to come with substantial polarity rather than a permeability advantage. The neutral fraction is very high at 0.9953, which is one favorable feature because a mostly neutral species is more able to cross membranes. The charge descriptors are mixed: the minimum partial charge of -0.3333, maximum absolute partial charge of 0.3333, and minimum absolute partial charge of 0.2575 suggest a modest charge distribution rather than extreme ionization, which can modestly support permeability. However, the strong polarity captured by TPSA 98.82 Å², the low estimated logD of -1.6234, and the polar amide/lactam content dominate the picture overall. Taken together, the molecule is more consistent with option (A), does not cross the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly strong positive analog despite a few countervailing size/polarity penalties. The query has one more lactam than the neighbor (2 vs 1, delta +1), which is favorable here because the comparison favors the BBB-crossing class. The query also has lower estimated logP than the neighbor (-1.6214 vs -0.9059, delta -0.7155), and in this local context that lower value is treated as helping the BBB-crossing side. At the same time, the query is less favorable on polarity and size: topological polar surface area rises from 63.4 to 98.82 (delta +35.42), and that higher TPSA moves into a range that is generally less compatible with BBB penetration; exact molecular weight also increases from 142.0742 to 282.1328 (delta +140.0586), which is a substantial size increase and works against brain entry. The query’s neutral fraction is still present and only slightly lower than the neighbor’s (1 to 0.9953, delta -0.0047), which remains consistent with BBB compatibility. The extra pyrrolidine copy in the query (1 to 2, delta +1) is unfavorable, but overall the favorable lactam and logP terms, together with retained neutrality, outweigh the TPSA, MW, and pyrrolidine penalties for this neighbor.
+
+Neighbor 2 also supports BBB crossing overall, but with a more mixed balance. Again, the query has one more lactam than the neighbor (2 vs 1, delta +1), which is favorable. The query has much lower QED drug-likeness than the neighbor (0.6053 vs 0.8847, delta -0.2794), and that relative drop is unfavorable for the non-BBB side in this comparison. TPSA is again notably higher in the query, rising from 49.41 to 98.82 (delta +49.41), and that moves the molecule toward the higher-polarity region that generally disfavors BBB penetration. The query’s neutral fraction is slightly lower than the neighbor’s but still very close to fully neutral (0.9953 vs 0.9994, delta -0.0041), which remains compatible with BBB passage. Minimum partial charge is essentially unchanged but slightly less negative in the query (-0.3333 vs -0.3334, delta +0.0001), and that small shift is favorable here. Against these positives, the query’s estimated logD is much lower than the neighbor’s (-1.6234 vs 1.8641, delta -3.4875), which is a clear disadvantage because it reflects a less lipophilic ionization-aware profile. Even so, the lactam enrichment and the near-neutral character keep this neighbor on the BBB-crossing side overall.
+
+Neighbor 3 again points toward BBB crossing, with several favorable features offsetting the higher polarity. The query has one more lactam than the neighbor (2 vs 1, delta +1), a favorable difference. The query’s TPSA is higher, increasing from 52.65 to 98.82 (delta +46.17), which is a meaningful move into a less permeable polarity range and works against BBB penetration. However, the query also has a much lower estimated logP than the neighbor (-1.6214 vs 0.8438, delta -2.4652), and in this local comparison that drop is favorable for the BBB-crossing class. The minimum partial charge becomes slightly less negative in the query (-0.3333 vs -0.3533, delta +0.02), which is also favorable. The query has one more pyrrolidine copy (2 vs 1, delta +1), which is unfavorable, but it also contains hydrazine once whereas the neighbor does not (delta +1), and that difference is treated as favorable in this comparison. Taken together, the lactam increase, the more favorable logP, the charge shift, and the hydrazine presence outweigh the TPSA increase and extra pyrrolidine, so this neighbor still supports option (B).
+
+Neighbor 4 is a negative-labeled neighbor that, interestingly, still looks more BBB-friendly than the query in several respects, but the key reason it remains informative is the contrast around ionization-aware lipophilicity. The neighbor lacks lactam entirely while the query has two copies (delta +2), and that difference favors BBB crossing. The neighbor also lacks 1H-1,2,3-triazole while the query does not have it (delta -1), which is favorable to the query in this local pairwise comparison. The neighbor has no secondary amide while the query has two (delta +2), again favoring the BBB-crossing side in this comparison. The neighbor’s estimated logP is -1.5232 versus the query’s -1.6214 (delta -0.0982), and that slightly lower logP is favorable here. The neighbor also has neutral fraction absent (0) whereas the query is strongly neutral (0.9953, delta +0.9953), which again helps the BBB-crossing side. The one feature that clearly hurts BBB crossing for the query in this pair is estimated logD: the neighbor is at -6.7179 while the query is at -1.6234 (delta +5.0945), and that higher logD still leaves the query in a relatively unfavorable zone. Even though several individual differences favor BBB penetration, this neighbor is part of the non-BBB class overall, so it serves as a caution that the query’s profile is not uniformly BBB-optimized.
+
+Neighbor 5 is another non-BBB neighbor that still shows the query as better on most of the explicit features. The query has two lactams versus none in the neighbor (delta +2), which is favorable here. The query’s maximum absolute partial charge is much lower (0.3333 vs 0.5432, delta -0.2099), and its minimum partial charge is less extreme as well (-0.3333 vs -0.5432, delta +0.2099); both charge-shape changes are favorable in this local comparison. The query also has a higher fraction of sp3 carbons (0.6667 vs 0.4615, delta +0.2051), which is favorable here, and it is much more neutral (0.9953 vs absent/0, delta +0.9953), again supporting BBB crossing. The counterweight is estimated logD: the neighbor is at -7.2028 and the query at -1.6234 (delta +5.5794), which remains unfavorable for the non-BBB side in this comparison. Even so, because the neighbor belongs to the non-crossing class while the query improves on lactam count, partial charge extremes, sp3 character, and neutrality, this neighbor reinforces the idea that the query is more BBB-compatible than the negative examples.
+
+Neighbor 6 likewise belongs to the non-BBB set, but the comparison still gives several advantages to the query. The query has two lactams versus none in the neighbor (delta +2), and that is favorable in this pair. The neighbor’s TPSA is 78.51 versus the query’s 98.82 (delta +20.31), so the query is substantially more polar, and that higher TPSA is a clear drawback for BBB entry. The neighbor has no secondary amide while the query has two (delta +2), which helps the BBB-crossing side in this specific comparison, and the query’s estimated logP is much lower (-1.6214 vs 1.7739, delta -3.3953), which is favorable here. Estimated logD, however, again favors the non-BBB side: the neighbor is at 0.3657 versus -1.6234 for the query (delta -1.9891), and that lower logD in the query works against passive BBB permeability. The query also has a higher fraction of sp3 carbons (0.6667 vs 0.5, delta +0.1667), which is favorable. So this neighbor contains a genuine polarity penalty through TPSA and a weaker logD profile, but the lactam, secondary-amide, logP, and sp3 differences still lean toward BBB compatibility when considered locally.
+
+Putting the six neighbors together, the three positive neighbors consistently show the query benefiting from lactam count and, in several cases, from logP, neutral fraction, and charge features, even though TPSA is repeatedly higher and therefore a recurring penalty. The three negative neighbors are less straightforward, but each still contains multiple query features that are more compatible with BBB crossing, with the main recurring drawback being the elevated TPSA and occasionally weak logD. Because the positive neighbors align with BBB crossing on balance and the negative neighbors do not provide a stronger counterargument than the query’s favorable local similarities, the overall prediction remains option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

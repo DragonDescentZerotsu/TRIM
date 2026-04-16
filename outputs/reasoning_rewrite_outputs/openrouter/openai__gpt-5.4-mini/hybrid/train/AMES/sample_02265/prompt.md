@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several exposure-limiting properties that argue against an Ames-positive call. Its QED drug-likeness is very low at 0.1693, which is consistent with a compound outside typical drug-like space and can coincide with problematic physicochemical properties rather than a clear mutagenicity signal. The rotatable-bond count is 21, indicating a highly flexible molecule; such flexibility can reduce effective bacterial accumulation. The Labute surface area is 182.0232, which is relatively large and likewise suggests a size/shape profile that may hinder uptake. Both estimated logP at 8.7935 and estimated logD at 8.7935 are very high, pointing to extreme lipophilicity; in an Ames context, that often means poor solubility and limited usable exposure in the assay rather than stronger intrinsic reactivity. The molecular weight of 434.642 and heavy-atom count of 29 are not extreme by themselves, but they still place the molecule on the larger side, which can add to uptake limitations. The maximum partial charge of 0.4743 does not suggest a strong charge-driven permeability advantage. The fraction of sp3 carbons is 1, indicating a fully saturated aliphatic character at that descriptor, which does not by itself create a mutagenic alert. One potentially concerning feature is the presence of a phosphoric triester, but that functionality alone is not a standard Ames structural alert in the way nitro, aziridine, epoxide, or aromatic amine motifs are. Overall, the combination of very high lipophilicity, large surface area, high flexibility, and low QED is more consistent with reduced bacterial exposure than with a clear DNA-reactive toxicophore profile, so the molecule is best predicted as not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close mutagenic analog, but several of the strongest matching properties still favor a non-mutagenic readout for the query. The query is much less rigid, with rotatable bonds rising from 9 to 21 (delta +12), and it is also markedly larger in the surface/solubility-related dimensions: Labute surface area increases from 137.1336 to 182.0232 (delta +44.8895), estimated logD increases from 4.0339 to 8.7935 (delta +4.7596), and estimated logP likewise rises from 4.034 to 8.7935 (delta +4.7595). In this comparison those shifts are associated with reduced effective exposure, which supports option (A). The query does have a lower QED drug-likeness, falling from 0.3897 to 0.1693 (delta -0.2204), and that lower drug-likeness can align with less favorable overall property balance, but here it is outweighed by the strong exposure-limiting changes. The fraction of sp3 carbons also rises from 0.5882 to 1 (delta +0.4118), and in this pairing that change is associated with the non-mutagenic side as well. Overall, Neighbor 1 still leans toward option (A) despite a couple of B-leaning signals.
+
+Neighbor 2 repeats the same pattern almost exactly, so it reinforces the same conclusion rather than changing it. Again, rotatable bonds jump from 9 to 21 (delta +12), estimated logD from 4.0339 to 8.7935 (delta +4.7596), and Labute surface area from 137.1336 to 182.0232 (delta +44.8895), all of which favor reduced bacterial exposure and therefore the non-mutagenic label. As with Neighbor 1, QED falls from 0.3897 to 0.1693 (delta -0.2204), which by itself is less favorable, and estimated logP rises from 4.034 to 8.7935 (delta +4.7595), which here is a mixed signal because very high hydrophobicity can either aid uptake in some contexts or limit usable exposure through poor solubility. The fraction of sp3 carbons again increases from 0.5882 to 1 (delta +0.4118), matching the same A-leaning direction as in Neighbor 1. Taken together, Neighbor 2 again supports option (A) more strongly than option (B).
+
+Neighbor 3 is also a mutagenic neighbor, but the comparison still has several features that favor the query as not mutagenic. Rotatable bonds increase from 7 to 21 (delta +14), which is a large jump toward a more flexible, less readily accumulated molecule and therefore supports option (A). QED drops substantially from 0.7154 to 0.1693 (delta -0.5461), and that lower drug-likeness again points to an unfavorable but exposure-limited profile rather than a clear mutagenic alert. The query also has a slightly lower maximum absolute partial charge, 0.4743 versus 0.5308 (delta -0.0565), while maximum partial charge follows the same numerical change, 0.4743 versus 0.5308 (delta -0.0565); in this pairing the feature-level effects split, with the absolute-charge term favoring B but the maximum partial charge term favoring A. Labute surface area rises sharply from 113.6805 to 182.0232 (delta +68.3427), and estimated logP rises from 3.4683 to 8.7935 (delta +5.3252); both of those are large exposure-related shifts that make the query look less like a readily bioavailable mutagenic analog. Even though this neighbor has some B-leaning signals, the larger size/rigidity/hydrophobicity changes still make the overall comparison favor option (A).
+
+Neighbor 4 is a non-mutagenic analog and it is one of the strongest supports for option (A) because it sits very close to the query in the same broad physicochemical space but still compares favorably on the key exposure-related dimensions. The query has more rotatable bonds, 21 versus 11 (delta +10), which again points away from efficient bacterial accumulation. It is also larger in Labute surface area, 182.0232 versus 150.2983 (delta +31.7249), and heavier in exact molecular weight, 434.3525 versus 362.1647 (delta +72.1878); both of those changes are consistent with lower passive uptake. The query’s ring count is 0 compared with 2 in the neighbor (delta -2), and in this specific comparison that reduction does not override the stronger A-leaning size/flexibility effects. QED is lower in the query, 0.1693 versus 0.4288 (delta -0.2596), and estimated logP is higher, 8.7935 versus 6.4855 (delta +2.308); those are mixed, but the combination still leaves the query looking more exposure-limited than the non-mutagenic neighbor. Overall, Neighbor 4 is a clear non-mutagenic reference that supports option (A).
+
+Neighbor 5 is essentially the same as Neighbor 4 and gives the same message. Rotatable bonds rise from 11 to 21 (delta +10), Labute surface area rises from 150.2983 to 182.0232 (delta +31.7249), and exact molecular weight rises from 362.1647 to 434.3525 (delta +72.1878), all of which support the non-mutagenic side through reduced accessibility and uptake. The query again has fewer rings, 0 versus 2 (delta -2), while QED drops from 0.4288 to 0.1693 (delta -0.2596) and estimated logP rises from 6.4855 to 8.7935 (delta +2.308). Those changes are not enough to overturn the dominant A-leaning comparison based on size and flexibility. Neighbor 5 therefore also favors option (A).
+
+Neighbor 6 is another non-mutagenic neighbor and is especially informative because it adds estimated logD to the same exposure picture. The query has more rotatable bonds, 21 versus 14 (delta +7), which again is associated with reduced accumulation in this comparison. Exact molecular weight is higher as well, 434.3525 versus 390.277 (delta +44.0755), and Labute-relevant size is indirectly reflected by the same heavier, less compact profile. Estimated logD increases from 6.433 to 8.7935 (delta +2.3605), which here keeps the query in a very hydrophobic regime; combined with the higher rotatable-bond count, that suggests a molecule that may be less effectively available to bacteria even if it is lipophilic. QED also drops from 0.3433 to 0.1693 (delta -0.174), and estimated logP rises from 6.433 to 8.7935 (delta +2.3605), both of which are consistent with a poorer overall property balance. The ring count decreases from 1 to 0 (delta -1), which is not enough to offset the stronger exposure-related A signals. Neighbor 6 therefore also supports option (A).
+
+Across the three mutagenic neighbors, the most repeated and convincing differences are the query’s much higher rotatable-bond count, much larger surface area, and much higher logP/logD, all of which make it look less able to reach bacteria effectively despite a few mixed QED and partial-charge signals. Across the three non-mutagenic neighbors, those same exposure-limiting features consistently line up with option (A). Because the A-leaning evidence is both more consistent and more numerous than the B-leaning signals, the final prediction is option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

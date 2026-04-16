@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a fairly balanced polarity profile rather than an obviously high-risk toxicophore pattern. Its minimum partial charge is -0.7588, which suggests some localized negative character, but the corresponding maximum absolute partial charge is 0.7588 and the maximum partial charge is only 0.0311, so the charge distribution is present but not extreme. The minimum absolute partial charge is 0.0311, also indicating that there are atoms with very small charge magnitudes rather than strongly polarized extremes. The topological polar surface area is 80.26, which sits in a moderate range and is compatible with reasonable permeability rather than severe polarity-driven attrition. The nitrogen/oxygen atom count is 4, a modest heteroatom load that does not by itself suggest excessive polarity. The fraction of sp3 carbons is 0, so the scaffold is completely unsaturated and relatively flat, which is not ideal from a general developability perspective, but it is only one piece of the picture. The strongest acidic pKa is not defined because there is no acidic site, which means there is no clear acidic liability driving ionization. Sulfuric acid is present at 1, which is a notable functional-group feature, but by itself it does not outweigh the rest of the descriptor pattern here. Ammonium is absent at 0, so there is no permanently cationic ammonium center that would suggest a strongly basic, lysosomotropic motif. Overall, the polarity and charge descriptors look moderate rather than extreme, and despite the flat sp3 fraction being 0, the combination of moderate TPSA, limited heteroatom count, no acidic site, and absence of ammonium is more consistent with a non-toxic profile. I therefore conclude the molecule is not toxic, option (A).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close toxic analog, but the query differs in several ways that soften that comparison. The query has sulfuric acid once while the neighbor has none, and that added acidic functionality is a meaningful shift toward greater ionization and away from the lipophilic, cationic-amphiphilic pattern that often underlies toxicity liabilities. At the same time, the query and neighbor both have ammonium at 0, and both have hydrogen-bond acceptor count 4, so those features do not separate them. The query’s estimated logD is much lower at -1.338 versus 3.5116 for the neighbor, a delta of -4.8496, which moves away from the more lipophilic regime that is often associated with safety risk. The query also has lower minimum absolute partial charge, 0.0311 versus 0.2325, with delta -0.2015, and the neighbor’s slightly higher fraction of sp3 carbons, 0.1176 versus 0, is another difference; taken together, Neighbor 1 is only weakly toxic-like, and the query looks less concerning on the most relevant lipophilicity and ionization cues.
+
+Neighbor 2 is also toxic, but the query again looks less risky on several key axes. The query has sulfuric acid once while the neighbor has none, and that again favors a more ionized, less freely permeable profile. The neighbor’s minimum partial charge is -0.4939 while the query’s is -0.7588, so the query is more negative there, and the maximum absolute partial charge is higher in the query, 0.7588 versus 0.4939, which is a related polarity shift. The query and neighbor both have ammonium at 0 and hydrogen-bond acceptor count 4, so those do not distinguish them. The query also has rotatable-bond count 0 versus 5 in the neighbor, a delta of -5, which makes the query more constrained. Overall, Neighbor 2’s toxic label is not well matched because the query is less lipophilic and less flexible than this analog.
+
+Neighbor 3 is another toxic example, but the same general pattern holds: the query carries sulfuric acid once whereas the neighbor has none, and that difference again supports a more ionized, less toxic-looking profile. The neighbor and query both have ammonium at 0 and hydrogen-bond acceptor count 4, so those features are matched. The query has rotatable-bond count 0 versus 5, giving a -5 delta that reduces flexibility relative to the toxic analog. The query also has a lower minimum absolute partial charge, 0.0311 versus 0.2669, with delta -0.2358, and a much lower estimated logP, -1.338 versus 2.006, with delta -3.344; both shifts are consistent with reduced lipophilicity and lower liability. Taken together, Neighbor 3 is a toxic neighbor, but the query is more polar and less lipophilic than that compound.
+
+Neighbor 4 is a not-toxic analog, and it lines up well with the query’s more favorable physicochemical profile. The query has minimum partial charge -0.7588 versus -0.3987 in the neighbor, so it is more negative on that descriptor, and estimated logP is lower at -1.338 versus -0.0838, which keeps the query in a relatively low-lipophilicity regime. The query has sulfuric acid once while the neighbor has none, again adding ionization and polarity. The neighbor has hydrogen-bond acceptor count 3 while the query has 4, and ammonium is absent in both. The neighbor also has fraction of sp3 carbons 0 while the query is also 0, so there is no difference there. Even though the acceptor count is slightly higher in the query, the combination of the added sulfuric acid and lower logP fits better with this non-toxic analog than with the toxic neighbors.
+
+Neighbor 5 is also not toxic, but it is more mixed because it has some toxic-like features that the query avoids. The neighbor has ammonium while the query does not, and that is one difference favoring the query because it lacks that cationic feature. The neighbor has hydrogen-bond acceptor count 2 versus 4 in the query, so the query is more polar there, and the query has sulfuric acid once while the neighbor has none. The query’s minimum partial charge is -0.7588 versus -0.3538, making it more negative, and its neutral fraction is present at 1 versus 0.05 in the neighbor, another difference that changes ionization context. The neighbor has one aromatic ring while the query has 0 aromatic rings, which reduces aromatic burden in the query. Even though the direction of several single-feature comparisons is mixed, the overall analog still belongs to the not-toxic side because the query lacks ammonium, has no aromatic rings, and carries the sulfuric acid functionality that shifts it away from the more concerning profile.
+
+Neighbor 6 is another not-toxic analog and is especially informative because it contrasts extreme lipophilicity with the query’s much less lipophilic state. The query’s estimated logP is -1.338 versus -6.181 in the neighbor, a delta of +4.843, so the query is substantially less negative and much less extremely lipophilic than that reference. The query’s maximum absolute partial charge is 0.7588 versus 0.7255, and its minimum partial charge is -0.7588 versus -0.7255, so the charge extrema are similar but slightly larger in magnitude for the query. The neighbor has 4 copies of sulfuric monoester while the query has 0, and the query has sulfuric acid once while the neighbor has none; these opposing sulfur-related features make the query more ionized in a different way, but still not in a direction that resembles the toxic analogs above. The neighbor has fraction of sp3 carbons 1 versus 0 in the query, so the query is flatter and less saturated, yet the much lower lipophilicity and the presence of sulfuric acid keep the comparison aligned with the not-toxic class.
+
+Putting all six neighbors together, the toxic neighbors are outweighed by the way the query consistently departs from them through lower logD or logP, added sulfuric acid, and reduced flexibility, while the not-toxic neighbors are generally compatible with that same less lipophilic, more ionized profile. The few unfavorable matches, such as unchanged ammonium absence in some toxic neighbors or the slightly higher acceptor count relative to Neighbor 4, are not enough to overturn the broader pattern. Overall, the neighbor set supports option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

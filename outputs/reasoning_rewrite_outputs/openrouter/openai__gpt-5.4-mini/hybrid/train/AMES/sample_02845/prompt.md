@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains phenothiazine, which is a heteroaromatic scaffold but not, by itself, one of the classic strong Ames-positive toxicophores such as aromatic nitro, epoxide, aziridine, or polycyclic aromatic systems with three or more fused aromatic rings. Its Labute surface area of 178.8197 and heavy-atom count of 30 indicate a moderately large, fairly bulky structure, and the molecular weight of 437.531 is still below the common 500 cutoff used in permeability heuristics. The heavy-atom molecular weight of 411.323 is also substantial but not extreme. Together, those size-related features can limit bacterial exposure somewhat, which can favor a negative Ames outcome.
+
+The presence of trifluoromethyl and the primary hydroxyl group further suggests a molecule with mixed polarity and strong electronic effects, but neither group is a clear mutagenicity toxicophore on its own. The QED drug-likeness value of 0.7278 is relatively favorable and is more consistent with a balanced, developable compound than with a strongly alert-rich structure. Ring count of 4 and heteroatom count of 8 show a ring-rich, heteroatom-rich framework, which can sometimes correlate with increased structural complexity and, in some cases, higher mutagenicity risk, but these descriptors are only weak proxies and do not establish a specific reactive hazard.
+
+Overall, the evidence is mixed: the ring count of 4, heteroatom count of 8, and heavy-atom count of 30 provide some enrichment for a more complex scaffold, but the larger size, the relatively high QED of 0.7278, the molecular weight of 437.531, and the absence of an obvious Ames toxicophore make a non-mutagenic interpretation more plausible. On balance, the compound is predicted to be not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Among the three mutagenic neighbors, Neighbor 1 is the strongest example of why this query can still fall on the non-mutagenic side despite carrying some mutagenicity-linked features. The query contains phenothiazine once where the neighbor has none, and that structural difference is associated with a negative shift for mutagenicity in this comparison. The same is true for piperazine, which is present once in the query and absent in the neighbor. The query is also much larger, with heavy-atom molecular weight 411.323 versus 78.05 in the neighbor (delta +333.273), and although larger size can sometimes reduce exposure, here the size difference still aligns with the non-mutagenic side in the local comparison. Two features point the other way: the query’s strongest basic pKa is higher, 7.5627 versus 5.9341 (delta +1.6286), and heteroatom count is also higher, 8 versus 2 (delta +6), both of which are the kinds of exposure- and ionization-related changes that can sometimes accompany mutagenic analogs. But the query also has a higher QED drug-likeness, 0.7278 versus 0.4498 (delta +0.278), which in this neighbor offsets those smaller mutagenicity-leaning shifts. Overall, Neighbor 1 still supports option (A): is not mutagenic.
+
+Neighbor 2 gives a similar picture. Again, the query has phenothiazine once where the neighbor has none, and piperazine once where the neighbor has none, both favoring the non-mutagenic side in this local analog set. The query’s strongest basic pKa is again higher, 7.5627 versus 5.9512 (delta +1.6115), which is a mutagenicity-leaning change in the local model because a more basic, ionizable nitrogen can alter bacterial exposure. Minimum absolute partial charge is also higher, 0.395 versus 0.2812 (delta +0.1138), which is another charge-related difference that can accompany a mutagenic shift in some analogs. But the query and neighbor both have trifluoromethyl, so that feature does not separate them, and the query’s Labute surface area is larger, 178.8197 versus 149.2501 (delta +29.5696), which in this comparison favors the non-mutagenic side by suggesting a different size/shape envelope rather than a clearer mutagenic analog. Taken together, Neighbor 2 still lands on option (A): is not mutagenic.
+
+Neighbor 3 is also on the mutagenic side overall, but the same pattern remains: phenothiazine is present in the query and absent in the neighbor, piperazine is present in the query and absent in the neighbor, and trifluoromethyl is shared by both molecules, so it does not help distinguish them. The main mutagenicity-leaning feature here is minimum absolute partial charge, which rises from 0.2595 in the neighbor to 0.395 in the query (delta +0.1355). Against that, the query also has primary hydroxyl once where the neighbor has none, and that additional polar functionality favors the non-mutagenic side in this comparison. The Labute surface area jumps from 84.4475 to 178.8197 (delta +94.3722), a very large size increase that, in this analog neighborhood, again supports the non-mutagenic label through altered exposure and shape rather than a cleaner mutagenic fit. So even though this neighbor includes one mutagenicity-leaning charge feature, the total local comparison still supports option (A): is not mutagenic.
+
+The three non-mutagenic neighbors reinforce that reading. Neighbor 4 shares phenothiazine with the query, so that feature no longer separates the molecules. The query is larger in Labute surface area, 178.8197 versus 130.3093 (delta +48.5104), and it also contains trifluoromethyl once while the neighbor has none; both of those differences favor the non-mutagenic side in this local setting. Ring count is identical at 4 versus 4, so it does not distinguish the pair, while heavy-atom count is higher in the query, 30 versus 21 (delta +9), and minimum absolute partial charge is also much higher, 0.395 versus 0.0552 (delta +0.3398). Despite those latter two features being less favorable to the non-mutagenic label in isolation, the overall comparison still lands on option (A): is not mutagenic.
+
+Neighbor 5 is essentially the same structural story as Neighbor 4. Phenothiazine is shared, Labute surface area is again much larger in the query, 178.8197 versus 130.3093 (delta +48.5104), and trifluoromethyl is present only in the query. Ring count remains equal at 4 versus 4, so it is neutral here. Heavy-atom count again rises from 21 to 30 (delta +9), and minimum absolute partial charge increases from 0.0552 to 0.395 (delta +0.3398). The size and substituent differences dominate this local analogy, leaving the comparison aligned with option (A): is not mutagenic.
+
+Neighbor 6 adds one more non-mutagenic anchor with a slightly different balance of features. The query again has phenothiazine and trifluoromethyl where the neighbor does not, and those differences are consistent with the non-mutagenic side in this neighborhood. The query also has higher Labute surface area, 178.8197 versus 127.5569 (delta +51.2628), and higher heavy-atom count, 30 versus 21 (delta +9), both of which favor the same label in this local comparison. Two features lean the other way: estimated logD is higher, 3.9181 versus 1.7865 (delta +2.1316), and ring count is 4 versus 3 (delta +1). In Ames interpretation these are exposure- and lipophilicity-related descriptors rather than direct mutagenicity mechanisms, and here they do not overturn the broader non-mutagenic match. Neighbor 6 therefore also supports option (A): is not mutagenic.
+
+Putting the six neighbors together, the mutagenic neighbors each contain some charge- and ionization-related differences, but they are offset by shared or query-favoring features such as phenothiazine, piperazine, larger size, and higher QED in Neighbor 1, plus the larger Labute surface area and polar substituent pattern in Neighbors 2 and 3. The three non-mutagenic neighbors are even more consistent: they repeatedly match on phenothiazine, differ in favor of the query on trifluoromethyl and size-related descriptors, and still remain on the non-mutagenic side. Overall, the local analog evidence is more compatible with option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

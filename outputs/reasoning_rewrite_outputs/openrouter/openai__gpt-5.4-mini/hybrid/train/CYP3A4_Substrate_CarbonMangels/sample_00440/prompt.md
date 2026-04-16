@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows mixed CYP3A4 substrate signals. The presence of imidazole (1) is a cautionary feature because this heteroaromatic nitrogen-containing group can add polarity and sometimes reduce passive accessibility, which leans against substrate behavior. Likewise, aryl chloride count 4 suggests a heavily halogenated scaffold; while halogens can sometimes help metabolic stability, this degree of halogenation also makes the structure less straightforward and can support the idea of reduced favorable access. At the same time, the compound is quite lipophilic: estimated logD is 6.3901 and estimated logP is 6.4548, both very high values that indicate strong hydrophobicity. That level of hydrophobicity can favor membrane partitioning and contact with CYP3A4, so these two descriptors support substrate behavior. Size-related descriptors are also in a range compatible with a drug-like, enzyme-accessible molecule: heavy-atom molecular weight is 402.023, exact molecular weight is 413.986, molecular weight is 416.135, and Labute surface area is 165.6058, all consistent with a moderately large but still plausible CYP3A4-interacting scaffold. In contrast, fraction of sp3 carbons is low at 0.1667, indicating a relatively flat and aromatic structure rather than a highly saturated one, which tends to be less favorable for balanced developability and can work against substrate-like behavior. Minimum absolute partial charge is 0.1023, a modest value that does not indicate an especially sheltered low-polarity center and is not strongly favorable on its own. Overall, the very high logD and logP together with moderate molecular size and surface area support CYP3A4 substrate behavior, but the imidazole, heavy aryl chloride substitution, and low sp3 fraction add opposing signals. On balance, the model prediction is that the molecule is a substrate to CYP3A4, with score 0.534.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a useful positive-class analog, but several differences still tilt it away from a substrate-like profile. The query lacks the tertiary amide present in the neighbor (delta -1), and that absence is associated here with a negative shift. The shared imidazole does not distinguish the two molecules, but it is still part of the common scaffold. More importantly, the query has a much lower fraction of sp3 carbons, 0.1667 versus 0.3846 in the neighbor (delta -0.2179), which reduces three-dimensionality relative to a more balanced, developability-friendly profile. The query is also just slightly more neutral, with neutral fraction 0.8616 versus 0.8607 (delta +0.0009), a small favorable change, and its strongest basic pKa is essentially unchanged, 6.6058 versus 6.609 (delta -0.0032), with a mild favorable effect. However, the query also lacks the neighbor’s 1,3-dioxolane (delta -1), another feature that in this comparison aligns with the substrate side. Overall, Neighbor 1 supports the final non-substrate call because the losses in tertiary amide, 1,3-dioxolane, and especially sp3 character outweigh the very small gains in neutral fraction and basic pKa.
+
+Neighbor 2 also resembles a substrate, but the query diverges in a mixed way. The query has many more rotatable bonds, 6 versus 1 (delta +5), which is a major unfavorable change because greater flexibility often tracks with poorer oral developability and weaker effective exposure. The query also lacks the imine found in the neighbor (delta -1), again a shift that aligns with the non-substrate side in this local comparison. At the same time, the neighbor has 4H-1,2,4-triazole while the query does not (delta -1), which favors the substrate side here. Size-related descriptors move in the opposite direction: heavy-atom molecular weight rises from 331.121 to 402.023 (delta +70.902), and exact molecular weight rises from 342.0439 to 413.986 (delta +71.9421), both of which are consistent with a larger, more membrane-exposed molecule. The query’s topological polar surface area is lower, 27.05 versus 43.07 (delta -16.02), which is also more compatible with permeability. Even so, the strong increase in rotatable bonds and the loss of imine dominate this comparison, so Neighbor 2 still aligns more with the final non-substrate label than with substrate behavior.
+
+Neighbor 3 is another positive neighbor, but it differs from the query in several ways that matter chemically. The most striking change is estimated logD, which jumps from 2.9806 in the neighbor to 6.3901 in the query (delta +3.4095), placing the query in a much more hydrophobic regime than the neighbor. The query also lacks the secondary aliphatic amine present in the neighbor (delta -1), and it has a lower fraction of sp3 carbons, 0.1667 versus 0.4615 (delta -0.2949), both of which reduce the neighbor’s more balanced, saturated character. The query’s topological polar surface area is slightly lower, 27.05 versus 29.1 (delta -2.05), which is directionally favorable for permeability, but the effect is modest. The query also has one more basic site, 2 versus 1 (delta +1), and a much larger heavy-atom molecular weight, 402.023 versus 221.602 (delta +180.421), both of which separate it from the smaller positive neighbor and make the query less like that substrate example. Taken together, Neighbor 3 does not overturn the broader picture: the query is larger, more hydrophobic, and less sp3-rich than the positive analog, which is still more consistent with the final non-substrate decision.
+
+Neighbor 4 is a negative neighbor, and here the comparison mostly reinforces the non-substrate label. The query shares imidazole with the neighbor, so that scaffold element does not distinguish the two, but the neighbor also has an oximether that the query lacks (delta -1), and the absence of that feature keeps the query on the same side as the non-substrate example. The query has slightly higher estimated logP, 6.4548 versus 6.1178 (delta +0.337), which is a move toward greater hydrophobicity and in this context can help exposure. However, the query also has a somewhat higher fraction of sp3 carbons, 0.1667 versus 0.1111 (delta +0.0556), and that higher saturation is paired here with a negative shift relative to the non-substrate neighbor. The maximum partial charge is lower in the query, 0.1023 versus 0.1433 (delta -0.041), and the neutral fraction is also lower, 0.8616 versus 0.9346 (delta -0.073). In combination, those charge-state differences do not move the molecule convincingly toward substrate-like behavior. Because the query still resembles this non-substrate neighbor on the key scaffold and neutral-fraction features, Neighbor 4 supports the final non-substrate prediction.
+
+Neighbor 5 is also a negative neighbor and gives an especially clear hydrophobicity-and-size contrast. The query again shares imidazole, but it has a higher minimum absolute partial charge, 0.1023 versus 0.0954 (delta +0.0069), a small but unfavorable increase in local polarity. More importantly, estimated logD rises from 4.0145 to 6.3901 (delta +2.3756), moving the query to a substantially more hydrophobic region. The query also becomes larger, with heavy-atom molecular weight increasing from 295.668 to 402.023 (delta +106.355), molecular weight increasing from 308.772 to 416.135 (delta +107.363), and Labute surface area increasing from 131.9631 to 165.6058 (delta +33.6428). Those shifts point to a bigger, more lipophilic structure relative to this non-substrate analog. In this local setting, that overall shift does not rescue substrate behavior; instead it keeps the query aligned with the negative neighbor class, so Neighbor 5 continues to support option A.
+
+Neighbor 6 provides the strongest direct non-substrate support. The query has a much lower minimum absolute partial charge than the neighbor, 0.1023 versus 0.3352 (delta -0.2329), while both molecules share imidazole. The query also has four aryl chlorides whereas the neighbor has none (delta +4), and that halogen enrichment is a major structural difference that can affect the observed metabolic profile. The fraction of sp3 carbons is unchanged at 0.1667, so there is no compensating gain in saturation here. The neighbor has carboxylic acid and the query does not (delta -1), removing a strongly polar acidic feature from the query. Finally, the query’s neutral fraction is vastly higher, 0.8616 versus 0.0011 (delta +0.8605), which reflects a dramatic move away from the highly ionized state of the neighbor. Even though a higher neutral fraction can sometimes favor accessibility, in this specific comparison the combined loss of carboxylic acid, the halogen-rich scaffold, and the much lower minimum absolute partial charge keep Neighbor 6 as a clear non-substrate analog.
+
+Putting the six comparisons together, the positive neighbors do contain some substrate-like features, especially when the query is compared with smaller or more polar analogs, but the strongest recurring differences are the query’s larger size, much higher hydrophobicity, lower fraction of sp3 carbons in the positive set, and the presence or absence of key scaffold features that match the non-substrate neighbors. The negative neighbors in particular are consistent with the query’s chemistry, and the overall balance favors option (A): the compound is not a substrate to CYP3A4.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

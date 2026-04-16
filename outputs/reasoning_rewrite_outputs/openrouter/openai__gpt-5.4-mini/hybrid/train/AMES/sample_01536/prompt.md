@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a chloroalkene group, which is a plausible structural alert for mutagenicity and is the strongest pro-mutagenic feature here, so that immediately raises concern for option (B). At the same time, several descriptors suggest a very small, highly nonpolar molecule: the molecular weight is 88.537, the heavy-atom count is 5, the topological polar surface area is 0, the hydrogen-bond acceptor count is 0, the heteroatom count is 1, and the ring count is 0. This pattern is consistent with a compact, minimally polar structure that may have limited hydrogen-bonding capacity and little ring-driven aromatic risk, which would ordinarily weaken mutagenicity concerns. The fraction of sp3 carbons is 0, so the scaffold is fully unsaturated and relatively flat, which can be less favorable than a saturated framework. The Labute surface area is 36.7581, which is not especially low for such a small molecule and adds some support for exposure to the bacterial system. The minimum partial charge is -0.0976, indicating only a modest negative charge character rather than a strongly ionized or highly polar molecule. Balancing these mixed signals, the presence of the chloroalkene as a clear reactive motif outweighs the mostly exposure-limiting and low-polartiy descriptors, so the molecule is predicted to be mutagenic, option (B), with score 0.5406.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close analog, and several of its values favor the non-mutagenic side. The query has much lower topological polar surface area than the neighbor, 0 versus 45.37 with a delta of -45.37, and that lower polarity can reduce bacterial exposure; that same comparison is accompanied by a negative effect on the non-mutagenic direction. The query also has a much smaller exact molecular weight, 88.008 versus 183.0895 with a delta of -95.0816, which again tends to reduce uptake-related burden rather than create a mutagenic alert. The query’s minimum partial charge is less negative, -0.0976 versus -0.3712 with a delta of +0.2736, which in this setting also aligns with the non-mutagenic side. Against that, the query has one chloroalkene while the neighbor has none, and that single added chloroalkene is the clearest mutagenicity-facing difference here. The query also has lower Labute surface area, 36.7581 versus 77.106 with a delta of -40.3478, and fewer heavy atoms, 5 versus 13 with a delta of -8; both of those changes are mixed but not enough to outweigh the overall non-mutagenic leaning from the low polarity, low mass, and smaller size profile. Neighbor 1 therefore ends up only weakly informative overall, but it still supports the non-mutagenic label more than the mutagenic one.
+
+Neighbor 2 is essentially the same kind of comparison and leads to the same conclusion. Again, the query’s topological polar surface area is 0 compared with 45.37 in the neighbor, delta -45.37, which favors lower exposure and therefore a non-mutagenic outcome. The query still contains one chloroalkene where the neighbor has none, a feature that is concerning for mutagenicity, and the query also has lower Labute surface area, 36.7581 versus 77.106 with delta -40.3478, plus a much smaller exact molecular weight, 88.008 versus 183.0895 with delta -95.0816. The minimum partial charge is also less negative in the query, -0.0976 versus -0.3712 with delta +0.2736, which does not create a strong mutagenic signal here. The lower heavy-atom count, 5 versus 13 with delta -8, is mainly another exposure-related difference. Taken together, Neighbor 2 stays near neutral but, like Neighbor 1, still tilts slightly toward option (A) because the low polarity and small size are more convincing than the isolated chloroalkene concern.
+
+Neighbor 3 is the strongest of the three mutagenic neighbors, but even here the evidence is mixed rather than decisive. The query has one chloroalkene while the neighbor has none, delta +1, which is the most direct mutagenic feature in this comparison. The query also shows a much lower topological polar surface area, 0 versus 34.14 with delta -34.14, and lower molecular weight, 88.537 versus 203.024 with delta -114.487; both of those differences reduce overall size and polarity, which can lower bacterial exposure. However, the query also has a much lower Labute surface area, 36.7581 versus 79.0909 with delta -42.3327, and fewer heavy atoms, 5 versus 12 with delta -7; in this analog set those changes are associated with the mutagenic side rather than the non-mutagenic side. The heteroatom count is also lower, 1 versus 4 with delta -3, which cuts the other way. Because the chloroalkene is the main structural-alert-like difference and the smaller, less polar query still carries that feature, Neighbor 3 supports mutagenicity more than the first two neighbors do. Even so, the comparison is not overwhelming, and it does not by itself overcome the broader pattern seen across all six neighbors.
+
+Neighbor 4 shifts the comparison back toward the non-mutagenic side. The query has one chloroalkene while the neighbor has none, delta +1, which is again the main mutagenicity-facing issue. But the neighbor is much heavier and larger in the exposure-related descriptors: Labute surface area is 100.988 versus 36.7581 for the query, and the heavy-atom count is 13 versus 5, both suggesting the neighbor is the bulkier molecule. The neighbor also contains 5 aryl chlorides while the query has 0, and that absence in the query is a favorable non-mutagenic difference. The query’s maximum absolute partial charge is 0.0976 versus 0.0984 in the neighbor, a very small shift, but it does not create a stronger mutagenic argument. The ring count also drops from 1 in the neighbor to 0 in the query, delta -1, which in this pair is another non-mutagenic-leaning change rather than a concern. Overall, despite the chloroalkene, Neighbor 4 is better aligned with option (A) because the query lacks the aryl chlorides and ring burden that distinguish the non-mutagenic analog.
+
+Neighbor 5 is still informative but leans more ambivalently. The query has one alkene while the neighbor has none, and that unsaturation is treated as a mutagenicity-facing change here. The query also has fewer heteroatoms, 1 versus 7 with delta -6, fewer aryl chlorides, 0 versus 5 with delta -5, and a much smaller heavy-atom count, 5 versus 15 with delta -10. Those reductions mostly suggest a smaller, less substituted molecule. At the same time, the query’s minimum partial charge is -0.0976 versus -0.0819 in the neighbor, delta -0.0157, so the electrostatic profile is only slightly different. In this neighbor, the reduced heteroatom burden and lower substitution are interpreted on the non-mutagenic side, while the alkene and smaller size keep some mutagenic pressure in view. The balance still ends up favoring option (A), but only weakly.
+
+Neighbor 6 is close to Neighbor 5 and gives a slightly stronger mutagenic tilt than Neighbor 5 while still not overturning the overall pattern. The query again has one alkene whereas the neighbor has none, which is unfavorable, and the query is much smaller with 5 heavy atoms versus 15, delta -10. The heteroatom count is also much lower, 1 versus 7 with delta -6, and the query has no aryl chlorides compared with 5 in the neighbor, both of which are favorable to the non-mutagenic side. The ring count falls from 1 to 0, delta -1, which is another size/simplicity difference that does not create a mutagenic alert by itself. Even with those favorable reductions, the neighbor comparison is pulled toward mutagenicity by the alkene and by the size difference in this specific context, so Neighbor 6 is the one negative-neighbor case that leans most clearly toward option (B). Still, it remains a single analog rather than the dominant pattern.
+
+Putting all six neighbors together, the most consistent themes are that the query is much smaller, less polar, and less heavily substituted than several of the analogs, while only one explicit mutagenicity-oriented feature appears repeatedly: the chloroalkene or alkene motif. That structural concern is real, but the broader analog set contains multiple neighbors where the lower topological polar surface area, reduced molecular weight, smaller ring burden, and lower substituent count align with the non-mutagenic class. Because the non-mutagenic signals appear across more of the comparisons and the mutagenic signals are more localized, the combined evidence supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

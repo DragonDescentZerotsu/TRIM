@@ -1,0 +1,2332 @@
+{
+  "schema_version": "trim_reasoning_v0",
+  "evidence_stage": "local_evidence_only",
+  "sample_id": "train_sample_48",
+  "sample_index": 48,
+  "task": "Carcinogens_Lagunin",
+  "split": "train",
+  "smiles": "CC1(C)[C@@H](OC(=O)CCC(=O)O)CC[C@]2(C)[C@H]3C(=O)C=C4[C@@H]5C[C@@](C)(C(=O)O)CC[C@]5(C)CC[C@@]4(C)[C@]3(C)CC[C@@H]12",
+  "gt_label": 0,
+  "gt_label_semantics": {
+    "option": "A",
+    "text": "is not a carcinogen",
+    "label": 0
+  },
+  "local_prediction": 0,
+  "local_prediction_semantics": {
+    "option": "A",
+    "text": "is not a carcinogen",
+    "label": 0
+  },
+  "local_prediction_correct": true,
+  "local_score": 0.0024092349791252137,
+  "s_pos": 0.0012068240622262042,
+  "s_neg": 0.0029123292244329006,
+  "keep_for_reasoning": true,
+  "drop_reason": null,
+  "local_per_neighbor_decision_evidence": {
+    "positive_neighbors": [
+      {
+        "neighbor_id": "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+        "query_smiles": "CC1(C)[C@@H](OC(=O)CCC(=O)O)CC[C@]2(C)[C@H]3C(=O)C=C4[C@@H]5C[C@@](C)(C(=O)O)CC[C@]5(C)CC[C@@]4(C)[C@]3(C)CC[C@@H]12",
+        "query_label": 0,
+        "neighbor_smiles": "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+        "neighbor_label": 1,
+        "neighbor_similarity": 0.11245421245421244,
+        "neighbor_scaffold": "c1ccc(Cc2ccccc2)cc1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.0003447914050143952,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a carcinogen",
+          "label": 0
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 4.654600000000005,
+            "query_value": 6.828300000000008,
+            "delta_value": 2.173700000000003,
+            "base_value_text": "value 4.6546",
+            "query_value_text": "value 6.8283",
+            "delta_value_text": "+2.1737",
+            "contribution": 1.6122958145100081,
+            "contribution_abs": 1.6122958145100081,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a carcinogen",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 4.6546, while the query's estimated logP is value 6.8283. The query-minus-neighbor delta is +2.1737. This pairwise contribution is 1.6123, which pushes toward option (B): is a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 2.4097,
+            "query_value": 3.6837,
+            "delta_value": 1.274,
+            "base_value_text": "value 2.4097",
+            "query_value_text": "value 3.6837",
+            "delta_value_text": "+1.274",
+            "contribution": -1.329687230789211,
+            "contribution_abs": 1.329687230789211,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For estimated logD, the neighbor's estimated logD is value 2.4097, while the query's estimated logD is value 3.6837. The query-minus-neighbor delta is +1.274. This pairwise contribution is -1.3297, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "fg_top_level__ketone",
+            "display_name": "ketone",
+            "description": "top-level functional-group indicator or count for ketone",
+            "source_family": "fg_top_level",
+            "raw_name": "ketone",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": -1.1095668277748405,
+            "contribution_abs": 1.1095668277748405,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "The neighbor does not have ketone, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1096, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "display_name": "heavy-atom molecular weight",
+            "description": "molecular weight contributed by heavy atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomMolWt",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 322.2580000000001,
+            "query_value": 520.3670000000004,
+            "delta_value": 198.10900000000032,
+            "base_value_text": "value 322.258",
+            "query_value_text": "value 520.367",
+            "delta_value_text": "+198.109",
+            "contribution": -0.9481267591397708,
+            "contribution_abs": 0.9481267591397708,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 322.258, while the query's heavy-atom molecular weight is value 520.367. The query-minus-neighbor delta is +198.109. This pairwise contribution is -0.9481, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticCarbocycles",
+            "display_name": "aliphatic carbocycle count",
+            "description": "number of aliphatic carbocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticCarbocycles",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 5.0,
+            "delta_value": 5.0,
+            "base_value_text": "value 0",
+            "query_value_text": "value 5",
+            "delta_value_text": "+5",
+            "contribution": -0.9283808417139001,
+            "contribution_abs": 0.9283808417139001,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +5. This pairwise contribution is -0.9284, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumSaturatedCarbocycles",
+            "display_name": "saturated carbocycle count",
+            "description": "number of saturated carbocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumSaturatedCarbocycles",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 4.0,
+            "delta_value": 4.0,
+            "base_value_text": "value 0",
+            "query_value_text": "value 4",
+            "delta_value_text": "+4",
+            "contribution": -0.9106193595359445,
+            "contribution_abs": 0.9106193595359445,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For saturated carbocycle count, the neighbor's saturated carbocycle count is value 0, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is +4. This pairwise contribution is -0.9106, which pushes toward option (A): is not a carcinogen."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O",
+        "query_smiles": "CC1(C)[C@@H](OC(=O)CCC(=O)O)CC[C@]2(C)[C@H]3C(=O)C=C4[C@@H]5C[C@@](C)(C(=O)O)CC[C@]5(C)CC[C@@]4(C)[C@]3(C)CC[C@@H]12",
+        "query_label": 0,
+        "neighbor_smiles": "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O",
+        "neighbor_label": 1,
+        "neighbor_similarity": 0.1109353905496625,
+        "neighbor_scaffold": "O=C1N=CNC(=O)C1c1ccccc1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.0005922007506143697,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a carcinogen",
+          "label": 0
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "display_name": "carboxylic ester",
+            "description": "top-level functional-group indicator or count for carboxylic ester",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic ester",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 1.7513027562761774,
+            "contribution_abs": 1.7513027562761774,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a carcinogen",
+            "text_hint": "The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 1.7513, which pushes toward option (B): is a carcinogen."
+          },
+          {
+            "feature_name": "fg_top_level__ketone",
+            "display_name": "ketone",
+            "description": "top-level functional-group indicator or count for ketone",
+            "source_family": "fg_top_level",
+            "raw_name": "ketone",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": -1.1095668277748405,
+            "contribution_abs": 1.1095668277748405,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "The neighbor does not have ketone, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1096, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.9048,
+            "query_value": 6.828300000000008,
+            "delta_value": 5.923500000000008,
+            "base_value_text": "value 0.9048",
+            "query_value_text": "value 6.8283",
+            "delta_value_text": "+5.9235",
+            "contribution": 1.0845094984645742,
+            "contribution_abs": 1.0845094984645742,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a carcinogen",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 0.9048, while the query's estimated logP is value 6.8283. The query-minus-neighbor delta is +5.9235. This pairwise contribution is 1.0845, which pushes toward option (B): is a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "display_name": "heavy-atom molecular weight",
+            "description": "molecular weight contributed by heavy atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomMolWt",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 220.143,
+            "query_value": 520.3670000000004,
+            "delta_value": 300.2240000000004,
+            "base_value_text": "value 220.143",
+            "query_value_text": "value 520.367",
+            "delta_value_text": "+300.224",
+            "contribution": -0.9969851366204359,
+            "contribution_abs": 0.9969851366204359,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 220.143, while the query's heavy-atom molecular weight is value 520.367. The query-minus-neighbor delta is +300.224. This pairwise contribution is -0.997, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticCarbocycles",
+            "display_name": "aliphatic carbocycle count",
+            "description": "number of aliphatic carbocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticCarbocycles",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 5.0,
+            "delta_value": 5.0,
+            "base_value_text": "value 0",
+            "query_value_text": "value 5",
+            "delta_value_text": "+5",
+            "contribution": -0.9283808417139001,
+            "contribution_abs": 0.9283808417139001,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +5. This pairwise contribution is -0.9284, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumSaturatedCarbocycles",
+            "display_name": "saturated carbocycle count",
+            "description": "number of saturated carbocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumSaturatedCarbocycles",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 4.0,
+            "delta_value": 4.0,
+            "base_value_text": "value 0",
+            "query_value_text": "value 4",
+            "delta_value_text": "+4",
+            "contribution": -0.9106193595359445,
+            "contribution_abs": 0.9106193595359445,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For saturated carbocycle count, the neighbor's saturated carbocycle count is value 0, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is +4. This pairwise contribution is -0.9106, which pushes toward option (A): is not a carcinogen."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1",
+        "query_smiles": "CC1(C)[C@@H](OC(=O)CCC(=O)O)CC[C@]2(C)[C@H]3C(=O)C=C4[C@@H]5C[C@@](C)(C(=O)O)CC[C@]5(C)CC[C@@]4(C)[C@]3(C)CC[C@@H]12",
+        "query_label": 0,
+        "neighbor_smiles": "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1",
+        "neighbor_label": 1,
+        "neighbor_similarity": 0.10520123839009289,
+        "neighbor_scaffold": "O=C1C(N=Nc2ccccc2)C=NN1c1ccccc1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.0027764128162945396,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a carcinogen",
+          "label": 0
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "display_name": "carboxylic ester",
+            "description": "top-level functional-group indicator or count for carboxylic ester",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic ester",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 1.7513027562761774,
+            "contribution_abs": 1.7513027562761774,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a carcinogen",
+            "text_hint": "The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 1.7513, which pushes toward option (B): is a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0625,
+            "query_value": 0.8235294117647058,
+            "delta_value": 0.7610294117647058,
+            "base_value_text": "value 0.0625",
+            "query_value_text": "value 0.8235",
+            "delta_value_text": "+0.761",
+            "contribution": -1.1691815736937428,
+            "contribution_abs": 1.1691815736937428,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.0625, while the query's fraction of sp3 carbons is value 0.8235. The query-minus-neighbor delta is +0.761. This pairwise contribution is -1.1692, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "fg_top_level__carboxylic acid",
+            "display_name": "carboxylic acid",
+            "description": "top-level functional-group indicator or count for carboxylic acid",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic acid",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 2.0,
+            "delta_value": 1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "count 2",
+            "delta_value_text": "+1",
+            "contribution": -1.1507419677765691,
+            "contribution_abs": 1.1507419677765691,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "The neighbor has 1 copies of carboxylic acid, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -1.1507, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "fg_top_level__ketone",
+            "display_name": "ketone",
+            "description": "top-level functional-group indicator or count for ketone",
+            "source_family": "fg_top_level",
+            "raw_name": "ketone",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": -1.1095668277748405,
+            "contribution_abs": 1.1095668277748405,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "The neighbor does not have ketone, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1096, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.1196999999999997,
+            "query_value": 6.828300000000008,
+            "delta_value": 5.708600000000008,
+            "base_value_text": "value 1.1197",
+            "query_value_text": "value 6.8283",
+            "delta_value_text": "+5.7086",
+            "contribution": 1.0948649431248925,
+            "contribution_abs": 1.0948649431248925,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a carcinogen",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 1.1197, while the query's estimated logP is value 6.8283. The query-minus-neighbor delta is +5.7086. This pairwise contribution is 1.0949, which pushes toward option (B): is a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticCarbocycles",
+            "display_name": "aliphatic carbocycle count",
+            "description": "number of aliphatic carbocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticCarbocycles",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 5.0,
+            "delta_value": 5.0,
+            "base_value_text": "value 0",
+            "query_value_text": "value 5",
+            "delta_value_text": "+5",
+            "contribution": -0.9283808417139001,
+            "contribution_abs": 0.9283808417139001,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +5. This pairwise contribution is -0.9284, which pushes toward option (A): is not a carcinogen."
+          }
+        ]
+      }
+    ],
+    "negative_neighbors": [
+      {
+        "neighbor_id": "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+        "query_smiles": "CC1(C)[C@@H](OC(=O)CCC(=O)O)CC[C@]2(C)[C@H]3C(=O)C=C4[C@@H]5C[C@@](C)(C(=O)O)CC[C@]5(C)CC[C@@]4(C)[C@]3(C)CC[C@@H]12",
+        "query_label": 0,
+        "neighbor_smiles": "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+        "neighbor_label": 0,
+        "neighbor_similarity": 0.3227168234064786,
+        "neighbor_scaffold": "C1=C2C3CCCCC3CCC2C2CCC3CCCCC3C2C1",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.001988193234971595,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a carcinogen",
+          "label": 0
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticCarbocycles",
+            "display_name": "aliphatic carbocycle count",
+            "description": "number of aliphatic carbocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticCarbocycles",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 5.0,
+            "query_value": 5.0,
+            "delta_value": 0.0,
+            "base_value_text": "value 5",
+            "query_value_text": "value 5",
+            "delta_value_text": "+0",
+            "contribution": -0.8055271498291625,
+            "contribution_abs": 0.8055271498291625,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 5, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.8055, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumSaturatedCarbocycles",
+            "display_name": "saturated carbocycle count",
+            "description": "number of saturated carbocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumSaturatedCarbocycles",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 4.0,
+            "query_value": 4.0,
+            "delta_value": 0.0,
+            "base_value_text": "value 4",
+            "query_value_text": "value 4",
+            "delta_value_text": "+0",
+            "contribution": -0.6879869141673803,
+            "contribution_abs": 0.6879869141673803,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For saturated carbocycle count, the neighbor's saturated carbocycle count is value 4, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is +0. This pairwise contribution is -0.688, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "display_name": "aliphatic ring count",
+            "description": "number of aliphatic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticRings",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 5.0,
+            "query_value": 5.0,
+            "delta_value": 0.0,
+            "base_value_text": "value 5",
+            "query_value_text": "value 5",
+            "delta_value_text": "+0",
+            "contribution": -0.6597893615454107,
+            "contribution_abs": 0.6597893615454107,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For aliphatic ring count, the neighbor's aliphatic ring count is value 5, while the query's aliphatic ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.6598, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "fg_top_level__carboxylic acid",
+            "display_name": "carboxylic acid",
+            "description": "top-level functional-group indicator or count for carboxylic acid",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic acid",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 2.0,
+            "delta_value": 1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "count 2",
+            "delta_value_text": "+1",
+            "contribution": -0.6152783208005268,
+            "contribution_abs": 0.6152783208005268,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "The neighbor has 1 copies of carboxylic acid, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -0.6153, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "display_name": "carboxylic ester",
+            "description": "top-level functional-group indicator or count for carboxylic ester",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic ester",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 0.4398996913041109,
+            "contribution_abs": 0.4398996913041109,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a carcinogen",
+            "text_hint": "The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4399, which pushes toward option (B): is a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumSaturatedRings",
+            "display_name": "saturated ring count",
+            "description": "number of saturated rings",
+            "source_family": "rdkit",
+            "raw_name": "NumSaturatedRings",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 4.0,
+            "query_value": 4.0,
+            "delta_value": 0.0,
+            "base_value_text": "value 4",
+            "query_value_text": "value 4",
+            "delta_value_text": "+0",
+            "contribution": -0.28581790046351285,
+            "contribution_abs": 0.28581790046351285,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For saturated ring count, the neighbor's saturated ring count is value 4, while the query's saturated ring count is value 4. The query-minus-neighbor delta is +0. This pairwise contribution is -0.2858, which pushes toward option (A): is not a carcinogen."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+        "query_smiles": "CC1(C)[C@@H](OC(=O)CCC(=O)O)CC[C@]2(C)[C@H]3C(=O)C=C4[C@@H]5C[C@@](C)(C(=O)O)CC[C@]5(C)CC[C@@]4(C)[C@]3(C)CC[C@@H]12",
+        "query_label": 0,
+        "neighbor_smiles": "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+        "neighbor_label": 0,
+        "neighbor_similarity": 0.24855144855144856,
+        "neighbor_scaffold": "C1CCC2C(C1)CCC1C2CCC2C3CCCC3CCC21",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.0019062562457618868,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a carcinogen",
+          "label": 0
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticCarbocycles",
+            "display_name": "aliphatic carbocycle count",
+            "description": "number of aliphatic carbocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticCarbocycles",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 5.0,
+            "query_value": 5.0,
+            "delta_value": 0.0,
+            "base_value_text": "value 5",
+            "query_value_text": "value 5",
+            "delta_value_text": "+0",
+            "contribution": -0.8055271498291625,
+            "contribution_abs": 0.8055271498291625,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 5, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.8055, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumSaturatedCarbocycles",
+            "display_name": "saturated carbocycle count",
+            "description": "number of saturated carbocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumSaturatedCarbocycles",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 5.0,
+            "query_value": 4.0,
+            "delta_value": -1.0,
+            "base_value_text": "value 5",
+            "query_value_text": "value 4",
+            "delta_value_text": "-1",
+            "contribution": -0.7293861695675893,
+            "contribution_abs": 0.7293861695675893,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For saturated carbocycle count, the neighbor's saturated carbocycle count is value 5, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is -0.7294, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "display_name": "aliphatic ring count",
+            "description": "number of aliphatic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticRings",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 5.0,
+            "query_value": 5.0,
+            "delta_value": 0.0,
+            "base_value_text": "value 5",
+            "query_value_text": "value 5",
+            "delta_value_text": "+0",
+            "contribution": -0.6597893615454107,
+            "contribution_abs": 0.6597893615454107,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For aliphatic ring count, the neighbor's aliphatic ring count is value 5, while the query's aliphatic ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.6598, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "fg_top_level__carboxylic acid",
+            "display_name": "carboxylic acid",
+            "description": "top-level functional-group indicator or count for carboxylic acid",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic acid",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 2.0,
+            "delta_value": 1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "count 2",
+            "delta_value_text": "+1",
+            "contribution": -0.6152783208005268,
+            "contribution_abs": 0.6152783208005268,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "The neighbor has 1 copies of carboxylic acid, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -0.6153, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "display_name": "carboxylic ester",
+            "description": "top-level functional-group indicator or count for carboxylic ester",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic ester",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 0.4398996913041109,
+            "contribution_abs": 0.4398996913041109,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a carcinogen",
+            "text_hint": "The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4399, which pushes toward option (B): is a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumSaturatedRings",
+            "display_name": "saturated ring count",
+            "description": "number of saturated rings",
+            "source_family": "rdkit",
+            "raw_name": "NumSaturatedRings",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 5.0,
+            "query_value": 4.0,
+            "delta_value": -1.0,
+            "base_value_text": "value 5",
+            "query_value_text": "value 4",
+            "delta_value_text": "-1",
+            "contribution": -0.3196628990819436,
+            "contribution_abs": 0.3196628990819436,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For saturated ring count, the neighbor's saturated ring count is value 5, while the query's saturated ring count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is -0.3197, which pushes toward option (A): is not a carcinogen."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C",
+        "query_smiles": "CC1(C)[C@@H](OC(=O)CCC(=O)O)CC[C@]2(C)[C@H]3C(=O)C=C4[C@@H]5C[C@@](C)(C(=O)O)CC[C@]5(C)CC[C@@]4(C)[C@]3(C)CC[C@@H]12",
+        "query_label": 0,
+        "neighbor_smiles": "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C",
+        "neighbor_label": 0,
+        "neighbor_similarity": 0.21407407407407408,
+        "neighbor_scaffold": "C1CCC2C(C1)CCC1C3CCCC3CCC21",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.0054735694375844714,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a carcinogen",
+          "label": 0
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 5.507100000000006,
+            "query_value": 6.828300000000008,
+            "delta_value": 1.321200000000002,
+            "base_value_text": "value 5.5071",
+            "query_value_text": "value 6.8283",
+            "delta_value_text": "+1.3212",
+            "contribution": 1.097544454667265,
+            "contribution_abs": 1.097544454667265,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a carcinogen",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 5.5071, while the query's estimated logP is value 6.8283. The query-minus-neighbor delta is +1.3212. This pairwise contribution is 1.0975, which pushes toward option (B): is a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticCarbocycles",
+            "display_name": "aliphatic carbocycle count",
+            "description": "number of aliphatic carbocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticCarbocycles",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 4.0,
+            "query_value": 5.0,
+            "delta_value": 1.0,
+            "base_value_text": "value 4",
+            "query_value_text": "value 5",
+            "delta_value_text": "+1",
+            "contribution": -0.6969305572994944,
+            "contribution_abs": 0.6969305572994944,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 4, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +1. This pairwise contribution is -0.6969, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumSaturatedCarbocycles",
+            "display_name": "saturated carbocycle count",
+            "description": "number of saturated carbocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumSaturatedCarbocycles",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 4.0,
+            "query_value": 4.0,
+            "delta_value": 0.0,
+            "base_value_text": "value 4",
+            "query_value_text": "value 4",
+            "delta_value_text": "+0",
+            "contribution": -0.6879869141673803,
+            "contribution_abs": 0.6879869141673803,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For saturated carbocycle count, the neighbor's saturated carbocycle count is value 4, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is +0. This pairwise contribution is -0.688, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "display_name": "aliphatic ring count",
+            "description": "number of aliphatic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticRings",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 4.0,
+            "query_value": 5.0,
+            "delta_value": 1.0,
+            "base_value_text": "value 4",
+            "query_value_text": "value 5",
+            "delta_value_text": "+1",
+            "contribution": -0.6553837024129057,
+            "contribution_abs": 0.6553837024129057,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "For aliphatic ring count, the neighbor's aliphatic ring count is value 4, while the query's aliphatic ring count is value 5. The query-minus-neighbor delta is +1. This pairwise contribution is -0.6554, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "fg_top_level__carboxylic acid",
+            "display_name": "carboxylic acid",
+            "description": "top-level functional-group indicator or count for carboxylic acid",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic acid",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 2.0,
+            "delta_value": 1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "count 2",
+            "delta_value_text": "+1",
+            "contribution": -0.6152783208005268,
+            "contribution_abs": 0.6152783208005268,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a carcinogen",
+            "text_hint": "The neighbor has 1 copies of carboxylic acid, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -0.6153, which pushes toward option (A): is not a carcinogen."
+          },
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "display_name": "carboxylic ester",
+            "description": "top-level functional-group indicator or count for carboxylic ester",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic ester",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 0.4398996913041109,
+            "contribution_abs": 0.4398996913041109,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a carcinogen",
+            "text_hint": "The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4399, which pushes toward option (B): is a carcinogen."
+          }
+        ]
+      }
+    ],
+    "num_positive_neighbors": 3,
+    "num_negative_neighbors": 3
+  },
+  "local_per_neighbor_middle_draft": {
+    "positive_neighbors": [
+      {
+        "neighbor_id": "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+        "neighbor_smiles": "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.0003447914050143952,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a carcinogen",
+          "label": 0
+        },
+        "middle_draft": "First, For estimated logP, the neighbor's estimated logP is value 4.6546, while the query's estimated logP is value 6.8283. The query-minus-neighbor delta is +2.1737. This pairwise contribution is 1.6123, which pushes toward option (B): is a carcinogen. Next, For estimated logD, the neighbor's estimated logD is value 2.4097, while the query's estimated logD is value 3.6837. The query-minus-neighbor delta is +1.274. This pairwise contribution is -1.3297, which pushes toward option (A): is not a carcinogen. Then, The neighbor does not have ketone, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1096, which pushes toward option (A): is not a carcinogen. After that, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 322.258, while the query's heavy-atom molecular weight is value 520.367. The query-minus-neighbor delta is +198.109. This pairwise contribution is -0.9481, which pushes toward option (A): is not a carcinogen. Finally, For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +5. This pairwise contribution is -0.9284, which pushes toward option (A): is not a carcinogen. Step 6, For saturated carbocycle count, the neighbor's saturated carbocycle count is value 0, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is +4. This pairwise contribution is -0.9106, which pushes toward option (A): is not a carcinogen. Taken together, this positive-neighbor comparison pushes toward option (A): is not a carcinogen with pair score 0.0003."
+      },
+      {
+        "neighbor_id": "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O",
+        "neighbor_smiles": "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.0005922007506143697,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a carcinogen",
+          "label": 0
+        },
+        "middle_draft": "First, The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 1.7513, which pushes toward option (B): is a carcinogen. Next, The neighbor does not have ketone, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1096, which pushes toward option (A): is not a carcinogen. Then, For estimated logP, the neighbor's estimated logP is value 0.9048, while the query's estimated logP is value 6.8283. The query-minus-neighbor delta is +5.9235. This pairwise contribution is 1.0845, which pushes toward option (B): is a carcinogen. After that, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 220.143, while the query's heavy-atom molecular weight is value 520.367. The query-minus-neighbor delta is +300.224. This pairwise contribution is -0.997, which pushes toward option (A): is not a carcinogen. Finally, For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +5. This pairwise contribution is -0.9284, which pushes toward option (A): is not a carcinogen. Step 6, For saturated carbocycle count, the neighbor's saturated carbocycle count is value 0, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is +4. This pairwise contribution is -0.9106, which pushes toward option (A): is not a carcinogen. Taken together, this positive-neighbor comparison pushes toward option (A): is not a carcinogen with pair score 0.0006."
+      },
+      {
+        "neighbor_id": "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1",
+        "neighbor_smiles": "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.0027764128162945396,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a carcinogen",
+          "label": 0
+        },
+        "middle_draft": "First, The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 1.7513, which pushes toward option (B): is a carcinogen. Next, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.0625, while the query's fraction of sp3 carbons is value 0.8235. The query-minus-neighbor delta is +0.761. This pairwise contribution is -1.1692, which pushes toward option (A): is not a carcinogen. Then, The neighbor has 1 copies of carboxylic acid, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -1.1507, which pushes toward option (A): is not a carcinogen. After that, The neighbor does not have ketone, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1096, which pushes toward option (A): is not a carcinogen. Finally, For estimated logP, the neighbor's estimated logP is value 1.1197, while the query's estimated logP is value 6.8283. The query-minus-neighbor delta is +5.7086. This pairwise contribution is 1.0949, which pushes toward option (B): is a carcinogen. Step 6, For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +5. This pairwise contribution is -0.9284, which pushes toward option (A): is not a carcinogen. Taken together, this positive-neighbor comparison pushes toward option (A): is not a carcinogen with pair score 0.0028."
+      }
+    ],
+    "negative_neighbors": [
+      {
+        "neighbor_id": "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+        "neighbor_smiles": "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.001988193234971595,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a carcinogen",
+          "label": 0
+        },
+        "middle_draft": "First, For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 5, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.8055, which pushes toward option (A): is not a carcinogen. Next, For saturated carbocycle count, the neighbor's saturated carbocycle count is value 4, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is +0. This pairwise contribution is -0.688, which pushes toward option (A): is not a carcinogen. Then, For aliphatic ring count, the neighbor's aliphatic ring count is value 5, while the query's aliphatic ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.6598, which pushes toward option (A): is not a carcinogen. After that, The neighbor has 1 copies of carboxylic acid, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -0.6153, which pushes toward option (A): is not a carcinogen. Finally, The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4399, which pushes toward option (B): is a carcinogen. Step 6, For saturated ring count, the neighbor's saturated ring count is value 4, while the query's saturated ring count is value 4. The query-minus-neighbor delta is +0. This pairwise contribution is -0.2858, which pushes toward option (A): is not a carcinogen. Taken together, this negative-neighbor comparison pushes toward option (A): is not a carcinogen with pair score 0.002."
+      },
+      {
+        "neighbor_id": "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+        "neighbor_smiles": "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.0019062562457618868,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a carcinogen",
+          "label": 0
+        },
+        "middle_draft": "First, For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 5, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.8055, which pushes toward option (A): is not a carcinogen. Next, For saturated carbocycle count, the neighbor's saturated carbocycle count is value 5, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is -0.7294, which pushes toward option (A): is not a carcinogen. Then, For aliphatic ring count, the neighbor's aliphatic ring count is value 5, while the query's aliphatic ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.6598, which pushes toward option (A): is not a carcinogen. After that, The neighbor has 1 copies of carboxylic acid, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -0.6153, which pushes toward option (A): is not a carcinogen. Finally, The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4399, which pushes toward option (B): is a carcinogen. Step 6, For saturated ring count, the neighbor's saturated ring count is value 5, while the query's saturated ring count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is -0.3197, which pushes toward option (A): is not a carcinogen. Taken together, this negative-neighbor comparison pushes toward option (A): is not a carcinogen with pair score 0.0019."
+      },
+      {
+        "neighbor_id": "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C",
+        "neighbor_smiles": "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.0054735694375844714,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a carcinogen",
+          "label": 0
+        },
+        "middle_draft": "First, For estimated logP, the neighbor's estimated logP is value 5.5071, while the query's estimated logP is value 6.8283. The query-minus-neighbor delta is +1.3212. This pairwise contribution is 1.0975, which pushes toward option (B): is a carcinogen. Next, For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 4, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +1. This pairwise contribution is -0.6969, which pushes toward option (A): is not a carcinogen. Then, For saturated carbocycle count, the neighbor's saturated carbocycle count is value 4, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is +0. This pairwise contribution is -0.688, which pushes toward option (A): is not a carcinogen. After that, For aliphatic ring count, the neighbor's aliphatic ring count is value 4, while the query's aliphatic ring count is value 5. The query-minus-neighbor delta is +1. This pairwise contribution is -0.6554, which pushes toward option (A): is not a carcinogen. Finally, The neighbor has 1 copies of carboxylic acid, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -0.6153, which pushes toward option (A): is not a carcinogen. Step 6, The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4399, which pushes toward option (B): is a carcinogen. Taken together, this negative-neighbor comparison pushes toward option (A): is not a carcinogen with pair score 0.0055."
+      }
+    ]
+  },
+  "local_summary_middle_draft": {
+    "positive_neighbors": {
+      "group_name": "positive_neighbors",
+      "num_neighbors": 3,
+      "num_shared_features": 6,
+      "num_single_neighbor_features": 3,
+      "shared_evidence": [
+        {
+          "feature_name": "rdkit_pka__rdkit__MolLogP",
+          "display_name": "estimated logP",
+          "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+          "source_family": "rdkit",
+          "raw_name": "MolLogP",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+            "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O",
+            "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1"
+          ],
+          "neighbor_similarities": [
+            0.11245421245421244,
+            0.1109353905496625,
+            0.10520123839009289
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.4168010887175694
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a carcinogen",
+            "label": 1
+          },
+          "total_abs_contribution": 3.791670256099475,
+          "total_weighted_evidence": 0.4168010887175694,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+              "neighbor_similarity": 0.11245421245421244,
+              "pair_score": 0.0003447914050143952,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": 1.6122958145100081,
+              "contribution_abs": 1.6122958145100081,
+              "contribution_rank": 1,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a carcinogen",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 4.6546, while the query's estimated logP is value 6.8283. The query-minus-neighbor delta is +2.1737. This pairwise contribution is 1.6123, which pushes toward option (B): is a carcinogen."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O",
+              "neighbor_similarity": 0.1109353905496625,
+              "pair_score": 0.0005922007506143697,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": 1.0845094984645742,
+              "contribution_abs": 1.0845094984645742,
+              "contribution_rank": 3,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a carcinogen",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 0.9048, while the query's estimated logP is value 6.8283. The query-minus-neighbor delta is +5.9235. This pairwise contribution is 1.0845, which pushes toward option (B): is a carcinogen."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1",
+              "neighbor_similarity": 0.10520123839009289,
+              "pair_score": 0.0027764128162945396,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": 1.0948649431248925,
+              "contribution_abs": 1.0948649431248925,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a carcinogen",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 1.1197, while the query's estimated logP is value 6.8283. The query-minus-neighbor delta is +5.7086. This pairwise contribution is 1.0949, which pushes toward option (B): is a carcinogen."
+            }
+          ]
+        },
+        {
+          "feature_name": "fg_top_level__ketone",
+          "display_name": "ketone",
+          "description": "top-level functional-group indicator or count for ketone",
+          "source_family": "fg_top_level",
+          "raw_name": "ketone",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+            "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O",
+            "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1"
+          ],
+          "neighbor_similarities": [
+            0.11245421245421244,
+            0.1109353905496625,
+            0.10520123839009289
+          ],
+          "support_weight_by_label": {
+            "0": 0.36459349752137066,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "total_abs_contribution": 3.3287004833245213,
+          "total_weighted_evidence": 0.36459349752137066,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+              "neighbor_similarity": 0.11245421245421244,
+              "pair_score": 0.0003447914050143952,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -1.1095668277748405,
+              "contribution_abs": 1.1095668277748405,
+              "contribution_rank": 3,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "The neighbor does not have ketone, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1096, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O",
+              "neighbor_similarity": 0.1109353905496625,
+              "pair_score": 0.0005922007506143697,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -1.1095668277748405,
+              "contribution_abs": 1.1095668277748405,
+              "contribution_rank": 2,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "The neighbor does not have ketone, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1096, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1",
+              "neighbor_similarity": 0.10520123839009289,
+              "pair_score": 0.0027764128162945396,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -1.1095668277748405,
+              "contribution_abs": 1.1095668277748405,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "The neighbor does not have ketone, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1096, which pushes toward option (A): is not a carcinogen."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__NumAliphaticCarbocycles",
+          "display_name": "aliphatic carbocycle count",
+          "description": "number of aliphatic carbocyclic rings",
+          "source_family": "rdkit",
+          "raw_name": "NumAliphaticCarbocycles",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+            "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O",
+            "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1"
+          ],
+          "neighbor_similarities": [
+            0.11245421245421244,
+            0.1109353905496625,
+            0.10520123839009289
+          ],
+          "support_weight_by_label": {
+            "0": 0.30505744191281053,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "total_abs_contribution": 2.7851425251417004,
+          "total_weighted_evidence": 0.30505744191281053,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+              "neighbor_similarity": 0.11245421245421244,
+              "pair_score": 0.0003447914050143952,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.9283808417139001,
+              "contribution_abs": 0.9283808417139001,
+              "contribution_rank": 5,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +5. This pairwise contribution is -0.9284, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O",
+              "neighbor_similarity": 0.1109353905496625,
+              "pair_score": 0.0005922007506143697,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.9283808417139001,
+              "contribution_abs": 0.9283808417139001,
+              "contribution_rank": 5,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +5. This pairwise contribution is -0.9284, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1",
+              "neighbor_similarity": 0.10520123839009289,
+              "pair_score": 0.0027764128162945396,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.9283808417139001,
+              "contribution_abs": 0.9283808417139001,
+              "contribution_rank": 6,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +5. This pairwise contribution is -0.9284, which pushes toward option (A): is not a carcinogen."
+            }
+          ]
+        },
+        {
+          "feature_name": "fg_top_level__carboxylic ester",
+          "display_name": "carboxylic ester",
+          "description": "top-level functional-group indicator or count for carboxylic ester",
+          "source_family": "fg_top_level",
+          "raw_name": "carboxylic ester",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O",
+            "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1"
+          ],
+          "neighbor_similarities": [
+            0.1109353905496625,
+            0.10520123839009289
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.378520673994435
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a carcinogen",
+            "label": 1
+          },
+          "total_abs_contribution": 3.5026055125523547,
+          "total_weighted_evidence": 0.378520673994435,
+          "term_instances": [
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O",
+              "neighbor_similarity": 0.1109353905496625,
+              "pair_score": 0.0005922007506143697,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": 1.7513027562761774,
+              "contribution_abs": 1.7513027562761774,
+              "contribution_rank": 1,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a carcinogen",
+              "text_hint": "The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 1.7513, which pushes toward option (B): is a carcinogen."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1",
+              "neighbor_similarity": 0.10520123839009289,
+              "pair_score": 0.0027764128162945396,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": 1.7513027562761774,
+              "contribution_abs": 1.7513027562761774,
+              "contribution_rank": 1,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a carcinogen",
+              "text_hint": "The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 1.7513, which pushes toward option (B): is a carcinogen."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+          "display_name": "heavy-atom molecular weight",
+          "description": "molecular weight contributed by heavy atoms",
+          "source_family": "rdkit",
+          "raw_name": "HeavyAtomMolWt",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            2
+          ],
+          "neighbor_ids": [
+            "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+            "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O"
+          ],
+          "neighbor_similarities": [
+            0.11245421245421244,
+            0.1109353905496625
+          ],
+          "support_weight_by_label": {
+            "0": 0.21722178350902438,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "total_abs_contribution": 1.9451118957602067,
+          "total_weighted_evidence": 0.21722178350902438,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+              "neighbor_similarity": 0.11245421245421244,
+              "pair_score": 0.0003447914050143952,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.9481267591397708,
+              "contribution_abs": 0.9481267591397708,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 322.258, while the query's heavy-atom molecular weight is value 520.367. The query-minus-neighbor delta is +198.109. This pairwise contribution is -0.9481, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O",
+              "neighbor_similarity": 0.1109353905496625,
+              "pair_score": 0.0005922007506143697,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.9969851366204359,
+              "contribution_abs": 0.9969851366204359,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 220.143, while the query's heavy-atom molecular weight is value 520.367. The query-minus-neighbor delta is +300.224. This pairwise contribution is -0.997, which pushes toward option (A): is not a carcinogen."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__NumSaturatedCarbocycles",
+          "display_name": "saturated carbocycle count",
+          "description": "number of saturated carbocyclic rings",
+          "source_family": "rdkit",
+          "raw_name": "NumSaturatedCarbocycles",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            2
+          ],
+          "neighbor_ids": [
+            "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+            "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O"
+          ],
+          "neighbor_similarities": [
+            0.11245421245421244,
+            0.1109353905496625
+          ],
+          "support_weight_by_label": {
+            "0": 0.2034228972143775,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "total_abs_contribution": 1.821238719071889,
+          "total_weighted_evidence": 0.2034228972143775,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+              "neighbor_similarity": 0.11245421245421244,
+              "pair_score": 0.0003447914050143952,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.9106193595359445,
+              "contribution_abs": 0.9106193595359445,
+              "contribution_rank": 6,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For saturated carbocycle count, the neighbor's saturated carbocycle count is value 0, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is +4. This pairwise contribution is -0.9106, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCC1(c2ccccc2)C(=O)N=C(O)NC1=O",
+              "neighbor_similarity": 0.1109353905496625,
+              "pair_score": 0.0005922007506143697,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.9106193595359445,
+              "contribution_abs": 0.9106193595359445,
+              "contribution_rank": 6,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For saturated carbocycle count, the neighbor's saturated carbocycle count is value 0, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is +4. This pairwise contribution is -0.9106, which pushes toward option (A): is not a carcinogen."
+            }
+          ]
+        }
+      ],
+      "single_neighbor_evidence": [
+        {
+          "feature_name": "rdkit_pka__pka__logd_estimate",
+          "display_name": "estimated logD",
+          "description": "estimated logD at the configured pH",
+          "source_family": "pka",
+          "raw_name": "logd_estimate",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            1
+          ],
+          "neighbor_ids": [
+            "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1"
+          ],
+          "neighbor_similarities": [
+            0.11245421245421244
+          ],
+          "support_weight_by_label": {
+            "0": 0.14952893034882334,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "total_abs_contribution": 1.329687230789211,
+          "total_weighted_evidence": 0.14952893034882334,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+              "neighbor_similarity": 0.11245421245421244,
+              "pair_score": 0.0003447914050143952,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -1.329687230789211,
+              "contribution_abs": 1.329687230789211,
+              "contribution_rank": 2,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For estimated logD, the neighbor's estimated logD is value 2.4097, while the query's estimated logD is value 3.6837. The query-minus-neighbor delta is +1.274. This pairwise contribution is -1.3297, which pushes toward option (A): is not a carcinogen."
+            }
+          ],
+          "neighbor_rank": 1,
+          "neighbor_id": "CCC(OC(C)=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1",
+          "neighbor_similarity": 0.11245421245421244,
+          "pair_score": 0.0003447914050143952,
+          "pair_prediction": 0,
+          "pair_prediction_semantics": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "contribution": -1.329687230789211,
+          "contribution_abs": 1.329687230789211,
+          "contribution_rank": 2,
+          "supports_label": 0,
+          "supports_option": "A",
+          "supports_text": "is not a carcinogen",
+          "text_hint": "For estimated logD, the neighbor's estimated logD is value 2.4097, while the query's estimated logD is value 3.6837. The query-minus-neighbor delta is +1.274. This pairwise contribution is -1.3297, which pushes toward option (A): is not a carcinogen."
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+          "display_name": "fraction of sp3 carbons",
+          "description": "fraction of carbon atoms that are sp3 hybridized",
+          "source_family": "rdkit",
+          "raw_name": "FractionCSP3",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            3
+          ],
+          "neighbor_ids": [
+            "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1"
+          ],
+          "neighbor_similarities": [
+            0.10520123839009289
+          ],
+          "support_weight_by_label": {
+            "0": 0.12299934945545939,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "total_abs_contribution": 1.1691815736937428,
+          "total_weighted_evidence": 0.12299934945545939,
+          "term_instances": [
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1",
+              "neighbor_similarity": 0.10520123839009289,
+              "pair_score": 0.0027764128162945396,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -1.1691815736937428,
+              "contribution_abs": 1.1691815736937428,
+              "contribution_rank": 2,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.0625, while the query's fraction of sp3 carbons is value 0.8235. The query-minus-neighbor delta is +0.761. This pairwise contribution is -1.1692, which pushes toward option (A): is not a carcinogen."
+            }
+          ],
+          "neighbor_rank": 3,
+          "neighbor_id": "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1",
+          "neighbor_similarity": 0.10520123839009289,
+          "pair_score": 0.0027764128162945396,
+          "pair_prediction": 0,
+          "pair_prediction_semantics": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "contribution": -1.1691815736937428,
+          "contribution_abs": 1.1691815736937428,
+          "contribution_rank": 2,
+          "supports_label": 0,
+          "supports_option": "A",
+          "supports_text": "is not a carcinogen",
+          "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.0625, while the query's fraction of sp3 carbons is value 0.8235. The query-minus-neighbor delta is +0.761. This pairwise contribution is -1.1692, which pushes toward option (A): is not a carcinogen."
+        },
+        {
+          "feature_name": "fg_top_level__carboxylic acid",
+          "display_name": "carboxylic acid",
+          "description": "top-level functional-group indicator or count for carboxylic acid",
+          "source_family": "fg_top_level",
+          "raw_name": "carboxylic acid",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            3
+          ],
+          "neighbor_ids": [
+            "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1"
+          ],
+          "neighbor_similarities": [
+            0.10520123839009289
+          ],
+          "support_weight_by_label": {
+            "0": 0.12105948007754744,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "total_abs_contribution": 1.1507419677765691,
+          "total_weighted_evidence": 0.12105948007754744,
+          "term_instances": [
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1",
+              "neighbor_similarity": 0.10520123839009289,
+              "pair_score": 0.0027764128162945396,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -1.1507419677765691,
+              "contribution_abs": 1.1507419677765691,
+              "contribution_rank": 3,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "The neighbor has 1 copies of carboxylic acid, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -1.1507, which pushes toward option (A): is not a carcinogen."
+            }
+          ],
+          "neighbor_rank": 3,
+          "neighbor_id": "O=C(O)C1=NN(c2ccc(S(=O)(=O)O)cc2)C(=O)C1/N=N/c1ccc(S(=O)(=O)O)cc1",
+          "neighbor_similarity": 0.10520123839009289,
+          "pair_score": 0.0027764128162945396,
+          "pair_prediction": 0,
+          "pair_prediction_semantics": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "contribution": -1.1507419677765691,
+          "contribution_abs": 1.1507419677765691,
+          "contribution_rank": 3,
+          "supports_label": 0,
+          "supports_option": "A",
+          "supports_text": "is not a carcinogen",
+          "text_hint": "The neighbor has 1 copies of carboxylic acid, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -1.1507, which pushes toward option (A): is not a carcinogen."
+        }
+      ]
+    },
+    "negative_neighbors": {
+      "group_name": "negative_neighbors",
+      "num_neighbors": 3,
+      "num_shared_features": 6,
+      "num_single_neighbor_features": 1,
+      "shared_evidence": [
+        {
+          "feature_name": "rdkit_pka__rdkit__NumAliphaticCarbocycles",
+          "display_name": "aliphatic carbocycle count",
+          "description": "number of aliphatic carbocyclic rings",
+          "source_family": "rdkit",
+          "raw_name": "NumAliphaticCarbocycles",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+            "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+            "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C"
+          ],
+          "neighbor_similarities": [
+            0.3227168234064786,
+            0.24855144855144856,
+            0.21407407407407408
+          ],
+          "support_weight_by_label": {
+            "0": 0.6093668666459177,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "total_abs_contribution": 2.3079848569578196,
+          "total_weighted_evidence": 0.6093668666459177,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+              "neighbor_similarity": 0.3227168234064786,
+              "pair_score": 0.001988193234971595,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.8055271498291625,
+              "contribution_abs": 0.8055271498291625,
+              "contribution_rank": 1,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 5, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.8055, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+              "neighbor_similarity": 0.24855144855144856,
+              "pair_score": 0.0019062562457618868,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.8055271498291625,
+              "contribution_abs": 0.8055271498291625,
+              "contribution_rank": 1,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 5, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.8055, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C",
+              "neighbor_similarity": 0.21407407407407408,
+              "pair_score": 0.0054735694375844714,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.6969305572994944,
+              "contribution_abs": 0.6969305572994944,
+              "contribution_rank": 2,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 4, while the query's aliphatic carbocycle count is value 5. The query-minus-neighbor delta is +1. This pairwise contribution is -0.6969, which pushes toward option (A): is not a carcinogen."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__NumSaturatedCarbocycles",
+          "display_name": "saturated carbocycle count",
+          "description": "number of saturated carbocyclic rings",
+          "source_family": "rdkit",
+          "raw_name": "NumSaturatedCarbocycles",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+            "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+            "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C"
+          ],
+          "neighbor_similarities": [
+            0.3227168234064786,
+            0.24855144855144856,
+            0.21407407407407408
+          ],
+          "support_weight_by_label": {
+            "0": 0.5505951021102009,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "total_abs_contribution": 2.10535999790235,
+          "total_weighted_evidence": 0.5505951021102009,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+              "neighbor_similarity": 0.3227168234064786,
+              "pair_score": 0.001988193234971595,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.6879869141673803,
+              "contribution_abs": 0.6879869141673803,
+              "contribution_rank": 2,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For saturated carbocycle count, the neighbor's saturated carbocycle count is value 4, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is +0. This pairwise contribution is -0.688, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+              "neighbor_similarity": 0.24855144855144856,
+              "pair_score": 0.0019062562457618868,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.7293861695675893,
+              "contribution_abs": 0.7293861695675893,
+              "contribution_rank": 2,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For saturated carbocycle count, the neighbor's saturated carbocycle count is value 5, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is -0.7294, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C",
+              "neighbor_similarity": 0.21407407407407408,
+              "pair_score": 0.0054735694375844714,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.6879869141673803,
+              "contribution_abs": 0.6879869141673803,
+              "contribution_rank": 3,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For saturated carbocycle count, the neighbor's saturated carbocycle count is value 4, while the query's saturated carbocycle count is value 4. The query-minus-neighbor delta is +0. This pairwise contribution is -0.688, which pushes toward option (A): is not a carcinogen."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+          "display_name": "aliphatic ring count",
+          "description": "number of aliphatic rings",
+          "source_family": "rdkit",
+          "raw_name": "NumAliphaticRings",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+            "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+            "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C"
+          ],
+          "neighbor_similarities": [
+            0.3227168234064786,
+            0.24855144855144856,
+            0.21407407407407408
+          ],
+          "support_weight_by_label": {
+            "0": 0.5172173876835522,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "total_abs_contribution": 1.974962425503727,
+          "total_weighted_evidence": 0.5172173876835522,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+              "neighbor_similarity": 0.3227168234064786,
+              "pair_score": 0.001988193234971595,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.6597893615454107,
+              "contribution_abs": 0.6597893615454107,
+              "contribution_rank": 3,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For aliphatic ring count, the neighbor's aliphatic ring count is value 5, while the query's aliphatic ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.6598, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+              "neighbor_similarity": 0.24855144855144856,
+              "pair_score": 0.0019062562457618868,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.6597893615454107,
+              "contribution_abs": 0.6597893615454107,
+              "contribution_rank": 3,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For aliphatic ring count, the neighbor's aliphatic ring count is value 5, while the query's aliphatic ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.6598, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C",
+              "neighbor_similarity": 0.21407407407407408,
+              "pair_score": 0.0054735694375844714,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.6553837024129057,
+              "contribution_abs": 0.6553837024129057,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For aliphatic ring count, the neighbor's aliphatic ring count is value 4, while the query's aliphatic ring count is value 5. The query-minus-neighbor delta is +1. This pairwise contribution is -0.6554, which pushes toward option (A): is not a carcinogen."
+            }
+          ]
+        },
+        {
+          "feature_name": "fg_top_level__carboxylic acid",
+          "display_name": "carboxylic acid",
+          "description": "top-level functional-group indicator or count for carboxylic acid",
+          "source_family": "fg_top_level",
+          "raw_name": "carboxylic acid",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+            "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+            "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C"
+          ],
+          "neighbor_similarities": [
+            0.3227168234064786,
+            0.24855144855144856,
+            0.21407407407407408
+          ],
+          "support_weight_by_label": {
+            "0": 0.483204119920116,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "total_abs_contribution": 1.8458349624015804,
+          "total_weighted_evidence": 0.483204119920116,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+              "neighbor_similarity": 0.3227168234064786,
+              "pair_score": 0.001988193234971595,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.6152783208005268,
+              "contribution_abs": 0.6152783208005268,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "The neighbor has 1 copies of carboxylic acid, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -0.6153, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+              "neighbor_similarity": 0.24855144855144856,
+              "pair_score": 0.0019062562457618868,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.6152783208005268,
+              "contribution_abs": 0.6152783208005268,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "The neighbor has 1 copies of carboxylic acid, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -0.6153, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C",
+              "neighbor_similarity": 0.21407407407407408,
+              "pair_score": 0.0054735694375844714,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.6152783208005268,
+              "contribution_abs": 0.6152783208005268,
+              "contribution_rank": 5,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "The neighbor has 1 copies of carboxylic acid, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -0.6153, which pushes toward option (A): is not a carcinogen."
+            }
+          ]
+        },
+        {
+          "feature_name": "fg_top_level__carboxylic ester",
+          "display_name": "carboxylic ester",
+          "description": "top-level functional-group indicator or count for carboxylic ester",
+          "source_family": "fg_top_level",
+          "raw_name": "carboxylic ester",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+            "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+            "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C"
+          ],
+          "neighbor_similarities": [
+            0.3227168234064786,
+            0.24855144855144856,
+            0.21407407407407408
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.3454718555875236
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a carcinogen",
+            "label": 1
+          },
+          "total_abs_contribution": 1.3196990739123327,
+          "total_weighted_evidence": 0.3454718555875236,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+              "neighbor_similarity": 0.3227168234064786,
+              "pair_score": 0.001988193234971595,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": 0.4398996913041109,
+              "contribution_abs": 0.4398996913041109,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a carcinogen",
+              "text_hint": "The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4399, which pushes toward option (B): is a carcinogen."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+              "neighbor_similarity": 0.24855144855144856,
+              "pair_score": 0.0019062562457618868,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": 0.4398996913041109,
+              "contribution_abs": 0.4398996913041109,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a carcinogen",
+              "text_hint": "The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4399, which pushes toward option (B): is a carcinogen."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C",
+              "neighbor_similarity": 0.21407407407407408,
+              "pair_score": 0.0054735694375844714,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": 0.4398996913041109,
+              "contribution_abs": 0.4398996913041109,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a carcinogen",
+              "text_hint": "The neighbor does not have carboxylic ester, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4399, which pushes toward option (B): is a carcinogen."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__NumSaturatedRings",
+          "display_name": "saturated ring count",
+          "description": "number of saturated rings",
+          "source_family": "rdkit",
+          "raw_name": "NumSaturatedRings",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            2
+          ],
+          "neighbor_ids": [
+            "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+            "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12"
+          ],
+          "neighbor_similarities": [
+            0.3227168234064786,
+            0.24855144855144856
+          ],
+          "support_weight_by_label": {
+            "0": 0.17169092152526655,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "total_abs_contribution": 0.6054807995454565,
+          "total_weighted_evidence": 0.17169092152526655,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "C[C@H]1[C@H](C)CC[C@]2(C(=O)O)CC[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@H]12",
+              "neighbor_similarity": 0.3227168234064786,
+              "pair_score": 0.001988193234971595,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.28581790046351285,
+              "contribution_abs": 0.28581790046351285,
+              "contribution_rank": 6,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For saturated ring count, the neighbor's saturated ring count is value 4, while the query's saturated ring count is value 4. The query-minus-neighbor delta is +0. This pairwise contribution is -0.2858, which pushes toward option (A): is not a carcinogen."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "C=C(C)[C@@H]1CC[C@]2(C(=O)O)CC[C@]3(C)[C@H](CC[C@@H]4[C@@]5(C)CC[C@H](O)C(C)(C)[C@@H]5CC[C@]43C)[C@@H]12",
+              "neighbor_similarity": 0.24855144855144856,
+              "pair_score": 0.0019062562457618868,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": -0.3196628990819436,
+              "contribution_abs": 0.3196628990819436,
+              "contribution_rank": 6,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a carcinogen",
+              "text_hint": "For saturated ring count, the neighbor's saturated ring count is value 5, while the query's saturated ring count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is -0.3197, which pushes toward option (A): is not a carcinogen."
+            }
+          ]
+        }
+      ],
+      "single_neighbor_evidence": [
+        {
+          "feature_name": "rdkit_pka__rdkit__MolLogP",
+          "display_name": "estimated logP",
+          "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+          "source_family": "rdkit",
+          "raw_name": "MolLogP",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            3
+          ],
+          "neighbor_ids": [
+            "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C"
+          ],
+          "neighbor_similarities": [
+            0.21407407407407408
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.23495581288802933
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a carcinogen",
+            "label": 1
+          },
+          "total_abs_contribution": 1.097544454667265,
+          "total_weighted_evidence": 0.23495581288802933,
+          "term_instances": [
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C",
+              "neighbor_similarity": 0.21407407407407408,
+              "pair_score": 0.0054735694375844714,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a carcinogen",
+                "label": 0
+              },
+              "contribution": 1.097544454667265,
+              "contribution_abs": 1.097544454667265,
+              "contribution_rank": 1,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a carcinogen",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 5.5071, while the query's estimated logP is value 6.8283. The query-minus-neighbor delta is +1.3212. This pairwise contribution is 1.0975, which pushes toward option (B): is a carcinogen."
+            }
+          ],
+          "neighbor_rank": 3,
+          "neighbor_id": "C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3CC[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C",
+          "neighbor_similarity": 0.21407407407407408,
+          "pair_score": 0.0054735694375844714,
+          "pair_prediction": 0,
+          "pair_prediction_semantics": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "contribution": 1.097544454667265,
+          "contribution_abs": 1.097544454667265,
+          "contribution_rank": 1,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is a carcinogen",
+          "text_hint": "For estimated logP, the neighbor's estimated logP is value 5.5071, while the query's estimated logP is value 6.8283. The query-minus-neighbor delta is +1.3212. This pairwise contribution is 1.0975, which pushes toward option (B): is a carcinogen."
+        }
+      ]
+    },
+    "middle_draft": "Across the positive neighbors, shared local signals include estimated logP, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is a carcinogen, ketone, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not a carcinogen, aliphatic carbocycle count, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not a carcinogen, carboxylic ester, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is a carcinogen, heavy-atom molecular weight, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not a carcinogen, and saturated carbocycle count, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not a carcinogen. The remaining one-off signals from the positive neighbors are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.1125), the comparison shows that for estimated logD, the neighbor's estimated logD is value 2.4097, while the query's estimated logD is value 3.6837. The query-minus-neighbor delta is +1.274. This pairwise contribution is -1.3297, which pushes toward option (A): is not a carcinogen. With neighbor 3 (similarity 0.1052), the comparison shows that for fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.0625, while the query's fraction of sp3 carbons is value 0.8235. The query-minus-neighbor delta is +0.761. This pairwise contribution is -1.1692, which pushes toward option (A): is not a carcinogen. With neighbor 3 (similarity 0.1052), the comparison shows that the neighbor has 1 copies of carboxylic acid, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -1.1507, which pushes toward option (A): is not a carcinogen. Across the negative neighbors, shared local signals include aliphatic carbocycle count, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not a carcinogen, saturated carbocycle count, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not a carcinogen, aliphatic ring count, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not a carcinogen, carboxylic acid, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not a carcinogen, carboxylic ester, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is a carcinogen, and saturated ring count, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not a carcinogen. The remaining one-off signals from the negative neighbors are all kept explicitly for downstream rewriting. With neighbor 3 (similarity 0.2141), the comparison shows that for estimated logP, the neighbor's estimated logP is value 5.5071, while the query's estimated logP is value 6.8283. The query-minus-neighbor delta is +1.3212. This pairwise contribution is 1.0975, which pushes toward option (B): is a carcinogen. Taken together, these local analog comparisons support option (A): is not a carcinogen with local score 0.0024, positive-neighbor aggregate 0.0012, and negative-neighbor aggregate 0.0029."
+  }
+}

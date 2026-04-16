@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an acyl chloride group, which is a strong electrophilic, DNA-reactive functionality and therefore a clear mutagenicity alert. That structural concern is the most decisive piece of evidence. At the same time, several global descriptors are not uniformly aligned with mutagenicity. The QED drug-likeness value of 0.5993 is moderate rather than especially poor, and by itself would not strongly favor a mutagenic call. The fraction of sp3 carbons is 0, indicating a completely flat and highly unsaturated scaffold, which can be associated with known mutagenic chemotypes, so that adds some concern. However, the ring count of 1 is low, which does not suggest a highly complex polycyclic aromatic system, and the heteroatom count of 3 is also modest. The hydrogen-bond acceptor count of 1 is low, and the topological polar surface area of 17.07 is very small, both consistent with limited polarity and potentially good passive access. The maximum absolute partial charge of 0.2756 indicates some localized electrostatic character, which can accompany reactive behavior, while the estimated logP of 2.719 is in a moderate hydrophobic range that should not obviously prevent exposure. An aryl chloride is also present, but by itself that is not as decisive here as the acyl chloride. Taken together, the explicit electrophilic acyl chloride alert dominates the mixed descriptor picture, so the molecule is best classified as mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately informative mutagenic analog. The strongest shared feature is the acyl chloride, which the query has once and the neighbor lacks; that is a prominent electrophilic alert and the largest single reason this comparison leans toward mutagenicity. The query also has a much higher minimum absolute partial charge (0.2519 vs 0.0411, delta +0.2108), which in this local comparison goes the opposite way and is unfavorable for mutagenicity, and the strongest basic pKa is absent in the query while the neighbor has 4.781, another factor that locally weighs toward the non-mutagenic side because the ionizable basic site is missing. By contrast, the query has no acidic site where the neighbor has 2 acidic sites, and it also has a higher maximum partial charge (0.2519 vs 0.0411, delta +0.2108), both of which were associated here with the mutagenic side. The strongest acidic pKa is also absent in the query while the neighbor’s is 13.7599, which locally contributes a small non-mutagenic tilt, but overall the acyl chloride dominates and makes Neighbor 1 supportive of option (B).
+
+Neighbor 2 again shares the acyl chloride difference: the query has one acyl chloride and the neighbor has none, which is the clearest mutagenic feature in the comparison. Several other features then pull back toward the non-mutagenic side. The query’s QED is higher (0.5993 vs 0.4652, delta +0.1341), the topological polar surface area is much lower (17.07 vs 43.14, delta -26.07), and the ring count is lower (1 vs 2, delta -1); in this local setting those shifts all favor the non-mutagenic label. The fraction of sp3 carbons is unchanged at 0 vs 0, but that parity was associated with a mutagenic-leaning effect in this pair, and the neighbor has a nitro group that the query lacks, which is a classic mutagenic alert. So Neighbor 2 is a true mixed analog, but the acyl chloride plus the nitro feature keep it aligned overall with option (B).
+
+Neighbor 3 is also overall supportive of mutagenicity. As before, the query has acyl chloride once while the neighbor has none, which is the main mutagenic differentiator. The query has fewer rings (1 vs 2, delta -1), and that local decrease is non-mutagenic in this comparison, while the fraction of sp3 carbons is again equal at 0 vs 0 and was counted on the mutagenic side. The neighbor also has nitro, which the query lacks, but that absence in the query actually appears as a non-mutagenic factor in the pairwise comparison. Still, two additional details help the mutagenic side: the query’s maximum absolute partial charge is slightly lower (0.2756 vs 0.3244, delta -0.0488), and the nitrogen/oxygen atom count is much lower (1 vs 5, delta -4), which in this local context also favored the non-mutagenic side. Even with those offsets, the acyl chloride remains the decisive structural alert, so Neighbor 3 still supports option (B).
+
+Neighbor 4 is a negative neighbor overall, but it remains useful because it still contains the same acyl chloride mismatch that favors mutagenicity: the query has acyl chloride once and the neighbor has none. However, several other differences point away from mutagenicity relative to this neighbor. The query has fewer rings (1 vs 2, delta -1), lower topological polar surface area (17.07 vs 34.14, delta -17.07), and fewer hydrogen-bond acceptors (1 vs 2, delta -1), and each of those shifts was associated here with the non-mutagenic side. The fraction of sp3 carbons is unchanged at 0 vs 0 and again leans mutagenic in this local pair. The neighbor also lacks aryl chloride while the query has it once, and in this comparison that feature specifically favored the non-mutagenic side. So Neighbor 4 is one of the better non-mutagenic comparators because the exposure/polarity and ring-count shifts outweigh the acyl chloride signal, even though the acyl chloride still keeps the mutagenic case alive.
+
+Neighbor 5 is similar to Neighbor 4 but with an additional exposure-related feature. The query again has acyl chloride once while the neighbor has none, and that remains the strongest mutagenic marker. Beyond that, the query has a much lower Labute surface area (68.5644 vs 103.6978, delta -35.1334), which in this comparison favored the mutagenic side, likely reflecting a smaller, more compact query relative to the neighbor. At the same time, the query has fewer rings (1 vs 2, delta -1), the neighbor has 2 carboxylic esters while the query has none (delta -2), and the neighbor lacks aryl chloride while the query has it once; those shifts were all non-mutagenic in this pair. The fraction of sp3 carbons is again 0 vs 0 and was counted on the mutagenic side. Taken together, Neighbor 5 is a mixed but still mutagenicity-supporting analog because the acyl chloride and the lower Labute surface area outweigh the more non-mutagenic ester/ring/aryl-chloride differences.
+
+Neighbor 6 is the strongest of the non-mutagenic neighbors, but it still does not overturn the acyl chloride alert. The query has acyl chloride once and the neighbor has none, which again favors mutagenicity. Yet this neighbor also has much higher hydrogen-bond donor count (3 vs 0, delta -3), much higher topological polar surface area (86.63 vs 17.07, delta -69.56), more rings (2 vs 1, delta -1), and a much higher nitrogen/oxygen atom count (5 vs 1, delta -4); all of those shifts were associated with the non-mutagenic side in this local comparison and are consistent with a more polar, more exposed neighbor. The minimum partial charge is also more negative in the neighbor (-0.4776 vs -0.2756), while the query is less negative by +0.202, and that partial-charge shift favored mutagenicity here. So Neighbor 6 is a clear example of a case where polarity and donor-rich character pull strongly against mutagenicity, but the acyl chloride and charge effect still leave room for the mutagenic label.
+
+Across the six neighbors, the same pattern repeats: the query consistently carries the acyl chloride that the neighbors lack, and that structural alert is repeatedly the strongest mutagenic signal. The non-mutagenic neighbors mainly differ by greater polarity, donor/acceptor burden, higher topological polar surface area, and sometimes extra ring/ester content, which are exposure-modifying features that can soften mutagenicity in local analog comparisons. Even so, those offsets do not remove the electrophilic alert. Because the mutagenic neighbors and the non-mutagenic neighbors alike repeatedly highlight the acyl chloride as the key differentiator, the combined analog evidence still favors option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

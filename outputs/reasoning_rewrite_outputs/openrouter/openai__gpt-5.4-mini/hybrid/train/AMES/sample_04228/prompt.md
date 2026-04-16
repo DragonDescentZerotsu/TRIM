@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+Pyrazine is present (1), but that heteroaromatic ring by itself is not a classic mutagenicity toxicophore, so it does not strongly suggest an Ames-positive outcome. Several exposure-related descriptors also look relatively favorable for low bacterial bioavailability: heteroatom count is 2, ring count is 1, and topological polar surface area is 25.78, all of which are consistent with a small, fairly compact molecule that should not be especially burdened by size or polarity. The strongest basic pKa is 2.0772, indicating a weakly basic site that would not be strongly protonated at neutral conditions, so it does not obviously add a permeability advantage that would help reveal hidden mutagenicity. On the other hand, the partial-charge descriptors are somewhat mixed: maximum absolute partial charge is 0.2578, maximum partial charge is 0.0588, and minimum absolute partial charge is 0.0588, suggesting some uneven charge distribution that could modestly affect uptake or efflux behavior. Estimated logP is 1.4019, which is not especially lipophilic and does not raise an obvious solubility or accumulation concern. Labute surface area is 54.9655, again pointing to a relatively small molecule rather than a large, highly burdened structure. Overall, there is no clear mutagenic toxicophore such as an aromatic nitro group, aziridine, epoxide, nitrosamine, or polycyclic aromatic fused system, and the balance of the descriptors favors limited exposure rather than strong intrinsic DNA-reactive behavior. Taken together, the molecule is more consistent with option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mutagenic analog, but the query still looks less concerning overall against it. The strongest point is the pyrazine difference: the neighbor lacks pyrazine while the query has it once, and that single change is associated here with a strong shift toward the non-mutagenic side. The query also has a much lower strongest basic pKa, 2.0772 versus 5.1858, with a delta of -3.1086; since a lower basic pKa can mean the site is less readily protonated, that change is not helping mutagenic exposure in this comparison. The query is also smaller and less heteroatom-rich, with ring count 1 versus 2 (delta -1) and heteroatom count 2 versus 3 (delta -1), both of which align with a less exposed, less complex profile here. The two features that point the other way are maximum partial charge, where the query is lower at 0.0588 versus 0.0939 (delta -0.0352), and estimated logP, where the query is also lower at 1.4019 versus 2.2883 (delta -0.8865); in this specific comparison those shifts are associated with the mutagenic side. Even so, the stronger effects from pyrazine absence in the neighbor, the much lower basic pKa, and the reduced ring and heteroatom counts make Neighbor 1 support the non-mutagenic label overall.
+
+Neighbor 2 shows the same broad pattern. Again, the query has pyrazine once while the neighbor has none, which favors the non-mutagenic side relative to this mutagenic analog. The query’s maximum partial charge is lower, 0.0588 versus 0.0936, with delta -0.0349, and that feature here leans toward mutagenicity, but it is counterbalanced by a lower strongest basic pKa of 2.0772 versus 5.1614 (delta -3.0842), which again favors the non-mutagenic side. The query also has fewer rings, 1 versus 2 (delta -1), and fewer heteroatoms, 2 versus 3 (delta -1), both consistent with the less complex, less exposure-favoring direction. Estimated logP is also lower in the query, 1.4019 versus 2.2883 (delta -0.8865), which in this comparison points toward mutagenicity, likely reflecting that the analog relationship is not governed by a simple monotonic lipophilicity rule. Still, the balance of the pyrazine difference plus the lower basic pKa, fewer rings, and fewer heteroatoms keeps Neighbor 2 on the side of the non-mutagenic prediction.
+
+Neighbor 3 provides a stronger non-mutagenic counterexample. The query again has pyrazine once while the neighbor has none, which is a major distinction in favor of the query’s non-mutagenic assignment. The neighbor has three aromatic rings versus the query’s one, and that larger aromatic system is a more mutagenicity-prone pattern than the query’s simpler ring set. The neighbor also has more heteroatoms, 5 versus 2, and a much higher maximum partial charge, 0.2005 versus 0.0588 (delta -0.1418), both of which mark it as the more extreme analog. The query’s fraction of sp3 carbons is higher, 0.4286 versus 0.1818 (delta +0.2468), meaning the query is less flat and less aromatic than the neighbor, which is consistent with lower mutagenicity concern in this comparison. Labute surface area is much lower in the query as well, 54.9655 versus 91.9426 (delta -36.9771), which is another exposure/shape-related change that does not overturn the overall safer profile. Although the Labute area and some size-related features can move the opposite way in isolation, the dominant effect here is that the neighbor is a more aromatic, more heteroatom-rich, more highly charged analog, while the query is smaller in ring burden and less planar. That makes Neighbor 3 strongly support the non-mutagenic label.
+
+Neighbor 4 is a non-mutagenic analog, and the query remains less alarming than that reference despite a few mixed signals. The query has fewer rings, 1 versus 2 (delta -1), which is favorable relative to the neighbor. Topological polar surface area is identical at 25.78 with delta 0, so there is no meaningful polarity shift here. Maximum partial charge is again lower in the query, 0.0588 versus 0.0889 (delta -0.0302), and in this comparison that change points toward mutagenicity rather than away from it. Heteroatom count is unchanged at 2 (delta 0), so that feature is neutral. The neighbor contains quinoxaline while the query does not, and that absence in the query is a meaningful structural simplification because quinoxaline is a more aromatic heterocyclic motif than the query’s scaffold. Estimated logP is also lower in the query, 1.4019 versus 1.9382 (delta -0.5364), and here that shift is associated with the mutagenic side. Even with those two unfavorable directions, the simpler ring count and lack of quinoxaline keep the overall comparison aligned with non-mutagenicity.
+
+Neighbor 5 is also a non-mutagenic analog, and several of the query’s properties are compatible with that direction. The query is fully neutral as well, with neutral fraction effectively 1 versus 0.9998 in the neighbor, so there is no exposure-related advantage from ionization there. The query has fewer rings, 1 versus 3 (delta -2), which is a substantial simplification relative to the neighbor. At the same time, the query is smaller overall, with heavy-atom count 9 versus 15 (delta -6) and molecular weight 122.171 versus 198.229 (delta -76.058), both of which reduce size and can affect exposure. Interestingly, in this comparison those size reductions are associated with the mutagenic side, not the non-mutagenic side, and the same is true for Labute surface area, 54.9655 versus 86.6027 (delta -31.6372), and maximum partial charge, 0.0588 versus 0.1168 (delta -0.058), both of which also point toward mutagenicity here. Even so, the much lower ring count and the overall simpler scaffold remain the more persuasive features for this neighbor, so Neighbor 5 still fits the non-mutagenic class overall.
+
+Neighbor 6 is the most mixed of the six, but it still serves as a mutagenic neighbor that the query compares against in a way that does not overturn the final label. The query has a much lower strongest basic pKa, 2.0772 versus 5.7373 (delta -3.6601), which in this comparison points toward mutagenicity, and it also has fewer ionizable sites, 2 versus 7 (delta -5), and fewer NH/OH groups, 0 versus 3 (delta -3), both of which move toward the non-mutagenic side by reducing ionizable functionality and hydrogen-bonding capacity. The query also has fewer rings, 1 versus 2 (delta -1), and lower molecular weight, 122.171 versus 188.234 (delta -66.063), again favoring the non-mutagenic side through a simpler, smaller scaffold. Neutral fraction is slightly higher in the query, 1 versus 0.9787 (delta +0.0213), and here that modest increase points toward mutagenicity rather than away from it. Taken together, this neighbor is genuinely mixed: lower ionizable-site burden and fewer donors support the non-mutagenic call, while the pKa and neutral-fraction changes are the features that lean mutagenic. Because the structural simplification is substantial and the query remains less functionally crowded, the comparison does not outweigh the broader non-mutagenic pattern established by the other neighbors.
+
+Across all six neighbors, the consistent themes are that the query is simpler in ring count, often less heteroatom-rich, and in several comparisons structurally less aromatic or less complex than the mutagenic references. Some individual properties move in the mutagenic direction, especially lower maximum partial charge, lower logP, or the pKa shift in Neighbor 6, but these do not dominate the full set of analog comparisons. The repeated absence of more complex aromatic motifs in the query, together with its smaller scaffold and lower overall structural burden, makes the non-mutagenic label the best overall fit.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

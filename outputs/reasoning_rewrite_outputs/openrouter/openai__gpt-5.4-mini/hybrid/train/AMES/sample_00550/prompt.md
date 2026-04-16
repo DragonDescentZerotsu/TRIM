@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a nitro group, which is a well-recognized mutagenicity toxicophore and strongly supports an Ames-positive outcome. That said, there are also features that can limit bacterial exposure: the primary hydroxyl group is present as 1, ring count is only 1, and the aromatic ring count is also 1, all of which are relatively simple structural features rather than a highly planar polycyclic aromatic system. The estimated logP of 1.1296 is only modestly lipophilic, so it does not suggest extreme hydrophobicity, and the strongest acidic pKa of 13.8028 indicates a very weak acidic site that is unlikely to be strongly ionized under typical assay conditions. In addition, the number of basic sites is absent (0), which removes one possible ionizable handle that could enhance bacterial accumulation, and the maximum absolute partial charge of 0.396 is not especially extreme. The neutral fraction is present (1), consistent with a substantial neutral form, which can aid passive uptake, and the presence of an alkyl chloride is absent (0), so there is no added halide alkylating alert. Overall, the nitro toxicophore is the dominant signal, and despite some exposure- and polarity-related features that are not strongly activating, the balance of evidence favors the molecule being mutagenic, with a score of 0.5261.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor with similarity 0.500, but several differences favor a non-mutagenic interpretation for the query. The query has one primary hydroxyl while the neighbor lacks it (query-minus-neighbor delta +1), and the query is much less lipophilic, with estimated logD 1.1296 versus 4.3276 for the neighbor (delta -3.198). The query also has fewer rings, with ring count 1 versus 2 (delta -1), and it lacks the alkene present in the neighbor (delta -1). Although both molecules carry nitro, which is an Ames-relevant mutagenic alert, and the maximum partial charge values are essentially the same at 0.2689 versus 0.269, the overall comparison is still dominated by the more exposure-limiting, less ring-rich, less hydrophobic profile of the query. That makes this neighbor lean toward option (A): is not mutagenic.
+
+Neighbor 2 is another positive neighbor at similarity 0.484, and it also ends up favoring option (A) overall. Here both molecules have primary hydroxyl, so that feature does not separate them, but the query again has fewer rings, with ring count 1 versus 2 (delta -1), and a slightly lower estimated logD, 1.1296 versus 1.6109 (delta -0.4813). The query also has lower topological polar surface area, 63.37 versus 79.16 (delta -15.79), while its strongest acidic pKa is slightly higher, 13.8028 versus 13.5767 (delta +0.2261). The nitro group is shared, which keeps some mutagenic concern on the table, yet the ring reduction and modestly lower lipophilicity still make the query look less like the neighbor on the features that were most favorable to mutagenicity in that comparison. Taken together, this supports option (A): is not mutagenic.
+
+Neighbor 3 is the third positive neighbor, similarity 0.475, and it gives a mixed picture but still finishes on the side of option (B) for that local comparison. The query has one primary hydroxyl where the neighbor has none (delta +1), which favors the non-mutagenic side, but the query also has a higher fraction of sp3 carbons, 0.25 versus 0 (delta +0.25), which in this comparison was favorable to mutagenicity. The query is much less hydrophobic, with estimated logP 1.1296 versus 3.6734 (delta -2.5438), but it also has a lower estimated logD at the same values (delta -2.5438), and that lower logD was associated with the non-mutagenic direction here. The query again has fewer rings, 1 versus 2 (delta -1), and its QED drug-likeness is higher, 0.5417 versus 0.4815 (delta +0.0603), which in this local case aligned with the non-mutagenic side. Because the higher sp3 fraction and lower logP were the features favoring mutagenicity more strongly than the opposing effects, this comparison is the one positive neighbor that leans toward option (B): is mutagenic.
+
+Neighbor 4 is a negative neighbor with similarity 0.459, and it is informative because the query looks less mutagenic than this structurally related compound on several key points. Both share nitro, which is a strong mutagenic alert, but the query has fewer rings, 1 versus 2 (delta -1), and it gains one primary hydroxyl compared with the neighbor (delta +1), both of which favor option (A) in this comparison. The query also has a much lower molecular weight, 167.164 versus 229.235 (delta -62.071), which can reduce exposure, while its Labute surface area is lower at 69.6085 versus 98.62 (delta -29.0115). The only features here that favored mutagenicity were the higher topological polar surface area of the query, 63.37 versus 52.37 (delta +11), and the lower surface area-related metrics do not outweigh the ring and mass differences in this specific analog context. Overall, this negative neighbor supports option (A): is not mutagenic.
+
+Neighbor 5 is another negative neighbor at similarity 0.394, and it also favors option (A) overall despite some mutagenicity-leaning features. As with Neighbor 4, both molecules contain nitro, but the query has fewer rings, 1 versus 2 (delta -1), and one primary hydroxyl while the neighbor has none (delta +1), both of which favor the non-mutagenic side. The query also lacks the neighbor’s secondary aromatic amine, which is a meaningful mutagenic structural alert, and that absence supports option (A). Against that, the query has a slightly higher strongest acidic pKa, 13.8028 versus 13.7795 (delta +0.0233), and a higher fraction of sp3 carbons, 0.25 versus 0 (delta +0.25), both of which were associated with the mutagenic side in this local comparison. Even so, the ring reduction, added hydroxyl, and removal of the secondary aromatic amine make the overall comparison favor option (A): is not mutagenic.
+
+Neighbor 6 is the strongest negative-neighbor contrast, similarity 0.346, and it is the one case where the local comparison favors option (B). The query again shares nitro with the neighbor, but the neighbor has azo while the query does not (delta -1), and azo functionality is a mutagenicity-relevant alert. The query also has one primary hydroxyl while the neighbor has none (delta +1), and it has fewer rings, 1 versus 2 (delta -1), both of which point toward the non-mutagenic side. However, the neighbor is much larger and more surface-rich, with Labute surface area 107.1767 versus 69.6085 for the query (delta -37.5682), and the query also has a higher fraction of sp3 carbons, 0.25 versus 0 (delta +0.25); in this local setting those features aligned with the mutagenic direction strongly enough to outweigh the opposing ring and hydroxyl differences. So this negative neighbor is the one that supports option (B): is mutagenic.
+
+Putting the six comparisons together, the three positive neighbors mostly favor the query as less mutagenic because it is smaller in ring count, less lipophilic, and generally less exposure-prone, while the three negative neighbors mostly show the query lacking some mutagenic features or having smaller size-related properties relative to more concerning analogs. Only Neighbor 3 among the positive set and Neighbor 6 among the negative set point toward mutagenicity, and the more numerous and more consistent local comparisons still favor option (A). Therefore the final prediction is option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

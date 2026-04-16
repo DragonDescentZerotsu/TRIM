@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+Urea is present (1), which adds a polar functional group and can work against passive BBB penetration, although it does not by itself determine the outcome. Benzimidazole is present (1), introducing an aromatic heterocycle that can increase heteroatom burden and polarity, which is a mild unfavorable feature for BBB crossing. At the same time, piperidine is present (1), and a basic saturated nitrogen-containing ring can be compatible with CNS penetration when overall polarity remains controlled. The minimum partial charge is value -0.3055, suggesting only a modestly polarized site, and the maximum absolute partial charge is value 0.326, which is also not extreme; together these charge features are not strongly discouraging for membrane passage. Aryl fluoride is present (1), which often helps maintain lipophilicity without adding hydrogen-bonding burden, supporting BBB permeability. The estimated logD is value 3.0725, a moderate ionization-aware lipophilicity level that is generally favorable for BBB penetration, and the estimated logP is value 4.1071, which also indicates substantial lipophilicity. The minimum absolute partial charge is value 0.3055, again consistent with limited charge separation rather than a highly polar scaffold. The rotatable-bond count is value 6, which is still within a relatively favorable flexibility range for CNS penetration, though not maximally rigid. Taken together, the molecule has one or two polar features that add some resistance to BBB passage, but the moderate lipophilicity, limited charge extremes, and acceptable flexibility make the overall profile more consistent with crossing the BBB. Therefore, the molecule is predicted to cross the BBB, option (B), with high confidence.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a strong positive analog for BBB crossing. It shares benzimidazole and aryl fluoride with the query, and both of those shared motifs have favorable comparisons here. The query also has a slightly less negative minimum partial charge than the neighbor, shifting from -0.3508 to -0.3055 with a delta of +0.0453, which is a modest move toward a less polar profile. Estimated logD also rises from 2.1581 in the neighbor to 3.0725 in the query, a delta of +0.9144; that sits in a more CNS-friendly moderate lipophilicity region than the neighbor’s lower value. The shared urea is also consistent with the positive comparison overall. The only counterpoint is that the neighbor has a secondary amide while the query does not, and that missing amide was the one feature in this pair that favored the non-crossing direction. Even so, the shared scaffold and the higher logD and slightly less negative charge make Neighbor 1 overall supportive of BBB crossing.
+
+Neighbor 2 is also a positive analog. It again matches the query on benzimidazole and urea, and the query has fewer aryl fluorides, dropping from 2 in the neighbor to 1 in the query. It also has fewer aromatic carbocycles, from 3 down to 2. Both of those changes move away from a more heavily substituted aromatic pattern toward a somewhat less bulky, less aromatic analog, which is compatible with BBB entry when polarity is not excessive. The biggest physicochemical shift is estimated logP, which falls from 6.5104 in the neighbor to 4.1071 in the query, a delta of -2.4033. That is still fairly lipophilic but much less extreme than the neighbor, and it lands closer to the moderate lipophilicity region typically associated with better brain penetration. The minimum partial charge is unchanged at -0.3055, so the charge pattern remains aligned between the two molecules. Taken together, Neighbor 2 supports the BBB-crossing label because the query preserves the favorable heteroaromatic scaffold while reducing some of the excess lipophilic/aromatic burden present in the neighbor.
+
+Neighbor 3 is another positive analog and is especially informative because it combines scaffold sharing with a surface-area and lipophilicity comparison. The query and neighbor both contain benzimidazole and aryl fluoride, and both also have urea. Compared with the neighbor, the query has a larger Labute surface area, increasing from 162.336 to 172.6393 with a delta of +10.3033, yet the comparison still remains on the favorable side because the query also has a higher estimated logD, moving from 2.267 to 3.0725 with a delta of +0.8055. The minimum partial charge is the same at -0.3055. Although a larger surface area can be a mixed sign for passive permeation, the rest of the profile here stays in a BBB-compatible direction, and the overall similarity remains high. So Neighbor 3, like the first two, reinforces the interpretation that the query behaves more like a BBB-crossing molecule than a non-crossing one.
+
+Neighbor 4 is one of the negative-class neighbors, but the local comparison still points toward BBB crossing for the query. The query has one urea unit whereas the neighbor has none, and it also shares benzimidazole and piperidine with the neighbor. The minimum partial charge becomes less negative in the query, changing from -0.4968 to -0.3055 with a delta of +0.1913, which is a clear shift away from the stronger negative polarity of the neighbor. The maximum partial charge also increases from 0.2039 to 0.326, and the minimum absolute partial charge rises from 0.2039 to 0.3055; both changes are consistent with the query having a different charge distribution than the neighbor. In this particular comparison, those shifts align with the query behaving more like a BBB-crossing analog despite the neighbor being labeled as non-crossing. The presence of piperidine and benzimidazole in both structures means the reasoning stays close to the shared scaffold, but the charge pattern in the query is more supportive of brain penetration than the neighbor’s more negative profile.
+
+Neighbor 5 is another negative-class neighbor, and it also supports the BBB-crossing label for the query. The neighbor lacks urea, lacks aryl fluoride, and lacks benzimidazole, while the query contains each of those motifs once. The estimated logD jumps from 0.1362 in the neighbor to 3.0725 in the query, a large delta of +2.9363, moving the query from a very low-lipophilicity regime into a much more favorable moderate range for BBB entry. The maximum partial charge is also higher in the query, going from 0.2269 to 0.326 with a delta of +0.0991. The main opposing signals in this comparison are that the query has benzimidazole, which here is associated with the non-crossing side, and the query has lower QED drug-likeness, dropping from 0.7276 to 0.6163 with a delta of -0.1113. Even with those counterweights, the much stronger logD shift and the added urea and aryl fluoride still make the overall comparison favor BBB crossing for the query.
+
+Neighbor 6 is the final negative-class neighbor, and it again leans toward BBB crossing for the query despite some mixed effects. The neighbor lacks urea, while the query has it once, and the neighbor also lacks benzimidazole, while the query has it once; those shared additions are important because they place the query closer to the set of motifs already seen in the positive neighbors. Estimated logD rises from 1.2937 in the neighbor to 3.0725 in the query, a delta of +1.7788, which again moves the query into a more favorable moderate lipophilicity region. Estimated logP also rises from 2.7189 to 4.1071, a delta of +1.3882, but here that change is treated as unfavorable in this specific comparison, suggesting that further lipophilicity is not automatically better once the baseline is already in a reasonable range. The maximum partial charge drops slightly from 0.3407 to 0.326, while the minimum partial charge becomes less negative, from -0.4775 to -0.3055 with a delta of +0.172; those charge shifts again make the query look less extreme than the neighbor in terms of polarity distribution. Even though benzimidazole is unfavorable in this particular neighbor comparison, the combined pattern still places the query closer to the BBB-crossing side than the non-crossing side.
+
+Across all six neighbors, the positive analogs are consistently supportive, and the negative analogs still mostly move in the same direction once the query-specific changes are considered. The recurring favorable themes are the presence of benzimidazole, urea, and aryl fluoride together with moderate estimated logD around 3 and less negative partial charges. The main cautionary signals are the secondary amide in Neighbor 1, the higher aromatic substitution in Neighbor 2, the larger surface area in Neighbor 3, the piperidine/charge pattern in Neighbor 4, the benzimidazole and lower QED in Neighbor 5, and the mixed logP behavior plus benzimidazole penalty in Neighbor 6. Even with those caveats, the balance of the six comparisons places the query much closer to the BBB-crossing examples than to the non-crossing ones, so the final prediction is option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

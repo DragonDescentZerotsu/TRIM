@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are compatible with BBB penetration. A maximum partial charge of 0.4094 is not especially extreme and, together with the absence of acidic functionality, suggests a limited strong-ionization burden. The urethane present (1) can add polarity, but here it does not appear dominant enough to outweigh the more favorable profile. The molecule has no acidic site, so the strongest acidic pKa is not defined, which is consistent with avoiding a strongly acidic, permanently unfavorable pattern for brain entry. It also has NH/OH group count 0 and hydrogen-bond donor count 0, both of which are favorable for passive BBB permeation because they minimize donor-driven desolvation penalties. The estimated logP of 3.6911 and estimated logD of 2.4047 fall in a moderate lipophilicity range that is generally consistent with BBB permeability rather than being too polar or excessively lipophilic. The rotatable-bond count of 6 is moderate and still compatible with brain entry, since flexibility is not excessive. In addition, the molecule contains pyrrolidine (1) and saturated heterocycle count 2, which add some polarity and heterocycle burden; these elements are not ideal for BBB crossing and introduce some tension against the more favorable descriptors. However, the overall balance of zero donors, zero NH/OH groups, moderate logP/logD, and a non-acidic profile outweighs those less favorable structural aspects. Taken together, the molecule is more consistent with crossing the BBB, so the final prediction is option (B).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a strong positive analog for BBB crossing. It lacks urethane while the query has one (query-minus-neighbor delta +1), and it also has a higher estimated logP of 4.0128 versus 3.6911 in the query, a difference of -0.3217 from query to neighbor that still lands the query in a moderately lipophilic range. The query is also more compact in Labute surface area terms than the neighbor in the comparison direction used here, with 182.2165 for the query versus 148.0868 for the neighbor and a delta of +34.1297, while the query and neighbor both share pyrrolidine. The estimated logD is essentially matched, 2.4047 for the query versus 2.4299 for the neighbor (delta -0.0252), which stays in a CNS-relevant moderate window. The main offsets are that the query has lower QED drug-likeness, 0.6746 versus 0.8147, and that shared pyrrolidine is treated unfavorably in this local comparison. Even so, the combination of higher lipophilicity than the non-BBB neighbor, the added urethane context, and the close logD makes this neighbor overall support BBB penetration.
+
+Neighbor 2 gives the same general direction. The neighbor has higher estimated logP, 4.6489 versus 3.6911, with a query-minus-neighbor delta of -0.9578, and again the query has urethane once while the neighbor does not. The query’s Labute surface area is 182.2165 compared with 160.8167 in the neighbor, a delta of +21.3998, and the two molecules both have pyrrolidine. The neutral fraction is also higher in the query, 0.0517 versus 0.0228, with a delta of +0.0289, which is less favorable for passive BBB entry because more neutral fraction is generally helpful for crossing. NH/OH group count is 0 in both molecules. On balance, the stronger lipophilicity and the structural difference around urethane outweigh the negative neutral-fraction shift, so this neighbor still resembles a BBB-crossing compound more than a non-crossing one.
+
+Neighbor 3 reinforces that picture. It again lacks urethane while the query has one, and the neighbor’s estimated logP is even higher at 4.7577 versus 3.6911 in the query, with delta -1.0666. The Labute surface area is 170.414 in the neighbor versus 182.2165 in the query, so the query is somewhat larger by +11.8025, but the same pyrrolidine motif is shared. As in Neighbor 2, the query has a higher neutral fraction, 0.0517 versus 0.0182, with delta +0.0335, which works against BBB penetration, and NH/OH group count remains 0 for both. Even with that neutral-fraction penalty and the shared pyrrolidine factor, the much higher logP of the non-BBB neighbor and the consistent urethane difference keep this comparison aligned with BBB crossing.
+
+Neighbor 4 is labeled as a non-crossing neighbor, yet several of its features are actually closer to a BBB-permeable profile than the query’s in the local comparison. The query has higher maximum partial charge, 0.4094 versus 0.3219, with delta +0.0875, and it also lacks 1,3,8-triazaspiro[4.5]decan-4-one and hydantoin, both present in the neighbor. Those absences are favorable for the query here because each of those motifs in the neighbor is associated with the non-crossing side of the comparison. At the same time, the query has lower minimum partial charge, -0.4494 versus -0.3379, with delta -0.1115, and a higher minimum absolute partial charge, 0.4094 versus 0.3219, with delta +0.0875; both of those charge shifts are unfavorable for crossing in this local pairing. The query also has urethane once while the neighbor does not, with delta +1. Taken together, the mixed charge changes and the urethane difference still leave the overall comparison tilted toward BBB crossing despite the neighbor itself being a non-crosser.
+
+Neighbor 5 also sits on the non-crossing side, but the comparison still favors the query. The neighbor has a strongest acidic pKa of 13.8731 while the query has no acidic site, so the acidic-site comparison is not directly numeric for the query; that absence is favorable for BBB penetration because avoiding acidic ionization is generally helpful. The query is higher in maximum partial charge, 0.4094 versus 0.2272, delta +0.1822, and also higher in minimum absolute partial charge, 0.4094 versus 0.2272, delta +0.1822, both of which are favorable in this local setting. The query again has urethane once while the neighbor does not, delta +1, and the query’s minimum partial charge is slightly more negative, -0.4494 versus -0.3917, delta -0.0577. The only feature that clearly favors the non-crossing neighbor is heteroatom count, which is 8 in both molecules; the query-minus-neighbor delta is +0, and that equality is associated with the non-crossing side in this pairing. Even with that, the acidic-site absence and the repeated urethane-related and charge-pattern advantages make this neighbor still support the BBB-crossing label.
+
+Neighbor 6 is the weakest similarity, but it is still informative in the same direction. The neighbor has much lower maximum partial charge, 0.1637 versus 0.4094, and the same value also appears for minimum absolute partial charge, with the query-minus-neighbor delta +0.2457 for both measures. The query also lacks piperidine, while the neighbor has it, and the query has urethane once and tertiary amide once whereas the neighbor has neither, so those two structural differences are again in the BBB-crossing direction for the query. Finally, heteroatom count is much lower in the neighbor, 3 versus 8 in the query, with a delta of +5, which is the main feature here favoring the non-crossing side because a higher heteroatom burden generally increases polarity. Still, the fact that the query carries urethane and tertiary amide while lacking piperidine, together with the large partial-charge shifts, keeps this comparison aligned more with the crossing class than with the non-crossing class.
+
+Considering all six neighbors together, the three BBB-crossing neighbors are consistently characterized by higher lipophilicity or closely related favorable structure-property differences, especially the recurring urethane comparison and the moderate logP/logD region. The three non-crossing neighbors do contain several unfavorable features such as higher heteroatom burden, acidic or polar motifs, and charge patterns, but the query repeatedly differs from them in ways that are locally associated with crossing. The overall neighborhood pattern therefore supports option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

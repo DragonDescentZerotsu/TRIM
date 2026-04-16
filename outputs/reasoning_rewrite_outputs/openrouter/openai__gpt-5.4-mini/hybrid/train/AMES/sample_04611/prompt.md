@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an aziridine (1), which is a well-recognized electrophilic mutagenicity toxicophore and strongly supports an AMES-positive outcome. It also has an aromatic ring count of 2, and while that is not by itself a definitive alert, the presence of aromatic character can be consistent with mutagenic chemistry when paired with other risky motifs. The ring count of 4 suggests a moderately ring-rich scaffold, which can sometimes correlate with structural features associated with mutagenicity, though this is not a standalone rule. The estimated logD of 3.9188 indicates a fairly lipophilic compound, so exposure in the assay is not obviously limited by extreme polarity, and that can make a reactive toxicophore more consequential. The maximum partial charge of 0.0725 and minimum absolute partial charge of 0.0725 indicate some charge asymmetry in the molecule, and the most negative minimum partial charge of -0.2012 also reflects a polar distribution that may matter for reactivity and interaction with the bacterial system. At the same time, the topological polar surface area of 3.01 is very low, which would generally favor permeability, but the heteroatom count of 2 and hydrogen-bond acceptor count of 1 are both low, suggesting the scaffold is not especially heteroatom-rich or strongly polar. Even with those lower-polarity features, the aziridine alert dominates the interpretation, and the overall balance of evidence supports the molecule being mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a strong positive analog for mutagenicity. It matches the query on aziridine, and aziridine is a clear mutagenic toxicophore, so that shared substructure already keeps the comparison on the B side. The query is slightly more positively charged at the maximum partial charge level, with 0.0725 versus 0.0562 in the neighbor, delta +0.0163, and that also favors greater bacterial interaction/exposure rather than relief from risk. The query is less lipophilic than the neighbor, with estimated logD 3.9188 versus 4.9179, delta -0.9991; even though lower logD can sometimes reduce exposure, here the comparison still aligns with the mutagenic analog because the shared aziridine dominates. The query also has a lower ring count, 4 versus 5, delta -1, and fewer heavy atoms, 16 versus 22, delta -6; both are size-related shifts that may reduce exposure somewhat, but they do not outweigh the aziridine alert and the overall structural similarity. The only counterweight is QED drug-likeness, which is lower in the query, 0.4871 versus 0.6003, delta -0.1133, but QED is only a coarse drug-likeness proxy and does not neutralize the stronger toxicophore signal. Overall, Neighbor 1 supports option (B).
+
+Neighbor 2 also supports option (B) even more directly. The query again shares aziridine with the neighbor, and that common aziridine motif is the dominant mutagenicity anchor. The query is much less lipophilic here, with estimated logP 3.9188 versus 5.6186, delta -1.6998, and estimated logD 3.9188 versus 5.5964, delta -1.6776; those shifts would usually improve solubility/exposure rather than create mutagenicity on their own, but they do not erase the toxicophore. The query has a slightly higher maximum partial charge, 0.0725 versus 0.0562, delta +0.0163, which keeps the molecule in a somewhat more polar/electrostatically active regime. Neutral fraction is also a bit higher in the query, 1 versus 0.9502, delta +0.0498, and the ring count is lower, 4 versus 5, delta -1. These property shifts are mixed and mostly exposure-related, but because the shared aziridine is such a strong structural alert, the overall comparison still favors mutagenicity. Neighbor 2 therefore reinforces option (B).
+
+Neighbor 3 is another clear mutagenic neighbor and adds a different structural perspective. Here the neighbor lacks aziridine while the query has it once, a direct +1 difference that is highly informative because aziridine is a recognized electrophilic mutagenicity toxicophore. The query also has a higher ring count, 4 versus 3, delta +1, and a much higher maximum partial charge, 0.0725 versus 0.0073, delta +0.0651, both of which are consistent with a more reactive/polar profile. Two features go the other way: topological polar surface area increases from 0 to 3.01, delta +3.01, and heteroatom count rises from 0 to 2, delta +2. In this context those changes are more likely to affect permeability or exposure than intrinsic reactivity, but they do not cancel the new aziridine alert, and the neighbor also carries fluorene while the query does not. Fluorene is not the main reason by itself, yet it adds aromatic character to the mutagenic neighbor. Taken together, Neighbor 3 still lines up strongly with option (B), mainly because the query’s aziridine is the decisive difference.
+
+Neighbor 4 is a negative-labeled neighbor, but the comparison still points toward mutagenicity for the query. The neighbor does not have aziridine, while the query has it once, which is the largest single difference here and strongly favors B. The query also has a much higher neutral fraction, 1 versus 0.2781, delta +0.7219, meaning it is much more neutral at the configured pH; in Ames terms, that can improve passive bacterial exposure rather than diminish it. Maximum partial charge is less negative in the query on the minimum partial-charge side, with minimum partial charge -0.2012 versus -0.3202, delta +0.119, which again indicates a different charge distribution that does not reduce concern. The query has a higher ring count, 4 versus 3, delta +1, and higher estimated logD, 3.9188 versus 2.1593, delta +1.7595, both of which can support uptake or persistence relative to the neighbor. The neighbor’s fluorene is another aromatic feature absent in the query, but despite that, the new aziridine in the query is the more decisive mutagenic signal. So even against a non-mutagenic neighbor, the query looks more B-like overall.
+
+Neighbor 5 is also labeled non-mutagenic, yet the chemistry still favors the query being mutagenic. Both molecules have aziridine, so the shared toxicophore remains present. The neighbor is much larger and more aromatic-looking: ring count 7 versus 4, delta -3 for the query; it also has 2 alkene groups versus 0 in the query, and 4 benzene rings versus 2 in the query. Those differences make the neighbor the more complex and more aromatic structure, but they do not negate the fact that the query retains aziridine. The query has lower topological polar surface area, 3.01 versus 6.25, delta -3.24, which can support permeability/exposure. The strongest basic pKa is also a useful contrast: the neighbor has a strongest basic pKa of 6.1399, while the query has no basic site, so the delta is not defined. That means the neighbor has a basic ionizable site whereas the query does not, a difference that may alter uptake, but it does not outweigh the mutagenic aziridine shared by both. Since the query keeps the aziridine toxicophore and has lower polarity burden, this neighbor still supports option (B).
+
+Neighbor 6 again favors the mutagenic label. The neighbor does not have aziridine, while the query has it once, so this is another direct gain for B. The charge descriptors are mixed: maximum absolute partial charge is 0.2012 in the query versus 0.2226 in the neighbor, delta -0.0214; minimum partial charge is -0.2012 versus -0.2226, delta +0.0214; maximum partial charge is 0.0725 versus 0.1438, delta -0.0713; and minimum absolute partial charge is 0.0725 versus 0.1438, delta -0.0713. These shifts collectively show a different electrostatic profile, but none of them remove the key aziridine alert. The query also has much lower topological polar surface area, 3.01 versus 18.46, delta -15.45, which tends to increase passive permeability relative to the more polar neighbor. In context, that makes the query more able to reach bacteria than the heavily polar comparator. Even though the charge and polarity differences point in mixed directions, the presence of aziridine in the query is the dominant structural reason this comparison leans to B.
+
+Across all six neighbors, the pattern is consistent: every positive neighbor supports the query as mutagenic, and the three negative neighbors also become unfavorable once the query’s aziridine is considered. Some descriptors such as lower logP/logD, lower QED, or higher polarity in parts of the comparisons are exposure-related and can cut either way, but they never outweigh the repeated presence of aziridine, which is a strong mutagenicity toxicophore. Taken together, the nearest-analog evidence points decisively to option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

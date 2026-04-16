@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule looks strongly BBB-compatible overall. Its topological polar surface area is 3.24, which is extremely low and well within the range expected for passive brain penetration. The hydrogen-bonding profile is also very light: hydrogen-bond acceptor count is 1 and NH/OH group count is 0, both of which keep polarity and desolvation burden low. Consistent with that, the nitrogen/oxygen atom count is 1, so the heteroatom burden is minimal. The rotatable-bond count is 0, indicating a very rigid scaffold with essentially no conformational flexibility, which is generally favorable for BBB passage. The molecule also has aliphatic carbocycle count 2 and contains decahydroisoquinoline 1, suggesting a saturated, compact bicyclic framework that supports a constrained shape rather than a floppy or highly polar structure. The partial-charge descriptors are also modest, with minimum partial charge -0.3027 and maximum absolute partial charge 0.3027, which is consistent with limited charge separation. Finally, the molecule has no acidic site, so strongest acidic pKa is not defined; that absence of acidic functionality further supports BBB penetration because there is no strongly ionized acidic group to penalize membrane permeability. Taken together, the very low TPSA, minimal hydrogen-bonding capacity, rigid saturated scaffold, and absence of acidic functionality strongly favor option (B), crossing the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is strongly aligned with BBB penetration because it is smaller in polarity-related features than the query across several key descriptors. The neighbor has nitrogen/oxygen atom count 2 versus 1 in the query, topological polar surface area 23.47 versus 3.24, hydrogen-bond acceptor count 2 versus 1, and hydrogen-bond donor count 1 versus 0; in each case the query is lower by 1 or by 20.23 Å² for TPSA, which is the direction generally favored for brain entry. The query also has decahydroisoquinoline once while the neighbor lacks it, and that structural difference is still part of the same more BBB-permeable profile in this comparison. The only feature that cuts the other way is neutral fraction, where the query is slightly higher at 0.0209 versus 0.0151 (delta +0.0058), and that small increase is the main unfavorable point. Even so, the much lower TPSA and reduced donor/acceptor burden make Neighbor 1 overall a useful analog for option (B).
+
+Neighbor 2 again supports option (B) overall, although it contains a couple of countervailing features. Its TPSA is 32.7 compared with the query’s 3.24, so the query is far less polar, which is favorable for BBB crossing. The query also has fewer heteroatoms (1 versus 3) and still carries decahydroisoquinoline while the neighbor does not, both of which are directionally consistent with better brain penetration. The query likewise has no hydrogen-bond donors versus 1 in the neighbor. Against that, the neighbor has a higher QED drug-likeness value (0.9112 versus 0.6833), and the query-minus-neighbor delta is negative here, so QED does not help the BBB argument for the query in this particular comparison. The minimum partial charge also shifts from -0.508 in the neighbor to -0.3027 in the query, a delta of +0.2052 that is unfavorable in this pair. Still, the substantial reductions in TPSA and heteroatom burden dominate, so Neighbor 2 remains more consistent with BBB crossing.
+
+Neighbor 3 is another positive analog for the query. The most important favorable shifts are the lower nitrogen/oxygen atom count, 1 in the query versus 2 in the neighbor, and the much lower TPSA, 3.24 versus 23.47. The query also has lower acceptor count, 1 versus 2, and a lower Labute surface area, 116.553 versus 151.4766, even though that surface-area decrease is the one feature here that is marked as unfavorable in this specific comparison. The query additionally has lower estimated logP, 3.6832 versus 4.6628, which is still within a generally reasonable BBB-oriented lipophilicity region rather than an extreme value. The strongest basic pKa is slightly higher in the query, 9.0701 versus 8.6917, with delta +0.3784, and in this comparison that shift is treated as favorable. Taken together, the much lower polarity and heteroatom burden outweigh the surface-area penalty, so Neighbor 3 supports option (B).
+
+Neighbor 4 is labeled as a non-BBB analog, but the feature-level comparison still largely favors the query. The query again has much lower TPSA, 3.24 versus 40.46, and fewer nitrogen/oxygen atoms, 1 versus 2, with lower hydrogen-bond acceptor count, 1 versus 2. The query also has lower minimum absolute partial charge, 0.0169 versus 0.1154, and lower maximum absolute partial charge, 0.3027 versus 0.508, both of which are favorable in this specific neighbor comparison. The minimum partial charge also shifts from -0.508 to -0.3027, which is again favorable here. Even though this neighbor belongs to the non-BBB group, its properties are actually much less polar than the query on the key BBB-relevant dimensions, so the comparison still reinforces the idea that the query is the better BBB-like structure.
+
+Neighbor 5 is also a non-BBB analog, yet it too points toward the query’s BBB-favorable profile. The neighbor has a very high TPSA of 78.51 compared with the query’s 3.24, a large polarity gap that clearly favors the query. The neighbor also has many more heteroatoms, 7 versus 1, while the query carries decahydroisoquinoline once and the neighbor does not. The query has a much higher strongest basic pKa, 9.0701 versus 4.1978, and that shift is treated favorably in this comparison. The neighbor has a strongest acidic pKa of 6.0094, while the query has no acidic site; preserving the absence of an acidic site is consistent with the more BBB-permeable side of the comparison. Although the query also has more aliphatic carbocycles, 2 versus 0, that structural increase is not a downside in this specific pair. Overall, Neighbor 5 is a strong non-BBB counterexample that still makes the query look more compatible with BBB penetration.
+
+Neighbor 6 remains in the non-BBB group, but most of its listed features again favor the query. The query’s TPSA is dramatically lower, 3.24 versus 118.21, which is the clearest BBB-relevant contrast in the entire set. The query also has lower maximum partial charge, 0.0169 versus 0.2802, and lower maximum absolute partial charge, 0.3027 versus 0.3609, plus decahydroisoquinoline once while the neighbor lacks it. The query has one more aliphatic carbocycle, 2 versus 1, which is also treated favorably here. The single feature that points against the query is rotatable-bond count, where the neighbor has 4 and the query has 0, giving a delta of -4 and an unfavorable effect for the query in this comparison. Even with that flexibility penalty, the enormous drop in TPSA and the more favorable charge profile dominate, so Neighbor 6 still supports the BBB-crossing side.
+
+Putting the six neighbors together, the three BBB-crossing neighbors and the three non-crossing neighbors all contain multiple comparisons that place the query in a more BBB-compatible region, especially through its very low TPSA, low donor/acceptor burden, low heteroatom count, and generally restrained charge profile. The few opposing features, such as slightly higher neutral fraction in Neighbor 1, higher QED and a less favorable minimum partial charge in Neighbor 2, lower Labute surface area in Neighbor 3, and fewer rotatable bonds in Neighbor 6, do not outweigh the repeated polarity and hydrogen-bond advantages. On balance, the local analog evidence favors option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

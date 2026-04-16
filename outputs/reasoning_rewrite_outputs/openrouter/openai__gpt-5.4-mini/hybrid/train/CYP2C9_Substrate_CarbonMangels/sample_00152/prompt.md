@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has several structural motifs that are often compatible with CYP2C9 recognition. A urea group is present (1), which adds polar functionality that can still fit within a substrate-like scaffold when balanced by hydrophobic or aromatic features. A pyridine ring is present (1), and aromatic heterocycles can support binding and positioning in the CYP2C9 active site, especially when the overall scaffold is not overly polar. A piperazine ring is present (1), which introduces additional ionizable nitrogen functionality and can alter the charge distribution and binding behavior, but it does not by itself exclude substrate status. The aromatic heterocycle count is 2, which indicates a moderate heteroaromatic scaffold and is consistent with a molecule that can make productive π-type or hydrophobic contacts. At the same time, some descriptors lean away from substrate behavior: maximum partial charge is 0.3498, suggesting a charge distribution that is not strongly favorable for the classic anionic recognition pattern associated with CYP2C9, and minimum absolute partial charge is also 0.3498, which is not especially indicative of a strongly differentiated charge-pairing motif. The neutral fraction is 0.4645, showing a substantial neutral component rather than a clearly anion-rich species, which weakens the usual weak-acid/anionic-substrate pattern. Labute surface area is 156.7576, which is relatively large and can make entry into the active site less favorable if not offset by the right binding interactions. One more aromatic/heteroaromatic signal remains supportive, but the presence of 4H-1,2,4-triazole (1) is a cautionary feature because this kind of heteroaromatic nitrogen-rich motif can shift binding away from the classic CYP2C9 substrate profile. Dialkyl ether is absent (0), which removes one potentially flexible polar ether motif, but that alone is not enough to overcome the less favorable charge and surface-area signals. Overall, the scaffold has some substrate-like aromatic and heterocyclic elements, yet the charge distribution, substantial neutral fraction, and larger surface area make it less convincing as a CYP2C9 substrate, so the balance favors option (A): is not a substrate to the enzyme CYP2C9.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor, but it still contains several features that are less supportive of CYP2C9 substrate behavior: both molecules share 4H-1,2,4-triazole with query-minus-neighbor delta +0, and that shared motif is associated here with a negative shift; both also share piperazine with delta +0, which again weighs against substrate status. The shared urea is mildly favorable, and the absence of dialkyl ether in both molecules is also favorable, while the query having pyridine once where the neighbor has none (delta +1) favors substrate status. However, the query also matches the neighbor at number of basic sites, 4 versus 4 with delta +0, and that unchanged basic-site count is unfavorable in this comparison. Overall, despite a few favorable shared or newly present features, this neighbor still tilts toward non-substrate behavior.
+
+Neighbor 2 is also a positive neighbor, but the balance is mixed. The shared absence of dialkyl ether is favorable, and the query’s strongest basic pKa is lower than the neighbor’s, from 9.4148 down to 7.4617 (delta -1.9531), which in this local comparison favors substrate status. The query also has pyridine once where the neighbor has none, and it has urea once where the neighbor has none, both favorable. Against that, the query’s neutral fraction is much higher, 0.4645 versus 0.0096 (delta +0.4549), and in this setting that shift is unfavorable. The query also has more aromatic heterocycle count, 2 versus 0 (delta +2), which is favorable. Taken together, this neighbor gives some substrate-supporting signals, but the elevated neutral fraction still leaves the comparison leaning away from the final substrate label.
+
+Neighbor 3, another positive neighbor, is more clearly substrate-favoring on the individual features, but it is still a positive-neighbor comparison overall. The neighbor has pyrazole while the query does not (delta -1), and that difference favors substrate status here. The query again shares the absence of dialkyl ether, has pyridine once where the neighbor has none, and has urea once where the neighbor has none, all favorable. The query also has higher aromatic heterocycle count, 2 versus 1 (delta +1), and it has piperazine once where the neighbor has none, which is also favorable. Even so, this is still being compared against a positive neighbor that carries a substrate label, so the local evidence is mixed rather than uniformly decisive for the final class.
+
+Neighbor 4 is a negative neighbor, yet several of its properties still look substrate-like and are important to weigh carefully. Both molecules lack dialkyl ether, which is favorable. The query has slightly higher maximum partial charge, 0.3498 versus 0.3262 (delta +0.0236), and higher minimum absolute partial charge, 0.3498 versus 0.3055 (delta +0.0443); in this comparison those charge increases are favorable. The query also has higher QED drug-likeness, 0.6904 versus 0.5143 (delta +0.1761), and one fewer nitrogen/oxygen atom, 6 versus 7 (delta -1), both favorable. Finally, the neighbor has 2 copies of benzimidazole while the query has 0 (delta -2), and that absence is favorable as well. Even though this neighbor is a non-substrate, most of the direct feature differences here actually favor the substrate class, so it does not strongly reinforce the final non-substrate label by itself.
+
+Neighbor 5 is a negative neighbor and provides some of the clearest non-substrate-associated features. The neighbor has succinimide, 1,2-benzisothiazole, and azonane, while the query lacks each of them (delta -1 for all three), and each of those absences is strongly unfavorable to substrate status in this local comparison. The shared absence of dialkyl ether is favorable, and the query having urea once where the neighbor has none is also favorable. The query’s QED is higher, 0.6904 versus 0.5236 (delta +0.1668), which is favorable. Still, the three missing heterocyclic fragments in the query are large negative signals relative to this neighbor, so this comparison contributes to the non-substrate side overall.
+
+Neighbor 6 is the other negative neighbor and is also mixed but still relevant. The neighbor has tetrahydroquinoline while the query does not (delta -1), which favors substrate status in this local comparison. The shared absence of dialkyl ether and the query having urea once where the neighbor has none are both favorable. The query also has higher aromatic heterocycle count, 2 versus 0 (delta +2), which is favorable, and the neighbor’s strongest acidic pKa is 13.8065 while the query has no acidic site, with delta not defined because one molecule has no acidic site; that feature is also treated as favorable here. On the other hand, the neighbor has 2 copies of aryl chloride while the query has 1 (delta -1), which is unfavorable. So this neighbor does not give a purely one-sided message, but the comparison still fits within the broader non-substrate neighborhood.
+
+Putting the six neighbors together, the three positive neighbors are not cleanly substrate-dominant because each carries some unfavorable local signals, especially the non-supportive shared triazole/piperazine pattern in Neighbor 1 and the higher neutral fraction in Neighbor 2. The three negative neighbors are also not uniformly decisive, but Neighbor 5 in particular contains several strongly absent fragments relative to the query that are consistent with non-substrate behavior, and Neighbor 4 and Neighbor 6 remain negative exemplars despite some substrate-like overlaps. Taken as a set, the neighboring chemical space gives enough weight to the non-substrate side to support option (A): is not a substrate to the enzyme CYP2C9.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP2C9
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

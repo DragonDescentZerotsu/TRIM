@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a chloroalkene, which is a structural alert that can be consistent with mutagenic behavior, so that feature raises concern for option (B). At the same time, the aminal count of 12 suggests a relatively saturated, non-aromatic framework that is not itself a classic mutagenic toxicophore, and the presence of an ammonium group (1) makes the molecule more ionized and less likely to passively cross bacterial membranes, which can reduce effective exposure in an Ames assay. The ring count of 4 is moderate and can sometimes accompany more rigid, planar chemistry, but by itself it is not enough to indicate mutagenicity. The fraction of sp3 carbons of 0.7778 is fairly high, which suggests a more three-dimensional, less flat structure and is not the kind of geometry that typically accompanies polycyclic aromatic mutagenic scaffolds. QED drug-likeness at 0.6118 is reasonably moderate, so it does not strongly suggest an unusual toxicophore-rich profile. The neutral fraction of 0.9885 is very high, meaning the compound is mostly neutral at the configured pH, which favors membrane permeability and could increase assay exposure. However, the number of basic sites of 3 also implies multiple ionizable centers, which can complicate uptake and does not directly indicate DNA reactivity. The aromatic ring count of 0 is reassuring because it argues against polycyclic aromatic planar systems, a known mutagenic motif. The topological polar surface area of 9.72 is very low, which also supports good passive permeability and possible exposure in bacteria. Balancing the clear mutagenic alert from the chloroalkene against the several features that suggest a non-aromatic, highly sp3-rich, and relatively polar/ionizable scaffold without a fused aromatic toxicophore, the overall picture is more consistent with a non-mutagenic outcome. Therefore, the molecule is predicted to be option (A), is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is fairly similar and gives a mixed but ultimately mutagenicity-leaning comparison. The shared chloroalkene motif is an explicit favorable feature for mutagenicity, and here it is present in both molecules with a query-minus-neighbor delta of +0, so that alert remains fully retained. At the same time, the query has a much higher fraction of sp3 carbons, 0.7778 versus 0.3333 (delta +0.4444), which weakens the mutagenicity signal because the added 3D character moves away from the flatter, more aromatic chemotypes that often accompany Ames-positive toxicophores. The query also has ammonium once while the neighbor has none (delta +1), and the comparison treats that as lowering the mutagenicity likelihood, consistent with the idea that simple ionizable amines can modify exposure rather than directly create DNA reactivity. In contrast, the query has 12 aminal copies versus 0 in the neighbor, which supports mutagenicity in this local comparison. The query’s estimated logD is lower, 0.2425 versus 0.7312 (delta -0.4887), and that shift is treated as favoring mutagenicity here, while the higher QED of the query, 0.6118 versus 0.5057 (delta +0.1061), works against it. Overall, Neighbor 1 still comes out on the mutagenic side because the retained chloroalkene alert, the aminal enrichment, and the logD shift outweigh the opposing sp3, ammonium, and QED effects.
+
+Neighbor 2 is also a positive neighbor and is slightly stronger overall. As with Neighbor 1, the shared chloroalkene motif is present in both structures, keeping a mutagenic structural alert in place. The query additionally has three hydrogen-bond acceptors while the neighbor has none (delta +3), which is treated as favoring the mutagenic label in this local context. The query again has a higher fraction of sp3 carbons, 0.7778 versus 0.3333 (delta +0.4444), and that acts in the opposite direction, as does the presence of ammonium in the query (1 versus 0), which reduces the mutagenicity tendency in this comparison. Two other features strengthen the mutagenic side: the query’s maximum partial charge is higher, 0.139 versus 0.0415 (delta +0.0975), and the query has 12 aminal copies versus 0 in the neighbor. Those changes, together with the chloroalkene and acceptor-count differences, outweigh the opposing sp3 and ammonium terms. So Neighbor 2 remains a net mutagenic analog.
+
+Neighbor 3 follows the same pattern and also supports the mutagenic label, though with a somewhat different balance of features. The chloroalkene motif is again shared exactly, preserving the favorable mutagenicity signal. The query has three hydrogen-bond acceptors versus none in the neighbor (delta +3), and that is favorable here as well. The higher fraction of sp3 carbons in the query, 0.7778 versus 0.3333 (delta +0.4444), again cuts against mutagenicity, and ammonium is present in the query but absent in the neighbor, which is also treated as opposing the mutagenic call. However, the query’s maximum partial charge is higher, 0.139 versus 0 (delta +0.139), which favors mutagenicity in this comparison. The query also has a much higher QED drug-likeness, 0.6118 versus 0.4125 (delta +0.1994), and that term points the other way, toward non-mutagenicity. Even so, the retained chloroalkene alert, the acceptor-count increase, and the charge shift together keep Neighbor 3 on the mutagenic side overall.
+
+Neighbor 4 is a negative neighbor, but even here the comparison still ends up supporting the mutagenic label overall. The query has fewer chloroalkenes than the neighbor, 1 versus 2 (delta -1), which is a favorable mutagenicity sign in this local setting because the neighbor’s extra chloroalkene burden is not required in the query. The query also has more aliphatic heterocycles, 4 versus 0 (delta +4), and more rings overall, 4 versus 0 (delta +4); both differences are treated as mutagenicity-supporting here, consistent with the idea that the query is more structurally elaborate and ring-rich. Against that, the query’s QED is higher, 0.6118 versus 0.4328 (delta +0.179), and its heavy-atom count is much larger, 14 versus 4 (delta +10); both of those shifts are taken as reducing the mutagenicity likelihood through exposure-related or drug-likeness-related effects. The query also has 12 aminal copies versus none in the neighbor, which again supports mutagenicity. Even though this neighbor sits in the non-mutagenic set, the ring-rich, heterocycle-rich query with the aminal feature still aligns more with the mutagenic class than the neighbor does.
+
+Neighbor 5 is another negative neighbor, yet it also points toward mutagenicity when compared with the query. The query has four aliphatic heterocycles versus none in the neighbor (delta +4) and four rings versus none (delta +4), both of which favor the mutagenic side in this local comparison. The chloroalkene motif is shared exactly, so the same mutagenicity-linked substructure remains present. The query also has 12 aminal copies versus 0, again a favorable feature. One opposing factor is ammonium: the query has it once while the neighbor has none, and that term is treated as lowering the mutagenicity tendency. Another opposing factor is the stronger basicity of the neighbor, with strongest basic pKa 8.4438 versus 5.4646 in the query (delta -2.9792). That lower query pKa is still counted as mutagenicity-favoring here, because the local comparison treats the shift in ionization behavior as part of the pattern associated with the mutagenic analogs. Taken together, the ring, heterocycle, chloroalkene, aminal, and basicity differences outweigh the ammonium term, so Neighbor 5 remains aligned with the mutagenic class.
+
+Neighbor 6 is the weakest of the three negative neighbors by similarity, but it still supports the mutagenic label overall. The query has more rings, 4 versus 1 (delta +3), and more aliphatic heterocycles, 4 versus 0 (delta +4), both of which favor mutagenicity in this comparison. The chloroalkene motif is again shared between query and neighbor, preserving the same favorable structural alert. The query also has 12 aminal copies versus 0, which remains a positive sign for the mutagenic class. Two features point the other way: the query’s QED is higher, 0.6118 versus 0.43 (delta +0.1818), and the neighbor has five Aryl chloride groups while the query has none (delta -5). Both of those differences are treated as making the query less concerning. Even with those offsets, the ring-rich and heterocycle-rich query still looks more like the mutagenic set than this neighbor does, especially given the retained chloroalkene and aminal pattern.
+
+Across all six neighbors, the picture is consistent: the three positive neighbors repeatedly retain the chloroalkene alert and reinforce it with aminal enrichment, occasional hydrogen-bond acceptor or partial-charge effects, and only partially offsetting non-mutagenic signals such as higher sp3 fraction, ammonium, or higher QED. The three negative neighbors are less similar but still show that the query’s higher ring count, higher aliphatic heterocycle count, retained chloroalkene motif, and aminal abundance place it closer to the mutagenic analogs overall, despite some countervailing effects from QED, heavy-atom count, ammonium, or aryl chloride differences. Taken together, the nearest-neighbor evidence supports option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

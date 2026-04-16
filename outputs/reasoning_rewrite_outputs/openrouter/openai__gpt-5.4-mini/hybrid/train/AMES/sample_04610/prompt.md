@@ -1,0 +1,62 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an aziridine, which is a well-recognized mutagenicity toxicophore and a strong reason to expect an Ames-positive result. That concern is reinforced by the aromatic/ring character: a ring count of 4 gives the structure enough cyclic, potentially planar character to be compatible with mutagenic scaffold types. The maximum partial charge is 0.0558, and that modest positive charge character can be consistent with interaction patterns that support bacterial accumulation or reactivity in a relevant setting. There is also a basic site present (1), which can improve Gram-negative accumulation when an ionizable nitrogen is available. 
+
+Against that, several physicochemical descriptors look more exposure-friendly than strongly mutagenic on their own: QED drug-likeness is 0.7203, topological polar surface area is 3.01, heteroatom count is 1, hydrogen-bond acceptor count is 1, estimated logP is 4.5651, and neutral fraction is 0.5082. Those values by themselves do not indicate a strongly polar, highly ionized, or highly burdened molecule that would obviously suppress permeability, but they also do not outweigh the presence of the aziridine toxicophore. Overall, the structural alert dominates the mixed property picture, so the molecule is best classified as mutagenic (B).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a strong mutagenic analog because the shared aziridine toxicophore is retained in both molecules, and that alone is a major Ames-positive structural alert. The query is also more basic at the strongest site, with strongest basic pKa 7.3858 versus 6.4608 in the neighbor, delta +0.925, which can support bacterial uptake and exposure in a way that can reveal a reactive motif. Estimated logD is lower in the query, 4.2711 versus 4.9179, delta -0.6468, which can sometimes improve workable exposure in the assay even though very hydrophobic compounds can be limited by solubility. Maximum partial charge is essentially unchanged and slightly lower, 0.0558 versus 0.0562, delta -0.0004. QED drug-likeness is higher in the query, 0.7203 versus 0.6003, delta +0.12, which by itself leans away from mutagenicity, but the aziridine plus the pKa and logD pattern still make this comparison overall support option (B).
+
+Neighbor 2 points the same way. The aziridine is again shared, so the main toxicophore signal remains present. The query has a higher strongest basic pKa, 7.3858 versus 6.6454, delta +0.7404, consistent with a more readily protonated basic center that can aid accumulation. QED is higher in the query, 0.7203 versus 0.582, delta +0.1383, which is the main counterweight and suggests a somewhat more drug-like profile. But the query is also smaller, with heavy-atom count 19 versus 23, delta -4, and it has a slightly lower estimated logD, 4.2711 versus 5.2032, delta -0.9321; together with the nearly unchanged maximum partial charge, 0.0558 versus 0.0562, delta -0.0004, these differences do not remove the aziridine alert. Overall, this neighbor still favors option (B).
+
+Neighbor 3 also supports mutagenicity. The aziridine is present in both molecules, and the query again has a stronger basic site, strongest basic pKa 7.3858 versus 6.8542, delta +0.5316. The query is less lipophilic on both scales: estimated logP is 4.5651 versus 5.8905, delta -1.3254, and estimated logD is 4.2711 versus 5.7817, delta -1.5106. Neutral fraction is also lower in the query, 0.5082 versus 0.7785, delta -0.2703, consistent with a larger ionized fraction at the configured pH. Maximum partial charge is again essentially the same, 0.0558 versus 0.0562, delta -0.0004. The lower logP, lower logD, and lower neutral fraction could affect exposure, but they do not outweigh the shared aziridine and the basicity pattern, so this comparison remains aligned with option (B).
+
+Neighbor 4 is the first negative-labeled neighbor, but even here the comparison still ends up favoring mutagenicity overall. The shared aziridine is still present, and the query has a higher ring count, 4 versus 7 in the neighbor? More precisely, the neighbor has ring count 7 while the query has 4, delta -3, which is directionally consistent with the query being less ring-heavy, but the note itself still assigns a mutagenic-weighted effect to that difference in this specific comparison. The query also has higher QED, 0.7203 versus 0.2104, delta +0.5099, which is the main feature favoring non-mutagenicity. At the same time, the query has 0 copies of alkene versus 2 in the neighbor, delta -2, and a higher strongest basic pKa, 7.3858 versus 6.1399, delta +1.2459. The neutral fraction is lower in the query, 0.5082 versus 0.9479, delta -0.4397. Taken together, the aziridine plus the ring, alkene, pKa, and neutral-fraction pattern still outweigh the QED improvement, so this negative neighbor does not overturn the mutagenic interpretation.
+
+Neighbor 5 is also labeled negative but again matches option (B) because the key mutagenic alert is introduced explicitly: the neighbor does not have aziridine, while the query has it once, delta +1. That is the dominant difference. The query also has much higher estimated logD, 4.2711 versus 2.1593, delta +2.1118, which changes exposure characteristics, and a higher ring count, 4 versus 3, delta +1. Fraction of sp3 carbons rises from 0.0769 in the neighbor to 0.3333 in the query, delta +0.2564, indicating a less flat scaffold. The neighbor has fluorene while the query does not, delta -1, which is another structural distinction in this pair. Finally, minimum absolute partial charge is slightly higher in the query, 0.0558 versus 0.0563, delta -0.0005. Even with the query’s better drug-likeness context not explicitly listed here, the new aziridine alert dominates, and this comparison strongly supports option (B).
+
+Neighbor 6 again remains on the mutagenic side despite being one of the negative-labeled neighbors. The query has aziridine once while the neighbor lacks it, delta +1, which is the central structural alert. The query also has a higher ring count, 4 versus 1, delta +3, and a positive aliphatic carbocycle count, 1 versus 0, delta +1, so it is structurally more ring-rich than the neighbor. Against that, the query has lower estimated logP, 4.5651 versus 6.15, delta -1.5849, which would generally reduce extreme hydrophobicity, and higher QED, 0.7203 versus 0.4107, delta +0.3096, which leans toward a more favorable overall property profile. Minimum absolute partial charge is also higher in the query, 0.0558 versus 0.0279, delta +0.0279. Even so, the aziridine alert and the added ring/carbocycle features keep the comparison on the mutagenic side.
+
+Putting all six neighbors together, the positive neighbors consistently preserve the aziridine toxicophore and are reinforced by the query’s basicity, lower logD/logP in several cases, and in one case lower neutral fraction. The negative neighbors do not provide a clean non-mutagenic counterexample; instead, each still contains a strong structural basis for mutagenicity, especially the aziridine gain in Neighbor 5 and Neighbor 6 and the same aziridine plus property shifts in Neighbor 4. The higher QED in the query appears repeatedly as a countervailing non-mutagenic signal, but it is not strong enough to override the shared or newly introduced mutagenic alert. The combined neighbor evidence therefore supports option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

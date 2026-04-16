@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an oxirane (1), which is a well-recognized electrophilic toxicophore and therefore strongly supports mutagenic potential. It also contains a nitro group (1), another classic Ames-positive structural alert associated with mutagenicity. In addition, the aromatic content is substantial: aromatic ring count is 3, aromatic carbocycle count is 3, benzene is count 3, and the total ring count is 5, giving a fairly ring-rich and partially planar scaffold that can align with known mutagenic chemotypes, especially when combined with a reactive substructure. The topological polar surface area is 55.67, which is not especially high, so the molecule is not obviously too polar to reach bacterial targets. The estimated logD is 4.0272, indicating a fairly lipophilic compound, and the estimated logP is also 4.0272, which is moderately high; that level of hydrophobicity does not rule out exposure in the assay and can be compatible with bacterial uptake for a sufficiently reactive molecule. QED drug-likeness is 0.2881, which is relatively low and is consistent with a less drug-like, more alert-rich profile. Although the estimated logP of 4.0272 is not extreme enough by itself to argue strongly against activity, it does introduce some tension because higher lipophilicity can sometimes limit effective soluble exposure; however, that possible exposure limitation is outweighed here by the presence of the oxirane and nitro toxicophores together with the ring-rich aromatic scaffold. Overall, the structural alerts dominate, so the molecule is best judged mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a strong positive analog for mutagenicity. The query contains nitro once while the neighbor has none, which is a major structural-alert difference because aromatic nitro is a well-recognized Ames-positive toxicophore. The query also has slightly higher QED drug-likeness (0.2881 vs 0.2402, delta +0.0479), but that is only a weak contextual property here and does not outweigh the nitro alert. Both molecules have oxirane, so that reactive epoxide motif is shared rather than explanatory for the difference. The query is one ring smaller than the neighbor (5 vs 6, delta -1), and it also has lower estimated logD (4.0272 vs 5.2722, delta -1.245), which could modestly alter exposure, but the key point is that the query retains the nitro motif while matching the shared oxirane, so this comparison still aligns with option (B): is mutagenic. The minimum absolute partial charge is higher in the query (0.2755 vs 0.1151, delta +0.1604), which slightly tempers the effect, but not enough to overturn the structural-alert signal.
+
+Neighbor 2 repeats essentially the same pattern as Neighbor 1 and again supports mutagenicity. The neighbor lacks nitro while the query has it once, which is the most important difference and strongly favors a positive Ames outcome. The query again has slightly higher QED drug-likeness (0.2881 vs 0.2402, delta +0.0479), both compounds contain oxirane, and the query has one fewer ring (5 vs 6, delta -1). Although the query’s estimated logD is lower than the neighbor’s (4.0272 vs 5.2722, delta -1.245), that is best viewed as an exposure-related modifier rather than a mechanism that would cancel a nitro toxicophore. The higher minimum absolute partial charge in the query (0.2755 vs 0.1151, delta +0.1604) is also a secondary physicochemical difference. Taken together, Neighbor 2 remains a close positive analog because the query retains nitro and oxirane while still sitting in a broadly similar physicochemical range.
+
+Neighbor 3 also points to option (B). Here the query has one more ring than the neighbor (5 vs 4, delta +1), and it contains oxirane whereas the neighbor does not. That matters because oxirane is a clear electrophilic motif associated with mutagenicity, so the added oxirane in the query strengthens the positive case. The query’s QED drug-likeness is only slightly higher than the neighbor’s (0.2881 vs 0.2823, delta +0.0058), which is not a decisive separator, while estimated logD is somewhat lower in the query (4.0272 vs 4.4922, delta -0.465). Both molecules have nitro, so the query does not lose that toxicophoric anchor. The query also has a modestly higher fraction of sp3 carbons (0.125 vs 0, delta +0.125), which may slightly reduce flatness relative to the neighbor, but the dominant features in this comparison are the shared nitro and the query’s additional oxirane, so Neighbor 3 still supports mutagenicity.
+
+Neighbor 4 is listed among the non-mutagenic neighbors, but the specific comparison still favors the query being mutagenic. The query has oxirane while the neighbor does not, and that single change is a strong positive alert. The query also has a much larger ring count (5 vs 1, delta +4), lower QED drug-likeness (0.2881 vs 0.4379, delta -0.1498), and higher estimated logD (4.0272 vs 1.9032, delta +2.124). In addition, the query has one aliphatic carbocycle while the neighbor has none (delta +1). These differences collectively make the query more structurally reminiscent of a mutagenic analog than the low-ring, higher-QED neighbor. Both compounds have nitro, so nitro does not explain the distinction here; instead, the presence of oxirane and the larger, more hydrophobic ring system in the query make the comparison lean toward option (B): is mutagenic.
+
+Neighbor 5 also comes from the non-mutagenic set, yet it still reinforces the positive label. The query again has oxirane while the neighbor does not, which is the clearest structural-alert difference. The query also has a much larger ring count (5 vs 1, delta +4), one aliphatic carbocycle versus none in the neighbor (delta +1), and higher estimated logD (4.0272 vs 2.3011, delta +1.7261), all of which make the query look closer to a more hydrophobic, structurally elaborate analog. Both molecules have nitro, so the query retains that toxicophore rather than gaining it as a new difference. The neighbor has nitroso while the query does not, but that loss is not enough to offset the query’s oxirane and larger ring system. Overall, Neighbor 5 still points to mutagenicity for the query.
+
+Neighbor 6 is the last non-mutagenic neighbor and again ends up favoring the query’s mutagenic label. The query has oxirane while the neighbor does not, which remains the major positive alert. The query also has a much higher QED contrast in the opposite direction here (0.2881 vs 0.5753, delta -0.2872), but lower QED is not a reliable Ames rule by itself; it is only a coarse descriptor. The query has a larger ring count (5 vs 1, delta +4), one aliphatic carbocycle versus none (delta +1), and a much higher estimated logD (4.0272 vs 2.3011, delta +1.7261), which makes it more similar to the other positive analogs on size/hydrophobicity context. The neighbor has two nitro groups while the query has one (delta -1), so the query loses some nitro burden relative to this neighbor, but it still keeps a nitro group and adds oxirane, which is more important for the mutagenic readout. The neighbor also has one benzene ring while the query has three (delta +2), adding further aromatic content to the query. Even with one fewer nitro group, the query remains the more structurally alert-rich compound in this comparison.
+
+Across all six neighbors, the same pattern holds: the three positive neighbors are all aligned with the query because the query retains nitro, carries oxirane, and sits in a similar physicochemical range, while the three non-mutagenic neighbors are still overridden by the query’s oxirane, larger ring count, and higher hydrophobic/structural complexity relative to those analogs. The recurring presence of nitro and oxirane, together with the query’s generally more mutagenicity-like scaffold than the non-mutagenic neighbors, makes the overall balance clearly favor option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

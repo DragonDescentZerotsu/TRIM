@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule looks unfavorable for CYP3A4 substrate behavior overall. It contains isothiourea (1) and imidazole (1), both of which suggest a strongly heteroatom-rich, polar scaffold rather than a hydrophobic substrate-like one. The estimated logD of -3.6621 is very low, indicating a highly polar, poorly lipophilic compound that is unlikely to partition well into the membrane or active-site environment needed for CYP3A4 access. Consistent with that, the estimated logP is only 0.7088, also reflecting limited hydrophobicity. The molecular weight is low at 114.173, with exact molecular weight 114.0252 and heavy-atom molecular weight 108.125; together with the heavy-atom count of 7 and Labute surface area of 47.5902, this places the compound in a very small size regime that does not resemble the more typical mid-sized, membrane-accessible CYP3A4 substrate space. The neutral fraction is absent (0), which is another strong sign that the molecule is not behaving as a neutral, permeability-friendly species under physiological conditions. Taken together, the very low lipophilicity, low molecular size, limited surface area, and complete lack of neutral fraction outweigh any possibility of productive CYP3A4 interaction. Therefore, the compound is best classified as not a substrate to CYP3A4.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is the closest positive substrate example, but several of its key properties still look more substrate-like than the query and therefore weaken support for a CYP3A4 substrate call. The neighbor has much higher heavy-atom molecular weight, 184.114 versus 108.125 for the query, with a delta of -75.989, and it also has a less extreme estimated logD, -1.0293 versus -3.6621, with a delta of -2.6328. Both of those differences favor the non-substrate label for the query because the query is smaller and much more polar. At the same time, the query lacks a neutral fraction feature that is present in the neighbor, and that single comparison goes the other way, but it is not enough to offset the stronger size and hydrophobicity differences. The neighbor also contains purine while the query does not, and the query has a much higher strongest basic pKa, 6.7549 versus 2.3832, with a +4.3717 delta; in this comparison that pKa shift is still aligned with the neighbor being the substrate-like analog, and the query’s lower Labute surface area, 47.5902 versus 79.029, with a -31.4388 delta, further separates it from that substrate example. Overall, Neighbor 1 supports non-substrate behavior for the query.
+
+Neighbor 2 is also a positive substrate example, and it again differs from the query in several ways that make the query look less substrate-like. The neighbor’s heavy-atom molecular weight is 274.218 versus 108.125 for the query, a very large -166.093 delta, and its total molecular weight is 293.37 versus 114.173, a -179.197 delta; the exact molecular weight shows the same pattern, 293.1528 versus 114.0252, with a -179.1276 delta. These large size gaps point away from substrate behavior for the query. The neighbor and query both have imidazole, so that shared motif does not distinguish them. The neighbor also has higher estimated logP, 3.1285 versus 0.7088, with a -2.4197 delta, and does not have isothiourea whereas the query has it once; both of those differences again make the query appear more polar and less membrane-compatible than the substrate analog. Taken together, Neighbor 2 strongly supports the non-substrate label.
+
+Neighbor 3, another positive substrate neighbor, shows the same overall pattern. The query has much lower estimated logD than the neighbor, -3.6621 versus -1.0854, with a -2.5767 delta, which is a substantial shift toward a more polar, less permeable molecule. The neighbor has purine and uracil while the query has neither, so the query is missing both structural features that characterize this substrate example. The query also has a lower Labute surface area, 47.5902 versus 72.454, with a -24.8639 delta, and a lower exact molecular weight, 114.0252 versus 180.0647, with a -66.0396 delta. The query does contain isothiourea while the neighbor does not, but that single difference does not outweigh the combined reductions in hydrophobicity, size, and surface area relative to this substrate analog. Neighbor 3 therefore also leans toward the query being a non-substrate.
+
+Neighbor 4 is one of the negative, non-substrate neighbors, and it aligns well with the query’s non-substrate direction. The neighbor has purine and uracil, while the query has neither, so the query is missing two motifs seen in this non-substrate example. The query is also much more polar by estimated logD, -3.6621 versus -1.0409, with a -2.6212 delta, and it is smaller by heavy-atom molecular weight, 108.125 versus 172.103, with a -63.978 delta. Exact molecular weight shows the same pattern, 114.0252 versus 180.0647, with a -66.0396 delta, and total molecular weight is also lower, 114.173 versus 180.167, with a -65.994 delta. All of those features make the query resemble this non-substrate neighbor in the direction that matters here, so Neighbor 4 provides direct support for option (A).
+
+Neighbor 5 is another negative neighbor and again matches the query’s non-substrate profile. It has purine and uracil, both absent from the query, and the query also differs in neutral fraction: the neighbor’s neutral fraction is 0.9287, while the query’s neutral fraction is absent, with a delta of -0.9287. The query is again more polar by estimated logD, -3.6621 versus -1.0718, with a -2.5903 delta, and smaller by heavy-atom molecular weight, 108.125 versus 172.103, with a -63.978 delta. Exact molecular weight is likewise lower, 114.0252 versus 180.0647, with a -66.0396 delta. These comparisons keep the query clustered with the non-substrate side rather than the substrate side.
+
+Neighbor 6 is the final negative neighbor, and it is especially informative because it combines a much less polar reference compound with shared heterocycle context. The neighbor’s estimated logD is 1.5607, far above the query’s -3.6621, a delta of -5.2228, so the query is dramatically more polar than this non-substrate example. Both the neighbor and the query have imidazole, so that feature is not discriminating here. Even with that shared motif, the query remains much smaller in exact molecular weight, 114.0252 versus 186.0463, a -72.0211 delta, in heavy-atom molecular weight, 108.125 versus 176.156, a -68.031 delta, and in total molecular weight, 114.173 versus 186.236, a -72.063 delta. The neighbor also has neutral fraction present as 1, while the query is absent, adding one more difference consistent with the neighbor’s non-substrate profile. Neighbor 6 therefore reinforces the non-substrate side very clearly.
+
+Putting the six neighbors together, the three substrate neighbors all sit at substantially higher logD or logP, larger molecular weight, and larger surface area than the query, while the three non-substrate neighbors mirror the query’s small size and very low logD more closely. The only scattered exceptions, such as the query sharing imidazole with two neighbors or having isothiourea where one substrate neighbor lacks it, do not outweigh the repeated pattern of very low hydrophobicity and reduced size. The neighborhood as a whole therefore supports option (A): the query is not a substrate to CYP3A4.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

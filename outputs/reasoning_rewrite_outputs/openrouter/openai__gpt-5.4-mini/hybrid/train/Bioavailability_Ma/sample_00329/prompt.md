@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed oral-bioavailability profile. An alkyne is present (1), which by itself does not add polarity and can sometimes be associated with less favorable drug-likeness in the context of other liabilities. More importantly, the molecule contains a tertiary mixed amine (1) with a strongest basic pKa of 5.2987, suggesting a basic center that is not excessively strong and may retain a useful balance between ionization and permeability. The estimated logD is 5.4031, which is on the high side and supports membrane partitioning, although it also raises the possibility of solubility or clearance tradeoffs. The topological polar surface area is 40.54, which is comfortably below common permeability-limiting thresholds and is favorable for passive absorption. The presence of a tertiary hydroxyl (1) and a ketone (1) adds polarity, but the overall polar surface area remains moderate rather than excessive. Against that, the aliphatic ring count is 4, and the Labute surface area is 192.1374, both of which indicate a fairly large and structurally substantial scaffold that can make oral exposure more challenging. QED drug-likeness is 0.6395, which is reasonably solid and consistent with a generally drug-like profile. Although there are some unfavorable size- and surface-area-related signals, the favorable combination of moderate polar surface area, a workable basic pKa, relatively high logD, and acceptable overall drug-likeness makes oral bioavailability at or above 20% the more likely outcome.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor with moderate similarity, and several of its differences from the query are in favorable ranges for oral exposure. The query has lower topological polar surface area than a more polar neighbor? Actually here the neighbor’s TPSA is 20.23 while the query’s is 40.54, so the query is higher by +20.31, which is less favorable on polarity grounds, yet the comparison still favors option (B) because the query also sits in a more favorable lipophilicity and basicity profile: estimated logP rises from 4.3135 to 5.4065 (+1.093), number of basic sites increases from absent (0) to present (1), and the query has one tertiary mixed amine where the neighbor has none. Those changes are all treated as supportive of the higher-bioavailability class in this neighborhood context. The only counterweights called out are that estimated logD rises from 4.3135 to 5.4031 (+1.0896), which is less favorable, and that both molecules share an alkyne, which does not separate them. Overall, despite the higher TPSA, the net comparison to Neighbor 1 supports option (B): oral bioavailability ≥ 20%.
+
+Neighbor 2 is also a positive neighbor and gives a similar mixed but ultimately favorable picture. The query again has slightly higher TPSA than the neighbor, 40.54 versus 37.3, a delta of +3.24, which is the main unfavorable feature in this comparison. However, that is outweighed by a stronger QED drug-likeness for the query, 0.6395 versus 0.5927 (+0.0469), along with the same increase from no basic sites to one basic site and the appearance of one tertiary mixed amine in the query where the neighbor has none. The query also has higher estimated logP, 5.4065 versus 3.6586 (+1.7479), which in this local comparison is associated with the better-absorbed class. As with Neighbor 1, the shared alkyne is not a differentiator. Taken together, Neighbor 2 again leans toward option (B): oral bioavailability ≥ 20%.
+
+Neighbor 3 is another positive neighbor, and here the contrast is driven by a different set of features. The query has an alkyne once while the neighbor has none, which is a negative difference for the higher-bioavailability class in this local comparison. But the query offsets that with a higher QED, 0.6395 versus 0.5718 (+0.0677), one basic site where the neighbor has none, and one tertiary mixed amine where the neighbor has none; all of those point toward the ≥20% class. The query also has a higher estimated logP, 5.4065 versus 4.8523 (+0.5542), again favoring the higher-bioavailability side in this neighborhood. The one feature that works against the query is strongest acidic pKa: the neighbor has no acidic site, while the query has a strongest acidic pKa of 12.8862, so the delta is not defined. That feature is noted as a negative signal here, but it is not strong enough to overturn the other favorable differences. Overall Neighbor 3 still supports option (B): oral bioavailability ≥ 20%.
+
+Neighbor 4 is a negative neighbor, but most of its detailed feature differences actually look more like the higher-bioavailability class than the lower one. The query shares the alkyne with the neighbor, which strongly favors the ≥20% class in this comparison. The query also has slightly higher estimated logP, 5.4065 versus 4.8697 (+0.5368), higher QED, 0.6395 versus 0.541 (+0.0986), and one tertiary mixed amine where the neighbor has none; all of those are favorable for the query. The query also has fewer saturated carbocycles, 2 versus 3 (delta -1), which is again treated as favorable here, and both molecules share tertiary hydroxyl. Even though this neighbor is labeled as belonging to the <20% group, the local comparison of properties makes the query look more consistent with option (B): oral bioavailability ≥ 20%.
+
+Neighbor 5 is another negative neighbor, and it contains one important unfavorable contrast, but the overall balance still favors the query. The query has an alkyne while the neighbor does not, and that is a negative point for the lower-bioavailability class in this comparison. On the other hand, the query has much better QED, 0.6395 versus 0.4391 (+0.2004), one tertiary mixed amine where the neighbor has none, and a much higher estimated logD, 5.4031 versus 3.0138 (+2.3893), all of which favor the higher-bioavailability class here. The two features that work against the query are that the neighbor has a lactone while the query does not, and the neighbor has a much higher fraction of sp3 carbons, 0.7667 versus 0.5517, so the query is lower by -0.2149; both of those differences are treated as unfavorable in this comparison. Even with those negatives, the stronger QED, higher logD, and added tertiary mixed amine make the overall comparison lean toward option (B): oral bioavailability ≥ 20%.
+
+Neighbor 6, the last negative neighbor, also ends up supporting the higher-bioavailability label despite a few opposing signals. The query has an alkyne while the neighbor does not, which is unfavorable for the lower-bioavailability side in this local pair. But the neighbor has a 1,3-dioxolane that the query lacks, and that difference favors the query. The query also has one tertiary mixed amine where the neighbor has none, a much higher estimated logD, 5.4031 versus 2.7168 (+2.6863), and fewer saturated carbocycles, 2 versus 3 (delta -1); these all support option (B) in this comparison. The one clear counterweight is that the query’s fraction of sp3 carbons is lower, 0.5517 versus 0.76 (delta -0.2083), which is unfavorable here. Even so, the combination of higher logD, tertiary mixed amine presence, and the dioxolane difference keeps Neighbor 6 aligned overall with option (B): oral bioavailability ≥ 20%.
+
+Putting all six neighbors together, the three positive neighbors are consistently supportive of the ≥20% class, and the three negative neighbors do not overturn that picture because the query repeatedly shows the same favorable local pattern: higher QED, presence of a basic site and tertiary mixed amine, and often higher logP/logD, with only partial offsets from higher TPSA, alkyne presence, lower sp3 fraction in one case, and the absence of some favorable motifs like lactone or 1,3-dioxolane. The balance of evidence therefore supports the provided prediction: option (B), has oral bioavailability ≥ 20%.
+
+Input 3. Target final label semantics
+option (B): has oral bioavailability ≥ 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

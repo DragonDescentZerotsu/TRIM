@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule carries an alkyl chloride, which is a clear mutagenicity alert and weighs toward an AMES-positive outcome. It also contains a trifluoromethyl group, and that kind of strongly electron-withdrawing substituent is not itself a mutagenicity alert; here it supports a less reactive overall profile. Several global descriptors are consistent with low intrinsic bacterial exposure: a minimum partial charge of -0.1697 suggests a modestly negative charge character, topological polar surface area is 0, hydrogen-bond acceptor count is 0, and ring count is 0, all of which point to a very small, simple, and relatively nonpolar scaffold. The fraction of sp3 carbons is 1, indicating a fully saturated carbon framework rather than a flat aromatic system, which does not favor the classic polycyclic aromatic mutagenicity pattern. At the same time, the heavy-atom count is 6, Labute surface area is 37.9041, and estimated logP is 1.7875, so the molecule is not especially large and has moderate lipophilicity rather than extreme polarity; these properties could support some bacterial access, but they are not strong enough to outweigh the absence of rings and polar functionality. Taken together, the single strongest structural alert is the alkyl chloride, while the rest of the profile is small, simple, and non-aromatic, so the overall balance favors option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close analog overall, and its comparison is mixed but slightly informative for a non-mutagenic call. The query is much less polar at topological polar surface area, with TPSA 0 versus 27.69 in the neighbor (delta -27.69), which is a common exposure-limiting feature and in this case strongly favors option (A). At the same time, the query is smaller in Labute surface area, 37.9041 versus 85.8086 (delta -47.9045), and the note treats that as favoring option (B), so the size/shape signal is not one-sided. The query also has a higher maximum partial charge, 0.4017 versus 0.1769 (delta +0.2248), which weighs toward option (A) here, and it contains one trifluoromethyl group where the neighbor has none (delta +1), again favoring option (A) in this comparison. Finally, the query has fewer hydrogen-bond acceptors, 0 versus 3 (delta -3), and that also supports option (A). The one opposing feature is alkyl chloride: the neighbor has 3 copies versus 1 in the query (delta -2), which points toward option (B). Even with that opposing halide signal, the stronger overall pattern in Neighbor 1 is the lower polarity, higher charge character, fewer acceptors, and added trifluoromethyl group aligning better with the non-mutagenic label.
+
+Neighbor 2 repeats essentially the same structural picture and therefore reinforces the same conclusion. Again, TPSA is 0 in the query versus 27.69 in the neighbor (delta -27.69), which is favorable for option (A) because very low polarity can reduce bacterial exposure differences. Labute surface area remains lower in the query, 37.9041 versus 85.8086 (delta -47.9045), which by itself is the one feature leaning toward option (B). The query’s maximum partial charge is higher, 0.4017 versus 0.1769 (delta +0.2248), and that again supports option (A) in this matched pair. The query also has one trifluoromethyl group where the neighbor has none (delta +1), and the hydrogen-bond acceptor count drops from 3 to 0 (delta -3); both of those changes favor option (A). As in Neighbor 1, the only clear mutagenic-leaning feature is the alkyl chloride difference, where the neighbor has 3 copies and the query has 1 (delta -2), which points toward option (B). But the balance of the comparison still favors non-mutagenicity because the query remains more polarity-limited and less acceptor-rich while retaining the trifluoromethyl substitution.
+
+Neighbor 3 is somewhat different because it adds a strong contrast in saturation and ring-related features, but the overall comparison still supports option (A). The query has a much higher fraction of sp3 carbons, 1 versus 0.1429 in the neighbor (delta +0.8571), and that lower flatness is consistent with weaker association to the aromatic toxicophore patterns that often accompany mutagenicity, so this feature favors option (A). However, both the neighbor and the query have alkyl chloride, so there is no difference there (delta +0), and in this note that shared feature is associated with option (B). Labute surface area is lower in the query, 37.9041 versus 54.0996 (delta -16.1955), which favors option (B) here, so this is another mixed signal. The hydrogen-bond acceptor count is unchanged at 0 versus 0 (delta +0), and that comparison is interpreted as favoring option (A). The query also has one trifluoromethyl group while the neighbor has none (delta +1), which again supports option (A). Finally, the query has a slightly lower exact molecular weight, 117.9797 versus 126.0236 (delta -8.0439), and in this comparison that also leans toward option (A). So although the shared alkyl chloride and smaller surface area point the other way, Neighbor 3 still ends up closer to the non-mutagenic side because of the more saturated character, unchanged acceptor count, added trifluoromethyl group, and slightly lower molecular weight.
+
+Neighbor 4 is one of the negative neighbors, and it still ends up supporting option (A) when compared directly with the query. The query and neighbor both contain trifluoromethyl (delta +0), and that shared feature is associated here with option (A). The query has a lower Labute surface area, 37.9041 versus 72.9612 (delta -35.0571), which in this specific comparison is one of the features leaning toward option (B), and the same is true for alkyl chloride, which is present in both molecules and is treated here as favoring option (B). Counterbalancing that, the query has a much higher fraction of sp3 carbons, 1 versus 0.25 (delta +0.75), which favors option (A) and indicates a much more saturated, less planar scaffold. The query also has a smaller heavy-atom count, 6 versus 12 (delta -6), which here leans toward option (B) through the size/exposure channel. The ring count drops from 1 in the neighbor to 0 in the query (delta -1), and that favors option (A). Taken together, Neighbor 4 shows the query as more saturated and ring-poor, with the shared trifluoromethyl group still present, and despite the surface-area and alkyl-chloride signals, the balance remains on the non-mutagenic side.
+
+Neighbor 5 is another negative neighbor that ultimately reinforces option (A), though its internal signals are also mixed. The query introduces alkyl chloride relative to this neighbor: the neighbor has none and the query has one (delta +1), which is a mutagenic-leaning feature in this comparison. But both molecules have trifluoromethyl (delta +0), which again favors option (A) in the note’s local framing. The query also has lower Labute surface area, 37.9041 versus 66.5962 (delta -28.6922), and that is treated here as favoring option (B). Against that, the query has a much higher fraction of sp3 carbons, 1 versus 0.1429 (delta +0.8571), which supports option (A) by making the scaffold more saturated and less flat. Ring count also decreases from 1 to 0 (delta -1), again favoring option (A). The query’s QED drug-likeness is lower, 0.4256 versus 0.5744 (delta -0.1488), and in this local comparison that favors option (B), but QED is only a coarse composite and does not outweigh the structural shift toward a more saturated, ring-free query. Overall, Neighbor 5 still leaves the query more consistent with the non-mutagenic label.
+
+Neighbor 6 is the last negative neighbor and gives a similarly mixed but ultimately non-mutagenic pattern. Both molecules have alkyl chloride (delta +0), which is treated here as favoring option (B). The query has trifluoromethyl whereas the neighbor does not (delta +1), which favors option (A), and the query also has a much higher fraction of sp3 carbons, 1 versus 0.1429 (delta +0.8571), again supporting option (A). The minimum partial charge is less negative in the query, -0.1697 versus -0.207 (delta +0.0373), and that local change also favors option (A). Labute surface area is lower in the query, 37.9041 versus 58.2651 (delta -20.3611), which leans toward option (B) in this comparison, and ring count drops from 1 to 0 (delta -1), which favors option (A). So although the shared alkyl chloride and smaller surface area are not ideal, the combined effect of the added trifluoromethyl group, higher sp3 character, less negative minimum partial charge, and ring loss still makes the query look closer to the non-mutagenic side.
+
+Across all six neighbors, the same broad picture emerges: the query repeatedly shows lower polar surface area, fewer hydrogen-bond acceptors where those are measured, a higher sp3 fraction, and the added trifluoromethyl group, while the main recurring mutagenic-leaning signals are alkyl chloride, occasional lower Labute surface area, and in one case lower QED or higher heavy-atom count. Because the structural features associated with reduced polarity and greater saturation are consistent across the comparisons, and because the mutagenic-leaning signals are either shared, offset, or weaker in aggregate, the neighbor set as a whole supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

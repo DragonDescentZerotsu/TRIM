@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an alkyl aryl thioether, which is a structural motif often seen in compounds that can engage CYP3A4, so that feature supports substrate behavior. Its neutral fraction is present (1), suggesting a meaningful neutral component that can aid membrane access and enzyme contact, again leaning toward substrate status. The estimated logD is 2.7435, a moderately favorable hydrophobicity range for reaching CYP3A4 while still remaining within a drug-like window, which also supports substrate behavior. The minimum absolute partial charge is 0.4103, indicating some localized polarity but not an extreme ionization pattern, so it does not strongly block access to the enzyme. On the other hand, several size-related descriptors are on the smaller side: molecular weight is 225.313, exact molecular weight is 225.0823, heavy-atom molecular weight is 210.193, Labute surface area is 94.2042, and ring count is 1. Taken together, these values describe a relatively compact molecule with limited ring complexity, which can sometimes weaken the broader developability profile for CYP3A4 substrate behavior even when hydrophobicity is acceptable. The presence of a urethane group is a counterpoint, because urethanes tend to add polarity and can reduce passive permeability, which slightly favors non-substrate behavior. Overall, the balance is mixed, but the favorable neutral fraction (1), moderate logD (2.7435), and alkyl aryl thioether motif outweigh the smaller-size and urethane-related penalties, so the molecule is more likely to be a CYP3A4 substrate.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is fairly strong positive evidence for substrate behavior because several structural changes move the query toward the substrate side of the comparison. The query has 0 secondary amides versus 2 in the neighbor, which removes a polar donor/acceptor-heavy motif that can hinder membrane access. It also introduces alkyl aryl thioether once where the neighbor has none, and it carries secondary mixed amine once where the neighbor has none; both of those features are associated here with the substrate-favoring side of the comparison. The neutral fraction is essentially maximal for both molecules, but the query is slightly higher, 1 versus 0.9996 with delta +0.0004, so that effect is small. Two features partially offset this: heavy-atom molecular weight is lower in the query, 210.193 versus 346.237 with delta -136.044, and maximum partial charge is higher, 0.4118 versus 0.2506 with delta +0.1612; both of those shifts work against substrate behavior in this specific comparison. Even so, the overall analog relationship to Neighbor 1 still leans toward option B.
+
+Neighbor 2 is mixed but still ends up leaning negative overall, even though some individual changes favor substrate behavior. The query and neighbor both contain urethane, and that shared feature is associated with the non-substrate side here. They also both contain alkyl aryl thioether, which is substrate-favoring in this pair. The query has a much higher strongest acidic pKa, 12.3558 versus 9.4887 with delta +2.8671, which is consistent with a less readily ionized acidic site and supports substrate behavior in this comparison. Against that, the query has a slightly lower maximum partial charge, 0.4118 versus 0.4132, and a slightly lower minimum absolute partial charge, 0.4103 versus 0.4132; both of those changes are small but align with the non-substrate side here. The neutral fraction also rises from 0.9847 in the neighbor to 1 in the query, delta +0.0153, which is substrate-favoring. Still, because the urethane match carries a non-substrate signal and the charge-related comparisons are not helping, this neighbor contributes net caution against substrate assignment.
+
+Neighbor 3 is clearly supportive of option B. The neighbor has 2 alkyl chlorides while the query has 0, and losing those halogenated groups here is strongly associated with substrate behavior. The query also has alkyl aryl thioether once where the neighbor has none, again favoring the substrate side. The minimum absolute partial charge is higher in the query, 0.4103 versus 0.347 with delta +0.0634, and the estimated logD is much higher, 2.7435 versus -0.1177 with delta +2.8612; both shifts fit better with the substrate-like profile in this local comparison, especially the large hydrophobicity increase. The query’s neutral fraction is also much higher, 1 versus 0.0002 with delta +0.9998, which is a major move away from a heavily ionized state and strongly supports substrate behavior. The only counterweight is that maximum partial charge is a bit lower in the query, 0.4118 versus 0.347 with delta +0.0649, which here is associated with the non-substrate side, but that is outweighed by the other favorable changes. Overall, Neighbor 3 is one of the clearest positive analogs.
+
+Neighbor 4 is a negative neighbor overall, yet most of its feature-level differences actually favor the query as a substrate. The query has alkyl aryl thioether once where the neighbor has none, which is favorable. The neighbor has thioether and imine, while the query has neither; those two absences are each associated here with the non-substrate direction. The query also has a much higher estimated logD, 2.7435 versus 1.0385 with delta +1.705, which is favorable for reaching the enzyme environment. Maximum partial charge is slightly lower in the query, 0.4118 versus 0.4326 with delta -0.0208, and that change also supports the substrate side in this comparison. QED drug-likeness is much higher in the query, 0.7864 versus 0.2711 with delta +0.5154, which similarly favors the substrate interpretation. Even though the neighbor label is non-substrate, the comparison to the query mostly shifts toward substrate-like chemistry, so this neighbor adds only modest support for option B.
+
+Neighbor 5 is another negative neighbor, but it also compares mostly in the substrate direction. The query again has alkyl aryl thioether once where the neighbor has none, which is favorable. Its neutral fraction is much higher, 1 versus 0.0019 with delta +0.9981, and its estimated logD is substantially higher, 2.7435 versus 0.0534 with delta +2.6901; both of those changes strongly support better exposure and substrate-like behavior. Against that, the query’s maximum partial charge is much higher, 0.4118 versus 0.1699 with delta +0.2419, and that shift is unfavorable in this local comparison. The query is also smaller, with molecular weight 225.313 versus 307.39, delta -82.077, and lower Labute surface area, 94.2042 versus 131.7019, delta -37.4978; both of those size/surface reductions work against substrate behavior here. Even with those offsets, the combination of higher neutral fraction and higher logD keeps the overall comparison leaning toward option B.
+
+Neighbor 6 is the most internally mixed of the negative neighbors, but it still ends up favoring the query as a substrate. The query has alkyl aryl thioether once where the neighbor has none, which is favorable, and its fraction of sp3 carbons is much higher, 0.3636 versus 0.0625 with delta +0.3011, indicating a more saturated, less aromatic profile that is beneficial in this context. In contrast, the query is smaller, with molecular weight 225.313 versus 295.298 and exact molecular weight 225.0823 versus 295.0957, and it has lower Labute surface area, 94.2042 versus 125.6802; these size and surface decreases are unfavorable here. Minimum absolute partial charge is also slightly lower in the query, 0.4103 versus 0.4132 with delta -0.0028, but in this pair that small shift supports the substrate side. Taken together, the favorable thioether and higher sp3 content outweigh the size-related penalties, so this neighbor still supports option B.
+
+Across all six neighbors, the three positive neighbors and the three negative neighbors both contain substantial evidence that the query is more substrate-like than its analogs in the specific ways highlighted here. The most repeated favorable patterns are the presence of alkyl aryl thioether, higher neutral fraction, and higher estimated logD, with Neighbor 3 being especially persuasive because it combines those with a large improvement in ionization state and hydrophobicity. The main opposing signals are occasional higher partial charge, smaller size, or shared polar motifs such as urethane, but those do not outweigh the repeated substrate-favoring shifts. Overall, the local analog evidence is more consistent with option B: is a substrate to the enzyme CYP3A4.
+
+Input 3. Target final label semantics
+option (B): is a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

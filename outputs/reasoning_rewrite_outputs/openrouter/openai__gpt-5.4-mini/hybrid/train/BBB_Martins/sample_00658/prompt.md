@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are unfavorable for BBB penetration. It contains imidazole (1), which introduces a basic heteroaromatic center and can increase polarity/ionization. It also contains nitro (1), adding a strongly polar functionality that is generally unfavorable for passive BBB permeation. The topological polar surface area is 81.19 Å², which is not extreme but still sits in a range that is only moderately compatible with BBB entry and does not strongly favor penetration. The estimated logD is 0.092, a very low lipophilicity at pH 7.4, which suggests limited membrane permeability. The QED drug-likeness is 0.5159, indicating a middling overall profile rather than a strongly BBB-optimized one. The minimum absolute partial charge is 0.3424, consistent with a noticeable polar character. Against that, there are a few features that could support BBB crossing: the neutral fraction is present (1), which is favorable because a neutral species fraction can aid passive diffusion, and the strongest acidic pKa is 13.8279, indicating that strong acidic ionization is not a major issue here. The exact molecular weight is 171.0644 and the molecular weight is 171.156, both quite low, which is favorable for BBB penetration and helps offset some of the polar liabilities. Even so, the combination of low logD, moderately elevated TPSA, and polar heteroatom-containing motifs makes the overall profile lean more toward limited BBB penetration. Balancing the mixed signals, the molecule is predicted to cross the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a supportive BBB-crossing analog overall. It is lighter and more compact than the query in the features that matter most for passive entry: the neighbor has heavy-atom molecular weight 348.32 versus the query at 162.084, giving a large query-minus-neighbor delta of -186.236, and it also has a much larger Labute surface area, 147.9406 versus 68.6122, with delta -79.3283. Those size/surface differences by themselves are not a clean one-way signal, because the query is smaller and has the more favorable low surface area, which can matter for BBB entry. But the neighbor also carries a disulfide that the query lacks, it has 2 pyridine groups while the query has 0, and it has neutral fraction 0.9906 versus the query at 1, plus minimum absolute partial charge 0.1421 versus 0.3424. Taken together, the comparison is mixed, but the net evidence from this neighbor still leans toward BBB crossing in the supplied label sense because several structural and charge-related differences favor the crossing class even though Labute surface area is the main counterpoint.
+
+Neighbor 2 is also a supportive analog for BBB crossing despite one clearly unfavorable feature. The neighbor has 2H-pyrrole while the query has none, which is the main negative difference here. However, the query is more neutral-rich at the baseline given, with neutral fraction present at 1 versus the neighbor at 0.9974, and that small increase is favorable in this comparison. The query also has imidazole once, whereas the neighbor has none, and that difference works against crossing here. Likewise, the neighbor has amine and dialkyl thioether while the query does not; both of those absent-vs-present differences in the query are treated as unfavorable for crossing in this local comparison. Against those negatives, the neighbor’s estimated logD is 1.4744 while the query’s is 0.092, a delta of -1.3824, which places the query at much lower lipophilicity than this BBB-crossing analog and weighs against the query. Even with the mixed feature pattern, the neighbor is still one of the crossing-class examples overall, so it remains a useful positive analog.
+
+Neighbor 3 is another positive neighbor for the crossing class, but its evidence is more mixed than Neighbor 1. The neighbor has 1H-pyrrole while the query does not, which is unfavorable in this local comparison. On the favorable side, the query’s strongest acidic pKa is 13.8279 versus 11.0419 for the neighbor, a delta of +2.786, so the query is less acidic here; that difference is treated as supporting crossing in the comparison. The query also has neutral fraction at 1 versus 0.9987 for the neighbor, again a very small but favorable shift toward the query. In contrast, the query’s minimum absolute partial charge is 0.3424 versus 0.3103 for the neighbor, and that difference is unfavorable in this analog context. The query’s estimated logP is also much lower, 0.092 versus 2.6632 for the neighbor, a delta of -2.5712, which is another disadvantage relative to this BBB-crossing reference. Finally, the query has imidazole once while the neighbor has none, and that is also unfavorable in this pair. Even though several individual features pull in both directions, the neighbor remains classified with the BBB-crossing group, so it contributes positive analog support overall.
+
+Neighbor 4 belongs to the non-crossing side, but the comparison still contains several features that look favorable for BBB entry in isolation. The query has a much higher fraction of sp3 carbons, 0.5 versus the neighbor’s 0.0714, with delta +0.4286, which means the query is far more saturated/3D than this reference. The query is also smaller, with heavy-atom molecular weight 162.084 versus 262.156, delta -100.072, and it has neutral fraction 1 versus 0.0031 for the neighbor, delta +0.9969. Those three differences would normally look favorable for BBB permeation. But the neighbor does not have imidazole while the query has it once, and the neighbor has 2 phenol groups while the query has none; both of those differences are unfavorable for the query in this local comparison because they remove polar functionality that the query retains. The query’s minimum absolute partial charge is 0.3424 versus 0.3149, delta +0.0275, which also goes against the query here. Even so, this neighbor is explicitly in the non-crossing class, so it is an important counterexample showing that some favorable size/neutrality features are not enough by themselves to overturn the broader non-BBB pattern.
+
+Neighbor 5 is another non-crossing analog, and it is distinguished by a heavier, more lipophilic scaffold than the query. The neighbor has 2 alkyl chloride groups while the query has none, a difference that favors the neighbor in this comparison. The neighbor’s heavy-atom molecular weight is 311.036 versus 162.084 for the query, delta -148.952, and its exact molecular weight is 322.0123 versus 171.0644, delta -150.9479; both are much larger than the query and therefore align with the non-crossing reference rather than the query. The neighbor also lacks imidazole while the query has it once, which is unfavorable for the query here. In the same direction, the query has higher QED drug-likeness at 0.5159 versus 0.4091 for the neighbor, delta +0.1068, and that is treated as unfavorable in this local analog comparison. The neighbor’s molecular weight is 323.132 versus 171.156 for the query, delta -151.976, reinforcing the same size gap. This neighbor is non-crossing despite its size, so it shows that the query’s smaller mass does not automatically guarantee BBB crossing, but the overall local evidence here still keeps the query on the crossing side because the query is substantially lighter than this non-crossing analog.
+
+Neighbor 6 is the strongest non-crossing counterexample by size, yet it still ends up on the query-favoring side in this local comparison because the query is so much smaller. The neighbor’s heavy-atom molecular weight is 328.195 versus 162.084 for the query, delta -166.111, and its exact molecular weight is 346.1165 versus 171.0644, delta -175.0521; both differences strongly emphasize how much larger the non-crossing neighbor is. The neighbor’s fraction of sp3 carbons is 0.2941 versus 0.5 for the query, delta +0.2059, so the query is more saturated here. The query also has a slightly higher minimum absolute partial charge, 0.3424 versus 0.336, delta +0.0065, which in this comparison is unfavorable. The neighbor does not have imidazole while the query has it once, again a negative for the query. The query’s QED drug-likeness is 0.5159 versus 0.5055 for the neighbor, delta +0.0104, which is another unfavorable shift in this local setting. Even with those mixed smaller effects, the neighbor remains in the non-crossing class, and its much greater size makes it a useful foil that still leaves the query looking comparatively more BBB-compatible.
+
+Putting all six neighbors together, the positive neighbors consistently include several BBB-compatible features such as smaller neutral fraction differences, lower lipophilicity in the query relative to the BBB-crossing analogs, and in some cases smaller size or lower charge burden, while the negative neighbors are generally larger, with more heavy atoms and higher exact or heavy-atom molecular weight, and they carry non-crossing class labels despite some of those size penalties. The evidence is not perfectly one-directional because Neighbor 1 has a favorable Labute surface area counterpoint, and Neighbor 4 is a non-crossing analog even though the query is smaller and more neutral than it is. Still, the balance of the nearest analogs favors the query being on the BBB-crossing side, so the final prediction is option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

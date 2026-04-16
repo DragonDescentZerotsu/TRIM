@@ -21,6 +21,7 @@ def train_global_task(
     label_key: str = "Y",
     ebm_params: dict[str, object] | None = None,
     scale_features: bool = False,
+    drop_any_nan_columns: bool = False,
     output_dir: str | Path = "outputs/models/global_ebm/default_experiment",
 ) -> dict[str, object]:
     ebm_params = dict(ebm_params or build_ebm_params())
@@ -34,6 +35,7 @@ def train_global_task(
         label_key=label_key,
         feature_source=feature_bundle["feature_source"],
         scale_features=scale_features,
+        drop_any_nan_columns=drop_any_nan_columns,
     )
 
     x_train = matrices["x_train"]
@@ -114,6 +116,7 @@ def train_global_task(
         "surviving_feature_names": surviving_columns,
         "ebm_params": ebm_params,
         "scale_features": scale_features,
+        "drop_any_nan_columns": drop_any_nan_columns,
         "final_model_metrics": {"train": train_metrics, "valid": valid_metrics},
         "artifacts": {
             "train_predictions_csv": str(train_predictions_csv.resolve()),
@@ -123,4 +126,3 @@ def train_global_task(
     }
     save_json(task_output_dir / "train_summary.json", summary)
     return summary
-

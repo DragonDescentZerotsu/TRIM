@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that can reduce bacterial exposure: a Labute surface area of 188.5421 is fairly large, the carboxylic acid count of 2 indicates substantial ionizable acidity, the neutral fraction is absent (0), and the heavy-atom molecular weight of 452.242 together with a molecular weight of 468.37 suggest a relatively large, polar compound. The hetero O count of 2 and the overall heteroatom count of 11 also support a polar, highly functionalized structure. These properties can limit passive permeation and make it harder for the compound to reach bacterial DNA at effective levels, which favors a non-mutagenic AMES outcome. At the same time, there are some features that keep mutagenicity on the table: the ring count of 4 and aromatic ring count of 4 indicate a moderately aromatic scaffold, and the heteroatom-rich framework may support interactions associated with bioactivation or structural alert patterns in some contexts. The QED drug-likeness value of 0.3454 is relatively low, consistent with a less drug-like and more heavily substituted molecule, which can sometimes coexist with problematic chemistry. Even with those mixed signals, the exposure-limiting properties appear more prominent overall than the mutagenicity-enriching ones, so the molecule is better supported as not mutagenic (A).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close positive analogue, but several of its key differences actually make the query look less like a mutagen. The query has a much larger Labute surface area, 188.5421 versus 135.7513, with a delta of +52.7908, and that size/shape increase is associated here with a -1.9065 shift toward not mutagenic behavior, consistent with reduced effective exposure rather than any direct genotoxic signal. The query also has 2 oxoarene groups versus 0 in the neighbor, delta +2, which is the one feature in this comparison that goes the other way and supports mutagenicity. But that is counterbalanced by the query’s higher aromatic heterocycle count, 2 versus 0, delta +2, which here favors not mutagenic behavior, along with the heavier scaffold overall: heavy-atom count 34 versus 23, delta +11, also leaning not mutagenic. Heteroatom count rises from 7 to 11, delta +4, which in this local comparison supports mutagenicity through higher polarity/heteroatom burden, and maximum partial charge increases from 0.3161 to 0.3715, delta +0.0553, which here again favors not mutagenic. Taken together, Neighbor 1 still ends up slightly on the not mutagenic side despite the oxoarene and heteroatom increases.
+
+Neighbor 2 is essentially the same positive-neighbor pattern and therefore supports the same conclusion. Again, the query is much larger in Labute surface area, 188.5421 versus 135.7513, delta +52.7908, which strongly favors not mutagenic behavior in this analog pair. The query also carries 2 oxoarene groups where the neighbor has 0, delta +2, a feature that points toward mutagenicity. Yet the query’s aromatic heterocycle count is also 2 versus 0, delta +2, and in this comparison that change supports not mutagenic behavior. The query’s heavy-atom count is 34 versus 23, delta +11, another not mutagenic shift, while heteroatom count rises from 7 to 11, delta +4, which supports mutagenicity. Maximum partial charge also increases from 0.3161 to 0.3715, delta +0.0553, and that again is aligned with the not mutagenic direction here. So, despite a couple of mutagenicity-favoring structural additions, the overall balance for Neighbor 2 remains slightly on the not mutagenic side.
+
+Neighbor 3 gives the same overall message, with a bit more emphasis on polarity. The query again has a much larger Labute surface area, 188.5421 versus 128.2625, delta +60.2795, which weighs toward not mutagenic behavior. It also has 2 oxoarene groups versus 0, delta +2, a mutagenicity-favoring feature. At the same time, aromatic heterocycle count increases from 0 to 2, delta +2, which here supports not mutagenic behavior, and maximum partial charge rises from 0.1224 to 0.3715, delta +0.2491, again aligned with not mutagenic. This neighbor also adds a strong polarity shift: nitrogen/oxygen atom count jumps from 3 to 11, delta +8, which favors mutagenicity in this local comparison, and topological polar surface area rises sharply from 41.49 to 173.71, delta +132.22, another feature that would be expected to reduce passive permeability and affect exposure. Even with those two mutagenicity-leaning changes, the combination of larger surface area, higher aromatic heterocycle count, and higher partial charge keeps Neighbor 3 only marginally on the not mutagenic side overall.
+
+Neighbor 4 is a negative analogue, and it again aligns with the non-mutagenic label. The query has 2 carboxylic acid groups where the neighbor has 0, delta +2, which here favors not mutagenic behavior, likely by increasing ionization and lowering passive exposure. The query’s neutral fraction is absent and effectively 0 compared with the neighbor’s 0.0193, delta -0.0193, which also supports not mutagenic behavior. Labute surface area is again much larger in the query, 188.5421 versus 129.6512, delta +58.8909, and that difference favors not mutagenic behavior in this pair. The neighbor has a strongest basic pKa of 9.1053, while the query has no basic site, so the comparison is not a numeric delta but an explicit no-basic-site versus basic-site contrast; that also supports the not mutagenic side here. Heavy-atom count rises from 22 to 34, delta +12, another not mutagenic shift, while heteroatom count increases from 4 to 11, delta +7, which in this neighbor does lean mutagenic. Even so, the acid-rich, highly polar, larger query remains closer to a not mutagenic profile than to an actively mutagenic one.
+
+Neighbor 5 strengthens that same conclusion. The query again has 2 carboxylic acid groups versus 0, delta +2, which favors not mutagenic behavior. Its estimated logD is much lower, -3.461 versus 0.2692, delta -3.7302, consistent with a highly polar, less membrane-permeable molecule and therefore a not mutagenic direction in this analog context. Labute surface area is substantially larger as well, 188.5421 versus 106.9695, delta +81.5725, and that again supports not mutagenic behavior. Heavy-atom count increases from 18 to 34, delta +16, which also points the same way. Neutral fraction is lower in the query, with absent/0 versus 0.0231, delta -0.0231, again consistent with reduced passive exposure. As with Neighbor 4, the query has no basic site while the neighbor has strongest basic pKa 9.0262, so that nonnumeric contrast is another feature favoring the not mutagenic side. This neighbor is one of the clearest examples where polarity, acidity, and size all move together toward the negative class.
+
+Neighbor 6 is also a negative analogue and follows the same pattern. The query has 2 carboxylic acid groups versus 0, delta +2, which supports not mutagenic behavior. Its estimated logD is lower, -3.461 versus 0.4304, delta -3.8914, again indicating a much more polar molecule. Strongest basic pKa is present in the neighbor at 9.3965, while the query has no basic site, another no-basic-site contrast that favors not mutagenic behavior here. Heavy-atom count rises from 18 to 34, delta +16, which also leans not mutagenic. The main opposing feature in this comparison is ring count: the query has 4 rings versus 1, delta +3, and that change points toward mutagenicity in this neighbor. But even with that ring increase, the much larger Labute surface area, 188.5421 versus 110.1735, delta +78.3685, still supports the not mutagenic direction overall in this pair.
+
+Across all six neighbors, the same broad picture repeats: the query is larger, much more polar, and more acidified than the negatives, with very low logD, no basic site, lower neutral fraction when available, and markedly higher surface area. Those features consistently align with the not mutagenic class in the local comparisons, even though a few structural additions such as oxoarene groups, higher heteroatom count, and more rings or aromatic heterocycles introduce some mutagenicity-leaning signals. Because the not mutagenic evidence is more consistent across the nearest analogs, the overall prediction is option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

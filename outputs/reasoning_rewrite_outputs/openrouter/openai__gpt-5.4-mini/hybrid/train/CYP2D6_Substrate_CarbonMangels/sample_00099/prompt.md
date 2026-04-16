@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows some features that are compatible with CYP2D6 substrate-like chemistry, but the balance of properties leans against that assignment. It contains hydrazine count 2 and phthalazine present (1), which introduce multiple nitrogens and some heteroaromatic character; those elements can sometimes fit the broader CYP2D6 substrate motif of a basic, heteroatom-containing scaffold. However, the molecule also has fraction of sp3 carbons 0, indicating a very flat, fully unsaturated framework, and topological polar surface area 101.88, which is quite high for a typical CYP2D6 substrate-like profile and suggests excessive polarity. The NH/OH group count 6 is also high, reinforcing a strongly hydrogen-bonding, polar character rather than the lower-PSA lipophilic base pattern often associated with CYP2D6 substrates. Although minimum absolute partial charge 0.1702 and maximum partial charge 0.1702 are mild signals in a substrate-like direction, they are weak compared with the more prominent polarity-related features. Hydrogen-bond donor count 4 is still relatively high, and maximum absolute partial charge 0.3065 together with minimum partial charge -0.3065 indicate a molecule with notable charge separation rather than a compact, hydrophobic substrate scaffold. Overall, the strong polarity, high donor capacity, and zero sp3 character outweigh the limited positive hints from the nitrogen-rich heteroaromatic core, so the molecule is better classified as not a CYP2D6 substrate.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is strongly aligned with the non-substrate class. It has 0 copies of hydrazine versus 2 in the query, which is a large mismatch, and it also lacks pyridazine that the query has once. The same comparison shows the query is less sp3-rich than the neighbor (fraction of sp3 carbons 0 vs 0.4118; delta -0.4118), and the query has much higher topological polar surface area (101.88 vs 50.28; delta +51.6). Given that CYP2D6 substrates are often more lipophilic and lower in polar surface area, that PSA increase is unfavorable for substrate status. The query also lacks the neighbor’s secondary mixed amine, while gaining phthalazine once, which partly offsets the pattern but not enough. Overall, Neighbor 1 still looks more like a non-substrate reference and supports option (A).
+
+Neighbor 2 tells the same story. The query again has 2 hydrazine groups while the neighbor has none, and the query is less sp3-rich (0 vs 0.3333; delta -0.3333). It also shows a slightly lower maximum absolute partial charge in the query (0.3065 vs 0.3277; delta -0.0212), lower minimum partial charge (−0.3065 vs −0.3277; delta +0.0212), and a much larger minimum absolute partial charge (0.1702 vs 0.0051; delta +0.1651). Although the query contains phthalazine once and the neighbor does not, that one favorable feature is outweighed by the hydrazine enrichment, reduced sp3 character, and the charge pattern difference. Taken together, this neighbor comparison still fits the non-substrate side better than the substrate side.
+
+Neighbor 3 is very similar in direction. The query again carries 2 hydrazine groups while the neighbor has none, the query has lower fraction of sp3 carbons (0 vs 0.4; delta -0.4), and the query’s maximum absolute partial charge is slightly lower (0.3065 vs 0.3169; delta -0.0105). As with Neighbor 2, the query also has phthalazine once while the neighbor does not, but the query’s minimum partial charge (−0.3065 vs −0.3169; delta +0.0105) and minimum absolute partial charge (0.1702 vs 0.0076; delta +0.1626) do not rescue the pattern. The recurring message from this positive-neighbor set is that the query’s unusual hydrazine-rich, highly polar profile is not matching the substrate-like examples well, even though phthalazine appears in the query.
+
+Neighbor 4, drawn from the non-substrate group, is especially informative because the query is far more polar than the neighbor. The topological polar surface area rises from 26.02 in the neighbor to 101.88 in the query, a large increase of +75.86, which is unfavorable because CYP2D6 substrates often sit in a lower-PSA, more lipophilic region. The query also has 2 hydrazine groups compared with 0 in the neighbor, and it lacks the neighbor’s primary aromatic amine. Although the query has phthalazine once and the neighbor does not, and the query’s minimum absolute partial charge is higher (0.1702 vs 0.0313; delta +0.1389), those gains are not enough to overcome the much higher polarity and the loss of the primary aromatic amine. The nitrogen/oxygen atom count also rises from 1 to 6, reinforcing the shift toward a more heteroatom-rich, less typical substrate-like profile. This comparison strongly supports option (A).
+
+Neighbor 5, also a non-substrate, again contrasts sharply with the query. The neighbor contains 1,2-benzisoxazole, which the query lacks, while the query instead has 2 hydrazine groups. The query is less sp3-rich than the neighbor (0 vs 0.125; delta -0.125) and has higher topological polar surface area (101.88 vs 86.19; delta +15.69), both of which are unfavorable for CYP2D6 substrate-like chemistry. The query does have phthalazine once, but the neighbor’s minimum partial charge is more negative (−0.356 vs −0.3065; delta +0.0495), and that does not compensate for the overall increase in polarity and hydrazine content. Neighbor 5 therefore also points clearly toward the non-substrate label.
+
+Neighbor 6 is the closest non-substrate analog in this set and still favors option (A). The query has fraction of sp3 carbons at 0 compared with 0.3077 in the neighbor, a decrease of -0.3077, and the topological polar surface area is much higher in the query (101.88 vs 38.91; delta +62.97). It also has 2 hydrazine groups while the neighbor has none, and the neighbor contains a primary aromatic amine and quinoline that the query does not. The query again has phthalazine once, and its minimum absolute partial charge is larger (0.1702 vs 0.0051? actually here the neighbor has 0.0051 and the query 0.1702 in the same shared scale), but those partial-charge differences do not outweigh the strong penalties from high PSA, high hydrazine count, and the missing aromatic amine/quinoline features. This neighbor remains firmly on the non-substrate side.
+
+Putting all six neighbors together, the same pattern repeats: the query is consistently more polar, hydrazine-rich, and less sp3-rich than the neighbors, while the few recurring phthalazine-related similarities are not enough to offset that. Since CYP2D6 substrates are more often associated with a lipophilic, lower-PSA, basic-centered profile, the neighbor evidence overall fits the non-substrate class better. The combined comparison therefore supports option (A): is not a substrate to the enzyme CYP2D6.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP2D6
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

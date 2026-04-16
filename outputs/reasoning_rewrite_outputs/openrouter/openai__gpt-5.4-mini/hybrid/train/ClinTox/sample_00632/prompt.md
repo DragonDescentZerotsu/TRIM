@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a furan (1), an oximether (1), and an azetidin-2-one (1), and these motifs do not, by themselves, strongly suggest a toxicity-prone profile. The strongest basic pKa is low at 2.6878, which is generally consistent with limited cationic character and is favorable from a nonspecific accumulation standpoint. The presence of a dialkyl thioether (1) also does not stand out as an obvious liability here. However, there are several polarity-related signals that are less favorable: the minimum partial charge is -0.4624, the minimum absolute partial charge is 0.4043, the hydrogen-bond acceptor count is 12, and the nitrogen/oxygen atom count is 14. Taken together, that is a fairly heteroatom-rich, strongly polar pattern, which can sometimes hurt passive permeability and create broader ADME risk. There is also an ammonium absence (0), which means the molecule lacks a permanently cationic center that might otherwise alter the balance of charge distribution. Even with those mixed polarity signals, the overall balance of the structural features and physicochemical descriptors still supports a not toxic classification. Final conclusion: option (A), is not toxic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close toxic analog that lacks several features present in the query: furan is absent in the neighbor but present once in the query (delta +1), oximether is also absent in the neighbor and present once in the query (delta +1), azetidin-2-one is absent in the neighbor and present once in the query (delta +1), and dialkyl thioether is absent in the neighbor and present once in the query (delta +1). Those differences all favor the not-toxic class in this local comparison. At the same time, the query has a slightly more negative minimum partial charge, from -0.4489 in the neighbor to -0.4624 in the query (delta -0.0135), and both molecules have ammonium absent/present unchanged at 0, but those charge-related effects are not enough to outweigh the structural gains from the added motifs. Overall this neighbor leans toward option (A): is not toxic.
+
+Neighbor 2 shows the same strong structural pattern in favor of option (A): the neighbor lacks furan, oximether, and azetidin-2-one while the query has each of those once. Those three absences in the neighbor versus presence in the query again align the query away from the toxic example. This neighbor also differs on charge and polarity descriptors: the query’s minimum partial charge is slightly more negative than the neighbor’s (-0.4624 versus -0.4572, delta -0.0051), ammonium is unchanged at zero in both, and the query has a much higher hydrogen-bond acceptor count, 12 versus 3 in the neighbor (delta +9). The acceptor count increase is large, and in general higher acceptor burden can track with higher polarity and lower permeability, but here the overall comparison is still dominated by the favorable structural differences that match the not-toxic side. So this neighbor also supports option (A): is not toxic.
+
+Neighbor 3 again lacks furan, oximether, and azetidin-2-one while the query contains each once, and the query additionally has dialkyl thioether where the neighbor does not. Those repeated structural differences remain consistent with the query being closer to the not-toxic side than the toxic neighbor. The charge terms are similar to Neighbor 2: the query’s minimum partial charge is slightly more negative than the neighbor’s (-0.4624 versus -0.4557, delta -0.0066), and ammonium is unchanged at zero. Even though those small charge shifts are associated with the more toxic side in the local comparison, they are modest relative to the repeated presence of query-only motifs that favor option (A). Taken together, Neighbor 3 still supports option (A): is not toxic.
+
+Neighbor 4 is a non-toxic analog and is especially informative because it shares azetidin-2-one with the query exactly, with no delta, which is favorable to the same label. It also lacks furan and oximether while the query has each once, again matching the query with the not-toxic side of the comparison. The neutral fraction is also much higher in the query, 0.9975 versus 0 in the neighbor, which is a substantial shift toward the neutral state; for ionizable molecules, a high neutral fraction can be consistent with less problematic charge-driven accumulation depending on the rest of the scaffold. However, this neighbor also shows the query with a slightly higher minimum partial charge magnitude in the negative direction than the neighbor (-0.4624 versus -0.5432, delta +0.0808), while the neighbor’s maximum absolute partial charge is 0.5432 versus 0.4624 in the query (delta -0.0808). Those charge differences are the main counterweight, but the structural agreement on azetidin-2-one and the query-only furan and oximether still keep the overall comparison on the not-toxic side.
+
+Neighbor 5 remains a non-toxic analog with the same azetidin-2-one and oximether features as the query, both present with delta 0, and it also lacks furan while the query has it once. That combination again matches the query more closely to the not-toxic neighbor pattern. The query’s minimum partial charge is less negative than the neighbor’s (-0.4624 versus -0.5432, delta +0.0808), and the maximum absolute partial charge is also lower in the query (0.4624 versus 0.5432, delta -0.0808); both of those charge differences are locally associated with the toxic side. In addition, the neighbor has isothiourea while the query does not, which is another difference that favors the query away from this particular non-toxic neighbor’s extra feature set. Even with those charge and substituent differences, the shared azetidin-2-one and oximether and the query’s furan keep the local analog evidence aligned with option (A): is not toxic.
+
+Neighbor 6 is another non-toxic analog and shares azetidin-2-one with the query, while the neighbor has ammonium and the query does not, which is a toxic-side difference in this local comparison. The query again differs by having furan and oximether once each, both absent in the neighbor, and those query-only structural features continue to support the not-toxic class. The charge values are the same pattern seen in the other non-toxic neighbors: the query’s minimum partial charge is less negative than the neighbor’s (-0.4624 versus -0.5432, delta +0.0808), and the maximum absolute partial charge is lower in the query (0.4624 versus 0.5432, delta -0.0808). Those shifts lean toward the toxic side locally, but they are counterbalanced by the shared azetidin-2-one and the query-only furan and oximether, so the overall neighbor still remains on the not-toxic side.
+
+Across all six comparisons, the toxic neighbors consistently lack the query’s furan, oximether, and often azetidin-2-one and dialkyl thioether, which repeatedly aligns the query with the not-toxic class. The non-toxic neighbors preserve azetidin-2-one and, in several cases, oximether, while the query’s furan is also repeatedly present in the not-toxic comparisons. Some charge features and ammonium differences point in the opposite direction, especially the minimum partial charge and maximum absolute partial charge shifts, but those effects are local and smaller than the repeated structural alignment with the non-toxic analogs. Taken together, the six analogs support option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

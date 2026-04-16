@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has several features that argue against strong oral exposure, but there are also a few favorable signs. Phenothiazine is present (1), which adds a bulky, aromatic, lipophilic scaffold that can be a liability for oral bioavailability, especially when combined with other polar or ionizable features. Piperazine is also present (1), and that strongly basic heterocycle often lowers passive permeability because it is frequently protonated at physiological pH. The estimated logD is 4.0225, which is fairly high; very lipophilic compounds can suffer from solubility and developability limitations, so this is not an ideal value for oral bioavailability even though it can support membrane partitioning. The Labute surface area is 159.1022, which indicates a relatively large molecular surface burden and is consistent with a more challenging permeability/solubility balance. The neutral fraction is 0.2769, so there is only a modest neutral population, which is not especially favorable for passive absorption in an ionizable molecule. The maximum partial charge is 0.0567, which suggests some charge localization, though this is a weaker signal than the ionization-related descriptors. The strongest acidic pKa is not defined because there is no acidic site, so the molecule is not burdened by acidic ionization, which helps somewhat, but that alone does not offset the other liabilities. On the favorable side, topological polar surface area is 9.72, which is very low and would ordinarily support good permeability, and the QED drug-likeness value is 0.7751, which is a relatively attractive overall drug-like score. There is also no secondary hydroxyl group (0), which avoids an additional hydrogen-bond donor and potential polarity or conjugation liability. Balancing these signals, the low TPSA and good QED are encouraging, but the combination of phenothiazine, piperazine, high logD of 4.0225, and large surface area of 159.1022 makes the overall profile more consistent with oral bioavailability below 20%. Therefore the molecule is predicted to have oral bioavailability < 20%.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly close positive match, but several of its key descriptors are worse than the query in ways that favor low oral bioavailability. The query has a much higher neutral fraction than the neighbor, 0.2769 versus 0.0094, with a delta of +0.2675; even though a more neutral population can support passive permeability, here the comparison still lands on the side of the <20% class. The same pattern holds for topological polar surface area, where the query is 9.72 versus the neighbor’s 6.48, delta +3.24, and for estimated logD, where the query is 4.0225 versus 2.8695, delta +1.153; both of those shifts are treated as unfavorable in this local comparison. The shared phenothiazine motif also counts against the query here, while the minimum absolute partial charge is unchanged at 0.0567, which slightly supports the higher-bioavailability class, and QED is a bit lower in the query, 0.7751 versus 0.7918, which also supports the higher-bioavailability class. Even with those partial offsets, Neighbor 1 overall still aligns more with the <20% label.
+
+Neighbor 2 tells a similar story and is also positive to the higher-bioavailability side, yet the comparison again favors the <20% class overall. The query has a much larger neutral fraction than the neighbor, 0.2769 versus 0.0096, delta +0.2673, which is treated as unfavorable here. Estimated logD is also higher in the query, 4.0225 versus 2.5094, delta +1.5131, and topological polar surface area is again higher, 9.72 versus 6.48, delta +3.24; both changes are unfavorable in this local pairing. QED moves slightly downward from 0.8179 in the neighbor to 0.7751 in the query, delta -0.0427, which is favorable, and the neighbor lacks piperazine while the query has it once, delta +1, which is unfavorable. The neighbor has tertiary mixed amine whereas the query does not, delta -1, which is favorable. Despite those mixed signals, the combined effect of the neutral fraction, logD, and piperazine differences still supports the <20% outcome.
+
+Neighbor 3 is the strongest of the positive neighbors in terms of direct geometric/polarity contrast, yet it also ultimately points toward the <20% class. The most striking difference is topological polar surface area: the neighbor is at 64.09 while the query is only 9.72, a large delta of -54.37, so the query is far less polar than this neighbor. QED moves in the favorable direction for the query, 0.7751 versus 0.6221, delta +0.153, but neutral fraction again differs sharply, with the query at 0.2769 versus the neighbor’s 0.0099, delta +0.267. The shared phenothiazine scaffold remains the same, and estimated logD is much higher for the query, 4.0225 versus 2.0176, delta +2.0049. The query also has piperazine once while the neighbor has none, delta +1, which is again unfavorable in this comparison. Even though the lower TPSA and higher QED of the query are attractive, the combination of very low neutral fraction in the neighbor, the shared phenothiazine motif, and the much higher logD in the query keeps this neighbor aligned with the <20% label.
+
+Neighbor 4 is one of the negative-neighbor comparisons and it actually provides direct support for the ≥20% side, which is why it must be weighed carefully against the positive neighbors. Here the neighbor’s topological polar surface area is extremely high at 83.71 compared with the query’s 9.72, delta -73.99, and such a large polar burden is far less compatible with the query’s profile. The neighbor’s estimated logD is 2.0734, lower than the query’s 4.0225, delta +1.9491, and the neighbor also has a strongest acidic pKa of 13.7826 while the query has no acidic site, with the delta not defined because one molecule has no acidic site. Those differences all favor the query relative to this more polar neighbor. The neighbor does have sulfonyl, while the query does not, delta -1, and the neighbor also has a primary amide while the query does not, delta -1; both of those features are consistent with the neighbor being more polar and less favorable for the query’s low-bioavailability assignment. QED is slightly lower in the neighbor, 0.7347 versus 0.7751, delta +0.0405, which also favors the query. So Neighbor 4 clearly leans toward the ≥20% side and stands as the main opposing piece of evidence.
+
+Neighbor 5 is another negative-neighbor comparison that still ends up supporting the <20% label for the query. The query contains phenothiazine once while the neighbor does not, delta +1, and that is the single strongest unfavorable difference in this pair. The neighbor has enolether and diaryl thioether while the query lacks both, each with delta -1, which are favorable differences for the query, but they are not enough to cancel the phenothiazine effect. Topological polar surface area is higher in the neighbor, 12.47 versus 9.72, delta -2.75, which again makes the query look more compact and less polar. Estimated logP is slightly lower in the neighbor, 4.8809 versus 4.5802, delta -0.3007, which is favorable for the query under this comparison, and fraction of sp3 carbons is also higher in the query, 0.4 versus 0.2222, delta +0.1778, which would usually be a helpful developability feature. Even so, the phenothiazine difference dominates enough that Neighbor 5 still overall aligns with the <20% class.
+
+Neighbor 6 is the other negative-neighbor case and it also supports the <20% label, though through a different balance of features. The query has phenothiazine once while the neighbor does not, delta +1, which is again unfavorable for the query. The query also has much higher QED, 0.7751 versus 0.4542, delta +0.3209, which favors the query, but the neighbor’s topological polar surface area is 55.53 versus the query’s 9.72, delta -45.81, and that large polar difference is a strong reason this neighbor sits on the other side of the boundary. Estimated logD is 3.239 in the neighbor versus 4.0225 in the query, delta +0.7835, and the neighbor’s maximum partial charge is 0.3455 versus the query’s 0.0567, delta -0.2888; both differences are unfavorable for the query in this comparison. The piperazine motif is shared, with no delta, so it does not separate the molecules. Overall, the query still compares more like the lower-bioavailability side than this neighbor does.
+
+Taken together, the six neighbors are not all pointing in exactly the same direction, but the balance is consistent with the <20% label. The three higher-bioavailability neighbors still contain repeated signals that the query has a problematic combination of higher estimated logD, a very low neutral fraction relative to those analogs, piperazine in two cases, and the phenothiazine motif shared across the first three neighbors. The three lower-bioavailability neighbors provide one clear counterexample with very high TPSA and two additional comparisons where phenothiazine and polar/charge differences still leave the query aligned with the <20% side. The favorable QED and lower TPSA in some comparisons are not enough to outweigh the repeated unfavorable ionization/lipophilicity pattern, so the overall prediction remains option (A): has oral bioavailability < 20%.
+
+Input 3. Target final label semantics
+option (A): has oral bioavailability < 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

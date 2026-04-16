@@ -1,0 +1,2621 @@
+{
+  "schema_version": "trim_reasoning_v0",
+  "evidence_stage": "local_evidence_only",
+  "sample_id": "train_sample_700",
+  "sample_index": 700,
+  "task": "Pgp_Broccatelli",
+  "split": "train",
+  "smiles": "CCCCCCC[C@H]1OC(=O)C[C@@H](OCOC)[C@H](Cc2ccccc2)N(C)C(=O)[C@H](C)OC(=O)[C@H]1C",
+  "gt_label": 1,
+  "gt_label_semantics": {
+    "option": "B",
+    "text": "is a PgP inhibitor",
+    "label": 1
+  },
+  "local_prediction": 1,
+  "local_prediction_semantics": {
+    "option": "B",
+    "text": "is a PgP inhibitor",
+    "label": 1
+  },
+  "local_prediction_correct": true,
+  "local_score": 0.7518486239430827,
+  "s_pos": 0.49331569959421884,
+  "s_neg": 0.9961747496213876,
+  "keep_for_reasoning": true,
+  "drop_reason": null,
+  "local_per_neighbor_decision_evidence": {
+    "positive_neighbors": [
+      {
+        "neighbor_id": "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+        "query_smiles": "CCCCCCC[C@H]1OC(=O)C[C@@H](OCOC)[C@H](Cc2ccccc2)N(C)C(=O)[C@H](C)OC(=O)[C@H]1C",
+        "query_label": 1,
+        "neighbor_smiles": "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+        "neighbor_label": 1,
+        "neighbor_similarity": 0.2337777777777778,
+        "neighbor_scaffold": "c1ccc(CCN2CCC(Nc3ccccc3)CC2)cc1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.4790823649299492,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a PgP inhibitor",
+          "label": 0
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.4090909090909091,
+            "query_value": 0.6785714285714286,
+            "delta_value": 0.2694805194805195,
+            "base_value_text": "value 0.4091",
+            "query_value_text": "value 0.6786",
+            "delta_value_text": "+0.2695",
+            "contribution": -1.9364552696752304,
+            "contribution_abs": 1.9364552696752304,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a PgP inhibitor",
+            "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.4091, while the query's fraction of sp3 carbons is value 0.6786. The query-minus-neighbor delta is +0.2695. This pairwise contribution is -1.9365, which pushes toward option (A): is not a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumRotatableBonds",
+            "display_name": "rotatable-bond count",
+            "description": "number of rotatable bonds",
+            "source_family": "rdkit",
+            "raw_name": "NumRotatableBonds",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 6.0,
+            "query_value": 11.0,
+            "delta_value": 5.0,
+            "base_value_text": "value 6",
+            "query_value_text": "value 11",
+            "delta_value_text": "+5",
+            "contribution": 1.4195527359856355,
+            "contribution_abs": 1.4195527359856355,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 6, while the query's rotatable-bond count is value 11. The query-minus-neighbor delta is +5. This pairwise contribution is 1.4196, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "display_name": "strongest basic pKa",
+            "description": "pKa of the strongest basic site",
+            "source_family": "pka",
+            "raw_name": "most_basic_pka",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 8.6463,
+            "query_value": null,
+            "delta_value": null,
+            "base_value_text": "value 8.6463",
+            "query_value_text": "no basic site",
+            "delta_value_text": "not defined because one molecule has no basic site",
+            "contribution": -1.355024933733202,
+            "contribution_abs": 1.355024933733202,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a PgP inhibitor",
+            "text_hint": "For strongest basic pKa, the neighbor's strongest basic pKa is value 8.6463, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is -1.355, which pushes toward option (A): is not a PgP inhibitor.",
+            "query_value_missing_reason": "no_basic_site",
+            "delta_value_missing_reason": "no_basic_site"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "display_name": "topological polar surface area",
+            "description": "topological polar surface area of the molecule",
+            "source_family": "rdkit",
+            "raw_name": "TPSA",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 23.550000000000004,
+            "query_value": 91.37,
+            "delta_value": 67.82,
+            "base_value_text": "value 23.55",
+            "query_value_text": "value 91.37",
+            "delta_value_text": "+67.82",
+            "contribution": -0.6153296932690112,
+            "contribution_abs": 0.6153296932690112,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a PgP inhibitor",
+            "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 23.55, while the query's topological polar surface area is value 91.37. The query-minus-neighbor delta is +67.82. This pairwise contribution is -0.6153, which pushes toward option (A): is not a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomCount",
+            "display_name": "heavy-atom count",
+            "description": "number of non-hydrogen atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomCount",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 25.0,
+            "query_value": 36.0,
+            "delta_value": 11.0,
+            "base_value_text": "value 25",
+            "query_value_text": "value 36",
+            "delta_value_text": "+11",
+            "contribution": 0.5889608474089022,
+            "contribution_abs": 0.5889608474089022,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For heavy-atom count, the neighbor's heavy-atom count is value 25, while the query's heavy-atom count is value 36. The query-minus-neighbor delta is +11. This pairwise contribution is 0.589, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 4.136700000000004,
+            "query_value": 4.289000000000004,
+            "delta_value": 0.15230000000000032,
+            "base_value_text": "value 4.1367",
+            "query_value_text": "value 4.289",
+            "delta_value_text": "+0.1523",
+            "contribution": 0.5422158090221283,
+            "contribution_abs": 0.5422158090221283,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 4.1367, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +0.1523. This pairwise contribution is 0.5422, which pushes toward option (B): is a PgP inhibitor."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1",
+        "query_smiles": "CCCCCCC[C@H]1OC(=O)C[C@@H](OCOC)[C@H](Cc2ccccc2)N(C)C(=O)[C@H](C)OC(=O)[C@H]1C",
+        "query_label": 1,
+        "neighbor_smiles": "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1",
+        "neighbor_label": 1,
+        "neighbor_similarity": 0.22215189873417723,
+        "neighbor_scaffold": "c1ccc(CC2c3ccccc3OC2CN2CCCCC2)cc1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.024460429118169064,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a PgP inhibitor",
+          "label": 0
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.4285714285714285,
+            "query_value": 0.6785714285714286,
+            "delta_value": 0.2500000000000001,
+            "base_value_text": "value 0.4286",
+            "query_value_text": "value 0.6786",
+            "delta_value_text": "+0.25",
+            "contribution": -2.1967584093302244,
+            "contribution_abs": 2.1967584093302244,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a PgP inhibitor",
+            "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.4286, while the query's fraction of sp3 carbons is value 0.6786. The query-minus-neighbor delta is +0.25. This pairwise contribution is -2.1968, which pushes toward option (A): is not a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "display_name": "strongest basic pKa",
+            "description": "pKa of the strongest basic site",
+            "source_family": "pka",
+            "raw_name": "most_basic_pka",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 8.9652,
+            "query_value": null,
+            "delta_value": null,
+            "base_value_text": "value 8.9652",
+            "query_value_text": "no basic site",
+            "delta_value_text": "not defined because one molecule has no basic site",
+            "contribution": -1.529325058156005,
+            "contribution_abs": 1.529325058156005,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a PgP inhibitor",
+            "text_hint": "For strongest basic pKa, the neighbor's strongest basic pKa is value 8.9652, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is -1.5293, which pushes toward option (A): is not a PgP inhibitor.",
+            "query_value_missing_reason": "no_basic_site",
+            "delta_value_missing_reason": "no_basic_site"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "display_name": "topological polar surface area",
+            "description": "topological polar surface area of the molecule",
+            "source_family": "rdkit",
+            "raw_name": "TPSA",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 12.47,
+            "query_value": 91.37,
+            "delta_value": 78.9,
+            "base_value_text": "value 12.47",
+            "query_value_text": "value 91.37",
+            "delta_value_text": "+78.9",
+            "contribution": -0.939217493963662,
+            "contribution_abs": 0.939217493963662,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a PgP inhibitor",
+            "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 12.47, while the query's topological polar surface area is value 91.37. The query-minus-neighbor delta is +78.9. This pairwise contribution is -0.9392, which pushes toward option (A): is not a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 2.6829,
+            "query_value": 4.289,
+            "delta_value": 1.6060999999999996,
+            "base_value_text": "value 2.6829",
+            "query_value_text": "value 4.289",
+            "delta_value_text": "+1.6061",
+            "contribution": 0.6193511885448706,
+            "contribution_abs": 0.6193511885448706,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For estimated logD, the neighbor's estimated logD is value 2.6829, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +1.6061. This pairwise contribution is 0.6194, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 4.259800000000003,
+            "query_value": 4.289000000000004,
+            "delta_value": 0.029200000000001225,
+            "base_value_text": "value 4.2598",
+            "query_value_text": "value 4.289",
+            "delta_value_text": "+0.0292",
+            "contribution": 0.613689739959951,
+            "contribution_abs": 0.613689739959951,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 4.2598, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +0.0292. This pairwise contribution is 0.6137, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHeteroatoms",
+            "display_name": "heteroatom count",
+            "description": "number of heteroatoms, such as N, O, or S",
+            "source_family": "rdkit",
+            "raw_name": "NumHeteroatoms",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 2.0,
+            "query_value": 8.0,
+            "delta_value": 6.0,
+            "base_value_text": "value 2",
+            "query_value_text": "value 8",
+            "delta_value_text": "+6",
+            "contribution": 0.5551705996003002,
+            "contribution_abs": 0.5551705996003002,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For heteroatom count, the neighbor's heteroatom count is value 2, while the query's heteroatom count is value 8. The query-minus-neighbor delta is +6. This pairwise contribution is 0.5552, which pushes toward option (B): is a PgP inhibitor."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21",
+        "query_smiles": "CCCCCCC[C@H]1OC(=O)C[C@@H](OCOC)[C@H](Cc2ccccc2)N(C)C(=O)[C@H](C)OC(=O)[C@H]1C",
+        "query_label": 1,
+        "neighbor_smiles": "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21",
+        "neighbor_label": 1,
+        "neighbor_similarity": 0.21494845360824744,
+        "neighbor_scaffold": "O=C1CCCC(CCC2CC=CC3=CCCCC32)O1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.9933636139274669,
+        "pair_prediction": 1,
+        "pair_prediction_semantics": {
+          "option": "B",
+          "text": "is a PgP inhibitor",
+          "label": 1
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__rdkit__NumRotatableBonds",
+            "display_name": "rotatable-bond count",
+            "description": "number of rotatable bonds",
+            "source_family": "rdkit",
+            "raw_name": "NumRotatableBonds",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 6.0,
+            "query_value": 11.0,
+            "delta_value": 5.0,
+            "base_value_text": "value 6",
+            "query_value_text": "value 11",
+            "delta_value_text": "+5",
+            "contribution": 1.4195527359856355,
+            "contribution_abs": 1.4195527359856355,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 6, while the query's rotatable-bond count is value 11. The query-minus-neighbor delta is +5. This pairwise contribution is 1.4196, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 4.1955,
+            "query_value": 4.289,
+            "delta_value": 0.0934999999999997,
+            "base_value_text": "value 4.1955",
+            "query_value_text": "value 4.289",
+            "delta_value_text": "+0.0935",
+            "contribution": 0.6108999268998765,
+            "contribution_abs": 0.6108999268998765,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For estimated logD, the neighbor's estimated logD is value 4.1955, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +0.0935. This pairwise contribution is 0.6109, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 4.195500000000004,
+            "query_value": 4.289000000000004,
+            "delta_value": 0.09350000000000058,
+            "base_value_text": "value 4.1955",
+            "query_value_text": "value 4.289",
+            "delta_value_text": "+0.0935",
+            "contribution": 0.5979136274319233,
+            "contribution_abs": 0.5979136274319233,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 4.1955, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +0.0935. This pairwise contribution is 0.5979, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "display_name": "strongest acidic pKa",
+            "description": "pKa of the strongest acidic site",
+            "source_family": "pka",
+            "raw_name": "most_acidic_pka",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 13.3778,
+            "query_value": null,
+            "delta_value": null,
+            "base_value_text": "value 13.3778",
+            "query_value_text": "no acidic site",
+            "delta_value_text": "not defined because one molecule has no acidic site",
+            "contribution": -0.5743487818445048,
+            "contribution_abs": 0.5743487818445048,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a PgP inhibitor",
+            "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.3778, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.5743, which pushes toward option (A): is not a PgP inhibitor.",
+            "query_value_missing_reason": "no_acidic_site",
+            "delta_value_missing_reason": "no_acidic_site"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__LabuteASA",
+            "display_name": "Labute surface area",
+            "description": "Labute approximate surface area",
+            "source_family": "rdkit",
+            "raw_name": "LabuteASA",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 174.08058854529264,
+            "query_value": 215.1528793710553,
+            "delta_value": 41.07229082576265,
+            "base_value_text": "value 174.0806",
+            "query_value_text": "value 215.1529",
+            "delta_value_text": "+41.0723",
+            "contribution": 0.5657729454338195,
+            "contribution_abs": 0.5657729454338195,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For Labute surface area, the neighbor's Labute surface area is value 174.0806, while the query's Labute surface area is value 215.1529. The query-minus-neighbor delta is +41.0723. This pairwise contribution is 0.5658, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomCount",
+            "display_name": "heavy-atom count",
+            "description": "number of non-hydrogen atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomCount",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 29.0,
+            "query_value": 36.0,
+            "delta_value": 7.0,
+            "base_value_text": "value 29",
+            "query_value_text": "value 36",
+            "delta_value_text": "+7",
+            "contribution": 0.36950367456379984,
+            "contribution_abs": 0.36950367456379984,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For heavy-atom count, the neighbor's heavy-atom count is value 29, while the query's heavy-atom count is value 36. The query-minus-neighbor delta is +7. This pairwise contribution is 0.3695, which pushes toward option (B): is a PgP inhibitor."
+          }
+        ]
+      }
+    ],
+    "negative_neighbors": [
+      {
+        "neighbor_id": "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+        "query_smiles": "CCCCCCC[C@H]1OC(=O)C[C@@H](OCOC)[C@H](Cc2ccccc2)N(C)C(=O)[C@H](C)OC(=O)[C@H]1C",
+        "query_label": 1,
+        "neighbor_smiles": "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+        "neighbor_label": 0,
+        "neighbor_similarity": 0.2508427742470296,
+        "neighbor_scaffold": "O=C1C=CCC(C=Cc2ccccc2)O1",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.9980232393319546,
+        "pair_prediction": 1,
+        "pair_prediction_semantics": {
+          "option": "B",
+          "text": "is a PgP inhibitor",
+          "label": 1
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "fg_top_level__lactone",
+            "display_name": "lactone",
+            "description": "top-level functional-group indicator or count for lactone",
+            "source_family": "fg_top_level",
+            "raw_name": "lactone",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 2.0,
+            "delta_value": 1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "count 2",
+            "delta_value_text": "+1",
+            "contribution": 1.837738079715518,
+            "contribution_abs": 1.837738079715518,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "The neighbor has 1 copies of lactone, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is 1.8377, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 2.5456,
+            "query_value": 4.289,
+            "delta_value": 1.7433999999999998,
+            "base_value_text": "value 2.5456",
+            "query_value_text": "value 4.289",
+            "delta_value_text": "+1.7434",
+            "contribution": 0.6594567077306798,
+            "contribution_abs": 0.6594567077306798,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For estimated logD, the neighbor's estimated logD is value 2.5456, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +1.7434. This pairwise contribution is 0.6595, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 2.5456000000000003,
+            "query_value": 4.289000000000004,
+            "delta_value": 1.7434000000000038,
+            "base_value_text": "value 2.5456",
+            "query_value_text": "value 4.289",
+            "delta_value_text": "+1.7434",
+            "contribution": 0.6429725774297445,
+            "contribution_abs": 0.6429725774297445,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 2.5456, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +1.7434. This pairwise contribution is 0.643, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.7484511459227772,
+            "query_value": 0.2516842018803282,
+            "delta_value": -0.496766944042449,
+            "base_value_text": "value 0.7485",
+            "query_value_text": "value 0.2517",
+            "delta_value_text": "-0.4968",
+            "contribution": 0.4781756088531853,
+            "contribution_abs": 0.4781756088531853,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.7485, while the query's QED drug-likeness is value 0.2517. The query-minus-neighbor delta is -0.4968. This pairwise contribution is 0.4782, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "display_name": "topological polar surface area",
+            "description": "topological polar surface area of the molecule",
+            "source_family": "rdkit",
+            "raw_name": "TPSA",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 35.53,
+            "query_value": 91.37,
+            "delta_value": 55.84,
+            "base_value_text": "value 35.53",
+            "query_value_text": "value 91.37",
+            "delta_value_text": "+55.84",
+            "contribution": 0.4365247633472342,
+            "contribution_abs": 0.4365247633472342,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 35.53, while the query's topological polar surface area is value 91.37. The query-minus-neighbor delta is +55.84. This pairwise contribution is 0.4365, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.2142857142857142,
+            "query_value": 0.6785714285714286,
+            "delta_value": 0.4642857142857144,
+            "base_value_text": "value 0.2143",
+            "query_value_text": "value 0.6786",
+            "delta_value_text": "+0.4643",
+            "contribution": 0.4200833193098981,
+            "contribution_abs": 0.4200833193098981,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2143, while the query's fraction of sp3 carbons is value 0.6786. The query-minus-neighbor delta is +0.4643. This pairwise contribution is 0.4201, which pushes toward option (B): is a PgP inhibitor."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C",
+        "query_smiles": "CCCCCCC[C@H]1OC(=O)C[C@@H](OCOC)[C@H](Cc2ccccc2)N(C)C(=O)[C@H](C)OC(=O)[C@H]1C",
+        "query_label": 1,
+        "neighbor_smiles": "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C",
+        "neighbor_label": 0,
+        "neighbor_similarity": 0.23895823701648947,
+        "neighbor_scaffold": "O=C1CCCOC(=O)C(NC(=O)c2ccccc2)CO1",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.9971067551382535,
+        "pair_prediction": 1,
+        "pair_prediction_semantics": {
+          "option": "B",
+          "text": "is a PgP inhibitor",
+          "label": 1
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomCount",
+            "display_name": "heavy-atom count",
+            "description": "number of non-hydrogen atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomCount",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 39.0,
+            "query_value": 36.0,
+            "delta_value": -3.0,
+            "base_value_text": "value 39",
+            "query_value_text": "value 36",
+            "delta_value_text": "-3",
+            "contribution": 1.777791210175995,
+            "contribution_abs": 1.777791210175995,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For heavy-atom count, the neighbor's heavy-atom count is value 39, while the query's heavy-atom count is value 36. The query-minus-neighbor delta is -3. This pairwise contribution is 1.7778, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "fg_top_level__secondary amide",
+            "display_name": "secondary amide",
+            "description": "top-level functional-group indicator or count for secondary amide",
+            "source_family": "fg_top_level",
+            "raw_name": "secondary amide",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 2.0,
+            "query_value": 0.0,
+            "delta_value": -2.0,
+            "base_value_text": "count 2",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-2",
+            "contribution": 1.0138533459244141,
+            "contribution_abs": 1.0138533459244141,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "The neighbor has 2 copies of secondary amide, while the query has 0 (query-minus-neighbor delta -2). This pairwise contribution is 1.0139, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 3.1045,
+            "query_value": 4.289,
+            "delta_value": 1.1844999999999999,
+            "base_value_text": "value 3.1045",
+            "query_value_text": "value 4.289",
+            "delta_value_text": "+1.1845",
+            "contribution": 0.8826930231852305,
+            "contribution_abs": 0.8826930231852305,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For estimated logD, the neighbor's estimated logD is value 3.1045, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +1.1845. This pairwise contribution is 0.8827, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.6071428571428571,
+            "query_value": 0.6785714285714286,
+            "delta_value": 0.07142857142857151,
+            "base_value_text": "value 0.6071",
+            "query_value_text": "value 0.6786",
+            "delta_value_text": "+0.0714",
+            "contribution": -0.6917943943761842,
+            "contribution_abs": 0.6917943943761842,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a PgP inhibitor",
+            "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.6071, while the query's fraction of sp3 carbons is value 0.6786. The query-minus-neighbor delta is +0.0714. This pairwise contribution is -0.6918, which pushes toward option (A): is not a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 3.480400000000002,
+            "query_value": 4.289000000000004,
+            "delta_value": 0.808600000000002,
+            "base_value_text": "value 3.4804",
+            "query_value_text": "value 4.289",
+            "delta_value_text": "+0.8086",
+            "contribution": 0.5856110613427693,
+            "contribution_abs": 0.5856110613427693,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 3.4804, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +0.8086. This pairwise contribution is 0.5856, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "fg_top_level__lactone",
+            "display_name": "lactone",
+            "description": "top-level functional-group indicator or count for lactone",
+            "source_family": "fg_top_level",
+            "raw_name": "lactone",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 2.0,
+            "query_value": 2.0,
+            "delta_value": 0.0,
+            "base_value_text": "count 2",
+            "query_value_text": "count 2",
+            "delta_value_text": "+0",
+            "contribution": 0.5609460176961426,
+            "contribution_abs": 0.5609460176961426,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "The neighbor has 2 copies of lactone, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is 0.5609, which pushes toward option (B): is a PgP inhibitor."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O",
+        "query_smiles": "CCCCCCC[C@H]1OC(=O)C[C@@H](OCOC)[C@H](Cc2ccccc2)N(C)C(=O)[C@H](C)OC(=O)[C@H]1C",
+        "query_label": 1,
+        "neighbor_smiles": "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O",
+        "neighbor_label": 0,
+        "neighbor_similarity": 0.2200865800865801,
+        "neighbor_scaffold": "O=C1CC(=O)N(c2ccccc2)N1c1ccccc1",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.993056019337626,
+        "pair_prediction": 1,
+        "pair_prediction_semantics": {
+          "option": "B",
+          "text": "is a PgP inhibitor",
+          "label": 1
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "fg_top_level__lactam",
+            "display_name": "lactam",
+            "description": "top-level functional-group indicator or count for lactam",
+            "source_family": "fg_top_level",
+            "raw_name": "lactam",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 2.0,
+            "query_value": 1.0,
+            "delta_value": -1.0,
+            "base_value_text": "count 2",
+            "query_value_text": "present (1)",
+            "delta_value_text": "-1",
+            "contribution": 0.9309746819945941,
+            "contribution_abs": 0.9309746819945941,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "The neighbor has 2 copies of lactam, while the query has 1 (query-minus-neighbor delta -1). This pairwise contribution is 0.931, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "fg_top_level__lactone",
+            "display_name": "lactone",
+            "description": "top-level functional-group indicator or count for lactone",
+            "source_family": "fg_top_level",
+            "raw_name": "lactone",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 2.0,
+            "delta_value": 2.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "count 2",
+            "delta_value_text": "+2",
+            "contribution": 0.9051426297719172,
+            "contribution_abs": 0.9051426297719172,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "The neighbor has 0 copies of lactone, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is 0.9051, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.4811,
+            "query_value": 4.289,
+            "delta_value": 3.8078999999999996,
+            "base_value_text": "value 0.4811",
+            "query_value_text": "value 4.289",
+            "delta_value_text": "+3.8079",
+            "contribution": 0.7211116456791803,
+            "contribution_abs": 0.7211116456791803,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For estimated logD, the neighbor's estimated logD is value 0.4811, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +3.8079. This pairwise contribution is 0.7211, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "display_name": "neutral fraction",
+            "description": "estimated fraction of the molecule that is neutral at the configured pH",
+            "source_family": "pka",
+            "raw_name": "fraction_neutral",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0008,
+            "query_value": 1.0,
+            "delta_value": 0.9992,
+            "base_value_text": "value 0.0008",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0.9992",
+            "contribution": -0.6456580944055845,
+            "contribution_abs": 0.6456580944055845,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a PgP inhibitor",
+            "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.0008, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9992. This pairwise contribution is -0.6457, which pushes toward option (A): is not a PgP inhibitor."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "display_name": "heavy-atom molecular weight",
+            "description": "molecular weight contributed by heavy atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomMolWt",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 412.2720000000002,
+            "query_value": 462.30800000000033,
+            "delta_value": 50.036000000000115,
+            "base_value_text": "value 412.272",
+            "query_value_text": "value 462.308",
+            "delta_value_text": "+50.036",
+            "contribution": 0.5198888579390682,
+            "contribution_abs": 0.5198888579390682,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 412.272, while the query's heavy-atom molecular weight is value 462.308. The query-minus-neighbor delta is +50.036. This pairwise contribution is 0.5199, which pushes toward option (B): is a PgP inhibitor."
+          },
+          {
+            "feature_name": "fg_top_level__pyrazolidine",
+            "display_name": "pyrazolidine",
+            "description": "top-level functional-group indicator or count for pyrazolidine",
+            "source_family": "fg_top_level",
+            "raw_name": "pyrazolidine",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "contribution": 0.47081906130056506,
+            "contribution_abs": 0.47081906130056506,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a PgP inhibitor",
+            "text_hint": "The neighbor has pyrazolidine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.4708, which pushes toward option (B): is a PgP inhibitor."
+          }
+        ]
+      }
+    ],
+    "num_positive_neighbors": 3,
+    "num_negative_neighbors": 3
+  },
+  "local_per_neighbor_middle_draft": {
+    "positive_neighbors": [
+      {
+        "neighbor_id": "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+        "neighbor_smiles": "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.4790823649299492,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a PgP inhibitor",
+          "label": 0
+        },
+        "middle_draft": "First, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.4091, while the query's fraction of sp3 carbons is value 0.6786. The query-minus-neighbor delta is +0.2695. This pairwise contribution is -1.9365, which pushes toward option (A): is not a PgP inhibitor. Next, For rotatable-bond count, the neighbor's rotatable-bond count is value 6, while the query's rotatable-bond count is value 11. The query-minus-neighbor delta is +5. This pairwise contribution is 1.4196, which pushes toward option (B): is a PgP inhibitor. Then, For strongest basic pKa, the neighbor's strongest basic pKa is value 8.6463, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is -1.355, which pushes toward option (A): is not a PgP inhibitor. After that, For topological polar surface area, the neighbor's topological polar surface area is value 23.55, while the query's topological polar surface area is value 91.37. The query-minus-neighbor delta is +67.82. This pairwise contribution is -0.6153, which pushes toward option (A): is not a PgP inhibitor. Finally, For heavy-atom count, the neighbor's heavy-atom count is value 25, while the query's heavy-atom count is value 36. The query-minus-neighbor delta is +11. This pairwise contribution is 0.589, which pushes toward option (B): is a PgP inhibitor. Step 6, For estimated logP, the neighbor's estimated logP is value 4.1367, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +0.1523. This pairwise contribution is 0.5422, which pushes toward option (B): is a PgP inhibitor. Taken together, this positive-neighbor comparison pushes toward option (A): is not a PgP inhibitor with pair score 0.4791."
+      },
+      {
+        "neighbor_id": "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1",
+        "neighbor_smiles": "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.024460429118169064,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a PgP inhibitor",
+          "label": 0
+        },
+        "middle_draft": "First, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.4286, while the query's fraction of sp3 carbons is value 0.6786. The query-minus-neighbor delta is +0.25. This pairwise contribution is -2.1968, which pushes toward option (A): is not a PgP inhibitor. Next, For strongest basic pKa, the neighbor's strongest basic pKa is value 8.9652, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is -1.5293, which pushes toward option (A): is not a PgP inhibitor. Then, For topological polar surface area, the neighbor's topological polar surface area is value 12.47, while the query's topological polar surface area is value 91.37. The query-minus-neighbor delta is +78.9. This pairwise contribution is -0.9392, which pushes toward option (A): is not a PgP inhibitor. After that, For estimated logD, the neighbor's estimated logD is value 2.6829, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +1.6061. This pairwise contribution is 0.6194, which pushes toward option (B): is a PgP inhibitor. Finally, For estimated logP, the neighbor's estimated logP is value 4.2598, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +0.0292. This pairwise contribution is 0.6137, which pushes toward option (B): is a PgP inhibitor. Step 6, For heteroatom count, the neighbor's heteroatom count is value 2, while the query's heteroatom count is value 8. The query-minus-neighbor delta is +6. This pairwise contribution is 0.5552, which pushes toward option (B): is a PgP inhibitor. Taken together, this positive-neighbor comparison pushes toward option (A): is not a PgP inhibitor with pair score 0.0245."
+      },
+      {
+        "neighbor_id": "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21",
+        "neighbor_smiles": "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.9933636139274669,
+        "pair_prediction": 1,
+        "pair_prediction_semantics": {
+          "option": "B",
+          "text": "is a PgP inhibitor",
+          "label": 1
+        },
+        "middle_draft": "First, For rotatable-bond count, the neighbor's rotatable-bond count is value 6, while the query's rotatable-bond count is value 11. The query-minus-neighbor delta is +5. This pairwise contribution is 1.4196, which pushes toward option (B): is a PgP inhibitor. Next, For estimated logD, the neighbor's estimated logD is value 4.1955, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +0.0935. This pairwise contribution is 0.6109, which pushes toward option (B): is a PgP inhibitor. Then, For estimated logP, the neighbor's estimated logP is value 4.1955, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +0.0935. This pairwise contribution is 0.5979, which pushes toward option (B): is a PgP inhibitor. After that, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.3778, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.5743, which pushes toward option (A): is not a PgP inhibitor. Finally, For Labute surface area, the neighbor's Labute surface area is value 174.0806, while the query's Labute surface area is value 215.1529. The query-minus-neighbor delta is +41.0723. This pairwise contribution is 0.5658, which pushes toward option (B): is a PgP inhibitor. Step 6, For heavy-atom count, the neighbor's heavy-atom count is value 29, while the query's heavy-atom count is value 36. The query-minus-neighbor delta is +7. This pairwise contribution is 0.3695, which pushes toward option (B): is a PgP inhibitor. Taken together, this positive-neighbor comparison pushes toward option (B): is a PgP inhibitor with pair score 0.9934."
+      }
+    ],
+    "negative_neighbors": [
+      {
+        "neighbor_id": "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+        "neighbor_smiles": "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.9980232393319546,
+        "pair_prediction": 1,
+        "pair_prediction_semantics": {
+          "option": "B",
+          "text": "is a PgP inhibitor",
+          "label": 1
+        },
+        "middle_draft": "First, The neighbor has 1 copies of lactone, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is 1.8377, which pushes toward option (B): is a PgP inhibitor. Next, For estimated logD, the neighbor's estimated logD is value 2.5456, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +1.7434. This pairwise contribution is 0.6595, which pushes toward option (B): is a PgP inhibitor. Then, For estimated logP, the neighbor's estimated logP is value 2.5456, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +1.7434. This pairwise contribution is 0.643, which pushes toward option (B): is a PgP inhibitor. After that, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.7485, while the query's QED drug-likeness is value 0.2517. The query-minus-neighbor delta is -0.4968. This pairwise contribution is 0.4782, which pushes toward option (B): is a PgP inhibitor. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 35.53, while the query's topological polar surface area is value 91.37. The query-minus-neighbor delta is +55.84. This pairwise contribution is 0.4365, which pushes toward option (B): is a PgP inhibitor. Step 6, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2143, while the query's fraction of sp3 carbons is value 0.6786. The query-minus-neighbor delta is +0.4643. This pairwise contribution is 0.4201, which pushes toward option (B): is a PgP inhibitor. Taken together, this negative-neighbor comparison pushes toward option (B): is a PgP inhibitor with pair score 0.998."
+      },
+      {
+        "neighbor_id": "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C",
+        "neighbor_smiles": "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.9971067551382535,
+        "pair_prediction": 1,
+        "pair_prediction_semantics": {
+          "option": "B",
+          "text": "is a PgP inhibitor",
+          "label": 1
+        },
+        "middle_draft": "First, For heavy-atom count, the neighbor's heavy-atom count is value 39, while the query's heavy-atom count is value 36. The query-minus-neighbor delta is -3. This pairwise contribution is 1.7778, which pushes toward option (B): is a PgP inhibitor. Next, The neighbor has 2 copies of secondary amide, while the query has 0 (query-minus-neighbor delta -2). This pairwise contribution is 1.0139, which pushes toward option (B): is a PgP inhibitor. Then, For estimated logD, the neighbor's estimated logD is value 3.1045, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +1.1845. This pairwise contribution is 0.8827, which pushes toward option (B): is a PgP inhibitor. After that, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.6071, while the query's fraction of sp3 carbons is value 0.6786. The query-minus-neighbor delta is +0.0714. This pairwise contribution is -0.6918, which pushes toward option (A): is not a PgP inhibitor. Finally, For estimated logP, the neighbor's estimated logP is value 3.4804, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +0.8086. This pairwise contribution is 0.5856, which pushes toward option (B): is a PgP inhibitor. Step 6, The neighbor has 2 copies of lactone, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is 0.5609, which pushes toward option (B): is a PgP inhibitor. Taken together, this negative-neighbor comparison pushes toward option (B): is a PgP inhibitor with pair score 0.9971."
+      },
+      {
+        "neighbor_id": "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O",
+        "neighbor_smiles": "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.993056019337626,
+        "pair_prediction": 1,
+        "pair_prediction_semantics": {
+          "option": "B",
+          "text": "is a PgP inhibitor",
+          "label": 1
+        },
+        "middle_draft": "First, The neighbor has 2 copies of lactam, while the query has 1 (query-minus-neighbor delta -1). This pairwise contribution is 0.931, which pushes toward option (B): is a PgP inhibitor. Next, The neighbor has 0 copies of lactone, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is 0.9051, which pushes toward option (B): is a PgP inhibitor. Then, For estimated logD, the neighbor's estimated logD is value 0.4811, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +3.8079. This pairwise contribution is 0.7211, which pushes toward option (B): is a PgP inhibitor. After that, For neutral fraction, the neighbor's neutral fraction is value 0.0008, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9992. This pairwise contribution is -0.6457, which pushes toward option (A): is not a PgP inhibitor. Finally, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 412.272, while the query's heavy-atom molecular weight is value 462.308. The query-minus-neighbor delta is +50.036. This pairwise contribution is 0.5199, which pushes toward option (B): is a PgP inhibitor. Step 6, The neighbor has pyrazolidine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.4708, which pushes toward option (B): is a PgP inhibitor. Taken together, this negative-neighbor comparison pushes toward option (B): is a PgP inhibitor with pair score 0.9931."
+      }
+    ]
+  },
+  "local_summary_middle_draft": {
+    "positive_neighbors": {
+      "group_name": "positive_neighbors",
+      "num_neighbors": 3,
+      "num_shared_features": 7,
+      "num_single_neighbor_features": 3,
+      "shared_evidence": [
+        {
+          "feature_name": "rdkit_pka__rdkit__MolLogP",
+          "display_name": "estimated logP",
+          "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+          "source_family": "rdkit",
+          "raw_name": "MolLogP",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+            "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1",
+            "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21"
+          ],
+          "neighbor_similarities": [
+            0.2337777777777778,
+            0.22215189873417723,
+            0.21494845360824744
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.39161095748274943
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 1.7538191764140025,
+          "total_weighted_evidence": 0.39161095748274943,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+              "neighbor_similarity": 0.2337777777777778,
+              "pair_score": 0.4790823649299492,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a PgP inhibitor",
+                "label": 0
+              },
+              "contribution": 0.5422158090221283,
+              "contribution_abs": 0.5422158090221283,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 4.1367, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +0.1523. This pairwise contribution is 0.5422, which pushes toward option (B): is a PgP inhibitor."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1",
+              "neighbor_similarity": 0.22215189873417723,
+              "pair_score": 0.024460429118169064,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a PgP inhibitor",
+                "label": 0
+              },
+              "contribution": 0.613689739959951,
+              "contribution_abs": 0.613689739959951,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 4.2598, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +0.0292. This pairwise contribution is 0.6137, which pushes toward option (B): is a PgP inhibitor."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21",
+              "neighbor_similarity": 0.21494845360824744,
+              "pair_score": 0.9933636139274669,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.5979136274319233,
+              "contribution_abs": 0.5979136274319233,
+              "contribution_rank": 3,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 4.1955, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +0.0935. This pairwise contribution is 0.5979, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+          "display_name": "fraction of sp3 carbons",
+          "description": "fraction of carbon atoms that are sp3 hybridized",
+          "source_family": "rdkit",
+          "raw_name": "FractionCSP3",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            2
+          ],
+          "neighbor_ids": [
+            "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+            "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1"
+          ],
+          "neighbor_similarities": [
+            0.2337777777777778,
+            0.22215189873417723
+          ],
+          "support_weight_by_label": {
+            "0": 0.9407142614037232,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a PgP inhibitor",
+            "label": 0
+          },
+          "total_abs_contribution": 4.133213679005455,
+          "total_weighted_evidence": 0.9407142614037232,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+              "neighbor_similarity": 0.2337777777777778,
+              "pair_score": 0.4790823649299492,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a PgP inhibitor",
+                "label": 0
+              },
+              "contribution": -1.9364552696752304,
+              "contribution_abs": 1.9364552696752304,
+              "contribution_rank": 1,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a PgP inhibitor",
+              "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.4091, while the query's fraction of sp3 carbons is value 0.6786. The query-minus-neighbor delta is +0.2695. This pairwise contribution is -1.9365, which pushes toward option (A): is not a PgP inhibitor."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1",
+              "neighbor_similarity": 0.22215189873417723,
+              "pair_score": 0.024460429118169064,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a PgP inhibitor",
+                "label": 0
+              },
+              "contribution": -2.1967584093302244,
+              "contribution_abs": 2.1967584093302244,
+              "contribution_rank": 1,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a PgP inhibitor",
+              "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.4286, while the query's fraction of sp3 carbons is value 0.6786. The query-minus-neighbor delta is +0.25. This pairwise contribution is -2.1968, which pushes toward option (A): is not a PgP inhibitor."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__pka__most_basic_pka",
+          "display_name": "strongest basic pKa",
+          "description": "pKa of the strongest basic site",
+          "source_family": "pka",
+          "raw_name": "most_basic_pka",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            2
+          ],
+          "neighbor_ids": [
+            "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+            "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1"
+          ],
+          "neighbor_similarities": [
+            0.2337777777777778,
+            0.22215189873417723
+          ],
+          "support_weight_by_label": {
+            "0": 0.6565171832927412,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a PgP inhibitor",
+            "label": 0
+          },
+          "total_abs_contribution": 2.884349991889207,
+          "total_weighted_evidence": 0.6565171832927412,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+              "neighbor_similarity": 0.2337777777777778,
+              "pair_score": 0.4790823649299492,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a PgP inhibitor",
+                "label": 0
+              },
+              "contribution": -1.355024933733202,
+              "contribution_abs": 1.355024933733202,
+              "contribution_rank": 3,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a PgP inhibitor",
+              "text_hint": "For strongest basic pKa, the neighbor's strongest basic pKa is value 8.6463, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is -1.355, which pushes toward option (A): is not a PgP inhibitor."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1",
+              "neighbor_similarity": 0.22215189873417723,
+              "pair_score": 0.024460429118169064,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a PgP inhibitor",
+                "label": 0
+              },
+              "contribution": -1.529325058156005,
+              "contribution_abs": 1.529325058156005,
+              "contribution_rank": 2,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a PgP inhibitor",
+              "text_hint": "For strongest basic pKa, the neighbor's strongest basic pKa is value 8.9652, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is -1.5293, which pushes toward option (A): is not a PgP inhibitor."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__NumRotatableBonds",
+          "display_name": "rotatable-bond count",
+          "description": "number of rotatable bonds",
+          "source_family": "rdkit",
+          "raw_name": "NumRotatableBonds",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            3
+          ],
+          "neighbor_ids": [
+            "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+            "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21"
+          ],
+          "neighbor_similarities": [
+            0.2337777777777778,
+            0.21494845360824744
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.6369905494725554
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 2.839105471971271,
+          "total_weighted_evidence": 0.6369905494725554,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+              "neighbor_similarity": 0.2337777777777778,
+              "pair_score": 0.4790823649299492,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a PgP inhibitor",
+                "label": 0
+              },
+              "contribution": 1.4195527359856355,
+              "contribution_abs": 1.4195527359856355,
+              "contribution_rank": 2,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 6, while the query's rotatable-bond count is value 11. The query-minus-neighbor delta is +5. This pairwise contribution is 1.4196, which pushes toward option (B): is a PgP inhibitor."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21",
+              "neighbor_similarity": 0.21494845360824744,
+              "pair_score": 0.9933636139274669,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 1.4195527359856355,
+              "contribution_abs": 1.4195527359856355,
+              "contribution_rank": 1,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 6, while the query's rotatable-bond count is value 11. The query-minus-neighbor delta is +5. This pairwise contribution is 1.4196, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__TPSA",
+          "display_name": "topological polar surface area",
+          "description": "topological polar surface area of the molecule",
+          "source_family": "rdkit",
+          "raw_name": "TPSA",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            2
+          ],
+          "neighbor_ids": [
+            "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+            "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1"
+          ],
+          "neighbor_similarities": [
+            0.2337777777777778,
+            0.22215189873417723
+          ],
+          "support_weight_by_label": {
+            "0": 0.3524993579014942,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a PgP inhibitor",
+            "label": 0
+          },
+          "total_abs_contribution": 1.5545471872326733,
+          "total_weighted_evidence": 0.3524993579014942,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+              "neighbor_similarity": 0.2337777777777778,
+              "pair_score": 0.4790823649299492,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a PgP inhibitor",
+                "label": 0
+              },
+              "contribution": -0.6153296932690112,
+              "contribution_abs": 0.6153296932690112,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a PgP inhibitor",
+              "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 23.55, while the query's topological polar surface area is value 91.37. The query-minus-neighbor delta is +67.82. This pairwise contribution is -0.6153, which pushes toward option (A): is not a PgP inhibitor."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1",
+              "neighbor_similarity": 0.22215189873417723,
+              "pair_score": 0.024460429118169064,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a PgP inhibitor",
+                "label": 0
+              },
+              "contribution": -0.939217493963662,
+              "contribution_abs": 0.939217493963662,
+              "contribution_rank": 3,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a PgP inhibitor",
+              "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 12.47, while the query's topological polar surface area is value 91.37. The query-minus-neighbor delta is +78.9. This pairwise contribution is -0.9392, which pushes toward option (A): is not a PgP inhibitor."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__pka__logd_estimate",
+          "display_name": "estimated logD",
+          "description": "estimated logD at the configured pH",
+          "source_family": "pka",
+          "raw_name": "logd_estimate",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1",
+            "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21"
+          ],
+          "neighbor_similarities": [
+            0.22215189873417723,
+            0.21494845360824744
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.26890203711503224
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 1.230251115444747,
+          "total_weighted_evidence": 0.26890203711503224,
+          "term_instances": [
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1",
+              "neighbor_similarity": 0.22215189873417723,
+              "pair_score": 0.024460429118169064,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a PgP inhibitor",
+                "label": 0
+              },
+              "contribution": 0.6193511885448706,
+              "contribution_abs": 0.6193511885448706,
+              "contribution_rank": 4,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For estimated logD, the neighbor's estimated logD is value 2.6829, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +1.6061. This pairwise contribution is 0.6194, which pushes toward option (B): is a PgP inhibitor."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21",
+              "neighbor_similarity": 0.21494845360824744,
+              "pair_score": 0.9933636139274669,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.6108999268998765,
+              "contribution_abs": 0.6108999268998765,
+              "contribution_rank": 2,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For estimated logD, the neighbor's estimated logD is value 4.1955, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +0.0935. This pairwise contribution is 0.6109, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__HeavyAtomCount",
+          "display_name": "heavy-atom count",
+          "description": "number of non-hydrogen atoms",
+          "source_family": "rdkit",
+          "raw_name": "HeavyAtomCount",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            3
+          ],
+          "neighbor_ids": [
+            "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+            "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21"
+          ],
+          "neighbor_similarities": [
+            0.2337777777777778,
+            0.21494845360824744
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.21711020155542393
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 0.958464521972702,
+          "total_weighted_evidence": 0.21711020155542393,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCC(=O)N(c1ccccc1)C1CCN(CCc2ccccc2)CC1",
+              "neighbor_similarity": 0.2337777777777778,
+              "pair_score": 0.4790823649299492,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a PgP inhibitor",
+                "label": 0
+              },
+              "contribution": 0.5889608474089022,
+              "contribution_abs": 0.5889608474089022,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For heavy-atom count, the neighbor's heavy-atom count is value 25, while the query's heavy-atom count is value 36. The query-minus-neighbor delta is +11. This pairwise contribution is 0.589, which pushes toward option (B): is a PgP inhibitor."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21",
+              "neighbor_similarity": 0.21494845360824744,
+              "pair_score": 0.9933636139274669,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.36950367456379984,
+              "contribution_abs": 0.36950367456379984,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For heavy-atom count, the neighbor's heavy-atom count is value 29, while the query's heavy-atom count is value 36. The query-minus-neighbor delta is +7. This pairwise contribution is 0.3695, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ]
+        }
+      ],
+      "single_neighbor_evidence": [
+        {
+          "feature_name": "rdkit_pka__rdkit__NumHeteroatoms",
+          "display_name": "heteroatom count",
+          "description": "number of heteroatoms, such as N, O, or S",
+          "source_family": "rdkit",
+          "raw_name": "NumHeteroatoms",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            2
+          ],
+          "neighbor_ids": [
+            "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1"
+          ],
+          "neighbor_similarities": [
+            0.22215189873417723
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.12333220282259835
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 0.5551705996003002,
+          "total_weighted_evidence": 0.12333220282259835,
+          "term_instances": [
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1",
+              "neighbor_similarity": 0.22215189873417723,
+              "pair_score": 0.024460429118169064,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a PgP inhibitor",
+                "label": 0
+              },
+              "contribution": 0.5551705996003002,
+              "contribution_abs": 0.5551705996003002,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For heteroatom count, the neighbor's heteroatom count is value 2, while the query's heteroatom count is value 8. The query-minus-neighbor delta is +6. This pairwise contribution is 0.5552, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ],
+          "neighbor_rank": 2,
+          "neighbor_id": "c1ccc(C[C@@H]2c3ccccc3O[C@H]2CN2CCCCC2)cc1",
+          "neighbor_similarity": 0.22215189873417723,
+          "pair_score": 0.024460429118169064,
+          "pair_prediction": 0,
+          "pair_prediction_semantics": {
+            "option": "A",
+            "text": "is not a PgP inhibitor",
+            "label": 0
+          },
+          "contribution": 0.5551705996003002,
+          "contribution_abs": 0.5551705996003002,
+          "contribution_rank": 6,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is a PgP inhibitor",
+          "text_hint": "For heteroatom count, the neighbor's heteroatom count is value 2, while the query's heteroatom count is value 8. The query-minus-neighbor delta is +6. This pairwise contribution is 0.5552, which pushes toward option (B): is a PgP inhibitor."
+        },
+        {
+          "feature_name": "rdkit_pka__pka__most_acidic_pka",
+          "display_name": "strongest acidic pKa",
+          "description": "pKa of the strongest acidic site",
+          "source_family": "pka",
+          "raw_name": "most_acidic_pka",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            3
+          ],
+          "neighbor_ids": [
+            "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21"
+          ],
+          "neighbor_similarities": [
+            0.21494845360824744
+          ],
+          "support_weight_by_label": {
+            "0": 0.12345538248925696,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a PgP inhibitor",
+            "label": 0
+          },
+          "total_abs_contribution": 0.5743487818445048,
+          "total_weighted_evidence": 0.12345538248925696,
+          "term_instances": [
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21",
+              "neighbor_similarity": 0.21494845360824744,
+              "pair_score": 0.9933636139274669,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": -0.5743487818445048,
+              "contribution_abs": 0.5743487818445048,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a PgP inhibitor",
+              "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.3778, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.5743, which pushes toward option (A): is not a PgP inhibitor."
+            }
+          ],
+          "neighbor_rank": 3,
+          "neighbor_id": "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21",
+          "neighbor_similarity": 0.21494845360824744,
+          "pair_score": 0.9933636139274669,
+          "pair_prediction": 1,
+          "pair_prediction_semantics": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "contribution": -0.5743487818445048,
+          "contribution_abs": 0.5743487818445048,
+          "contribution_rank": 4,
+          "supports_label": 0,
+          "supports_option": "A",
+          "supports_text": "is not a PgP inhibitor",
+          "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.3778, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.5743, which pushes toward option (A): is not a PgP inhibitor."
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__LabuteASA",
+          "display_name": "Labute surface area",
+          "description": "Labute approximate surface area",
+          "source_family": "rdkit",
+          "raw_name": "LabuteASA",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            3
+          ],
+          "neighbor_ids": [
+            "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21"
+          ],
+          "neighbor_similarities": [
+            0.21494845360824744
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.12161201971438286
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 0.5657729454338195,
+          "total_weighted_evidence": 0.12161201971438286,
+          "term_instances": [
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21",
+              "neighbor_similarity": 0.21494845360824744,
+              "pair_score": 0.9933636139274669,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.5657729454338195,
+              "contribution_abs": 0.5657729454338195,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For Labute surface area, the neighbor's Labute surface area is value 174.0806, while the query's Labute surface area is value 215.1529. The query-minus-neighbor delta is +41.0723. This pairwise contribution is 0.5658, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ],
+          "neighbor_rank": 3,
+          "neighbor_id": "CC[C@@H](C)C(=O)O[C@@H]1C[C@H](C)C=C2C=C[C@H](C)[C@H](CC[C@H]3C[C@H](O)CC(=O)O3)[C@H]21",
+          "neighbor_similarity": 0.21494845360824744,
+          "pair_score": 0.9933636139274669,
+          "pair_prediction": 1,
+          "pair_prediction_semantics": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "contribution": 0.5657729454338195,
+          "contribution_abs": 0.5657729454338195,
+          "contribution_rank": 5,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is a PgP inhibitor",
+          "text_hint": "For Labute surface area, the neighbor's Labute surface area is value 174.0806, while the query's Labute surface area is value 215.1529. The query-minus-neighbor delta is +41.0723. This pairwise contribution is 0.5658, which pushes toward option (B): is a PgP inhibitor."
+        }
+      ]
+    },
+    "negative_neighbors": {
+      "group_name": "negative_neighbors",
+      "num_neighbors": 3,
+      "num_shared_features": 4,
+      "num_single_neighbor_features": 8,
+      "shared_evidence": [
+        {
+          "feature_name": "fg_top_level__lactone",
+          "display_name": "lactone",
+          "description": "top-level functional-group indicator or count for lactone",
+          "source_family": "fg_top_level",
+          "raw_name": "lactone",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+            "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C",
+            "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O"
+          ],
+          "neighbor_similarities": [
+            0.2508427742470296,
+            0.23895823701648947,
+            0.2200865800865801
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.7942357355824149
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 3.303826727183578,
+          "total_weighted_evidence": 0.7942357355824149,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+              "neighbor_similarity": 0.2508427742470296,
+              "pair_score": 0.9980232393319546,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 1.837738079715518,
+              "contribution_abs": 1.837738079715518,
+              "contribution_rank": 1,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "The neighbor has 1 copies of lactone, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is 1.8377, which pushes toward option (B): is a PgP inhibitor."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C",
+              "neighbor_similarity": 0.23895823701648947,
+              "pair_score": 0.9971067551382535,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.5609460176961426,
+              "contribution_abs": 0.5609460176961426,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "The neighbor has 2 copies of lactone, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is 0.5609, which pushes toward option (B): is a PgP inhibitor."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O",
+              "neighbor_similarity": 0.2200865800865801,
+              "pair_score": 0.993056019337626,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.9051426297719172,
+              "contribution_abs": 0.9051426297719172,
+              "contribution_rank": 2,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "The neighbor has 0 copies of lactone, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is 0.9051, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__pka__logd_estimate",
+          "display_name": "estimated logD",
+          "description": "estimated logD at the configured pH",
+          "source_family": "pka",
+          "raw_name": "logd_estimate",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+            "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C",
+            "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O"
+          ],
+          "neighbor_similarities": [
+            0.2508427742470296,
+            0.23895823701648947,
+            0.2200865800865801
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.5350537146682107
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 2.2632613765950906,
+          "total_weighted_evidence": 0.5350537146682107,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+              "neighbor_similarity": 0.2508427742470296,
+              "pair_score": 0.9980232393319546,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.6594567077306798,
+              "contribution_abs": 0.6594567077306798,
+              "contribution_rank": 2,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For estimated logD, the neighbor's estimated logD is value 2.5456, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +1.7434. This pairwise contribution is 0.6595, which pushes toward option (B): is a PgP inhibitor."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C",
+              "neighbor_similarity": 0.23895823701648947,
+              "pair_score": 0.9971067551382535,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.8826930231852305,
+              "contribution_abs": 0.8826930231852305,
+              "contribution_rank": 3,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For estimated logD, the neighbor's estimated logD is value 3.1045, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +1.1845. This pairwise contribution is 0.8827, which pushes toward option (B): is a PgP inhibitor."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O",
+              "neighbor_similarity": 0.2200865800865801,
+              "pair_score": 0.993056019337626,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.7211116456791803,
+              "contribution_abs": 0.7211116456791803,
+              "contribution_rank": 3,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For estimated logD, the neighbor's estimated logD is value 0.4811, while the query's estimated logD is value 4.289. The query-minus-neighbor delta is +3.8079. This pairwise contribution is 0.7211, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__MolLogP",
+          "display_name": "estimated logP",
+          "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+          "source_family": "rdkit",
+          "raw_name": "MolLogP",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            2
+          ],
+          "neighbor_ids": [
+            "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+            "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C"
+          ],
+          "neighbor_similarities": [
+            0.2508427742470296,
+            0.23895823701648947
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.30122161188306357
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 1.2285836387725138,
+          "total_weighted_evidence": 0.30122161188306357,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+              "neighbor_similarity": 0.2508427742470296,
+              "pair_score": 0.9980232393319546,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.6429725774297445,
+              "contribution_abs": 0.6429725774297445,
+              "contribution_rank": 3,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 2.5456, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +1.7434. This pairwise contribution is 0.643, which pushes toward option (B): is a PgP inhibitor."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C",
+              "neighbor_similarity": 0.23895823701648947,
+              "pair_score": 0.9971067551382535,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.5856110613427693,
+              "contribution_abs": 0.5856110613427693,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 3.4804, while the query's estimated logP is value 4.289. The query-minus-neighbor delta is +0.8086. This pairwise contribution is 0.5856, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+          "display_name": "fraction of sp3 carbons",
+          "description": "fraction of carbon atoms that are sp3 hybridized",
+          "source_family": "rdkit",
+          "raw_name": "FractionCSP3",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            2
+          ],
+          "neighbor_ids": [
+            "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+            "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C"
+          ],
+          "neighbor_similarities": [
+            0.2508427742470296,
+            0.23895823701648947
+          ],
+          "support_weight_by_label": {
+            "0": 0.16530996885802302,
+            "1": 0.10537486523059562
+          },
+          "support_mode": "mixed",
+          "dominant_support": null,
+          "total_abs_contribution": 1.1118777136860822,
+          "total_weighted_evidence": 0.27068483408861865,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+              "neighbor_similarity": 0.2508427742470296,
+              "pair_score": 0.9980232393319546,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.4200833193098981,
+              "contribution_abs": 0.4200833193098981,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2143, while the query's fraction of sp3 carbons is value 0.6786. The query-minus-neighbor delta is +0.4643. This pairwise contribution is 0.4201, which pushes toward option (B): is a PgP inhibitor."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C",
+              "neighbor_similarity": 0.23895823701648947,
+              "pair_score": 0.9971067551382535,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": -0.6917943943761842,
+              "contribution_abs": 0.6917943943761842,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a PgP inhibitor",
+              "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.6071, while the query's fraction of sp3 carbons is value 0.6786. The query-minus-neighbor delta is +0.0714. This pairwise contribution is -0.6918, which pushes toward option (A): is not a PgP inhibitor."
+            }
+          ]
+        }
+      ],
+      "single_neighbor_evidence": [
+        {
+          "feature_name": "rdkit_pka__rdkit__qed",
+          "display_name": "QED drug-likeness",
+          "description": "quantitative estimate of drug-likeness",
+          "source_family": "rdkit",
+          "raw_name": "qed",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            1
+          ],
+          "neighbor_ids": [
+            "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1"
+          ],
+          "neighbor_similarities": [
+            0.2508427742470296
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.11994689630199548
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 0.4781756088531853,
+          "total_weighted_evidence": 0.11994689630199548,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+              "neighbor_similarity": 0.2508427742470296,
+              "pair_score": 0.9980232393319546,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.4781756088531853,
+              "contribution_abs": 0.4781756088531853,
+              "contribution_rank": 4,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.7485, while the query's QED drug-likeness is value 0.2517. The query-minus-neighbor delta is -0.4968. This pairwise contribution is 0.4782, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ],
+          "neighbor_rank": 1,
+          "neighbor_id": "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+          "neighbor_similarity": 0.2508427742470296,
+          "pair_score": 0.9980232393319546,
+          "pair_prediction": 1,
+          "pair_prediction_semantics": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "contribution": 0.4781756088531853,
+          "contribution_abs": 0.4781756088531853,
+          "contribution_rank": 4,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is a PgP inhibitor",
+          "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.7485, while the query's QED drug-likeness is value 0.2517. The query-minus-neighbor delta is -0.4968. This pairwise contribution is 0.4782, which pushes toward option (B): is a PgP inhibitor."
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__TPSA",
+          "display_name": "topological polar surface area",
+          "description": "topological polar surface area of the molecule",
+          "source_family": "rdkit",
+          "raw_name": "TPSA",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            1
+          ],
+          "neighbor_ids": [
+            "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1"
+          ],
+          "neighbor_similarities": [
+            0.2508427742470296
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.1094990826655483
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 0.4365247633472342,
+          "total_weighted_evidence": 0.1094990826655483,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+              "neighbor_similarity": 0.2508427742470296,
+              "pair_score": 0.9980232393319546,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.4365247633472342,
+              "contribution_abs": 0.4365247633472342,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 35.53, while the query's topological polar surface area is value 91.37. The query-minus-neighbor delta is +55.84. This pairwise contribution is 0.4365, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ],
+          "neighbor_rank": 1,
+          "neighbor_id": "COC1=CC(=O)O[C@@H](/C=C/c2ccccc2)C1",
+          "neighbor_similarity": 0.2508427742470296,
+          "pair_score": 0.9980232393319546,
+          "pair_prediction": 1,
+          "pair_prediction_semantics": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "contribution": 0.4365247633472342,
+          "contribution_abs": 0.4365247633472342,
+          "contribution_rank": 5,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is a PgP inhibitor",
+          "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 35.53, while the query's topological polar surface area is value 91.37. The query-minus-neighbor delta is +55.84. This pairwise contribution is 0.4365, which pushes toward option (B): is a PgP inhibitor."
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__HeavyAtomCount",
+          "display_name": "heavy-atom count",
+          "description": "number of non-hydrogen atoms",
+          "source_family": "rdkit",
+          "raw_name": "HeavyAtomCount",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            2
+          ],
+          "neighbor_ids": [
+            "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C"
+          ],
+          "neighbor_similarities": [
+            0.23895823701648947
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.42481785336706707
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 1.777791210175995,
+          "total_weighted_evidence": 0.42481785336706707,
+          "term_instances": [
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C",
+              "neighbor_similarity": 0.23895823701648947,
+              "pair_score": 0.9971067551382535,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 1.777791210175995,
+              "contribution_abs": 1.777791210175995,
+              "contribution_rank": 1,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For heavy-atom count, the neighbor's heavy-atom count is value 39, while the query's heavy-atom count is value 36. The query-minus-neighbor delta is -3. This pairwise contribution is 1.7778, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ],
+          "neighbor_rank": 2,
+          "neighbor_id": "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C",
+          "neighbor_similarity": 0.23895823701648947,
+          "pair_score": 0.9971067551382535,
+          "pair_prediction": 1,
+          "pair_prediction_semantics": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "contribution": 1.777791210175995,
+          "contribution_abs": 1.777791210175995,
+          "contribution_rank": 1,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is a PgP inhibitor",
+          "text_hint": "For heavy-atom count, the neighbor's heavy-atom count is value 39, while the query's heavy-atom count is value 36. The query-minus-neighbor delta is -3. This pairwise contribution is 1.7778, which pushes toward option (B): is a PgP inhibitor."
+        },
+        {
+          "feature_name": "fg_top_level__secondary amide",
+          "display_name": "secondary amide",
+          "description": "top-level functional-group indicator or count for secondary amide",
+          "source_family": "fg_top_level",
+          "raw_name": "secondary amide",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            2
+          ],
+          "neighbor_ids": [
+            "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C"
+          ],
+          "neighbor_similarities": [
+            0.23895823701648947
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.24226860813536705
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 1.0138533459244141,
+          "total_weighted_evidence": 0.24226860813536705,
+          "term_instances": [
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C",
+              "neighbor_similarity": 0.23895823701648947,
+              "pair_score": 0.9971067551382535,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 1.0138533459244141,
+              "contribution_abs": 1.0138533459244141,
+              "contribution_rank": 2,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "The neighbor has 2 copies of secondary amide, while the query has 0 (query-minus-neighbor delta -2). This pairwise contribution is 1.0139, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ],
+          "neighbor_rank": 2,
+          "neighbor_id": "CCCCCC[C@@H]1C(=O)O[C@@H](C)[C@@H](NC(=O)c2cccc(NC=O)c2O)C(=O)O[C@@H](C)[C@H]1OC(=O)CC(C)C",
+          "neighbor_similarity": 0.23895823701648947,
+          "pair_score": 0.9971067551382535,
+          "pair_prediction": 1,
+          "pair_prediction_semantics": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "contribution": 1.0138533459244141,
+          "contribution_abs": 1.0138533459244141,
+          "contribution_rank": 2,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is a PgP inhibitor",
+          "text_hint": "The neighbor has 2 copies of secondary amide, while the query has 0 (query-minus-neighbor delta -2). This pairwise contribution is 1.0139, which pushes toward option (B): is a PgP inhibitor."
+        },
+        {
+          "feature_name": "fg_top_level__lactam",
+          "display_name": "lactam",
+          "description": "top-level functional-group indicator or count for lactam",
+          "source_family": "fg_top_level",
+          "raw_name": "lactam",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            3
+          ],
+          "neighbor_ids": [
+            "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O"
+          ],
+          "neighbor_similarities": [
+            0.2200865800865801
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.20489503390738167
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 0.9309746819945941,
+          "total_weighted_evidence": 0.20489503390738167,
+          "term_instances": [
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O",
+              "neighbor_similarity": 0.2200865800865801,
+              "pair_score": 0.993056019337626,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.9309746819945941,
+              "contribution_abs": 0.9309746819945941,
+              "contribution_rank": 1,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "The neighbor has 2 copies of lactam, while the query has 1 (query-minus-neighbor delta -1). This pairwise contribution is 0.931, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ],
+          "neighbor_rank": 3,
+          "neighbor_id": "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O",
+          "neighbor_similarity": 0.2200865800865801,
+          "pair_score": 0.993056019337626,
+          "pair_prediction": 1,
+          "pair_prediction_semantics": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "contribution": 0.9309746819945941,
+          "contribution_abs": 0.9309746819945941,
+          "contribution_rank": 1,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is a PgP inhibitor",
+          "text_hint": "The neighbor has 2 copies of lactam, while the query has 1 (query-minus-neighbor delta -1). This pairwise contribution is 0.931, which pushes toward option (B): is a PgP inhibitor."
+        },
+        {
+          "feature_name": "rdkit_pka__pka__fraction_neutral",
+          "display_name": "neutral fraction",
+          "description": "estimated fraction of the molecule that is neutral at the configured pH",
+          "source_family": "pka",
+          "raw_name": "fraction_neutral",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            3
+          ],
+          "neighbor_ids": [
+            "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O"
+          ],
+          "neighbor_similarities": [
+            0.2200865800865801
+          ],
+          "support_weight_by_label": {
+            "0": 0.14210068190294337,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a PgP inhibitor",
+            "label": 0
+          },
+          "total_abs_contribution": 0.6456580944055845,
+          "total_weighted_evidence": 0.14210068190294337,
+          "term_instances": [
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O",
+              "neighbor_similarity": 0.2200865800865801,
+              "pair_score": 0.993056019337626,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": -0.6456580944055845,
+              "contribution_abs": 0.6456580944055845,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a PgP inhibitor",
+              "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.0008, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9992. This pairwise contribution is -0.6457, which pushes toward option (A): is not a PgP inhibitor."
+            }
+          ],
+          "neighbor_rank": 3,
+          "neighbor_id": "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O",
+          "neighbor_similarity": 0.2200865800865801,
+          "pair_score": 0.993056019337626,
+          "pair_prediction": 1,
+          "pair_prediction_semantics": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "contribution": -0.6456580944055845,
+          "contribution_abs": 0.6456580944055845,
+          "contribution_rank": 4,
+          "supports_label": 0,
+          "supports_option": "A",
+          "supports_text": "is not a PgP inhibitor",
+          "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.0008, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9992. This pairwise contribution is -0.6457, which pushes toward option (A): is not a PgP inhibitor."
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+          "display_name": "heavy-atom molecular weight",
+          "description": "molecular weight contributed by heavy atoms",
+          "source_family": "rdkit",
+          "raw_name": "HeavyAtomMolWt",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            3
+          ],
+          "neighbor_ids": [
+            "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O"
+          ],
+          "neighbor_similarities": [
+            0.2200865800865801
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.11442056076892741
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 0.5198888579390682,
+          "total_weighted_evidence": 0.11442056076892741,
+          "term_instances": [
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O",
+              "neighbor_similarity": 0.2200865800865801,
+              "pair_score": 0.993056019337626,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.5198888579390682,
+              "contribution_abs": 0.5198888579390682,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 412.272, while the query's heavy-atom molecular weight is value 462.308. The query-minus-neighbor delta is +50.036. This pairwise contribution is 0.5199, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ],
+          "neighbor_rank": 3,
+          "neighbor_id": "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O",
+          "neighbor_similarity": 0.2200865800865801,
+          "pair_score": 0.993056019337626,
+          "pair_prediction": 1,
+          "pair_prediction_semantics": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "contribution": 0.5198888579390682,
+          "contribution_abs": 0.5198888579390682,
+          "contribution_rank": 5,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is a PgP inhibitor",
+          "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 412.272, while the query's heavy-atom molecular weight is value 462.308. The query-minus-neighbor delta is +50.036. This pairwise contribution is 0.5199, which pushes toward option (B): is a PgP inhibitor."
+        },
+        {
+          "feature_name": "fg_top_level__pyrazolidine",
+          "display_name": "pyrazolidine",
+          "description": "top-level functional-group indicator or count for pyrazolidine",
+          "source_family": "fg_top_level",
+          "raw_name": "pyrazolidine",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            3
+          ],
+          "neighbor_ids": [
+            "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O"
+          ],
+          "neighbor_similarities": [
+            0.2200865800865801
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.10362095704121528
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "total_abs_contribution": 0.47081906130056506,
+          "total_weighted_evidence": 0.10362095704121528,
+          "term_instances": [
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O",
+              "neighbor_similarity": 0.2200865800865801,
+              "pair_score": 0.993056019337626,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a PgP inhibitor",
+                "label": 1
+              },
+              "contribution": 0.47081906130056506,
+              "contribution_abs": 0.47081906130056506,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a PgP inhibitor",
+              "text_hint": "The neighbor has pyrazolidine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.4708, which pushes toward option (B): is a PgP inhibitor."
+            }
+          ],
+          "neighbor_rank": 3,
+          "neighbor_id": "CCCCC1(COC(=O)CCC(=O)O)C(=O)N(c2ccccc2)N(c2ccccc2)C1=O",
+          "neighbor_similarity": 0.2200865800865801,
+          "pair_score": 0.993056019337626,
+          "pair_prediction": 1,
+          "pair_prediction_semantics": {
+            "option": "B",
+            "text": "is a PgP inhibitor",
+            "label": 1
+          },
+          "contribution": 0.47081906130056506,
+          "contribution_abs": 0.47081906130056506,
+          "contribution_rank": 6,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is a PgP inhibitor",
+          "text_hint": "The neighbor has pyrazolidine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.4708, which pushes toward option (B): is a PgP inhibitor."
+        }
+      ]
+    },
+    "middle_draft": "Across the positive neighbors, shared local signals include estimated logP, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is a PgP inhibitor, fraction of sp3 carbons, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not a PgP inhibitor, strongest basic pKa, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not a PgP inhibitor, rotatable-bond count, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is a PgP inhibitor, topological polar surface area, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not a PgP inhibitor, estimated logD, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is a PgP inhibitor, and heavy-atom count, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is a PgP inhibitor. The remaining one-off signals from the positive neighbors are all kept explicitly for downstream rewriting. With neighbor 2 (similarity 0.2222), the comparison shows that for heteroatom count, the neighbor's heteroatom count is value 2, while the query's heteroatom count is value 8. The query-minus-neighbor delta is +6. This pairwise contribution is 0.5552, which pushes toward option (B): is a PgP inhibitor. With neighbor 3 (similarity 0.2149), the comparison shows that for strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.3778, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.5743, which pushes toward option (A): is not a PgP inhibitor. With neighbor 3 (similarity 0.2149), the comparison shows that for Labute surface area, the neighbor's Labute surface area is value 174.0806, while the query's Labute surface area is value 215.1529. The query-minus-neighbor delta is +41.0723. This pairwise contribution is 0.5658, which pushes toward option (B): is a PgP inhibitor. Across the negative neighbors, shared local signals include lactone, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is a PgP inhibitor, estimated logD, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is a PgP inhibitor, estimated logP, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is a PgP inhibitor, and fraction of sp3 carbons, which recurs in 2 of 3 neighbor comparisons, but with mixed direction. The remaining one-off signals from the negative neighbors are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.2508), the comparison shows that for QED drug-likeness, the neighbor's QED drug-likeness is value 0.7485, while the query's QED drug-likeness is value 0.2517. The query-minus-neighbor delta is -0.4968. This pairwise contribution is 0.4782, which pushes toward option (B): is a PgP inhibitor. With neighbor 1 (similarity 0.2508), the comparison shows that for topological polar surface area, the neighbor's topological polar surface area is value 35.53, while the query's topological polar surface area is value 91.37. The query-minus-neighbor delta is +55.84. This pairwise contribution is 0.4365, which pushes toward option (B): is a PgP inhibitor. With neighbor 2 (similarity 0.239), the comparison shows that for heavy-atom count, the neighbor's heavy-atom count is value 39, while the query's heavy-atom count is value 36. The query-minus-neighbor delta is -3. This pairwise contribution is 1.7778, which pushes toward option (B): is a PgP inhibitor. With neighbor 2 (similarity 0.239), the comparison shows that the neighbor has 2 copies of secondary amide, while the query has 0 (query-minus-neighbor delta -2). This pairwise contribution is 1.0139, which pushes toward option (B): is a PgP inhibitor. With neighbor 3 (similarity 0.2201), the comparison shows that the neighbor has 2 copies of lactam, while the query has 1 (query-minus-neighbor delta -1). This pairwise contribution is 0.931, which pushes toward option (B): is a PgP inhibitor. With neighbor 3 (similarity 0.2201), the comparison shows that for neutral fraction, the neighbor's neutral fraction is value 0.0008, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9992. This pairwise contribution is -0.6457, which pushes toward option (A): is not a PgP inhibitor. With neighbor 3 (similarity 0.2201), the comparison shows that for heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 412.272, while the query's heavy-atom molecular weight is value 462.308. The query-minus-neighbor delta is +50.036. This pairwise contribution is 0.5199, which pushes toward option (B): is a PgP inhibitor. With neighbor 3 (similarity 0.2201), the comparison shows that the neighbor has pyrazolidine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.4708, which pushes toward option (B): is a PgP inhibitor. Taken together, these local analog comparisons support option (B): is a PgP inhibitor with local score 0.7518, positive-neighbor aggregate 0.4933, and negative-neighbor aggregate 0.9962."
+  }
+}

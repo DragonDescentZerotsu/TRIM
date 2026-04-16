@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains alkyl chloride count 2, which is a concerning structural alert because aliphatic halides can act as mutagenic toxicophores. It also has tertiary mixed amine present 1, and a basic amine can increase bacterial accumulation, so that may help expose any reactive functionality. Heteroatom count 7 and number of basic sites 3 both indicate a fairly heteroatom-rich, ionizable structure, which can influence uptake and reactivity handling in bacteria. Estimated logP is 1.1718, a moderate value that should not strongly limit exposure by extreme hydrophobicity. On the other hand, several features lean away from mutagenicity: pyrimidine present 1 is not itself a clear mutagenicity alert, QED drug-likeness 0.7696 is relatively favorable, neutral fraction absent 0 suggests substantial ionization rather than neutral membrane-permeable character, phenol count 2 is not a classic Ames toxicophore, and ring count 1 is low, which does not suggest a large planar polycyclic aromatic system. Taken together, the molecule shows one notable mutagenic alert from alkyl chloride count 2, but the overall balance of descriptors is still more consistent with option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive analog with similarity 0.298 and overall looks mutagenic despite a few countervailing features. The strongest signal is that both molecules have 2 copies of alkyl chloride, and that shared alkyl-halide functionality is a recognized mutagenicity toxicophore. Against that, the query has pyrimidine once while the neighbor has none, and the query also has slightly higher QED drug-likeness (0.7696 vs 0.7476, delta +0.022), which are both features that can soften concern by improving the overall drug-like profile or changing the heteroaromatic context. Still, the neighbor comparison also notes the query has a lower strongest basic pKa (4.2073 vs 4.9051, delta -0.6978) and one more heteroatom count unit (7 vs 6, delta +1), while ring count stays the same at 1. Taken together, the shared alkyl chloride alert and the net structural chemistry remain aligned with mutagenicity, even though the pyrimidine and QED differences temper the strength of that call.
+
+Neighbor 2 is also a positive analog, similarity 0.292, and it again supports the mutagenic class more than the nonmutagenic class. As in Neighbor 1, both molecules have 2 copies of alkyl chloride, which is the most direct structural alert here. This neighbor also differs by phosphonic acid: the neighbor has 2 copies while the query has 0, a delta of -2, and that absence in the query removes a strongly polar, ionizable motif that can change exposure and physicochemical balance. The query is much more drug-like by QED (0.7696 vs 0.3156, delta +0.4541), and it has pyrimidine once while the neighbor has none, both of which work against a simple mutagenic reading. But the query is also far smaller in heavy-atom molecular weight (241.013 vs 402.986, delta -161.973), and it has a lower maximum partial charge (0.3168 vs 0.3737, delta -0.0569), so the comparison mixes improved permeability-like properties with the persistence of the alkyl chloride motif. Because the halide alert remains present and the change in size/charge does not remove that alert, the overall chemistry of this neighbor still leans mutagenic.
+
+Neighbor 3, similarity 0.265, is another positive neighbor and gives a similar mixed picture that still ends up on the mutagenic side. The shared feature is again 2 copies of alkyl chloride, which is the dominant concern. The query has pyrimidine once whereas the neighbor has none, and the query’s QED is modestly higher (0.7696 vs 0.7111, delta +0.0586), both of which are more compatible with a less alarmed profile. At the same time, the query’s maximum partial charge is slightly higher (0.3168 vs 0.3029, delta +0.0139), and heteroatom count rises from 5 to 7 (delta +2), while ring count remains 1 in both molecules. Those changes add polarity and heteroatom content without eliminating the reactive halide motif. So even though pyrimidine and the somewhat better QED work in the opposite direction, the shared alkyl chloride alert keeps this neighbor aligned with mutagenicity.
+
+Neighbor 4 is a negative neighbor with similarity 0.313, and here the comparison is more balanced but leans nonmutagenic overall. The query still has 2 copies of alkyl chloride while the neighbor has 2, which preserves the same structural alert, and the query also has pyrimidine once while the neighbor has none. However, the neighbor is penalized by lower QED (0.704 vs 0.7696, delta +0.0657 in the query), and its heteroatom count is much lower (3 vs 7, delta +4). Most importantly, estimated logD is extreme in the neighbor at 3.278 versus -4.1264 in the query, a delta of -7.4044, showing a very large shift in lipophilicity and exposure-related behavior. Both molecules also share tertiary mixed amine. In this case, the very large logD difference and the lower heteroatom burden in the neighbor are enough to make the neighbor behave as a nonmutagenic reference overall, even though the alkyl chloride motif remains present.
+
+Neighbor 5 is another negative neighbor, similarity 0.232, but here the chemistry swings back toward mutagenicity. The query again has 2 copies of alkyl chloride while the neighbor has 0, which is a strong shift in favor of the mutagenic side relative to this reference. The query also has tertiary mixed amine once while the neighbor has none, which adds another feature associated with the mutagenic direction in this comparison. On the other hand, the query has pyrimidine once while the neighbor has none, the neighbor contains 1,2,4-triazine while the query does not, and the neutral fraction is absent in both molecules, so that feature does not separate them. The neighbor’s strongest basic pKa is lower, 2.805 versus 4.2073 in the query, delta +1.4023, which is also part of why the query looks more mutagen-like than this reference. Even though this neighbor is labeled nonmutagenic, the comparison features themselves point back toward the mutagenic side because the query adds the alkyl chloride and tertiary amine features while also having a higher basic pKa.
+
+Neighbor 6, similarity 0.222, is the last negative neighbor and is the clearest nonmutagenic comparator. The query again has 2 copies of alkyl chloride while the neighbor has 0, which by itself favors mutagenicity, and the query also has pyrimidine once while the neighbor has none. But the neighbor is much more favorable on several exposure-related descriptors: QED is lower in the neighbor (0.4003 vs 0.7696, delta +0.3693 in the query), neutral fraction is very high in the neighbor (0.9634 vs 0 in the query, delta -0.9634), and strongest basic pKa is higher in the query (4.2073 vs 5.9799, delta -1.7726). The neighbor also has ring count 2 versus 1 in the query, delta -1. In this case the large shift in neutral fraction and the more favorable ring/lipophilicity balance make the neighbor a nonmutagenic reference despite the presence of the alkyl chloride alert in the query. That contrast is useful because it shows the query can still look mutagenic relative to a more polar, highly neutralized comparator.
+
+Putting the six neighbors together, the two strongest positive analogs consistently retain the alkyl chloride alert and, despite some mitigating changes in pyrimidine, QED, charge, and heteroatom balance, still align with mutagenicity. Among the negative neighbors, two comparisons are clearly dragged toward nonmutagenicity by exposure-related differences such as very low logD, high neutral fraction, or lower QED, but one of those negative neighbors still turns back toward mutagenicity because the query adds alkyl chloride and tertiary amine. Overall, the recurring presence of the alkyl chloride toxicophore, together with the way the query’s heteroaromatic and basicity features compare against the mutagenic analogs, makes option (B) the better final call.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

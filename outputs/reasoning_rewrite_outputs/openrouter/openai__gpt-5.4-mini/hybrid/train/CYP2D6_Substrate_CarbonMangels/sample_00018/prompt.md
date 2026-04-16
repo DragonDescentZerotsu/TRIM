@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows some features that fit CYP2D6 substrate-like chemistry, but the overall picture is still more consistent with a non-substrate. A carboxylic acid is present, and the strongest acidic pKa of 4.4001 suggests an acidic group that can contribute to a more anionic, less typical CYP2D6-substrate profile. At the same time, the topological polar surface area of 37.3 is moderate rather than very high, which leaves some room for permeability and substrate compatibility. The neutral fraction is only 0.001, indicating the molecule is overwhelmingly ionized under physiological conditions, and the maximum partial charge of 0.3102 together with the minimum absolute partial charge of 0.3102 reflects a fairly pronounced charge distribution. However, there are no basic sites at all, which is a notable mismatch with the common CYP2D6 substrate motif of a protonatable basic nitrogen. On the other hand, the QED drug-likeness of 0.8216, the fraction of sp3 carbons at 0.4615, and the minimum partial charge of -0.4808 all suggest a reasonably drug-like scaffold with some three-dimensional character, and the TPSA of 37.3 is not excessively polar. Even so, the lack of any basic site, the presence of a carboxylic acid, and the acidic pKa of 4.4001 weigh more strongly against CYP2D6 substrate status than the favorable lipophilicity-like and drug-likeness signals support it. Overall, the balance of evidence favors option (A): is not a substrate to the enzyme CYP2D6.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a substrate neighbor, but several of its key differences actually look less compatible with CYP2D6 substrate-like chemistry than the query. The neighbor lacks carboxylic acid while the query has one once, and that acidic functionality is one of the features that can move a molecule away from the typical lipophilic-base profile. The neighbor also has 2 secondary amides versus 0 in the query, again adding polarity and hydrogen-bonding burden. Its strongest basic pKa is 1.1889 while the query has no basic site, which means the neighbor at least contains a weakly basic site, whereas the query does not; here that still favors the non-substrate side because the query is missing the basic center that is commonly associated with CYP2D6 substrates. The neighbor also has boronic acid while the query does not. The one feature that goes the other way is topological polar surface area: the neighbor is high at 124.44 Å² versus 37.3 Å² for the query, so the query is much less polar, and lower PSA is more compatible with substrate-like space. Neutral fraction also differs sharply, with the neighbor at 0.9996 and the query at 0.001, meaning the query is far less neutral and more ionized. Even though the lower PSA of the query helps a bit, the overall pattern against the query is dominated by its acid/ionization profile and absence of a basic center, which makes the comparison lean toward option (A).
+
+Neighbor 2 shows a similar split, but with more explicit substrate-like features on the query side. The neighbor lacks carboxylic acid while the query has one, which again is unfavorable for the substrate label because the added acid moves the query away from the classic basic, lipophilic CYP2D6 substrate motif. However, the query has substantially lower topological polar surface area, 37.3 versus 95.58, and that lower polarity is more consistent with substrate-like behavior. The neighbor’s strongest basic pKa is 9.0711, while the query has no basic site, so the query again lacks the protonatable center that commonly supports CYP2D6 recognition. At the same time, the query has only 1 NH/OH group versus 5 in the neighbor, which reduces hydrogen-bonding burden and aligns better with the lower-PSA substrate side. The neighbor has a phenol that the query does not, and the query has a higher fraction of sp3 carbons, 0.4615 versus 0.3158, which can matter in a shape-dependent way and here modestly favors the query. Even so, the added carboxylic acid and the absence of a basic site keep this comparison overall on the non-substrate side.
+
+Neighbor 3, which is also a substrate neighbor, gives a mixed but still ultimately unfavorable picture for the query. The query has carboxylic acid once while the neighbor has none, again adding an acidic feature that does not fit the most typical CYP2D6 substrate pattern. The neighbor contains 2H-chromen-2-one, which the query lacks, so the query does not share that scaffold feature. The strongest basic pKa is absent in both molecules, and the number of basic sites is absent in both as well, so there is no compensating basic-center advantage for the query here. The favorable points for the query are that its topological polar surface area is lower, 37.3 versus 67.51, and its fraction of sp3 carbons is higher, 0.4615 versus 0.1579. Those two features move the query closer to a smaller, less polar, more substrate-like profile. But because both molecules lack a basic site and the query carries the extra carboxylic acid, the overall comparison still remains more consistent with option (A) than with substrate behavior.
+
+Neighbor 4 is a non-substrate neighbor, and its comparison is strongly informative because several of the features that differ are aligned with the non-substrate side. The neighbor has thiophene, which the query does not. Both molecules have carboxylic acid, so that feature does not separate them. The query has lower topological polar surface area, 37.3 versus 54.37, which is favorable to substrate-like behavior, and the stronger acidic pKa is slightly higher in the query, 4.4001 versus 4.2699, but both are in the acidic range and the effect here is not enough to overcome the rest. Both molecules have no basic site, so the query still lacks the protonatable center emphasized in typical CYP2D6 substrates. The neighbor’s minimum absolute partial charge is 0.3102 and the query is the same at 0.3102, so there is no distinction there. Taken together, the shared carboxylic acid plus the thiophene-linked non-substrate context makes this neighbor comparison support option (A), despite the query’s lower PSA.
+
+Neighbor 5, another non-substrate neighbor, is especially consistent with the query being non-substrate because several features either match or move in the non-substrate direction. The neighbor has very high fraction of sp3 carbons, 0.875 versus 0.4615 in the query, so the query is less saturated and more structured around ringed or unsaturated content, which here does not rescue the substrate label. Both molecules have carboxylic acid, so that acidic functionality is shared. The topological polar surface area is identical at 37.3 in both molecules, removing one potential advantage for the query. Both have no basic site, again leaving the query without the common protonatable nitrogen motif associated with CYP2D6 substrates. The neighbor has aromatic ring count 0 while the query has 1, so the query does carry an aromatic ring, but in this case that alone is not enough to offset the broader non-substrate alignment. The minimum absolute partial charge is also very close, 0.306 in the neighbor and 0.3102 in the query. Overall, this neighbor remains a useful non-substrate match because the query shares the acid and no-basic-site pattern while only modestly differing in aromaticity and saturation.
+
+Neighbor 6 is the other non-substrate neighbor and shows both favorable and unfavorable elements for the query, but it still does not overturn the overall trend. The neighbor has diaryl ether, phenol, and primary aliphatic amine, none of which the query has. The absence of the primary aliphatic amine in the query is notable because that kind of basic nitrogen can support CYP2D6 substrate recognition, so its loss is unfavorable for the substrate label. The query also shares carboxylic acid with the neighbor, so the acidic functionality remains present. On the other hand, the query again has much lower topological polar surface area, 37.3 versus 92.78, which is a substantial move toward the lower-polarity region more compatible with substrate-like molecules. Minimum absolute partial charge is slightly lower in the query, 0.3102 versus 0.3203. But because the neighbor’s distinctive amine and aromatic/phenolic features are absent in the query, and because the shared acid persists, this comparison still fits better with option (A) than with a true CYP2D6 substrate pattern.
+
+Across all six neighbors, the strongest recurring theme is that the query repeatedly lacks a clear basic site or protonatable nitrogen motif, while it contains carboxylic acid and often shows a more acidic, non-basic profile than the typical CYP2D6 substrate space described in the task guide. The query does have some favorable substrate-like features, especially the low topological polar surface area in several comparisons and, in one case, a higher fraction of sp3 carbons or an aromatic ring, but these advantages are not enough to overcome the repeated absence of the basic center and the presence of acidic functionality. Since the positive neighbors themselves still contain multiple signals that make the query look less substrate-like overall, and the negative neighbors reinforce the same conclusion, the final label is option (A): is not a substrate to the enzyme CYP2D6.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP2D6
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

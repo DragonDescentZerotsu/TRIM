@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an amidine group, which is a basic functionality, but by itself that does not establish mutagenicity. Several descriptors point toward limited bacterial exposure: the neutral fraction is low at 0.1875, the topological polar surface area is only 15.6, the hydrogen-bond acceptor count is just 1, the heteroatom count is 3, and the ring count is 1. These are all consistent with a small, relatively polar molecule that may not strongly favor passive accumulation in the assay system. The estimated logP of 2.8698 is moderate rather than extreme, so there is no strong lipophilicity-driven concern. The presence of one basic site could improve uptake somewhat, and the maximum partial charge of 0.0907 suggests some localized electrostatic character, but that alone is not enough to outweigh the overall low-complexity, low-polar-surface, single-ring profile. The Aryl chloride present at 1 is not, by itself, a strong enough structural alert here to override the other properties. Overall, the balance of evidence favors option (A): is not mutagenic, with a score of 0.8399.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mutagenic analog, but several of its features are more favorable to a non-mutagenic outcome than the query. It has a higher ring count than the query, 2 versus 1, with a delta of -1, and in this comparison that reduction in ring count aligns with a move toward the non-mutagenic label. The same pattern appears for amidine: the neighbor lacks amidine while the query has it once, so the query-minus-neighbor delta is +1, and that difference again favors the non-mutagenic side. The query is also less lipophilic and less polar in the specific way described here: QED drug-likeness is lower in the query, 0.5248 versus 0.7258, neutral fraction is much lower, 0.1875 versus 0.9949, and topological polar surface area is lower, 15.6 versus 27.96, with deltas of -0.201, -0.8074, and -12.36 respectively. Those shifts collectively make the query less similar to this mutagenic neighbor on the features that mattered most in the comparison, even though the query has a slightly higher maximum partial charge, 0.0907 versus 0.0887, delta +0.002, which by itself points the other way. Overall, Neighbor 1 still supports option (A) because the dominant shared differences here favor the non-mutagenic side.
+
+Neighbor 2 is also a mutagenic analog, and again most of the important differences favor option (A). The query has a lower ring count than the neighbor, 1 versus 2, delta -1, and it also has amidine once while the neighbor has none, delta +1; both of those differences align with the non-mutagenic side in this comparison. The neighbor contains benzimidazole, while the query does not, which is another structural difference that favors option (A) here. The query also has a higher fraction of sp3 carbons, 0.3 versus 0.125, delta +0.175, and the comparison treats that as moving away from the mutagenic neighbor. The one feature that points toward mutagenicity is maximum partial charge: the neighbor is higher at 0.1036 versus 0.0907, delta -0.0129, and that shift favors option (B). The shared presence of Aryl chloride in both compounds is neutral in the sense that the delta is 0. Taken together, the structural differences dominate, so Neighbor 2 still leans to option (A).
+
+Neighbor 3, another mutagenic neighbor, gives a more mixed picture but still ends up supporting option (A). The query has a less negative minimum partial charge than the neighbor, -0.3687 versus -0.5077, delta +0.1389, and that difference is unfavorable for the non-mutagenic side. The query also lacks the two phenol groups seen in the neighbor, with a change of -2, and that again favors option (A). At the same time, the query is lower in QED drug-likeness, 0.5248 versus 0.8647, delta -0.3399, and lower in maximum absolute partial charge, 0.3687 versus 0.5077, delta -0.1389; both of those differences were aligned with the mutagenic side in this pair. The query is also missing the neighbor’s two acidic sites, delta -2, which similarly pointed toward option (B) in the local comparison. Even so, the neighbor has ring count 2 while the query has 1, delta -1, and that ring-count difference is a strong non-mutagenic signal here. So despite several B-leaning shifts, the ring and phenol-related contrasts keep Neighbor 3 on the non-mutagenic side overall.
+
+Neighbor 4 is a non-mutagenic analog, and most of the contrasts are consistent with the same label. Both molecules have amidine, so there is no delta there, but the query has fewer rings, 1 versus 2, delta -1, which supports option (A). The query is also less lipophilic, with estimated logP 2.8698 versus 4.7448, delta -1.875, and that reduction matches the non-mutagenic direction in this comparison. The query differs in maximum partial charge, 0.0907 versus 0.1173, delta -0.0266, and in strongest basic pKa, 8.0368 versus 8.8297, delta -0.7929; both of those changes were associated here with the mutagenic side. However, the query also has Aryl chloride once while the neighbor has none, delta +1, and that structural difference was favorable to option (A). Because the non-mutagenic signals from ring count, logP, and Aryl chloride outweigh the two opposing charge/basicity shifts, Neighbor 4 remains a clear support for option (A).
+
+Neighbor 5 is another non-mutagenic analog and is especially informative because several exposure-related features differ in the direction that lowers effective similarity to the mutagenic class. The query has lower estimated logP, 2.8698 versus 4.8914, delta -2.0216, which is a substantial drop in lipophilicity. It also has fewer rings, 1 versus 3, delta -2, and it lacks the neighbor’s two diaryl ether groups, delta -2; both of those structural differences favor option (A). The query does have one basic site while the neighbor has none, delta +1, and that was the main feature in this pair that pointed toward option (B). The query also has a much lower neutral fraction, 0.1875 versus 1.0, delta -0.8125, and a slightly lower hydrogen-bond acceptor count, 1 versus 2, delta -1; both of those changes were again aligned with option (A) in the comparison. Even with the added basic site, the overall pattern is still dominated by the lower logP, fewer rings, and loss of diaryl ether motifs, so Neighbor 5 strongly supports option (A).
+
+Neighbor 6, the last non-mutagenic analog, gives a similar result. The query has a much lower neutral fraction, 0.1875 versus 0.7724, delta -0.5849, a lower estimated logP, 2.8698 versus 4.5558, delta -1.686, and fewer rings, 1 versus 2, delta -1; all three of those differences support the non-mutagenic side in this pair. The query also has one basic site while the neighbor has none, delta +1, and that difference points toward option (B). Two charge-related features also favor the mutagenic side here: the query has a less negative minimum partial charge, -0.3687 versus -0.5068, delta +0.1381, and a higher fraction of sp3 carbons, 0.3 versus 0, delta +0.3, both of which were associated with option (B) in this local comparison. Even so, the stronger and more numerous shifts are the reduction in logP, neutral fraction, and ring count, so Neighbor 6 still supports option (A).
+
+Across all six neighbors, the three mutagenic neighbors and the three non-mutagenic neighbors each contain mixed signals, but the most consistent pattern is that the query is less ring-rich and less lipophilic than the neighbors, with lower ring count in every comparison where it appeared and lower logP in the non-mutagenic neighbors. The query also lacks some neighbor-specific structural motifs such as benzimidazole and diaryl ether, and it differs in polarity-related descriptors in a way that repeatedly weakens similarity to the mutagenic examples. Although a few charge- and basicity-related features point toward mutagenicity, they are not enough to outweigh the repeated non-mutagenic structural and exposure-related signals. Taken together, the neighbor evidence is more consistent with option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

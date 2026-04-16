@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an isourea group, which is a strongly polar and ionizable motif that usually lowers passive permeability and makes CYP3A4-mediated substrate behavior less likely. It also has a carbonyl group, adding further polarity and hydrogen-bonding capacity, which reinforces that non-substrate tendency. There is a lactam present, and that does introduce a plausible substrate-like element because lactams can occur in compounds that are still metabolized, so this is a mild counterpoint. However, the acid-base profile looks unfavorable overall: the strongest acidic pKa is 0.6559, indicating a very strong acidic site that will be essentially deprotonated at physiological pH, which should greatly reduce neutral fraction and increase polarity. The estimated logD is -5.3386, an extremely low value that is strongly consistent with a very hydrophilic compound and poor membrane accessibility. Consistent with that, the neutral fraction is absent (0), suggesting essentially no neutral population to support passive entry into the enzyme-accessible environment. The estimated logP is 1.4057, which is not especially high and does not compensate for the very low logD, so overall hydrophobicity still looks insufficient. The strongest basic pKa is 3.952, which is well below physiological pH and therefore does not imply a strongly protonated basic center; this provides only limited substrate-like support. The Labute surface area is 99.8248, a moderate size-related value that does not overcome the polarity burden. The heavy-atom molecular weight is 220.143, which is within a drug-like size range, but size alone is not enough here because the compound is dominated by polarity and ionization effects. Taken together, the very low logD, absent neutral fraction, strong acidic character, and polar functional groups outweigh the minor substrate-like signal from the lactam, so the compound is more consistent with not being a CYP3A4 substrate.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close analogue, but several structural differences favor non-substrate behavior. The query has isourea once and carbonyl once where the neighbor has neither, and both of those changes are unfavorable for CYP3A4 substrate status here: isourea has a strongly negative effect and carbonyl also carries a negative effect. That is partly offset by the query having lactam once while the neighbor lacks it, and by the query lacking neutral fraction when the neighbor has it present, both of which lean toward substrate-like behavior in this local comparison. The shared alkene does not separate the two. However, the query also has a higher maximum partial charge, 0.2989 versus 0.1386, with a negative effect. Overall, the negative effects from isourea, carbonyl, and higher maximum partial charge outweigh the smaller positive signals, so Neighbor 1 supports the non-substrate label.
+
+Neighbor 2 tells the same general story, again with the query carrying isourea once and carbonyl once while the neighbor has neither, and both changes again favor non-substrate behavior. The query also lacks 2-oxazolidone that the neighbor has, and that difference is another strong move toward non-substrate status. On the positive side, the query lacks neutral fraction while the neighbor has neutral fraction present, which is a substrate-like shift in this pair, and the query shares lactam with the neighbor. The maximum partial charge also moves from 0.4169 in the neighbor to 0.2989 in the query, and in this comparison that lower value is favorable for substrate status. Even with those offsets, the combined impact still favors non-substrate behavior because the isourea, carbonyl, and 2-oxazolidone differences dominate. So Neighbor 2 also supports option (A).
+
+Neighbor 3 is similar to Neighbor 1 in the key functional-group pattern: the query has isourea once and carbonyl once while the neighbor has neither, and both changes again argue against substrate status. The query also has lactam once where the neighbor does not, which is a substrate-favoring difference, and the query lacks neutral fraction while the neighbor has it present, another substrate-favoring shift. Both compounds share alkene. In addition, the neighbor has saturated carbocycle count 3 while the query has 0, so the query is lower by 3, and that specific comparison is described as favoring substrate behavior. Even with those favorable differences, the strong negative weight on isourea and carbonyl keeps the overall comparison on the non-substrate side. Neighbor 3 therefore also aligns with option (A).
+
+Neighbor 4 is a direct negative-neighbor example and is especially informative because the hydrophobicity proxy is far lower in the query. The query again has isourea once and carbonyl once while the neighbor has neither, both unfavorable for substrate status. More importantly, estimated logD drops from 1.3732 in the neighbor to -5.3386 in the query, a very large decrease of -6.7118, and that strongly supports non-substrate behavior because the query is much more polar and far less able to access the membrane-like environment relevant for CYP3A4 interaction. The query and neighbor both have lactam, which does not separate them much here, while the neighbor has pyridine and the query does not; that specific difference is favorable for substrate status but not enough to outweigh the strong logD penalty. The neighbor’s neutral fraction is 0.996 and the query’s neutral fraction is absent, with a delta of -0.996, and that shift also favors non-substrate behavior in this comparison. Taken together, Neighbor 4 strongly reinforces option (A).
+
+Neighbor 5 is also a negative-neighbor comparison and again points to non-substrate behavior. The query has isourea once and carbonyl once while the neighbor has neither, both unfavorable as before. The query also has lactam once whereas the neighbor lacks it, which is the main substrate-favoring feature in this pair. But the query’s estimated logD is -5.3386 versus 1.427 in the neighbor, a very large drop of -6.7656, and that very low logD is strongly consistent with poor permeability and weak substrate accessibility. The neutral fraction likewise falls from 0.8985 in the neighbor to absent in the query, which is another non-substrate signal. The neighbor also has hydantoin while the query does not, and that difference is unfavorable for substrate status as well. Despite the lactam signal, the combined hydantoin, very low logD, and neutral-fraction differences make Neighbor 5 clearly support option (A).
+
+Neighbor 6 continues the same pattern. The query again has isourea once and carbonyl once while the neighbor has neither, which remains unfavorable for substrate status. The neighbor has barbiturate while the query does not, and that difference also favors non-substrate behavior. The query has lactam once where the neighbor lacks it, which is one substrate-like feature. But the estimated logD again drops sharply from 0.8584 in the neighbor to -5.3386 in the query, a delta of -6.197, and that is a major non-substrate signal. The one feature that clearly goes the other way is fraction of sp3 carbons: the neighbor is at 0.3077 while the query is higher at 0.5833, a delta of +0.2756, which is favorable for substrate status because the query is more saturated and three-dimensional. Even so, the very low logD plus the unfavorable isourea, carbonyl, and barbiturate differences outweigh the sp3 advantage. Neighbor 6 therefore also supports the non-substrate label.
+
+Across all six neighbors, the same dominant theme repeats: the query consistently carries isourea and carbonyl, and in the negative-neighbor set it also shows dramatically lower estimated logD than the non-substrate analogues. Some individual features do lean the other way, such as lactam, the absence of neutral fraction in several positive-neighbor comparisons, lower maximum partial charge in Neighbor 2, lower saturated carbocycle count in Neighbor 3, and higher fraction of sp3 carbons in Neighbor 6. But those are secondary relative to the repeatedly unfavorable isourea/carbonyl pattern and, especially for Neighbors 4 to 6, the strongly depressed logD around -5.3386. Taken together, the nearest analogs are more consistent with poor substrate-like accessibility than with CYP3A4 substrate behavior, so the final prediction is option (A): is not a substrate to the enzyme CYP3A4.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a nitroso group with count 2, which is a well-recognized mutagenicity toxicophore and strongly supports a mutagenic outcome. In addition, the maximum absolute partial charge is 0.2566 and the maximum partial charge is 0.0671; these charge features suggest notable electrostatic character that can influence uptake and exposure, and here they are consistent with a mutagenic tendency. The heteroatom count is 6, which indicates a fairly heteroatom-rich structure and can increase polarity and ionization, but in this case it does not outweigh the structural alert. The estimated logP is 0.7438, a moderate lipophilicity level that would not obviously limit bacterial exposure, so the compound should still be able to reach the assay system. The saturated heterocycle count is 1, which by itself is not a strong alert, but the presence of piperazine at 1 and a ring count of 1 provide some counterbalancing features associated with lower mutagenic propensity. Likewise, the fraction of sp3 carbons is 1, indicating a fully sp3-saturated character that is generally less associated with planar aromatic toxicophores and slightly favors a non-mutagenic interpretation. However, the nitroso toxicophore, together with the charge pattern and the heteroatom-rich composition, is more compelling than the mitigating features. Overall, the evidence favors option (B): is mutagenic, with high confidence.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive analog overall. It shares the key mutagenicity-associated nitroso motif, and the query has one more nitroso group than the neighbor, with a query-minus-neighbor delta of +1 and a strong positive effect of 3.2842. That is the dominant reason this comparison supports mutagenicity. The query also has piperazine once while the neighbor has none, and that feature goes the other way with a -1.2408 effect, so it slightly tempers the signal. Heteroatom count is also higher in the query, 6 versus 4 with a delta of +2, which adds a smaller mutagenicity-leaning effect of 0.4268. Against that, the query’s QED drug-likeness is somewhat higher, 0.5761 versus 0.5105 with a delta of +0.0657, and that difference is associated with a modest shift toward non-mutagenicity, effect -0.4126. Estimated logD is also slightly lower in the query, 0.7438 versus 0.777 with delta -0.0332, which here is associated with a mutagenicity-leaning effect of 0.4076. Ring count is unchanged at 1 versus 1, yet that still appears with a -0.3759 effect favoring non-mutagenicity. Taken together, the strong nitroso increase outweighs the opposing piperazine, QED, and ring-count terms, so Neighbor 1 still supports option (B).
+
+Neighbor 2 also supports the mutagenic class despite mixed features. Again, the query has one more nitroso group than the neighbor, delta +1, with a large 3.2842 effect favoring mutagenicity. The query also contains piperazine once while the neighbor has none, which again points the other direction with -1.2408. In this case the neighbor has pyrrolidine whereas the query does not, delta -1, and that difference is associated with a 0.7859 mutagenicity-leaning effect. The neighbor has two alkyl chloride groups while the query has none, delta -2, which contributes -0.5954 and therefore pulls toward non-mutagenicity. Heteroatom count is higher in the query, 6 versus 5 with delta +1, adding a smaller 0.4201 mutagenicity-leaning effect. Estimated logD is lower in the query, 0.7438 versus 1.1982 with delta -0.4544, and here that change still favors mutagenicity with a 0.4194 effect. Although the alkyl chloride and piperazine terms are countervailing, the nitroso difference remains the strongest feature, and the pyrrolidine, heteroatom, and logD terms keep the overall comparison on the mutagenic side.
+
+Neighbor 3 is essentially the same pattern as Neighbor 2. The query again has two nitroso groups versus one in the neighbor, delta +1, with the same strong 3.2842 mutagenic effect. The query also has piperazine once while the neighbor has none, a -1.2408 effect opposing mutagenicity. The neighbor has pyrrolidine and the query does not, delta -1, which again favors mutagenicity with a 0.7859 effect. The neighbor carries two alkyl chloride groups while the query has zero, delta -2, and that difference contributes -0.5954 toward non-mutagenicity. Heteroatom count is one unit higher in the query, 6 versus 5 with delta +1, adding 0.4201. Estimated logD is lower in the query, 0.7438 versus 1.1982 with delta -0.4544, and that still leans mutagenic with 0.4194. So even though some substituent changes pull in the opposite direction, the same nitroso-centered pattern keeps Neighbor 3 aligned with option (B).
+
+Neighbor 4, although listed among the non-mutagenic neighbors, still compares in a way that favors mutagenicity overall. The query has one more nitroso group than the neighbor, delta +1, and that remains the largest effect at 2.9403 toward mutagenicity. The query also has a much higher fraction of sp3 carbons, 1 versus 0.4615 with delta +0.5385, and that difference is associated with a 0.7465 mutagenicity-leaning effect. Labute surface area is lower in the query, 70.4075 versus 106.3262 with delta -35.9187, yet this comparison still carries a 0.6083 effect toward mutagenicity. Ring count is lower in the query, 1 versus 2 with delta -1, and that term goes the opposite way with -0.5495 toward non-mutagenicity. Maximum partial charge is also lower in the query, 0.0671 versus 0.254 with delta -0.1869, but the effect is still 0.4015 toward mutagenicity. Minimum absolute partial charge follows the same pattern, 0.0671 versus 0.254 with delta -0.1869, with a 0.3156 mutagenicity-leaning effect. The ring-count term is the only clear non-mutagenic counterweight here, but it is outweighed by the nitroso signal and the other positive terms.
+
+Neighbor 5 likewise ends up favoring mutagenicity despite one unfavorable descriptor. The query has one more nitroso group than the neighbor, delta +1, with a strong 2.9403 effect toward mutagenicity. The neighbor contains three 1,2-diol groups while the query has none, delta -3, and that difference is associated with a 0.5721 mutagenicity-leaning effect. The neighbor has dialkyl thioether while the query does not, delta -1, adding another 0.4635 toward mutagenicity. QED is higher in the query, 0.5761 versus 0.4405 with delta +0.1356, and here that higher drug-likeness shifts toward non-mutagenicity with -0.4578. Estimated logP is much higher in the query, 0.7438 versus -1.4938 with delta +2.2376, and that increase is associated with a 0.3785 mutagenicity-leaning effect. Hydrogen-bond donor count is lower in the query, 0 versus 4 with delta -4, but the comparison still contributes 0.3771 toward mutagenicity. So although QED is a notable opposing term, the nitroso motif and the combined hydrophobicity/donor context keep Neighbor 5 on the mutagenic side.
+
+Neighbor 6 also supports the same final label. The query has one more nitroso group than the neighbor, delta +1, with a 2.9403 effect toward mutagenicity. Maximum partial charge is lower in the query, 0.0671 versus 0.3286 with delta -0.2615, but that comparison still favors mutagenicity with a 0.6394 effect. The query has a higher fraction of sp3 carbons, 1 versus 0.75 with delta +0.25, and in this comparison that change goes toward non-mutagenicity with -0.5336. The neighbor has dialkyl thioether while the query does not, delta -1, adding 0.4635 toward mutagenicity. Maximum absolute partial charge is also lower in the query, 0.2566 versus 0.4796 with delta -0.223, and that difference contributes 0.3935 toward mutagenicity. Finally, neutral fraction is absent in the neighbor and present in the query, delta +1, with a 0.3886 mutagenicity-leaning effect. The only clear opposing term is the sp3 fraction, but the repeated nitroso-centered signal and the charge/neutral-fraction terms leave the comparison overall consistent with option (B).
+
+Across all six neighbors, the same core pattern repeats: the query repeatedly carries more nitroso functionality than the comparators, and that is the strongest and most consistent mutagenicity-associated feature in the set. Several neighbors add supportive context through pyrrolidine absence/presence, heteroatom count, estimated logD or logP, partial-charge descriptors, and neutral fraction, while piperazine, QED, ring count, and fraction of sp3 carbons provide some counterbalancing non-mutagenic pressure in individual cases. Even so, the nitroso signal is strong enough to dominate the local analog evidence, so the combined neighbor comparison supports option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

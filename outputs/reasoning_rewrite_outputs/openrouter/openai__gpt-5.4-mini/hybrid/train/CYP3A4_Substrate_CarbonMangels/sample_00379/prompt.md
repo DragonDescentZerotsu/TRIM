@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an imide acidic group (1), which is a strongly polar acidic motif and usually lowers neutral fraction and passive permeability, making CYP3A4 substrate behavior less likely. Its estimated logP is 1.166, which is relatively low and indicates limited hydrophobicity; that again is not especially favorable for membrane exposure or enzyme access. The estimated logD is 1.159, also modest, supporting a fairly polar profile rather than a highly lipophilic one. The molecular size is small-to-moderate, with heavy-atom molecular weight 204.144 and molecular weight 218.256, and the exact molecular weight is 218.1055; these values are not large enough by themselves to overcome the polarity-related limitations. Labute surface area is 94.0727, which is moderate and does not suggest a strongly expanded hydrophobic contact surface. The minimum partial charge is -0.2957, consistent with a polar atom environment rather than a strongly neutral, hydrophobic scaffold. Against these non-substrate-like signals, the scaffold does contain a pyridine (1), and the neutral fraction is high at 0.9841, both of which can support some membrane accessibility and are compatible with substrate behavior. However, the overall balance still looks unfavorable for CYP3A4 substrate status because the acidic imide, low logP, low logD, and only moderate size/surface area collectively point to a compound that is not especially hydrophobic or permeable. Overall, the molecule is more consistent with option (A): is not a substrate to the enzyme CYP3A4.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is informative because several features line up with a non-substrate interpretation. The query has imide acidic once while the neighbor does not, and that change is strongly unfavorable for substrate behavior here. The query also has lower estimated logP, 1.166 versus 2.6512 for the neighbor with a delta of -1.4852, which makes the query less hydrophobic and less likely to reach the membrane and enzyme environment efficiently. The query is also missing tertiary mixed amine and lactam, both present in the neighbor, and those absences further reduce the substrate-like balance seen in the neighbor. The one feature that leans the other way is fraction of sp3 carbons: the query is higher at 0.4167 versus 0.2667, delta +0.15, which is more favorable for substrate behavior. Even so, the acidic functionality, lower logP, and loss of the amine and lactam dominate, so this neighbor overall supports option (A).
+
+Neighbor 2 tells a similar story. Again the query has imide acidic once while the neighbor does not, which is an unfavorable shift. The query also has much lower estimated logP, 1.166 versus 2.6336, delta -1.4676, indicating a less hydrophobic and less exposure-friendly profile. In addition, the query has lower heavy-atom molecular weight, 204.144 versus 306.078, delta -101.934, which moves it away from the larger, more substrate-like chemical space represented by the neighbor. The query is missing both lactam and imine that are present in the neighbor, and those structural losses also align with the non-substrate side. The only opposing feature is that the neighbor has an aryl bromide while the query does not, and that difference favors substrate behavior in isolation, but it is too small to outweigh the stronger acidic, hydrophobicity, and size effects. Taken together, this neighbor also supports option (A).
+
+Neighbor 3 is especially useful because it includes both hydrophobicity and polarity contrasts. The query again carries imide acidic once while the neighbor does not, and the query is less hydrophobic, with estimated logP 1.166 versus 2.5837, delta -1.4177. The estimated logD is also lower in the query, 1.159 versus 2.1717, delta -1.0127, which further points to reduced effective hydrophobicity. At the same time, the query has higher topological polar surface area, 59.06 versus 32.34, delta +26.72, and higher TPSA generally means poorer passive permeability, which is unfavorable for reaching CYP3A4. Two features go in the opposite direction: the neighbor has a secondary amide while the query does not, and the neighbor lacks pyridine while the query has it once. Those two differences are favorable for substrate-like behavior in isolation, but they do not overcome the stronger polarity and ionization-related disadvantages. Overall, this neighbor still leans to option (A).
+
+Neighbor 4 is also aligned with the non-substrate class despite a couple of favorable differences. The query has imide acidic once while the neighbor does not, and the neighbor has a Barbiturate motif that the query lacks; both of those distinctions are unfavorable for substrate behavior in this comparison. The query does have a higher fraction of sp3 carbons, 0.4167 versus 0.25, delta +0.1667, and a much higher neutral fraction, 0.9841 versus 0.48, delta +0.5041, both of which are favorable because they indicate a less charged, more substrate-accessible state. However, the query also has higher estimated logP, 1.166 versus 0.7004, delta +0.4656, and that shift is unfavorable in this specific comparison because it moves away from the neighbor’s profile in the direction already associated with non-substrate behavior here. The query’s heavy-atom molecular weight is slightly lower, 204.144 versus 220.143, delta -15.999, which also does not rescue the comparison. The combined effect remains on the non-substrate side, so Neighbor 4 supports option (A).
+
+Neighbor 5 again supports the non-substrate label. The query has imide acidic once while the neighbor does not, and the neighbor has a Barbiturate motif that the query lacks; both differences are unfavorable for substrate behavior. The query is also lighter in heavy-atom molecular weight, 204.144 versus 232.154, delta -28.01, and lower in exact molecular weight, 218.1055 versus 246.1004, delta -27.9949, which both move it away from the more substrate-like size region of the neighbor. The query’s estimated logP is slightly higher, 1.166 versus 1.0426, delta +0.1234, but in this context that small shift does not offset the stronger acidic and size-related disadvantages. The query also has lower Labute surface area, 94.0727 versus 104.7744, delta -10.7017, which further reduces the similarity to the neighbor’s more exposed, more accessible profile. This neighbor therefore also favors option (A).
+
+Neighbor 6 is the clearest example of mixed evidence, but the non-substrate side still dominates. The query has imide acidic once while the neighbor does not, which is a strong unfavorable difference. On the favorable side, the query has a much higher fraction of sp3 carbons, 0.4167 versus 0, delta +0.4167, and both the query and the neighbor have pyridine, which is a neutral comparison that neither side changes. Those two features make the query look more substrate-accessible than the highly rigid neighbor. But the query also has much higher estimated logP, 1.166 versus -0.3149, delta +1.4809, and in this comparison that shift is unfavorable because it separates the query from the neighbor in a way that weakens the substrate-like alignment. The query also lacks hydrazine, which the neighbor has, and the query has a higher saturated ring count, 1 versus 0, delta +1; both of those differences are unfavorable here. Even with the favorable sp3 increase and shared pyridine, the acidic functionality together with the logP, hydrazine, and saturated-ring differences keep this neighbor on the non-substrate side.
+
+Putting the six neighbors together, the strongest recurring pattern is the query’s imide acidic group, which repeatedly distinguishes it from substrate neighbors and from the non-substrate neighbors in the same direction. Lower estimated logP and lower effective hydrophobicity relative to several substrate neighbors, higher TPSA versus one substrate neighbor, and several size or scaffold differences all reinforce the same conclusion. Although some individual features such as higher fraction of sp3 carbons and higher neutral fraction in selected comparisons are favorable, they are not enough to overcome the repeated acidic, polarity, and structural contrasts. The overall neighbor evidence therefore supports option (A): is not a substrate to the enzyme CYP3A4.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

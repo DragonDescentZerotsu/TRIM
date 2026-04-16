@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an aryl fluoride and a primary aromatic amine, which are both notable structural features in an AMES context. The primary aromatic amine is especially concerning because aromatic amines are well-recognized mutagenicity toxicophores and often require metabolic activation, so their presence raises the likelihood of a mutagenic response. The molecule also has a fraction of sp3 carbons of 0, indicating an entirely flat, fully unsaturated framework, which can be consistent with planar aromatic chemistry that is more often associated with mutagenic alerts than with benign scaffolds. In addition, the neutral fraction is very high at 0.9967, so the compound is predominantly neutral at the configured pH, which can favor passive exposure in bacterial assays and make any reactive motif more available to the test system. The strongest acidic pKa is 13.838, which is very high and suggests the acidic functionality is only weakly ionized under typical conditions, again leaving much of the molecule in a neutral form. The estimated logP is 1.4079, which is not extreme, so solubility is not obviously limiting from hydrophobicity alone, and the Labute surface area of 46.9368 is modest, consistent with a compact structure that should not be too large to access the assay environment. Against that, the heteroatom count is 2, the ring count is 1, and the hydrogen-bond acceptor count is 1, all of which are relatively low and point to a fairly simple scaffold rather than a highly polar, highly substituted one. Taken together, the aromatic amine and the flat aromatic character are the most chemically meaningful signals, and they outweigh the more exposure-limiting or simplicity-related features. Overall, the molecule is best classified as mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor and overall looks more consistent with a mutagenic profile than the query. The strongest basic pKa is slightly higher in the neighbor, 5.2023 versus 4.925 for the query (delta -0.2773), which aligns with the idea that a protonatable nitrogen can support bacterial accumulation and exposure. The neighbor also has a much larger Labute surface area, 93.6151 compared with 46.9368 in the query (delta -46.6782), again favoring the mutagenic side in this comparison because the query is the smaller, less surface-expansive analog. The query is lower in heteroatom count, 2 versus 4 (delta -2), and lower in ring count, 1 versus 2 (delta -1); both of those differences are offset here by the other properties and by the fact that the neighbor itself still represents the more mutagenic member of the pair. The fraction of sp3 carbons is the same in both molecules, 0 versus 0 (delta +0), so it does not separate them. Finally, the query has lower estimated logD, 1.4064 versus 3.2637 (delta -1.8573), which is the kind of shift that can reduce effective exposure, but in this specific analog comparison the net similarity still favors the mutagenic neighbor.
+
+Neighbor 2 is also a positive neighbor and reinforces the mutagenic side through several exposure- and charge-related features. The strongest basic pKa is essentially unchanged, 4.9268 in the neighbor versus 4.925 in the query (delta -0.0018), but even that tiny difference is interpreted in the same mutagenic direction here. The query has a higher maximum partial charge, 0.1229 versus 0.0314 (delta +0.0915), and that charge difference is treated as favoring mutagenicity in this pair. The neighbor also has a much larger Labute surface area, 89.5332 versus 46.9368 (delta -42.5964), and a much heavier scaffold by heavy-atom count, 15 versus 8 (delta -7); both differences support the mutagenic analog as the closer comparison point. The minimum absolute partial charge moves in the opposite direction, 0.0314 in the neighbor versus 0.1229 in the query (delta +0.0915), and that feature leans away from mutagenicity for the query, but it is not enough to outweigh the other similarities. The strongest acidic pKa is also slightly higher in the query, 13.838 versus 13.7582 (delta +0.0798), which in this comparison still tracks with the mutagenic neighbor overall. Taken together, Neighbor 2 remains a strong mutagenic analog.
+
+Neighbor 3, another positive neighbor, again matches the mutagenic label better than the query. The Labute surface area is much larger in the neighbor, 95.2086 versus 46.9368 (delta -48.2717), and the maximum partial charge is lower, 0.0314 versus 0.1229 in the query (delta +0.0915); both of these features are read here in the same direction as the mutagenic neighbor. The strongest basic pKa is 5.0322 in the neighbor versus 4.925 in the query (delta -0.1072), which also supports the mutagenic side of the comparison. As in the other neighbors, the minimum absolute partial charge goes the other way, 0.0314 in the neighbor versus 0.1229 in the query (delta +0.0915), so that feature slightly favors the nonmutagenic direction for the query. The neighbor also has a much larger heavy-atom molecular weight, 196.168 versus 105.071 (delta -91.097), and a higher ring count, 2 versus 1 (delta -1); these differences are again consistent with the mutagenic analog being the larger, more ring-rich structure. Overall, Neighbor 3 supports option (B) more strongly than option (A).
+
+Neighbor 4 is one of the negative neighbors, but the comparison is mixed and still contains several mutagenicity-associated features. The strongest basic pKa is 4.9595 in the neighbor versus 4.925 in the query (delta -0.0345), which is treated in the mutagenic direction, and the query also has a higher strongest acidic pKa, 13.838 versus 13.8029 (delta +0.0351), again favoring the mutagenic side of the comparison. The query carries an aryl fluoride once while the neighbor has none (delta +1), which is a key structural difference favoring mutagenicity in the query. The query also has one fewer primary aromatic amine than the neighbor, 1 versus 2 (delta -1), which in this comparison is another feature associated with the mutagenic side. On the other hand, the neighbor is much larger by heavy-atom count, 26 versus 8 in the query (delta -18), and has a higher ring count, 4 versus 1 (delta -3); both of those differences favor the nonmutagenic reference. Even with that size penalty, the overall neighbor comparison still ends up leaning toward the mutagenic side because of the aryl fluoride, aromatic amine, and pKa pattern.
+
+Neighbor 5, the other negative neighbor, is similar: it includes a mix of features but still ends up closer to the mutagenic side than the nonmutagenic one. The neighbor has a sulfonyl group that the query lacks (delta -1), and that difference favors the nonmutagenic direction for the query. At the same time, the query has one aryl fluoride while the neighbor has none (delta +1), which is a mutagenicity-associated structural difference in favor of the query. The neighbor also has a much larger Labute surface area, 99.7937 versus 46.9368 (delta -52.8568), and two primary aromatic amines compared with one in the query (delta -1); both of these features are treated here as favoring the mutagenic side. The strongest acidic pKa is slightly higher in the query, 13.838 versus 13.626 (delta +0.212), which in this pair is a nonmutagenic-leaning shift, and the ring count is also lower in the query, 1 versus 2 (delta -1), another feature favoring the nonmutagenic direction. Even so, the structural alert pattern and the larger surface-area analog keep Neighbor 5 overall aligned more with mutagenicity than with nonmutagenicity.
+
+Neighbor 6, the final negative neighbor, also retains enough mutagenic similarity to keep the overall direction on option (B). The neighbor has a much larger Labute surface area, 83.3783 versus 46.9368 (delta -36.4414), which favors the mutagenic side, and the query has one aryl fluoride while the neighbor has none (delta +1), again a mutagenicity-associated difference. Both molecules have a primary aromatic amine, so that feature does not separate them (delta +0), but the stronger basic pKa is higher in the neighbor, 5.4085 versus 4.925 (delta -0.4835), which is another mutagenic-leaning comparison. The query is smaller in molecular weight, 111.119 versus 184.242 (delta -73.123), and has fewer rings, 1 versus 2 (delta -1); those two differences favor the nonmutagenic direction for the query. Even with those opposing size-related effects, the mutagenicity-associated charge and aryl-fluoride pattern keep Neighbor 6 closer to option (B) than option (A).
+
+Across all six neighbors, the three positive neighbors consistently resemble the mutagenic side on the main comparison features, especially basic pKa, Labute surface area, size, and ring-richness. The three negative neighbors are more mixed, but even they contain several mutagenicity-associated structural differences, particularly aryl fluoride and primary aromatic amine patterns alongside larger surface area or stronger basicity in the neighboring molecules. Since the positive neighbors are strongly aligned with option (B) and the negative neighbors do not provide a clean counterexample strong enough to reverse that pattern, the overall comparison supports option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

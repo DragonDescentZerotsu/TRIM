@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several properties that are not typical of a CYP2D6 substrate. Its neutral fraction is very high at 0.9967, which means it is overwhelmingly neutral rather than carrying the protonated basic center that often favors CYP2D6 recognition. Consistent with that, the strongest basic pKa is only 4.9161, suggesting weak basicity and limited protonation near physiological pH. The maximum partial charge of 0.343, the minimum partial charge of -0.306, and the minimum absolute partial charge of 0.306 do not suggest a strongly cationic center either; together they fit a molecule without the pronounced basic nitrogen character often seen in typical CYP2D6 substrates. Polarity is moderate, with a topological polar surface area of 41.57, which is not extremely low and can work against the more lipophilic, compact substrate profile that is often favored. The aromatic carbocycle count is 0, so the molecule lacks the aromatic carbocycle feature commonly associated with CYP2D6 substrate-like scaffolds. On the other hand, there are a few substrate-like hints: phosphoric monoesterdiamide is present at 1, fraction of sp3 carbons is 1, and the piperazine count is 0. But the absence of piperazine does not help much, and the overall picture remains dominated by weak basicity, high neutrality, and the lack of aromatic carbocycles. Taken together, these features support a conclusion that the molecule is not a CYP2D6 substrate.
+
+Input 2. Polished multi-molecule comparison analysis
+Among the three substrate neighbors, Neighbor 1 is mixed but leans against the substrate label overall. It lacks a basic site, whereas the query has strongest basic pKa 4.9161 and 2 basic sites, which is the kind of protonatable basic-center motif often associated with CYP2D6 substrates; that comparison favors substrate-like behavior. The much lower topological polar surface area in the query, 41.57 versus 99.15 in the neighbor, is also favorable because lower polarity fits the substrate-enriched space. However, the neighbor contains nitrosamide and sulfonamide, both absent from the query, and those differences are associated here with the non-substrate side. The net effect is still negative for the substrate label because the absence of a basic site in the neighbor and the presence of those features make the query look less consistent with that substrate neighbor overall.
+
+Neighbor 2 is also mixed but ends up closer to the non-substrate side. The neighbor has pyridazine and a secondary mixed amine, both absent from the query, and those differences favor the non-substrate class in this comparison. The query does have a lower topological polar surface area, 41.57 versus 50.28, which is a substrate-favoring polarity shift, and it also has a much higher fraction of sp3 carbons, 1 versus 0.4118, which again can support the substrate-like end of the local chemistry. But the query’s minimum absolute partial charge is higher, 0.306 versus 0.1512, and its QED drug-likeness is lower, 0.6057 versus 0.9168; both of those changes are unfavorable here. Taken together, the structural heterocycle and amine differences, plus the less favorable charge and QED profile, make this neighbor support the non-substrate outcome more strongly than the substrate outcome.
+
+Neighbor 3 is again a mixed comparison, but the non-substrate signals dominate. The neighbor has 2 acidic sites while the query has none, and that extra acidic functionality is less typical of the basic, lipophilic substrate profile. The query does have lower topological polar surface area, 41.57 versus 48.13, which is favorable, and it also has phosphoric monoesterdiamide once while the neighbor lacks it, which is a substrate-favoring difference in this local comparison. Still, the neighbor’s strongest basic pKa is 8.7125 versus 4.9161 in the query, the neighbor has a slightly higher maximum absolute partial charge, 0.3609 versus 0.343, and it contains 1H-indole, which the query does not. Those features collectively outweigh the favorable PSA and phosphoric monoesterdiamide differences, so this neighbor also leans away from substrate status.
+
+Neighbor 4, one of the non-substrate neighbors, gives a clear non-substrate tilt despite a few opposing features. The neighbor contains morpholine, which the query does not, and that feature favors the substrate side in this comparison. It also has an aryl chloride, absent from the query, which again favors substrate-like chemistry locally. But the query has 2 alkyl chloride groups while the neighbor has none, its neutral fraction is much higher at 0.9967 versus 0.8763, and its minimum partial charge is less negative, -0.306 versus -0.3788; these shifts all favor the non-substrate direction in this specific analog setting. The topological polar surface area is identical at 41.57 for both molecules, so it does not rescue the substrate side. Overall, the charge-state and substituent pattern makes this a non-substrate-leaning neighbor.
+
+Neighbor 5 is the strongest substrate-favoring counterexample among the negative neighbors, but it still does not overturn the overall call. The query has a higher fraction of sp3 carbons, 1 versus 0.8889, which is favorable, and it also has lower topological polar surface area, 41.57 versus 61.77, again favoring substrate-like chemistry. The neighbor has urea, which the query lacks, and that difference also supports the substrate side here. However, the query’s minimum partial charge is less negative, -0.306 versus -0.3337, and the neighbor has no basic site while the query has strongest basic pKa 4.9161, so the charge/basation profile does not cleanly align with the substrate side. The query’s minimum absolute partial charge is also lower, 0.306 versus 0.3337, which is unfavorable in this comparison. So although this neighbor has several substrate-like features, the overall balance remains non-substrate-leaning in the local neighborhood context.
+
+Neighbor 6 is also a non-substrate neighbor with a mixed but ultimately negative profile for substrate status. The query again has a much lower topological polar surface area, 41.57 versus 61.8, which favors substrate-like behavior. It also has phosphoric monoesterdiamide once whereas the neighbor has none, and the neighbor has piperidine, which the query lacks; those are substrate-favoring elements in this comparison. But the query also has 2 alkyl chloride groups while the neighbor has none, its minimum absolute partial charge is higher at 0.306 versus 0.2452, and its minimum partial charge is less negative at -0.306 versus -0.4935. Those charge and substituent changes are unfavorable for the substrate label here. Even with the piperidine and PSA advantages, the overall comparison remains aligned with the non-substrate class.
+
+Putting all six neighbors together, the picture is mixed but the non-substrate evidence is more persuasive. The substrate neighbors provide some support through lower topological polar surface area, higher fraction of sp3 carbons in places, and a few favorable functional-group differences such as phosphoric monoesterdiamide or urea, but they are repeatedly counterbalanced by less favorable charge-state, basicity, acidic-site, or heterocycle patterns. The three non-substrate neighbors, especially Neighbor 4 and Neighbor 6, reinforce the same direction through the query’s high neutral fraction, alkyl chloride count, and less favorable partial-charge patterns. On balance, the local analogs support option (A): is not a substrate to the enzyme CYP2D6.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP2D6
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

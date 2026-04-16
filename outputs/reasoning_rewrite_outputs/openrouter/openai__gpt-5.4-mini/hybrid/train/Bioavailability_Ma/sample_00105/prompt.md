@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has several features that support oral bioavailability: the presence of isoxazole, a QED drug-likeness value of 0.7525, a carboxylic acid, a neutral fraction of 0, a topological polar surface area of 112.74, a dialkyl thioether, and the absence of a secondary hydroxyl group. A QED value of 0.7525 is fairly strong and is consistent with an overall drug-like balance, while the TPSA of 112.74 remains below the common permeability concern range, so polarity is not excessively high. The carboxylic acid is a mixed signal, because acidic functionality can reduce passive permeability when ionized, but its presence here does not appear to dominate the overall profile. The neutral fraction of 0 is also a potential liability because it suggests no neutral population at the relevant pH, which can hurt passive absorption. There are also clear negative factors: an azetidin-2-one is present, saturated heterocycle count is 2, and the Labute surface area is 164.8032. The azetidin-2-one and the saturated heterocycles add polarity and structural complexity, and the Labute surface area is relatively large, which can accompany a heavier overall physicochemical burden. Still, the balance of evidence is slightly favorable because the strong QED value, moderate TPSA, and several favorable structural fragments outweigh the weaker liabilities. Overall, the molecule is more consistent with option (B), meaning oral bioavailability of at least 20%.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a favorable analog for oral bioavailability ≥ 20% because the query is stronger on the main drug-likeness axes that matter here. The query has higher QED drug-likeness, 0.7525 versus 0.6749 for the neighbor, a delta of +0.0776, which is consistent with a more developable profile. The query also contains isoxazole once whereas the neighbor lacks it, delta +1, adding another favorable structural difference. Neutral fraction is unchanged at 0 for both molecules, so there is no penalty or advantage there. The main offsets are that the neighbor has one basic site while the query has none, delta -1, and the neighbor has a primary aliphatic amine that the query lacks, delta -1; both of those differences move away from the more ionizable, potentially less permeable pattern seen in the neighbor. The azetidin-2-one is shared by both molecules, so that feature does not separate them. Overall, the stronger QED and added isoxazole outweigh the loss of basic functionality, making Neighbor 1 support the higher-bioavailability label.
+
+Neighbor 2 also supports oral bioavailability ≥ 20% even more clearly on the positive side. The query again has much higher QED, 0.7525 versus 0.3491, with a delta of +0.4033, which is a strong improvement in overall drug-likeness. Isoxazole is present once in the query and absent in the neighbor, delta +1, and neutral fraction remains 0 in both, so the polarity/ionization picture does not worsen. The main negative differences are that the neighbor has an azide that the query does not, delta -1, and both molecules share azetidin-2-one, so that part is neutral between them. The number of basic sites is 0 in both, so there is no advantage from reducing basicity here, but there is also no penalty from adding it. Taken together, the large QED gain plus the added isoxazole and the removal of azide make Neighbor 2 a strong match to the ≥20% class.
+
+Neighbor 3 follows the same overall pattern as the other positive neighbors. The query’s QED is 0.7525 compared with 0.553 for the neighbor, delta +0.1994, again pointing to a more favorable oral-drug-like profile. Isoxazole is present in the query and absent in the neighbor, delta +1, and neutral fraction is again 0 for both, so that aspect stays balanced. The main counterweights are that the neighbor has one basic site while the query has none, delta -1, and the neighbor has a primary aliphatic amine while the query does not, delta -1; both of these differences remove ionizable/basic functionality that can hinder passive absorption when present. Azetidin-2-one is shared, so it does not distinguish the pair. Even with those offsets, the higher QED and isoxazole presence make Neighbor 3 align with the oral bioavailability ≥ 20% side.
+
+Neighbor 4 is a negative-class analog, but the comparison still favors the query and therefore favors oral bioavailability ≥ 20%. The query has isoxazole once while the neighbor lacks it, delta +1, and the query also has higher QED, 0.7525 versus 0.5001, delta +0.2524, both of which support the better-exposure label. Azetidin-2-one is present in both molecules, so that is neutral. The remaining features do not overturn the comparison: strongest basic pKa is reported as no basic site for both, with delta not defined because neither molecule has a basic site, and neutral fraction is 0 for both, delta 0. Those neutral or undefined terms simply indicate that this neighbor’s poorer class assignment is not coming from basicity or neutral fraction in the observed comparison. Overall, the query looks more favorable than Neighbor 4 on the features that were actually different, so this comparison supports ≥20% bioavailability.
+
+Neighbor 5 is similar to Neighbor 4 in direction and likewise supports the higher-bioavailability label. The query has isoxazole once while the neighbor lacks it, delta +1, and QED is higher in the query, 0.7525 versus 0.4544, delta +0.298, which again is a substantial improvement in composite drug-likeness. Azetidin-2-one is shared between the two. Strongest basic pKa is again no basic site for both, so the delta is not defined because neither molecule has a basic site, and neutral fraction is 0 in both with delta 0. The fact that the query is better on isoxazole and QED while matching the neighbor on the non-discriminating terms makes Neighbor 5 another piece of evidence for oral bioavailability ≥ 20%.
+
+Neighbor 6 is also a negative-class neighbor, but the comparison remains favorable overall for the query. The query has isoxazole once and the neighbor lacks it, delta +1, and the query’s QED is 0.7525 compared with 0.4824 for the neighbor, delta +0.2701, again pointing toward the better oral-drug-like profile. The important countervailing feature here is fraction of sp3 carbons: the neighbor is high at 0.8, while the query is lower at 0.3684, delta -0.4316, which is an unfavorable shift in 3D character relative to that neighbor. Azetidin-2-one is shared, so that remains neutral. The neighbor also has amidine while the query does not, delta -1, which removes a strongly basic motif associated with poorer passive permeability. Finally, the neighbor’s strongest basic pKa is 7.8691, while the query has no basic site, so the delta is not defined because one molecule has no basic site; that comparison is still directionally unfavorable to the neighbor’s more basic state. Even with the lower sp3 fraction, the higher QED, added isoxazole, and loss of amidine make Neighbor 6 align better with the ≥20% class.
+
+Putting all six neighbors together, the three positive neighbors consistently show the query improving on QED and gaining isoxazole, with the only recurring offsets coming from reduced basic-site burden or loss of primary aliphatic amine. The three negative neighbors are still beaten on the features that differ most clearly: the query has higher QED and adds isoxazole in each case, while the remaining descriptors are either shared, undefined because no basic site is present, or only partially offset by the lower sp3 fraction in Neighbor 6. The balance of evidence therefore favors the query as the more orally bioavailable analog, matching option (B): has oral bioavailability ≥ 20%.
+
+Input 3. Target final label semantics
+option (B): has oral bioavailability ≥ 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

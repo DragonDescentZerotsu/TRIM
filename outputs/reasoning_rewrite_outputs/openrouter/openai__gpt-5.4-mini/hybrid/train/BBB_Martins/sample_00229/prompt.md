@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule looks well aligned with BBB penetration overall. Its topological polar surface area is 21.7, which is very low and strongly favorable for passive brain entry. It also contains a morpholine ring, with morpholine present as 1, which can be compatible with BBB passage when the rest of the polarity profile is controlled. The QED drug-likeness is 0.8038, supporting a generally drug-like scaffold, and the estimated logD of 3.7244 together with an estimated logP of 3.7782 indicates moderately lipophilic character that can aid membrane permeation. The molecule has no acidic site, so the strongest acidic pKa is not defined, which avoids the strong ionization penalty that acidic groups often create for BBB transport. In addition, the NH/OH group count is 0, giving no hydrogen-bond donor burden, and the neutral fraction is 0.8836, meaning the molecule is mostly neutral at physiological conditions, both of which favor CNS exposure. The rotatable-bond count is 6, which is not minimal but still within a range that can remain compatible with BBB permeability if polarity stays low, as it does here. One caution is the maximum partial charge of 0.1076, which suggests some localized polarity and is the weakest point in the profile, but it is not enough to outweigh the strong overall favorability from low TPSA, no acidic site, no donor groups, good neutral fraction, and moderate lipophilicity. Taken together, these properties are consistent with crossing the BBB, so the molecule is predicted to be BBB-permeable.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is overall consistent with BBB crossing. Its Labute surface area is lower than the neighbor’s value, 142.3275 versus 160.4979, with a delta of -18.1704, which is favorable because smaller surface area generally supports permeability. The query also has a higher neutral fraction, 0.8836 versus 0.7742, a +0.1094 shift that fits better BBB access because more neutral species is easier to passively diffuse. QED drug-likeness is also improved, 0.8038 versus 0.7203, and the query has a lower TPSA, 21.7 versus 35.94, a -14.24 change that moves further into the low-TPSA region typically associated with CNS entry. In addition, the hydrogen-bond donor count drops from 1 to 0, and the query has one morpholine where the neighbor has none; taken together, the lower donor burden and the specific scaffold change are aligned with the BBB-crossing side for this comparison.
+
+Neighbor 2 also supports BBB crossing, with several descriptors moving in the favorable direction. TPSA is much lower in the query, 21.7 versus 45.17, delta -23.47, which is strongly consistent with the low-polarity region favored for CNS penetration. Neutral fraction again increases from 0.7812 to 0.8836, a +0.1024 shift that favors a larger neutral population at physiological conditions. The donor count decreases from 1 to 0, which is again helpful. The query’s Labute surface area is lower, 142.3275 versus 178.3413, delta -36.0138, though here that feature is explicitly unfavorable in the local comparison, so it slightly offsets the rest of the pattern. Even so, the added morpholine is favorable in this neighborhood comparison, while the maximum partial charge rises from 0.0701 to 0.1076, and that specific increase is unfavorable here. Despite those mixed local effects, the polarity-related changes still make this neighbor more like a BBB-crossing example.
+
+Neighbor 3 likewise points toward BBB crossing. The query has lower estimated logP than the neighbor, 3.7782 versus 4.1167, delta -0.3385, which stays in a moderately lipophilic region rather than becoming extreme. TPSA is higher in the query, 21.7 versus 12.47, delta +9.23, but it remains low overall and still within a CNS-friendly range. The maximum partial charge is unchanged at 0.1076, which is unfavorable in this local comparison because it does not add the desired improvement. The query also has one morpholine where the neighbor has none, which is favorable, and NH/OH group count stays at 0, preserving the low donor burden. The one adverse local feature is that the query has one aryl chloride while the neighbor has none, which is unfavorable here, but the overall profile still resembles the BBB-crossing neighbor more than a non-crossing one.
+
+Neighbor 4 is the strongest non-crossing comparator, but even that comparison still leans toward BBB crossing for the query. The neighbor has very poor neutral fraction, 0.0001, versus the query’s 0.8836, a massive +0.8835 shift that clearly favors membrane permeation. The query also has much lower TPSA, 21.7 versus 53.01, delta -31.31, and a much higher estimated logD, 3.7244 versus -1.0563, delta +4.7807, both of which are favorable for BBB entry because they move away from a highly polar, poorly permeable profile. The neighbor’s strongest acidic pKa is 3.3721, while the query has no acidic site; preserving the absence of an acidic site is favorable in this context, especially since acidic functionality is generally detrimental to BBB penetration. The query also has one morpholine where the neighbor has none. The only mixed element is that the query’s maximum partial charge is lower, 0.1076 versus 0.3291, yet the overall set of changes still shifts the query decisively away from the non-BBB phenotype.
+
+Neighbor 5 is another non-crossing comparator, but most of its local differences still favor the query. The query has a lower maximum partial charge, 0.1076 versus 0.1157, delta -0.0081, which is unfavorable in this specific comparison because it removes a feature associated with the neighbor’s non-BBB profile. However, several structural features move in the BBB-favoring direction: the query has one aliphatic ring where the neighbor has none, one aliphatic heterocycle where the neighbor has none, and one morpholine where the neighbor has none. The QED drug-likeness is also slightly higher, 0.8038 versus 0.7735, delta +0.0303, which is favorable. The main opposing factor is estimated logD, which is lower in the query, 3.7244 versus 3.9828, delta -0.2584, and that local decrease is unfavorable here. Even with that offset, the added ring and heterocycle features plus the morpholine still make the query look more BBB-compatible than this neighbor.
+
+Neighbor 6 also compares against a non-BBB example, and the query again looks more permeable on the key polarity descriptors. TPSA drops sharply from 49.77 to 21.7, delta -28.07, which is a major move into the low-TPSA region associated with BBB crossing. Neutral fraction rises from 0.0015 to 0.8836, delta +0.8821, a very large shift toward the neutral species that can cross membranes more readily. Estimated logD also jumps from -0.9398 to 3.7244, delta +4.6642, which is strongly favorable because it moves from a poorly lipophilic profile into a much more BBB-compatible range. The query has one morpholine while the neighbor has none, and both minimum absolute partial charge and maximum partial charge are lower in the query, with the same -0.2318 delta for each; in this local comparison those charge changes are favorable as well. Taken together, this neighbor is clearly more polar and less permeable than the query.
+
+Putting the six neighbors together, the three positive neighbors and the three negative neighbors all point in the same direction on the main BBB-relevant axes: the query has much lower TPSA than several non-BBB neighbors, a much higher neutral fraction, no acidic site where one neighbor has an acidic function, and generally more favorable lipophilicity and donor burden. A few local comparisons introduce mixed signals, such as Labute surface area, maximum partial charge, or the aryl chloride and logD shifts in individual neighbors, but those do not outweigh the repeated pattern of low polarity, low donor count, and higher neutral fraction. Overall, the query aligns more closely with the BBB-crossing analogs, so the final prediction is option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

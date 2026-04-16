@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several properties that can limit bacterial exposure and make an Ames-negative outcome plausible. It has 4 aryl bromides, which adds halogenated aromatic character but does not by itself establish a classic mutagenic alert. Its Labute surface area is 156.642, which is relatively large and consistent with poorer passive access to bacterial cells. The estimated logP is 6.4737, indicating strong lipophilicity; together with a heavy-atom molecular weight of 531.779 and a molecular weight of 543.875, this suggests a bulky, hydrophobic compound that may have solubility and uptake limitations. The neutral fraction is only 0.129, so most of the molecule is ionized at the configured pH, which can further reduce passive membrane permeation. The phenol count of 2 and heteroatom count of 6 increase polarity relative to a purely hydrocarbon scaffold, again making full bacterial exposure less straightforward. The aromatic ring count is 2, which is not the kind of fused polycyclic aromatic system most associated with strong mutagenic concern. There is one tension in the data: the estimated logD is 5.5843, which still reflects substantial lipophilicity and could support some exposure, but the overall picture remains dominated by size, surface area, and limited neutral fraction that tend to suppress uptake. Taking these factors together, the balance of evidence favors a non-mutagenic outcome, so the molecule is predicted to be option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close mutagenic analog, but the query differs in several ways that collectively weaken that comparison. The query has 0 Aryl chloride groups versus 4 in the neighbor (delta -4), and it also has 4 Aryl bromide groups versus 0 in the neighbor (delta +4); those halogen-pattern shifts are both important, but in this comparison they are outweighed by the other properties. The query is much larger and more lipophilic, with Labute surface area rising from 136.6643 to 156.642 (delta +19.9777), estimated logP rising from 4.8781 to 6.4737 (delta +1.5956), and heavy-atom molecular weight rising from 366.008 to 531.779 (delta +165.771). Although the query also has much lower QED drug-likeness, dropping from 0.7904 to 0.4555 (delta -0.3349), which can co-occur with less drug-like or more problematic chemistry, the overall neighbor-level comparison still ends up favoring the non-mutagenic label because the structural and physicochemical mismatches make this a weaker mutagenic analog.
+
+Neighbor 2 is also a mutagenic neighbor, and the query again departs in ways that mostly point away from matching that positive class. The query is far larger, with heavy-atom count increasing from 5 to 21 (delta +16), heavy-atom molecular weight increasing from 127.948 to 531.779 (delta +403.831), and exact molecular weight increasing from 135.9888 to 539.7571 (delta +403.7683). Its estimated logP also jumps from 2.1798 to 6.4737 (delta +4.2939), again indicating a much more hydrophobic molecule. The query does share a higher hydrogen-bond acceptor count, going from 0 to 2 (delta +2), and that can add polarity, but here that increase is not enough to offset the very large size and lipophilicity differences. The 0-to-4 change in Aryl bromide also appears here (query minus neighbor delta +4), but overall this neighbor remains a poor match to the mutagenic reference and therefore supports the non-mutagenic outcome.
+
+Neighbor 3 gives a mixed comparison, but the balance still leans away from the mutagenic class. The query again has 4 Aryl bromides where the neighbor has none (delta +4), which is one reason it does not cleanly align with this positive analog. At the same time, the query has more heteroatoms, increasing from 2 to 6 (delta +4), and that higher heteroatom burden can change polarity and charge distribution. However, the neighbor also contains hydroperoxide while the query does not (delta -1), and the query shows a higher maximum absolute partial charge, 0.5056 versus 0.2509 (delta +0.2547), along with a much larger heavy-atom molecular weight, 531.779 versus 140.097 (delta +391.682), and heavy-atom count, 21 versus 11 (delta +10). Those combined differences make this look chemically distinct from the mutagenic neighbor, so this comparison also favors the non-mutagenic label overall.
+
+Neighbor 4 is a non-mutagenic reference, and the query remains only partly similar while still showing some features that could have gone either way. The query has one more Aryl bromide than the neighbor, 4 versus 3 (delta +1), and it is much more lipophilic, with estimated logP rising from 3.6797 to 6.4737 (delta +2.794). Its Labute surface area also increases substantially, from 83.8283 to 156.642 (delta +72.8137), which reflects a much larger and more extended structure. The query also has higher heteroatom count, 6 versus 4 (delta +2), and its QED is lower, 0.4555 versus 0.7691 (delta -0.3136), while estimated logD is higher, 5.5843 versus 2.5997 (delta +2.9846). Even though the QED and logD shifts are not both in the same direction, the overall pattern still remains closer to the non-mutagenic side than to a clear mutagenic match.
+
+Neighbor 5 is another non-mutagenic analog, and the query again differs mainly by being much larger, more hydrophobic, and more heavily halogenated. The query has 4 Aryl bromides versus 2 in the neighbor (delta +2), estimated logP rises from 2.7889 to 6.4737 (delta +3.6848), exact molecular weight rises from 274.8581 to 539.7571 (delta +264.8989), and Labute surface area rises from 80.7183 to 156.642 (delta +75.9237). The query also has higher heteroatom count, 6 versus 4 (delta +2), which increases polarity somewhat, and the neighbor has a nitrile that the query lacks (delta -1). That missing nitrile is one of the few features moving away from the neighbor, but the dominant theme is still that the query is much bulkier and more lipophilic than this non-mutagenic example, so the comparison supports the final non-mutagenic prediction.
+
+Neighbor 6, the last non-mutagenic reference, again shows the query as a much larger and more hydrophobic compound. Exact molecular weight increases from 220.1827 to 539.7571 (delta +319.5744), Labute surface area rises from 99.5101 to 156.642 (delta +57.1319), and estimated logP is much higher in the query, with the values moving from 0.129 neutral fraction? No, here the neutral fraction comparison is the key polarity-related point: the neighbor has neutral fraction present at 1, while the query is 0.129, a delta of -0.871, indicating the query is far less neutral and more ionizable. The query also has 4 Aryl bromides versus 0 (delta +4), lower topological polar surface area in the neighbor-to-query direction being unfavorable for the query because TPSA rises from 20.23 to 40.46 (delta +20.23), and lower QED in the query, 0.4555 versus 0.691 (delta -0.2355). Taken together, this neighbor still looks much more like the non-mutagenic side than the mutagenic side, despite the increased polarity from the lower neutral fraction and higher TPSA.
+
+Across all six neighbors, the comparison pattern is consistent: the three mutagenic neighbors do not match the query cleanly because the query is much larger, more lipophilic, and differently substituted, while the three non-mutagenic neighbors share the same general profile of a smaller, less hydrophobic, less bulky analog more than the query does. The repeated increases in Aryl bromide count, molecular weight, heavy-atom count, Labute surface area, and estimated logP/logD make the query a poor match to the mutagenic references and a better fit to the non-mutagenic set overall. That combined evidence supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

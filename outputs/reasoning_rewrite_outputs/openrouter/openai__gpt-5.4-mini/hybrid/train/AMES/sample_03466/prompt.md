@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+1H-indazole is present, and that is a clear structural alert associated with mutagenic behavior, so it weighs toward a positive Ames result. The picture is tempered by the neutral fraction of 0.0002, which is extremely low and suggests the molecule is mostly ionized at the configured pH; that can reduce passive bacterial exposure and sometimes makes mutagens harder to detect. Phenol is present as well, and while a phenolic group is not itself a classic Ames toxicophore, it can contribute to polarity and may modestly reduce exposure, which again leans away from mutagenicity. At the same time, the fraction of sp3 carbons is 0, meaning the molecule is fully unsaturated and quite flat, a feature that can accompany aromatic toxicophore patterns and planar DNA-interacting scaffolds, so that supports mutagenicity. The estimated logP is 1.2685, which is not extremely hydrophobic and should not strongly penalize solubility, but it still reflects a moderately lipophilic scaffold that may retain some membrane access. The heteroatom count is 3, which is fairly modest and does not by itself suggest an especially polar, strongly exposure-limited structure. The aromatic ring count is 2, indicating a small aromatic system rather than an extensively fused polycyclic framework, so this is not the strongest aromaticity-based mutagenicity flag. The strongest basic pKa is 2.6436, which is low and implies the basic site is weakly protonated under neutral conditions, again suggesting limited ionization-driven bacterial accumulation. The strongest acidic pKa is 3.6363, also relatively low, consistent with only limited acid ionization near neutral pH. Labute surface area is 57.3046, which is not especially large and does not suggest a major size-driven permeability barrier. Overall, the molecule contains a notable mutagenicity-associated heteroaromatic scaffold, but several properties—very low neutral fraction, low basic and acidic pKa values, and the presence of phenol with only moderate logP—point toward reduced effective bacterial exposure. On balance, the exposure-limiting features slightly outweigh the structural alert, so the molecule is predicted to be not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly close analog but still leans away from mutagenicity overall. The query has a lower neutral fraction than the neighbor (0.0002 vs 0.0006, delta -0.0004), and for Ames this kind of ionization/bioavailability shift can matter operationally by reducing passive exposure, which fits the non-mutagenic direction here. The query is also more ionized in the simple site-count sense, with number of ionizable sites increasing from 3 to 4 (delta +1), and the estimated logD is lower in the query (-2.4953 vs -1.5614, delta -0.9339), which again is consistent with weaker exposure. The neighbor lacks 1H-indazole while the query has one instance, and that structural difference is the main mutagenicity-facing counterweight because indazole-like heteroaromatic motifs can matter as an aromatic framework; the maximum absolute partial charge is also slightly lower in the query (0.4931 vs 0.507, delta -0.0139), which is a smaller opposing factor. Even with the positive indazole signal, the stronger shifts in neutral fraction, ionizable-site burden, and logD make this comparison favor option (A).
+
+Neighbor 2 is also overall aligned with a non-mutagenic call. The query has a much lower neutral fraction than the neighbor (0.0002 vs 0.8407, delta -0.8405), which is a very large move toward a more ionized, less passively permeable state; that kind of exposure reduction is relevant in Ames because bioavailability can limit detection. The query is more basic-site poor in the sense of lower strongest basic pKa (2.6436 vs 4.7635, delta -2.1199), which reduces the likelihood of a protonated, Gram-negative-accumulation-friendly nitrogen, and that again does not favor revealing mutagenicity. The neighbor and query both have phenol, so that feature does not distinguish them, while the query again has 1H-indazole present once and the neighbor does not, which is a mutagenicity-facing counterpoint. Fraction of sp3 carbons is unchanged at 0, which is a neutral structural background feature here. Taken together, the dramatic neutral-fraction decrease and the lower basicity support option (A) despite the indazole addition.
+
+Neighbor 3 provides another strong non-mutagenic comparison. The query’s estimated logD is far lower than the neighbor’s (about -2.4953 vs 3.3868, delta -5.8821), shifting from a hydrophobic regime toward a highly hydrophilic one, which generally makes passive uptake and effective bacterial exposure less favorable. The neutral fraction also drops sharply (0.0002 vs 0.9973, delta -0.9971), reinforcing the same exposure-limiting direction. The query has a higher maximum absolute partial charge (0.4931 vs 0.2556, delta +0.2375), and more extreme charge can alter polarity and transport properties rather than intrinsic reactivity; here it fits a more polar, less membrane-permeable profile. The query also has more ionizable sites (4 vs 1, delta +3), which further increases ionization complexity, and a higher QED (0.5696 vs 0.4819, delta +0.0877), which is not a direct Ames rule but does not overcome the exposure-limiting changes. As in the other positive neighbors, the query has 1H-indazole once while the neighbor does not, and both have fraction of sp3 carbons at 0. Despite that structural counterpoint, the combined drop in logD and neutral fraction makes this neighbor support option (A).
+
+Neighbor 4, one of the negative neighbors, still ends up favoring the non-mutagenic label when compared to the query. The neighbor has quinazoline and the query does not, and that heteroaromatic scaffold is a key structural difference that favors the neighbor side in this comparison. The query does have 1H-indazole once, which is the main mutagenicity-facing difference in the other direction, but the exposure-related descriptors outweigh it here: the neighbor has no neutral fraction value recorded while the query is at 0.0002 (delta +0.0002), the query’s strongest acidic pKa is much higher (3.6363 vs 0.4008, delta +3.2355), and the neighbor’s minimum partial charge is slightly less negative (-0.4928 vs -0.4931, delta -0.0004). Fraction of sp3 carbons stays at 0 in both. The combination is still consistent with the query being the less compelling mutagenic analog overall, so this comparison supports option (A).
+
+Neighbor 5 is more mixed on individual features, but it still does not overturn the non-mutagenic direction. The query’s neutral fraction is lower than the neighbor’s (0.0002 vs 0.0014, delta -0.0012), again favoring reduced exposure. The query also has more ionizable sites (4 vs 2, delta +2), which can increase ionization and reduce passive diffusion. However, the query has 1H-indazole once while the neighbor lacks it, and the neighbor has quinoline while the query does not, so there are two heteroaromatic structural differences in opposite directions. The strongest basic pKa is lower in the query (2.6436 vs 5.2198, delta -2.5762), which is chemically meaningful because a less basic site is less likely to support the kind of protonated nitrogen associated with Gram-negative accumulation. Fraction of sp3 carbons remains 0 in both. Even though some features here are mixed, the lower neutral fraction and lower basicity still make the query look less likely to behave as a mutagenic analog, so the comparison remains consistent with option (A).
+
+Neighbor 6 also supports the non-mutagenic label. The query has 1H-indazole once while the neighbor does not, which is the main mutagenicity-facing difference. But the query’s neutral fraction is slightly higher than the neighbor’s only in the very small range (0.0002 vs 0.0001, delta +0.0001), while the estimated logD is still less favorable for uptake than the neighbor’s (−2.4953 vs −2.9301, delta +0.4348 in the comparison’s direction), and the neighbor carries phthalazine whereas the query does not. The query’s minimum partial charge is slightly more negative (-0.4931 vs -0.4918, delta -0.0014), and that subtle shift in charge distribution is not enough to offset the overall exposure-limiting profile. Fraction of sp3 carbons remains 0. Even with the indazole difference and the small charge effect, the balance of the comparison still fits option (A).
+
+Across all six neighbors, the most consistent pattern is that the query is comparatively more ionized and less hydrophobic, with very low neutral fraction and lower logD in several of the closest mutagenic neighbors, and lower basicity or higher ionizable-site burden where those were reported. That kind of profile is more consistent with reduced bacterial exposure than with a strong mutagenicity signal. The only recurring mutagenicity-facing feature is the presence of 1H-indazole in the query, but it is repeatedly outweighed by the stronger exposure-limiting differences and by the fact that the comparison set as a whole still aggregates toward the non-mutagenic side. The six comparisons therefore support option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

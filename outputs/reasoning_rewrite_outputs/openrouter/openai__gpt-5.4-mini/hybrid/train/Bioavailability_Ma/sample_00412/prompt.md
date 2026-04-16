@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several strong liabilities for oral exposure. It contains a phosphonic acid group, and with a strongest acidic pKa of 0.9916 it is likely to be highly ionized under physiological conditions, which is generally unfavorable for passive membrane permeation. Its estimated logD of -6.5663 is extremely low, reinforcing that it is very hydrophilic and poorly partitioned into membranes. The QED drug-likeness score is only 0.4241, which is consistent with an overall less developable profile. The topological polar surface area is 94.83, which is not above the most severe permeability cutoffs, but it is still substantial and adds to the polarity burden. The presence of a carboxylic acid and the reported neutral fraction being absent at 0 both point toward an ionization state dominated by charged species, again making oral absorption harder. The maximum partial charge of 0.4326 and minimum absolute partial charge of 0.4326 suggest a highly polarized electronic structure, which fits with the poor partitioning behavior. Although the heavy-atom molecular weight of 122.98 is relatively modest and could support absorption in isolation, that advantage is outweighed by the strong acid character, very low lipophilicity, and high polarity. Taken together, the dominant chemistry is more consistent with oral bioavailability below 20%, so the better conclusion is option (A).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly close positive example, but several of its features still line up with poorer oral bioavailability relative to the query. Both molecules share phosphonic acid, and that motif is a known liability for passive permeability because it tends to be strongly anionic, so the shared presence itself does not rescue the query. The query also lacks the oxirane seen in the neighbor (query-minus-neighbor delta -1), which removes one feature that was part of the more bioavailable analog. QED is slightly higher in the query, 0.4241 versus 0.392, with a delta of +0.0321, but that small increase is not enough to offset the stronger liabilities. The query and neighbor both have absent neutral fraction (0 vs 0), so there is no advantage there. In addition, the query contains one carboxylic acid while the neighbor has none, which is one of the few differences that favors oral exposure, but the query also has a higher minimum absolute partial charge, 0.4326 versus 0.3562, delta +0.0764, and that change is unfavorable. Overall, Neighbor 1 gives a mixed but still somewhat unfavorable comparison for oral bioavailability, especially because the phosphonic acid and partial-charge pattern remain problematic.
+
+Neighbor 2 is the strongest positive analog among the higher-bioavailability neighbors, yet it also shows why the query remains weaker. The neighbor has a much better QED of 0.6737 compared with the query’s 0.4241, a sizable delta of -0.2496, so the query is clearly less drug-like on that composite measure. Both have absent neutral fraction, so again there is no relief from ionization balance there. The query has phosphonic acid once while the neighbor does not, which is a major disadvantage because phosphonic acids are hard to absorb orally. The query also has a higher minimum absolute partial charge, 0.4326 versus 0.3035, delta +0.1292, which points to a more problematic electronic profile. The neighbor, however, has one basic site while the query has none, and the query-minus-neighbor delta of -1 on basic-site count is favorable in this comparison. The biggest favorable structural difference for the query is fraction of sp3 carbons: the neighbor is high at 0.8889, while the query is 0, delta -0.8889, so the query lacks the 3D character that the neighbor has. Even with that favorable sp3 difference, the phosphonic acid and partial-charge penalties keep the query less consistent with the higher-bioavailability class than Neighbor 2.
+
+Neighbor 3 is also a positive analog, but it again shows the query losing on the most important exposure-related features. The neighbor’s QED is 0.8318, far above the query’s 0.4241, with a delta of -0.4077, so the query is much less drug-like by this summary metric. The neighbor has heavy-atom molecular weight 240.173 and exact molecular weight 254.0943, while the query is much lighter at 122.98 heavy-atom MW and 125.9718 exact MW, with deltas of -117.193 and -128.1225; those lower weights would ordinarily be more favorable for absorption. The neutral fraction is also slightly lower in the query, absent versus 0.0007 in the neighbor, which is directionally favorable but only by a tiny amount. Still, the query has phosphonic acid once while the neighbor has none, and that single functional group is a major drawback for oral bioavailability. The query’s minimum absolute partial charge is also higher, 0.4326 versus 0.3033, delta +0.1293, which again worsens the profile. So although the query benefits from lower mass and slightly lower neutral fraction, the phosphonic acid and higher charge extremum make it less consistent with the better-absorbed positive neighbors overall.
+
+Neighbor 4 is a negative neighbor, and its comparison is one of the clearest signals that the query should be placed in the lower-bioavailability class. The query has a higher minimum absolute partial charge than the neighbor, 0.4326 versus 0.3505, delta +0.0821, which is unfavorable. The query’s QED is also lower, 0.4241 versus 0.4923, delta -0.0682, consistent with weaker drug-likeness. The query does gain one carboxylic acid relative to the neighbor, which can sometimes help balance polarity or solubility, but here that does not compensate for the other liabilities. The query’s maximum partial charge is also higher, 0.4326 versus 0.3505, delta +0.0821, again indicating a more extreme charge profile. Most importantly, estimated logD is lower in the query, -6.5663 versus -5.491, delta -1.0753, placing the query even farther toward a highly polar, poorly membrane-partitioning regime. The neighbor also has fraction of sp3 carbons 0.375 while the query is 0, delta -0.375, so the query lacks the 3D character present in this less-bioavailable analog, but the dominant message is still that the query’s stronger polarity and lower logD are unfavorable. Taken together, Neighbor 4 supports the lower-bioavailability label.
+
+Neighbor 5 is another negative neighbor that strongly reinforces the same direction. The neighbor lacks phosphonic acid while the query has it once, which is a major disadvantage for the query because phosphonic acids are typically hard to absorb orally. The query also has a higher minimum absolute partial charge, 0.4326 versus 0.3274, delta +0.1052, which again points to a more polar and less permeable profile. QED is lower in the query, 0.4241 versus 0.4824, delta -0.0583, so the query is also weaker on overall drug-likeness. Fraction of sp3 carbons is 0 in the query versus 0.8 in the neighbor, delta -0.8, meaning the query lacks the saturated 3D character seen in the neighbor. The neighbor has an azetidin-2-one, which the query does not; that difference is one of the few features favoring the query in this pair. Even so, the query’s estimated logD is much lower, -6.5663 versus -4.0194, delta -2.5469, which is a major liability for passive absorption. This neighbor therefore remains firmly on the side of lower oral bioavailability and makes the query look even less favorable.
+
+Neighbor 6 also sits in the negative class and gives a nuanced but ultimately unfavorable comparison for the query. The query again has phosphonic acid while the neighbor does not, and that single feature is one of the strongest reasons against oral exposure. The query’s fraction of sp3 carbons is 0 versus 0.8 in the neighbor, delta -0.8, so the query lacks the more saturated framework present in the neighbor. Labute surface area is much lower in the query, 38.7464 versus 150.6835, delta -111.937, and the neighbor also has 2 secondary hydroxyl groups while the query has 0, delta -2; both of those differences could in principle reduce the query’s polarity burden relative to the neighbor. The query’s QED is slightly higher, 0.4241 versus 0.3476, delta +0.0765, and the neighbor has a ketone that the query lacks, which also favors the query. But despite those limited advantages, the phosphonic acid remains a strong oral-availability liability, and the overall comparison still lands on the lower-bioavailability side for the neighbor class. 
+
+Putting all six comparisons together, the positive neighbors do offer some favorable points for the query, such as lower molecular weight than Neighbor 3, lack of a basic site relative to Neighbor 2, and the carboxylic acid difference in Neighbor 1. However, those benefits are repeatedly outweighed by the same recurring liabilities: the query contains phosphonic acid, shows higher partial-charge extrema than several neighbors, has very low estimated logD where reported, and has QED values below the stronger positive analogs. The negative neighbors, especially Neighbors 4 and 5, align closely with that unfavorable polarity and permeability pattern. Taken as a whole, the local analog evidence supports option (A): has oral bioavailability < 20%.
+
+Input 3. Target final label semantics
+option (A): has oral bioavailability < 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

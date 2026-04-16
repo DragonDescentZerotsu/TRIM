@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several properties that are compatible with BBB penetration. Its topological polar surface area is 27.82, which is very low and strongly favors passive brain entry. The presence of a 1H-indole ring is also consistent with a more lipophilic, CNS-like scaffold, and the hydrogen-bond acceptor count of 1 is minimal, further reducing polar burden. The strongest basic pKa is 10.1851, indicating a basic center that can still be present in BBB-permeable compounds, and the estimated logP of 3.5974 gives moderate lipophilicity that can support membrane crossing. The maximum absolute partial charge of 0.3568 and minimum partial charge of -0.3568 suggest a not excessively polarized structure overall.
+
+At the same time, there are a couple of features that temper confidence. A secondary aliphatic amine is present, which adds ionization potential and can work against BBB penetration. The neutral fraction is only 0.0016, meaning the molecule is overwhelmingly ionized at physiological pH, and that usually disfavors passive BBB transport. The estimated logD of 0.8116 is also relatively low for strong CNS penetration, suggesting that ionization-aware lipophilicity is not especially favorable despite the higher logP.
+
+Overall, the very low TPSA, low hydrogen-bond acceptor count, and CNS-like aromatic scaffold outweigh the unfavorable neutral fraction and the presence of a secondary amine, so the molecule is more consistent with crossing the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is overall supportive of BBB crossing. The query has a stronger basic pKa of 10.1851 versus 9.5949 in the neighbor, a delta of +0.5902, which is a mixed signal because the BBB guidance favors only moderate basicity and penalizes overly basic centers. Here, though, that higher basic pKa is paired with a slightly larger topological polar surface area in the query (27.82 vs 19.03, delta +8.79), and both values remain in a relatively low TPSA region that is still compatible with CNS entry. The query also has a lower neutral fraction (0.0016 vs 0.0063, delta -0.0047), which is unfavorable because more neutral species usually helps passive diffusion. The strongest acidic pKa is essentially unchanged and extremely high (13.9995 vs 13.9979, delta +0.0016), so acidity is not a major differentiator here. The minimum partial charge is slightly less negative in the query (-0.3568 vs -0.3582, delta +0.0013), and the fraction of sp3 carbons is lower (0.2222 vs 0.4286, delta -0.2063), meaning the query is less saturated and more rigid/unsaturated than the neighbor. Taken together, the low TPSA and charge profile keep this comparison aligned with BBB permeability despite the lower neutral fraction, so Neighbor 1 still leans toward option (B).
+
+Neighbor 2 is also supportive of BBB crossing. The query has a much stronger basic pKa than the neighbor (10.1851 vs 7.4353, delta +2.7498), which can be a liability if basicity becomes too strong, but that concern is counterbalanced by very favorable polarity and charge features. The query’s TPSA is slightly lower than the neighbor’s (27.82 vs 28.68, delta -0.86), staying in the low, CNS-friendly region. The maximum partial charge is also lower in the query (0.0517 vs 0.0681, delta -0.0164), and the minimum absolute partial charge is lower as well (0.0517 vs 0.0681, delta -0.0164), both suggesting a less polar charge distribution. The strongest acidic pKa is slightly higher in the query (13.9995 vs 13.7395, delta +0.26), which is only a minor shift here. The main counterweight is neutral fraction: the neighbor has 0.4797 while the query has only 0.0016, delta -0.4781, so the query is much less neutral at physiological conditions. Even so, the combination of low TPSA and favorable partial-charge measures keeps this neighbor comparison on the BBB-crossing side, so Neighbor 2 supports option (B).
+
+Neighbor 3 gives a more mixed but still ultimately BBB-favorable comparison. The query has far fewer hydrogen-bond acceptors than the neighbor (1 vs 9, delta -8), which is strongly favorable because a lower acceptor burden usually tracks with lower polarity and better passive penetration. The query also has a higher strongest basic pKa (10.1851 vs 7.9977, delta +2.1874), again a mixed feature because excessive basicity can hurt, but moderate weak basicity can still be compatible with CNS entry depending on the rest of the profile. Both the maximum absolute partial charge and minimum absolute partial charge are lower in the query (0.3568 vs 0.4927, delta -0.1358; and 0.0517 vs 0.3383, delta -0.2866), indicating a less extreme charge environment than the neighbor. The query’s TPSA is dramatically lower (27.82 vs 108.55, delta -80.73), which is the strongest signal in the comparison and falls squarely in the low-TPSA region favored for BBB penetration. The query’s estimated logP is also lower (3.5974 vs 4.1625, delta -0.5651), moving away from the higher-lipophilicity end that can bring liabilities even when permeability is good. Overall, the much lower TPSA and fewer H-bond acceptors dominate, so Neighbor 3 still supports option (B).
+
+Neighbor 4, although listed among the non-crossing neighbors, actually compares in a way that favors BBB crossing for the query. The query’s TPSA is much lower than the neighbor’s (27.82 vs 65.56, delta -37.74), placing the query deeper into the desirable low-polar-surface region for CNS penetration. Both molecules contain one 1H-indole, so that scaffold feature does not distinguish them. The query is also less saturated by fraction of sp3 carbons (0.2222 vs 0.5714, delta -0.3492), which means it is more unsaturated and potentially more rigid. The strongest acidic pKa is slightly higher in the query (13.9995 vs 13.8229, delta +0.1766), but this is a very small shift and remains in a highly weakly acidic range. The maximum partial charge is lower in the query (0.0517 vs 0.3111, delta -0.2594), and the query has one benzene while the neighbor has none (delta +1), adding an aromatic component that can be consistent with passive permeability when polarity is controlled. Altogether, this comparison is dominated by the much lower TPSA and lower partial-charge burden in the query, so Neighbor 4 also aligns with option (B).
+
+Neighbor 5 likewise favors the query on the BBB-crossing side despite one unfavorable lipophilicity comparison. The query has a much lower maximum partial charge (0.0517 vs 0.2457, delta -0.194), which is favorable because it indicates a less strongly polarized surface. The strongest basic pKa is nearly the same, with the query only slightly lower (10.1851 vs 10.2103, delta -0.0252), so basicity is not materially separating the two. The estimated logD is the main unfavorable difference: the query is much higher at 0.8116 versus -1.5832, delta +2.3948. Moderate logD can be acceptable for BBB penetration, whereas very low logD often reflects poor membrane passage, so this shift is not necessarily harmful in the CNS context. The query also has far fewer heavy atoms (20 vs 82, delta -62), which strongly favors a smaller, more permeable molecule. Its fraction of sp3 carbons is lower (0.2222 vs 0.6333, delta -0.4111), again indicating a less saturated scaffold. Finally, the neighbor contains 10 lactam groups while the query has none (delta -10), removing a major polar liability from the query. Even with the higher logD, the query’s smaller size and lower polar functionality make Neighbor 5 support option (B).
+
+Neighbor 6 is also supportive of BBB crossing. The query has a much higher strongest basic pKa than the neighbor (10.1851 vs 5.3398, delta +4.8453), which is a mixed feature because strong basicity can increase ionization, but the rest of the profile remains quite compact and low in H-bonding burden. The query has fewer hydrogen-bond acceptors (1 vs 2, delta -1), which is favorable. The heavy-atom molecular weight is much larger in the query (244.212 vs 138.105, delta +106.107), so size works against it to some degree, since lower MW is usually better for BBB entry. However, the query also gains one aliphatic ring and one aliphatic heterocycle relative to the neighbor (0 to 1 for both, delta +1 and +1), which can reduce flexibility and sometimes help permeability if the overall polarity stays controlled. The estimated logP is much higher in the query (3.5974 vs 1.5964, delta +2.001), moving it into a more lipophilic range that is often more compatible with passive BBB diffusion than a low-logP scaffold. Taken together, the stronger lipophilicity and compact heterocyclic ring additions outweigh the size increase in this comparison, so Neighbor 6 still leans toward option (B).
+
+Across the six neighbors, the dominant recurring pattern is that the query repeatedly shows low TPSA, low hydrogen-bonding burden, and generally favorable partial-charge characteristics relative to many comparison molecules, even when some features such as basic pKa, logD, or molecular size vary in a mixed way. The three positive neighbors directly reinforce BBB compatibility through low polarity, low acceptor burden, and manageable charge. The three negative neighbors are not truly contradictory when inspected closely: each of them also shows the query retaining the low-polarity, low-charge profile that is consistent with crossing the BBB, with the most relevant differences often favoring the query despite occasional tradeoffs. Putting these local analogs together, the query is more consistent with option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

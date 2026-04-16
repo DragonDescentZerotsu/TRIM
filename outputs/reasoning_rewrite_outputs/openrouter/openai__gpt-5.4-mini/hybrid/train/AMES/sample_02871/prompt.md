@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains two nitro groups, which is a strong mutagenicity alert and the clearest reason to expect an Ames-positive result. That structural toxicophore is consistent with known mutagenic nitro-containing compounds. Several descriptor-level properties also support this direction: the QED drug-likeness value is 0.6082, which is only moderate and does not compensate for the alerting chemistry; the heteroatom count of 6 indicates a fairly heteroatom-rich scaffold; and the estimated logD of 3.7703 suggests appreciable lipophilicity that can still permit bacterial exposure. The topological polar surface area of 86.28 and Labute surface area of 116.6511 are not extreme, so the molecule is not obviously too polar or too bulky to be seen by the assay. The heavy-atom molecular weight of 260.164 and ring count of 2 are also within a relatively modest range, which does not argue strongly against activity. At the same time, the fraction of sp3 carbons is 0.5714, which gives the scaffold some three-dimensional character, and the estimated logP of 3.7703 is not so high as to make exposure impossible; however, these moderating features are outweighed by the nitro toxicophore. Overall, the balance of evidence favors a mutagenic outcome, so the molecule is predicted to be option (B): is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is the closest mutagenic analog, but the query differs in several ways that weaken that comparison. The query has a much higher fraction of sp3 carbons, 0.5714 versus 0.1429 in the neighbor, with a delta of +0.4286, and that shift is associated with a strong move away from mutagenicity here. The query also contains 2,3-dihydro-1H-indene once while the neighbor does not, another feature that in this comparison favors the non-mutagenic side. On top of that, the query has slightly higher QED drug-likeness, 0.6082 versus 0.5702, and a higher ring count, 2 versus 1; both of those changes also lean toward option (A) here. The two features that point back toward mutagenicity are the lower topological polar surface area, 86.28 versus 129.42, and the lower rotatable-bond count, 2 versus 3, which can improve exposure, but those effects are smaller than the combined anti-mutagenic signals. Overall, Neighbor 1 still supports option (A) more than option (B).
+
+Neighbor 2 tells a similar story. Again, the query has a much higher fraction of sp3 carbons, 0.5714 versus 0.1429, and the indene motif is present in the query but absent in the neighbor, both of which favor option (A). The query also has higher QED drug-likeness, 0.6082 versus 0.4749, and a higher ring count, 2 versus 1, both again aligning with the non-mutagenic side in this local comparison. The features that go the other way are the absence of acidic sites in the query versus 2 acidic sites in the neighbor, which here points toward mutagenicity, and the lower rotatable-bond count, 2 versus 3, which also favors mutagenicity through greater rigidity and potential exposure. Even so, the larger structural and drug-likeness differences still make Neighbor 2 overall support option (A).
+
+Neighbor 3 is also predominantly non-mutagenic relative to the query despite one strong mutagenic-looking matched feature. The query again has the indene motif while the neighbor does not, the query’s fraction of sp3 carbons is much higher at 0.5714 versus 0.25, the QED is higher at 0.6082 versus 0.535, and the ring count is higher at 2 versus 1; each of these differences favors option (A). There is a countervailing signal from nitro, which is present at 2 copies in both query and neighbor, and this shared toxicophore-like feature contributes on the mutagenic side. Topological polar surface area is unchanged at 86.28 in both molecules, so it does not separate them here, even though that value is already in a range that can support better exposure. Taken together, Neighbor 3 still more strongly resembles a non-mutagenic analog set than a mutagenic one.
+
+Neighbor 4, drawn from the non-mutagenic group, shows a mixed pattern but the overall balance still favors option (A). The query again has the indene motif that the neighbor lacks, and the query’s fraction of sp3 carbons is higher, 0.5714 versus 0.25, both of which lean toward non-mutagenicity in this local context. The query also has higher QED drug-likeness, 0.6082 versus 0.535, which continues that same direction. However, the query has one aliphatic carbocycle versus none in the neighbor, and its estimated logD is also higher, 3.7703 versus 2.1198, both changes that here lean toward mutagenicity, likely by making the molecule more lipophilic and exposure-friendly. Even with those offsets, the non-mutagenic side remains stronger because the structural comparison around indene, sp3 character, and QED is more persuasive overall.
+
+Neighbor 5 also belongs to the non-mutagenic set and gives a similar mixed but ultimately A-leaning comparison. The query has the indene motif absent in the neighbor, and it also has a slightly higher fraction of sp3 carbons, 0.5714 versus 0.5, which still favors option (A) but less strongly than in the earlier neighbors. The query additionally has one aliphatic carbocycle versus none in the neighbor, which in this case leans toward mutagenicity, and its maximum absolute partial charge is lower, 0.2827 versus 0.4899, while the minimum absolute partial charge is also lower, 0.2583 versus 0.3205; both charge-related shifts favor the non-mutagenic side here. The neighbor’s nitro count is 2, matching the query, so that toxicophore-like feature is shared and does not separate them. With the charge and indene differences outweighing the small ring-related counter-signal, Neighbor 5 still supports option (A).
+
+Neighbor 6 is the one comparison that most strongly cuts the other way and resembles the mutagenic class more closely. The query has the indene motif absent in the neighbor, but here that is outweighed by several exposure- and charge-related differences that favor mutagenicity. The neighbor has a much more negative minimum partial charge, -0.5072 versus -0.2583 in the query, so the query is less negative by +0.2489, and that change is associated with mutagenicity in this comparison. The query also has one aliphatic carbocycle versus none in the neighbor, and its neutral fraction is much higher, with the neighbor at 0.0435 and the query marked present as 1, both of which lean toward better bacterial exposure and thus option (B). The maximum absolute partial charge is lower in the query, 0.2827 versus 0.5072, which also favors the mutagenic side here. Even so, this is the only neighbor that clearly gives the mutagenic class the edge.
+
+Putting all six neighbors together, the three positive neighbors mostly favor option (A), and even the one strongest mutagenic-looking positive neighbor still ends up overall A-leaning. Among the three negative neighbors, two still favor option (A) and only Neighbor 6 favors option (B). The repeated pattern is that the query’s higher sp3 character, presence of 2,3-dihydro-1H-indene, slightly better QED, and generally less exposure-limiting profile tend to make it look less mutagenic than most of the mutagenic neighbors, while only a subset of charge and lipophilicity features in one neighbor pull the other way. The net result is a clear preference for option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

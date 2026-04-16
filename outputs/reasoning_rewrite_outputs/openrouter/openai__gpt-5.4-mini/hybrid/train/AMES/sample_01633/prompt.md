@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a hydroperoxide group (1), which is a concerning reactive functionality and supports a mutagenic interpretation. At the same time, several size and exposure-related descriptors point the other way: the molecular weight is low at 76.051, the heavy-atom count is only 5, the exact molecular weight is 76.016, and the heavy-atom molecular weight is 72.019, all of which make the structure small and in principle not especially prone to bioavailability limitations. However, the neutral fraction is absent (0), suggesting a strongly ionized state that can reduce passive bacterial uptake, and the estimated logD is very low at -5.2927, indicating extreme hydrophilicity and likely poor membrane permeation. The Labute surface area is 29.1028, which is small, but the QED drug-likeness is only 0.3266, consistent with a less optimized physicochemical profile and not strongly reassuring here. The carboxylic ester is present (1), which is not itself a classic Ames toxicophore and can be associated with a less concerning profile, but that is outweighed by the hydroperoxide concern. Overall, despite the small size and highly hydrophilic, ionized character that could limit exposure, the presence of the hydroperoxide makes the compound more consistent with a mutagenic outcome, so the final call is option (B): is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately informative mutagenic analog. The most striking difference is hydroperoxide: the neighbor lacks it while the query has one copy, and that directly favors a mutagenic interpretation because hydroperoxide is a reactive functionality. The query is also much smaller and less bulky than the neighbor, with Labute surface area dropping from 76.1046 to 29.1028 (delta -47.0018), heavy-atom count falling from 12 to 5 (delta -7), and molecular weight falling from 184.622 to 76.051, including exact molecular weight from 184.0291 to 76.016 (delta -108.0131). Those size and surface-area shifts can reduce exposure, which works against mutagenicity, but the query also has lower QED drug-likeness, 0.3266 versus 0.4008 (delta -0.0742), which is consistent with a less drug-like profile. Taken together, the added hydroperoxide and the low-QED, low-size profile make this neighbor informative for a B outcome even though the smaller size and lower molecular weight temper it.
+
+Neighbor 2 also compares against a mutagenic analog and gives a somewhat split picture. Again, the query has hydroperoxide once while the neighbor has none, which is a major mutagenicity-leaning difference. At the same time, the query is much less flexible, with rotatable bonds dropping from 6 to 0 (delta -6), and it is less aromatic, with aromatic ring count falling from 2 to 0 (delta -2); both of those changes make the query less like a larger, more aromatic scaffold that could support mutagenicity. The query is also much smaller in heavy-atom count, 5 versus 24 (delta -19), which can reduce exposure. Its fraction of sp3 carbons is higher, 0.5 versus 0.2222 (delta +0.2778), and the neighbor has 2 carboxylic ester groups while the query has 1 (delta -1), both of which move away from the neighbor’s more ester-rich, more extended structure. Overall this neighbor is not as cleanly mutagenic as the first, but the hydroperoxide presence still keeps it on the B side despite the smaller, less aromatic, and less flexible query.
+
+Neighbor 3 leans more clearly toward mutagenicity. The same hydroperoxide difference is present: the neighbor has none and the query has one, which is again a strong reactive-feature difference in favor of B. The query is far smaller, with heavy-atom count dropping from 21 to 5 (delta -16) and molecular weight from 274.319 to 76.051 (delta -198.268), and it is also more saturated/less flat in the sense of a higher fraction of sp3 carbons, 0.5 versus 0.1053 (delta +0.3947). Those changes could reduce exposure or remove planar aromatic character, but the query simultaneously has lower QED drug-likeness, 0.3266 versus 0.3927 (delta -0.0661), which again points to a less drug-like profile. The maximum partial charge is slightly higher in the query, 0.3385 versus 0.3025 (delta +0.0361), but that shift is small relative to the hydroperoxide difference. In sum, the reactive hydroperoxide feature dominates this comparison and supports a mutagenic call.
+
+Neighbor 4 is a negative neighbor, but it still contains several features that help explain why the query can remain mutagenic. As before, the query has hydroperoxide once while the neighbor has none, favoring B. The query is much smaller, with molecular weight 76.051 versus 166.176 (delta -90.125), and heavy-atom molecular weight 72.019 versus 156.096 (delta -84.077), which can reduce exposure. Yet the query also has much lower Labute surface area, 29.1028 versus 70.5955 (delta -41.4927), and that large drop is part of a small, compact profile rather than a large exposed scaffold. Neutral fraction is explicitly different: the neighbor has a neutral fraction present (1) while the query has it absent (0), which is a polarity/ionization-related change that can alter bacterial exposure. QED is lower in the query, 0.3266 versus 0.5283 (delta -0.2017), again indicating a less drug-like molecule. Even though the neighbor is labeled non-mutagenic, the query’s hydroperoxide and lower QED keep this comparison from overturning a B prediction.
+
+Neighbor 5 is the most nuanced negative neighbor and still ends up supporting mutagenicity overall. The query again has hydroperoxide once while the neighbor has none, a strong B-leaning difference. The query’s estimated logD is much lower, -5.2927 versus -1.2994 (delta -3.9933), indicating a much more highly ionized or less lipophilic state, which can reduce passive exposure. The query also lacks the neighbor’s 2 tetrahydrofuran copies, with a delta of -2, and the ring count drops from 2 to 0 (delta -2), both reflecting a simpler, less ring-rich structure. Neutral fraction is absent in the query but present in the neighbor (delta -1), which again signals a change in ionization state, and Labute surface area is much lower in the query, 29.1028 versus 101.1123 (delta -72.0095). Several of those shifts would usually reduce exposure, but the hydroperoxide feature is still the most chemically consequential distinction here, and the large drop in logD plus the simplified ring system do not remove that reactive alert. This neighbor therefore remains compatible with a mutagenic overall call.
+
+Neighbor 6 is the strongest of the negative neighbors for a B outcome. The query again carries hydroperoxide while the neighbor does not. In addition, the query is much smaller, with Labute surface area 29.1028 versus 74.7571 (delta -45.6543), molecular weight 76.051 versus 180.159 (delta -104.108), heavy-atom count 5 versus 13 (delta -8), and QED 0.3266 versus 0.5501 (delta -0.2235). Neutral fraction is also lower/absent in the query, with the neighbor at 0.0001 and the query absent (delta -0.0001). Most of those differences point to a smaller, less drug-like molecule that may have lower exposure, but the hydroperoxide feature is still directly unfavorable, and the neighbor’s own non-mutagenic label is outweighed by the query’s reactive motif plus its lower QED and compact but potentially bioactive profile. Among the six comparisons, this one most clearly leaves B intact despite exposure-related arguments in the opposite direction.
+
+Across all six neighbors, the same pattern repeats: the query consistently contains hydroperoxide where the neighbors do not, and that reactive feature repeatedly supports mutagenicity. Several size- and exposure-related descriptors point the other way — much lower molecular weight, heavy-atom count, Labute surface area, rotatable bonds, ring count, and in one case much lower logD or higher fraction of sp3 carbons — but those shifts are better viewed as exposure modifiers than as arguments against the reactive alert. Because the mutagenicity-associated hydroperoxide signal is present throughout the comparisons and is not canceled by the compact size of the query, the overall prediction is option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

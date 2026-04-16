@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several structural features that are more consistent with mutagenicity: it has aromatic ring count 3 and aromatic carbocycle count 3, which indicates a fairly aromatic scaffold, and ring count 4 with fraction of sp3 carbons 0, making the structure completely flat and aromatic-rich. That kind of planarity can align with mutagenic aromatic systems, especially when the aromatic content is substantial. The presence of benzene count 3 further reinforces the aromatic character. It also contains ketone count 2 and a secondary amide present 1, along with number of basic sites present 1, so there is at least one ionizable nitrogen that could affect bacterial uptake and exposure. At the same time, some physicochemical features lean the other way: Labute surface area 153.9723 is fairly large, and estimated logP 4.3677 is moderately high, both of which can make effective bacterial exposure less straightforward and can sometimes reduce apparent activity. However, those exposure-related factors do not outweigh the combination of multiple aromatic rings, complete sp3 absence, and the presence of a basic site in this case. Overall, the balance of evidence favors option (B): is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately mutagenicity-leaning comparison. The query is larger and more lipophilic than the neighbor, with Labute surface area 153.9723 versus 137.4181 (delta +16.5541), estimated logD 4.3677 versus 2.3788 (delta +1.9889), and topological polar surface area 63.24 versus 92.34 (delta -29.1). The lower TPSA and higher logD together suggest a more hydrophobic, less polar profile, which can support bacterial exposure in some contexts rather than suppress it. At the same time, the query has fraction of sp3 carbons 0 versus 0.1111 (delta -0.1111), and the note treats that flatter, more aromatic tendency as favorable for mutagenicity; the ring count is also higher, 4 versus 3 (delta +1), which is consistent with more ring-rich chemistry. The ketone count is unchanged at 2 versus 2, so that feature does not distinguish the pair. Overall, despite the larger surface area tending the other way, Neighbor 1 still resembles a mutagenic analog more than a non-mutagenic one.
+
+Neighbor 2 is more conflicted, but the balance is still slightly against mutagenicity. The query again has much larger Labute surface area, 153.9723 versus 117.1803 (delta +36.792), which in this comparison works against mutagenicity. Ring count rises from 3 to 4 (delta +1), and the fraction of sp3 carbons drops from 0.1765 to 0 (delta -0.1765), both of which favor the mutagenic side by making the query more ring-rich and more planar. The ketone count remains 2 versus 2, so that is neutral. Estimated logD moves from 3.2817 to 4.3677 (delta +1.086), but here that higher lipophilicity is interpreted in the opposite direction and favors not-mutagenic behavior, likely by worsening effective exposure. Neutral fraction is also slightly higher in the query, 0.9999 versus 0.9987 (delta +0.0012), which is a very small shift but still counted on the mutagenic side in this pair. Taken together, the large surface-area and logD effects outweigh the ring and sp3 effects, so this neighbor is closer overall to the not-mutagenic class.
+
+Neighbor 3 is more clearly mutagenicity-leaning overall. The query has more rings, 4 versus 2 (delta +2), which aligns with the stronger aromatic/ring-rich structural pattern associated with mutagenic behavior. The fraction of sp3 carbons is unchanged at 0 versus 0 (delta +0), so that does not move the comparison, but the heavy-atom count is much larger, 26 versus 18 (delta +8), which in this context is treated as a size-related factor that works against mutagenicity through reduced exposure. Labute surface area is also higher, 153.9723 versus 111.1614 (delta +42.8109), again acting in the not-mutagenic direction. QED drug-likeness decreases from 0.6908 to 0.5764 (delta -0.1145), which also favors not-mutagenic behavior in this comparison. Estimated logD increases from 3.562 to 4.3677 (delta +0.8057), and that shift is likewise counted against mutagenicity here. Even with the size and lipophilicity penalties, the ring increase and the unchanged flat sp3 profile leave Neighbor 3 as a mutagenicity-leaning analog overall.
+
+Neighbor 4 is a strong mutagenic analog despite several exposure-limiting features. The query has far fewer QED-like desirability issues than the neighbor, with QED 0.5764 versus 0.1776 (delta +0.3988), and that shift is interpreted as not-mutagenic in this pair. However, the query is much less bulky in the sense of ring architecture: ring count drops from 9 to 4 (delta -5), but the comparison note still treats the query’s 4-ring structure, together with aromatic carbocycle count 3 versus 8 (delta -5), as qualitatively compatible with mutagenicity relative to the very ring-heavy neighbor. Heavy-atom count also drops sharply from 51 to 26 (delta -25), and aliphatic carbocycle count rises from 0 to 1 (delta +1), both of which are recorded as mutagenic-leaning here. Number of ionizable sites falls from 8 to 2 (delta -6), which works against mutagenicity by reducing ionizable functionality and possibly exposure. Even with that counterweight, the overall comparison still favors mutagenicity because the neighbor is an extremely large, highly ringed, aromatic-rich structure, whereas the query retains the smaller ring pattern associated with the positive class.
+
+Neighbor 5 is also mutagenic-leaning overall. The query has more rings, 4 versus 1 (delta +3), and a new aliphatic carbocycle count of 1 versus 0 (delta +1), both of which support the positive class in this comparison. It also has more ketones, 2 versus 0 (delta +2), and the presence of ketone functionality is treated here as mutagenicity-favoring. Number of basic sites is present in the query and absent in the neighbor, 1 versus 0 (delta +1), which likewise supports the positive class. The main counterweights are that Labute surface area is much larger, 153.9723 versus 59.8727 (delta +94.0996), and heavy-atom count is also much larger, 26 versus 10 (delta +16); both of those are treated as not-mutagenic because they may limit effective exposure. Even so, the ring increase and added ketone/basic functionality dominate the comparison, so Neighbor 5 remains a mutagenic analog.
+
+Neighbor 6 follows the same general pattern as Neighbor 5, with the query looking more like the mutagenic side overall. The query has more aliphatic carbocycles, 1 versus 0 (delta +1), and more rings overall, 4 versus 2 (delta +2), both of which favor mutagenicity in this pair. Ketone count again increases from 0 to 2 (delta +2), which is another positive-class feature. The countervailing factors are higher heavy-atom count, 26 versus 19 (delta +7), higher Labute surface area, 153.9723 versus 120.3305 (delta +33.6417), and a slightly higher estimated logP, 4.3677 versus 4.3641 (delta +0.0036); each of these is treated as not-mutagenic in the comparison because of size or exposure limitations. Even with those offsets, the added ring and ketone pattern keeps Neighbor 6 aligned with mutagenicity.
+
+Putting the six comparisons together, the three mutagenic neighbors are supported by recurring ring-rich, more planar, and ketone-containing features, while the three non-mutagenic neighbors mainly emphasize larger size, higher surface area, and exposure-limiting properties. The positive neighbors are slightly more persuasive overall because the query repeatedly matches the mutagenic side on ring count and related structural features, even when some size-based descriptors pull in the opposite direction. That combination supports option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

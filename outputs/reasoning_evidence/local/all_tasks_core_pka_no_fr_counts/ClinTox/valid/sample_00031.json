@@ -1,0 +1,2332 @@
+{
+  "schema_version": "trim_reasoning_v0",
+  "evidence_stage": "local_evidence_only",
+  "sample_id": "valid_sample_31",
+  "sample_index": 31,
+  "task": "ClinTox",
+  "split": "valid",
+  "smiles": "CC(C)C[C@H](NC(=O)[C@H](CCc1ccccc1)NC(=O)CN1CCOCC1)C(=O)N[C@@H](Cc1ccccc1)C(=O)N[C@@H](CC(C)C)C(=O)[C@@]1(C)CO1",
+  "gt_label": 1,
+  "gt_label_semantics": {
+    "option": "B",
+    "text": "is toxic",
+    "label": 1
+  },
+  "local_prediction": 0,
+  "local_prediction_semantics": {
+    "option": "A",
+    "text": "is not toxic",
+    "label": 0
+  },
+  "local_prediction_correct": false,
+  "local_score": 0.03576052432667776,
+  "s_pos": 0.041301378479906954,
+  "s_neg": 0.03146878337861359,
+  "keep_for_reasoning": true,
+  "drop_reason": null,
+  "local_per_neighbor_decision_evidence": {
+    "positive_neighbors": [
+      {
+        "neighbor_id": "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+        "query_smiles": "CC(C)C[C@H](NC(=O)[C@H](CCc1ccccc1)NC(=O)CN1CCOCC1)C(=O)N[C@@H](Cc1ccccc1)C(=O)N[C@@H](CC(C)C)C(=O)[C@@]1(C)CO1",
+        "query_label": 1,
+        "neighbor_smiles": "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+        "neighbor_label": 1,
+        "neighbor_similarity": 0.23623827909542197,
+        "neighbor_scaffold": "O=C(CNC(=O)CNC(=O)C(Cc1ccccc1)NC(=O)CNC(=O)C(Cc1c[nH]c2ccccc12)NC(=O)C(Cc1cnc[nH]1)NC(=O)C1CCC(=O)N1)NCC(=O)N1CCCC1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.01905508122514625,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not toxic",
+          "label": 0
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": -0.5079666451556014,
+            "query_value": -0.3787922353563335,
+            "delta_value": 0.12917440979926792,
+            "base_value_text": "value -0.508",
+            "query_value_text": "value -0.3788",
+            "delta_value_text": "+0.1292",
+            "contribution": 1.2421172269817302,
+            "contribution_abs": 1.2421172269817302,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For minimum partial charge, the neighbor's minimum partial charge is value -0.508, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.1292. This pairwise contribution is 1.2421, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "fg_top_level__oxirane",
+            "display_name": "oxirane",
+            "description": "top-level functional-group indicator or count for oxirane",
+            "source_family": "fg_top_level",
+            "raw_name": "oxirane",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": -1.1687293551916702,
+            "contribution_abs": 1.1687293551916702,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not toxic",
+            "text_hint": "The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1687, which pushes toward option (A): is not toxic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": -3.1057000000000192,
+            "query_value": 2.583500000000007,
+            "delta_value": 5.689200000000026,
+            "base_value_text": "value -3.1057",
+            "query_value_text": "value 2.5835",
+            "delta_value_text": "+5.6892",
+            "contribution": 1.0279228822185658,
+            "contribution_abs": 1.0279228822185658,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value -3.1057, while the query's estimated logP is value 2.5835. The query-minus-neighbor delta is +5.6892. This pairwise contribution is 1.0279, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "fg_top_level__lactam",
+            "display_name": "lactam",
+            "description": "top-level functional-group indicator or count for lactam",
+            "source_family": "fg_top_level",
+            "raw_name": "lactam",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "contribution": -0.7096896639897263,
+            "contribution_abs": 0.7096896639897263,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not toxic",
+            "text_hint": "The neighbor has lactam, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.7097, which pushes toward option (A): is not toxic."
+          },
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "display_name": "ammonium",
+            "description": "top-level functional-group indicator or count for ammonium",
+            "source_family": "fg_top_level",
+            "raw_name": "ammonium",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "contribution": 0.6974427447966625,
+            "contribution_abs": 0.6974427447966625,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "fg_top_level__morpholine",
+            "display_name": "morpholine",
+            "description": "top-level functional-group indicator or count for morpholine",
+            "source_family": "fg_top_level",
+            "raw_name": "morpholine",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 0.49634563981300234,
+            "contribution_abs": 0.49634563981300234,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4963, which pushes toward option (B): is toxic."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+        "query_smiles": "CC(C)C[C@H](NC(=O)[C@H](CCc1ccccc1)NC(=O)CN1CCOCC1)C(=O)N[C@@H](Cc1ccccc1)C(=O)N[C@@H](CC(C)C)C(=O)[C@@]1(C)CO1",
+        "query_label": 1,
+        "neighbor_smiles": "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+        "neighbor_label": 1,
+        "neighbor_similarity": 0.22077519379844965,
+        "neighbor_scaffold": "c1ccccc1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.042677738550755275,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not toxic",
+          "label": 0
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "fg_top_level__oxirane",
+            "display_name": "oxirane",
+            "description": "top-level functional-group indicator or count for oxirane",
+            "source_family": "fg_top_level",
+            "raw_name": "oxirane",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": -1.1687293551916702,
+            "contribution_abs": 1.1687293551916702,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not toxic",
+            "text_hint": "The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1687, which pushes toward option (A): is not toxic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": -0.425736096244373,
+            "query_value": -0.3787922353563335,
+            "delta_value": 0.04694386088803948,
+            "base_value_text": "value -0.4257",
+            "query_value_text": "value -0.3788",
+            "delta_value_text": "+0.0469",
+            "contribution": 0.9693320231576991,
+            "contribution_abs": 0.9693320231576991,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For minimum partial charge, the neighbor's minimum partial charge is value -0.4257, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.0469. This pairwise contribution is 0.9693, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "display_name": "ammonium",
+            "description": "top-level functional-group indicator or count for ammonium",
+            "source_family": "fg_top_level",
+            "raw_name": "ammonium",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "contribution": 0.6974427447966625,
+            "contribution_abs": 0.6974427447966625,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "fg_top_level__morpholine",
+            "display_name": "morpholine",
+            "description": "top-level functional-group indicator or count for morpholine",
+            "source_family": "fg_top_level",
+            "raw_name": "morpholine",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 0.49634563981300234,
+            "contribution_abs": 0.49634563981300234,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4963, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "display_name": "hydrogen-bond acceptor count",
+            "description": "number of hydrogen-bond acceptors",
+            "source_family": "rdkit",
+            "raw_name": "NumHAcceptors",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 4.0,
+            "query_value": 8.0,
+            "delta_value": 4.0,
+            "base_value_text": "value 4",
+            "query_value_text": "value 8",
+            "delta_value_text": "+4",
+            "contribution": 0.44062725533654096,
+            "contribution_abs": 0.44062725533654096,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 4, while the query's hydrogen-bond acceptor count is value 8. The query-minus-neighbor delta is +4. This pairwise contribution is 0.4406, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.2660999999999991,
+            "query_value": 2.583500000000007,
+            "delta_value": 1.317400000000008,
+            "base_value_text": "value 1.2661",
+            "query_value_text": "value 2.5835",
+            "delta_value_text": "+1.3174",
+            "contribution": 0.3442538703176378,
+            "contribution_abs": 0.3442538703176378,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 1.2661, while the query's estimated logP is value 2.5835. The query-minus-neighbor delta is +1.3174. This pairwise contribution is 0.3443, which pushes toward option (B): is toxic."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2",
+        "query_smiles": "CC(C)C[C@H](NC(=O)[C@H](CCc1ccccc1)NC(=O)CN1CCOCC1)C(=O)N[C@@H](Cc1ccccc1)C(=O)N[C@@H](CC(C)C)C(=O)[C@@]1(C)CO1",
+        "query_label": 1,
+        "neighbor_smiles": "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2",
+        "neighbor_label": 1,
+        "neighbor_similarity": 0.20543417366946778,
+        "neighbor_scaffold": "O=C(CCC=CCc1ccc2c(c1)C(=O)OC2)OCCN1CCOCC1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.0654042856539523,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not toxic",
+          "label": 0
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": -0.5065900756532241,
+            "query_value": -0.3787922353563335,
+            "delta_value": 0.12779784029689062,
+            "base_value_text": "value -0.5066",
+            "query_value_text": "value -0.3788",
+            "delta_value_text": "+0.1278",
+            "contribution": 1.2756363408719125,
+            "contribution_abs": 1.2756363408719125,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For minimum partial charge, the neighbor's minimum partial charge is value -0.5066, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.1278. This pairwise contribution is 1.2756, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "fg_top_level__oxirane",
+            "display_name": "oxirane",
+            "description": "top-level functional-group indicator or count for oxirane",
+            "source_family": "fg_top_level",
+            "raw_name": "oxirane",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": -1.1687293551916702,
+            "contribution_abs": 1.1687293551916702,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not toxic",
+            "text_hint": "The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1687, which pushes toward option (A): is not toxic."
+          },
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "display_name": "ammonium",
+            "description": "top-level functional-group indicator or count for ammonium",
+            "source_family": "fg_top_level",
+            "raw_name": "ammonium",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "contribution": 0.6974427447966625,
+            "contribution_abs": 0.6974427447966625,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "fg_top_level__morpholine",
+            "display_name": "morpholine",
+            "description": "top-level functional-group indicator or count for morpholine",
+            "source_family": "fg_top_level",
+            "raw_name": "morpholine",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 1.0,
+            "delta_value": 0.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0",
+            "contribution": -0.5838353308166102,
+            "contribution_abs": 0.5838353308166102,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not toxic",
+            "text_hint": "Both the neighbor and the query have morpholine (query-minus-neighbor delta +0). This pairwise contribution is -0.5838, which pushes toward option (A): is not toxic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "display_name": "hydrogen-bond acceptor count",
+            "description": "number of hydrogen-bond acceptors",
+            "source_family": "rdkit",
+            "raw_name": "NumHAcceptors",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 8.0,
+            "query_value": 8.0,
+            "delta_value": 0.0,
+            "base_value_text": "value 8",
+            "query_value_text": "value 8",
+            "delta_value_text": "+0",
+            "contribution": 0.3777578980367858,
+            "contribution_abs": 0.3777578980367858,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 8, while the query's hydrogen-bond acceptor count is value 8. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3778, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 2.52402,
+            "query_value": 2.583500000000007,
+            "delta_value": 0.05948000000000686,
+            "base_value_text": "value 2.524",
+            "query_value_text": "value 2.5835",
+            "delta_value_text": "+0.0595",
+            "contribution": 0.3391727923537077,
+            "contribution_abs": 0.3391727923537077,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 2.524, while the query's estimated logP is value 2.5835. The query-minus-neighbor delta is +0.0595. This pairwise contribution is 0.3392, which pushes toward option (B): is toxic."
+          }
+        ]
+      }
+    ],
+    "negative_neighbors": [
+      {
+        "neighbor_id": "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+        "query_smiles": "CC(C)C[C@H](NC(=O)[C@H](CCc1ccccc1)NC(=O)CN1CCOCC1)C(=O)N[C@@H](Cc1ccccc1)C(=O)N[C@@H](CC(C)C)C(=O)[C@@]1(C)CO1",
+        "query_label": 1,
+        "neighbor_smiles": "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+        "neighbor_label": 0,
+        "neighbor_similarity": 0.2866666666666667,
+        "neighbor_scaffold": "O=C(NCCc1ccccc1)C1CCCCC1",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.03540640832406531,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not toxic",
+          "label": 0
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__rdkit__NumRotatableBonds",
+            "display_name": "rotatable-bond count",
+            "description": "number of rotatable bonds",
+            "source_family": "rdkit",
+            "raw_name": "NumRotatableBonds",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 6.0,
+            "query_value": 20.0,
+            "delta_value": 14.0,
+            "base_value_text": "value 6",
+            "query_value_text": "value 20",
+            "delta_value_text": "+14",
+            "contribution": -1.0403781500626887,
+            "contribution_abs": 1.0403781500626887,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not toxic",
+            "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 6, while the query's rotatable-bond count is value 20. The query-minus-neighbor delta is +14. This pairwise contribution is -1.0404, which pushes toward option (A): is not toxic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "display_name": "maximum absolute partial charge",
+            "description": "largest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxAbsPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.5478848151713233,
+            "query_value": 0.3787922353563335,
+            "delta_value": -0.16909257981498976,
+            "base_value_text": "value 0.5479",
+            "query_value_text": "value 0.3788",
+            "delta_value_text": "-0.1691",
+            "contribution": 0.9117611165121664,
+            "contribution_abs": 0.9117611165121664,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.5479, while the query's maximum absolute partial charge is value 0.3788. The query-minus-neighbor delta is -0.1691. This pairwise contribution is 0.9118, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": -0.5478848151713233,
+            "query_value": -0.3787922353563335,
+            "delta_value": 0.16909257981498976,
+            "base_value_text": "value -0.5479",
+            "query_value_text": "value -0.3788",
+            "delta_value_text": "+0.1691",
+            "contribution": 0.8064363958712049,
+            "contribution_abs": 0.8064363958712049,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For minimum partial charge, the neighbor's minimum partial charge is value -0.5479, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.1691. This pairwise contribution is 0.8064, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "fg_top_level__oxirane",
+            "display_name": "oxirane",
+            "description": "top-level functional-group indicator or count for oxirane",
+            "source_family": "fg_top_level",
+            "raw_name": "oxirane",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": -0.6004052260673117,
+            "contribution_abs": 0.6004052260673117,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not toxic",
+            "text_hint": "The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6004, which pushes toward option (A): is not toxic."
+          },
+          {
+            "feature_name": "fg_top_level__morpholine",
+            "display_name": "morpholine",
+            "description": "top-level functional-group indicator or count for morpholine",
+            "source_family": "fg_top_level",
+            "raw_name": "morpholine",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 0.5900304144266686,
+            "contribution_abs": 0.5900304144266686,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.59, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "display_name": "hydrogen-bond acceptor count",
+            "description": "number of hydrogen-bond acceptors",
+            "source_family": "rdkit",
+            "raw_name": "NumHAcceptors",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 3.0,
+            "query_value": 8.0,
+            "delta_value": 5.0,
+            "base_value_text": "value 3",
+            "query_value_text": "value 8",
+            "delta_value_text": "+5",
+            "contribution": 0.5093668613551565,
+            "contribution_abs": 0.5093668613551565,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 8. The query-minus-neighbor delta is +5. This pairwise contribution is 0.5094, which pushes toward option (B): is toxic."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]",
+        "query_smiles": "CC(C)C[C@H](NC(=O)[C@H](CCc1ccccc1)NC(=O)CN1CCOCC1)C(=O)N[C@@H](Cc1ccccc1)C(=O)N[C@@H](CC(C)C)C(=O)[C@@]1(C)CO1",
+        "query_label": 1,
+        "neighbor_smiles": "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]",
+        "neighbor_label": 0,
+        "neighbor_similarity": 0.2846153846153846,
+        "neighbor_scaffold": "c1ccccc1",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.02245708847469976,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not toxic",
+          "label": 0
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__rdkit__NumRotatableBonds",
+            "display_name": "rotatable-bond count",
+            "description": "number of rotatable bonds",
+            "source_family": "rdkit",
+            "raw_name": "NumRotatableBonds",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 8.0,
+            "query_value": 20.0,
+            "delta_value": 12.0,
+            "base_value_text": "value 8",
+            "query_value_text": "value 20",
+            "delta_value_text": "+12",
+            "contribution": -1.002632501326341,
+            "contribution_abs": 1.002632501326341,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not toxic",
+            "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 8, while the query's rotatable-bond count is value 20. The query-minus-neighbor delta is +12. This pairwise contribution is -1.0026, which pushes toward option (A): is not toxic."
+          },
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "display_name": "ammonium",
+            "description": "top-level functional-group indicator or count for ammonium",
+            "source_family": "fg_top_level",
+            "raw_name": "ammonium",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 2.0,
+            "query_value": 0.0,
+            "delta_value": -2.0,
+            "base_value_text": "count 2",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-2",
+            "contribution": 0.7832137771807832,
+            "contribution_abs": 0.7832137771807832,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "The neighbor has 2 copies of ammonium, while the query has 0 (query-minus-neighbor delta -2). This pairwise contribution is 0.7832, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "display_name": "hydrogen-bond acceptor count",
+            "description": "number of hydrogen-bond acceptors",
+            "source_family": "rdkit",
+            "raw_name": "NumHAcceptors",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 8.0,
+            "delta_value": 7.0,
+            "base_value_text": "value 1",
+            "query_value_text": "value 8",
+            "delta_value_text": "+7",
+            "contribution": 0.6287627147533533,
+            "contribution_abs": 0.6287627147533533,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 1, while the query's hydrogen-bond acceptor count is value 8. The query-minus-neighbor delta is +7. This pairwise contribution is 0.6288, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "fg_top_level__oxirane",
+            "display_name": "oxirane",
+            "description": "top-level functional-group indicator or count for oxirane",
+            "source_family": "fg_top_level",
+            "raw_name": "oxirane",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": -0.6004052260673117,
+            "contribution_abs": 0.6004052260673117,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not toxic",
+            "text_hint": "The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6004, which pushes toward option (A): is not toxic."
+          },
+          {
+            "feature_name": "fg_top_level__morpholine",
+            "display_name": "morpholine",
+            "description": "top-level functional-group indicator or count for morpholine",
+            "source_family": "fg_top_level",
+            "raw_name": "morpholine",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 0.5900304144266686,
+            "contribution_abs": 0.5900304144266686,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.59, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "display_name": "maximum absolute partial charge",
+            "description": "largest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxAbsPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.3575608351760896,
+            "query_value": 0.3787922353563335,
+            "delta_value": 0.021231400180243887,
+            "base_value_text": "value 0.3576",
+            "query_value_text": "value 0.3788",
+            "delta_value_text": "+0.0212",
+            "contribution": 0.5317194296593336,
+            "contribution_abs": 0.5317194296593336,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3576, while the query's maximum absolute partial charge is value 0.3788. The query-minus-neighbor delta is +0.0212. This pairwise contribution is 0.5317, which pushes toward option (B): is toxic."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O",
+        "query_smiles": "CC(C)C[C@H](NC(=O)[C@H](CCc1ccccc1)NC(=O)CN1CCOCC1)C(=O)N[C@@H](Cc1ccccc1)C(=O)N[C@@H](CC(C)C)C(=O)[C@@]1(C)CO1",
+        "query_label": 1,
+        "neighbor_smiles": "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O",
+        "neighbor_label": 0,
+        "neighbor_similarity": 0.2839712918660287,
+        "neighbor_scaffold": "O=C(CCc1c[nH]c2ccccc12)NCC(=O)NCC(=O)NCCc1ccccc1",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.03652591849949507,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not toxic",
+          "label": 0
+        },
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "display_name": "maximum absolute partial charge",
+            "description": "largest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxAbsPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.5500723460292523,
+            "query_value": 0.3787922353563335,
+            "delta_value": -0.17128011067291876,
+            "base_value_text": "value 0.5501",
+            "query_value_text": "value 0.3788",
+            "delta_value_text": "-0.1713",
+            "contribution": 0.9288134453532864,
+            "contribution_abs": 0.9288134453532864,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.5501, while the query's maximum absolute partial charge is value 0.3788. The query-minus-neighbor delta is -0.1713. This pairwise contribution is 0.9288, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": -0.5500723460292523,
+            "query_value": -0.3787922353563335,
+            "delta_value": 0.17128011067291876,
+            "base_value_text": "value -0.5501",
+            "query_value_text": "value -0.3788",
+            "delta_value_text": "+0.1713",
+            "contribution": 0.8259486277853033,
+            "contribution_abs": 0.8259486277853033,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For minimum partial charge, the neighbor's minimum partial charge is value -0.5501, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.1713. This pairwise contribution is 0.8259, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "fg_top_level__oxirane",
+            "display_name": "oxirane",
+            "description": "top-level functional-group indicator or count for oxirane",
+            "source_family": "fg_top_level",
+            "raw_name": "oxirane",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": -0.6004052260673117,
+            "contribution_abs": 0.6004052260673117,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not toxic",
+            "text_hint": "The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6004, which pushes toward option (A): is not toxic."
+          },
+          {
+            "feature_name": "fg_top_level__morpholine",
+            "display_name": "morpholine",
+            "description": "top-level functional-group indicator or count for morpholine",
+            "source_family": "fg_top_level",
+            "raw_name": "morpholine",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 0.5900304144266686,
+            "contribution_abs": 0.5900304144266686,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.59, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0430000000000075,
+            "query_value": 2.583500000000007,
+            "delta_value": 2.5404999999999993,
+            "base_value_text": "value 0.043",
+            "query_value_text": "value 2.5835",
+            "delta_value_text": "+2.5405",
+            "contribution": 0.5590786843656678,
+            "contribution_abs": 0.5590786843656678,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is toxic",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 0.043, while the query's estimated logP is value 2.5835. The query-minus-neighbor delta is +2.5405. This pairwise contribution is 0.5591, which pushes toward option (B): is toxic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.4066479022859582,
+            "query_value": 0.2430070330048691,
+            "delta_value": -0.16364086928108912,
+            "base_value_text": "value 0.4066",
+            "query_value_text": "value 0.243",
+            "delta_value_text": "-0.1636",
+            "contribution": -0.49196603880509165,
+            "contribution_abs": 0.49196603880509165,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not toxic",
+            "text_hint": "For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.4066, while the query's minimum absolute partial charge is value 0.243. The query-minus-neighbor delta is -0.1636. This pairwise contribution is -0.492, which pushes toward option (A): is not toxic."
+          }
+        ]
+      }
+    ],
+    "num_positive_neighbors": 3,
+    "num_negative_neighbors": 3
+  },
+  "local_per_neighbor_middle_draft": {
+    "positive_neighbors": [
+      {
+        "neighbor_id": "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+        "neighbor_smiles": "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.01905508122514625,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not toxic",
+          "label": 0
+        },
+        "middle_draft": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.508, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.1292. This pairwise contribution is 1.2421, which pushes toward option (B): is toxic. Next, The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1687, which pushes toward option (A): is not toxic. Then, For estimated logP, the neighbor's estimated logP is value -3.1057, while the query's estimated logP is value 2.5835. The query-minus-neighbor delta is +5.6892. This pairwise contribution is 1.0279, which pushes toward option (B): is toxic. After that, The neighbor has lactam, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.7097, which pushes toward option (A): is not toxic. Finally, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. Step 6, The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4963, which pushes toward option (B): is toxic. Taken together, this positive-neighbor comparison pushes toward option (A): is not toxic with pair score 0.0191."
+      },
+      {
+        "neighbor_id": "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+        "neighbor_smiles": "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.042677738550755275,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not toxic",
+          "label": 0
+        },
+        "middle_draft": "First, The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1687, which pushes toward option (A): is not toxic. Next, For minimum partial charge, the neighbor's minimum partial charge is value -0.4257, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.0469. This pairwise contribution is 0.9693, which pushes toward option (B): is toxic. Then, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. After that, The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4963, which pushes toward option (B): is toxic. Finally, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 4, while the query's hydrogen-bond acceptor count is value 8. The query-minus-neighbor delta is +4. This pairwise contribution is 0.4406, which pushes toward option (B): is toxic. Step 6, For estimated logP, the neighbor's estimated logP is value 1.2661, while the query's estimated logP is value 2.5835. The query-minus-neighbor delta is +1.3174. This pairwise contribution is 0.3443, which pushes toward option (B): is toxic. Taken together, this positive-neighbor comparison pushes toward option (A): is not toxic with pair score 0.0427."
+      },
+      {
+        "neighbor_id": "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2",
+        "neighbor_smiles": "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.0654042856539523,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not toxic",
+          "label": 0
+        },
+        "middle_draft": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.5066, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.1278. This pairwise contribution is 1.2756, which pushes toward option (B): is toxic. Next, The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1687, which pushes toward option (A): is not toxic. Then, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. After that, Both the neighbor and the query have morpholine (query-minus-neighbor delta +0). This pairwise contribution is -0.5838, which pushes toward option (A): is not toxic. Finally, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 8, while the query's hydrogen-bond acceptor count is value 8. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3778, which pushes toward option (B): is toxic. Step 6, For estimated logP, the neighbor's estimated logP is value 2.524, while the query's estimated logP is value 2.5835. The query-minus-neighbor delta is +0.0595. This pairwise contribution is 0.3392, which pushes toward option (B): is toxic. Taken together, this positive-neighbor comparison pushes toward option (A): is not toxic with pair score 0.0654."
+      }
+    ],
+    "negative_neighbors": [
+      {
+        "neighbor_id": "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+        "neighbor_smiles": "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.03540640832406531,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not toxic",
+          "label": 0
+        },
+        "middle_draft": "First, For rotatable-bond count, the neighbor's rotatable-bond count is value 6, while the query's rotatable-bond count is value 20. The query-minus-neighbor delta is +14. This pairwise contribution is -1.0404, which pushes toward option (A): is not toxic. Next, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.5479, while the query's maximum absolute partial charge is value 0.3788. The query-minus-neighbor delta is -0.1691. This pairwise contribution is 0.9118, which pushes toward option (B): is toxic. Then, For minimum partial charge, the neighbor's minimum partial charge is value -0.5479, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.1691. This pairwise contribution is 0.8064, which pushes toward option (B): is toxic. After that, The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6004, which pushes toward option (A): is not toxic. Finally, The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.59, which pushes toward option (B): is toxic. Step 6, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 8. The query-minus-neighbor delta is +5. This pairwise contribution is 0.5094, which pushes toward option (B): is toxic. Taken together, this negative-neighbor comparison pushes toward option (A): is not toxic with pair score 0.0354."
+      },
+      {
+        "neighbor_id": "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]",
+        "neighbor_smiles": "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.02245708847469976,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not toxic",
+          "label": 0
+        },
+        "middle_draft": "First, For rotatable-bond count, the neighbor's rotatable-bond count is value 8, while the query's rotatable-bond count is value 20. The query-minus-neighbor delta is +12. This pairwise contribution is -1.0026, which pushes toward option (A): is not toxic. Next, The neighbor has 2 copies of ammonium, while the query has 0 (query-minus-neighbor delta -2). This pairwise contribution is 0.7832, which pushes toward option (B): is toxic. Then, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 1, while the query's hydrogen-bond acceptor count is value 8. The query-minus-neighbor delta is +7. This pairwise contribution is 0.6288, which pushes toward option (B): is toxic. After that, The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6004, which pushes toward option (A): is not toxic. Finally, The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.59, which pushes toward option (B): is toxic. Step 6, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3576, while the query's maximum absolute partial charge is value 0.3788. The query-minus-neighbor delta is +0.0212. This pairwise contribution is 0.5317, which pushes toward option (B): is toxic. Taken together, this negative-neighbor comparison pushes toward option (A): is not toxic with pair score 0.0225."
+      },
+      {
+        "neighbor_id": "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O",
+        "neighbor_smiles": "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O",
+        "neighbor_role": "negative_neighbor",
+        "pair_model_type": "negative_neighbor_model",
+        "pair_score": 0.03652591849949507,
+        "pair_prediction": 0,
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not toxic",
+          "label": 0
+        },
+        "middle_draft": "First, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.5501, while the query's maximum absolute partial charge is value 0.3788. The query-minus-neighbor delta is -0.1713. This pairwise contribution is 0.9288, which pushes toward option (B): is toxic. Next, For minimum partial charge, the neighbor's minimum partial charge is value -0.5501, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.1713. This pairwise contribution is 0.8259, which pushes toward option (B): is toxic. Then, The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6004, which pushes toward option (A): is not toxic. After that, The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.59, which pushes toward option (B): is toxic. Finally, For estimated logP, the neighbor's estimated logP is value 0.043, while the query's estimated logP is value 2.5835. The query-minus-neighbor delta is +2.5405. This pairwise contribution is 0.5591, which pushes toward option (B): is toxic. Step 6, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.4066, while the query's minimum absolute partial charge is value 0.243. The query-minus-neighbor delta is -0.1636. This pairwise contribution is -0.492, which pushes toward option (A): is not toxic. Taken together, this negative-neighbor comparison pushes toward option (A): is not toxic with pair score 0.0365."
+      }
+    ]
+  },
+  "local_summary_middle_draft": {
+    "positive_neighbors": {
+      "group_name": "positive_neighbors",
+      "num_neighbors": 3,
+      "num_shared_features": 6,
+      "num_single_neighbor_features": 1,
+      "shared_evidence": [
+        {
+          "feature_name": "fg_top_level__oxirane",
+          "display_name": "oxirane",
+          "description": "top-level functional-group indicator or count for oxirane",
+          "source_family": "fg_top_level",
+          "raw_name": "oxirane",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+            "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+            "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2"
+          ],
+          "neighbor_similarities": [
+            0.23623827909542197,
+            0.22077519379844965,
+            0.20543417366946778
+          ],
+          "support_weight_by_label": {
+            "0": 0.774222010816211,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not toxic",
+            "label": 0
+          },
+          "total_abs_contribution": 3.5061880655750106,
+          "total_weighted_evidence": 0.774222010816211,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+              "neighbor_similarity": 0.23623827909542197,
+              "pair_score": 0.01905508122514625,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": -1.1687293551916702,
+              "contribution_abs": 1.1687293551916702,
+              "contribution_rank": 2,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not toxic",
+              "text_hint": "The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1687, which pushes toward option (A): is not toxic."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+              "neighbor_similarity": 0.22077519379844965,
+              "pair_score": 0.042677738550755275,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": -1.1687293551916702,
+              "contribution_abs": 1.1687293551916702,
+              "contribution_rank": 1,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not toxic",
+              "text_hint": "The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1687, which pushes toward option (A): is not toxic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2",
+              "neighbor_similarity": 0.20543417366946778,
+              "pair_score": 0.0654042856539523,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": -1.1687293551916702,
+              "contribution_abs": 1.1687293551916702,
+              "contribution_rank": 2,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not toxic",
+              "text_hint": "The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.1687, which pushes toward option (A): is not toxic."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+          "display_name": "minimum partial charge",
+          "description": "most negative atomic partial charge",
+          "source_family": "rdkit",
+          "raw_name": "MinPartialCharge",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+            "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+            "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2"
+          ],
+          "neighbor_similarities": [
+            0.23623827909542197,
+            0.22077519379844965,
+            0.20543417366946778
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.7694993989943908
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "total_abs_contribution": 3.4870855910113416,
+          "total_weighted_evidence": 0.7694993989943908,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+              "neighbor_similarity": 0.23623827909542197,
+              "pair_score": 0.01905508122514625,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 1.2421172269817302,
+              "contribution_abs": 1.2421172269817302,
+              "contribution_rank": 1,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For minimum partial charge, the neighbor's minimum partial charge is value -0.508, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.1292. This pairwise contribution is 1.2421, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+              "neighbor_similarity": 0.22077519379844965,
+              "pair_score": 0.042677738550755275,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.9693320231576991,
+              "contribution_abs": 0.9693320231576991,
+              "contribution_rank": 2,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For minimum partial charge, the neighbor's minimum partial charge is value -0.4257, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.0469. This pairwise contribution is 0.9693, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2",
+              "neighbor_similarity": 0.20543417366946778,
+              "pair_score": 0.0654042856539523,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 1.2756363408719125,
+              "contribution_abs": 1.2756363408719125,
+              "contribution_rank": 1,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For minimum partial charge, the neighbor's minimum partial charge is value -0.5066, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.1278. This pairwise contribution is 1.2756, which pushes toward option (B): is toxic."
+            }
+          ]
+        },
+        {
+          "feature_name": "fg_top_level__ammonium",
+          "display_name": "ammonium",
+          "description": "top-level functional-group indicator or count for ammonium",
+          "source_family": "fg_top_level",
+          "raw_name": "ammonium",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+            "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+            "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2"
+          ],
+          "neighbor_similarities": [
+            0.23623827909542197,
+            0.22077519379844965,
+            0.20543417366946778
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.46201930490322474
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "total_abs_contribution": 2.0923282343899876,
+          "total_weighted_evidence": 0.46201930490322474,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+              "neighbor_similarity": 0.23623827909542197,
+              "pair_score": 0.01905508122514625,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.6974427447966625,
+              "contribution_abs": 0.6974427447966625,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+              "neighbor_similarity": 0.22077519379844965,
+              "pair_score": 0.042677738550755275,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.6974427447966625,
+              "contribution_abs": 0.6974427447966625,
+              "contribution_rank": 3,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2",
+              "neighbor_similarity": 0.20543417366946778,
+              "pair_score": 0.0654042856539523,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.6974427447966625,
+              "contribution_abs": 0.6974427447966625,
+              "contribution_rank": 3,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__MolLogP",
+          "display_name": "estimated logP",
+          "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+          "source_family": "rdkit",
+          "raw_name": "MolLogP",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+            "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+            "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2"
+          ],
+          "neighbor_similarities": [
+            0.23623827909542197,
+            0.22077519379844965,
+            0.20543417366946778
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.3885151300017129
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "total_abs_contribution": 1.7113495448899112,
+          "total_weighted_evidence": 0.3885151300017129,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+              "neighbor_similarity": 0.23623827909542197,
+              "pair_score": 0.01905508122514625,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 1.0279228822185658,
+              "contribution_abs": 1.0279228822185658,
+              "contribution_rank": 3,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value -3.1057, while the query's estimated logP is value 2.5835. The query-minus-neighbor delta is +5.6892. This pairwise contribution is 1.0279, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+              "neighbor_similarity": 0.22077519379844965,
+              "pair_score": 0.042677738550755275,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.3442538703176378,
+              "contribution_abs": 0.3442538703176378,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 1.2661, while the query's estimated logP is value 2.5835. The query-minus-neighbor delta is +1.3174. This pairwise contribution is 0.3443, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2",
+              "neighbor_similarity": 0.20543417366946778,
+              "pair_score": 0.0654042856539523,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.3391727923537077,
+              "contribution_abs": 0.3391727923537077,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 2.524, while the query's estimated logP is value 2.5835. The query-minus-neighbor delta is +0.0595. This pairwise contribution is 0.3392, which pushes toward option (B): is toxic."
+            }
+          ]
+        },
+        {
+          "feature_name": "fg_top_level__morpholine",
+          "display_name": "morpholine",
+          "description": "top-level functional-group indicator or count for morpholine",
+          "source_family": "fg_top_level",
+          "raw_name": "morpholine",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+            "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+            "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2"
+          ],
+          "neighbor_similarities": [
+            0.23623827909542197,
+            0.22077519379844965,
+            0.20543417366946778
+          ],
+          "support_weight_by_label": {
+            "0": 0.11993972874535068,
+            "1": 0.2268366446066709
+          },
+          "support_mode": "mostly",
+          "dominant_support": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "total_abs_contribution": 1.576526610442615,
+          "total_weighted_evidence": 0.3467763733520216,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+              "neighbor_similarity": 0.23623827909542197,
+              "pair_score": 0.01905508122514625,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.49634563981300234,
+              "contribution_abs": 0.49634563981300234,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4963, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+              "neighbor_similarity": 0.22077519379844965,
+              "pair_score": 0.042677738550755275,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.49634563981300234,
+              "contribution_abs": 0.49634563981300234,
+              "contribution_rank": 4,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4963, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2",
+              "neighbor_similarity": 0.20543417366946778,
+              "pair_score": 0.0654042856539523,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": -0.5838353308166102,
+              "contribution_abs": 0.5838353308166102,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not toxic",
+              "text_hint": "Both the neighbor and the query have morpholine (query-minus-neighbor delta +0). This pairwise contribution is -0.5838, which pushes toward option (A): is not toxic."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+          "display_name": "hydrogen-bond acceptor count",
+          "description": "number of hydrogen-bond acceptors",
+          "source_family": "rdkit",
+          "raw_name": "NumHAcceptors",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+            "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2"
+          ],
+          "neighbor_similarities": [
+            0.22077519379844965,
+            0.20543417366946778
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.17488394932010592
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "total_abs_contribution": 0.8183851533733267,
+          "total_weighted_evidence": 0.17488394932010592,
+          "term_instances": [
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O",
+              "neighbor_similarity": 0.22077519379844965,
+              "pair_score": 0.042677738550755275,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.44062725533654096,
+              "contribution_abs": 0.44062725533654096,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 4, while the query's hydrogen-bond acceptor count is value 8. The query-minus-neighbor delta is +4. This pairwise contribution is 0.4406, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "COc1c(C)c2c(c(O)c1C/C=C(\\C)CCC(=O)OCCN1CCOCC1)C(=O)OC2",
+              "neighbor_similarity": 0.20543417366946778,
+              "pair_score": 0.0654042856539523,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.3777578980367858,
+              "contribution_abs": 0.3777578980367858,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 8, while the query's hydrogen-bond acceptor count is value 8. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3778, which pushes toward option (B): is toxic."
+            }
+          ]
+        }
+      ],
+      "single_neighbor_evidence": [
+        {
+          "feature_name": "fg_top_level__lactam",
+          "display_name": "lactam",
+          "description": "top-level functional-group indicator or count for lactam",
+          "source_family": "fg_top_level",
+          "raw_name": "lactam",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            1
+          ],
+          "neighbor_ids": [
+            "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O"
+          ],
+          "neighbor_similarities": [
+            0.23623827909542197
+          ],
+          "support_weight_by_label": {
+            "0": 0.1676558649127412,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not toxic",
+            "label": 0
+          },
+          "total_abs_contribution": 0.7096896639897263,
+          "total_weighted_evidence": 0.1676558649127412,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+              "neighbor_similarity": 0.23623827909542197,
+              "pair_score": 0.01905508122514625,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": -0.7096896639897263,
+              "contribution_abs": 0.7096896639897263,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not toxic",
+              "text_hint": "The neighbor has lactam, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.7097, which pushes toward option (A): is not toxic."
+            }
+          ],
+          "neighbor_rank": 1,
+          "neighbor_id": "CC(C)C[C@H](NC(=O)[C@@H](COC(C)(C)C)NC(=O)[C@H](Cc1ccc(O)cc1)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H]1CCC(=O)N1)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N1CCC[C@H]1C(=O)NNC(N)=O",
+          "neighbor_similarity": 0.23623827909542197,
+          "pair_score": 0.01905508122514625,
+          "pair_prediction": 0,
+          "pair_prediction_semantics": {
+            "option": "A",
+            "text": "is not toxic",
+            "label": 0
+          },
+          "contribution": -0.7096896639897263,
+          "contribution_abs": 0.7096896639897263,
+          "contribution_rank": 4,
+          "supports_label": 0,
+          "supports_option": "A",
+          "supports_text": "is not toxic",
+          "text_hint": "The neighbor has lactam, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.7097, which pushes toward option (A): is not toxic."
+        }
+      ]
+    },
+    "negative_neighbors": {
+      "group_name": "negative_neighbors",
+      "num_neighbors": 3,
+      "num_shared_features": 6,
+      "num_single_neighbor_features": 3,
+      "shared_evidence": [
+        {
+          "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+          "display_name": "maximum absolute partial charge",
+          "description": "largest absolute atomic partial charge",
+          "source_family": "rdkit",
+          "raw_name": "MaxAbsPartialCharge",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+            "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]",
+            "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O"
+          ],
+          "neighbor_similarities": [
+            0.2866666666666667,
+            0.2846153846153846,
+            0.2839712918660287
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.676463404026295
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "total_abs_contribution": 2.3722939915247867,
+          "total_weighted_evidence": 0.676463404026295,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+              "neighbor_similarity": 0.2866666666666667,
+              "pair_score": 0.03540640832406531,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.9117611165121664,
+              "contribution_abs": 0.9117611165121664,
+              "contribution_rank": 2,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.5479, while the query's maximum absolute partial charge is value 0.3788. The query-minus-neighbor delta is -0.1691. This pairwise contribution is 0.9118, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]",
+              "neighbor_similarity": 0.2846153846153846,
+              "pair_score": 0.02245708847469976,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.5317194296593336,
+              "contribution_abs": 0.5317194296593336,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3576, while the query's maximum absolute partial charge is value 0.3788. The query-minus-neighbor delta is +0.0212. This pairwise contribution is 0.5317, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O",
+              "neighbor_similarity": 0.2839712918660287,
+              "pair_score": 0.03652591849949507,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.9288134453532864,
+              "contribution_abs": 0.9288134453532864,
+              "contribution_rank": 1,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.5501, while the query's maximum absolute partial charge is value 0.3788. The query-minus-neighbor delta is -0.1713. This pairwise contribution is 0.9288, which pushes toward option (B): is toxic."
+            }
+          ]
+        },
+        {
+          "feature_name": "fg_top_level__oxirane",
+          "display_name": "oxirane",
+          "description": "top-level functional-group indicator or count for oxirane",
+          "source_family": "fg_top_level",
+          "raw_name": "oxirane",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+            "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]",
+            "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O"
+          ],
+          "neighbor_similarities": [
+            0.2866666666666667,
+            0.2846153846153846,
+            0.2839712918660287
+          ],
+          "support_weight_by_label": {
+            "0": 0.5134985768376471,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not toxic",
+            "label": 0
+          },
+          "total_abs_contribution": 1.801215678201935,
+          "total_weighted_evidence": 0.5134985768376471,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+              "neighbor_similarity": 0.2866666666666667,
+              "pair_score": 0.03540640832406531,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": -0.6004052260673117,
+              "contribution_abs": 0.6004052260673117,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not toxic",
+              "text_hint": "The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6004, which pushes toward option (A): is not toxic."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]",
+              "neighbor_similarity": 0.2846153846153846,
+              "pair_score": 0.02245708847469976,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": -0.6004052260673117,
+              "contribution_abs": 0.6004052260673117,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not toxic",
+              "text_hint": "The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6004, which pushes toward option (A): is not toxic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O",
+              "neighbor_similarity": 0.2839712918660287,
+              "pair_score": 0.03652591849949507,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": -0.6004052260673117,
+              "contribution_abs": 0.6004052260673117,
+              "contribution_rank": 3,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not toxic",
+              "text_hint": "The neighbor does not have oxirane, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6004, which pushes toward option (A): is not toxic."
+            }
+          ]
+        },
+        {
+          "feature_name": "fg_top_level__morpholine",
+          "display_name": "morpholine",
+          "description": "top-level functional-group indicator or count for morpholine",
+          "source_family": "fg_top_level",
+          "raw_name": "morpholine",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+            "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]",
+            "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O"
+          ],
+          "neighbor_similarities": [
+            0.2866666666666667,
+            0.2846153846153846,
+            0.2839712918660287
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.5046254844974554
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "total_abs_contribution": 1.7700912432800058,
+          "total_weighted_evidence": 0.5046254844974554,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+              "neighbor_similarity": 0.2866666666666667,
+              "pair_score": 0.03540640832406531,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.5900304144266686,
+              "contribution_abs": 0.5900304144266686,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.59, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]",
+              "neighbor_similarity": 0.2846153846153846,
+              "pair_score": 0.02245708847469976,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.5900304144266686,
+              "contribution_abs": 0.5900304144266686,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.59, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O",
+              "neighbor_similarity": 0.2839712918660287,
+              "pair_score": 0.03652591849949507,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.5900304144266686,
+              "contribution_abs": 0.5900304144266686,
+              "contribution_rank": 4,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "The neighbor does not have morpholine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.59, which pushes toward option (B): is toxic."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__NumRotatableBonds",
+          "display_name": "rotatable-bond count",
+          "description": "number of rotatable bonds",
+          "source_family": "rdkit",
+          "raw_name": "NumRotatableBonds",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            2
+          ],
+          "neighbor_ids": [
+            "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+            "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]"
+          ],
+          "neighbor_similarities": [
+            0.2866666666666667,
+            0.2846153846153846
+          ],
+          "support_weight_by_label": {
+            "0": 0.5836063713441858,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not toxic",
+            "label": 0
+          },
+          "total_abs_contribution": 2.0430106513890296,
+          "total_weighted_evidence": 0.5836063713441858,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+              "neighbor_similarity": 0.2866666666666667,
+              "pair_score": 0.03540640832406531,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": -1.0403781500626887,
+              "contribution_abs": 1.0403781500626887,
+              "contribution_rank": 1,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not toxic",
+              "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 6, while the query's rotatable-bond count is value 20. The query-minus-neighbor delta is +14. This pairwise contribution is -1.0404, which pushes toward option (A): is not toxic."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]",
+              "neighbor_similarity": 0.2846153846153846,
+              "pair_score": 0.02245708847469976,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": -1.002632501326341,
+              "contribution_abs": 1.002632501326341,
+              "contribution_rank": 1,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not toxic",
+              "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 8, while the query's rotatable-bond count is value 20. The query-minus-neighbor delta is +12. This pairwise contribution is -1.0026, which pushes toward option (A): is not toxic."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+          "display_name": "minimum partial charge",
+          "description": "most negative atomic partial charge",
+          "source_family": "rdkit",
+          "raw_name": "MinPartialCharge",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            3
+          ],
+          "neighbor_ids": [
+            "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+            "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O"
+          ],
+          "neighbor_similarities": [
+            0.2866666666666667,
+            0.2839712918660287
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.465724132330245
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "total_abs_contribution": 1.632385023656508,
+          "total_weighted_evidence": 0.465724132330245,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+              "neighbor_similarity": 0.2866666666666667,
+              "pair_score": 0.03540640832406531,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.8064363958712049,
+              "contribution_abs": 0.8064363958712049,
+              "contribution_rank": 3,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For minimum partial charge, the neighbor's minimum partial charge is value -0.5479, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.1691. This pairwise contribution is 0.8064, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O",
+              "neighbor_similarity": 0.2839712918660287,
+              "pair_score": 0.03652591849949507,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.8259486277853033,
+              "contribution_abs": 0.8259486277853033,
+              "contribution_rank": 2,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For minimum partial charge, the neighbor's minimum partial charge is value -0.5501, while the query's minimum partial charge is value -0.3788. The query-minus-neighbor delta is +0.1713. This pairwise contribution is 0.8259, which pushes toward option (B): is toxic."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+          "display_name": "hydrogen-bond acceptor count",
+          "description": "number of hydrogen-bond acceptors",
+          "source_family": "rdkit",
+          "raw_name": "NumHAcceptors",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            2
+          ],
+          "neighbor_ids": [
+            "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+            "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]"
+          ],
+          "neighbor_similarities": [
+            0.2866666666666667,
+            0.2846153846153846
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.3249740421464839
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "total_abs_contribution": 1.13812957610851,
+          "total_weighted_evidence": 0.3249740421464839,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CC(C)[C@H]1CC[C@H](C(=O)N[C@H](Cc2ccccc2)C(=O)[O-])CC1",
+              "neighbor_similarity": 0.2866666666666667,
+              "pair_score": 0.03540640832406531,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.5093668613551565,
+              "contribution_abs": 0.5093668613551565,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 8. The query-minus-neighbor delta is +5. This pairwise contribution is 0.5094, which pushes toward option (B): is toxic."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]",
+              "neighbor_similarity": 0.2846153846153846,
+              "pair_score": 0.02245708847469976,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.6287627147533533,
+              "contribution_abs": 0.6287627147533533,
+              "contribution_rank": 3,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 1, while the query's hydrogen-bond acceptor count is value 8. The query-minus-neighbor delta is +7. This pairwise contribution is 0.6288, which pushes toward option (B): is toxic."
+            }
+          ]
+        }
+      ],
+      "single_neighbor_evidence": [
+        {
+          "feature_name": "fg_top_level__ammonium",
+          "display_name": "ammonium",
+          "description": "top-level functional-group indicator or count for ammonium",
+          "source_family": "fg_top_level",
+          "raw_name": "ammonium",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            2
+          ],
+          "neighbor_ids": [
+            "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]"
+          ],
+          "neighbor_similarities": [
+            0.2846153846153846
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.22291469042837675
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "total_abs_contribution": 0.7832137771807832,
+          "total_weighted_evidence": 0.22291469042837675,
+          "term_instances": [
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]",
+              "neighbor_similarity": 0.2846153846153846,
+              "pair_score": 0.02245708847469976,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.7832137771807832,
+              "contribution_abs": 0.7832137771807832,
+              "contribution_rank": 2,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "The neighbor has 2 copies of ammonium, while the query has 0 (query-minus-neighbor delta -2). This pairwise contribution is 0.7832, which pushes toward option (B): is toxic."
+            }
+          ],
+          "neighbor_rank": 2,
+          "neighbor_id": "C[C@@H](Cc1ccccc1)NC(=O)[C@@H]([NH3+])CCCC[NH3+]",
+          "neighbor_similarity": 0.2846153846153846,
+          "pair_score": 0.02245708847469976,
+          "pair_prediction": 0,
+          "pair_prediction_semantics": {
+            "option": "A",
+            "text": "is not toxic",
+            "label": 0
+          },
+          "contribution": 0.7832137771807832,
+          "contribution_abs": 0.7832137771807832,
+          "contribution_rank": 2,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is toxic",
+          "text_hint": "The neighbor has 2 copies of ammonium, while the query has 0 (query-minus-neighbor delta -2). This pairwise contribution is 0.7832, which pushes toward option (B): is toxic."
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__MolLogP",
+          "display_name": "estimated logP",
+          "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+          "source_family": "rdkit",
+          "raw_name": "MolLogP",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            3
+          ],
+          "neighbor_ids": [
+            "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O"
+          ],
+          "neighbor_similarities": [
+            0.2839712918660287
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.1587622962540784
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "total_abs_contribution": 0.5590786843656678,
+          "total_weighted_evidence": 0.1587622962540784,
+          "term_instances": [
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O",
+              "neighbor_similarity": 0.2839712918660287,
+              "pair_score": 0.03652591849949507,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": 0.5590786843656678,
+              "contribution_abs": 0.5590786843656678,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is toxic",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 0.043, while the query's estimated logP is value 2.5835. The query-minus-neighbor delta is +2.5405. This pairwise contribution is 0.5591, which pushes toward option (B): is toxic."
+            }
+          ],
+          "neighbor_rank": 3,
+          "neighbor_id": "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O",
+          "neighbor_similarity": 0.2839712918660287,
+          "pair_score": 0.03652591849949507,
+          "pair_prediction": 0,
+          "pair_prediction_semantics": {
+            "option": "A",
+            "text": "is not toxic",
+            "label": 0
+          },
+          "contribution": 0.5590786843656678,
+          "contribution_abs": 0.5590786843656678,
+          "contribution_rank": 5,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is toxic",
+          "text_hint": "For estimated logP, the neighbor's estimated logP is value 0.043, while the query's estimated logP is value 2.5835. The query-minus-neighbor delta is +2.5405. This pairwise contribution is 0.5591, which pushes toward option (B): is toxic."
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+          "display_name": "minimum absolute partial charge",
+          "description": "smallest absolute atomic partial charge",
+          "source_family": "rdkit",
+          "raw_name": "MinAbsPartialCharge",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            3
+          ],
+          "neighbor_ids": [
+            "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O"
+          ],
+          "neighbor_similarities": [
+            0.2839712918660287
+          ],
+          "support_weight_by_label": {
+            "0": 0.1397042315936947,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not toxic",
+            "label": 0
+          },
+          "total_abs_contribution": 0.49196603880509165,
+          "total_weighted_evidence": 0.1397042315936947,
+          "term_instances": [
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O",
+              "neighbor_similarity": 0.2839712918660287,
+              "pair_score": 0.03652591849949507,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not toxic",
+                "label": 0
+              },
+              "contribution": -0.49196603880509165,
+              "contribution_abs": 0.49196603880509165,
+              "contribution_rank": 6,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not toxic",
+              "text_hint": "For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.4066, while the query's minimum absolute partial charge is value 0.243. The query-minus-neighbor delta is -0.1636. This pairwise contribution is -0.492, which pushes toward option (A): is not toxic."
+            }
+          ],
+          "neighbor_rank": 3,
+          "neighbor_id": "CSCC[C@H](NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)CCNC(=O)OCC(C)C)C(=O)N[C@@H](CC(=O)[O-])C(=O)N[C@@H](Cc1ccccc1)C(N)=O",
+          "neighbor_similarity": 0.2839712918660287,
+          "pair_score": 0.03652591849949507,
+          "pair_prediction": 0,
+          "pair_prediction_semantics": {
+            "option": "A",
+            "text": "is not toxic",
+            "label": 0
+          },
+          "contribution": -0.49196603880509165,
+          "contribution_abs": 0.49196603880509165,
+          "contribution_rank": 6,
+          "supports_label": 0,
+          "supports_option": "A",
+          "supports_text": "is not toxic",
+          "text_hint": "For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.4066, while the query's minimum absolute partial charge is value 0.243. The query-minus-neighbor delta is -0.1636. This pairwise contribution is -0.492, which pushes toward option (A): is not toxic."
+        }
+      ]
+    },
+    "middle_draft": "Across the positive neighbors, shared local signals include oxirane, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not toxic, minimum partial charge, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is toxic, ammonium, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is toxic, estimated logP, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is toxic, morpholine, which recurs in 3 of 3 neighbor comparisons and mostly pushes toward option (B): is toxic, and hydrogen-bond acceptor count, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is toxic. The remaining one-off signals from the positive neighbors are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.2362), the comparison shows that the neighbor has lactam, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.7097, which pushes toward option (A): is not toxic. Across the negative neighbors, shared local signals include maximum absolute partial charge, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is toxic, oxirane, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not toxic, morpholine, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is toxic, rotatable-bond count, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not toxic, minimum partial charge, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is toxic, and hydrogen-bond acceptor count, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is toxic. The remaining one-off signals from the negative neighbors are all kept explicitly for downstream rewriting. With neighbor 2 (similarity 0.2846), the comparison shows that the neighbor has 2 copies of ammonium, while the query has 0 (query-minus-neighbor delta -2). This pairwise contribution is 0.7832, which pushes toward option (B): is toxic. With neighbor 3 (similarity 0.284), the comparison shows that for estimated logP, the neighbor's estimated logP is value 0.043, while the query's estimated logP is value 2.5835. The query-minus-neighbor delta is +2.5405. This pairwise contribution is 0.5591, which pushes toward option (B): is toxic. With neighbor 3 (similarity 0.284), the comparison shows that for minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.4066, while the query's minimum absolute partial charge is value 0.243. The query-minus-neighbor delta is -0.1636. This pairwise contribution is -0.492, which pushes toward option (A): is not toxic. Taken together, these local analog comparisons support option (A): is not toxic with local score 0.0358, positive-neighbor aggregate 0.0413, and negative-neighbor aggregate 0.0315."
+  }
+}

@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed mutagenicity profile, but the balance of evidence favors a non-mutagenic outcome. A primary hydroxyl count of 4 suggests a fairly polar, hydrogen-bonding-rich structure, which can reduce passive membrane permeability and limit bacterial exposure. Consistent with that, the fraction of sp3 carbons is 1, indicating a fully sp3-saturated character that does not suggest a flat, aromatic polycyclic motif associated with Ames-positive alerts. The ring count is 0, so there is no obvious ring-based toxicophore such as a fused polycyclic aromatic system.
+
+Several descriptors also point to a highly polar, poorly lipophilic molecule: the estimated logP is -1.4645 and the estimated logD is -1.4645, both indicating low hydrophobicity and therefore limited passive uptake into bacterial cells. The topological polar surface area is 80.92 and the Labute surface area is 54.0956, both consistent with a small, polar surface profile rather than a large hydrophobic scaffold. The strongest acidic pKa is 13.7474, which means the acidic functionality is very weakly acidic and should remain largely neutral under typical assay conditions; that does not itself indicate a mutagenic electrophile.
+
+The QED drug-likeness value is 0.3747, which is modest and suggests the structure is not especially drug-like overall, but this is not a direct mutagenicity signal. The unavailable maximum absolute partial charge does not add a clear concern here. Taken together, the low logP/logD, moderate polar surface area, absence of rings, and high sp3 character are more consistent with limited bacterial exposure and no obvious mutagenic structural alert, so the molecule is best classified as not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a weak but informative positive neighbor with several features leaning away from mutagenicity. The query is much more hydroxyl-rich here, with primary hydroxyl count rising from 1 in the neighbor to 4 in the query, and that larger hydroxyl burden is consistent with reduced passive permeability and lower effective bacterial exposure. The same exposure-limiting theme appears in the charge descriptors: the neighbor has a maximum partial charge of 0.0558 and a minimum partial charge of -0.395, while the query values are unavailable, so those comparisons cannot be used directly beyond noting that the neighbor itself sits in a relatively modest charge range. The query also has a lower estimated logP than the neighbor, -1.4645 versus -0.7057, a delta of -0.7588, which again points toward a more polar, less membrane-partitioning query. One feature goes the other way, because the query’s topological polar surface area is much higher, 80.92 versus 23.24, a delta of +57.68, and higher polarity can sometimes be associated with lower permeability; however, in the supplied comparison this specific contrast was still outweighed overall by the other query-vs-neighbor differences, so this neighbor remains net supportive of option (A).
+
+Neighbor 2 is also a positive neighbor overall, even though it contains a few features that individually look less favorable. The query again has more primary hydroxyl groups, 4 versus 1, which is a substantial +3 change and supports lower exposure rather than a true mutagenic signal. The neighbor’s minimum partial charge is -0.3865 and the query’s value is unavailable, so that descriptor is not directly comparable here. The query has a lower QED drug-likeness, 0.3747 versus 0.7898, with a delta of -0.4151; the same is true for the lower Labute surface area, 54.0956 versus 90.1267, delta -36.0311. In contrast, the query has a stronger acidic pKa, 13.7474 versus 12.718, delta +1.0294, and the neighbor has a basic site with strongest basic pKa 4.2452 whereas the query has no basic site, a difference that also matters in the comparison. Taken together, the balance in this neighbor still ends up on the non-mutagenic side, because the increased hydroxylation and the absence of a basic site fit better with reduced bacterial uptake than with a mutagenic structural alert.
+
+Neighbor 3 is likewise a positive neighbor and the comparison is dominated by the same exposure-reducing pattern. The query has 4 primary hydroxyls versus 2 in the neighbor, a +2 delta, which supports lower permeability. The neighbor’s maximum partial charge is 0.0606 and its minimum partial charge is -0.3945, while the query values are unavailable, so those charge terms do not add a direct directional comparison. The query’s QED drug-likeness is much lower, 0.3747 versus 0.7296, delta -0.3549, again suggesting the query is less drug-like by that composite metric. The query is also fully sp3, with fraction of sp3 carbons at 1 versus 0.4545 in the neighbor, delta +0.5455; in the supplied comparison this higher saturation is treated as favorable for the non-mutagenic outcome, even though saturation alone is not a stand-alone Ames rule. The neighbor’s minimum absolute partial charge is 0.0606 and the query’s is unavailable, so that feature is again not directly comparable. Overall, this neighbor still supports option (A) because the query’s higher hydroxylation and more saturated character are not accompanied by a mutagenicity-linked alert.
+
+Neighbor 4 is one of the negative neighbors, but even here the local comparison remains net non-mutagenic. The query again has more primary hydroxyl groups, 4 versus 1, and the same +3 shift favors lower exposure. The query’s estimated logP is much lower, -1.4645 versus 1.1789, a delta of -2.6434, which is a strong move toward a more polar, less lipophilic compound. The neighbor’s maximum partial charge is 0.0681 and maximum absolute partial charge is also 0.0681, while the query values are unavailable; by contrast, the neighbor’s minimum absolute partial charge comparison is the one feature here that leans the other way, with 0.0681 in the neighbor and an unavailable query value associated with a positive direction in that local comparison. The query also has a much higher fraction of sp3 carbons, 1 versus 0.1429, delta +0.8571, which in this context supports the non-mutagenic side. QED drug-likeness is lower in the query, 0.3747 versus 0.5723, delta -0.1976, which is the main feature in this neighbor that went in the mutagenic direction. Even so, the overall analog pattern here still favors option (A), because the hydroxyl increase, lower logP, and higher sp3 fraction all point more toward reduced bacterial exposure than toward a DNA-reactive motif.
+
+Neighbor 5 is another negative neighbor that nevertheless looks closer to a non-mutagenic analog than to a mutagenic one. The query has 4 primary hydroxyls versus 1 in the neighbor, again a +3 difference that increases polarity. The neighbor’s maximum partial charge is 0.0471 and its maximum absolute partial charge is 0.396, while the query values are unavailable; the minimum absolute partial charge is 0.0471 in the neighbor and unavailable for the query, and that term was locally favorable to mutagenicity in the supplied comparison. The query’s QED drug-likeness is lower, 0.3747 versus 0.625, delta -0.2503, which is a less favorable drug-likeness profile. The query is also much more saturated, with fraction of sp3 carbons 1 versus 0.25, delta +0.75, and that again supports the non-mutagenic side in this local neighborhood. Even though the QED and one charge descriptor point toward mutagenicity, the much higher hydroxyl content and stronger saturation signal keep the overall comparison aligned with option (A).
+
+Neighbor 6 is the last negative neighbor and the pattern is similar. The query has 4 primary hydroxyl groups versus 1 in the neighbor, a +3 delta. The neighbor’s maximum partial charge is 0.1151, minimum partial charge is -0.508, and maximum absolute partial charge is 0.508, while the query values are unavailable for those descriptors. The query’s estimated logP is lower at -1.4645 versus 0.8845, a delta of -2.349, which is a substantial shift toward lower lipophilicity and less favorable passive uptake into bacteria. The query’s QED drug-likeness is also lower, 0.3747 versus 0.5832, delta -0.2085, which is the main feature in this neighbor pointing the opposite way. Even so, the dominant local chemistry remains the same: more hydroxyls and lower logP are consistent with reduced effective exposure, so this neighbor still comes out on the non-mutagenic side.
+
+Putting the six neighbors together, the three positive neighbors all share the same core pattern: the query is more hydroxyl-rich, often more polar or more saturated, and tends to look less permeable than the nearby mutagenic analogs. The three negative neighbors do contain a few mutagenicity-favoring features such as lower QED or isolated charge-related contrasts, but those are outweighed by the repeated increase in primary hydroxyl count and the lower logP of the query, both of which favor reduced bacterial exposure. Across the whole local neighborhood, the balance therefore supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

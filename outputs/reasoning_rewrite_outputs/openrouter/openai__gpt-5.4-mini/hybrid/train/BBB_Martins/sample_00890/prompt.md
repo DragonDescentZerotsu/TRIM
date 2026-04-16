@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are unfavorable for BBB penetration. A guanidine group is present (1), which is strongly basic and typically remains highly ionized, making passive brain entry difficult. The NH/OH group count is 4, which is a relatively high donor burden and increases polarity and desolvation cost. The estimated logP is 0.3564, which is quite low and suggests limited lipophilicity for membrane permeation, and the estimated logD is -0.0479, also indicating a poor balance for crossing the BBB at physiological pH. The topological polar surface area is 77.29 Å², which is not extreme but is still within a polarity range that can constrain BBB penetration when combined with multiple donors and a basic center. The QED drug-likeness value is 0.4548, which is moderate rather than strongly supportive of a CNS-like profile. There is no acidic site, so the strongest acidic pKa is not defined, which avoids adding acid-driven ionization liability, but that advantage is not enough to offset the other polar features. A thiazole is present (1), adding another heteroaromatic element that can contribute to polarity. Against these unfavorable signals, the exact molecular weight is 156.047 and the molecular weight is 156.214, both quite low and generally favorable for BBB permeability. Even so, the combination of guanidine, four NH/OH groups, very low logP/logD, and moderate TPSA makes the overall profile more consistent with a molecule that does not cross the BBB. Therefore, the molecule is best classified as option (A): does not cross the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor, but several of its key descriptors are more favorable for BBB penetration than the query. Its heavy-atom molecular weight is 208.205 versus 148.15 for the query, so the query is much smaller by -60.055, and that size reduction is not enough here to outweigh the other differences. The query also has higher fraction of sp3 carbons at 0.2 versus 0 for the neighbor, delta +0.2, which in this comparison aligns with a less BBB-like profile. Estimated logD is also much lower in the query, -0.0479 versus 1.4678, delta -1.5157, and the query and neighbor both contain thiazole, so that feature does not separate them. The query’s maximum partial charge is essentially the same as the neighbor’s, 0.212 versus 0.2124, delta -0.0004, and topological polar surface area is identical at 77.29. Even though the neighbor is a BBB-crossing example, these query shifts in size, lipophilicity, and sp3 character make the query look less favorable overall relative to Neighbor 1.
+
+Neighbor 2 is also a positive neighbor, but the comparison is mixed. The query has a much lower topological polar surface area, 77.29 versus 103.31, delta -26.02, which is beneficial because BBB penetration is typically favored when TPSA is kept below about 90 Å². However, the query again has higher fraction of sp3 carbons, 0.2 versus 0, delta +0.2, which in this local comparison moves away from the BBB-crossing profile. The query also has no acidic sites while the neighbor has 2, delta -2, which is favorable because removing acidic functionality generally supports BBB entry by reducing ionization. The thiazole motif is shared, so it does not explain the difference. Maximum partial charge is nearly unchanged, 0.212 versus 0.2124, delta -0.0004, and minimum partial charge is less negative in the query, -0.3698 versus -0.3987, delta +0.0289. Overall, this neighbor still supports BBB crossing, but the benefit comes mainly from the lower polar surface area and loss of acidic sites rather than from the full feature pattern.
+
+Neighbor 3 is the weakest of the positive neighbors and leans against BBB crossing for the query overall. The query has a higher molecular weight, 156.214 versus 123.115, delta +33.099, which is unfavorable because lower size is generally more compatible with BBB entry. The query also contains guanidine once while the neighbor has none, delta +1, and that added strongly basic, highly polar functionality is a clear liability for BBB penetration. Estimated logP rises from -0.4245 in the neighbor to 0.3564 in the query, delta +0.7809, but in this context that increase does not compensate for the added polarity and basicity. Fraction of sp3 carbons also increases from 0 to 0.2, delta +0.2, again not helping the BBB-like profile in this comparison. Neutral fraction drops from 0.9998 to 0.3942, delta -0.6056, which is unfavorable because a lower neutral fraction means less membrane-permeable material at physiological pH. The one favorable change is that the query lacks the neighbor’s 2 acidic sites, delta -2, but that is not enough to offset the guanidine, size, and neutral-fraction penalties. So Neighbor 3 points away from a BBB-crossing assignment for the query.
+
+Neighbor 4 is a negative neighbor, yet the query looks substantially more BBB-like on the size descriptors. Exact molecular weight falls from 275.0841 in the neighbor to 156.047 in the query, delta -119.0371, molecular weight drops from 275.337 to 156.214, delta -119.123, and heavy-atom molecular weight drops from 262.233 to 148.15, delta -114.083. Those are all large reductions and are directionally favorable for BBB penetration, since smaller molecules are generally easier to transport across the barrier. The query does have slightly lower QED drug-likeness, 0.4548 versus 0.5848, delta -0.1299, and higher fraction of sp3 carbons, 0.2 versus 0.0833, delta +0.1167, both of which are unfavorable in this local comparison. Guanidine is present in both molecules, so that feature does not distinguish them. Even so, the much smaller size of the query relative to this non-crossing neighbor is a strong argument in favor of BBB crossing.
+
+Neighbor 5 is another negative neighbor that also makes the query appear more BBB-compatible on the main size and acidity features. The query is much lighter, with heavy-atom molecular weight 148.15 versus 300.266, delta -152.116, and exact molecular weight 156.047 versus 314.1062, delta -158.0592. Those are large shifts toward the lower-mass region that is generally more favorable for BBB penetration. The query, however, has slightly higher QED drug-likeness, 0.4548 versus 0.3812, delta +0.0737, while the comparison note treats that increase as unfavorable in this local setting. The neighbor has 2 guanidine copies and the query has 1, delta -1, so the query is less burdened by this strongly polar basic group. Fraction of sp3 carbons is also higher in the query, 0.2 versus 0.0769, delta +0.1231, again not a positive shift here. Finally, the neighbor has strongest acidic pKa 10.6877 while the query has no acidic site, so the delta is not defined; that absence of an acidic site is favorable for the query because it removes a potentially ionizable acidic liability. Taken together, the big reductions in size and the lack of an acidic site make the query look more BBB-like than this non-crossing neighbor.
+
+Neighbor 6 is the last negative neighbor and again the query is mixed but overall more favorable for BBB crossing on the dominant descriptors. Heavy-atom count is lower in the query, 10 versus 14, delta -4, which is a clear size advantage. Estimated logP also rises from 2.3113 in the neighbor to 0.3564 in the query, delta -1.9549, and in this comparison that shift is favorable because it moves the molecule away from the neighbor’s more lipophilic non-crossing profile into a moderate-lipophilicity region. Minimum absolute partial charge is higher in the query, 0.212 versus 0.0945, delta +0.1175, which is also treated as favorable here. The main drawback is that the query has guanidine once while the neighbor has none, delta +1, and that adds a strong polar/basic liability. QED drug-likeness is also much lower in the query, 0.4548 versus 0.8329, delta -0.3781, which is unfavorable. Fraction of sp3 carbons is slightly higher in the query, 0.2 versus 0.1818, delta +0.0182, and that minor increase is also treated as unfavorable in this comparison. Even with those liabilities, the size reduction and more moderate logP keep this neighbor leaning toward BBB crossing for the query.
+
+Putting all six neighbors together, the three positive neighbors are not uniformly supportive, but they are informative: Neighbor 1 and Neighbor 2 both show that the query has some BBB-favorable features such as lower TPSA in Neighbor 2 and, in both cases, the query is compared against BBB-crossing analogs. Neighbor 3 is the least supportive positive neighbor because the query’s guanidine, higher molecular weight, lower neutral fraction, and higher sp3 fraction all hurt BBB likelihood. The three negative neighbors are especially important because the query consistently looks smaller than the non-crossing examples, with large drops in molecular weight, exact molecular weight, heavy-atom molecular weight, or heavy-atom count, and in Neighbor 5 the absence of an acidic site also helps. Although guanidine and some QED/sp3 effects are unfavorable in several comparisons, the dominant pattern is that the query is generally reduced in size and often more favorable in polarity-related terms than the non-crossing neighbors. Overall, the balance of evidence supports option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

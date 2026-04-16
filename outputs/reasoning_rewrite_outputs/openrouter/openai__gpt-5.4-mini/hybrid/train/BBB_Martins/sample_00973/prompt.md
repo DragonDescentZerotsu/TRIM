@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are compatible with BBB penetration. It has an aliphatic carbocycle count of 4, which adds some rigid hydrophobic character and can be consistent with brain entry when other liabilities are controlled. The strongest basic pKa is 9.7297, which is fairly high but still within the general weak-base range that can sometimes support BBB permeation if enough neutral species is present. The estimated logP of 3.8204 is moderately lipophilic and therefore favorable for passive membrane diffusion. The saturated carbocycle count of 4 also suggests a fairly substantial saturated ring framework, which may help rigidity and reduce excessive flexibility.
+
+At the same time, there are several polar and ionization-related features that work against BBB crossing. A secondary aliphatic amine is present at 1, which adds basic polarity and can increase ionization at physiological pH. The neutral fraction is only 0.0047, indicating that very little of the molecule is uncharged under physiological conditions, which is unfavorable for passive BBB penetration. The maximum absolute partial charge of 0.4819 and minimum absolute partial charge of 0.3437 both indicate a notable charge distribution, reinforcing the polarity burden. The QED drug-likeness value of 0.5906 is moderate rather than strongly reassuring for a CNS-like profile. Finally, the molecule has no acidic site, so the strongest acidic pKa is not defined, which removes one potential acidic liability but does not offset the low neutral fraction and amine-associated ionization.
+
+Overall, the lipophilicity, rigid carbocycle content, and reasonably weak-base character are supportive, but the very low neutral fraction together with the amine-associated polarity make the molecule less favorable for BBB entry. Taking the mixed evidence together, the balance still favors option (B): crosses the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is moderately similar and gives a largely BBB-favorable comparison. The query has a stronger basic pKa of 9.7297 versus 7.7849 in the neighbor, a +1.9448 shift that can support brain penetration when basicity remains in a workable range rather than being excessively ionized. The query also has more aliphatic carbocycle count and saturated carbocycle count, both moving from 0 in the neighbor to 4 in the query, which is a shape/rigidity change that can be compatible with BBB entry when it does not come with a polarity penalty. At the same time, the query’s neutral fraction is much lower, 0.0047 versus 0.2919, a -0.2872 change that is unfavorable because a higher neutral fraction is generally more compatible with passive BBB diffusion. The unchanged minimum absolute partial charge, 0.3437 to 0.3437, also remains on the unfavorable side in this local comparison. Overall, though, Neighbor 1 still looks more aligned with BBB crossing than not.
+
+Neighbor 2 is similar in the opposite direction on several key features, but the comparison still ends up favoring BBB crossing overall. The query again has a much higher strongest basic pKa, 9.7297 versus 5.3408, with a +4.3889 delta that supports the BBB-crossing side under weak-base CNS heuristics. The query also increases aliphatic carbocycle count from 0 to 4 and fraction of sp3 carbons from 0.3636 to 0.65, both of which are the kind of structural changes that can improve CNS-like character when the molecule stays reasonably controlled. Against that, the query’s neutral fraction collapses from 0.9913 to 0.0047, a -0.9866 change that is strongly unfavorable because it greatly reduces the neutral species available for passive membrane passage. The query also lacks the neighbor’s secondary amide, which is a favorable shift in this context, but the query has lower QED drug-likeness, 0.5906 versus 0.7738, which is a modest counterweight. Even with the poor neutral fraction, the basicity and structural changes make this comparison lean toward BBB crossing.
+
+Neighbor 3 is also on the BBB-crossing side, with a similar pattern. The strongest basic pKa rises from 9.0559 to 9.7297, a +0.6738 change that is directionally favorable for this task context. The query again has a higher aliphatic carbocycle count, 4 versus 0, and higher saturated carbocycle count, 4 versus 0, both consistent with the more rigid saturated scaffold seen in the query. The query does lack the secondary amide present in the neighbor, which is favorable, but it also has lower QED drug-likeness, 0.5906 versus 0.7955, which is unfavorable. The minimum partial charge is essentially unchanged, from -0.4838 to -0.4819, and that tiny +0.0019 shift is still treated unfavorably in this local comparison. Even so, the stronger basicity and added saturated carbocycle content keep Neighbor 3 aligned with BBB crossing.
+
+Neighbor 4 is labeled as not crossing the BBB, yet several of its local feature differences actually resemble the query’s structure. The query has higher aliphatic carbocycle count, 4 versus 0, with a +4 delta, and likewise higher aliphatic ring count and saturated ring count, both moving from 0 to 4. Those are all features that make the query more ring-rich and more rigid than the neighbor, and in this comparison they are favorable to BBB crossing. The query also has a higher fraction of sp3 carbons, 0.65 versus 0.4167, another structural shift that is favorable here. However, the query’s maximum partial charge is slightly lower, 0.3437 versus 0.3494, a -0.0057 change that is unfavorable in this local setting. Even with that penalty, the query’s ring and sp3 changes are strong enough that Neighbor 4 overall still resembles the BBB-crossing side more than the non-crossing side.
+
+Neighbor 5 is another non-crossing neighbor, but again the query differs in ways that look more BBB-compatible. The query has a much higher fraction of sp3 carbons, 0.65 versus 0.3, a +0.35 shift, and higher aliphatic carbocycle count, 4 versus 0. It also has higher aliphatic ring count and saturated ring count, both moving from 0 to 4, which continues the same rigidified scaffold pattern. The query has lower maximum partial charge, 0.3437 versus 0.347, which is unfavorable. More importantly, its estimated logD is 1.4887 versus -1.2527, a +2.7414 increase. In the BBB/CNS range, moving from a very low logD to a moderate positive value is generally more favorable for membrane permeation, although excessively high values would be less desirable. So despite the charge penalty, Neighbor 5 still supports the BBB-crossing side overall.
+
+Neighbor 6, while also a non-crossing neighbor, again shows the query carrying the more BBB-like structural pattern. The query has higher aliphatic carbocycle count, 4 versus 0, and higher saturated carbocycle count, 4 versus 0. Its fraction of sp3 carbons is also higher, 0.65 versus 0.381, a +0.269 change that fits the same more saturated, less flat profile. The query lacks the dialkyl ether present in the neighbor, and in this comparison that absence is favorable. The minimum absolute partial charge is slightly higher, 0.3437 versus 0.3291, which is unfavorable, and the neutral fraction is also very low at 0.0047 versus 0.0001; that tiny increase is still treated as unfavorable in this local contrast because both values are extremely small and do not provide much neutral species for passive entry. Even so, the ring saturation and sp3 changes dominate the comparison and support BBB crossing.
+
+Taken together, the six neighbor comparisons are mixed in label but not in direction of evidence: all three BBB-crossing neighbors favor the query through stronger basic pKa and/or the more saturated, sp3-rich ring pattern, while the non-crossing neighbors still show the query moving toward that same saturated carbocyclic scaffold and higher logD or sp3 character, despite some penalties from neutral fraction and partial-charge features. The overall balance therefore supports option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

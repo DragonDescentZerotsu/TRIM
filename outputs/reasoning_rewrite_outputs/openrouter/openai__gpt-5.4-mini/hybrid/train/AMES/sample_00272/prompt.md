@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a bromoalkene, which is a concerning structural alert for mutagenicity because electrophilic halogenated unsaturated motifs can behave as reactive toxicophores. It also has heteroatom count 8, indicating substantial heteroatom content and polarity, which can accompany reactive functionality and does not ease concern by itself. In contrast, there are some features that lean away from mutagenicity or at least suggest limited effective exposure: aryl chloride count 2, maximum partial charge 0.5296, phosphoric triester present 1, estimated logP 5.8844, ring count 1, molecular weight 404.024, and Labute surface area 136.2958 all point to a sizable, fairly hydrophobic but not especially polycyclic scaffold without an obvious high-risk fused aromatic system. The phosphoric triester and the relatively large, lipophilic character can also reduce the likelihood of straightforward bacterial uptake or effective presentation in the assay. Estimated logD 5.8844 is high, which can sometimes limit exposure, but high lipophilicity does not rule out mutagenicity when a reactive alert is present. Overall, the presence of the bromoalkene and the heteroatom-rich composition raise concern, but the dominant balance of the remaining descriptors suggests reduced effective bioavailability and no strong mutagenic aromatic toxicophore pattern, so the molecule is predicted to be not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly strong mutagenic analog despite one mixed feature. The query carries bromoalkene once while the neighbor lacks it, and that structural change is associated with a positive shift toward mutagenicity. The query also has a higher minimum absolute partial charge (0.4027 vs 0.2471, delta +0.1557) and higher estimated logP (5.8844 vs 4.5278, delta +1.3566), both of which in this comparison align with the mutagenic side. Although the query’s estimated logD is also higher (5.8844 vs 4.5027, delta +1.3817) and that particular shift is unfavorable for mutagenicity here, the query’s neutral fraction is also slightly higher (present/1 vs 0.9439, delta +0.0561), again favoring mutagenicity, and the larger Labute surface area (136.2958 vs 125.6081, delta +10.6877) goes the opposite way. Overall, the bromoalkene plus the charge and lipophilicity pattern make this neighbor support option (B) more than option (A).
+
+Neighbor 2 is also more consistent with mutagenicity overall. The query has bromoalkene once while the neighbor does not, which is a clear favorable structural difference. The neighbor has pyrimidine while the query does not, but in this pair that difference still aligns with mutagenicity. The query is slightly more heteroatom-rich (8 vs 7, delta +1), another feature associated here with the mutagenic side, while the query also has 2 copies of aryl chloride compared with 0 in the neighbor, which works in the opposite direction and favors non-mutagenicity. Even so, the query’s maximum absolute partial charge is essentially unchanged but slightly lower (0.5296 vs 0.5308, delta -0.0012), and that shift is treated as mutagenic in this case. The query also has a much lower QED drug-likeness (0.4205 vs 0.7154, delta -0.2948), which here accompanies the mutagenic label. Taken together, the bromoalkene, pyrimidine-related, heteroatom, charge, and low-QED pattern outweigh the aryl chloride counterpoint, so this neighbor still favors option (B).
+
+Neighbor 3 is the one positive neighbor that leans the other way overall, but it still does not overturn the mutagenic picture. The query has a higher maximum partial charge (0.5296 vs 0.3445, delta +0.1851), and in this pair that shift is unfavorable for mutagenicity. However, the query again has bromoalkene once while the neighbor does not, which favors mutagenicity. The query is also more lipophilic, with estimated logP 5.8844 vs 4.4805 (delta +1.4039), which here supports option (B), while the higher estimated logD at the query (5.8844 vs 4.4805, delta +1.4039) points the other way toward option (A). The neighbor contains diaryl ether while the query does not, and that absence is unfavorable for mutagenicity in this comparison. Finally, the query has a higher minimum absolute partial charge (0.4027 vs 0.3445, delta +0.0582), which restores some mutagenic support. Because the charge and diaryl-ether effects pull toward non-mutagenicity but are counterbalanced by bromoalkene and higher logP, this neighbor is mixed and only modestly anti-mutagenic overall.
+
+Neighbor 4 is a clear mutagenic comparator and one of the stronger pieces of evidence on the non-mutagenic side set. The query has bromoalkene once while the neighbor lacks it, and that difference is strongly favorable for mutagenicity. The query also shows higher minimum absolute partial charge (0.4027 vs 0.2872, delta +0.1156) and higher maximum absolute partial charge (0.5296 vs 0.4742, delta +0.0553), both of which align with the mutagenic side here. The query’s estimated logP is much higher (5.8844 vs 2.204, delta +3.6804), which in this comparison actually works against mutagenicity, but the query also has more heteroatoms (8 vs 5, delta +3), which again favors mutagenicity, and lower QED (0.4205 vs 0.5905, delta -0.1699), also consistent with the mutagenic side. The one opposing lipophilicity signal is not enough to override the combined bromoalkene, charge, heteroatom, and low-QED pattern, so this neighbor supports option (B).
+
+Neighbor 5 is similarly mutagenic overall. The query has bromoalkene once while the neighbor has none, which is the dominant favorable structural difference. The query also has a higher maximum partial charge (0.5296 vs 0.3472, delta +0.1824) and a slightly higher minimum absolute partial charge (0.4027 vs 0.3472, delta +0.0556); both changes align with mutagenicity in this pair. The query’s QED is much lower (0.4205 vs 0.8701, delta -0.4496), another feature that tracks with the mutagenic side here. The second maximum partial charge comparison is again favorable for the query (0.5296 vs 0.4633, delta +0.0663). The only explicitly opposing feature is that both compounds have 2 copies of aryl chloride, so there is no separating advantage there; that shared state contributes toward non-mutagenicity in the local comparison but does not distinguish the query. With the structural alert and the charge/QED pattern all leaning the same way, Neighbor 5 supports option (B).
+
+Neighbor 6 is the most mixed of the non-mutagenic comparators, but it still ends up favoring mutagenicity. The query has bromoalkene once while the neighbor lacks it, which supports mutagenicity. The query also has a much higher maximum absolute partial charge (0.5296 vs 0.49, delta +0.0395) and a higher maximum partial charge (0.5296 vs 0.1472, delta +0.3824), and both of these shifts are favorable for option (B) in this comparison. The query has one more heteroatom (8 vs 7, delta +1), again aligning with mutagenicity. However, the neighbor contains enolether while the query does not, which is a strong countervailing feature that favors option (A), and the query also has a lower ring count (1 vs 3, delta -2), which here is also unfavorable for mutagenicity. Even with those two anti-mutagenic signals, the bromoalkene plus the charge and heteroatom changes remain dominant, so this neighbor still ends up on the mutagenic side.
+
+Putting the six analogies together, four of the six neighbors are clearly on the mutagenic side and two are mixed or only weakly anti-mutagenic. Across the set, the recurring query features that stand out are the presence of bromoalkene and the generally higher charge/lipophilicity-related values, with low QED also appearing several times as a mutagenic-associated context signal. The opposing signals, such as higher estimated logD in some comparisons, diaryl ether absence in Neighbor 3, aryl chloride in Neighbor 2 and Neighbor 5, enolether in Neighbor 6, and the lower ring count in Neighbor 6, are not enough to outweigh the stronger mutagenic analog evidence. Taken together, the local neighborhood is more consistent with option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

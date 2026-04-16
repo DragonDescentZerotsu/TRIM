@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several properties that would be expected to reduce effective bacterial exposure: a strongest basic pKa of 1.0944 suggests the basic site is only weakly basic, and the number of ionizable sites is 8, both of which imply substantial ionization across conditions and therefore potentially poorer passive penetration. The topological polar surface area of 76.1 and the NH/OH group count of 6 also indicate a fairly polar, hydrogen-bonding-rich structure, which can further limit membrane passage. The estimated logP of -1.4322 is very low, consistent with a hydrophilic compound rather than a highly lipophilic one, so there is no strong hydrophobicity-driven reason to expect enhanced uptake. The ring count of 0 and fraction of sp3 carbons of 0 suggest a non-ring, fully unsaturated framework, which by itself does not indicate a known polycyclic aromatic mutagenicity motif. At the same time, the heteroatom count of 6 and QED drug-likeness of 0.2504 are mixed signals: the low QED reflects an overall less drug-like profile, while the high heteroatom burden and polarity can work against bacterial accumulation. The thiosemicarbazide count of 2 is worth noting because thiosemicarbazide-related motifs are not among the clearest classic Ames-positive alerts in the information available here, so this alone is not enough to establish mutagenicity. Overall, despite a few descriptors that could accompany chemically unusual or less drug-like structures, the combination of weak basicity, many ionizable sites, high polarity, low logP, and no rings is more consistent with limited bacterial exposure than with a strongly mutagenic compound, so the molecule is better classified as not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is overall informative for a non-mutagenic call because the query has 2 copies of thiosemicarbazide where the neighbor has 0, and that feature is the strongest single difference here. Thiosemicarbazide is a mutagenicity-relevant toxicophore, so the added query burden supports concern for mutagenicity, but several other descriptors offset that. The query is much less lipophilic, with estimated logP -1.4322 versus 2.6276 in the neighbor (delta -4.0598), and estimated logD is also far lower at -1.4324 versus 2.6276 (delta -4.06); in Ames testing, very hydrophobic compounds can suffer exposure and solubility limitations, so this shift is consistent with weaker effective bacterial exposure. The query also has lower QED drug-likeness, 0.2504 versus 0.7144 (delta -0.464), which on its own can co-occur with poorer overall property balance, and it has higher NH/OH group count, 6 versus 2 (delta +4), plus higher heteroatom count, 6 versus 4 (delta +2), both of which increase polarity and can reduce passive permeability. Taken together, despite the thiosemicarbazide alert and the modestly mutagenicity-leaning direction of the NH/OH and heteroatom increases, the comparison still ends up favoring the non-mutagenic label because the low logP/logD strongly point to reduced exposure.
+
+Neighbor 2 tells a similar story. The query again has 2 copies of thiosemicarbazide while the neighbor has 0, which is a clear mutagenicity concern, and the query also has more ionizable sites overall, 8 versus 5 (delta +3), which can increase charge states and lower passive diffusion. However, the query’s strongest basic pKa is much lower, 1.0944 versus 10.3663 (delta -9.2719), indicating that the query is far less strongly basic at the relevant pH, which tends to reduce the kind of protonated nitrogen behavior associated with bacterial accumulation. The query also has lower estimated logP, -1.4322 versus 0.8239 (delta -2.2561), again consistent with reduced hydrophobic exposure, and fewer rotatable bonds, 0 versus 3 (delta -3), which can increase rigidity but does not outweigh the exposure-limiting polarity changes here. The QED value is slightly higher in the query, 0.2504 versus 0.1749 (delta +0.0755), but that is a modest counterweight compared with the large pKa and lipophilicity shifts. Overall, this neighbor still supports non-mutagenicity because the exposure-limiting changes dominate the remaining mixed signals.
+
+Neighbor 3 is the most mixed of the positive neighbors, but it still ends up leaning away from mutagenicity overall. The query is much smaller, with heavy-atom count 8 versus 22 in the neighbor (delta -14), which would ordinarily reduce uptake and exposure; that size reduction is favorable for a non-mutagenic call. At the same time, the query has lower estimated logP, -1.4322 versus 1.7922 (delta -3.2244), and again carries 2 thiosemicarbazide copies while the neighbor has 0, which remains a clear structural-alert concern. The neighbor also has 2 thiourea groups and 2 urethane groups while the query has 0 of each, and both of those features are removed in the query, which is favorable because it strips away additional potentially problematic functionality. QED drug-likeness is lower in the query, 0.2504 versus 0.6037 (delta -0.3533), which is not a direct mutagenicity rule but is consistent with a less balanced property profile. Even though the heavy-atom difference points in the mutagenic direction in isolation, the combined effect of much lower logP, fewer problematic thiourea and urethane motifs, and the strong exposure-limiting profile keeps this neighbor aligned with the final non-mutagenic label.
+
+Neighbor 4, from the non-mutagenic side, is especially helpful because the query remains lower in several exposure-relevant dimensions even though it is higher in some polarity measures. The query has 2 thiosemicarbazide copies versus 0 in the neighbor, which again raises mutagenicity concern, and it also has more ionizable sites, 8 versus 5 (delta +3), plus more acidic sites, 6 versus 3 (delta +3); both shifts increase ionization burden and can reduce passive diffusion. The query’s topological polar surface area is also higher, 76.1 versus 38.05 (delta +38.05), and higher TPSA generally correlates with lower permeability. Against that, the query has lower QED drug-likeness, 0.2504 versus 0.5963 (delta -0.3459), and it has fewer rings overall, 0 versus 1 (delta -1). The ring-count change is not itself decisive, but the absence of an extra ring and the overall less drug-like profile do not add support for mutagenicity. Even with the higher TPSA and ionizable-site burden, the comparison still fits better with a non-mutagenic outcome because the query looks more exposure-limited than the neighbor.
+
+Neighbor 5 also supports the non-mutagenic label. The query again has 2 thiosemicarbazide copies where the neighbor has 0, and it has more ionizable sites, 8 versus 6 (delta +2), plus more acidic sites, 6 versus 4 (delta +2), which would tend to reduce membrane passage. The query’s NH/OH group count is also higher, 6 versus 4 (delta +2), reinforcing a more polar, less diffusible profile. On the other hand, the query has lower QED drug-likeness, 0.2504 versus 0.6382 (delta -0.3878), and fewer rings overall, 0 versus 1 (delta -1). The QED shift again reflects a less favorable property balance, but not specifically mutagenicity. Here the key point is that the stronger polarity and ionization burden, combined with the thiosemicarbazide alert, do not translate into a mutagenic readout because the comparison remains dominated by limited exposure rather than a stronger DNA-reactive pattern than the neighbor.
+
+Neighbor 6 is the last non-mutagenic neighbor and is important because it combines the same structural alert with several strong exposure-limiting differences. The query has 2 copies of thiosemicarbazide versus 0 in the neighbor, which is the main mutagenicity-related concern. But the query also has much lower estimated logP, -1.4322 versus 1.0939 (delta -2.5261), which is consistent with reduced hydrophobic uptake; it has lower QED drug-likeness, 0.2504 versus 0.6151 (delta -0.3647); and it has a higher topological polar surface area, 76.1 versus 43.09 (delta +33.01), again pointing to poorer passive permeability. The query lacks a primary amide that the neighbor has, which is another specific structural difference, and it has fewer rings overall, 0 versus 1 (delta -1). Although the higher TPSA and the missing primary amide might look more polar and less drug-like, the overall pattern still favors a non-mutagenic interpretation because the query is far less lipophilic and more exposure-limited than the neighbor.
+
+Across all six neighbors, the same pattern repeats: the query carries thiosemicarbazide, which is the main mutagenicity-relevant structural concern, but it is also substantially more polar, less lipophilic, and generally less permeable than the comparison molecules. The positive neighbors show that the query’s thiosemicarbazide burden is real, yet the large drops in logP/logD, the low basicity in one case, and the reduced rigidity/size or removal of other functional motifs keep the comparisons from becoming clearly mutagenic. The negative neighbors reinforce that the query’s higher ionization burden, TPSA, and NH/OH count are more consistent with reduced bacterial exposure than with a stronger mutagenic profile. Putting those analog signals together, the balance still supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

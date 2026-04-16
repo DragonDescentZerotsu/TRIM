@@ -1,0 +1,52 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several strong features associated with poor BBB penetration. Its topological polar surface area is 182.83 Å², which is well above the usual CNS-friendly range and strongly disfavors passive brain entry. The hydrogen-bonding burden is also high, with an H-bond donor count of 5 and an NH/OH group count of 5, both of which increase desolvation cost and reduce permeability. Consistent with that, the heteroatom count is 13, adding substantial polarity, and the saturated heterocycle count is 3 suggests a fairly heteroatom-rich, polar scaffold rather than a compact hydrophobic one. The presence of secondary hydroxyl groups at count 2 further reinforces the high polar burden. There is also a tetrahydropyran count of 3, which introduces additional oxygen-containing ring functionality and is not helpful for BBB penetration when combined with the already high PSA and donor count. The QED drug-likeness value of 0.1885 is quite low, which is consistent with an unfavorable overall physicochemical profile. On the other hand, the fraction of sp3 carbons is 0.9268, indicating a highly saturated and three-dimensional scaffold, and the aliphatic carbocycle count of 4 could support rigidity and sometimes permeability. However, these shape-related features are not enough to overcome the dominant polarity and hydrogen-bonding liabilities. Taken together, the molecule is much more consistent with option (A), does not cross the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but overall unfavorable analog for BBB penetration. It shares the query’s low ketone count only indirectly through the comparison that the neighbor has 2 ketones while the query has 0, and that delta of -2 is associated with a strong shift toward non-crossing behavior. The query also has more saturated heterocycles than the neighbor, with 3 versus 0 (delta +3), which is another unfavorable change because added heterocycle burden often comes with more polarity or donor/acceptor complexity. Although the query has a much larger Labute surface area than the neighbor, 318.5282 versus 176.917 (delta +141.6112), and that particular difference is favorable for BBB crossing in this pair, the query also has more NH/OH groups, 5 versus 2 (delta +3), which is a clear liability for passive brain entry because extra hydrogen-bonding functionality raises desolvation cost. The query has one fewer alkene, 1 versus 2 (delta -1), which is the only other favorable change here, but the large increase in NH/OH groups and saturated heterocycles makes this neighbor more consistent with non-crossing overall. Neighbor 2 is even more strongly aligned with the non-BBB class. Again, the query has 0 ketones versus the neighbor’s 2 (delta -2), and that change is unfavorable in this comparison. The query also has 3 saturated heterocycles versus 0 in the neighbor (delta +3), which again points away from BBB penetration. In addition, the query’s topological polar surface area is far higher, 182.83 versus 74.6 (delta +108.23), and that is especially important because BBB penetration is generally favored when TPSA is much lower, typically below about 90 Å² and often in the 60–70 Å² region. Here the query is well above that range, so this is a major argument against crossing. The query also has a much larger heavy-atom count, 54 versus 27 (delta +27), which adds size burden, and its QED drug-likeness is much lower, 0.1885 versus 0.7379 (delta -0.5494), reinforcing that it is a poorer overall permeability-like analog. The higher NH/OH group count, 5 versus 2 (delta +3), adds another polarity penalty. Neighbor 3 follows the same pattern. The query again has 0 ketones versus 2 in the neighbor (delta -2), 3 saturated heterocycles versus 0 (delta +3), and a much higher TPSA, 182.83 versus 54.37 (delta +128.46), which places the query far outside the usual BBB-favorable TPSA window. The query is also larger, with heavy-atom count 54 versus 25 (delta +29), and its QED is much lower, 0.1885 versus 0.7837 (delta -0.5952), both of which support the non-BBB assignment. The only feature here that superficially looks favorable is fraction of sp3 carbons, where the query is slightly higher at 0.9268 versus 0.8182 (delta +0.1086), but that does not overcome the strong polarity and size disadvantages. Taken together, Neighbor 1 to Neighbor 3 all resemble BBB-crossing analogs only weakly, and the query’s much higher polarity burden and size consistently move it away from BBB penetration.
+
+Neighbor 4, which is one of the non-crossing neighbors, makes the non-BBB call even clearer. The query has a much higher hydrogen-bond acceptor count, 13 versus 2 (delta +11), which is a major liability because BBB heuristics generally favor low HBA, often below 7, and low total hydrogen-bonding capacity. The query also has 4 aliphatic heterocycles versus 0 in the neighbor (delta +4), adding structural complexity that can carry extra polarity or ionization burden depending on the scaffold. Its QED drug-likeness is much lower, 0.1885 versus 0.6951 (delta -0.5066), again pointing to a less favorable CNS-like profile. The rotatable-bond count goes the other way, with the query at 7 versus 0 in the neighbor (delta +7), and fewer rotatable bonds are usually better for BBB permeation because lower flexibility helps membrane passage. But that favorable flexibility change is outweighed by the much larger HBA burden, the extra heterocycles, the poor QED, and the high TPSA, 182.83 versus 37.3 (delta +145.53), which is far above the range usually associated with BBB entry. Neighbor 5 is similar. The query again has 13 HBA versus 2 (delta +11), 4 aliphatic heterocycles versus 0 (delta +4), and much lower QED, 0.1885 versus 0.7253 (delta -0.5368), all unfavorable for crossing. The strongest acidic pKa is slightly lower in the query, 13.0959 versus 14.0016 (delta -0.9057); by itself that is not enough to rescue BBB behavior, and the comparison still lands on the non-crossing side because the query’s polarity burden remains much larger. As in Neighbor 4, the query’s rotatable-bond count is higher, 7 versus 0 (delta +7), which is the one feature that would usually help permeability, but it is overwhelmed by HBA, heterocycle count, and the very low QED. Neighbor 6 repeats the same overall pattern with very similar values. The query has 13 HBA versus 2 (delta +11), 4 aliphatic heterocycles versus 0 (delta +4), lower QED at 0.1885 versus 0.7339 (delta -0.5454), and a lower strongest acidic pKa at 13.0959 versus 13.9524 (delta -0.8565). It again has 7 rotatable bonds versus 0 (delta +7), which would normally be favorable on flexibility grounds, but the acceptor burden and low drug-likeness dominate the comparison. Across these three non-crossing neighbors, the query consistently looks too polar and too heterocycle-rich for reliable BBB penetration, despite the modest flexibility advantage.
+
+Putting all six neighbors together, the pattern is internally consistent: the three BBB-crossing neighbors already show that the query is disadvantaged by higher NH/OH burden, higher saturated heterocycle count, and especially much higher TPSA and heavy-atom count, even when one or two individual descriptors such as Labute surface area, alkene count, or sp3 fraction look favorable. The three non-crossing neighbors reinforce that interpretation because the query repeatedly shows very high HBA, many aliphatic heterocycles, low QED, and TPSA far outside the BBB-favorable range, with only partial compensation from having seven rotatable bonds and a slightly lower acidic pKa in two cases. Overall, the balance of evidence supports option (A): does not cross the BBB.
+
+Input 3. Target final label semantics
+option (A): does not cross the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

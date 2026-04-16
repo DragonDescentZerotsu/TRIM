@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an azide group, which is a well-recognized mutagenicity toxicophore and strongly supports an Ames-positive outcome. It also has a primary aromatic amine, another classic mutagenic alert, and an adenine fragment that further raises concern for genotoxicity. In addition, the presence of a secondary hydroxyl does not offset those alerts, since hydroxylation mainly affects polarity rather than eliminating intrinsic reactive risk.
+
+Several general exposure-related descriptors point in different directions. The number of ionizable sites is high at 11, which can increase ionization and potentially reduce passive bacterial uptake, a factor that could weaken detection in some cases. However, the heteroatom count is 10, the NH/OH group count is 5, the topological polar surface area is 164.63, and the QED drug-likeness is 0.3806; together these suggest a fairly polar, complex molecule, but they do not remove the strong structural alerts. The neutral fraction is 0.9854, indicating the molecule is largely neutral under the configured conditions, which can support membrane passage and makes the mutagenic alerts more concerning rather than less.
+
+Taken as a whole, the strong mutagenic functional-group signals dominate the more mixed physicochemical profile. The most chemically persuasive features are the azide, primary aromatic amine, and adenine-related motif, so the molecule is best classified as mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close positive analog, and its chemistry is dominated by several features that align with a mutagenic outcome. The shared azide is especially important, because azide is a recognized mutagenicity toxicophore and the neighbor-query match there is strongly favorable to option (B). The query also lacks pyrazole relative to the neighbor, which in this comparison still sits on the mutagenic side, and the query is slightly more polar at the topological polar surface area level (neighbor 138.61 vs query 164.63, delta +26.02), a shift that here does not outweigh the toxicophore signal. The query has slightly more heteroatoms overall (9 to 10, delta +1), and one feature, nitrogen/oxygen atom count, moves the other way (9 to 10, delta +1) with a negative local effect, but the balance of the comparison still favors mutagenicity. Pyrimidine is also present in the neighbor but absent in the query, and that comparison again sits on the mutagenic side in this local neighborhood. Overall, Neighbor 1 supports option (B).
+
+Neighbor 2 is also a positive analog and gives a similarly mutagenic picture, even though some descriptors lean the other direction. The neighbor has two azide copies versus one in the query, which is a very strong mutagenic anchor. Against that, the query has many more basic sites (0 to 6, delta +6) and more ionizable sites (1 to 11, delta +10), and both of those changes locally favor the non-mutagenic side, consistent with the idea that greater ionization can reduce passive exposure. The query also has more aromatic heterocycles (0 to 2, delta +2), which in this comparison likewise trends toward option (A). But the query is also more heteroatom-rich (7 to 10, delta +3), and the QED drug-likeness shift from 0.3509 to 0.3806 is associated here with the mutagenic side. Because the azide signal is so strong and the remaining features do not overturn it, Neighbor 2 still points to option (B).
+
+Neighbor 3 reinforces that same direction. It again shares azide with the query, which remains a major mutagenic alert. The query has more basic sites (0 to 6, delta +6) and more aromatic heterocycles (0 to 2, delta +2), both of which in this comparison lean toward option (A), but the local structure differences that matter most here still favor mutagenicity. The neighbor has a 1,2-diol that the query lacks, and that absence is associated with option (B) in this pair. The query also has substantially more heteroatoms (5 to 10, delta +5), and that increase is on the mutagenic side here. The query retains secondary hydroxyl as well, moving from absent in the neighbor to present once in the query (delta +1), which in this comparison favors option (A), but that is not enough to override the azide and heteroatom pattern. Neighbor 3 therefore also supports option (B).
+
+Neighbor 4 is one of the negative neighbors, but even here the local comparison still ends up favoring mutagenicity. The query has azide once while the neighbor lacks it, and that is a strong mutagenic difference in favor of option (B). At the same time, the query has more ionizable sites (9 to 11, delta +2), which in this comparison leans toward option (A), consistent with reduced exposure from added ionization. The query also has more heteroatoms (7 to 10, delta +3) and more NH/OH groups (4 to 5, delta +1), both of which here align with option (B). QED drug-likeness falls from 0.6548 in the neighbor to 0.3806 in the query (delta -0.2742), and that lower value is also associated here with the mutagenic side. Finally, the query’s strongest basic pKa is slightly higher (5.3199 to 5.5693, delta +0.2494), which in this pair also leans toward option (B). Despite the negative-neighbor status, the azide-centered structure and the accompanying shifts still make Neighbor 4 favor option (B).
+
+Neighbor 5 is another negative analog, and it is also informative because it contains several mutagenicity-associated features. The query has azide once while the neighbor does not, which again strongly favors option (B). The query has fewer NH/OH groups than the neighbor (7 to 5, delta -2), and in this local comparison that reduction is still associated with mutagenicity. The query also has one fewer primary aromatic amine than the neighbor (2 to 1, delta -1), yet the comparison still treats the primary aromatic amine pattern as mutagenicity-associated. The neighbor carries pteridine while the query does not, and that difference leans toward option (A), so this is one of the few features here that tempers the mutagenic reading. The query also has a lower strongest basic pKa (6.3198 to 5.5693, delta -0.7505), which here remains aligned with option (B), while the query has one fewer basic site (7 to 6, delta -1), a shift that leans toward option (A). Even with that counterweight, the azide and aromatic-amine pattern keep Neighbor 5 on the mutagenic side overall.
+
+Neighbor 6 is the last negative analog and remains consistent with the mutagenic label. The query again has azide once while the neighbor lacks it, and that is the clearest favorable signal for option (B). The query also has one more primary aromatic amine than the neighbor (absent to present, delta +1), which is another mutagenicity-associated structural alert in this local comparison. The query’s strongest basic pKa is higher than the neighbor’s (3.7921 to 5.5693, delta +1.7772), and that shift also favors option (B) here. By contrast, the query has one more ionizable site (10 to 11, delta +1), and that change leans toward option (A), reflecting the exposure-limiting role of increased ionization. Both molecules share adenine, which in this comparison still sits on the mutagenic side, and the number of acidic sites is unchanged at 5 vs 5 (delta +0), which slightly favors option (A). Even with those counterpoints, the azide and primary aromatic amine evidence dominate Neighbor 6 as well, so it supports option (B).
+
+Taken together, all six neighbors point in the same direction: the three positive neighbors are clearly mutagenic analogs, and the three negative neighbors still end up mutagenic once the shared azide and other toxicophoric features are weighed against the exposure-modifying properties such as ionizable-site burden, polarity, and QED. The repeated azide signal, along with aromatic amine-related and heteroatom-rich contexts, makes option (B): is mutagenic the best final prediction.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

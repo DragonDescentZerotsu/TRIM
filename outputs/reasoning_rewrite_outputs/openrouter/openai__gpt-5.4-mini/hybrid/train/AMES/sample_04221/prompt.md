@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a very high topological polar surface area of 232.9, which suggests substantial polarity and may limit passive bacterial uptake, a factor that can sometimes favor a non-mutagenic outcome. However, that is counterbalanced by several features associated with greater structural complexity and potential exposure to mutagenicity-relevant chemistry. The QED drug-likeness value is low at 0.1523, indicating a poor drug-like profile and often reflecting an unfavorable combination of properties that can overlap with problematic structural motifs. The Labute surface area is also high at 225.7113, consistent with a large surface footprint rather than a compact, easily permeable scaffold. The molecule contains an acetal (1), which adds heteroatom-rich functionality, and the heteroatom count is 14 together with 8 ionizable sites, both of which indicate a heavily functionalized, highly polar structure. The ring count is 5, and the molecule includes 2 tetrahydropyran rings, suggesting a fairly ring-rich architecture; although ring count alone is not decisive, the overall scaffold complexity here does not obviously reduce concern. A primary hydroxyl group is present (1), further reinforcing the polar, hydrogen-bonding character. On the side favoring non-mutagenicity, 1,2-diol count is 3, which is not an obvious mutagenic toxicophore and can be consistent with a more hydroxylated, exposure-limited molecule. Taken together, the strong heteroatom and ionization burden, low QED, and large polar surface area outweigh the weaker arguments for lower mutagenic risk, so the overall profile is more consistent with option (B), is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is the strongest positive analog overall, but its structure is mixed. The query is one 1,2-diol unit lower than the neighbor (3 vs 4; delta -1), and that feature is associated with a sizable shift toward not mutagenic behavior in this comparison. However, several other matched properties are identical yet still favor mutagenicity: acidic sites are the same at 8, heavy-atom count is the same at 40, QED is the same at 0.1523, and estimated logP is the same at -2.6981, each aligning with the mutagenic side here. The equal NH/OH group count at 8 works the other way and weakens the mutagenic readout. Taken together, Neighbor 1 still ends up on the mutagenic side, but only modestly, because the favorable and unfavorable signals partly offset each other.
+
+Neighbor 2 is also a positive analog and is more clearly aligned with the mutagenic label on balance. The query is much more lipophilic-averse here, with estimated logP dropping from 1.3655 in the neighbor to -2.6981 in the query (delta -4.0636), and that change favors not mutagenic behavior in this pair. But several other shifts go the opposite way and are more numerous: nitrogen/oxygen atom count rises from 5 to 14 (delta +9), heteroatom count rises from 5 to 14 (delta +9), ring count rises from 3 to 5 (delta +2), and NH/OH group count rises from 3 to 8 (delta +5), all matching the mutagenic side in this comparison. Heavy-atom count also increases from 20 to 40 (delta +20), which here favors not mutagenic behavior, but that is outweighed by the cluster of higher heteroatom, ring, and donor-like features. Overall, Neighbor 2 remains a mutagenic analog despite the lower logP and larger size.
+
+Neighbor 3 provides another positive comparison and is especially important because the query is much more polar and less drug-like than the neighbor. Topological polar surface area jumps from 144.52 to 232.9 (delta +88.38), which in this pair supports mutagenicity, and hydrogen-bond acceptor count also rises from 8 to 14 (delta +6), again favoring the mutagenic side. At the same time, the query has one more 1,2-diol than the neighbor (3 vs 2; delta +1), and that difference goes toward not mutagenic behavior. QED drops from 0.4031 to 0.1523 (delta -0.2508), which here favors mutagenicity, while Labute surface area increases from 158.8041 to 225.7113 (delta +66.9072) and number of ionizable sites rises from 5 to 8 (delta +3), both of which point the other way toward not mutagenic behavior in this comparison. Even with those counterweights, the very large PSA increase together with the lower QED and higher acceptor count leave Neighbor 3 on the mutagenic side.
+
+Neighbor 4 is a negative neighbor, but its comparison still ends up leaning mutagenic overall. The query has fewer acetal groups than the neighbor (1 vs 2; delta -1), and that shift favors mutagenicity here. The query also has one more ionizable site than the neighbor (8 vs 7; delta +1), which goes toward not mutagenic behavior, while NH/OH group count increases from 7 to 8 (delta +1) and heteroatom count from 13 to 14 (delta +1), both favoring mutagenic behavior. Heavy-atom count rises modestly from 38 to 40 (delta +2), which points toward not mutagenic behavior, and QED drops from 0.1855 to 0.1523 (delta -0.0333), which in this pair supports mutagenicity. So although Neighbor 4 is labeled not mutagenic, the query differs in several ways that still make it resemble the mutagenic side of the local neighborhood.
+
+Neighbor 5 is another negative analog and again the query is mixed but trends toward the mutagenic side overall. The neighbor has just one ionizable site, whereas the query has 8, a large increase (delta +7) that favors mutagenicity in this comparison. QED also falls sharply from 0.8001 to 0.1523 (delta -0.6478), which likewise aligns with the mutagenic side here. Against that, Labute surface area rises from 126.6517 to 225.7113 (delta +99.0595) and heavy-atom count rises from 22 to 40 (delta +18), both of which point toward not mutagenic behavior. The neighbor lacks phenol while the query has one copy (delta +1), and that also favors not mutagenic behavior; heteroatom count increases from 5 to 14 (delta +9), favoring mutagenic behavior. Because the query gains several polarity/heteroatom features and loses a lot of QED relative to this small, drug-like neighbor, Neighbor 5 still supports the mutagenic label.
+
+Neighbor 6 is the other negative analog and is strongly informative because the query resembles a higher-polarity, more flexible version of the neighbor in several respects. The neighbor has 2 acetal copies while the query has 1, which in this comparison favors mutagenicity. QED is also lower for the query relative to the neighbor only slightly in the raw values shown here, but the comparison still treats that direction as mutagenic-supporting. The query and neighbor have the same ring count at 5, and the neighbor has an oxoarene while the query does not, both of which favor mutagenic behavior in this pair. NH/OH group count is lower in the query, 8 versus 10 (delta -2), which still aligns with mutagenicity here, while rotatable-bond count drops from 15 to 6 (delta -9), and that goes toward not mutagenic behavior. Even with that flexibility reduction, the combination of acetal, oxoarene, ring, QED, and NH/OH comparisons keeps Neighbor 6 on the mutagenic side.
+
+Putting the six neighbors together, the three positive neighbors all remain on the mutagenic side despite some opposing exposure-related or size-related effects, and the three negative neighbors are also closer to the mutagenic class than to a clean not-mutagenic signature. The most consistent themes are the query’s high polarity/heteroatom burden, elevated acceptor and donor-related features, and low QED relative to several neighbors, alongside some countervailing size and flexibility effects. On balance, the local neighborhood supports option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

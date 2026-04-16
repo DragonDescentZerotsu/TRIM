@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has a tertiary aliphatic amine with raw value 1, which suggests a basic center that can support recognition in CYP3A4-relevant chemical space, although ionization can also reduce passive permeability if strongly protonated. Its estimated logD of 2.5768 is in a moderate hydrophobicity range that is compatible with membrane access and enzyme exposure, rather than being so low that polarity would dominate. The urea motif is present at 1, adding polarity, but not enough on its own to outweigh the overall balance of the molecule. The 1H-indole present at 1 contributes an aromatic, lipophilic scaffold that is often associated with substrate-like chemistry. Labute surface area is 148.2313, which is moderately sized and consistent with a compound that is not too small to engage the enzyme. Ring count is 4, indicating a compact but sufficiently structured scaffold, and molecular weight is 338.455, which sits in a favorable mid-range for oral drug-like exposure. The alkene present at 1 adds a small amount of unsaturation without making the structure overly rigid or polar. Estimated logP is 2.8414, again pointing to balanced hydrophobicity that should support access to the CYP3A4 environment. Heavy-atom molecular weight is 312.247, reinforcing that the molecule has a substantial non-hydrogen framework of moderate size. Taken together, the tertiary aliphatic amine, moderate logD and logP, aromatic indole core, and mid-range size descriptors outweigh the polarity added by the urea, so the overall profile is more consistent with a CYP3A4 substrate than with a non-substrate.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a strong positive analog for substrate behavior. The query has a tertiary aliphatic amine once while the neighbor has none, a difference of +1 that favors the substrate class here. The two molecules also match on 1H-indole and urea, both of which are retained exactly at delta +0, so the core scaffold features are aligned. On top of that, the query is only slightly higher in QED drug-likeness (0.9041 vs 0.9025, delta +0.0016) and estimated logD (2.5768 vs 2.5163, delta +0.0605), both small increases that keep it in a favorable developability and hydrophobicity region. The only opposing feature is a small decrease in strongest acidic pKa (13.3736 vs 13.7336, delta -0.36), which slightly weakens the comparison, but the overall balance still resembles a substrate-like molecule.
+
+Neighbor 2 also supports the substrate assignment. The shared 1H-indole, alkene, and tertiary aliphatic amine features all align between the query and this neighbor, indicating a closely matched structural pattern. The query has a much higher strongest acidic pKa than the neighbor, 13.3736 versus 9.8297, delta +3.5439, which is a substantial shift in the direction seen with the substrate class in this comparison. The query is also slightly higher in maximum partial charge, 0.3174 versus 0.2802, delta +0.0372, and it has fewer saturated rings, 0 versus 3, delta -3. Taken together, the preserved indole and alkene scaffold plus the higher pKa and reduced saturation make this a favorable substrate-like analog.
+
+Neighbor 3 is another clear positive neighbor. As with Neighbor 1, the query has one tertiary aliphatic amine while the neighbor has none, delta +1, and both molecules contain 1H-indole. The strongest acidic pKa is again much higher in the query, 13.3736 versus 9.8803, delta +3.4933, reinforcing the same direction of change. The query also drops from 4 saturated heterocycles in the neighbor to 0 in the query, delta -4, and from 4 saturated rings to 0, delta -4, so the query is substantially less saturated than this neighbor. Maximum partial charge is also higher in the query, 0.3174 versus 0.2802, delta +0.0372. This combination of shared indole chemistry, added tertiary amine, and lower ring saturation matches the substrate side of the local chemical neighborhood very well.
+
+Neighbor 4 is labeled as a non-substrate neighbor, but its comparison still leans overall toward the substrate side for the query. The neighbor has a dialkyl thioether that the query lacks, delta -1, while both molecules share 1H-indole and the query again contains the tertiary aliphatic amine once whereas the neighbor has none, delta +1. Those shared and added features support substrate-like behavior. The main opposing signals are the much larger minimum absolute partial charge in the query, 0.3174 versus 0.0459, delta +0.2715, and the same increase in maximum partial charge from 0.0459 to 0.3174, delta +0.2715; these are the only features in this comparison that favor the non-substrate side. Even so, the query also has a much higher neutral fraction, 0.5438 versus 0.1437, delta +0.4001, which is a substantial move toward a more neutral, permeable state. Overall, this neighbor remains more consistent with substrate behavior despite the partial-charge caution.
+
+Neighbor 5, another non-substrate neighbor, again mostly supports the substrate label for the query. The molecules share 1H-indole, and the query has the tertiary aliphatic amine once while the neighbor has none, delta +1. The query is also more hydrophobic, with estimated logD rising from 2.2716 to 2.5768, delta +0.3052, which stays in the favorable middle range for membrane access. Neutral fraction is also much higher in the query, 0.5438 versus 0.0464, delta +0.4974, suggesting far less ionization and better accessibility. The counterweight is the higher maximum partial charge in the query, 0.3174 versus 0.251, delta +0.0664, which here favors the non-substrate side. The neighbor also has a secondary amide that the query lacks, delta -1, and that structural difference still leaves the query looking more substrate-like overall because the dominant changes are the preserved indole, added tertiary amine, higher logD, and much higher neutral fraction.
+
+Neighbor 6 is the weakest of the six but still ends up favoring the substrate label overall. The query has the tertiary aliphatic amine once, while the neighbor lacks it, delta +1, and the query also has a much higher estimated logD, 2.5768 versus 0.4374, delta +2.1394, which is a major shift toward a more membrane-accessible region. Estimated logP shows the same pattern, 2.8414 versus 0.6956, delta +2.1458, and QED is also higher in the query, 0.9041 versus 0.6542, delta +0.2499, indicating a more drug-like property balance. The query lacks 1H-indole that the neighbor does not have, which is the one feature here that goes against the substrate side, and the neighbor also contains piperazine while the query does not, delta -1, which is another opposing point. Even with those negatives, the much higher logD, higher logP, higher QED, and presence of the tertiary amine make the query substantially more substrate-like than this neighbor.
+
+Across the full set, the three positive neighbors are all strongly aligned with the query through the shared 1H-indole scaffold and the presence of a tertiary aliphatic amine, with additional support from higher logD, higher QED, lower ring saturation, and higher neutral fraction in several comparisons. The three non-substrate neighbors do introduce some caution, especially the higher partial-charge signals in Neighbors 4 and 5 and the missing 1H-indole and piperazine contrast in Neighbor 6, but these are outweighed by the repeated substrate-favoring structural and physicochemical similarities. Taken together, the local neighborhood is more consistent with option (B): is a substrate to the enzyme CYP3A4.
+
+Input 3. Target final label semantics
+option (B): is a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

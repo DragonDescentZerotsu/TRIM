@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are often compatible with CYP2D6 substrate behavior, but there is also a notable counter-signal. It contains an imidazole group, which is a heteroaromatic nitrogen-containing motif; such heteroaryl systems can add polarity and sometimes do not fit the classic lipophilic, protonated-basic-center profile most associated with CYP2D6 substrates. The molecule also has a nitrile present, which is another polarizing functional group and can further reduce the resemblance to a typical lipophilic basic substrate. On the other hand, the topological polar surface area is 41.61, which is not especially high and sits in a range that can still be consistent with substrate-like small molecules, especially when paired with lipophilicity and a basic site. The maximum partial charge is 0.0991 and the minimum absolute partial charge is 0.0991, while the maximum absolute partial charge is 0.3271 and the minimum partial charge is -0.3271; taken together, these charge values suggest a molecule with some localized polarity but not an overwhelmingly charged or highly polar profile. The QED drug-likeness of 0.7454 is fairly strong and supports an overall drug-like small-molecule character. The molecule also has heteroatom count 3, which adds polarity but is not by itself decisive. However, piperazine is absent (0), and that absence matters because protonatable basic nitrogens, especially in amine-like motifs, are commonly associated with CYP2D6 substrates. With no clear piperazine-like basic center and with polar/heteroaromatic features such as imidazole and nitrile, the balance of evidence leans away from a classic CYP2D6 substrate pharmacophore. Overall, despite a few substrate-compatible descriptors, the mixed polarity and lack of a strongly prototypical protonated basic motif make non-substrate the more likely classification.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately unfavorable analog for substrate behavior. The strongest difference is imidazole: the query has imidazole once while the neighbor does not, and that change is associated with a large negative effect (query-minus-neighbor delta +1, corresponding to -0.8903), which is the dominant signal here. Several other features lean the other way: the query also has nitrile once while the neighbor has none (delta +1, +0.2696), the query has pyrrolidine while the neighbor does not (delta -1, +0.2082), maximum absolute partial charge is slightly higher in the query (0.3271 vs 0.2993, delta +0.0278, +0.1864), rotatable bond count is unchanged at 1 (delta 0, +0.1272), and topological polar surface area rises from 16.13 in the neighbor to 41.61 in the query (delta +25.48, +0.1189). Even though the nitrile, pyrrolidine, charge, rotatable-bond, and PSA changes are individually favorable, the very strong imidazole penalty outweighs them, so this neighbor still ends up closer to the non-substrate side.
+
+Neighbor 2 is also a negative analog overall. Again, the query has imidazole once while the neighbor has none, and that same large imidazole difference is unfavorable (delta +1, -0.8903). There are compensating features: the query has a lower minimum absolute partial charge than the neighbor (0.0991 vs 0.1227, delta -0.0236, +0.3507), lower topological polar surface area than the neighbor’s 36.26 is not the case here because the query is actually higher at 41.61 (delta +5.35, +0.2051), and the query’s maximum partial charge is lower than the neighbor’s 0.1227 (0.0991 vs 0.1227, delta -0.0236, +0.1804). However, the query also has a less favorable minimum partial charge than the neighbor (minimum partial charge -0.3271 vs -0.3608, delta +0.0337, -0.1068), which partly offsets those gains. Because the imidazole penalty remains the largest effect, this comparison still leans away from substrate status.
+
+Neighbor 3 repeats essentially the same pattern as Neighbor 2, and it is likewise unfavorable overall. The query again contains imidazole once while the neighbor has none, producing the same strong negative effect (delta +1, -0.8903). The query is helped by lower minimum absolute partial charge than the neighbor (0.0991 vs 0.1227, delta -0.0236, +0.3507), and by lower maximum partial charge than the neighbor’s 0.1227 (0.0991 vs 0.1227, delta -0.0236, +0.1804). The topological polar surface area comparison is slightly different here: the neighbor is at 45.05 and the query at 41.61, so the query is lower by 3.44 (delta -3.44, +0.2324), which is directionally favorable relative to a lower-PSA substrate-like region. But the query still has the same imidazole penalty and the same less favorable minimum partial charge on the signed scale (minimum partial charge -0.3271 vs -0.3608, delta +0.0337, -0.1068). Taken together, the positive features do not overcome the imidazole-driven penalty, so this neighbor also supports the non-substrate side.
+
+Neighbor 4 is a clear negative analog. Here the query has fewer nitriles than the neighbor: the neighbor has 2 copies of nitrile while the query has 1, so the delta is -1 and that change is unfavorable (-0.5415). The query also introduces imidazole once while the neighbor has none, producing another substantial negative effect (delta +1, -0.4531). The remaining comparisons point the other way: the query has a higher maximum absolute partial charge than the neighbor (0.3271 vs 0.241, delta +0.0861, +0.2361), a much lower topological polar surface area than the neighbor’s 78.29 (41.61 vs 78.29, delta -36.68, +0.2239), a higher fraction of sp3 carbons than the neighbor (0.2857 vs 0.0588, delta +0.2269, +0.1587), and the query lacks 4H-1,2,4-triazole that the neighbor has (delta -1, +0.1519). Even with those favorable differences, the loss of nitrile and the presence of imidazole make the overall comparison strongly consistent with non-substrate behavior.
+
+Neighbor 5 is also a negative analog, mainly because the shared imidazole still carries a large unfavorable signal. Both the neighbor and the query have imidazole, and that match itself is associated with a strong negative effect (-1.0307). The query is helped by lower minimum absolute partial charge than the neighbor (0.0991 vs 0.3561, delta -0.257, +0.3129), lower topological polar surface area than the neighbor’s 44.12 (delta -2.51, +0.1892), lower maximum partial charge than the neighbor’s 0.3561 (0.0991 vs 0.3561, delta -0.257, +0.1626), and the presence of nitrile in the query when the neighbor has none (delta +1, +0.1191). But the query also has a less favorable minimum partial charge than the neighbor (minimum partial charge -0.3271 vs -0.4613, delta +0.1342, -0.2417). Even though there are several favorable polarity-related differences and the nitrile is a positive feature, the imidazole match and the signed charge penalty keep this neighbor on the non-substrate side overall.
+
+Neighbor 6 is the weakest negative analog in magnitude, but it still points to non-substrate behavior overall. The largest unfavorable differences are the query lacking oximether that the neighbor has (delta -1, -1.2813), the shared imidazole feature (delta +0, -1.0307), and the neighbor having 4 copies of aryl chloride while the query has none (delta -4, -0.9633). Those are strong structure-based penalties. The query does have some favorable properties: its topological polar surface area is slightly higher than the neighbor’s 39.41 (41.61 vs 39.41, delta +2.2, +0.2236), its estimated logD is lower than the neighbor’s very high 6.0884 (2.555 vs 6.0884, delta -3.5334, -0.215), and its QED drug-likeness is higher than the neighbor’s 0.3501 (0.7454 vs 0.3501, delta +0.3953, +0.2092). Even with those favorable changes, the combination of missing oximether, shared imidazole, and fewer aryl chloride groups makes this comparison still align with the non-substrate class, though by a smaller margin than the other negative neighbors.
+
+Putting the six neighbors together, the three substrate-labeled neighbors are not as persuasive as they first appear because each of them contains a strong imidazole-related disadvantage relative to the query, despite some favorable polarity and charge shifts. The three non-substrate neighbors, by contrast, all reinforce the same overall direction through combinations of imidazole, nitrile, aryl chloride, and other structural differences, with Neighbor 4 and Neighbor 6 especially supporting the non-substrate side. Across the full set, the recurring imidazole signal and the structural contrasts with the negative neighbors make the molecule more consistent with option (A): is not a substrate to the enzyme CYP2D6.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP2D6
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

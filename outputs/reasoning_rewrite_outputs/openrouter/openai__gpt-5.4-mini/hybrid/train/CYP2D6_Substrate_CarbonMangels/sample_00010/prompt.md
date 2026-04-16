@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has a secondary aliphatic amine, which is a strong substrate-like feature for CYP2D6 because it provides a protonatable basic center near physiological pH. That interpretation is reinforced by the strongest basic pKa of 9.0268, which suggests the nitrogen is substantially protonated at pH 7.4, and by the very low neutral fraction of 0.0231, meaning the compound is mostly cationic rather than neutral. The aromatic/lipophilic character also looks compatible with CYP2D6 recognition: the molecule contains an alkyl aryl ether, and the topological polar surface area is 41.49, which is in a moderate range rather than highly polar, so the scaffold still retains enough lipophilic character to fit typical CYP2D6 substrate space. The strongest acidic pKa of 13.8852 is very high, so acidic ionization is unlikely to dominate the physicochemical profile, and the relatively modest fraction of sp3 carbons of 0.4667 does not argue against a substrate-like, partially rigid scaffold. The charge descriptors are also consistent with a cationic molecule, with maximum partial charge 0.1224, minimum partial charge -0.4905, and minimum absolute partial charge 0.1224, all fitting a structure that carries localized charge separation rather than being broadly neutral. Overall, the presence of a protonatable secondary amine together with a moderate PSA, a low neutral fraction, and an aromatic ether motif makes the molecule look like a CYP2D6 substrate rather than a non-substrate. Final prediction: B, substrate to CYP2D6.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is overall supportive of substrate behavior. It differs from the query by lacking carbazole, and that absence is associated with a negative shift here (neighbor-minus-query difference of -1 on that feature, with a -0.5928 effect), but the stronger chemistry signal comes from the query’s higher strongest basic pKa (neighbor 8.139 vs query 9.0268, delta +0.8878), which favors a more readily protonated basic center. The query also matches the neighbor on having a secondary aliphatic amine, and that shared basic functionality is consistent with the protonatable nitrogen motif often seen in CYP2D6 substrates. In addition, the query has much lower topological polar surface area than the neighbor (41.49 vs 75.74, delta -34.25), which fits a more substrate-like, less polar profile, and the slightly higher strongest acidic pKa (13.8852 vs 13.8424, delta +0.0428) and lower minimum absolute partial charge (0.1224 vs 0.1607, delta -0.0383) also keep the query in the favorable direction overall. So despite the carbazole difference, this neighbor still leans toward option (B).
+
+Neighbor 2 is also clearly positive for substrate likelihood. The neighbor contains 1,2,5-thiadiazole, which the query lacks, and that heterocycle difference strongly favors substrate behavior here. The two molecules again share a secondary aliphatic amine, reinforcing the basic-center motif. The query’s topological polar surface area is much lower than the neighbor’s (41.49 vs 79.74, delta -38.25), which is favorable, while the query’s strongest basic pKa is slightly lower than the neighbor’s (9.0268 vs 9.1522, delta -0.1254), a small counterpoint but not enough to dominate. The query also has a much lower heteroatom count (3 vs 8, delta -5), which supports a less polar scaffold, although its fraction of sp3 carbons is lower than the neighbor’s (0.4667 vs 0.8462, delta -0.3795), a mild unfavorable shape-related difference. Even with that one weaker point, the balance of features still favors option (B).
+
+Neighbor 3 likewise supports the substrate class overall. The shared secondary aliphatic amine again matches the basic-nitrogen pattern typical of CYP2D6 substrates, and the query’s topological polar surface area is far lower than the neighbor’s (41.49 vs 95.58, delta -54.09), which is strongly favorable. The query’s strongest basic pKa is also slightly lower than the neighbor’s (9.0268 vs 9.0711, delta -0.0443), a minor negative shift, but the query has fewer NH/OH groups (2 vs 5, delta -3), which is favorable because it reduces hydrogen-bonding/polar burden. The neighbor also has phenol and the query does not, which is another favorable difference for the query. The only clear opposing shape signal is that the query’s fraction of sp3 carbons is higher than the neighbor’s (0.4667 vs 0.3158, delta +0.1509), but that is not enough to outweigh the stronger polarity and functionality advantages. Taken together, Neighbor 3 still points toward option (B).
+
+Neighbor 4 is the strongest negative-neighbor comparison, but even here the overall structure still supports substrate status. The most important difference is neutral fraction: the neighbor is much more neutral (0.8174) than the query (0.0231), with a large query-minus-neighbor delta of -0.7943, and lower neutral fraction means the query is far less neutral and more ionizable, which is consistent with substrate-like chemistry for CYP2D6. The neighbor lacks secondary aliphatic amine while the query has one, and that is favorable for the query because a protonatable basic center is a recurring substrate feature. The query also has much lower topological polar surface area than the neighbor (41.49 vs 74.27, delta -32.78), again moving in the favorable direction. The neighbor’s maximum and minimum absolute partial charge values are both higher than the query’s (0.2381 vs 0.1224 for minimum absolute partial charge, delta -0.1156; and 0.2381 vs 0.1224 for maximum partial charge, delta -0.1156), which is another way the query looks less extreme and more consistent with the substrate side here. The only small counterweight is that the query’s strongest acidic pKa is slightly higher (13.8852 vs 13.7673, delta +0.1179), but that does not overturn the broader favorable ionization and polarity pattern.
+
+Neighbor 5 is also negative overall, yet the query still compares favorably on several substrate-relevant features. The neighbor has many more rotatable bonds than the query (16 vs 8, delta -8), so the query is less flexible, which can be consistent with a more focused substrate-like scaffold. Both compounds have a secondary aliphatic amine, preserving the basic-center motif. The query’s strongest basic pKa is slightly lower than the neighbor’s (9.0268 vs 9.2868, delta -0.26), which is a modest unfavorable difference, but the query again has much lower topological polar surface area (41.49 vs 81.95, delta -40.46), a strong favorable shift. The neighbor has phenol while the query does not, which removes a polar feature from the query side. The query also has a much higher QED drug-likeness value than the neighbor (0.6937 vs 0.3103, delta +0.3834), indicating a more drug-like balance overall. Even though this neighbor is categorized as non-substrate, the query still looks more compatible with the substrate side because it is less polar, less heavily functionalized, and retains the secondary aliphatic amine.
+
+Neighbor 6 is the other non-substrate comparison, but it too leaves the query in a more favorable substrate-like region. The neighbor has a much higher minimum absolute partial charge than the query (0.3259 vs 0.1224, delta -0.2035), and the same is true for maximum partial charge (0.3259 vs 0.1224, delta -0.2035), suggesting the query is less extreme in charge distribution. Both molecules have a secondary aliphatic amine, which again supports the basic-center motif in the query. The query’s topological polar surface area is far lower than the neighbor’s (41.49 vs 95.94, delta -54.45), which is strongly favorable. The query also has a much higher strongest acidic pKa than the neighbor (13.8852 vs 3.3072, delta +10.578), and that large difference separates the query from the very acidic character of the neighbor. The one opposing structural difference is that the neighbor has a carboxylic acid and the query does not, and that absence is a negative-neighbor-to-query feature in this comparison; however, the rest of the profile still favors the query because it is much less polar and retains the protonatable amine. So even against this non-substrate neighbor, the query remains more consistent with option (B).
+
+Putting the six comparisons together, the three substrate neighbors repeatedly highlight the same favorable query pattern: a secondary aliphatic amine, lower topological polar surface area, and generally more substrate-like basicity and lipophilicity/functional-group balance. The three non-substrate neighbors do contain some opposing features, especially the carboxylic acid, phenol, and carbazole/thiadiazole differences, but those are outweighed by the query’s more favorable ionization and polarity profile. The combined neighbor evidence therefore supports option (B): is a substrate to the enzyme CYP2D6.
+
+Input 3. Target final label semantics
+option (B): is a substrate to the enzyme CYP2D6
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

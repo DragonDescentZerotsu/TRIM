@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed profile for oral bioavailability. A strongest basic pKa of 2.3832 is quite low, which suggests the basic center is weakly ionizable and less likely to remain strongly cationic at physiological pH; that can be favorable for passive permeability, although the effect is not dominant by itself. The presence of a purine ring (1) and a uracil ring (1) adds heteroaromatic character and can support a drug-like scaffold, and both features can be compatible with oral exposure rather than being inherently disqualifying. The topological polar surface area of 61.82 is comfortably below the usual permeability concern range, so polarity is not excessive. A neutral fraction of 1 indicates the molecule can exist in a neutral form, which is favorable for membrane passage. At the same time, there are some liabilities: there is no acidic site, so strongest acidic pKa is not defined, and the estimated logP of -1.0293 is quite low, meaning the molecule is rather hydrophilic and may partition into membranes poorly. The rotatable-bond count of 0 is favorable because the scaffold is very rigid, and the Labute surface area of 79.029 is not especially large, both of which are consistent with reasonable developability. The minimum partial charge of -0.3279 does not suggest an extreme charge burden. Balancing these factors, the low polarity and rigid scaffold support oral bioavailability, while the very low logP and the ionization pattern add some caution, but overall the profile is more consistent with oral bioavailability ≥ 20%.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is an overall favorable analog for oral bioavailability ≥20%. It differs from the query by having 2 copies of hetero N nonbasic versus 0 in the query (query-minus-neighbor delta -2), and that difference is associated with a strong shift toward the higher-bioavailability class here. The query also has purine once while the neighbor has none (delta +1), and the query has higher fraction of sp3 carbons, 0.375 versus 0.1667 (delta +0.2083), both of which align with the more favorable side. There are some counterweights: the neighbor has primary amide while the query does not (delta -1), and the query has uracil once while the neighbor has none (delta +1), each of which leans the other way. The maximum partial charge is also slightly lower in the query, 0.3317 versus 0.3522 (delta -0.0205), which is a small favorable shift. Taken together, the stronger positive signals dominate, so Neighbor 1 supports oral bioavailability ≥20%.
+
+Neighbor 2 is mixed but still ends up favoring the ≥20% class overall. The query has higher QED than the neighbor, 0.5385 versus 0.4333 (delta +0.1052), yet that comparison is associated here with a negative shift for bioavailability. The same is true for estimated logP: the neighbor is at 1.1458 while the query is much lower at -1.0293 (delta -2.1751), and that lower lipophilicity also hurts the higher-bioavailability class in this specific comparison. The neighbor and query both have purine, so there is no difference there (delta +0), but the neighbor’s strongest acidic pKa is 8.2162 while the query has no acidic site, giving an undefined delta and still aligning unfavorably for the query in this pair. The query also has uracil once while the neighbor has none (delta +1), another negative cue. On the other hand, the query’s maximum partial charge is lower, 0.3317 versus 0.3958 (delta -0.0641), which helps the ≥20% side. Even with several unfavorable descriptors, the favorable charge pattern together with the remaining context keeps Neighbor 2 on the higher-bioavailability side overall.
+
+Neighbor 3 is also supportive of oral bioavailability ≥20%, though it contains clear opposing features. The neighbor has a primary aromatic amine while the query does not (delta -1), and that difference favors the query. The query also lacks the neighbor’s higher QED: the neighbor is 0.7331 versus 0.5385 for the query (delta -0.1947), which is unfavorable for the query in this comparison. Estimated logP is likewise lower in the query, -1.0293 versus 0.541 (delta -1.5703), again a negative factor here. The neighbor carries 2 carboxylic ester groups while the query has none (delta -2), and that difference is also unfavorable to the query in this setting. The two molecules both have purine (delta +0), which is neutral to mildly favorable for the query, and the query has a lower fraction of sp3 carbons, 0.375 versus 0.5 (delta -0.125), which is another negative shift. Even so, the combined evidence still leaves this neighbor aligned with the ≥20% class overall.
+
+Neighbor 4 provides useful negative-neighbor evidence, but the comparison still ends up favoring the ≥20% side overall. The query has purine while the neighbor does not (delta +1), the aromatic heterocycle count is the same at 2 versus 2 (delta +0), and the query has neutral fraction present while the neighbor is absent, effectively 1 versus 0 (delta +1); each of those differences supports the higher-bioavailability class. The query also has uracil once while the neighbor has none (delta +1), again favoring the query. The main opposing feature is that the neighbor has dialkyl ether while the query does not (delta -1), which is unfavorable for the query in this pair. The neighbor’s estimated logP is -0.4397 compared with -1.0293 for the query (delta -0.5896), and that lower logP on the query side is the one explicit feature here that leans toward the lower-bioavailability class. Still, the neutral fraction, purine, and uracil comparisons outweigh those negatives, so this neighbor comparison ends up supporting oral bioavailability ≥20% overall.
+
+Neighbor 5 is another negative-class neighbor whose local comparison nevertheless favors the ≥20% label overall. The query has lower QED than the neighbor, 0.5385 versus 0.6243 (delta -0.0859), and in this case that is a strong unfavorable sign. The query also has lower estimated logP, -1.0293 versus 1.5607 (delta -2.59), which would usually be a meaningful change in lipophilicity; here it is explicitly associated with a negative direction for the query in one place and a positive direction in the logD comparison in another. The charge descriptors go the other way: the query’s minimum absolute partial charge is lower, 0.3279 versus 0.4198 (delta -0.092), and its maximum absolute partial charge is also lower, 0.3317 versus 0.4492 (delta -0.1175), both of which favor the higher-bioavailability side in this analog pair. The query has purine once while the neighbor has none (delta +1), another favorable difference, and estimated logD is much lower in the query, -1.0293 versus 1.5607 (delta -2.59), which in this comparison is treated as a positive shift toward the ≥20% class. Even though the QED and logP differences are unfavorable, the charge and logD pattern together keep Neighbor 5 aligned with the higher-bioavailability outcome.
+
+Neighbor 6 also comes from the lower-bioavailability group, but its detailed comparison still leans toward oral bioavailability ≥20%. The neighbor has guanine while the query does not (delta -1), which is favorable for the query in this specific pair. The query again has lower QED, 0.5385 versus 0.5544 (delta -0.0159), and that is an unfavorable sign. The query has purine once while the neighbor has none (delta +1), and the neighbor also has dialkyl ether while the query does not (delta -1), both of which are supportive of the ≥20% class overall. The aromatic heterocycle count is identical at 2 versus 2 (delta +0), so that feature is neutral. The strongest acidic pKa comparison is also notable: the neighbor has 8.1233 while the query has no acidic site, so the delta is not defined, but the comparison is still treated as unfavorable for the lower-bioavailability side. Taken together, the favorable nucleobase-related differences and the neutral heteroaromatic count outweigh the weaker opposing QED signal, so Neighbor 6 remains consistent with oral bioavailability ≥20%.
+
+Across all six neighbors, the evidence is not perfectly uniform, but the positive-neighbor and negative-neighbor comparisons both repeatedly resolve in favor of the ≥20% class. Neighbor 1, Neighbor 2, and Neighbor 3 each support the higher-bioavailability label through combinations of heteroatom patterning, purine/uracil context, sp3 fraction, charge, QED, and lipophilicity. Neighbor 4, Neighbor 5, and Neighbor 6 come from the low-bioavailability side, yet their local descriptor contrasts still end up favoring the query on balance, especially through neutral fraction, purine presence, charge-related features, and in some cases logD. Putting the six analogs together, the overall pattern is more consistent with oral bioavailability ≥20% than with <20%, so the final prediction is option (B).
+
+Input 3. Target final label semantics
+option (B): has oral bioavailability ≥ 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

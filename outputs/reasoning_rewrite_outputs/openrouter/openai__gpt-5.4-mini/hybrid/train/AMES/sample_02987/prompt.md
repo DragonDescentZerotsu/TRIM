@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a sulfonamide group (1), which by itself is not a classic Ames mutagenicity toxicophore and is more often associated with a nonreactive functional group. Its QED drug-likeness is high at 0.8306, which is consistent with generally favorable physicochemical balance rather than an obvious enrichment for genotoxic alerts. The neutral fraction is very low at 0.0017, so the molecule is largely ionized at the configured pH; that can limit passive bacterial uptake and reduce effective exposure in an Ames assay. The heteroatom count is 7, which indicates a fairly heteroatom-rich, polar structure, again compatible with reduced membrane permeability. The minimum absolute partial charge is 0.3284 and the maximum partial charge is also 0.3284, suggesting a limited spread in charge extremes rather than a strongly reactive electrostatic profile. The Labute surface area is 129.8936, which is moderate and does not by itself indicate a highly permeable, highly lipophilic scaffold. A basic site is present (1), and the strongest basic pKa is 4.2114, so that basic center is only weakly basic and would not be strongly protonated under many conditions; this is not the kind of strongly ionizable amine pattern that would obviously enhance bacterial accumulation. The saturated carbocycle count is 1, indicating one saturated carbocyclic ring, which does not suggest a known mutagenic alert. Overall, the structure looks relatively polar and not obviously enriched for classic Ames toxicophores such as aromatic nitro groups, epoxides, aziridines, nitrosamines, or polycyclic fused aromatic systems. Taken together, the balance of descriptors supports a prediction of not mutagenic (A), despite the presence of a basic site and moderate heteroatom content.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close mutagenic analog, but the query differs in several ways that reduce mutagenicity risk relative to it. The query lacks the alkyne present in the neighbor (delta -1), and that is a strong shift away from the mutagenic side. It also has one sulfonamide where the neighbor has none (delta +1), which further aligns with the non-mutagenic side. Although the query is higher in heteroatom count (neighbor 3 vs query 7, delta +4), that modestly favors mutagenicity through increased polarity burden in this comparison. However, the query also has a much lower estimated logD (neighbor 4.6223 vs query -0.5662, delta -5.1885), indicating a far less lipophilic molecule, which can limit bacterial exposure. QED is essentially unchanged and slightly higher for the query (0.8291 to 0.8306, delta +0.0015), and the query has a lower maximum partial charge (0.4089 to 0.3284, delta -0.0805). Taken together, the loss of the alkyne and the much lower logD outweigh the small heteroatom-count increase, so Neighbor 1 supports the non-mutagenic label.
+
+Neighbor 2 is also a mutagenic analog, but the query again looks less favorable for mutagenicity overall. The query has sulfonamide while the neighbor does not (delta +1), which points away from mutagenicity. The query also has a much higher fraction of sp3 carbons (0.125 to 0.4667, delta +0.3417), shifting away from a flatter, more aromatic character that is often associated with Ames-positive chemistry. QED rises markedly from 0.4992 to 0.8306 (delta +0.3314), which is consistent with a more generally drug-like profile. The neutral fraction drops sharply from 0.9973 in the neighbor to 0.0017 in the query (delta -0.9956), meaning the query is overwhelmingly less neutral at the configured pH, which can reduce passive bacterial penetration. The query does have a higher heteroatom count (3 to 7, delta +4), which is the main feature in this comparison that leans toward mutagenicity, but the much lower neutral fraction, higher sp3 fraction, and much better QED all favor the non-mutagenic side. Overall, Neighbor 2 still supports option (A).
+
+Neighbor 3 follows the same pattern as Neighbor 1, reinforcing the non-mutagenic call. The query again lacks the alkyne found in the neighbor (delta -1) and has sulfonamide while the neighbor does not (delta +1); both changes move away from the mutagenic analog. QED is slightly higher in the query, rising from 0.7894 to 0.8306 (delta +0.0412), which is directionally favorable to a less alarming profile. Estimated logD also drops substantially from 5.0124 to -0.5662 (delta -5.5786), a large decrease in lipophilicity that can reduce effective exposure in the assay. The query has more heteroatoms (3 to 7, delta +4), which adds some polarity-associated mutagenicity concern, but that is outweighed by the removal of the alkyne and the very large logD decrease. The lower maximum partial charge in the query (0.4089 to 0.3284, delta -0.0805) is another small shift in the same direction. Neighbor 3 therefore also favors option (A).
+
+Neighbor 4 is a non-mutagenic analog, and several shared features make it a particularly good match to the query on the non-mutagenic side. Both molecules contain sulfonamide (delta +0), and both contain urea (delta +0), so the comparison turns on subtler differences. The query has slightly higher QED than the neighbor (0.8008 to 0.8306, delta +0.0298), which again indicates a somewhat more favorable overall profile. The query also has an aliphatic carbocycle and a saturated carbocycle whereas the neighbor has neither (both deltas +1), but those ring increases are not enough here to overcome the other features. The saturated carbocycle signal in particular is already balanced by the lower neutral fraction in the query: the neighbor’s neutral fraction is 0.0064 and the query’s is 0.0017 (delta -0.0047), so the query remains even less neutral and likely less passively permeable. Even though urea and the added carbocycle are mixed features in this comparison, the shared sulfonamide, slightly better QED, and lower neutral fraction make Neighbor 4 strongly consistent with option (A).
+
+Neighbor 5 is another non-mutagenic analog and is very similar to Neighbor 4, which strengthens the non-mutagenic case. Again, both molecules share sulfonamide and urea, so those features do not separate the two. The query is more aliphatic on ring counts than the neighbor: aliphatic carbocycle count goes from 0 to 1 and saturated carbocycle count from 0 to 1. Those changes are mixed in this specific comparison, because the aliphatic ring increase leans toward mutagenicity while the saturated ring change is associated here with the non-mutagenic side. The query’s neutral fraction is also slightly lower than the neighbor’s (0.002 to 0.0017, delta -0.0003), preserving the low-ionization pattern seen in the other non-mutagenic neighbors. QED is lower in the query than in the neighbor (0.8795 to 0.8306, delta -0.0489), which is a modest worsening relative to Neighbor 4 but still leaves the query in a fairly drug-like region. In total, the shared sulfonamide/urea scaffold and the persistent low neutral fraction keep this comparison on the non-mutagenic side despite the added carbocycle.
+
+Neighbor 6 is the strongest of the non-mutagenic analogs and provides the clearest support for option (A). Like the other negative neighbors, it shares sulfonamide with the query. The query has a higher QED than the neighbor (0.6828 to 0.8306, delta +0.1478), which is a meaningful improvement in overall drug-likeness. The query also has a higher minimum absolute partial charge (0.2635 to 0.3284, delta +0.0649), which is one of the few features in the set that leans toward mutagenicity in this comparison. In addition, the query has an aliphatic carbocycle and a saturated carbocycle while the neighbor has neither (both deltas +1), and it has a higher fraction of sp3 carbons (0.125 to 0.4667, delta +0.3417). Those changes suggest a less flat, more saturated scaffold, which is not intrinsically a mutagenicity alert here. But the overall pattern is still dominated by the shared sulfonamide, the better QED, and the more saturated/sp3-rich character, so Neighbor 6 remains aligned with the non-mutagenic label.
+
+Across the three mutagenic neighbors, the query consistently loses the alkyne where it is present, gains sulfonamide, has much lower estimated logD, and shows better QED; those shifts repeatedly move it away from the mutagenic analogs. Across the three non-mutagenic neighbors, the query matches the non-mutagenic sulfonamide-containing scaffold and retains a very low neutral fraction, with additional differences in ring saturation, sp3 fraction, and partial charge that do not overturn that overall direction. Taken together, the six comparisons cluster more strongly around the non-mutagenic side, so the final prediction is option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

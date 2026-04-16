@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has a very low topological polar surface area of 12.47, which is strongly favorable for BBB penetration because low polarity generally supports passive diffusion. It also has an estimated logP of 4.2585, indicating substantial lipophilicity that can aid membrane permeation, and an estimated logD of 2.4406, which sits in a moderate range compatible with brain entry. The hydrogen-bonding burden is minimal: hydrogen-bond donor count is 0, NH/OH group count is 0, and there are no acidic sites, so the strongest acidic pKa is not defined; together these features suggest limited polarity and a higher neutral-like character overall. The neutral fraction is 0.0152, which is low and would ordinarily be less favorable for passive BBB passage, and the minimum partial charge of -0.4568 also reflects some localized polarity. The rotatable-bond count is 0, which gives a very rigid scaffold; while rigidity can help permeability in some cases, the absence of flexibility here is not by itself a strong positive. The presence of one pyrrolidine ring adds a heterocyclic basic element that can increase polarity somewhat and partially counterbalance the otherwise favorable low-TPSA, low-donor profile. Overall, the very low TPSA, zero donors, zero NH/OH groups, moderate logD, and relatively high logP outweigh the mixed signals from the low neutral fraction, negative partial charge, and pyrrolidine ring, so the molecule is best classified as crossing the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive analog overall. The query has lower estimated logP than the neighbor, 4.2585 versus 4.9732, with a delta of -0.7147, and that shift still sits in a lipophilicity range that is compatible with BBB permeation. The two molecules are matched on topological polar surface area at 12.47 with a delta of 0, which is very favorable because such a low PSA is well below common BBB-limiting ranges. The query is also slightly higher in strongest basic pKa, 9.2112 versus 8.9693, delta +0.2419, and that remains in a weak-basicity region rather than a strongly ionized one. The same pair also shares NH/OH group count of 0, which is favorable for brain entry, although the query has a slightly lower maximum partial charge, 0.1306 versus 0.1349, delta -0.0043, and both carry the diaryl ether motif. Taken together, this neighbor is still more consistent with BBB crossing than not.
+
+Neighbor 2 also supports BBB crossing. It differs by the presence of a diaryl thioether in the neighbor, which the query lacks, and that structural simplification is favorable here. The query has higher topological polar surface area than the neighbor, 12.47 versus 6.48, delta +5.99, but both values are still very low and within a BBB-friendly region. The query’s estimated logP is slightly lower, 4.2585 versus 4.3358, delta -0.0773, yet still in a moderately lipophilic range. Although the query has lower Labute surface area, 123.4782 versus 146.9775, delta -23.4993, and a much lower neutral fraction, 0.0152 versus 0.3666, delta -0.3514, the query also has fewer rotatable bonds, 0 versus 1, delta -1. Since BBB penetration is generally helped by low polarity and low flexibility, this neighbor remains an overall favorable analog despite the lower neutral fraction.
+
+Neighbor 3 is again a positive analog overall, even though it contains a few mixed effects. The query has fewer rotatable bonds, 0 versus 1, delta -1, which is favorable for reduced flexibility. Both molecules have pyrrolidine, but the query’s neutral fraction is higher, 0.0152 versus 0.0017, delta +0.0135, while the estimated logD is also higher, 2.4406 versus 1.4317, delta +1.0089. Those two changes matter because a more ionization-aware lipophilicity profile is generally more compatible with BBB permeation than a very low logD profile. At the same time, the query’s topological polar surface area is higher, 12.47 versus 3.24, delta +9.23, which is less favorable, but it remains in a low absolute range overall. Both have NH/OH group count of 0, which keeps donor burden minimal. Overall, the favorable logD and low flexibility keep this comparison on the BBB-crossing side.
+
+Neighbor 4, in contrast, is a negative analog even though several features are individually favorable for BBB crossing. The neighbor has ammonium, which the query does not, and that removal is favorable because it reduces ionization burden. The query also has much lower topological polar surface area, 12.47 versus 35.53, delta -23.06, and lower estimated logD, 2.4406 versus 3.9538, delta -1.5132; the low PSA is especially supportive of BBB entry. However, the query’s minimum partial charge is slightly less negative, -0.4568 versus -0.459, delta +0.0022, and the rotatable-bond count is much lower, 0 versus 6, delta -6, both of which are favorable shifts. The key reason this neighbor still falls on the non-BBB side is that the comparison pattern overall aligns with the less permissive class despite these isolated improvements; even the shared absence of acidic sites does not by itself overcome the broader mismatch. So this is a negative analog relative to the query.
+
+Neighbor 5 is also a negative analog overall. As with Neighbor 4, the query lacks ammonium present in the neighbor, which is favorable, and the query has lower topological polar surface area, 12.47 versus 35.53, delta -23.06, which again is strongly BBB-friendly. The query’s estimated logD is lower, 2.4406 versus 4.7308, delta -2.2902, but still in a usable moderate range rather than a clearly impermeable one. The query has a slightly less negative minimum partial charge, -0.4568 versus -0.459, delta +0.0022, which is a small shift, and a lower maximum partial charge, 0.1306 versus 0.3179, delta -0.1873. It also has fewer rotatable bonds, 0 versus 6, delta -6. Despite these favorable query-side changes, the neighbor remains classified on the non-BBB side, so this comparison contributes negative evidence rather than support for crossing.
+
+Neighbor 6 is the clearest negative analog in structural terms but still shows several features that favor BBB permeation in the query. The topological polar surface area is identical at 12.47 with delta 0, which is strongly consistent with BBB compatibility. The query has a lower estimated logD, 2.4406 versus 3.9828, delta -1.5422, but again remains in a moderate range. The query also lacks the dialkyl ether present in the neighbor, and it has more aliphatic ring count and aliphatic heterocycle count, both 2 versus 0, with deltas of +2. Those added rings reduce flexibility and can be consistent with brain entry when polarity stays controlled. The main counterweight is the minimum partial charge, which is more negative in the query at -0.4568 versus -0.3616, delta -0.0952, a shift that is unfavorable. Even so, the overall comparison is still aligned with the non-BBB set, so it serves as negative analog evidence.
+
+Putting the six comparisons together, the three BBB-crossing neighbors are all characterized by very low TPSA, low H-bond donor burden, and generally favorable flexibility or lipophilicity features, while the three non-crossing neighbors show the opposite class context despite some query-side improvements in PSA, rotatable bonds, or structural simplification. The query itself keeps TPSA at 12.47, NH/OH count at 0, and logD around 2.44, which are all compatible with brain penetration. Weighing the full set of analogs, the balance of evidence supports option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

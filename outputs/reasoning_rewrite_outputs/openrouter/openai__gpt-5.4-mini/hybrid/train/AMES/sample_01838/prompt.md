@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several properties more consistent with poor bacterial exposure than with intrinsic mutagenicity. Its neutral fraction is absent (0), which suggests it is largely ionized under the configured pH and therefore less able to passively cross bacterial membranes. The estimated logD is very low at -5.6816, and the estimated logP is also low at -1.2485; both values indicate a highly hydrophilic compound rather than a lipophilic one, again favoring limited membrane permeation. The strongest acidic pKa is 2.9669, so the molecule likely contains a relatively strong acidic group that will be deprotonated under neutral conditions, further increasing polarity. In the same direction, the minimum absolute partial charge is 0.3364 and the maximum partial charge is 0.3364, consistent with a fairly polarized charge distribution rather than a neutral, hydrophobic scaffold. The ring count is 0 and the fraction of sp3 carbons is 0.5, so there is no obvious polycyclic aromatic system or other classic planar aromatic toxicophore that would raise concern for mutagenicity. Although the heteroatom count is 7 and the nitrogen/oxygen atom count is 7, which increase polarity and can sometimes accompany reactive functionality, these counts alone are not a mutagenicity warning. Overall, the descriptor pattern is dominated by low lipophilicity, high ionization, and limited ring structure, which is more compatible with reduced bacterial uptake than with a DNA-reactive mutagenic scaffold. On balance, the molecule is predicted to be not mutagenic, option (A), with a high confidence score of 0.8674.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close analog that overall looks less mutagenic than the query. The query has a much higher fraction of sp3 carbons than the neighbor, 0.5 versus 0.125 with a delta of +0.375, and that comparison is unfavorable for mutagenicity here. The same is true for carboxylic acid burden, where the query has 3 versus 1 in the neighbor, delta +2. The query also has no neutral fraction recorded while the neighbor has 0.0007, and that tiny shift still aligns with the less mutagenic side in this comparison. In addition, the query’s maximum partial charge is slightly higher, 0.3364 versus 0.3073, delta +0.0291, and the query lacks a basic site where the neighbor has strongest basic pKa 4.7365, a non-applicable comparison that still leans away from mutagenicity in this pair. The one feature that goes the other way is estimated logP, where the query is lower at -1.2485 versus 0.8959, delta -2.1444, which by itself would favor more exposure-related mutagenic risk. But that single favorable-to-mutagenic shift is outweighed by the other differences, so Neighbor 1 still supports the non-mutagenic label overall.
+
+Neighbor 2 tells a similar story. Again the query has higher fraction of sp3 carbons, 0.5 versus 0.125, delta +0.375, and more carboxylic acid groups, 3 versus 1, delta +2, both of which align with the less mutagenic side in this comparison. The query’s maximum partial charge is also slightly higher, 0.3364 versus 0.3073, delta +0.0291, which remains unfavorable for a mutagenic call here. Against that, the query is more lipophilic exposure-wise in the opposite direction, with estimated logP -1.2485 versus 0.7249, delta -1.9734, and it also has a higher heteroatom count, 7 versus 4, delta +3, which in this pair moves toward mutagenicity. However, the neighbor has 2 phenol groups while the query has 0, delta -2, and that difference leans back toward the non-mutagenic side. Taken together, the balance of these analog differences still favors Neighbor 2 as a non-mutagenic reference relative to the query.
+
+Neighbor 3 also remains on the non-mutagenic side overall. The query again has 3 carboxylic acids versus 1 in the neighbor, delta +2, which is a strong difference favoring the less mutagenic outcome in this local comparison. The query’s maximum partial charge is only slightly higher, 0.3364 versus 0.3248, delta +0.0117, and neutral fraction is absent on both sides, so there is no meaningful shift there. The neighbor has 2 phenol groups while the query has 0, delta -2, another feature that aligns with the non-mutagenic side here. Two features do move toward mutagenicity: the query has a slightly higher heteroatom count, 7 versus 6, delta +1, and a higher QED drug-likeness, 0.4274 versus 0.279, delta +0.1484. Even so, these are not enough to overcome the stronger acid-rich and phenol-related differences, so Neighbor 3 still points overall toward the non-mutagenic class.
+
+Neighbor 4 is a non-mutagenic analog with several strong exposure-limiting differences. The query has 3 carboxylic acids versus 1, delta +2, which again favors the non-mutagenic side. It is also much more hydrophilic by estimated logD, with -5.6816 versus -1.136, delta -4.5456, and that kind of shift can reduce effective bacterial exposure. Neutral fraction is absent in the query and 0.0014 in the neighbor, which is another small shift toward the non-mutagenic side. The query does have a tertiary hydroxyl once while the neighbor has none, delta +1, and it has a much larger nitrogen/oxygen atom count, 7 versus 2, delta +5, both of which move toward mutagenicity in this pair. QED is also lower in the query, 0.4274 versus 0.7116, delta -0.2842, which in this comparison points the other way. Even with those opposing features, the acid load and very low logD make Neighbor 4 an overall non-mutagenic reference relative to the query.
+
+Neighbor 5 is similar in the same direction. The query again has 3 carboxylic acids versus 1, delta +2, and a lower estimated logP of -1.2485 versus 1.15, delta -2.3985, both of which fit the less mutagenic side in this analog comparison. Neutral fraction is again absent in the query and 0.0001 in the neighbor, reinforcing that same direction. But the query has one tertiary hydroxyl while the neighbor has none, delta +1, and that, along with a higher heteroatom count of 7 versus 3, delta +4, moves toward mutagenicity in this pair. QED is also lower in the query, 0.4274 versus 0.7062, delta -0.2788, which here also favors mutagenicity. Even so, the dominant acid-rich and lower-logP pattern keeps Neighbor 5 aligned with a non-mutagenic outcome overall.
+
+Neighbor 6 is the same kind of non-mutagenic comparator, and the exposure-related differences are especially strong. The query has 3 carboxylic acids versus 1, delta +2, which again supports the non-mutagenic side. Its estimated logD is far lower, -5.6816 versus -1.276, delta -4.4056, consistent with much lower effective passive exposure. QED is lower as well, 0.4274 versus 0.737, delta -0.3096, while the query also has one tertiary hydroxyl versus none in the neighbor, delta +1, and higher nitrogen/oxygen atom count, 7 versus 2, delta +5, plus higher heteroatom count, 7 versus 3, delta +4; those last features lean toward mutagenicity in this local pair. But the very low logD and higher carboxylic acid burden still dominate the comparison, so Neighbor 6 remains an overall non-mutagenic analog.
+
+Across all six neighbors, the recurring pattern is that the query looks more acid-rich and much more hydrophilic than the reference molecules, especially in the three non-mutagenic neighbors and also in the three mutagenic neighbors where the acid burden still dominates the local comparison. Some secondary features such as higher heteroatom count, higher QED, or the presence of tertiary hydroxyl do lean toward mutagenicity in individual pairs, but they do not outweigh the repeated acid-rich, low-logP/low-logD, and low-neutral-fraction pattern. Taken together, the nearest analog evidence supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

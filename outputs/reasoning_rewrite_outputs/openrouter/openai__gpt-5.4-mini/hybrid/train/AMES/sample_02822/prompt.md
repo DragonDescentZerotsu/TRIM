@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a benzo[d]oxazole ring system, which adds some structural complexity but is not, by itself, a classic Ames toxicophore. Its strongest basic pKa of 1.5397 is very low, so the basic site will be only weakly protonated under typical test conditions; that can limit ionization-dependent accumulation and reduce effective bacterial exposure. The ring count is 3, and the aromatic ring count is also 3, which gives the structure a fairly aromatic, planar character. That kind of aromatic enrichment can sometimes align with mutagenic liability, especially when it reflects compact fused aromatic systems, so it is a modest concern. The fraction of sp3 carbons is 0, meaning the molecule is fully sp2/planar and lacks 3D saturation, which again can be associated with aromatic, flat chemotypes that are more often seen among mutagenic scaffolds. The estimated logD of 4.1482 indicates substantial lipophilicity; that level can support membrane interaction, but it also raises the possibility of exposure limitations through solubility or precipitation rather than implying intrinsic DNA reactivity. The QED drug-likeness value of 0.6266 is reasonably moderate and does not suggest an obviously problematic, highly alert-rich structure. The heteroatom count is 3, which is not especially high and therefore does not point to an overly polar, highly ionized scaffold. The topological polar surface area is 26.03, which is low and consistent with good passive permeability, so this property does not argue for poor bacterial entry. The molecule has 1 basic site, which is compatible with a single ionizable nitrogen that could aid accumulation in bacteria, but here the very low pKa suggests that effect may be limited. Overall, the evidence is mixed: the aromatic, fully unsaturated, compact scaffold with logD 4.1482 and 3 aromatic rings raises some mutagenicity concern, but the low pKa of 1.5397, low TPSA of 26.03, and moderate QED 0.6266 make the overall pattern more consistent with a non-mutagenic outcome than a clearly mutagenic one. The final prediction is that the molecule is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is compared against a mutagenic analog, but the query differs in several ways that weaken the case for mutagenicity. The query has benzo[d]oxazole once while the neighbor lacks it, and that structural change is associated here with a negative shift toward non-mutagenicity. The query also has slightly higher QED drug-likeness (0.6266 vs 0.5822, delta +0.0445), higher minimum absolute partial charge (0.2268 vs 0.0702, delta +0.1566), and higher estimated logP (4.1482 vs 2.8882, delta +1.26); each of those comparisons is unfavorable for calling the query mutagenic in this local setting. The lower strongest basic pKa in the query (1.5397 vs 4.1643, delta -2.6246) also supports the non-mutagenic side. The only feature here that leans the other way is fraction of sp3 carbons, where both are 0 and the comparison slightly favors mutagenicity, but that signal is smaller than the others. Overall, Neighbor 1 looks more consistent with option (A).
+
+Neighbor 2 shows the same main structural contrast: the query has benzo[d]oxazole and the neighbor does not, again favoring option (A) in this local comparison. The query has slightly higher QED drug-likeness (0.6266 vs 0.5822, delta +0.0445), higher estimated logP (4.1482 vs 2.8882, delta +1.26), and higher minimum absolute partial charge (0.2268 vs 0.0716, delta +0.1552), all of which lean away from mutagenicity here. Against that, the query has one more hydrogen-bond acceptor (2 vs 1, delta +1), which is the one feature in this neighbor that points toward mutagenicity, and fraction of sp3 carbons is again 0 for both with a small mutagenic-leaning effect. Even with those smaller positive signals, the overall balance of the comparison remains on the non-mutagenic side.
+
+Neighbor 3 is another mutagenic analog, but the query still carries features that weaken that match. The neighbor has 2H-chromen-2-one while the query does not, and that absence is a strong non-mutagenic difference in this local analog set. The query again has benzo[d]oxazole once while the neighbor lacks it, which also works against mutagenicity here. On the physicochemical side, the query has much higher estimated logP (4.1482 vs 1.793, delta +2.3552) and higher QED drug-likeness (0.6266 vs 0.5302, delta +0.0964), both aligning with the non-mutagenic side in this neighborhood. Fraction of sp3 carbons is unchanged at 0, with the same slight mutagenic-leaning effect as in the other positive neighbors, and the query also has one basic site while the neighbor has none (delta +1), which by itself would lean toward mutagenicity. Still, the net comparison is dominated by the missing chromenone motif and the repeated benzo[d]oxazole/physicochemical shifts, so Neighbor 3 overall supports option (A).
+
+Neighbor 4 is a non-mutagenic analog, and it lines up well with the query on the key heteroaromatic core: both molecules have benzo[d]oxazole, which is the strongest single alignment in this comparison and strongly supports the non-mutagenic label. The query is present in the neutral fraction feature while the neighbor is at 0.0002, but the local effect here still points toward option (A). The query also has lower topological polar surface area (26.03 vs 46.26, delta -20.23) and slightly higher QED drug-likeness (0.6266 vs 0.5954, delta +0.0312), both favoring non-mutagenicity in this analog context. One feature, fraction of sp3 carbons, remains at 0 for both with a small mutagenic-leaning effect, and the query has Aryl chloride once while the neighbor lacks it, which also leans toward non-mutagenicity here. Taken together, Neighbor 4 is a strong supportive match for option (A).
+
+Neighbor 5 is the one non-mutagenic neighbor that has several features pointing the opposite way, but the overall comparison still ends up on the mutagenic side locally, mainly because the neighbor carries quinoline while the query does not. The query also has higher maximum partial charge (0.2268 vs 0.0703, delta +0.1565), which in this comparison favors mutagenicity, and fraction of sp3 carbons is again 0 for both with a mutagenic-leaning effect. However, the query has higher topological polar surface area (26.03 vs 12.89, delta +13.14), which moves toward non-mutagenicity here, and higher QED drug-likeness (0.6266 vs 0.5822, delta +0.0445), which also favors the non-mutagenic side. Both molecules have Aryl chloride, so that feature does not separate them. Despite the mixed physicochemical signals, the loss of quinoline and the positively weighted charge feature make Neighbor 5 the main exception among the negative neighbors.
+
+Neighbor 6 is the clearest of the non-mutagenic analogs that still has some mutagenicity-leaning features. The query has lower QED drug-likeness than the neighbor (0.6266 vs 0.6512, delta -0.0246), slightly higher topological polar surface area (26.03 vs 25.78, delta +0.25), lower heteroatom count (3 vs 4, delta -1), and higher heavy-atom molecular weight (221.602 vs 195.008, delta +26.594); among these, the heavy-atom molecular weight increase and the lower heteroatom burden are important context-dependent shifts rather than direct mutagenicity rules. The query again has fraction of sp3 carbons at 0, which slightly favors mutagenicity in this local pattern. The key structural distinction is that the neighbor has quinoxaline while the query does not, and that absence is mutagenicity-leaning relative to the neighbor. Even with that, the remaining physicochemical pattern keeps the overall comparison aligned with option (A).
+
+Across all six neighbors, the three mutagenic analogs are repeatedly separated from the query by the presence or absence of specific heteroaromatic motifs such as benzo[d]oxazole, 2H-chromen-2-one, quinoline, and quinoxaline, while the shared physicochemical profile often favors the non-mutagenic side through lower exposure-like or less mutagenicity-enriching characteristics in the local comparisons. The non-mutagenic neighbors, especially Neighbor 4, reinforce that the query aligns well with a non-mutagenic local neighborhood despite one or two mutagenicity-leaning descriptors such as fraction of sp3 carbons or maximum partial charge in some cases. Taken together, the balance of the six comparisons supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that support oral bioavailability of at least 20%. The presence of 1,2,3-oxadiazole is often consistent with a more drug-like heteroaromatic scaffold, and the QED drug-likeness value of 0.6985 is fairly strong, suggesting an overall favorable balance of properties. The topological polar surface area is 82.78, which is comfortably below the common permeability concern range and is compatible with reasonable oral absorption. The molecule also has a neutral fraction present (1), which is favorable because a meaningful neutral population can support passive membrane permeation. In addition, the exact fraction of sp3 carbons is 0.6667, indicating substantial 3D character, which can be helpful for developability.
+
+At the same time, there are some liabilities that temper the picture. A carboxylic ester is present (1), and the molecule has no acidic site, so the strongest acidic pKa is not defined. The minimum partial charge is -0.5522 and the maximum absolute partial charge is 0.5522, showing a noticeable polarity pattern rather than a completely nonpolar scaffold. The Labute surface area is 98.012, which is moderate rather than especially small, so size and surface burden are not negligible.
+
+Balancing these signals, the relatively good QED, moderate TPSA, neutral fraction, and overall heteroaromatic character outweigh the less favorable features, so the molecule is more consistent with oral bioavailability ≥ 20%.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly strong analog for the oral-bioavailability ≥20% class because it matches the query on the 1,2,3-oxadiazole motif being present in the query once and absent in the neighbor, and that same motif difference is associated with the favorable side here. The query also has a much larger topological polar surface area than the neighbor, 82.78 versus 29.54, with a delta of +53.24; although TPSA is often a permeability liability when it gets too high, this comparison treats the increase as favorable relative to this very low-PSA neighbor. Against that, the query has a slightly more negative minimum partial charge, -0.5522 versus -0.4653 with delta -0.0869, lacks the neighbor’s basic site (0 versus 1), and contains morpholine where the neighbor does not. Those last two features are unfavorable in this pair, since the basic site difference and morpholine both tilt the comparison away from the higher-bioavailability class. Even so, the neighbor also has higher QED, 0.767 versus 0.6985, which in this comparison favors the query. Overall, Neighbor 1 still supports the ≥20% label because the oxadiazole, TPSA, and QED align more with the query than the small charge/basic-site penalties do.
+
+Neighbor 2 also supports oral bioavailability ≥20% despite some countervailing features. The query and neighbor both contain morpholine, which is a favorable shared feature here, and the query again has 1,2,3-oxadiazole once while the neighbor has none. The query’s estimated logD is much lower, 0.092 versus 4.0677, with delta -3.9757, and in this pair that lower lipophilicity is treated as favorable for the higher-bioavailability class. However, the query has a carboxylic ester that the neighbor lacks, and that is unfavorable here. The query also has a lower minimum absolute partial charge, 0.2569 versus 0.4111 with delta -0.1542, and a much lower estimated logP, 0.092 versus 4.1066 with delta -4.0146; both of those shifts are unfavorable in this specific comparison. Even with those offsets, the shared morpholine plus the oxadiazole and the much lower logD keep Neighbor 2 overall on the ≥20% side.
+
+Neighbor 3 is another positive analog for the ≥20% class. It shares morpholine with the query, again a favorable match, and lacks 1,2,3-oxadiazole while the query has it once, which also favors the query. The query’s topological polar surface area is much higher, 82.78 versus 32.78, delta +50, and that increase is treated as favorable in this comparison. The query also has a much lower estimated logD, 0.092 versus 3.3807 with delta -3.2887, which again is favorable here. The query does carry a carboxylic ester that the neighbor does not, and that is the main unfavorable feature in this pair. Still, the query’s Labute surface area is lower, 98.012 versus 174.0158 with delta -76.0038, and that smaller surface area helps the higher-bioavailability side. Taken together, Neighbor 3 remains clearly aligned with oral bioavailability ≥20%.
+
+Neighbor 4 is a negative-class neighbor, but the comparison still ends up favoring the ≥20% label overall. The query has 1,2,3-oxadiazole once while the neighbor lacks it, which is strongly favorable for the query. The query also has a lower minimum absolute partial charge, 0.2569 versus 0.4198 with delta -0.1629, and a much higher TPSA, 82.78 versus 36.16 with delta +46.62; both of those shifts are favorable in this specific analog comparison. The query’s QED is also higher, 0.6985 versus 0.6243 with delta +0.0742, which favors the query. The two features working against the query are its higher fraction of sp3 carbons, 0.6667 versus 0.4286 with delta +0.2381, and the strongest basic pKa comparison where the neighbor has 2.3095 while the query has no basic site, leaving the delta undefined; those are treated as unfavorable here. Even with those two penalties, the oxadiazole, TPSA, charge, and QED pattern leaves Neighbor 4 still more consistent with the ≥20% class.
+
+Neighbor 5 similarly has a negative-class label but the detailed comparison still supports the query as ≥20%. The query has 1,2,3-oxadiazole once while the neighbor lacks it, which is strongly favorable. The query’s topological polar surface area is higher, 82.78 versus 49.77 with delta +33.01, and the query also has lower estimated logD, 0.092 versus 3.0148 with delta -2.9228; both are favorable in this pair. The query does not have the secondary hydroxyl that the neighbor does, and that is also favorable. Against that, the neighbor’s strongest acidic pKa is 13.8048 while the query has no acidic site, so that missing acidic-site comparison is unfavorable for the query in this pair, and the query’s QED is a bit lower, 0.6985 versus 0.7582 with delta -0.0597, which is another unfavorable feature. Even so, the combination of the oxadiazole, higher TPSA, lower logD, and absence of the secondary hydroxyl keeps Neighbor 5 overall on the ≥20% side.
+
+Neighbor 6 is the last negative-class neighbor, and it also points toward oral bioavailability ≥20%. As in the other comparisons, the query has 1,2,3-oxadiazole once while the neighbor lacks it, which is favorable. The query’s topological polar surface area is much higher, 82.78 versus 35.53 with delta +47.25, and its estimated logD is much lower, 0.092 versus 3.0605 with delta -2.9685; both changes are favorable in this specific analog context. The query’s QED is slightly lower, 0.6985 versus 0.7616 with delta -0.0631, which is unfavorable. The neighbor also has one aromatic carbocycle while the query has none, and that delta of -1 is unfavorable for the query here. Finally, the query has a higher fraction of sp3 carbons, 0.6667 versus 0.4167 with delta +0.25, but in this comparison that shift is also unfavorable. Even with those three drawbacks, the strong oxadiazole, TPSA, and logD pattern still makes Neighbor 6 more consistent with the ≥20% class.
+
+Across all six neighbors, the positive neighbors all reinforce the same assignment and the negative neighbors do not overturn it. The repeated presence of 1,2,3-oxadiazole in the query, the consistently higher TPSA and lower estimated logD relative to several neighbors, plus generally supportive QED and surface/charge patterns, outweigh the localized penalties from features like carboxylic ester, lower QED in some comparisons, or aromatic carbocycle and fraction sp3 effects. Taken together, the six analog comparisons are more consistent with option (B): has oral bioavailability ≥20%.
+
+Input 3. Target final label semantics
+option (B): has oral bioavailability ≥ 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

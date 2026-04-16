@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has a tertiary aliphatic amine, and the presence of a basic nitrogen can support binding in some CYP2C9 substrates, even though this enzyme more commonly handles weakly acidic compounds. However, the strongest basic pKa is 9.2913, which suggests the amine will be largely protonated under physiological conditions and does not provide the acidic/anionic character that is often favorable for CYP2C9 recognition. That said, the neutral fraction is only 0.0127, indicating a very small neutral population, which can still be compatible with an enzyme active site that admits a bindable form. The compound also looks fairly drug-like overall, with QED drug-likeness at 0.8429, and it has moderate hydrophobicity with estimated logD of 2.0656 and estimated logP of 3.9624, both of which are in a range that can support entry into a hydrophobic binding pocket. Its topological polar surface area is low at 12.47, which generally favors permeability and pocket access. The scaffold also contains benzene count 2, providing aromatic surface for hydrophobic or π interactions, while the fraction of sp3 carbons is 0.2632, indicating a relatively flat, aromatic-leaning structure rather than a highly three-dimensional one. The dialkyl ether is absent (0), which does not add extra polarity or flexibility. Overall, the molecule has some features that are compatible with CYP2C9 binding, especially its aromatic/hydrophobic character and moderate lipophilicity, but it lacks the clearest classic CYP2C9 substrate motif of a weakly acidic, anion-forming group, and the strongly basic amine character with strongest basic pKa 9.2913 makes the charge pattern less typical. Taken together, I would classify it as option (A): not a substrate to the enzyme CYP2C9.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is close in overall chemical character, and several shared features line up with substrate-like behavior: both structures lack a dialkyl ether, both contain a tertiary aliphatic amine, and the query has slightly higher neutral fraction (0.0127 vs 0.0117, delta +0.001), higher maximum absolute partial charge (0.4882 vs 0.3091, delta +0.1791), and higher QED drug-likeness (0.8429 vs 0.8137, delta +0.0292). Those shifts are individually favorable for the substrate label in this comparison. The one feature moving the other way is hydrogen-bond acceptor count, where the query has 2 versus 1 in the neighbor (delta +1), and that is the main point of caution. Still, the balance of the shared tertiary amine, charge polarization, and modestly higher neutral fraction makes this neighbor more consistent with a CYP2C9 substrate than not.
+
+Neighbor 2 is even more supportive of the substrate label. Here the query again matches the neighbor on the absence of a dialkyl ether, the presence of a tertiary aliphatic amine, and the hydrogen-bond acceptor count of 2, while also showing a slightly higher QED (0.8429 vs 0.8385, delta +0.0044). The electronic descriptors are also favorable: maximum absolute partial charge rises from 0.341 to 0.4882 (delta +0.1472), and minimum partial charge becomes more negative from -0.341 to -0.4882 (delta -0.1472). In the context of CYP2C9, that kind of stronger charge separation can fit the weak-acid/anionic recognition theme from the guide, and nothing in this comparison offsets that direction. This neighbor therefore strongly supports option (B).
+
+Neighbor 3 is similarly aligned with the substrate side. The query again has no dialkyl ether, retains the tertiary aliphatic amine, and matches the neighbor on hydrogen-bond acceptor count at 2. The charge-related terms move in the same favorable direction as before: maximum absolute partial charge increases from 0.3409 to 0.4882 (delta +0.1473), and minimum partial charge becomes more negative from -0.3409 to -0.4882 (delta -0.1473). In addition, the query has a higher topological polar surface area, 12.47 versus 6.48 (delta +5.99). That is still a low TPSA region overall, so the increase does not obviously make the molecule too polar for entry into the pocket, and it remains compatible with the substrate-like profile seen in the other neighbors. Taken together, Neighbor 3 clearly favors option (B).
+
+Neighbor 4, although listed among the non-substrate neighbors, actually behaves more like a substrate analog on the features shown. The query is more polarized in the relevant charge descriptors: minimum partial charge moves from -0.3091 to -0.4882 (delta -0.1791), and maximum absolute partial charge from 0.3091 to 0.4882 (delta +0.1791). The query also has higher QED drug-likeness (0.8429 vs 0.6774, delta +0.1655), keeps the absence of a dialkyl ether, and retains the tertiary aliphatic amine. Even the fraction of sp3 carbons increases slightly, from 0.2 to 0.2632 (delta +0.0632), which modestly changes scaffold character without breaking the overall similarity. All of these features point toward the substrate side rather than away from it, so this neighbor is not a real counterweight to option (B).
+
+Neighbor 5 is also more consistent with the substrate label. The query has a more negative minimum partial charge (-0.4882 vs -0.3194, delta -0.1688), higher topological polar surface area (12.47 vs 12.03, delta +0.44), and higher maximum absolute partial charge (0.4882 vs 0.3194, delta +0.1688). It also shares the absence of a dialkyl ether and the presence of two benzene copies. The one feature that differs is that the neighbor has a secondary aliphatic amine while the query does not, but that does not outweigh the stronger charge polarization and matched aromatic scaffold. The comparison therefore still lands on the substrate side overall.
+
+Neighbor 6 is the only negative-neighbor comparison that genuinely leans away from the substrate label overall. The query matches the neighbor on topological polar surface area at 12.47 and on two benzene copies, and it is more polarized in the charge descriptors, with minimum partial charge shifting from -0.3675 to -0.4882 (delta -0.1208) and maximum absolute partial charge again at 0.4882 versus 0.3675 in the neighbor. Those points would favor substrate-like behavior. However, two features move in the opposite direction: QED rises from 0.7846 to 0.8429 (delta +0.0583), which here is associated with the non-substrate side, and strongest basic pKa rises from 8.2835 to 9.2913 (delta +1.0078), which also points toward the non-substrate class in this specific analog comparison. Because those two shifts align against option (B) while the other features are not enough to offset them, Neighbor 6 is a real negative example.
+
+Putting the six neighbors together, five of them point toward the substrate class or at least contain substrate-favoring charge and scaffold features, while only Neighbor 6 provides a meaningful counterexample. The repeated pattern across the comparisons is that the query preserves a tertiary aliphatic amine, lacks a dialkyl ether, and shows stronger charge polarization, with low TPSA staying within a compatible range for binding. The lone opposing signal comes from the basicity/QED pattern in Neighbor 6, but it is not strong enough to overturn the broader neighborhood evidence. Overall, the local analog set supports option (B): is a substrate to the enzyme CYP2C9.
+
+Input 3. Target final label semantics
+option (B): is a substrate to the enzyme CYP2C9
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

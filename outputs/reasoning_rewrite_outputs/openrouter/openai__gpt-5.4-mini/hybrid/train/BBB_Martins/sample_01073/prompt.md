@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are favorable for BBB penetration. Its topological polar surface area is 23.55, which is very low and strongly consistent with passive brain entry. It also contains thiophene (1), a lipophilic aromatic heterocycle that can support membrane permeability, and the estimated logD is 3.147, a moderate lipophilicity range that is generally compatible with BBB crossing. The neutral fraction is only 0.0213, which is a concern because such a low neutral fraction suggests most of the molecule is ionized at physiological pH; however, the absence of any acidic site means there is no strong acidic functionality opposing brain penetration, and the NH/OH group count is 0, which removes donor burden and helps permeability. The charge-related descriptors are also favorable overall: minimum partial charge is -0.3337, maximum absolute partial charge is 0.3337, and minimum absolute partial charge is 0.2271, all of which are consistent with a molecule that does not carry extreme polar charge density. One unfavorable element is that pyrrolidine (1) is present, which can introduce a basic, polar center and work against BBB penetration. Even so, the combination of very low TPSA, no NH/OH groups, moderate logD, and the generally favorable charge profile outweighs that drawback. Overall, the descriptor pattern supports option (B): crosses the BBB, with strong confidence.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a strong analog for BBB penetration. The query has thiophene once while the neighbor does not, which is a favorable structural change here. The query also has lower maximum absolute partial charge (0.3337 vs 0.4689, delta -0.1352), lower Labute surface area (168.0543 vs 163.2083 is actually slightly higher in the query, delta +4.846), slightly higher strongest basic pKa (9.0629 vs 8.9724, delta +0.0905), and higher estimated logD (3.147 vs 2.7668, delta +0.3802). The surface-area increase is the main counterpoint because larger accessible surface area can work against brain penetration, but the other shifts are in the direction of a more BBB-permeable profile. The neighbor also has furan while the query does not, which is unfavorable in this comparison. Overall, Neighbor 1 still looks more consistent with crossing the BBB than not.
+
+Neighbor 2 also supports BBB crossing. The query again has thiophene once while the neighbor does not, and the query’s topological polar surface area is the same as the neighbor’s at 23.55, which sits well within the low-PSA region generally associated with BBB permeability. The query’s estimated logP is slightly higher (4.8192 vs 4.7577, delta +0.0615), and its strongest basic pKa is slightly lower (9.0629 vs 9.1324, delta -0.0695); both changes are modest but remain compatible with a drug-like profile. The main negative here is that the query’s Labute surface area is a bit lower (168.0543 vs 170.414, delta -2.3596), while both molecules have pyrrolidine, so there is no separating effect from that feature. Taken together, this neighbor remains a good positive analog for BBB crossing.
+
+Neighbor 3 is likewise aligned with BBB crossing. The query has thiophene once while the neighbor lacks it, and the query has much lower TPSA (23.55 vs 41.37, delta -17.82), which is strongly favorable because lower polar surface area is generally associated with better BBB penetration and the query is clearly in the low-PSA region. The query also has higher estimated logD (3.147 vs 2.208, delta +0.939), which supports membrane permeability. The two main offsets are that the query has slightly higher Labute surface area (168.0543 vs 163.0528, delta +5.0016) and higher estimated logP (4.8192 vs 3.4117, delta +1.4075). The surface-area increase is a mild concern, and the higher logP is not uniformly beneficial at this baseline, but the much lower TPSA and higher logD make this comparison favor BBB crossing overall. Both molecules also contain pyrrolidine, so that does not separate them.
+
+Neighbor 4 is the first negative neighbor, but even here the comparison still leans toward BBB crossing for the query. The query has thiophene once while the neighbor does not, the query has much lower TPSA (23.55 vs 61.6, delta -38.05), and higher estimated logD (3.147 vs 1.8347, delta +1.3123), all of which are favorable for BBB permeability. The query also differs by having no acidic site while the neighbor’s strongest acidic pKa is 13.8731, and the query’s minimum partial charge is less negative (-0.3337 vs -0.3917, delta +0.0581), both of which are directionally consistent with a less polar profile. The only stated unfavorable shift is that the query’s maximum partial charge is slightly lower (0.2271 vs 0.2272, delta -0.0002), which is negligible. So although this neighbor is labeled as not crossing the BBB, the query looks more BBB-like than the neighbor on the features shown.
+
+Neighbor 5 is another negative neighbor, and it also supports the query’s BBB-crossing label. The query has thiophene once while the neighbor does not, and the query lacks 1,3,8-triazaspiro[4.5]decan-4-one and hydantoin, both of which are absent from the query and likely help reduce polar burden relative to the neighbor. The query’s TPSA is far lower (23.55 vs 81.75, delta -58.2), which is a major advantage because the query sits deep in the low-PSA range associated with BBB penetration. The query also has much higher estimated logD (3.147 vs 0.7681, delta +2.3789), again favoring passive permeability, and the neighbor’s strongest acidic pKa is 9.9115 while the query has no acidic site. In this comparison the query is consistently less polar and more BBB-like, so it clearly looks more likely to cross the BBB than the negative neighbor.
+
+Neighbor 6 provides the same general message. The query has thiophene once while the neighbor does not, the query’s TPSA is much lower (23.55 vs 67.25, delta -43.7), and the query’s estimated logD is far higher (3.147 vs 0.1362, delta +3.0108), all of which favor BBB penetration. The neighbor’s strongest acidic pKa is 13.7394, whereas the query has no acidic site, again leaving the query with a less polar profile. The only feature that goes the other way is QED drug-likeness, where the query is slightly lower (0.7231 vs 0.7276, delta -0.0045), but that difference is tiny and not enough to outweigh the strong PSA and logD advantages. The presence of a primary hydroxyl in the neighbor but not in the query is also favorable for the query in this comparison. Overall, Neighbor 6 is another negative example that the query outperforms for BBB crossing.
+
+Putting all six neighbors together, the three positive neighbors already point toward BBB penetration, and the three negative neighbors are not a counterargument because the query is more BBB-like than those lower-confidence negatives on the features that matter most here: especially the very low TPSA of 23.55, the elevated logD, and the absence of added acidic or strongly polar functionality. The small Labute-surface-area penalties and minor local tradeoffs do not outweigh those favorable polarity and permeability signals. The combined neighbor evidence therefore supports option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are generally more consistent with lower carcinogenic concern from an exposure and developability perspective. It contains 1H-indole present (1), which is a heteroaromatic motif but not, by itself, one of the classic high-risk structural alerts such as nitroso, nitro-aromatic, epoxide, aziridine, hydrazine, quinone, aldehyde, or PAH motifs. Its QED drug-likeness is high at 0.8171, suggesting an overall compound profile that is relatively balanced in terms of size, polarity, aromaticity, and flexibility rather than being highly atypical or highly lipophilic. The strongest acidic pKa is 13.844, which is very high and indicates that the acidic functionality is weakly acidic and likely remains largely neutral under physiological conditions; that is not a carcinogenic alert, and it is more compatible with a stable, non-reactive profile. The tertiary aliphatic amine is present (1), which adds an ionizable basic center, but a single basic site like this does not by itself indicate a carcinogenic mechanism. The primary hydroxyl is present (1), adding polarity and hydrogen-bonding capacity, which generally supports solubility and reduces passive membrane accumulation. The aromatic heterocycle count is 1, a modest level of heteroaromaticity rather than extensive aromatic burden. The neutral fraction is 0.3806, indicating a substantial ionized fraction at physiological pH, which tends to reduce passive permeability and broad tissue exposure relative to a mostly neutral compound. The saturated ring count is 0 and the saturated heterocycle count is 0, so the scaffold is not dominated by saturated ring systems, but that alone is not a carcinogenic warning sign. Alkyl aryl ether is absent (0), so there is no evidence here for that substructure. Overall, the profile is dominated by a relatively drug-like, moderately polar heteroaromatic scaffold without any obvious high-risk carcinogenic alert groups, so the balance of evidence supports option (A): is not a carcinogen.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is only weakly similar, but its comparison is still informative because the query has 1H-indole once while the neighbor does not, a difference that is associated here with a shift toward the non-carcinogen side. That is partly offset by physicochemical changes in the opposite direction: the query has higher estimated logP (2.0299 vs 0.9048, delta +1.1251), which can increase lipophilicity and exposure potential, yet the query also has much higher estimated logD (1.6104 vs -8.0971, delta +9.7075), which in this comparison favors the non-carcinogen side. The query is also larger in the ring sense for the aliphatic scaffold features, with aliphatic ring count 2 vs 1 (delta +1) and the same aliphatic heterocycle count as the neighbor at 1 (delta +0). The alkyl aryl ether feature is absent in both molecules. Overall, the balance of these features in Neighbor 1 still leans toward option (A), so this neighbor does not argue for carcinogenicity.
+
+Neighbor 2 gives a clearer non-carcinogen comparison. Here the neighbor contains thiolactam, purine, and tetrahydrofuran, while the query lacks each of those motifs, and the query also lacks the structural burden associated with them. The query also has 1H-indole, while the neighbor does not. In addition, both molecules have primary hydroxyl, so that feature does not separate them. The query is simpler in heterocycle terms as well: saturated heterocycle count is 0 in the query versus 1 in the neighbor. Taken together, this neighbor’s chemistry is more heavily decorated and more heterocycle-rich than the query, while the query is missing several of those features, which supports the non-carcinogen label.
+
+Neighbor 3 again points away from carcinogenicity. The query has 1H-indole once while the neighbor lacks it, but the more important difference here is estimated logD: the neighbor is higher at 2.4097 versus 1.6104 for the query, with a delta of -0.7993 for the query-minus-neighbor comparison. That places the query below the neighbor on this lipophilicity/distribution axis, and in this case the lower value is favorable for the non-carcinogen side. Both molecules have tertiary aliphatic amine, so that does not separate them. Neither has alkyl aryl ether. The query also has a lower minimum absolute partial charge (0.0506 vs 0.3024, delta -0.2519), and the neutral fraction is much higher in the query (0.3806 vs 0.0057, delta +0.3749). Because neutral fraction and ionization-related descriptors affect exposure and distribution rather than acting as direct carcinogenic alerts, this pattern is best read as a property difference rather than a mechanism for carcinogenicity. Even so, the neighbor-to-query contrast still ends up favoring option (A).
+
+Neighbor 4 is a much closer analog, and it strongly supports the non-carcinogen assignment. The neighbor contains pyrrolidine and piperazine, while the query has neither. The neighbor also has 2 lactam copies versus 0 in the query, and it has a much higher aliphatic heterocycle count, 4 versus 1, with a delta of -3. The query also has lower estimated logP, 2.0299 vs 2.4303, so the query is slightly less lipophilic here, which is directionally consistent with a more favorable profile. Both molecules have 1H-indole, so the indole feature does not distinguish them in this pair. Taken together, the query is missing several heterocycle-rich features present in the neighbor and is a little less lipophilic, so this comparison clearly sits on the non-carcinogen side.
+
+Neighbor 5 repeats the same pattern as Neighbor 4 and reinforces it. The neighbor again has pyrrolidine and piperazine, while the query does not. Both molecules have 1H-indole, so that feature remains matched. The neighbor also has 2 lactam copies versus 0 in the query, along with a much larger aliphatic heterocycle count, 4 versus 1, and now also a higher saturated heterocycle count, 4 versus 0. These differences make the neighbor more heterocycle-rich and structurally more complex than the query on the ring descriptors that were actually compared. As in the previous neighbor, this supports the non-carcinogen label for the query rather than a carcinogen assignment.
+
+Neighbor 6 provides the same message once more. It again has pyrrolidine and piperazine, while the query lacks both. Both share 1H-indole, the neighbor has 2 lactam copies while the query has 0, the aliphatic heterocycle count is 4 in the neighbor versus 1 in the query, and the saturated heterocycle count is 4 in the neighbor versus 0 in the query. These repeated structural differences all place the neighbor on the more heterocycle-rich side relative to the query. Since the query does not carry those added features, this comparison also favors option (A).
+
+Putting the six comparisons together, the three higher-similarity negative neighbors are especially consistent: they repeatedly show that the query lacks pyrrolidine, piperazine, extra lactam content, and the higher heterocycle counts seen in the non-carcinogen references. The three carcinogen neighbors are more mixed, but even there the query is not enriched in any explicit carcinogenic structural alert from the supplied comparisons; instead, the main differences are indole presence and exposure-related properties such as logP, logD, and neutral fraction. Across all six neighbors, the structural and physicochemical analogies align better with option (A) than with option (B), so the final prediction is that the query is not a carcinogen.
+
+Input 3. Target final label semantics
+option (A): is not a carcinogen
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

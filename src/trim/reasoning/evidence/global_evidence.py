@@ -38,6 +38,51 @@ def _safe_float(value: object) -> float | None:
     return numeric
 
 
+def _safe_scalar(value: object) -> object:
+    if hasattr(value, "item"):
+        try:
+            return value.item()
+        except Exception:
+            return value
+    return value
+
+
+def _missing_value_reason(raw_value: object, semantics: dict[str, str]) -> str | None:
+    try:
+        numeric = float(raw_value)
+    except (TypeError, ValueError):
+        return None
+    if not math.isnan(numeric):
+        return None
+
+    source_family = semantics.get("source_family", "")
+    raw_name = semantics.get("raw_name", "")
+    if source_family == "pka" and raw_name == "most_acidic_pka":
+        return "no_acidic_site"
+    if source_family == "pka" and raw_name == "most_basic_pka":
+        return "no_basic_site"
+    return "missing_value"
+
+
+def _missing_value_text(reason: str | None) -> str:
+    if reason == "no_acidic_site":
+        return "no acidic site"
+    if reason == "no_basic_site":
+        return "no basic site"
+    return "missing value"
+
+
+def _sanitize_json_value(raw_value: object) -> object:
+    scalar = _safe_scalar(raw_value)
+    try:
+        numeric = float(scalar)
+    except (TypeError, ValueError):
+        return scalar
+    if math.isnan(numeric) or math.isinf(numeric):
+        return None
+    return scalar
+
+
 def _default_label_semantics() -> dict[int, dict[str, str]]:
     return {
         0: {"option": "A", "text": "label 0"},
@@ -69,6 +114,10 @@ def _supports_prediction(contribution: float, predicted_label: int) -> bool:
 
 
 def _infer_value_phrase(raw_value: object, semantics: dict[str, str]) -> str:
+    missing_reason = _missing_value_reason(raw_value, semantics)
+    if missing_reason is not None:
+        return _missing_value_text(missing_reason)
+
     numeric = _safe_float(raw_value)
     if numeric is None:
         return f"value {raw_value}"
@@ -93,6 +142,16 @@ def _infer_value_phrase(raw_value: object, semantics: dict[str, str]) -> str:
     if integer_like and abs(numeric) <= 20:
         return f"value {int(round(numeric))}"
     return f"value {_format_number(numeric)}"
+
+
+def _build_value_observation(display_name: str, value_phrase: str) -> str:
+    if value_phrase == "no acidic site":
+        return f"The molecule has no acidic site, so {display_name} is not defined."
+    if value_phrase == "no basic site":
+        return f"The molecule has no basic site, so {display_name} is not defined."
+    if value_phrase == "missing value":
+        return f"{display_name} is unavailable."
+    return f"{display_name} is {value_phrase}."
 
 
 def _to_numeric_array(values: list[object] | np.ndarray) -> np.ndarray | None:
@@ -229,8 +288,8 @@ def _build_text_hint(
 ) -> str:
     contribution_text = _format_number(contribution, decimals=4)
     hint = (
-        f"{display_name} is {value_phrase}. "
-        f"At this value the global EBM contribution is {contribution_text}, "
+        f"{_build_value_observation(display_name, value_phrase)} "
+        f"The global EBM contribution here is {contribution_text}, "
         f"which pushes toward option ({contribution_label['option']}): {contribution_label['text']}."
     )
     if trend_text:
@@ -315,7 +374,7 @@ def _build_feature_evidence(
 
     payload = {
         **semantics,
-        "feature_value": raw_value,
+        "feature_value": _sanitize_json_value(raw_value),
         "feature_value_text": value_phrase,
         "model_input_value": model_input_value,
         "contribution": float(contribution),
@@ -335,6 +394,9 @@ def _build_feature_evidence(
             contribution_label=contribution_label,
         ),
     }
+    missing_reason = _missing_value_reason(raw_value, semantics)
+    if missing_reason is not None:
+        payload["feature_value_missing_reason"] = missing_reason
     if trend is not None:
         payload["local_trend"] = trend
     return payload

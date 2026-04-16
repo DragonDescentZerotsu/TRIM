@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several structural features that are consistent with CYP2D6 substrate-like chemistry. It contains imidazolidine, which can support a protonatable/basic nitrogen motif, and it also contains piperidine, another strongly basic heterocycle; together these suggest a readily protonated center near physiological pH, a common hallmark of CYP2D6 substrates. The presence of 1H-indole adds an aromatic heterocycle and increases the aromatic/lipophilic character that often accompanies substrate recognition. Consistent with that, the topological polar surface area is 40.51, which is a moderate polarity value and still compatible with the lower-PSA, lipophilic-base profile often seen for substrates. The strongest basic pKa is 8.9175, indicating a basic site that should be substantially protonated near physiological pH, while the strongest acidic pKa is 13.9329, meaning acidic ionization is unlikely to dominate the charge state. The aliphatic heterocycle count is 2, further supporting the presence of heterocyclic basic centers that can contribute to CYP2D6 binding. The aryl fluoride is present as well; while it is not a classic CYP2D6 determinant by itself, it can be part of a lipophilic aromatic scaffold. There is some counterweight from the minimum absolute partial charge value of 0.3171 and the maximum partial charge value of 0.3171, which suggest a measurable charge distribution that is not entirely neutral, but these do not outweigh the stronger substrate-like signals from the protonatable heterocycles and aromatic content. Overall, the combination of basic heterocycles, aromaticity, and moderate polarity makes the molecule more consistent with a CYP2D6 substrate than a non-substrate.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close positive analog that favors substrate behavior. The query has imidazolidine once while the neighbor has none, and the query also has 1H-indole once while the neighbor has none; both of these added features are consistent with the kind of substrate-like, heterocycle/aromatic-rich chemistry associated with CYP2D6. The query also has a stronger basic center, with strongest basic pKa 8.9175 versus 8.1364 for the neighbor, a +0.7811 shift that is favorable because CYP2D6 substrates commonly benefit from a protonatable basic nitrogen near physiological pH. The query’s topological polar surface area is essentially unchanged and slightly lower, 40.51 versus 40.54, delta -0.03, which keeps polarity in a similar substrate-compatible range. The strongest acidic pKa is also a bit higher in the query, 13.9329 versus 13.8369, delta +0.096. The only counterpoint is minimum absolute partial charge, where the query is higher at 0.3171 versus 0.1624, delta +0.1546, and that term leans away from substrate status; even so, the aromatic and basicity features dominate and the overall comparison supports option (B).
+
+Neighbor 2 is also a positive analog and again supports substrate status. As with Neighbor 1, the query adds imidazolidine and 1H-indole relative to the neighbor, both with query-minus-neighbor delta +1, reinforcing a substrate-like motif with a basic/heteroaromatic framework. The strongest basic pKa is higher in the query, 8.9175 versus 8.4887, delta +0.4288, which is directionally favorable for a protonated basic center. The polarity difference is larger here: topological polar surface area drops from 64.8 in the neighbor to 40.51 in the query, delta -24.29. Since lower PSA is more compatible with the lipophilic, less polar space often seen among CYP2D6 substrates, that shift strongly favors option (B). There are two charge-based counter-signals: minimum absolute partial charge increases from 0.1696 to 0.3171, delta +0.1475, and minimum partial charge becomes less negative, from -0.4928 to -0.3362, delta +0.1566. Those changes point the other way, but the combination of added heterocycles, stronger basicity, and much lower PSA still makes this neighbor comparison overall supportive of substrate status.
+
+Neighbor 3 remains positive overall, though it is more mixed. The query again has imidazolidine and 1H-indole while the neighbor lacks both, each with delta +1, which keeps the query in the more substrate-like aromatic/basic neighborhood. The strongest basic pKa is also much higher in the query, 8.9175 versus 7.448, delta +1.4695, a substantial increase that fits the common CYP2D6 preference for a protonatable basic center. The query’s topological polar surface area is lower, 40.51 versus 46.3, delta -5.79, which is again favorable because lower polarity is generally more compatible with substrate-like space. The query lacks 4H-1,2,4-triazole while the neighbor has it, delta -1, and in this comparison that absence is favorable as well. The main opposing feature is urea: both query and neighbor have urea, delta 0, and this shared feature is associated here with a negative effect. Even with that unfavorable shared urea term, the stronger basicity, lower PSA, and added imidazolidine/indole still make the overall neighbor comparison support option (B).
+
+Neighbor 4 is a negative neighbor by label, but its feature-by-feature comparison still looks mostly closer to the substrate side than the non-substrate side. The query has imidazolidine and 1H-indole while the neighbor lacks both, each with delta +1, which again aligns with the substrate-associated aromatic/basic pattern. The strongest basic pKa is 8.9175 in the query versus 8.951 in the neighbor, a small delta of -0.0335, so the query is only slightly less basic here and that still sits in a very similar protonatable range. The topological polar surface area drops sharply from 78.82 in the neighbor to 40.51 in the query, delta -38.31, which is a strong move toward the lower-polarity region more consistent with substrates. The query also has one aryl fluoride while the neighbor has none, delta +1. Finally, the neighbor has 2 copies of urea while the query has 1, delta -1, which removes some of the negative-neighbor urea burden. Even though this neighbor is a known non-substrate, the query looks substantially more substrate-like on the cited features, especially PSA and the added imidazolidine/indole pattern.
+
+Neighbor 5 is another negative neighbor that also differs in a way favoring the query. The query has imidazolidine while the neighbor does not, delta +1, and the query has 1H-indole while the neighbor does not, delta +1, preserving the same substrate-like motif seen in the positive neighbors. The query’s strongest acidic pKa is higher, 13.9329 versus 12.1577, delta +1.7752; this keeps the acidic site less ionizing and more in a neutral range, which is not itself a classic CYP2D6 substrate rule but does fit the broader ionization pattern of the query. The strongest basic pKa is slightly lower in the query, 8.9175 versus 9.128, delta -0.2105, but both values remain in a protonatable range and the difference is modest. Both molecules have urea, delta 0, so that feature does not separate them. The topological polar surface area is also very similar, 40.51 versus 41.03, delta -0.52, with the query just slightly less polar. Taken together, this negative neighbor does not undermine the substrate call; the shared urea and near-matching PSA are outweighed by the query’s added imidazolidine and indole and its less ionized acidic profile.
+
+Neighbor 6, while also a negative neighbor, gives a strong substrate-leaning contrast. The query again has imidazolidine and 1H-indole that the neighbor lacks, both with delta +1, reinforcing the same heterocyclic/aromatic signature. The query’s neutral fraction is dramatically lower, 0.0295 versus 0.8763, delta -0.8468, meaning the query is far more ionized; for CYP2D6, a protonatable basic center at physiological pH is often an important substrate feature, so this charge state is favorable. The neighbor has morpholine while the query does not, delta -1, and that missing morpholine is not a disadvantage here because the rest of the query already looks more substrate-like. The only explicit unfavorable feature is minimum absolute partial charge, which rises from 0.2508 to 0.3171, delta +0.0662, and that term leans away from substrate status. The query also has one aryl fluoride while the neighbor has none, delta +1. Overall, though, the much lower neutral fraction together with the added imidazolidine/indole pattern and the aryl fluoride make this neighbor comparison support the substrate label rather than the non-substrate label.
+
+Across all six neighbors, the same pattern repeats: the three positive neighbors directly favor option (B), and the three negative neighbors are still more similar to the query in the substrate-favoring direction for the major descriptors that were actually compared. The query repeatedly shows imidazolidine and 1H-indole, usually a stronger basic pKa, and generally lower topological polar surface area, with one negative neighbor also showing a much lower neutral fraction in the query. The few opposing charge-related features, such as higher minimum absolute partial charge in several comparisons and a shared urea term in one case, are not enough to outweigh the repeated basicity/aromaticity and polarity advantages. Taken together, the neighbor evidence is more consistent with option (B): the molecule is a substrate to CYP2D6.
+
+Input 3. Target final label semantics
+option (B): is a substrate to the enzyme CYP2D6
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

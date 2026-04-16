@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule is very small, with a molecular weight of 72.107 and an exact molecular weight of 72.0575, which is generally favorable for passive exposure in a bacterial assay rather than suggesting a size-based detection problem. Its heavy-atom count is 5 and heavy-atom molecular weight is 64.043, so the scaffold is compact; the Labute surface area of 31.9956 is also modest, consistent with a small, relatively accessible molecule. The fraction of sp3 carbons is 0.75, indicating a fairly saturated, non-flat structure, which is not the kind of planar polycyclic aromatic system that would raise concern for a classic mutagenic aromatic toxicophore. The ring count is 0, so there is no ring-based aromatic intercalation concern. The heteroatom count is only 1, and the hydrogen-bond acceptor count is 1, both of which indicate low heteroatom burden and limited polarity from acceptor functionality. The estimated logP of 0.9854 suggests only moderate lipophilicity, not an extreme hydrophobicity that would strongly impair soluble exposure in the assay. Taken together, these descriptors describe a small, simple, non-aromatic molecule without obvious structural alerts such as nitro, nitroso, aziridine, epoxide, aromatic amine, or polycyclic aromatic motifs. There are a few mixed signals, since the modest size-related descriptors and the single heteroatom/acceptor are slightly offset by the low ring count and high sp3 character, while the moderate logP could support exposure. Overall, the balance of evidence favors a non-mutagenic outcome, so the molecule is predicted to be option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is very small and much less aromatic than the query: heavy-atom count drops from 20 to 5 (delta -15), which is the kind of size reduction that can limit exposure and is consistent with a less mutagenic analog in a bacterial assay. At the same time, the query is much more sp3-rich than the neighbor, with fraction of sp3 carbons rising from 0.1176 to 0.75 (delta +0.6324), and it also loses aromatic ring content entirely, going from 2 aromatic rings to 0 (delta -2). The query is also less heteroatom-rich, with heteroatom count falling from 3 to 1 (delta -2), and it is substantially less lipophilic, with estimated logD decreasing from 3.9478 to 0.9854 (delta -2.9624). Molecular weight likewise drops from 267.328 to 72.107 (delta -195.221). Taken together, this neighbor’s aromatic, heavier, more lipophilic profile is more consistent with mutagenic behavior than the query’s small, nonaromatic profile, so the comparison favors option (A): is not mutagenic.
+
+Neighbor 2 is similar in overall size but still more polarizable and more aromatic than the query in several respects. The query has lower fraction of sp3 carbons than the neighbor’s 0.3 versus 0.75? Actually the key comparison is the query at 0.75 against the neighbor at 0.3, delta +0.45, which indicates the query is more saturated and less flat. Exact molecular weight also drops sharply from 195.0895 to 72.0575 (delta -123.032), and heteroatom count decreases from 4 to 1 (delta -3). The strongest basic pKa is present in the neighbor at 4.7381, while the query has no basic site; the delta is not defined, but the absence of a basic site removes one ionizable nitrogen feature that can matter for bacterial accumulation. One feature goes the other way: Labute surface area is much lower in the query, 31.9956 versus 82.6743 (delta -50.6787), which by itself can affect exposure in a direction that the note associates with mutagenic analogs. Even so, the overall profile of the query remains smaller, less heteroatom-rich, and more sp3-rich than this neighbor, which is more consistent with reduced mutagenic liability, so this comparison still supports option (A): is not mutagenic.
+
+Neighbor 3 gives a mixed picture, but the dominant structural differences again lean away from mutagenicity for the query. The query has a higher neutral fraction, going from the neighbor’s 0.6611 to present/1 in the query (delta +0.3389), which can mean less ionization and potentially different exposure behavior. The query also has a higher fraction of sp3 carbons, 0.75 versus 0.3 (delta +0.45), and far fewer heavy atoms, 72.0575 molecular weight versus 196.0736 (delta -124.016). It has much less surface area as well, with Labute surface area falling from 81.4354 to 31.9956 (delta -49.4398), and it lacks the phenol motif that is present three times in the neighbor (query 0, delta -3). Those changes all describe a smaller, less decorated molecule. The one feature that points in the opposite direction is the increased neutral fraction, which the note associates with a B-leaning effect here, but that is outweighed by the loss of phenols, the lower size, and the more saturated framework. Overall, Neighbor 3 still makes the query look less like the mutagenic phenolic, larger analog, so it favors option (A): is not mutagenic.
+
+Neighbor 4 is one of the negative neighbors and provides a useful contrast because several of its features resemble a more exposure-rich, possibly mutagenic profile. The query has much lower Labute surface area, 31.9956 versus 76.7641 (delta -44.7685), which on its own is one factor that had aligned with B in this comparison. It also has lower molecular weight, 72.107 versus 177.203 (delta -105.096), but lower size is not enough here to offset the other differences. Heavy-atom count is much smaller in the query, 5 versus 13 (delta -8), and ring count drops from 1 to 0 (delta -1), both of which remove structural complexity. QED drug-likeness also falls from 0.7127 to 0.4511 (delta -0.2616), and the number of ionizable sites goes from 4 in the neighbor to absent/0 in the query (delta -4). In this particular comparison, the combination of lower surface area, lower QED, and loss of ionizable sites is not enough to make the query resemble a mutagenic analog strongly enough to override the rest of the evidence, so the neighbor is the weaker and more confounded case among the negative analogs.
+
+Neighbor 5 is also a negative neighbor and is broadly similar to Neighbor 4. The query again has much lower heavy-atom count, 5 versus 14 (delta -9), lower molecular weight, 72.107 versus 191.23 (delta -119.123), and lower Labute surface area, 31.9956 versus 83.129 (delta -51.1334). QED drug-likeness is also lower in the query, 0.4511 versus 0.7417 (delta -0.2906), which means the query is less drug-like by that composite score, and ring count decreases from 1 to 0 (delta -1). The number of ionizable sites again goes from 4 in the neighbor to absent/0 in the query (delta -4). Even though several of these deltas point in the same direction as the mutagenic side of this local comparison, the query is still a much smaller, simpler molecule with no ring system and no ionizable sites, so it does not reproduce the more feature-rich profile of the negative neighbor in a way that would outweigh the broader pattern from the positive neighbors. This comparison therefore remains only a limited B-like signal and does not overturn the overall A-leaning picture.
+
+Neighbor 6 is the strongest of the negative neighbors because multiple features line up with a more mutagenic-looking analog, but the query still differs in a way that makes it less concerning overall. The query has much lower Labute surface area, 31.9956 versus 81.5583 (delta -49.5627), higher heavy-atom count contrast is again large, 5 versus 14 (delta -9), and molecular weight drops from 193.202 to 72.107 (delta -121.095). The minimum partial charge is also less negative in the query, -0.3 versus -0.508 (delta +0.2079), which the comparison associates with a B-leaning shift. QED drug-likeness is lower in the query, 0.4511 versus 0.5615 (delta -0.1104), and ring count falls from 1 to 0 (delta -1). Those features collectively give this neighbor a fairly strong mutagenic analog signal. However, they are still features of a much larger, ring-containing neighbor versus a very small, ring-free query, and that overall structural simplification is consistent with reduced mutagenic concern rather than increased it. So even this strongest negative neighbor does not overcome the pattern that the query is smaller, less aromatic, and less structurally complex than the positive analogs.
+
+Putting the six neighbors together, the positive neighbors consistently show that the mutagenic examples are larger, more aromatic, more heteroatom-rich, and often more lipophilic or phenolic than the query, while the query is smaller, more sp3-rich, and less ring-rich. The negative neighbors do contain some B-leaning local contrasts, especially around Labute surface area, QED, ionizable sites, and partial charge, but those are mixed with the same strong size-and-simplicity reduction in the query. Across the full set, the balance of analog evidence still points to the query being less likely mutagenic, so the final prediction is option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

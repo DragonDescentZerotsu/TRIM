@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several structural features that are concerning for Ames mutagenicity. It has 4 aromatic rings and 4 aromatic carbocycles, with a ring count of 4 overall, which is consistent with a fairly aromatic, planar scaffold; such aromaticity can be associated with mutagenic behavior, especially when fused or polycyclic character is present. The fraction of sp3 carbons is low at 0.1111, further suggesting a flat, aromatic-rich structure rather than a highly saturated one. The maximum partial charge is 0.0762, indicating some polarized character, and the strongest acidic pKa is 13.7317, which is quite high and does not suggest a strongly acidic, highly ionized molecule. The molecule also has a relatively low topological polar surface area of 20.23, which could support passive exposure rather than limiting it. On the other hand, heteroatom count is only 1, and the presence of a secondary hydroxyl group (1) together with the low TPSA may add some polarity and slightly moderate exposure. Even so, the overall picture is dominated by the aromatic, low-sp3, ring-rich scaffold, which is more consistent with a mutagenic outcome. I would therefore classify the molecule as mutagenic, option (B).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor with fairly high similarity, and several of its features point toward the mutagenic side when compared with the query. The query has higher QED drug-likeness than the neighbor, 0.4851 versus 0.2245, a delta of +0.2606, and in this comparison that is associated with a strong shift toward mutagenicity. The query also has a higher maximum partial charge, 0.0762 versus -0.0014, delta +0.0776, again aligning with the mutagenic side. At the same time, the query is less extreme in lipophilicity, with estimated logP 4.6373 versus 6.3282, delta -1.6909, and it also has lower aromatic ring count, 4 versus 6, delta -2, plus higher topological polar surface area, 20.23 versus 0, delta +20.23; those last two factors lean away from mutagenicity because greater polarity and more polar surface area can reduce passive exposure. The query additionally has one secondary hydroxyl while the neighbor has none, which also weakens the mutagenic side in this comparison. Even with those offsets, the overall Neighbor 1 comparison still favors option (B) because the charge and QED differences are substantial.
+
+Neighbor 2 is another positive neighbor and is even more clearly aligned with option (B). The same pattern appears for QED drug-likeness: 0.4851 for the query versus 0.2364 for the neighbor, delta +0.2487, which again favors mutagenicity in this local comparison. The maximum partial charge is also higher in the query, 0.0762 versus -0.0020, delta +0.0782, reinforcing that direction. Although the query’s estimated logP is lower than the neighbor’s, 4.6373 versus 6.0456, delta -1.4083, which would otherwise ease exposure and lean toward non-mutagenicity, the comparison also shows the query with lower topological polar surface area than the high-polarity side of the neighbor context only through the listed values, and that factor is stated as favoring option (A) here because the neighbor has 0 TPSA and the query has 20.23. However, the estimated logD comparison works in the opposite direction: 4.6373 versus 6.0456, delta -1.4083, and in this neighbor pair that shift is associated with option (B). The query also has fewer aromatic rings than the neighbor, 4 versus 5, delta -1, which here is treated as mutagenicity-favoring because the neighbor is more aromatic. Taken together, Neighbor 2 remains a strong positive-neighbor argument for option (B).
+
+Neighbor 3, also positive, again supports the mutagenic label through charge and aromaticity-related similarity. The query’s maximum partial charge is 0.0762 versus -0.0015 for the neighbor, delta +0.0777, which is a recurring mutagenicity-favoring pattern across the positive neighbors. The neighbor and query both have 4 copies of benzene, so there is no delta there, but the shared aromatic scaffold still comes through in the comparison and is scored toward option (B). The query also has lower topological polar surface area than the same 0-TPSA neighbor context? Here the comparison explicitly says the neighbor has 0 and the query has 20.23, delta +20.23, which is taken as weakening the mutagenic side because greater polarity can reduce exposure. The query has one secondary hydroxyl while the neighbor has none, delta +1, another factor leaning toward option (A) through higher polarity. The estimated logD is lower for the query, 4.6373 versus 5.0678, delta -0.4305, and in this pair that difference supports option (B). Finally, the maximum absolute partial charge is much larger for the query, 0.3887 versus 0.0610, delta +0.3277, and that is one of the few features in this comparison that weakens the mutagenic side. Even with those counterweights, the overall Neighbor 3 profile still lands on option (B), mainly because the positive-charge and aromatic context remain more favorable to mutagenicity than the polarity offsets.
+
+Neighbor 4 is a negative neighbor, but the comparison still ends up favoring mutagenicity because the query differs in several ways that resemble the mutagenic neighbors more than this non-mutagenic one. The query has many more rings, 4 versus 1, delta +3, and many more benzene copies, 4 versus 1, delta +3; both of those aromatic-enrichment signals are associated with option (B) in this local contrast. The query also has a lower fraction of sp3 carbons, 0.1111 versus 0.25, delta -0.1389, meaning it is flatter and less saturated, which here is treated as mutagenicity-favoring. Its estimated logD is much higher, 4.6373 versus 1.7399, delta +2.8974, and in this pair that higher lipophilicity is also linked to option (B). The query has higher aromatic ring count, 4 versus 1, delta +3, and higher aromatic carbocycle count, 4 versus 1, delta +3, both again pointing toward the mutagenic side. Although this neighbor is labeled non-mutagenic, the query is more aromatic, more lipophilic, and less sp3-rich than the neighbor, so the local comparison actually moves toward option (B).
+
+Neighbor 5 is effectively the same kind of negative-neighbor comparison as Neighbor 4, and it tells the same story. The query exceeds the neighbor in ring count, 4 versus 1, delta +3, and in benzene copies, 4 versus 1, delta +3, which again aligns with the mutagenic side. The fraction of sp3 carbons is lower in the query, 0.1111 versus 0.25, delta -0.1389, supporting a flatter aromatic profile that is treated here as more mutagenic. Estimated logD is also much higher for the query, 4.6373 versus 1.7399, delta +2.8974, which in this local pairing is another factor favoring option (B). The aromatic ring count rises from 1 to 4, delta +3, and aromatic carbocycle count also rises from 1 to 4, delta +3; both changes strengthen the same direction. As with Neighbor 4, the fact that this is a non-mutagenic reference does not outweigh the aromaticity and lipophilicity pattern, so Neighbor 5 still supports option (B).
+
+Neighbor 6 is the third negative neighbor, and it too points toward option (B) once the query-neighbor differences are considered. The query has fewer aromatic carbocycles than the neighbor, 4 versus 5, delta -1, but the comparison still assigns a mutagenic lean to the larger aromatic system context. Likewise, the neighbor has 5 copies of benzene versus 4 in the query, delta -1, and the neighbor’s aromatic ring count is 5 versus 4 in the query, delta -1; these are all features of a more aromatic framework, and the local contrast remains on the mutagenic side. The strongest acidic pKa is nearly unchanged, 13.7317 for the query versus 13.7122 for the neighbor, delta +0.0195, so that feature is essentially neutral here. The query has one secondary hydroxyl while the neighbor has none, delta +1, and that weakens the mutagenic side because added hydroxyl character increases polarity. Topological polar surface area is identical at 20.23 for both, delta 0, so it does not separate the pair. Even so, the aromatic-system differences dominate the comparison, and Neighbor 6 still favors option (B).
+
+Across all six neighbors, the positive-neighbor set consistently highlights the query’s higher maximum partial charge and the local scoring that favors the mutagenic side for QED, aromaticity, and in one case estimated logD, while the non-mutagenic neighbors are still overcome because the query is more ring-rich, more benzene-rich, less sp3-rich, and often more lipophilic than those references. The polarity-related features such as topological polar surface area and secondary hydroxyl sometimes temper the mutagenic tendency, but they do not outweigh the repeated aromatic and charge-based signals. Taken together, the six neighbor comparisons support option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

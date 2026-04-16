@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a nitroso group (1), which is a well-recognized mutagenicity toxicophore and therefore strongly supports an Ames-positive outcome. It also has an amine (1), and aromatic amines can be mutagenic depending on metabolic activation, so that adds further concern. In addition, the QED drug-likeness value is 0.307, which is relatively low and can coincide with less favorable structural features, while the estimated logP of -0.2654 is not highly lipophilic but does not offset the presence of reactive alerts. The maximum partial charge of 0.0624 and minimum absolute partial charge of 0.0624 suggest a notable charge distribution, and the topological polar surface area of 73.13 indicates moderate polarity rather than a strongly permeability-limiting profile. Against that, the primary hydroxyl count of 2 and the fraction of sp3 carbons of 1 point toward a more saturated, polar molecule, and the ring count of 0 means there is no polycyclic aromatic framework to add further mutagenic risk. Even with those dampening features, the nitroso alert together with the amine and the overall descriptor pattern are more consistent with mutagenicity than with a clearly non-mutagenic profile. Overall, the balance of evidence favors option (B): is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is overall consistent with a mutagenic readout. It shares nitroso with the query, and that shared toxicophore is a strong positive anchor for Ames positivity. The query is also lower in QED drug-likeness, with 0.307 versus 0.5214 in the neighbor, which is unfavorable in the same direction as the mutagenic class. Although the query has one more primary hydroxyl group than the neighbor (2 vs 1), and its fraction of sp3 carbons is higher at 1 versus 0.5714, both of those changes tend to work against that mutagenic signal by increasing polarity/3D character. The query also lacks the dialkyl ether present in the neighbor, which is another factor that weakens the comparison for mutagenicity. Even with those countervailing features, the higher maximum partial charge context and the shared nitroso motif make Neighbor 1 a net mutagenic analog.
+
+Neighbor 2 also supports mutagenicity. Again, both molecules have nitroso, which is the clearest structural alert in the comparison. The query is lower in QED drug-likeness (0.307 vs 0.5614), which aligns with the same unfavorable profile, and it is also more polar by topological polar surface area, rising from 52.9 in the neighbor to 73.13 in the query. The query is slightly less lipophilic as well, with estimated logP shifting from 0.035 to -0.2654. Those changes do not create a simple universal rule, but here they sit alongside the nitroso alert and support the same mutagenic direction. The query has one more primary hydroxyl group, which is a modest counterpoint, and the neighbor has dialkyl thioether while the query does not, but the shared nitroso plus the overall property pattern still makes this a positive-mutagenicity comparison.
+
+Neighbor 3 is essentially the same kind of evidence as Neighbor 2 and likewise favors mutagenicity. It again shares nitroso with the query, keeping the strongest mutagenic alert intact. The query remains lower in QED drug-likeness at 0.307 versus 0.5614, lower in estimated logP at -0.2654 versus 0.035, and higher in topological polar surface area at 73.13 versus 52.9. The query also has one additional primary hydroxyl group and lacks the dialkyl thioether present in the neighbor. Those latter differences add some polarity and reduce hydrophobic character, but they do not outweigh the repeated nitroso alert together with the same overall property shift. So Neighbor 3, like Neighbor 2, remains supportive of option (B).
+
+Neighbor 4 is a useful contrast because it is labeled non-mutagenic, yet the comparison still contains several mutagenicity-associated features in the query. The molecules share nitroso, and the query has lower QED drug-likeness (0.307 vs 0.5639), both of which point toward the mutagenic side. The query also has fraction of sp3 carbons of 1 versus 0.5 in the neighbor, which moves toward a more saturated, less aromatic profile and therefore partially offsets the alert-like features. It has two primary hydroxyl groups versus none in the neighbor, which is another change that increases polarity and can reduce passive exposure. The neighbor’s Labute surface area is larger, 100.6342 versus 65.5771 for the query, and that size/shape difference also distinguishes this pair. Finally, the query lacks one ring relative to the neighbor, with ring count 0 versus 1, which in this case is the main feature that helps explain why the neighbor itself can sit on the non-mutagenic side despite the shared nitroso. Taken together, Neighbor 4 shows that nitroso alone is not the whole story, but it still provides important context because several of the query’s features align with mutagenic chemistry.
+
+Neighbor 5, another non-mutagenic analog, again shares nitroso and again has a substantially higher QED drug-likeness than the query, 0.5781 versus 0.307. The query also has two primary hydroxyl groups versus none in the neighbor, which increases polarity. Here the ring difference is more pronounced: the neighbor has ring count 2 while the query has 0, so the query is more open-chain and less ring-rich. That is accompanied by a much lower fraction of sp3 carbons in the neighbor, 0.1429 versus 1 in the query, showing that the query is much more saturated. The neighbor also has a larger Labute surface area, 100.6431 versus 65.5771. In combination, these factors explain why the neighbor can be non-mutagenic even while sharing nitroso, but the query still looks less favorable than the neighbor on QED and still carries the nitroso alert that is repeatedly associated with mutagenicity in the positive neighbors.
+
+Neighbor 6 gives the clearest support for option (B). Unlike the previous two negative neighbors, it does not have nitroso while the query has it once, and it also lacks amine while the query has one. Both of those are strong mutagenicity-associated features in this context. The query is also much lower in QED drug-likeness, 0.307 versus 0.7578, and has a lower maximum partial charge, 0.0624 versus 0.3212, which fits a more alert-rich and less drug-like profile. The neighbor has ring count 1 while the query has 0, and the query again has one more primary hydroxyl group, which is a counterbalancing increase in polarity. Even with that counterweight, the presence of nitroso and amine in the query, together with the low QED and charge profile, makes Neighbor 6 strongly reinforce mutagenicity.
+
+When the six neighbors are viewed together, the balance is clear. All three positive neighbors consistently share nitroso with the query and align with a mutagenic interpretation, despite some mitigating effects from added hydroxyl groups or higher sp3 character. The three negative neighbors do show some features that can soften the signal, especially the extra hydroxyl groups, higher saturation, and ring-count differences, but they do not erase the central mutagenicity alerts. In particular, Neighbor 6 is a strong positive analog because the query contains nitroso and amine while the neighbor does not, and the two other non-mutagenic neighbors still share the nitroso motif that repeatedly tracks with mutagenicity in the positive set. Overall, the analog pattern is more consistent with option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

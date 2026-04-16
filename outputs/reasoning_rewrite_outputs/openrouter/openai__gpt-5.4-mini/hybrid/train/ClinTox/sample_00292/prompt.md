@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+Succinimide is present (1), which is a structural-alert-like motif and can raise concern for toxicity, although it is not determinative on its own. At the same time, the molecule shows several favorable polarity and size features: the topological polar surface area is 46.17, which is comfortably within a range generally consistent with reasonable permeability, and the Labute surface area is 59.796, also suggesting a modest surface-area burden rather than an extreme one. The hydrogen-bond acceptor count is 2 and the nitrogen/oxygen atom count is 3, both relatively low, which supports a simpler heteroatom profile. The strongest acidic pKa is 10.994, indicating a weak acid or largely nonacidic behavior under physiological conditions rather than a strongly ionized acidic species. Neutral fraction is 0.9997, so the molecule is overwhelmingly neutral, which is generally favorable for passive permeability. There are also charged-atom indicators that look slightly less favorable: minimum partial charge is -0.2959 and maximum absolute partial charge is 0.2959, reflecting a moderate localized charge distribution, and ammonium is absent (0), which removes one obvious cationic liability but does not by itself create a toxicity concern. Overall, the favorable mid-range polarity, low H-bonding burden, modest surface area, and overwhelmingly neutral state outweigh the limited alert from the succinimide motif and the mixed charge signals, so the molecule is predicted to be not toxic (A).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a weakly similar toxic analog, but its comparison is mixed and overall supports the non-toxic label for the query. The query has a less negative minimum partial charge than the neighbor, with neighbor -0.3981 versus query -0.2959 and delta +0.1021, and in this local comparison that shifts away from the toxic direction. The query also carries one succinimide while the neighbor has none, and that difference is treated favorably here. In addition, the query is much more saturated, with fraction of sp3 carbons rising from 0.2308 in the neighbor to 0.7143 in the query, delta +0.4835, which is a more three-dimensional profile than the flatter toxic neighbor. The query lacks ammonium just as the neighbor does, so that shared state does not separate them. On the other hand, the query has fewer hydrogen-bond acceptors, 2 versus 5 for the neighbor, delta -3, and it lacks piperidine while the neighbor has it, which are the main features that lean the other way. Even so, the stronger saturation and succinimide difference make Neighbor 1 more consistent with the not-toxic side overall.
+
+Neighbor 2 shows the same general pattern. The toxic neighbor again has a more negative minimum partial charge, -0.4932 versus the query’s -0.2959, delta +0.1973, but the query remains more saturated with fraction of sp3 carbons 0.7143 compared with 0.3158, delta +0.3985. The query also has succinimide once while the neighbor does not, which again fits the favorable side in this local comparison. Both molecules lack ammonium, so that feature is neutral between them. The query has fewer hydrogen-bond acceptors, 2 versus 5, delta -3, which by itself is not the dominant signal here. It also has far fewer rotatable bonds, 1 versus 7, delta -6, indicating a much less flexible scaffold than the toxic neighbor. Taken together, Neighbor 2 still lands on the not-toxic side because the query’s compactness, higher sp3 character, and succinimide-bearing profile outweigh the toxic-leaning charge difference.
+
+Neighbor 3 is again a toxic analog, and its differences are mixed in the same way. The query’s minimum partial charge is less negative than the neighbor’s, -0.2959 versus -0.3928, delta +0.0968, which is the toxic-leaning part of the comparison. But the query again contains succinimide once while the neighbor has none, and that remains favorable in this local context. Both lack ammonium, so there is no separation there. The query has fewer hydrogen-bond acceptors, 2 versus 5, delta -3. What distinguishes this neighbor most clearly is ring architecture: the toxic neighbor has 3 saturated carbocycles and 4 aliphatic carbocycles, while the query has 0 of each, with deltas -3 and -4 respectively. Because the query is much less ring-heavy in these saturated/aliphatic carbocycle features, the overall comparison still favors the not-toxic label despite the charge signal.
+
+Neighbor 4 is a non-toxic analog, and it aligns well with the query. Both molecules have the same hydrogen-bond acceptor count, 2 versus 2, delta 0, so there is no polarity penalty from that feature. The neighbor has slightly larger partial-charge extremes, with maximum absolute partial charge 0.3545 versus the query’s 0.2959, delta -0.0586, and minimum partial charge -0.3545 versus -0.2959, delta +0.0586. The query also contains succinimide once while the neighbor has none, which separates the query from the safer analog on that structural feature. Both lack ammonium, so that is again neutral. The query is a bit less saturated, with fraction of sp3 carbons 0.7143 versus 0.8, delta -0.0857, but this is a modest difference. Overall, Neighbor 4 is supportive because the query is broadly close to a benign compound and differs only mildly on the charge and saturation descriptors.
+
+Neighbor 5 is another non-toxic analog and provides strong support for the query’s not-toxic assignment. The query has fewer hydrogen-bond acceptors, 2 versus 3, delta -1, which is a modest move toward lower polarity. The query also has succinimide once while the neighbor has none, and that structural presence is favorable here. The neighbor has an imide acidic group while the query does not, which is an additional distinction that keeps the query away from the neighbor’s chemistry. Both lack ammonium. The maximum absolute partial charge is almost the same, 0.2959 in the query versus 0.2942 in the neighbor, delta +0.0017, so this feature does not separate them meaningfully. The query is also much more saturated, with fraction of sp3 carbons 0.7143 compared with 0.3333, delta +0.381. Taken together, Neighbor 5 is a clean non-toxic analog: the query matches it closely on charge while having more favorable saturation and avoiding the imide acidic feature.
+
+Neighbor 6 is also non-toxic and is similarly consistent with the query’s profile. The hydrogen-bond acceptor count is identical at 2, delta 0, so there is no difference there. The query’s maximum absolute partial charge is 0.2959 versus 0.3375 in the neighbor, delta -0.0415, while its minimum partial charge is -0.2959 versus -0.3375, delta +0.0415; these are small shifts but keep the query close in electrostatic profile. The query has succinimide once while the neighbor has none, which again marks the query as distinct from the safer analog on that structural element. Both lack ammonium. Finally, the query is much more saturated, with fraction of sp3 carbons 0.7143 versus 0.3333, delta +0.381, reinforcing a less flat scaffold than the neighbor. Neighbor 6 therefore supports the non-toxic call by combining a benign label with a similar charge pattern and a more saturated query structure.
+
+Across the full set, the three toxic neighbors are not compelling enough to overturn the label because each one is offset by the query’s higher sp3 fraction, lower flexibility or fewer acceptors, and in several cases the presence of succinimide relative to the toxic analogs. The three non-toxic neighbors line up even more directly with the query, especially on hydrogen-bond acceptor count, partial-charge range, and the more saturated scaffold. Although some toxic neighbors show more negative minimum partial charge and one also carries piperidine or additional saturated/aliphatic carbocycles, the overall nearest-neighbor pattern is more consistent with the safer, less toxic side. The combined evidence therefore supports option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows some features that are compatible with CYP2D6 substrate-like chemistry, but several properties lean the other way. The presence of 1H-indole and 6-azaindole suggests an aromatic heterocyclic scaffold, and the aromatic ring count of 4 gives the molecule substantial ring content. In CYP2D6, aromatic/lipophilic motifs can support substrate recognition, so the indole signal is a meaningful positive clue. However, the basicity profile is not especially favorable for a typical CYP2D6 substrate: the strongest basic pKa is 4.8584, which is relatively low for a readily protonated cationic center at physiological pH, and the neutral fraction is 0.9971, indicating the molecule is overwhelmingly neutral rather than cationic. That is less aligned with the common CYP2D6 preference for a protonatable basic nitrogen. Polarity is also somewhat high, with topological polar surface area at 73.44, which is above the lower-PSA range often associated with substrate-like compounds. The maximum partial charge of 0.3571 and minimum absolute partial charge of 0.3571 do not suggest a strongly emphasized cationic center, and the carboxylic ester present can further contribute to a more polar, less classically substrate-like profile. Although the strongest acidic pKa is 13.6253, which is consistent with the absence of a strongly acidic group at physiological pH, that does not overcome the weak basicity and high neutrality. Overall, the aromatic heterocycle signal is outweighed by the weakly basic, highly neutral, and relatively polar character, so the molecule is more consistent with being not a CYP2D6 substrate.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but overall weakly unfavorable analogue for substrate status. The query has 6-azaindole once while the neighbor has none, and that difference is associated with a strong negative effect (delta +1, pointing away from substrate behavior). The query also has 1H-indole once while the neighbor has none, which goes the other way and supports substrate-like chemistry. However, the neighbor contains carbazole once while the query does not, and that difference again favors the non-substrate class. The aromatic ring count is unchanged at 4 versus 4, so there is no helpful separation there. The query’s minimum absolute partial charge is higher, 0.3571 versus 0.1607, but that feature also moves in the non-substrate direction here. Although the query has fewer alkyl aryl ether copies than the neighbor, 1 versus 3, that is the one feature in this comparison that leans toward substrate behavior. Taken together, Neighbor 1 does not strongly support a substrate label overall.
+
+Neighbor 2 is similar in spirit and also leans slightly against substrate assignment despite one favorable feature. As with Neighbor 1, the query has 6-azaindole once and the neighbor has none, which is unfavorable, while the query also has 1H-indole once and the neighbor has none, which is favorable. The neighbor carries benzimidazole and sulfanylidene, both absent in the query, and both differences point toward the non-substrate side. The neutral fraction is also higher in the query, 0.9971 versus 0.7985, with a +0.1986 delta; in the supplied comparison this higher neutral fraction still aligns with the non-substrate direction. Only the alkyl aryl ether count is more favorable for the query, with 1 copy versus 2 in the neighbor. Even so, the balance remains slightly against a substrate call.
+
+Neighbor 3 is the closest of the three positive neighbors to a substrate-like pattern, but it is still not enough to overturn the overall direction. Again, the query has 6-azaindole once while the neighbor has none, which is unfavorable, and the query has 1H-indole once while the neighbor has none, which is favorable. The query’s maximum partial charge is higher, 0.3571 versus 0.119, and in this comparison that higher value supports substrate behavior. At the same time, the query’s minimum absolute partial charge is also higher, 0.3571 versus 0.119, but here that shift favors the non-substrate side. The strongest basic pKa is much lower in the query, 4.8584 versus 9.012, with a delta of -4.1536, and that lower basicity is unfavorable for a typical CYP2D6 substrate-like basic center. The fraction of sp3 carbons is also lower in the query, 0.25 versus 0.6667, and that change again points away from substrate status in this comparison. So Neighbor 3 contains one clear substrate-like charge feature, but the basicity and sp3-related differences still leave it overall unfavorable.
+
+Neighbor 4 is a stronger negative analogue and clearly supports the non-substrate label. The query has 6-azaindole once while the neighbor has none, which is unfavorable, but the query also has 1H-indole once while the neighbor has none, which is favorable. The neighbor contains imidazole and the query does not, and that difference favors the non-substrate side. More importantly, the query has much higher topological polar surface area, 73.44 versus 44.12, a +29.32 change, and that higher polarity is unfavorable because CYP2D6 substrate-like chemistry is generally more consistent with lower PSA and more lipophilic, basic scaffolds. The query also has slightly higher minimum absolute partial charge, 0.3571 versus 0.3561, and slightly higher maximum partial charge, 0.3571 versus 0.3561; both of those tiny shifts are still treated here as non-substrate leaning. Overall, Neighbor 4 is a strong argument for option (A).
+
+Neighbor 5 is also negative overall, even though it includes two features that look substrate-like. As in the other neighbors, the query has 6-azaindole once while the neighbor has none, which is unfavorable, and the query has 1H-indole once while the neighbor has none, which is favorable. The query has much lower topological polar surface area, 73.44 versus 117, a -43.56 delta, and that lower PSA supports substrate behavior by bringing the molecule into a more lipophilic, substrate-like region. The query and neighbor both have dialkyl ether, so there is no difference there. However, the query’s minimum absolute partial charge is slightly higher, 0.3571 versus 0.3365, which is unfavorable in this comparison, and the query’s QED drug-likeness is higher, 0.4386 versus 0.2963, which favors substrate behavior. Even with those favorable polarity and drug-likeness shifts, the comparison still ends up overall on the non-substrate side, so Neighbor 5 remains a net negative analogue.
+
+Neighbor 6 is the most clearly negative of the negative neighbors and strongly reinforces option (A). The query again has 6-azaindole once while the neighbor has none, which is unfavorable, and 1H-indole once while the neighbor has none, which is favorable. The query’s minimum absolute partial charge is lower, 0.3571 versus 0.4132, and that lower value is unfavorable here. The query also has a stronger acidic pKa, 13.6253 versus 9.2909, a +4.3344 shift, which still lands in the non-substrate direction for this comparison. In addition, the query’s estimated logD is higher, 5.0055 versus 2.9656, a +2.0399 difference, and this higher logD also behaves unfavorably in this particular neighbor comparison. The maximum absolute partial charge is slightly higher in the query, 0.4889 versus 0.4526, but that does not outweigh the other negative shifts. Among the negative neighbors, this one most consistently favors the non-substrate class.
+
+Putting the six comparisons together, the same pair of substructure signals appears throughout, but the decisive evidence comes from the polarity, charge, basicity, and lipophilicity contrasts in the negative neighbors. Neighbor 4 and Neighbor 6 are especially supportive of the non-substrate label, while Neighbor 5 is also net negative despite some substrate-like polarity and QED effects. Among the positive neighbors, Neighbor 1 and Neighbor 2 are only weakly informative, and Neighbor 3 still carries several unfavorable basicity and sp3 changes. Overall, the balance of neighbor evidence is more consistent with option (A): is not a substrate to the enzyme CYP2D6.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP2D6
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are more consistent with limited bacterial exposure than with strong intrinsic mutagenicity. Its carboxylic ester count is 2, which by itself does not indicate a mutagenic toxicophore and is compatible with a more drug-like, less aggressively reactive structure. The QED drug-likeness value is 0.6931, which is fairly favorable and does not suggest an especially alert-rich or highly problematic scaffold. The Labute surface area of 132.5747 is moderate rather than extreme, and the estimated logP of 2.7895 is also in a middle range that should not strongly favor poor handling from extreme lipophilicity. However, there are also features that increase concern. The heteroatom count is 6, indicating a fairly heteroatom-rich molecule, and the topological polar surface area of 81.7 is not low enough to eliminate polarity-related effects on uptake. The presence of 1 basic site can help bacterial accumulation in some contexts, and the fraction of sp3 carbons is only 0.1176, meaning the structure is relatively flat and aromatic-rich, which can sometimes align with mutagenic chemotypes. The strongest acidic pKa is 13.7978, suggesting the acidic functionality is weakly acidic and unlikely to be strongly ionized under typical assay conditions, while the secondary amide is present as 1, which adds polarity but is not itself a classic mutagenic alert. Overall, the strongest signal comes from the combination of moderate polarity, moderate lipophilicity, and the favorable QED and ester content, which together outweigh the more modest concerns from heteroatom richness, one basic site, and the low sp3 fraction. Taken together, the molecule is more likely to be not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor, but several of its key differences actually make the query look less mutagenic in this local comparison. The query has 2 carboxylic esters versus 0 in the neighbor, and that ester-rich shift is associated here with a negative effect on the mutagenicity call. The query is also lower in QED drug-likeness (0.6931 vs 0.8718, delta -0.1787), which in this setting again aligns with the non-mutagenic side. It additionally lacks the diaryl ether present in the neighbor, and the query is heavier and more heteroatom-rich overall: heteroatom count rises from 3 to 6 (delta +3) and heavy-atom count from 17 to 23 (delta +6). The maximum partial charge also increases from 0.2207 to 0.3468 (delta +0.1261), which here works in the non-mutagenic direction. Taken together, Neighbor 1 still favors option (A).
+
+Neighbor 2 is also a positive neighbor and gives a mixed picture, but the balance still leans toward option (A). The query again has 2 carboxylic esters while the neighbor has none, which is unfavorable for mutagenicity in this comparison. The query is more heteroatom-rich than the neighbor (6 vs 2, delta +4), and that is the main feature pointing toward option (B), but it is offset by lower minimum partial charge (-0.4258 vs -0.3263, delta -0.0995) and lower QED drug-likeness (0.6931 vs 0.8078, delta -0.1147), both of which favor the non-mutagenic side here. The query also has a higher maximum partial charge (0.3468 vs 0.2207, delta +0.1261), which again is aligned with option (A) in this local context. The larger topological polar surface area, 81.7 versus 29.1 (delta +52.6), could increase exposure limitations or polarity-related effects, but in this neighbor the overall comparison still ends up closer to option (A).
+
+Neighbor 3 is another positive neighbor, and again the strongest signals are on the non-mutagenic side overall. The query has a lower QED drug-likeness than the neighbor (0.6931 vs 0.7362, delta -0.0431), carries 2 carboxylic esters while the neighbor has 0, and lacks the diaryl ether present in the neighbor; all three of those differences support option (A). There are some opposing features: the strongest acidic pKa is higher in the query (13.7978 vs 10.5544, delta +3.2434), the strongest basic pKa is lower (4.1808 vs 4.8806, delta -0.6998), and heteroatom count is slightly higher (6 vs 5, delta +1). Those latter changes are directionally compatible with mutagenicity in this comparison, but they are not enough to overturn the stronger non-mutagenic signals from QED, ester count, and the absence of the diaryl ether. So Neighbor 3 still supports option (A).
+
+Neighbor 4 is a negative neighbor, yet it also looks more like the query than like a mutagenic outlier in the features that matter most here. The query has 2 carboxylic esters versus 0, and it does not have the diaryl ether seen in the neighbor, both of which align with option (A). The topological polar surface area is higher in the query (81.7 vs 67.43, delta +14.27), which in this comparison points toward option (B), and the strongest acidic pKa is essentially unchanged but slightly lower in the query (13.7978 vs 13.8016, delta -0.0038), also favoring option (B) in this local setting. Heteroatom count is one unit higher in the query (6 vs 5, delta +1), which again leans toward option (B), but the maximum partial charge is also higher (0.3468 vs 0.2207, delta +0.1261), which pulls back toward option (A). Overall, the neighbor remains closer to the non-mutagenic side when these effects are combined.
+
+Neighbor 5 is another negative neighbor, and here the query shows a split pattern with both non-mutagenic and mutagenic-leaning features. The query has higher QED drug-likeness than the neighbor (0.6931 vs 0.5501, delta +0.143), and the maximum partial charge is only slightly higher (0.3468 vs 0.339, delta +0.0078), while the minimum absolute partial charge is also slightly higher (0.3468 vs 0.339, delta +0.0078); in this comparison those charge-related and QED differences support option (A). However, the query has a basic site present whereas the neighbor has none (delta +1), and heteroatom count increases from 4 to 6 (delta +2), both of which lean toward option (B) here. The query also has 2 carboxylic esters versus 1 in the neighbor, which again favors option (A). Even with the added basic site and higher heteroatom count, the overall balance of Neighbor 5 remains closer to the non-mutagenic label.
+
+Neighbor 6 is the final negative neighbor and is especially informative because it combines several non-mutagenic-leaning descriptors with some exposure-related changes. The query has 2 carboxylic esters while the neighbor has none, and its QED drug-likeness is higher (0.6931 vs 0.6228, delta +0.0703), both consistent with option (A) in this local comparison. The heavy-atom count is much larger in the query (23 vs 10, delta +13), and the heavy-atom molecular weight rises sharply from 126.094 to 298.189 (delta +172.095); those size increases can change exposure, but here they still sit within the overall non-mutagenic-leaning pattern of the neighbor set. Against that, the query has a much larger topological polar surface area (81.7 vs 29.1, delta +52.6), which points toward option (B), and the strongest acidic pKa is slightly higher in the query (13.7978 vs 13.639, delta +0.1588), which in this comparison also leans toward option (A) only weakly or is near-neutral. On balance, Neighbor 6 still aligns more with option (A).
+
+Across all six neighbors, the most consistent recurring theme is that the query repeatedly differs from the neighbors by having more carboxylic ester content, lower QED in the positive-neighbor set, and several size/polarity features that are not strong enough to overcome the non-mutagenic leaning of the local analogs. Some descriptors such as heteroatom count and topological polar surface area do point toward option (B) in individual comparisons, but they are not dominant across the full set. Since the positive neighbors and negative neighbors both end up with an overall local balance closer to the non-mutagenic side, the combined evidence supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

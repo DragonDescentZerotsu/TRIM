@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has several features that are generally compatible with BBB penetration. It contains tetrahydroquinoline (1), which adds a lipophilic, rigid ring system, and morpholine (1), which can be tolerated in BBB-active scaffolds when overall polarity remains controlled. Its QED drug-likeness is high at 0.8934, which is consistent with a well-balanced medicinal chemistry profile. The exact molecular weight is 262.1681, comfortably below common BBB size limits, so size is not a barrier here. The molecule also has no acidic site, so there is no strongly ionized acidic functionality that would obviously hinder brain entry. On the other hand, estimated logP is 1.4362 and estimated logD is 0.6443, both on the low-to-moderate side; this can be somewhat favorable for avoiding excessive nonspecific binding, but it also means the compound is not especially lipophilic, which slightly weakens passive BBB permeability. The maximum absolute partial charge is 0.4886 and the minimum partial charge is -0.4886, indicating a noticeable but not extreme polar charge distribution, and the second reported maximum partial charge of 0.1425 is comparatively modest. Overall, the favorable size, high drug-likeness, absence of acidic functionality, and presence of BBB-compatible ring features outweigh the modestly lower lipophilicity and charge-related polarity, so the molecule is predicted to cross the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a strong BBB-crossing analog overall. It shares morpholine with the query, and the query also keeps the more favorable TPSA region in a low range, though it is slightly higher than the neighbor at 33.73 versus 30.49 Å² with delta +3.24. The query also has tetrahydroquinoline once while the neighbor lacks it, and the neighbor has indene while the query does not; both of those scaffold differences favor the BBB+ side in this comparison. The query’s QED is also a bit higher, 0.8934 versus 0.8572 with delta +0.0362. The only clear counterpoint is maximum partial charge, which is higher in the query at 0.1425 versus 0.123, delta +0.0195, and that change works against BBB crossing. Even with that penalty, the low-polarity, scaffold, and drug-likeness features make Neighbor 1 supportive of option (B).
+
+Neighbor 2 is similarly supportive of BBB crossing, although with one more lipophilicity-related caveat. Compared with this neighbor, the query has higher QED, 0.8934 versus 0.9178 giving delta -0.0244, and it again carries tetrahydroquinoline once while the neighbor lacks it, while both molecules contain morpholine. The query’s TPSA is 33.73 versus 30.49 Å², delta +3.24, which is still in the low CNS-favorable region even though it is slightly increased relative to the neighbor. The query also has higher maximum partial charge, 0.1425 versus 0.1225, delta +0.02, which is a negative sign. In addition, the neighbor has higher estimated logD at 1.8469 versus the query’s 0.6443, delta -1.2026, and that lower logD in the query is less ideal than the neighbor for passive BBB permeability. Even so, the combination of tetrahydroquinoline, morpholine, low TPSA, and overall drug-likeness still leaves Neighbor 2 on the BBB+ side.
+
+Neighbor 3 also aligns with BBB crossing. The query has tetrahydroquinoline once while the neighbor lacks it, and the query has morpholine while the neighbor does not. The query’s QED is higher, 0.8934 versus 0.8324, delta +0.0611, and the query has fewer alkyl aryl ether groups, 1 versus 2 with delta -1, which is another favorable structural shift here. The two features that cut the other way are estimated logP and neutral fraction: the query’s logP is 1.4362 versus 1.1824, delta +0.2538, and that increase is unfavorable in this pair, while the query’s neutral fraction is 0.1615 compared with the neighbor’s present neutral fraction of 1, delta -0.8385, which also works against BBB entry. Still, the tetrahydroquinoline and morpholine changes, together with the better QED and reduced ether burden, keep Neighbor 3 supportive of option (B).
+
+Neighbor 4 is a negative-class neighbor overall, but the comparison is mixed because several query features are still more BBB-friendly than the neighbor’s. The query has tetrahydroquinoline once while the neighbor lacks it, and the query also has morpholine while the neighbor does not. The query’s QED is much higher, 0.8934 versus 0.6057, delta +0.2878, and the query has no piperidine while the neighbor does, delta -1, which is another favorable simplification for the query. The query’s TPSA is also lower than the neighbor’s, 33.73 versus 52.19 Å², delta -18.46, and 52.19 Å² is still notably farther from the usual low-PSA CNS window than the query’s value. The only explicitly stated neutral site feature here is that neither molecule has an acidic site, so the delta is not defined; that means acidity does not separate them in this pair. Despite the neighbor being labeled non-BBB, the query comparison itself looks more BBB-compatible on these features, so Neighbor 4 still contributes to the overall BBB+ pattern.
+
+Neighbor 5 is another non-BBB neighbor that the query compares against favorably. As with Neighbor 4, the query has tetrahydroquinoline once while the neighbor lacks it, and the query has morpholine while the neighbor does not. The query’s QED is again much higher, 0.8934 versus 0.5363, delta +0.3571, and the query has piperidine absent while the neighbor has piperidine present, delta -1. The neighbor also lacks an acidic site, and so does the query, leaving that feature unchanged and not informative here. In addition, the query has aliphatic heterocycle count 2 versus the neighbor’s 1, delta +1. Because aliphatic heterocycle count is context dependent and can affect polarity and ionization in different ways, that increase is not by itself a simple BBB-positive sign; nevertheless, in this pair the stronger structural and QED differences still point to the query as the more BBB-like molecule.
+
+Neighbor 6 is the clearest negative-class comparator, yet even here the query retains several BBB-favoring features. The query has tetrahydroquinoline once while the neighbor lacks it, QED is substantially higher at 0.8934 versus 0.4865 with delta +0.4069, and TPSA is much lower at 33.73 versus 58.56 Å², delta -24.83, which places the query much closer to the commonly favored low-PSA CNS region. The query also has more aliphatic ring content, 2 versus 0 with delta +2, and more aliphatic heterocycles, 2 versus 0 with delta +2; those changes can matter mainly as shape/rigidity and heterocycle-burden descriptors, and here they accompany the more BBB-like query scaffold. The main adverse change in this comparison is strongest basic pKa: the neighbor is 9.0795 while the query is 8.1154, delta -0.9641, so the query is slightly less basic, which is favorable for BBB entry. Taken together, Neighbor 6 still leaves the query more compatible with BBB crossing than the non-BBB neighbor.
+
+Across all six neighbors, the same pattern repeats: the query consistently carries tetrahydroquinoline, usually retains morpholine, and shows low TPSA around 33.73 Å², all of which are compatible with the BBB+ side, while several countervailing features such as higher maximum partial charge, slightly lower logD in one comparison, or slightly higher logP/neutral-fraction shifts in another create only limited pushback. The three BBB-crossing neighbors are directly supportive, and even the three non-crossing neighbors resemble the query less favorably because they have higher TPSA, weaker QED, missing tetrahydroquinoline, missing morpholine, piperidine presence, or less favorable basicity. Overall, the balance of these analog comparisons supports option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

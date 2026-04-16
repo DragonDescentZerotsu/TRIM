@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a nitro group, which is a well-recognized mutagenicity toxicophore and strongly raises concern for an Ames-positive outcome. It also has benzene count 4, aromatic ring count 4, and aromatic carbocycle count 4, giving a fairly polyaromatic, planar scaffold; that kind of aromaticity can be associated with mutagenic behavior, especially when paired with a reactive alert. The total ring count is 4, which reinforces a compact ring-rich structure rather than a simple flexible scaffold. The fraction of sp3 carbons is very low at 0.0526, so the molecule is predominantly flat and unsaturated, a shape pattern that often accompanies aromatic toxicophores. Estimated logD is 5.3628, indicating substantial lipophilicity; while that can sometimes limit exposure by solubility, here the structure still presents a clear mutagenic alert. QED drug-likeness is low at 0.2684, which is consistent with a less favorable overall profile and can co-occur with problematic substructures. There are some features that lean the other way: heteroatom count is 3, which by itself suggests only modest polarity, and Labute surface area is 126.4943, a moderate size/shape measure that could affect exposure but is not decisive on its own. Even so, the nitro alert together with the aromatic ring-rich, low-sp3 scaffold makes the overall picture more consistent with mutagenicity. Final conclusion: option (B), is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly close mutagenic analogue, and several of its features line up with an Ames-positive pattern. The query has slightly higher QED drug-likeness than the neighbor (0.2684 vs 0.1737, delta +0.0948), which in this local comparison is associated with the mutagenic side of the neighborhood. The query is also a bit less lipophilic in estimated logD (5.3628 vs 5.6454, delta -0.2826), still within a very hydrophobic regime where exposure and solubility can matter, and that shift remains consistent with the mutagenic neighbors here. The query has one fewer aromatic ring and one fewer total ring than the neighbor (aromatic ring count 4 vs 5, delta -1; ring count 4 vs 5, delta -1), yet it still sits in a multi-ring aromatic space that is typical of the mutagenic side of the neighborhood. The query also has slightly higher fraction of sp3 carbons (0.0526 vs 0, delta +0.0526), but the overall comparison is dominated by the aromatic framework. The only opposing feature is Labute surface area, which is a bit lower in the query (126.4943 vs 130.7901, delta -4.2957), but that does not outweigh the other mutagenic similarities.
+
+Neighbor 2 also supports the mutagenic label. The query has slightly lower Labute surface area than this neighbor (126.4943 vs 131.8534, delta -5.3591), which by itself would lean away from stronger exposure-limited behavior, but the rest of the comparison stays aligned with the mutagenic set. QED is essentially similar but marginally lower in the query (0.2684 vs 0.2769, delta -0.0084), and the neighborhood still treats this region as mutagenic. Both molecules have the same number of benzene copies, 4 versus 4, so the aromatic core is retained. The query has slightly lower fraction of sp3 carbons (0.0526 vs 0.1, delta -0.0474), keeping it relatively flat, and it also has one fewer ring (4 vs 5, delta -1). Importantly, both molecules have nitro, so the query preserves a well-recognized mutagenic toxicophore. Taken together, this neighbor remains strongly on the mutagenic side despite the somewhat lower surface area.
+
+Neighbor 3 again points toward mutagenicity. The query has higher QED drug-likeness than the neighbor (0.2684 vs 0.182, delta +0.0865), and the comparison still lands on the mutagenic side of the local space. The query has one fewer aromatic ring (4 vs 5, delta -1), and one fewer total ring (4 vs 5, delta -1), but it remains in a compact aromatic scaffold. The query also has fewer heavy atoms than the neighbor (22 vs 26, delta -4), which would not by itself exclude mutagenicity, especially when the core chemistry is preserved. Its fraction of sp3 carbons is slightly higher (0.0526 vs 0, delta +0.0526), but that small increase does not remove the overall aromatic character. The neighbor has more heteroatoms than the query (6 vs 3, delta -3 from the query side), which is one of the few features here that tilts away from the mutagenic neighbor, yet the combined profile still favors the mutagenic class because the query remains within the same aromatic, ring-rich region.
+
+Neighbor 4 is a negative-labeled neighbor, but its feature pattern still looks strongly mutagenic overall and therefore helps the final decision. The query has higher QED drug-likeness than the neighbor (0.2684 vs 0.2105, delta +0.0579), and both compounds have 4 copies of benzene. Both also contain nitro, which preserves the mutagenic toxicophore. Ring count is the same at 4 versus 4. The main differences are in hydrophobicity: estimated logD is higher for the query (5.3628 vs 5.0544, delta +0.3084), and estimated logP is also higher (5.3628 vs 5.0544, delta +0.3084). Since Ames readouts can be affected by solubility and exposure, this higher lipophilicity can be an operational difference, but in this local context the shared nitro and aromatic features dominate, and the neighbor itself is negative despite looking structurally close to the mutagenic set.
+
+Neighbor 5 is especially informative because the query adds mutagenicity-linked functionality relative to this negative neighbor. The neighbor lacks nitro, while the query has nitro once, which is a major toxicophore difference favoring mutagenicity. The query also has one more benzene copy than the neighbor (4 vs 3, delta +1) and one more aromatic carbocycle (4 vs 3, delta +1), both of which increase aromaticity and align the query with the mutagenic side. The query’s QED is lower than the neighbor’s (0.2684 vs 0.4711, delta -0.2026), but lower drug-likeness here does not offset the structural alert added by nitro and the higher aromatic ring burden. The query also has a lower fraction of sp3 carbons (0.0526 vs 0.125, delta -0.0724), meaning it is flatter and more aromatic, and although the query has one more ring overall (4 vs 3, delta +1), that additional ring fits the same mutagenic aromatic pattern. Overall, this is a clear structural upgrade toward mutagenicity relative to a non-mutagenic neighbor.
+
+Neighbor 6 again supports the mutagenic label even though it is marked non-mutagenic. The query has much higher estimated logP than the neighbor (5.3628 vs 2.2116, delta +3.1512), which places it in a far more hydrophobic region and can affect exposure and assay behavior. At the same time, the query has far more ring content: ring count rises from 1 to 4 (delta +3), and benzene copies rise from 1 to 4 (delta +3). The query also has a lower fraction of sp3 carbons (0.0526 vs 0.25, delta -0.1974), making it much flatter and more aromatic, and both molecules contain nitro, preserving the mutagenic alert. The only opposing feature is the lower logP in the neighbor, which can be less exposure-limiting, but the query’s much richer aromatic and nitro-containing scaffold is more consistent with the mutagenic class.
+
+Putting all six comparisons together, the query repeatedly matches the mutagenic neighborhood: it retains nitro where relevant, sits in a multi-ring aromatic and benzene-rich scaffold, and shows the low-sp3, high-aromatic character seen in the positive neighbors. The negative neighbors do not overturn that pattern; instead, they either lack the nitro group or have less aromatic structure than the query. Despite some shifts in QED, surface area, and lipophilicity, the overall local analog evidence is more consistent with option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

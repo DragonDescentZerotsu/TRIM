@@ -1,0 +1,62 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has several features that make passive oral exposure less favorable. It contains 1,3-dioxolane, and it also has multiple saturated and aliphatic ring elements, with aliphatic ring count value 5 and saturated ring count value 4, which together suggest a fairly bulky, conformationally complex scaffold. The presence of a secondary hydroxyl and a primary hydroxyl adds hydrogen-bonding capacity and polarity, and the neutral fraction being present at 1 does not fully offset that polarity burden. The Labute surface area is value 183.2281, which is consistent with a relatively large surface that can make absorption more difficult. These features point toward reduced permeability, even though the topological polar surface area is value 93.06, which is still within a range that can be compatible with oral absorption, so this is not an extreme polarity case.
+
+There are also some mitigating properties. QED drug-likeness is value 0.7125, which is fairly strong and suggests the scaffold is not grossly non-drug-like. The ketone count is 2, which can be acceptable from an oral-property perspective. However, the overall balance still looks tilted toward lower bioavailability because the scaffold combines multiple rings with several hydroxyl groups and a sizable surface area, all of which tend to work against efficient oral absorption. Taken together, the more restrictive structural and polarity features outweigh the more favorable QED and TPSA signals, so the molecule is more likely to have oral bioavailability < 20%.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed comparison, but the unfavorable signals are a bit more important than the favorable ones. The query has one more aliphatic ring than the neighbor, with aliphatic ring count 5 versus 4 and delta +1, and that higher ring burden is associated here with a move toward lower oral bioavailability. The query also carries one secondary hydroxyl and one primary hydroxyl where the neighbor has none of each, and both of those additions are unfavorable in this comparison. Those effects are only partly offset by the query’s higher QED drug-likeness, 0.7125 versus 0.6761, and by the higher topological polar surface area, 93.06 versus 34.14; both of those changes lean in the favorable direction. The maximum absolute partial charge is also higher in the query, 0.3928 versus 0.2991, and that shift is unfavorable here. Overall, despite the better QED and PSA, the extra ring and added hydroxyl-related features make Neighbor 1 support the lower-bioavailability label.
+
+Neighbor 2 is even more clearly aligned with the lower-bioavailability side. The query’s QED is higher than the neighbor’s, 0.7125 versus 0.5718, which would ordinarily be favorable, but several other changes dominate. The query has one secondary hydroxyl and one primary hydroxyl where the neighbor has none of each, and both additions are unfavorable in this pair. The query also has a 1,3-dioxolane ring absent from the neighbor, which is another unfavorable change here. On top of that, the query’s estimated logP is lower, 2.7168 versus 4.8523, and in this local comparison that shift is associated with the lower-bioavailability side. Finally, the query has a strongest acidic pKa of 12.5732 while the neighbor has no acidic site; that asymmetry is also unfavorable in this comparison. Taken together, Neighbor 2 strongly supports the <20% class.
+
+Neighbor 3 also supports the lower-bioavailability label. The query has a lower fraction of sp3 carbons than the neighbor, 0.76 versus 0.9268, with delta -0.1668, and in this comparison that reduction is unfavorable. The query also has fewer aliphatic heterocycles, 1 versus 4, delta -3, and fewer acetal groups, 0 versus 3, both of which are unfavorable changes here. The query does look better on hydrogen-bond donor count, with 2 versus 5 and delta -3, and that is the one feature in this neighbor that favors higher oral bioavailability. However, the query’s QED is much higher than the neighbor’s, 0.7125 versus 0.1885, yet that still does not outweigh the other structural liabilities in this local match. The presence of tertiary hydroxyl in the neighbor, absent from the query, is also unfavorable in this comparison. Overall, Neighbor 3 remains on the low-bioavailability side despite the donor-count improvement.
+
+Neighbor 4, from the lower-bioavailability set, provides a clear structural contrast that still ends up favoring the <20% class. The query again has a higher QED, 0.7125 versus 0.4391, which is favorable. But the neighbor has a lactone while the query does not, and that difference is unfavorable for the query here. The query also adds one secondary hydroxyl relative to the neighbor, which is unfavorable, and it has one primary hydroxyl where the neighbor has none, another unfavorable change. The fraction of sp3 carbons is essentially similar, 0.76 versus 0.7667, but even that tiny decrease is treated unfavorably in this local comparison. The neighbor’s tertiary hydroxyl is absent from the query, which is again unfavorable. Altogether, the accumulation of hydroxyl-related and scaffold differences makes Neighbor 4 support the lower-bioavailability class even though QED is improved.
+
+Neighbor 5 reinforces the same conclusion. The query has more aliphatic rings, 5 versus 3, delta +2, and that increased ring count is unfavorable here. The neighbor contains a lactone that the query lacks, another unfavorable difference for the query. The query also has more aliphatic carbocycles, 4 versus 2, delta +2, and in this comparison that shift is favorable, but it is not enough to offset the other liabilities. The query has more saturated rings as well, 4 versus 1, delta +3, and that increase is unfavorable. Its QED is modestly higher, 0.7125 versus 0.6391, which is favorable, and both molecules have secondary hydroxyl groups so there is no difference there. Even with the improved QED and the extra carbocycles, the heavier ring burden and the missing lactone keep Neighbor 5 aligned with the lower-bioavailability label.
+
+Neighbor 6 is very similar to Neighbor 5 and shows the same overall pattern. The query again has more aliphatic rings, 5 versus 3, delta +2, which is unfavorable. It lacks the lactone present in the neighbor, another unfavorable change. The query has more aliphatic carbocycles, 4 versus 2, delta +2, which is favorable in this pair, but the query also has more saturated rings, 4 versus 1, delta +3, which is unfavorable. Secondary hydroxyl is present in both molecules, so that feature is neutral here. The query’s fraction of sp3 carbons is only slightly higher, 0.76 versus 0.75, delta +0.01, yet that small increase is still treated unfavorably in this local comparison. Taken together, Neighbor 6 remains on the side of lower oral bioavailability.
+
+Across all six neighbors, the same pattern repeats: although the query sometimes shows favorable signs such as higher QED, lower hydrogen-bond donor burden in one case, or better polar-surface-area balance, the comparisons repeatedly penalize its added hydroxyl functionality, ring burden, lactone differences, and related scaffold features. The negative-neighbor examples are particularly consistent in treating the query as less favorable for oral exposure, and even the positive-neighbor examples still end up with an overall lean toward the lower-bioavailability class. Putting the six analogies together, the strongest combined conclusion is option (A): has oral bioavailability < 20%.
+
+Input 3. Target final label semantics
+option (A): has oral bioavailability < 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

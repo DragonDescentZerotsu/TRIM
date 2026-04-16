@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several properties that are unfavorable for BBB penetration. Its topological polar surface area is 104.7 Å², which is above the commonly favored CNS range and sits in a polarity regime that generally makes passive BBB crossing difficult. The heteroatom burden is also high at 14, which is consistent with substantial hydrogen-bonding and polarity. In the same direction, the saturated heterocycle count of 2 suggests added heteroatom-rich ring content, and the maximum absolute partial charge of 0.4908 indicates a noticeably polar electronic profile. The aromatic ring count is 5, and the benzene count is 3; while aromaticity can sometimes help lipophilicity, this level of aromatic ring content can also contribute to a bulky, highly substituted scaffold rather than a clearly CNS-optimized one. The aromatic carbocycle count of 3 further reinforces that the scaffold is heavily aromatic. The urea group present (1) is a notable mixed signal because it can be seen in some BBB-relevant chemotypes, but ureas also typically add strong hydrogen-bonding character, so by itself it does not overcome the overall polarity burden. The 1,3-dioxolane present (1) may add some structural compactness and can be compatible with permeability, but again it does not offset the elevated TPSA and heteroatom count. Finally, the QED drug-likeness value of 0.1744 is quite low, which is consistent with a less favorable overall developability profile. Taken together, the high polarity, substantial heteroatom content, multiple aromatic rings, and low drug-likeness make the molecule more consistent with option (A): does not cross the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a useful positive neighbor only in the sense that it is the closer analog that still ends up arguing against BBB penetration when compared with the query. The query is substantially more polar and more bulky on several axes: aromatic ring count rises from 3 to 5, estimated logP rises from 3.5519 to 5.5773 (delta +2.0254), minimum absolute partial charge increases slightly from 0.3455 to 0.3501 (delta +0.0046), the count of 4H-1,2,4-triazole units increases from 1 to 2, heteroatom count rises from 8 to 14 (delta +6), and topological polar surface area jumps from 55.53 to 104.7 Å² (delta +49.17). That TPSA value is well beyond the usual BBB-favorable region of roughly below 90 Å², and the much higher heteroatom burden and extra aromatic/heteroaromatic content are also consistent with poorer passive brain penetration. Even though this neighbor is labeled as crossing the BBB, the comparison to the query mostly shows the query becoming less BBB-compatible.
+
+Neighbor 2 shows the same pattern more clearly. The query adds one urea group relative to the neighbor, which by itself can support brain entry in this local comparison, and the neighbor also has a secondary aliphatic amine that the query lacks, which is another feature that here favors BBB crossing. However, those positives are outweighed by several large shifts in the unfavorable direction: estimated logP increases from 3.4636 to 5.5773 (delta +2.1137), heavy-atom count increases from 24 to 49 (delta +25), QED drops sharply from 0.8699 to 0.1744 (delta -0.6955), and TPSA rises from 50.8 to 104.7 Å² (delta +53.9). A TPSA above 100 Å² is generally far outside the preferred CNS window, and the much larger size and worse drug-likeness reinforce that this query should be less BBB-permeable than this positive neighbor.
+
+Neighbor 3 is also a positive neighbor, but again the query looks substantially less BBB-friendly on the dominant descriptors. The query has a slightly higher minimum absolute partial charge, 0.3501 versus 0.3454, but the main changes are more important: TPSA increases from 46.3 to 104.7 Å² (delta +58.4), the query gains another 4H-1,2,4-triazole unit going from 1 to 2, QED falls from 0.7433 to 0.1744 (delta -0.5689), and heavy-atom count rises from 26 to 49 (delta +23). The one favorable-looking feature in this neighbor is neutral fraction, which goes from 0.4724 in the neighbor to 0.9379 in the query (delta +0.4655), and a higher neutral fraction can help passive BBB passage. But in this comparison the much larger increase in surface polarity and molecular size, along with the added triazole and much lower QED, still makes the query look less compatible with BBB crossing overall.
+
+Neighbor 4 is one of the negative neighbors and aligns closely with the final non-BBB label. Here the query has higher estimated logD, from 4.1407 to 5.5495 (delta +1.4088), and higher estimated logP, from 4.2058 to 5.5773 (delta +1.3715). Those lipophilicity increases can sometimes help permeability, but in this case they do not offset the other changes: both molecules contain 1,3-dioxolane, the query adds one urea group where the neighbor has none, QED drops from 0.4554 to 0.1744, and aromatic heterocycle count increases from 1 to 2. The combination of higher ionization-related polar burden from urea and greater aromatic heterocycle content is not enough to rescue BBB behavior here, especially given the very poor QED and the already high logD/logP context.
+
+Neighbor 5 is even more strongly in line with the final answer. The query has a much larger hydrogen-bond acceptor burden, rising from 3 to 12 (delta +9), which is well above the commonly used BBB-favorable acceptor range. It also adds one urea group, increases estimated logP from 3.0605 to 5.5773 (delta +2.5168), increases aromatic ring count from 1 to 5 (delta +4), and lowers QED from 0.7616 to 0.1744 (delta -0.5872). The query’s TPSA is also far higher, 104.7 versus 35.53 Å² (delta +69.17), and that alone places it in a clearly unfavorable polarity regime for passive BBB penetration. Even though urea is present in the query, the overall shift in acceptor count, aromatic ring burden, and TPSA strongly supports non-crossing behavior.
+
+Neighbor 6 provides the last negative analog and reinforces the same conclusion. The query again adds one urea group, which by itself can be seen as a BBB-favorable local motif in these comparisons, and it also has a higher neutral fraction, 0.9379 versus 0 in the neighbor (delta +0.9379), which would ordinarily favor passive entry. But those points are overwhelmed by the rest of the profile: estimated logP rises from 2.9866 to 5.5773 (delta +2.5907), aromatic ring count increases from 2 to 5 (delta +3), QED drops from 0.4354 to 0.1744, and minimum absolute partial charge rises from 0.3274 to 0.3501 (delta +0.0227). In a BBB context, the combination of high aromaticity burden, very high lipophilicity, and poor drug-likeness is more consistent with the query staying outside the BBB than crossing it.
+
+Taken together, the six neighbors point in the same direction despite a few isolated favorable local motifs such as urea or higher neutral fraction. The dominant shared pattern is that the query is much larger, more aromatic, and much more polar on the key CNS descriptors, especially TPSA at 104.7 Å², with very high HBA count in one neighbor comparison, more heteroatoms, and substantially worse QED. Those features outweigh the occasional favorable lipophilicity or neutral-fraction signal, so the overall comparison supports option (A): does not cross the BBB.
+
+Input 3. Target final label semantics
+option (A): does not cross the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains several features associated with Ames mutagenicity. It has a chloroalkene count of 2, which raises concern for potentially reactive halogenated unsaturation. An aromatic nitro group is present at nitro = 1, and that is a well-recognized mutagenic toxicophore. The heteroatom count is 8, indicating a fairly heteroatom-rich structure that can support polarity and functional reactivity, and the fraction of sp3 carbons is 0, so the molecule is completely unsaturated and highly flat/aromatic in character, a pattern that can align with mutagenic scaffolds. The ring count is 1, which by itself is not especially alarming and slightly tempers the concern because it does not suggest a highly fused polycyclic aromatic system. Estimated logP = 4.9088 is relatively high and could reduce effective exposure somewhat through solubility or uptake limitations, but it is still within a range where the compound can remain fairly lipophilic. Labute surface area = 108.5429 is consistent with a moderately sized, substantial scaffold. The number of basic sites = 0 means there is no ionizable basic nitrogen that might improve bacterial accumulation, so that does not add an exposure boost. Even so, the heavy-atom molecular weight = 296.131 is not excessive and does not argue strongly against bacterial access, while neutral fraction = 1 indicates the molecule is fully neutral, which can favor passive membrane permeation and bacterial exposure. Overall, the presence of an aromatic nitro group, halogenated unsaturation, and a flat, heteroatom-containing scaffold outweigh the modest exposure-limiting features, so the molecule is more likely mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive analog for mutagenicity overall. The strongest signal is the increase in chloroalkene count: the query has 2 copies versus 0 in the neighbor (delta +2), and that feature is strongly associated here with a shift toward mutagenic behavior. The query also has a much lower aromatic ring count than the neighbor, 1 versus 3 (delta -2), which would ordinarily temper the comparison because fused aromaticity can relate to mutagenic aromatic systems. However, that reduction is outweighed by the very large chloroalkene difference, and the higher heteroatom count in the query, 8 versus 3 (delta +5), also aligns with the mutagenic side of the comparison. The query’s estimated logD is higher as well, 4.9088 versus 3.9012 (delta +1.0076), but in this specific neighbor it is associated with the nonmutagenic direction, and the small increase in maximum partial charge, 0.2832 versus 0.2767 (delta +0.0065), also leans nonmutagenic here. Even so, the overall comparison remains more consistent with option (B) because the chloroalkene and heteroatom differences dominate.
+
+Neighbor 2 is even more clearly aligned with the mutagenic label. Again, the query carries 2 chloroalkene groups versus 0 in the neighbor (delta +2), which is the most prominent favorable difference. The query also has a much higher estimated logD, 4.9088 versus 2.6912 (delta +2.2176), and in this case that change is associated with the mutagenic direction, suggesting the query is more similar to a higher-risk chemical space on that axis. Although the neighbor has the higher aromatic ring count, 3 versus 1 in the query (delta -2), which would point the other way because larger aromatic systems can be an important mutagenicity anchor, that signal is counterbalanced by the query’s higher heteroatom count, 8 versus 5 (delta +3), and the tiny shift in minimum partial charge, -0.2583 versus -0.2582 (delta about 0), which is also treated as mutagenicity-favoring in this comparison. The fraction of sp3 carbons is unchanged at 0 versus 0, and here that flat, fully unsaturated character again sits on the mutagenic side. Taken together, this neighbor remains a strong positive analog for option (B).
+
+Neighbor 3 also supports mutagenicity. The query again has 2 chloroalkene groups versus 0 in the neighbor (delta +2), which is the clearest high-weight difference. Its estimated logP is higher, 4.9088 versus 4.3036 (delta +0.6052), and that shift is associated with the mutagenic direction in this comparison, consistent with greater hydrophobic character. The neighbor has a much larger aromatic ring count, 3 versus 1 in the query (delta -2), which would normally lean away from mutagenicity because more fused aromatic character can be an important risk anchor. But the query also has a higher heteroatom count, 8 versus 6 (delta +2), and the unchanged fraction of sp3 carbons, 0 versus 0, again keeps the structure in a flat, highly unsaturated space. The second logD comparison in this same neighbor note points the other way, with the query’s higher logD relative to 4.3036 (delta +0.6052) being associated with the nonmutagenic direction there, so that feature is mixed. Even with that ambiguity, the large chloroalkene increase and the heteroatom shift leave Neighbor 3 on the mutagenic side overall.
+
+Neighbor 4 is a useful negative analog, but it still does not overturn the mutagenic leaning. The query has 2 chloroalkene groups versus 0 in the neighbor (delta +2), which again is a strong mutagenic marker in this comparison. The neighbor also contains nitro while the query does not differ on that feature at all, so nitro is shared rather than distinguishing them. The query has fewer rings overall, 1 versus 2 (delta -1), which would normally reduce concern because a lower ring count can move away from aromatic structural-alert space. Yet the query’s heteroatom count is higher, 8 versus 4 (delta +4), and that again tracks toward the mutagenic side in this neighbor. The maximum partial charge is slightly lower in the neighbor, 0.2922 versus 0.2832 (delta -0.0089), but the comparison still associates that shift with the mutagenic direction. Finally, the neighbor has a secondary aromatic amine while the query does not (delta -1), and that absence would usually reduce mutagenic concern because aromatic amines are a recognized mutagenic functional group. Even so, the chloroalkene difference and the overall heteroatom burden keep the comparison from favoring option (A).
+
+Neighbor 5 is very similar to Neighbor 4 and again remains mutagenicity-leaning overall. The query has 2 chloroalkene groups versus 0 (delta +2), and the neighbor again serves as a lower-risk reference on that feature. Nitro is present in both molecules, so there is no difference there. The query has fewer rings, 1 versus 2 (delta -1), which on its own would not support mutagenicity. But the query also has a higher heteroatom count, 8 versus 4 (delta +4), maintaining the same polarity/heteroatom enrichment seen in Neighbor 4. In this comparison the neighbor has an alkene while the query does not (delta -1), and that feature is associated with the mutagenic side here. The maximum partial charge is again slightly higher in the query, 0.2832 versus 0.2761 (delta +0.0072), and in this neighbor that shift points toward nonmutagenic behavior. Even with that counterweight, the repeated chloroalkene increase and the heteroatom/ring pattern leave the analogy closer to option (B).
+
+Neighbor 6 is the strongest negative analog for the current label, but it still ultimately supports mutagenicity. The query has phenazine absent from its structure while the neighbor contains phenazine (delta -1), and phenazine is a major mutagenicity-associated aromatic system, so its absence would normally favor option (A). The query also has 2 chloroalkene groups versus 0 (delta +2), which again is a strong mutagenic difference. Its estimated logD is much higher, 4.9088 versus 2.5994 (delta +2.3094), and here that higher hydrophobicity is associated with the mutagenic direction. The query has fewer rings, 1 versus 3 (delta -2), which works against mutagenicity because the neighbor’s higher ring burden includes a more complex aromatic framework. In addition, the neighbor has 2 nitro groups while the query has 1 (delta -1), and that reduction would normally weaken mutagenic concern. But the query’s topological polar surface area is far lower, 43.14 versus 112.06 (delta -68.92), which indicates substantially lower polarity and potentially very different exposure behavior; in this comparison that lower TPSA is still treated in the mutagenic direction. So although Neighbor 6 carries the most obvious structural-alert feature via phenazine, the query’s chloroalkene enrichment, higher hydrophobicity, and lower polar surface area keep the overall evidence on the mutagenic side.
+
+Across the full set, the six neighbors are split into three positive and three negative analogs, but most of them repeatedly highlight the same query features: 2 chloroalkene groups versus 0 in several neighbors, higher heteroatom count in the query, and a generally more hydrophobic profile by logD/logP. The main counter-signals are the query’s lower aromatic ring count relative to some neighbors, the absence of phenazine and secondary aromatic amine, and in one case lower ring count and nitro count. Even so, the recurring chloroalkene enrichment and supporting polarity/lipophilicity differences outweigh those mitigating features. The combined analog evidence therefore supports option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

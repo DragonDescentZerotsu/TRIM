@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has a moderate QED drug-likeness value of 0.6064, which by itself is not especially concerning and slightly favors a non-mutagenic interpretation. However, several structural and exposure-related features point in the opposite direction. The fraction of sp3 carbons is 0, indicating a fully flat, non-sp3-rich scaffold, and that kind of low three-dimensionality can align with aromatic, planarity-driven mutagenicity patterns. The neutral fraction is very high at 0.9778, so the molecule is mostly neutral at the configured pH and should be able to persist in a form that can passively reach bacterial cells. Its estimated logP is 1.0535, which is not extreme, but it still supports some membrane compatibility rather than strong exclusion by polarity. Most importantly, benzimidazole is present at 1, and this heteroaromatic motif adds a recognizable structural alert context that can be associated with mutagenic behavior depending on substitution and activation. The topological polar surface area is 83.8, which is not so high that uptake would be severely restricted, and the aromatic ring count is 2, confirming a clearly aromatic scaffold. Counterbalancing these mutagenicity-leaning signals, the minimum absolute partial charge is 0.3184 and the maximum partial charge is 0.3184, while the ring count is 2; these values together suggest the molecule is not especially electronically extreme and does not have a highly expanded ring system. Still, the overall balance of a planar aromatic heterocycle, high neutrality, and reasonable lipophilicity makes bacterial exposure plausible, and the structural context is more consistent with mutagenic potential than with a clearly innocuous profile. Overall, the evidence supports option (B): is mutagenic, with score 0.6671.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately mutagenicity-leaning analog. The query has a higher strongest basic pKa than the neighbor, 5.7419 versus 5.1076, with a delta of +0.6343, and that favors the mutagenic class here by suggesting a somewhat stronger ionizable basic center that can support exposure in bacterial systems. The query also has lower QED drug-likeness, 0.6064 versus 0.3906? Actually the comparison is query 0.6064 against neighbor 0.3906 with a +0.2158 delta, and the direction given for that feature is toward not mutagenic, so that property offsets the pro-mutagenic signal. The maximum partial charge is lower in the query, 0.3184 versus 0.4132, delta -0.0947, which again leans away from mutagenicity. However, the query has lower topological polar surface area, 83.8 versus 99.6, delta -15.8, and lower fraction of sp3 carbons, 0 versus 0.0625, delta -0.0625, both of which are treated here as favoring the mutagenic side. The structural difference that the neighbor contains oxime while the query does not, delta -1, also shifts away from the neighbor and supports the mutagenic read. Overall, despite some countervailing exposure and charge features, this comparison still lands on the mutagenic side.
+
+Neighbor 2 is more mixed and ends up closer to not mutagenic. The query and neighbor both have fraction of sp3 carbons at 0, with no difference, and that feature is not decisive by itself but sits in the same flat, low-sp3 regime. The query has lower QED drug-likeness than the neighbor, 0.6064 versus 0.6573, delta -0.0509, which supports the not-mutagenic side in this comparison. The query also has substantially higher topological polar surface area, 83.8 versus 41.57, delta +42.23, and a higher maximum partial charge, 0.3184 versus 0.1575, delta +0.1609; both of those changes are interpreted here as favoring the not-mutagenic side. The minimum absolute partial charge also increases, 0.3184 versus 0.1575, delta +0.1609, again aligned with not mutagenic in this neighbor. The only feature in the opposite direction is ring count, where the query has 2 rings versus the neighbor’s 3, delta -1, which leans toward mutagenicity. Even so, the stronger weight of the polarity/charge and QED differences makes this neighbor overall support not mutagenic more than mutagenic.
+
+Neighbor 3 is clearly one of the strongest mutagenic analogs. The query has a much higher QED drug-likeness than the neighbor, 0.6064 versus 0.2966, delta +0.3098, and that favors the not-mutagenic side. The query also has a slightly higher maximum partial charge, 0.3184 versus 0.2833, delta +0.0352, which is again unfavorable for mutagenicity in this comparison. But those effects are outweighed by several signals pointing the other way: fraction of sp3 carbons is 0 in both molecules, and that shared very low-sp3 state is treated here as mutagenicity-leaning; hydrogen-bond donor count drops from 4 in the neighbor to 3 in the query, delta -1, which also favors mutagenicity; neutral fraction rises slightly from 0.9665 to 0.9778, delta +0.0113, supporting the mutagenic side in this local comparison; and the strongest basic pKa decreases from 5.9399 to 5.7419, delta -0.198, which is also interpreted here as favoring mutagenicity. Taken together, this neighbor supports the mutagenic label despite the better QED and slightly lower charge magnitude.
+
+Neighbor 4 is another mutagenic-leaning comparison even though it has some opposing exposure features. The query’s strongest basic pKa is much higher than the neighbor’s, 5.7419 versus 3.827, delta +1.9149, and that is a strong mutagenic signal here. Both molecules contain urea, so there is no structural difference on that motif. The query has more ionizable sites, 6 versus 5, delta +1, which is treated as reducing exposure and favoring not mutagenic. The maximum partial charge is also slightly higher in the query, 0.3184 versus 0.3162, delta +0.0023, and that small increase is unfavorable for mutagenicity in this comparison. But the query also has a higher topological polar surface area, 83.8 versus 68.01, delta +15.79, which favors mutagenicity here, and a slightly lower maximum absolute partial charge, 0.3513 versus 0.3514, delta -0.0001, which is a small additional mutagenic-leaning difference. Despite the exposure-limiting ionizable-site signal and the near-tie in charge, the stronger pKa and PSA differences keep this neighbor on the mutagenic side overall.
+
+Neighbor 5 supports the mutagenic label overall, though not without one important counterpoint. The query has more acidic sites, with 4 versus the neighbor’s 1, delta +3, and that feature is interpreted as reducing exposure and favoring not mutagenic. Against that, the query has much higher topological polar surface area, 83.8 versus 41.99, delta +41.81, which leans mutagenic here, and lower fraction of sp3 carbons, 0 versus 0.0909, delta -0.0909, which is also mutagenicity-leaning in this local comparison. The query’s maximum partial charge is higher, 0.3184 versus 0.2219, delta +0.0965, which goes the other way toward not mutagenic, but the minimum absolute partial charge also rises to 0.3184 from 0.2219, delta +0.0965, and that is treated here as favoring mutagenicity. The structural difference that the neighbor has quinoline while the query does not, delta -1, is also a mutagenic-leaning difference in this pairing. So although the extra acidic sites soften the case, the balance of polarity, low-sp3 character, and quinoline-related structure still makes this neighbor favor mutagenicity.
+
+Neighbor 6 is also mutagenic-leaning, again with some opposing exposure descriptors. Both the neighbor and the query contain urea, so that motif does not distinguish them. The query’s maximum partial charge is slightly higher, 0.3184 versus 0.3161, delta +0.0023, and that is unfavorable for mutagenicity in this comparison. The query also has higher topological polar surface area, 83.8 versus 55.12, delta +28.68, which favors mutagenicity here, while the number of ionizable sites is greater in the query, 6 versus 4, delta +2, which instead supports not mutagenic by implying more ionization and lower passive uptake. The maximum absolute partial charge is very slightly lower in the query, 0.3513 versus 0.3514, delta -0.0001, which again is a small mutagenic-leaning change. Finally, the estimated logP is lower in the query, 1.0535 versus 1.4856, delta -0.4321, and in this comparison that lower lipophilicity is associated with the mutagenic side. Overall, the PSA and logP differences outweigh the ionizable-site and partial-charge offsets, so this neighbor also points toward mutagenicity.
+
+Putting the six neighbors together, the positive-neighbor set is not unanimous but contains two clear mutagenic analogs and one mixed case, while the negative-neighbor set is also mixed but still includes two comparisons that land on mutagenic and one that lands on not mutagenic. Across the full set, the mutagenicity-leaning signals recur through stronger basic pKa in one close analog, lower sp3 character, higher polar surface area in several comparisons, the oxime-free query versus an oxime-bearing neighbor, and the quinoline-related difference. The countervailing features mainly involve QED, partial-charge magnitude, and ionizable-site counts, which often behave as exposure modifiers rather than direct anti-mutagenicity evidence. Taken together, the local analog pattern is more consistent with option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

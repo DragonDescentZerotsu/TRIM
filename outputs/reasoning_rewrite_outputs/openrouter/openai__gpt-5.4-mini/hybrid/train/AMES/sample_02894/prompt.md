@@ -1,0 +1,52 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has a very high Labute surface area of 205.0419, which suggests a large, bulky structure and can limit effective bacterial exposure. Its estimated logD of 8.3447 and estimated logP of 8.38 are both extremely high, indicating strong lipophilicity; while such hydrophobicity can sometimes accompany membrane interactions, it more often creates practical exposure limits in the Ames assay because very hydrophobic compounds can be poorly soluble or less readily available to the bacteria. The molecular weight is 448.654, which is moderately high, and the heavy-atom molecular weight is 412.366, again pointing to a fairly large scaffold that may further reduce uptake. The topological polar surface area is only 6.48, so the molecule is very nonpolar and compact in terms of polar functionality, consistent with its high logP/logD and low apparent accessibility in the assay. On the other hand, the aromatic content is substantial: benzene count 4, aromatic ring count 4, and total ring count 4 all indicate a strongly aromatic, multi-ring system. That kind of aromatic enrichment can be a mutagenicity concern because fused or highly aromatic systems are more often associated with mutagenic scaffolds, and the low QED drug-likeness score of 0.2536 also suggests the structure is outside the more balanced physicochemical space, which can coincide with problematic substructures. Taken together, however, the very high lipophilicity, large surface area, large size, and extremely low polar surface area point toward poor assay exposure and therefore favor a non-mutagenic call overall, despite the aromatic ring burden. The final assessment is option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close mutagenic neighbor, but the query differs in several ways that lean away from that outcome overall. The query has much higher estimated logP, 8.38 versus 2.115 for the neighbor (delta +6.265), and the comparison treats that shift as unfavorable for mutagenicity because extreme lipophilicity can limit effective exposure. The query also has a much larger heavy-atom count, 34 versus 12 (delta +22), a much higher Labute surface area, 205.0419 versus 73.9909 (delta +131.051), and a much larger heavy-atom molecular weight, 412.366 versus 148.124 (delta +264.242); all of these size/shape changes are consistent with reduced uptake or solubility, which favors the non-mutagenic side in this local comparison. The query does show a slightly lower minimum absolute partial charge, 0.0366 versus 0.0367 (delta -0.0001), and a lower QED, 0.2536 versus 0.6932 (delta -0.4396), which are the features that lean toward mutagenicity here, but the stronger size and lipophilicity differences dominate in the opposite direction. Neighbor 2 shows a similar pattern. The query again has far higher heavy-atom count, 34 versus 13 (delta +21), and much higher estimated logD, 8.3447 versus 2.9213 (delta +5.4234), both of which are interpreted as limiting exposure and favoring the non-mutagenic label. The query’s topological polar surface area is much lower, 6.48 versus 32.67 (delta -26.19), which in isolation would not help mutagenicity, and the neighbor has nitroso while the query does not, a clear mutagenic toxicophore difference that favors the non-mutagenic side for the query because one recognized alert is removed. Against that, the query has a lower minimum absolute partial charge, 0.0366 versus 0.1077 (delta -0.0711), and a slightly higher strongest basic pKa, 6.3278 versus 5.7398 (delta +0.588), both of which are associated with mutagenic-side behavior in this local context. Even so, the very high logD and much larger size still make the query look less likely to be mutagenic than this neighbor. Neighbor 3 also contains a mutagenic diazonium motif that the query lacks, which again is a strong point in favor of the non-mutagenic label. At the same time, the query is much larger, with heavy-atom count 34 versus 13 (delta +21), and has a much higher estimated logD, 8.3447 versus 3.0051 (delta +5.3396), both of which again work against bacterial exposure. The query’s maximum partial charge is much lower, 0.0366 versus 0.3847 (delta -0.3481), and its Labute surface area is much larger, 205.0419 versus 78.6113 (delta +126.4306); those shifts are also consistent with a less favorable mutagenic readout here. Although the query’s strongest basic pKa is slightly higher, 6.3278 versus 5.8571 (delta +0.4707), which is one feature that leans the other way, the absence of diazonium together with the much larger, more lipophilic profile supports the non-mutagenic call.
+
+Neighbor 4 is already non-mutagenic, and the query resembles it in the broad exposure-limiting features that matter most here. The query has far higher estimated logD, 8.3447 versus 2.4968 (delta +5.8479), and a much larger heavy-atom count, 34 versus 11 (delta +23), both of which align with reduced effective bacterial exposure and favor the same non-mutagenic side. The query also has a much larger Labute surface area, 205.0419 versus 68.651 (delta +136.3909), which reinforces the same interpretation. The query does differ by having lower QED, 0.2536 versus 0.638 (delta -0.3844), a slightly lower strongest basic pKa, 6.3278 versus 6.3364 (delta -0.0086), and a higher ring count, 4 versus 1 (delta +3); those are the features in this comparison that lean toward mutagenicity, but they do not outweigh the large exposure-related shifts that line up with the non-mutagenic neighbor. Neighbor 5 is also non-mutagenic, and the same broad pattern repeats. The query’s estimated logP is much higher, 8.38 versus 4.9482 (delta +3.4318), its Labute surface area is much larger, 205.0419 versus 114.1549 (delta +90.887), and its heavy-atom count is larger, 34 versus 19 (delta +15), all of which are consistent with poorer effective exposure and support the non-mutagenic label. The query does have a slightly lower strongest basic pKa, 6.3278 versus 6.4498 (delta -0.122), a lower QED, 0.2536 versus 0.6929 (delta -0.4392), and a higher estimated logD again in the other version of the comparison, 8.3447 versus 4.902 (delta +3.4427); among these, the lower QED and slightly lower basic pKa are the features that lean toward mutagenicity, but the much larger size and hydrophobicity still make the query closer to a low-exposure, non-mutagenic analog. Neighbor 6 provides the same kind of support. The query has much higher estimated logD, 8.3447 versus 2.3319 (delta +6.0128), much larger Labute surface area, 205.0419 versus 83.14 (delta +121.9019), much larger heavy-atom count, 34 versus 14 (delta +20), and much higher exact molecular weight, 448.2878 versus 194.1055 (delta +254.1823). Those are all classic exposure-limiting shifts and they strongly match the non-mutagenic direction. The query’s QED is lower, 0.2536 versus 0.7494 (delta -0.4958), and its ring count is higher, 4 versus 1 (delta +3), both of which lean toward mutagenicity in this local comparison, but the very large size and hydrophobicity differences are more persuasive for reduced bacterial access overall.
+
+Taken together, the six neighbors show a consistent pattern: the mutagenic neighbors either contain explicit toxicophoric features such as nitroso or diazonium, or are smaller and more compact, while the query is substantially larger, more hydrophobic, and has a much greater surface area and molecular weight. The non-mutagenic neighbors are the closer analogs in terms of the overall exposure-limiting profile, and although QED, pKa, and ring count sometimes lean the other way, they do not override the dominant size and lipophilicity pattern. The combined neighbor evidence therefore supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

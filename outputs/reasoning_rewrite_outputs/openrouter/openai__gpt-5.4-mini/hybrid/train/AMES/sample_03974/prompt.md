@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an oxirane group, and the count is 2, which is a strong mutagenicity alert because epoxides are electrophilic and can react with DNA. It also has 3 aromatic rings, and the aromatic ring system is further supported by 3 aromatic carbocycles and 3 benzene rings, which raises concern for a planar aromatic scaffold associated with mutagenic behavior, especially when fused aromatic character is present. At the same time, the heteroatom count is only 2, which suggests the structure is not especially heteroatom-rich. Some exposure-related descriptors are mixed: the Labute surface area is 139.2091, estimated logP is 5.2726, and topological polar surface area is 25.06. The relatively high logP and low TPSA together suggest a hydrophobic, low-polarity molecule that may penetrate membranes well, while the surface area is moderate-to-large and could limit aqueous exposure in some contexts. The molecule also has 2 saturated heterocycles and 2 aliphatic carbocycles, indicating a mixed ring system rather than a purely flat aromatic framework, but these saturated rings do not offset the clear electrophilic alert from the oxirane. Overall, the combination of an oxirane toxicophore with multiple aromatic rings and aromatic carbocycles supports a mutagenic outcome, despite the somewhat mixed exposure-related descriptors.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly strong mutagenic analogue. The query has one more oxirane than the neighbor, moving from 1 to 2 with a delta of +1, and oxirane is a classic electrophilic toxicophore, so that difference is an important reason to favor option (B). The query is also slightly smaller in lipophilicity on the logP/logD axis, with estimated logP going from 5.786 in the neighbor to 5.2726 in the query (delta -0.5134) and estimated logD showing the same numeric shift; in isolation that could reduce exposure a bit, but here it is outweighed by the added oxirane and the fact that the query is still quite hydrophobic. The query also has a higher ring count, 7 versus 6, and more aliphatic carbocycles, 2 versus 1, both consistent with the same more ring-rich scaffold. The Labute surface area is also larger in the query, 139.2091 versus 133.6836 (delta +5.5255), which is a modest counterweight because greater size/surface can sometimes limit exposure, but not enough to offset the more clearly mutagenic structural alert. Overall, Neighbor 1 supports option (B).
+
+Neighbor 2 tells essentially the same story and reinforces the mutagenic side. Again, the query has one extra oxirane, 2 versus 1, with the same +1 delta, which is the clearest structural reason to expect mutagenicity. The query also has higher ring count, 7 versus 6, and higher aliphatic carbocycle count, 2 versus 1, so the query remains the more ring-fused and more complex scaffold. As before, estimated logP drops from 5.786 in the neighbor to 5.2726 in the query (delta -0.5134), and estimated logD changes by the same amount, which can slightly limit effective exposure, but that effect is secondary to the added oxirane alert. The Labute surface area also rises from 133.6836 to 139.2091 (delta +5.5255), a small exposure-related offset. Taken together, Neighbor 2 still points to option (B).
+
+Neighbor 3 is a bit more mixed numerically, but it still ends up on the mutagenic side. The query again has one more oxirane, 2 versus 1, and one more aliphatic carbocycle, 2 versus 1, both favoring mutagenicity through the same structural pattern seen in the other positive neighbors. The query also has higher estimated logP, 5.2726 versus 4.6328, with delta +0.6398, so it is more lipophilic than this neighbor, which can make the compound more similar to mutagenic hydrophobic analogs. The maximum partial charge is nearly unchanged, 0.1145 in the query versus 0.115 in the neighbor, a tiny delta of -0.0006, so that feature does not materially change the comparison. The ring count is higher in the query, 7 versus 5, and that higher ring burden is paired with a lower estimated logD shift relative to the neighbor, 5.2726 versus 4.6328 with delta +0.6398; those two latter features add some mixed exposure/size context, with the ring count tending to support the mutagenic analogue and the logD/surface-type differences not enough to reverse the overall impression. Neighbor 3 therefore still supports option (B), though less strongly than the first two.
+
+Neighbor 4 is the most important negative-side comparator, but even here the query retains the features that favor mutagenicity. The query has two oxiranes while the neighbor has none, a large +2 delta, and that is a major mutagenic structural alert. The query also has more aliphatic carbocycles, 2 versus 1, and a higher neutral fraction, with the neighbor at 0.2781 and the query marked present (1), giving a delta of +0.7219; that neutral-fraction difference is another way of saying the query is more neutrally represented at the configured pH, which can support broader exposure. The query’s estimated logP is much higher than the neighbor’s, 5.2726 versus 2.7151, delta +2.5575, so the query is substantially more hydrophobic than this non-mutagenic analog. The neighbor also carries fluorene, which the query lacks, and that absence removes one of the more compact aromatic features of the comparator; however, the query replaces that with the stronger oxirane signal and a much more hydrophobic scaffold. The Labute surface area is much larger in the query, 139.2091 versus 83.1875 (delta +56.0216), which can work against passive exposure, but the combined structural-alert burden still dominates. So although Neighbor 4 is labeled non-mutagenic, the comparison to the query still leans to option (B).
+
+Neighbor 5 also falls in the non-mutagenic group, but the query again differs in the same direction that matters most. The query has two oxiranes while the neighbor has zero, a +2 delta, which is a strong mutagenicity anchor. It also has one more aliphatic carbocycle, 2 versus 1, and a higher ring count, 7 versus 5, both consistent with the more ring-rich query scaffold. Estimated logD rises from 3.1406 in the neighbor to 5.2726 in the query, delta +2.132, and estimated logP is likewise higher in the query than in the neighbor, reflecting a much more lipophilic profile. The maximum partial charge is slightly lower in the query, 0.1145 versus 0.1438, delta -0.0293, but that is a minor electrostatic difference and not enough to outweigh the oxirane signal. The Labute surface area is again much larger, 139.2091 versus 93.3631 (delta +45.846), which can reduce exposure somewhat, yet the query’s added oxirane functionality and ring-rich character still make it look more mutagenic than this comparator. Neighbor 5 therefore also supports option (B).
+
+Neighbor 6 is the weakest of the six comparisons, but it still points in the same direction overall. The query has one more aliphatic carbocycle, 2 versus 1, and two more oxiranes, 2 versus 1, although the note reports a negative oxirane pairwise effect for that particular comparison. Even with that local sign, the structural contrast still leaves the query carrying the more concerning epoxide burden. The query also has higher ring count, 7 versus 5, and more benzene rings, 3 versus 1, so it is the more aromatic, ring-rich scaffold. In contrast, the neighbor has lower estimated logP, 3.8285 versus 5.2726, and the query is therefore considerably more hydrophobic; the estimated logD difference is also in that higher-lipophilicity direction. The Labute surface area is much larger in the query, 139.2091 versus 127.7457, delta +11.4634, which could reduce exposure somewhat. But with the extra oxirane burden, the higher aromatic ring content, and the larger ring count, the comparison still leans toward mutagenicity despite the exposure-related offsets. Neighbor 6 is the most ambivalent of the set, yet it still does not overcome the overall mutagenic pattern.
+
+Across all six neighbors, the evidence is more consistent for option (B) than for option (A). The three mutagenic neighbors all align with the query’s extra oxirane(s), larger ring count, and greater aliphatic carbocycle count, while the three non-mutagenic neighbors are not close enough structurally to erase those alerts; instead, they mainly show that the query is sometimes larger, more hydrophobic, and more surface-rich, which could affect exposure but does not neutralize the oxirane and aromatic/ring-rich features. Taken together, the nearest analogs support the final prediction that the query is mutagenic, option (B).
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

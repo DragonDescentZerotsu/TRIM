@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule looks fairly consistent with a CYP2D6 substrate profile because it has a strongly basic center: the strongest basic pKa is 9.8235, so a protonatable nitrogen should be substantially cationic under physiological conditions, which is a common CYP2D6 substrate motif. The presence of piperidine, together with that high basicity, further supports a protonated basic nitrogen that CYP2D6 often recognizes. The topological polar surface area is 24.92, which is low and fits the more lipophilic, less polar substrate-like space often seen for CYP2D6 substrates. The neutral fraction is only 0.0038, indicating the compound is mostly ionized rather than neutral, again consistent with a basic substrate scaffold. The maximum partial charge is 0.0739 and the minimum absolute partial charge is 0.0739, while the maximum absolute partial charge is 0.3161 and the minimum partial charge is -0.3161; taken together, these charge features suggest a meaningful localized cationic center, although the relatively large absolute charge extremes also add some mixed signal about charge distribution. The QED drug-likeness is 0.7948, which is compatible with an overall drug-like small molecule and does not conflict with substrate-likeness. One cautionary point is that piperazine is absent (0), and the maximum absolute partial charge of 0.3161 plus the minimum partial charge of -0.3161 introduce some polarity/charge complexity that could weaken the fit somewhat. Even so, the low polar surface area, high basicity, very low neutral fraction, and presence of piperidine collectively outweigh those less favorable charge features, so the molecule is more likely to be a CYP2D6 substrate.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a substrate and provides mixed evidence, but the strongest individual signals are not enough to overturn the overall non-substrate call. The query lacks a diaryl ether motif present in the neighbor (query-minus-neighbor delta -1), which is a negative similarity feature for substrate-like chemistry. At the same time, the query has a higher strongest basic pKa than the neighbor, 9.8235 versus 8.7679 (delta +1.0556), and it also has pyridine once when the neighbor has none (delta +1); both of those changes are more consistent with the basic, protonatable nitrogen chemistry that often accompanies CYP2D6 substrates. The query and neighbor are equal in rotatable bonds at 0, and the query has a lower minimum absolute partial charge, 0.0739 versus 0.1526 (delta -0.0787), both of which are treated favorably here. However, the query also has a lower maximum partial charge, 0.0739 versus 0.1526 (delta -0.0787), which runs the other way. Taken together, this neighbor is internally mixed but, overall, still slightly favors the non-substrate side because the missing diaryl ether is the clearest structural difference.
+
+Neighbor 2 is also a substrate and again gives mixed but ultimately non-substrate-leaning evidence. The query has a somewhat higher strongest basic pKa, 9.8235 versus 9.1822 (delta +0.6413), which aligns with protonatable basic-center chemistry. The query’s topological polar surface area is also higher, 24.92 versus 16.13 (delta +8.79), and in CYP2D6 comparisons lower polarity is generally more substrate-like, so this change is not especially helpful. The shared pyridine substructure contributes no advantage here because both molecules have it (delta 0). The query’s maximum partial charge is slightly higher, 0.0739 versus 0.0478 (delta +0.0261), and neither molecule has carboxylic acid, which is neutral with respect to the comparison. But the query has more aliphatic ring content, 2 versus 0 (delta +2), which works against the substrate side in this neighbor comparison. Overall, the polar and ring-based differences outweigh the favorable pKa shift, so this neighbor also supports the non-substrate label.
+
+Neighbor 3, another substrate, again shows a balance that does not strongly favor substrate status. The query has a much larger topological polar surface area than the neighbor, 24.92 versus 12.03 (delta +12.89), and it also has a higher neutral fraction, 0.0038 versus 0.0014 (delta +0.0024); both changes are compatible with the substrate side in this specific pairing. The query lacks the neighbor’s lower maximum absolute partial charge advantage because the query is slightly lower, 0.3161 versus 0.3194 (delta -0.0033), which was unfavorable in this comparison. The query also has a lower strongest basic pKa, 9.8235 versus 10.268 (delta -0.4445), which is less favorable than the stronger basic center in the neighbor. Finally, the query’s minimum partial charge is slightly less negative, -0.3161 versus -0.3194 (delta +0.0033), which worked against the substrate side here. Even though the pyridine substituent is present in the query and absent in the neighbor, the overall comparison still leans away from substrate status because the charge-related features collectively do not build a consistent substrate-like picture.
+
+Neighbor 4 is a non-substrate and is one of the clearest negative-neighbor comparisons. The query has lower topological polar surface area than this neighbor, 24.92 versus 29.02 (delta -4.1), which would usually be more favorable for substrate-like behavior. But the query also has much lower estimated logD, 1.5938 versus 5.4608 (delta -3.867), and in CYP2D6 substrate-adjacent chemistry higher lipophilicity is often more compatible with substrate status, so this is a strong unfavorable shift. The query’s maximum absolute partial charge is slightly higher, 0.3161 versus 0.2984 (delta +0.0177), which is also unfavorable here, and the query’s QED drug-likeness is higher, 0.7948 versus 0.5423 (delta +0.2524), which in this comparison also points away from substrate status. The query has a much higher strongest basic pKa, 9.8235 versus 7.0931 (delta +2.7304), which is favorable for substrate-like basicity, but that does not fully offset the lipophilicity and QED differences. The query’s minimum partial charge is more negative, -0.3161 versus -0.2984 (delta -0.0177), which was again unfavorable in this pairing. Overall, this neighbor strongly reinforces the non-substrate prediction because the unfavorable logD, charge, and QED shifts dominate despite the higher basic pKa.
+
+Neighbor 5 is a non-substrate and also supports the non-substrate call. The neighbor has an aryl bromide that the query lacks (delta -1), which is a structural difference that here works against substrate status. The query has a much lower minimum absolute partial charge, 0.0739 versus 0.2456 (delta -0.1717), which is favorable in this comparison, and it also has a far lower topological polar surface area, 24.92 versus 54.35 (delta -29.43), again moving toward the substrate side. The query’s neutral fraction is also much lower, 0.0038 versus 0.999 (delta -0.9952), which is another strong substrate-like shift in this pair. However, the query’s maximum absolute partial charge is slightly lower, 0.3161 versus 0.3238 (delta -0.0077), which was unfavorable here, and the query’s maximum partial charge is much lower, 0.0739 versus 0.2456 (delta -0.1717), which also goes against the substrate side in this specific comparison. Because the key charge features on this neighbor counterbalance the favorable polarity shifts, the overall effect still remains aligned with the non-substrate label.
+
+Neighbor 6, another non-substrate, is the most strongly non-substrate-leaning comparison. The query has a dramatically lower neutral fraction than the neighbor, 0.0038 versus 0.8607 (delta -0.8569), which is a major unfavorable shift for substrate-like behavior in this pairing. The query also has a much lower maximum partial charge, 0.0739 versus 0.4116 (delta -0.3377), which in this comparison is favorable, but not enough to offset the other negatives. The neighbor has pyrazine and the query does not (delta -1), which is another structural difference favoring the non-substrate side here. The query’s minimum partial charge is less negative, -0.3161 versus -0.4185 (delta +0.1024), and the query also has a much lower nitrogen/oxygen atom count, 2 versus 9 (delta -7); both of those shifts are unfavorable in this comparison. The only clearly favorable feature for the query is topological polar surface area: 24.92 versus 91.76 (delta -66.84), which is much lower and would usually be more compatible with substrate-like space. Even so, the dominant neutral-fraction, heteroatom-count, and pyrazine differences make this neighbor strongly support the non-substrate label.
+
+Putting the six comparisons together, the three substrate neighbors each contain some favorable substrate-like signals such as higher basic pKa, pyridine in the query, or lower polarity, but none of them produces a clean overall substrate match once the full set of features is considered. The three non-substrate neighbors are more convincing overall, especially Neighbor 4 and Neighbor 6, where lower logD, unfavorable charge patterns, very high neutral fraction differences, and the pyrazine/aryl bromide contrasts all line up with non-substrate behavior. The total evidence therefore remains more consistent with option (A): the query is not a substrate to CYP2D6.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP2D6
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

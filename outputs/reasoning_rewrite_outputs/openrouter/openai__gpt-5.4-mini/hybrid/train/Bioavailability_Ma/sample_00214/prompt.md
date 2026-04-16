@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a very favorable topological polar surface area of 23.47 Å², which is well below common oral-bioavailability concern thresholds and supports passive permeability. Its QED drug-likeness is high at 0.8479, consistent with an overall drug-like balance of size, polarity, and flexibility. The neutral fraction is extremely low at 0.0027, which would usually be worrisome because a very small neutral population can limit passive diffusion, but that concern is partly offset here by the presence of a tertiary aliphatic amine (1), which can be a favorable structural element in oral drugs when the overall balance remains acceptable. The charge descriptors are mixed: minimum absolute partial charge is 0.1154, maximum partial charge is 0.1154, minimum partial charge is -0.508, and maximum absolute partial charge is 0.508, suggesting some localized charge character but not an obviously extreme polar burden from the surface area perspective. On the less favorable side, the strongest acidic pKa is 9.8842 and the strongest basic pKa is 9.9682, indicating ionizable functionality that may be substantially charged near physiological conditions, which can reduce passive absorption despite the otherwise low TPSA. Overall, the very low TPSA, high QED, and the favorable effect of the tertiary aliphatic amine provide enough support for oral bioavailability at or above 20%, even though the low neutral fraction and high pKa values introduce some countervailing risk.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is fairly close overall, but several descriptors still lean against oral bioavailability reaching the 20% cutoff. The query has lower topological polar surface area than the neighbor, 23.47 versus 40.54 with a delta of -17.07, and lower polarity would normally be a favorable absorption feature, but here that advantage is outweighed by other changes. The strongest basic pKa is higher in the query, 9.9682 versus 8.1991 with a delta of +1.7691, which is an unfavorable shift because stronger basicity can increase the fraction that is cationic at physiological pH and reduce passive permeability. QED drug-likeness is also slightly lower in the query, 0.8479 versus 0.8909 with a delta of -0.043, and the minimum partial charge is unchanged at -0.508 versus -0.508. Finally, fraction of sp3 carbons is higher in the query, 0.6 versus 0.5333 with a delta of +0.0667, and the number of basic sites is the same at 1 and 1. Despite the modestly better polarity and sp3 character, the higher basic pKa and lower QED make this neighbor comparison lean toward the <20% class.
+
+Neighbor 2 gives a more mixed picture, but the negative signals are again strong. The query has a much higher QED than the neighbor, 0.8479 versus 0.767 with a delta of +0.0809, which is a favorable drug-likeness shift. However, the query’s topological polar surface area is still higher than the neighbor’s, 23.47 versus 29.54 with a delta of -6.07, which is beneficial in principle because lower TPSA supports absorption. The problem is that the query has a much lower neutral fraction, 0.0027 versus 0.2463 with a delta of -0.2436, meaning it is far less neutral at the configured pH and therefore less favorable for passive permeation. The strongest basic pKa is also higher, 9.9682 versus 7.8857 with a delta of +2.0825, again pointing to a more strongly basic, more ionized profile. Fraction of sp3 carbons is higher in the query, 0.6 versus 0.5333 with a delta of +0.0667, which helps somewhat, while the number of basic sites is unchanged at 1 and 1. Overall, the large loss in neutral fraction and the stronger basic pKa dominate, so this comparison still supports the <20% label despite the better QED.
+
+Neighbor 3 is similar in that the query looks cleaner by QED but more charge-polarized elsewhere. QED drug-likeness is higher in the query, 0.8479 versus 0.7469 with a delta of +0.101, which is favorable. But the query also has a much larger maximum absolute partial charge, 0.508 versus 0.2936 with a delta of +0.2144, and the minimum absolute partial charge is higher as well, 0.1154 versus 0.046 with a delta of +0.0694. The maximum partial charge is likewise higher, 0.1154 versus 0.046 with a delta of +0.0694. Those shifts indicate more extreme charge localization, which is generally unfavorable for passive absorption. The strongest basic pKa is also higher in the query, 9.9682 versus 9.0188 with a delta of +0.9494, again pointing toward a more strongly basic and more ionized state. The minimum partial charge comparison is repeated in the same direction, with the query at -0.508 versus the neighbor at -0.2936 and a delta of -0.2144, reinforcing the same charge-polarity concern. Taken together, the better QED does not offset the stronger charge extremes and higher basicity, so this neighbor also aligns better with oral bioavailability below 20%.
+
+Neighbor 4 is the first negative neighbor, and it is actually one of the clearer cases where the query has a somewhat better overall profile by a few descriptors yet still retains liabilities relevant to the threshold. QED is higher in the query, 0.8479 versus 0.666 with a delta of +0.1819, which is a substantial favorable shift. Still, the query’s topological polar surface area is higher than the neighbor’s, 23.47 versus 20.23 with a delta of +3.24, and higher TPSA can make absorption harder rather than easier. The minimum partial charge is almost identical, -0.508 versus -0.5077 with a delta of -0.0002, and the maximum absolute partial charge is also nearly unchanged, 0.508 versus 0.5077 with a delta of +0.0002. The maximum partial charge is slightly lower in the query, 0.1154 versus 0.1356 with a delta of -0.0203, but the key issue is that the neighbor has no basic site while the query has a strongest basic pKa of 9.9682, so the query retains a basic ionizable feature that the neighbor lacks. That makes the comparison more compatible with the <20% side than the otherwise better QED might suggest.
+
+Neighbor 5 is more balanced, but the ionization pattern is still not especially favorable for high oral bioavailability. The query’s strongest basic pKa is higher, 9.9682 versus 8.7986 with a delta of +1.1696, which is an unfavorable shift. At the same time, the query’s neutral fraction is lower, 0.0027 versus 0.0383 with a delta of -0.0356, and that is favorable for the query only insofar as the comparison note associates it with the ≥20% side, but the absolute neutral fraction remains extremely small in the query. The maximum absolute partial charge is unchanged at 0.508 versus 0.508, and the maximum partial charge is also unchanged at 0.1154 versus 0.1154. QED is slightly higher in the query, 0.8479 versus 0.8335 with a delta of +0.0144, which is only a modest improvement. The strongest acidic pKa is a little lower in the query, 9.8842 versus 9.9674 with a delta of -0.0832. Even with the small QED gain and the neutral-fraction comparison, the higher basic pKa and overall highly ionized character leave this neighbor only weakly supportive of the ≥20% class and do not overcome the broader pattern favoring the lower-bioavailability side.
+
+Neighbor 6 is the strongest piece of positive-neighbor evidence, but even here the same high-basicity issue remains. The query’s strongest basic pKa is higher, 9.9682 versus 7.9936 with a delta of +1.9746, and the query’s strongest acidic pKa is lower, 9.8842 versus 13.8048 with a delta of -3.9206; both shifts point to a less favorable ionization balance for passive absorption. The query does have higher QED, 0.8479 versus 0.7582 with a delta of +0.0897, which is favorable, and the query’s maximum partial charge is lower, 0.1154 versus 0.3161 with a delta of -0.2008, which is also favorable from a charge-extremes perspective. The query’s topological polar surface area is much lower, 23.47 versus 49.77 with a delta of -26.3, which is a strong absorption-positive difference under the usual TPSA heuristics. The neighbor also has a secondary hydroxyl while the query does not, and that missing hydroxyl is another favorable difference for the query. Even so, the very strong basic pKa in the query remains a significant liability, so this neighbor is not enough to overturn the broader low-bioavailability pattern.
+
+Putting the six neighbors together, the positive-neighbor comparisons are not uniformly reassuring: Neighbor 1, Neighbor 2, and Neighbor 3 each contain a mix of favorable QED or polarity features but are repeatedly offset by higher strongest basic pKa, lower neutral fraction, or more extreme partial charges in the query. Among the negative neighbors, Neighbor 4, Neighbor 5, and Neighbor 6 each show some favorable improvements for the query, especially in QED and TPSA, but they also leave a persistent concern around strong basicity, charge state, and other permeability-related liabilities. The overall pattern is therefore still more consistent with a molecule that falls below the 20% oral bioavailability threshold rather than one that clearly reaches it.
+
+Input 3. Target final label semantics
+option (A): has oral bioavailability < 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

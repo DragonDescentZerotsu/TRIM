@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are generally compatible with BBB penetration. Succinimide is present (1), which can fit a compact scaffold with limited flexibility, and aryl bromide is present (1), adding hydrophobic character without introducing extra hydrogen-bonding burden. The minimum partial charge is -0.2959, the maximum absolute partial charge is 0.2959, and the minimum absolute partial charge is 0.2341; together these suggest a fairly modest charge distribution rather than a highly polarized molecule. The neutral fraction is very high at 0.999, which strongly favors passive diffusion across the BBB. The exact molecular weight is 252.9738 and the molecular weight is 254.083, both comfortably in a low-to-moderate range for CNS exposure and well below commonly problematic high-MW space. The estimated logP is 1.5792, which is somewhat modest and may be slightly less lipophilic than an ideal BBB candidate, so that is a mild counterpoint. However, the low aliphatic carbocycle count of 0 does not add polar burden, and the overall size, charge profile, and near-complete neutrality are favorable for brain penetration. On balance, the combination of low molecular weight, very high neutral fraction, limited polarity, and compact structure makes BBB crossing more likely than not, despite the somewhat moderate logP.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close analog that supports BBB crossing overall. The query has succinimide once while the neighbor lacks it, and that added cyclic imide-related polarity burden is one of the strongest differences in favor of class B here. In the same direction, the query also has imide acidic and imide motifs that the neighbor does not, and both of those absences in the neighbor make the query look more compatible with BBB entry in this local comparison. The query also has Aryl bromide once while the neighbor does not, and the query’s neutral fraction is slightly lower at 0.999 versus 0.9994 in the neighbor, with delta -0.0004; that very small shift still sits on the favorable side for BBB crossing in this pair. The only clearly unfavorable feature in this neighbor is the query’s maximum absolute partial charge being 0.2959 versus 0.2946 in the neighbor, delta +0.0012, which is a tiny increase and is outweighed by the stronger favorable differences. Overall, Neighbor 1 supports option (B).
+
+Neighbor 2 also supports BBB crossing, even though it contains one countervailing feature. The query again has succinimide once while the neighbor lacks it, which is favorable for BBB crossing in this comparison. The query’s minimum partial charge is less extreme at -0.2959 versus -0.3528, delta +0.057, which is a more favorable partial-charge profile for BBB penetration. The query’s neutral fraction is also slightly lower at 0.999 versus 1, delta -0.001, again consistent with the BBB-crossing side. The query and neighbor both have Aryl bromide, so that feature does not separate them. The main opposing point is that the neighbor has secondary amide while the query does not, and secondary amides usually add polarity/H-bonding burden; that relative absence in the query helps BBB penetration. The query’s topological polar surface area is 46.17 versus 29.1 in the neighbor, delta +17.07, which is higher and by itself is less favorable because BBB penetration is usually better at lower PSA, especially in the broader <90 Å² CNS region. Even so, the local differences in succinimide, partial charge, neutral fraction, and lack of secondary amide still leave this neighbor on the BBB-crossing side overall.
+
+Neighbor 3 likewise favors BBB crossing. The query’s minimum partial charge is -0.2959 versus -0.3238 in the neighbor, delta +0.028, so the query is slightly less negatively polarized. The query has succinimide once while the neighbor lacks it, again favoring the BBB-crossing label here. The neighbor has a strongest basic pKa of 4.3903, while the query has no basic site, and that non-overlapping comparison is less straightforward chemically; still, the comparison as given is not enough to overturn the other favorable differences. The neutral fraction is the same at 0.999 for both molecules, so that feature is essentially neutral in the comparison. Both molecules have Aryl bromide, so that does not discriminate either way. Finally, the neighbor has imine while the query does not, which removes another heteroatom-containing functionality from the query and is favorable in this local context. Taken together, Neighbor 3 remains aligned with option (B).
+
+Neighbor 4 is a negative-class neighbor, but the query still looks more BBB-permeable than it does. The query has succinimide once and the neighbor lacks it, which is favorable for BBB crossing. The query’s maximum absolute partial charge is 0.2959 versus 0.5069 in the neighbor, delta -0.211, and the minimum partial charge is -0.2959 versus -0.5069, delta +0.211; together, the query has a much less extreme charge distribution, which is more compatible with passive BBB penetration. The query also has Aryl bromide once while the neighbor does not, and the query’s heavy-atom molecular weight is 246.019 versus 347.692, delta -101.673, a substantial size reduction that fits the usual size constraint for BBB entry. The neutral fraction is also dramatically different: 0.999 for the query versus 0.0018 for the neighbor, delta +0.9972, showing the query is overwhelmingly neutral while the neighbor is not. Since BBB penetration is strongly favored by the neutral species and by lower size/polarity burden, this negative neighbor still supports option (B) when contrasted with the query.
+
+Neighbor 5, despite being in the negative set, again looks less BBB-friendly than the query. The query has succinimide once while the neighbor lacks it, which is favorable for BBB crossing. The query also has Aryl bromide once while the neighbor does not, adding another favorable structural difference. The neutral fraction is 0.999 for the query versus 0.9933 in the neighbor, delta +0.0057, so the query is even more neutral. The query’s maximum absolute partial charge is 0.2959 versus 0.3631 in the neighbor, delta -0.0672, which also favors the query. Two features point the other way: the query’s fraction of sp3 carbons is 0.2 versus 0.0714 in the neighbor, delta +0.1286, and the query’s strongest acidic pKa is 10.3967 versus 9.5978 in the neighbor, delta +0.7989; these differences are the main reasons this neighbor is in the non-BBB set. But within the local analog comparison, the succinimide absence, added Aryl bromide, higher neutral fraction, and lower maximum partial charge still make the query look more BBB-compatible than this neighbor overall.
+
+Neighbor 6 is the last negative neighbor, and it also leaves the query looking more favorable for BBB entry. As with the others, the query has succinimide once while the neighbor lacks it, which supports BBB crossing. The neighbor has estimated logD of -3.6086 while the query has 1.5788, delta +5.1874; the query is much more lipophilic in ionization-aware terms, and that is a major advantage for membrane permeation. The query’s neutral fraction is 0.999 versus an absent value of 0 in the neighbor, which again points strongly toward the query being the neutral, BBB-friendlier member. The neighbor has imidazolidine while the query does not, so the query is simpler and less heteroatom-rich at that point. The query also has Aryl bromide once while the neighbor does not, and the query’s minimum partial charge is -0.2959 versus -0.4797, delta +0.1838, giving the query a less extreme negative charge floor. Although the query’s logD and other descriptors are the reasons this is the BBB-crossing side and not the non-crossing side, the local comparison still consistently favors option (B).
+
+Across all six neighbors, the same pattern repeats: the query is repeatedly favored by the absence or relative reduction of polar, ionizable, or highly charged features in the comparison, while retaining the BBB-favorable neutral fraction and moderate lipophilicity in the more informative analogs. Neighbor 2 is the main cautionary case because the query’s PSA is higher there, but the broader set of comparisons still points the same way, and even the negative neighbors show the query as more neutral, less extreme in partial charge, and in one case much higher in logD. Taken together, the six comparisons support option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

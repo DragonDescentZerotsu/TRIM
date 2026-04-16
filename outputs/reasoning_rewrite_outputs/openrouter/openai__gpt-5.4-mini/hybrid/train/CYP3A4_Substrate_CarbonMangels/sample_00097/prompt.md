@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule looks quite hydrophobic and membrane-compatible, which generally favors CYP3A4 substrate behavior. Its estimated logD of 6.2998 is very high, and the estimated logP of 7.2176 is also strongly hydrophobic, both of which support good access to the enzyme environment. The aromatic content is notable as well, with benzene count 3, aromatic ring count 3, and aromatic carbocycle count 3, giving a fairly aromatic scaffold that is consistent with CYP3A4-recognized chemical space. Size is moderate-to-large but still compatible with substrate behavior: exact molecular weight 469.2981, molecular weight 469.669, heavy-atom molecular weight 430.357, heavy-atom count 35, and Labute surface area 210.6839 together indicate a substantial but not extreme molecule that can still engage the enzyme. Taken together, the high hydrophobicity, appreciable aromaticity, and mid-to-large size outweigh any concern that the compound is too polar or too small, so the overall assessment is that it is a substrate to CYP3A4.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close analog with several features aligned in the substrate direction: the query is much larger and more lipophilic-looking than the neighbor, with QED dropping from 0.6984 to 0.3099 (delta -0.3884), Labute surface area rising from 161.5158 to 210.6839 (delta +49.168), molecular weight increasing from 420.322 to 469.669 (delta +49.347), heavy-atom molecular weight increasing from 397.138 to 430.357 (delta +33.219), and exact molecular weight increasing from 419.0896 to 469.2981 (delta +50.2085). The neighbor also contains an aryl bromide, which the query lacks. In the supplied comparison this overall pattern favors the substrate label, even though the neighbor is already in the substrate class.
+
+Neighbor 2 also points strongly toward substrate behavior overall. Here the query again sits in a heavier and less drug-like region: QED falls from 0.7593 to 0.3099 (delta -0.4494), Labute surface area rises from 157.9515 to 210.6839 (delta +52.7323), heavy-atom molecular weight rises from 352.687 to 430.357 (delta +77.67), exact molecular weight rises from 375.1401 to 469.2981 (delta +94.1579), and TPSA drops from 40.54 to 29.54 (delta -11). Those shifts support substrate-like chemistry in this specific neighbor comparison. The one opposing feature is neutral fraction: the neighbor is at 0.155 while the query is lower at 0.1208 (delta -0.0342), and lower neutral fraction is generally less favorable for permeability. Even so, the other features dominate here and the net comparison still favors the substrate label.
+
+Neighbor 3 provides a particularly clear substrate-oriented contrast on hydrophobicity. The query has a much higher estimated logD, moving from -0.1786 in the neighbor to 6.2998 in the query (delta +6.4784), and estimated logP also rises from 2.0853 to 7.2176 (delta +5.1323). The neighbor’s strongest basic pKa is 9.6615 versus 8.2619 in the query (delta -1.3996), so the query is less strongly basic. The query is also much larger, with heavy-atom count increasing from 17 to 35 (delta +18), and carboxylic ester is present in the neighbor but absent in the query. The only opposing size-related signal is heavy-atom molecular weight, which rises from 214.159 to 430.357 (delta +216.198) and is marked as unfavorable in that comparison. Even with that counterweight, the strong shift to very high logD and logP, together with the ester difference, makes this neighbor comparison lean toward the substrate label.
+
+Neighbor 4 is the only negative neighbor with a somewhat mixed pattern, but it still contains several features that resemble substrate-like space. The query lacks a trifluoromethyl group that is present in the neighbor, Labute surface area increases from 166.5098 to 210.6839 (delta +44.174), molecular weight rises from 409.423 to 469.669 (delta +60.246), and heavy-atom molecular weight rises from 386.239 to 430.357 (delta +44.118). Neutral fraction, however, is lower in the query, dropping from 0.1821 to 0.1208 (delta -0.0613), which is less favorable for passive access. The most important opposing feature here is estimated logD: it rises from 4.0514 in the neighbor to 6.2998 in the query (delta +2.2484), and in this comparison that higher logD is treated as unfavorable. So Neighbor 4 is the main reminder that very high hydrophobicity can work against the substrate call, but the overall analog still contains enough substrate-like size and surface-area context that it does not outweigh the broader pattern.
+
+Neighbor 5 again supports the substrate label quite directly. The query has much higher estimated logD, from 0.0534 in the neighbor to 6.2998 (delta +6.2464), and a much larger Labute surface area, from 131.7019 to 210.6839 (delta +78.9819). The query also has more aromatic content, with benzene copies increasing from 1 to 3 (delta +2), and higher maximum partial charge differences are not the driver here because the query’s maximum partial charge is 0.1624 versus 0.1699 in the neighbor (delta -0.0075), which still favors the same direction in that comparison. The molecular size terms also increase substantially, with exact molecular weight rising from 307.1784 to 469.2981 (delta +162.1197) and molecular weight rising from 307.39 to 469.669 (delta +162.279). Taken together, this neighbor is a strong substrate-leaning analog because the query is much larger and much more hydrophobic than the neighbor while also carrying more benzene rings.
+
+Neighbor 6 is similarly substrate-favoring. The query again sits at much higher estimated logD, increasing from 2.2716 to 6.2998 (delta +4.0282), and higher Labute surface area, increasing from 153.7642 to 210.6839 (delta +56.9196). The neighbor contains 1H-indole, which the query does not, and it has only 1 benzene ring versus 3 in the query (delta +2). The query is also larger, with molecular weight rising from 347.462 to 469.669 (delta +122.207) and exact molecular weight rising from 347.1998 to 469.2981 (delta +122.0983). In that comparison the higher size and hydrophobicity again align with the substrate class, and the absence of 1H-indole and the increased benzene count reinforce the same direction.
+
+Across all six neighbors, the same broad pattern repeats: the query is consistently heavier, more surface-rich, and often more hydrophobic than the substrate neighbors, with QED lower in the two explicit cases where it is reported. The one cautionary counterexample is Neighbor 4, where very high logD is unfavorable relative to a non-substrate neighbor, but even there the query still differs in multiple substrate-like size and surface-area terms. Taken together, the positive-neighbor evidence dominates and the negative-neighbor examples do not overturn it, so the most consistent final prediction is option (B): the query is a substrate to CYP3A4.
+
+Input 3. Target final label semantics
+option (B): is a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

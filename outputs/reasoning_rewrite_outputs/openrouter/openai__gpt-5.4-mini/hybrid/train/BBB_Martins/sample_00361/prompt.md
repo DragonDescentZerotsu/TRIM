@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows some features that are compatible with BBB penetration and some that are less favorable. Indoline is present (1), which adds a compact bicyclic nitrogen-containing motif that can be consistent with central penetration when polarity stays controlled. Aromatic ring count is 4, which is on the higher side and can begin to work against BBB crossing because aromatic burden often accompanies increased structural complexity and can correlate with less favorable CNS profiles. At the same time, the polarity-related charge features are encouraging: minimum partial charge is -0.28, maximum absolute partial charge is 0.28, and minimum absolute partial charge is 0.2425, all of which indicate only modest charge separation rather than a strongly polar surface. The neutral fraction is 0.9704, which is very high and strongly favors passive BBB permeation because the molecule is predominantly neutral at physiological conditions. Hydrogen-bonding burden also looks light, with NH/OH group count at 0, which is favorable for BBB entry. The molecule has no acidic site, so strongest acidic pKa is not defined; that absence of an acidic group is generally helpful because strongly acidic functionality usually disfavors BBB penetration. Lactam is present (1), which can add polarity and is not inherently ideal for BBB permeation, but in this case the overall profile still appears controlled enough that it does not dominate the picture. QED drug-likeness is 0.4872, a middling value that does not by itself strongly favor BBB crossing, but it is not inconsistent with a brain-penetrant scaffold either. Overall, the combination of very high neutral fraction, low hydrogen-bond donor burden, and modest partial charges outweighs the moderate aromatic burden, so the molecule is more consistent with option (B): crosses the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly strong analog for BBB penetration because several of its features sit in a favorable CNS range and the query improves on them further. The query has a slightly less negative minimum partial charge than the neighbor, -0.28 versus -0.3198, with a delta of +0.0398, and that small shift is consistent with reduced polarity burden. The query also lacks the secondary aliphatic amine present in the neighbor, which is a helpful change because amines can add ionization liability. It likewise has lower hydrogen-bond donor burden, going from 1 donor in the neighbor to 0 in the query, which is favorable for BBB passage. The query’s estimated logD is also much higher, 4.865 versus 0.2565, a large increase that can support membrane permeability. Against that, the query has lower QED drug-likeness, 0.4872 versus 0.8542, and the note marks that direction as unfavorable for BBB crossing in this comparison. Overall, though, the charge, amine, donor, and logD changes make Neighbor 1 support option (B).
+
+Neighbor 2 is also aligned with the BBB-crossing class even though one descriptor cuts the other way. The query has a much higher neutral fraction, 0.9704 versus 0.4804, a large +0.49 shift that is exactly the kind of neutral-species enrichment that supports passive brain entry. The query also lacks a barbiturate, has an indoline once where the neighbor has none, and has a lactam once where the neighbor has none; those structural changes are all treated favorably in this local comparison. In addition, the query has fewer hydrogen-bond donors, 0 versus 1, which is beneficial in the BBB context because lower donor burden generally helps permeability. The main counterpoint is aromatic ring count: the query has 4 aromatic rings versus 1 in the neighbor, a +3 increase, and that is unfavorable because higher aromatic-ring burden can work against BBB penetration. Even with that penalty, the net comparison still favors option (B) because the neutral fraction and the other structural changes dominate.
+
+Neighbor 3 is a very close physicochemical analog and again favors BBB crossing. The query’s estimated logP is essentially the same as the neighbor’s, 4.8781 versus 4.8698, so there is no meaningful lipophilicity penalty there. The query has a much higher topological polar surface area, 46.09 versus 17.82, a +28.27 increase, and although lower TPSA is generally more favorable for BBB entry, this neighbor comparison still scores that shift as supportive of the query relative to the reference. The query also has a slightly less negative minimum partial charge, -0.28 versus -0.3428, and a slightly higher neutral fraction, 0.9704 versus 0.9669; both are small but directionally consistent with a more BBB-permeable profile. The only explicit structural counterweights are that the neighbor has 1H-indole while the query does not, whereas the query has indoline once while the neighbor does not. Even with that aromatic-heterocycle tradeoff, the overall analog evidence here still lands on option (B).
+
+Neighbor 4 is labeled among the non-crossing examples, but the detailed comparison still shows the query looking more BBB-like on several key points. The query has one more pyridine than the neighbor, 2 versus 1, which is treated favorably in this local setting. It also has a much heavier heavy-atom molecular weight, 370.306 versus 130.086, so size is clearly increased, yet the comparison still assigns that shift a favorable direction here. The query has one lactam while the neighbor has none, again counted favorably in the supplied comparison. The main features arguing against BBB crossing are the increase in aromatic ring count from 1 to 4 and the increase in aromatic heterocycle count from 1 to 2; both shifts add aromatic/heteroaromatic burden and are unfavorable for CNS penetration. Even so, the overall neighbor-level comparison is still closer to option (B) than to option (A), because the favorable changes outweigh the aromatic penalty in this specific analog pair.
+
+Neighbor 5 also sits in the non-crossing set, but it too supports the query as the more BBB-compatible molecule overall. The query lacks pyrazolidine, which is favorable here, and it has fewer pyridines than the neighbor in the sense described by the delta of +2, although that local feature is scored unfavorably in this comparison. The neutral fraction is the strongest favorable shift: the neighbor is very low at 0.0063, while the query is 0.9704, a +0.9641 increase that strongly supports BBB crossing because a larger neutral fraction should aid passive membrane transit. The query also has a slightly lower minimum partial charge, -0.28 versus -0.2717, and the note treats that as favorable. On acidity, the neighbor has a strongest acidic pKa of 5.1993 while the query has no acidic site, which is also favorable because removing acidic liability can help maintain neutral species at physiological pH. Finally, the query has much higher estimated logD, 4.865 versus 1.5844, which is consistent with greater ionization-aware lipophilicity and better permeability. Taken together, even though the pyridine change is unfavorable, the overall comparison still supports option (B).
+
+Neighbor 6 again favors BBB crossing overall, despite a few aromaticity-related penalties. The query has one more pyridine than the neighbor and also has a lactam where the neighbor does not, and both of those features are treated as favorable in this pair. The query has a lower fraction of sp3 carbons, 0.1154 versus 0.1667, which is unfavorable because it indicates a less saturated scaffold. It also has more aromatic ring burden, 4 versus 1, and more aromatic heterocycles, 2 versus 1; both of those changes are unfavorable for BBB penetration. However, the query has a higher rotatable-bond count, 5 versus 1, and in this comparison that shift is favorable because the local relationship indicates the query’s flexibility still aligns better with the BBB-crossing class than the reference does. So although the aromaticity increase and lower sp3 fraction are negatives, the overall neighbor remains supportive of option (B).
+
+When these six neighbors are considered together, the three BBB-crossing neighbors consistently favor the query through higher neutral fraction, lower donor burden, favorable charge shifts, and higher logD/lipophilicity, while the three non-crossing neighbors still contain several query features that move toward better brain penetration in their local analog context. The main recurring liabilities are the higher aromatic ring and aromatic heterocycle counts in some comparisons, but these are not enough to outweigh the stronger permeability-related signals. Taken as a whole, the neighborhood evidence supports option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

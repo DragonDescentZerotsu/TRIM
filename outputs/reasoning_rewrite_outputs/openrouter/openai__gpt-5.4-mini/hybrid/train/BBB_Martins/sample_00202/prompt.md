@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed BBB profile, with one favorable permeability feature but several strong liabilities. The presence of sugar pattern 2 beta (1) is a notable positive for BBB crossing, suggesting a structural element that can support recognition or transport-like behavior. However, this is outweighed by multiple polarity and ionization signals that are unfavorable for passive brain penetration. Hydroxy is present (1), which adds hydrogen-bonding polarity, and enol is present (1), which further increases polar functionality. The strongest acidic pKa is 4.0108, indicating an acidic site that is likely significantly ionized near physiological pH, and the neutral fraction is only 0.0004, meaning the compound is overwhelmingly ionized rather than neutral. Consistent with that, the NH/OH group count is 4 and the hydrogen-bond donor count is 4, both of which are relatively high for BBB permeability and imply substantial desolvation cost. The topological polar surface area is 107.22, which is above the commonly favored CNS range and is therefore unfavorable for BBB penetration. The maximum absolute partial charge is 0.4994, reflecting a fairly polar charge distribution that also does not favor passive membrane transit. Finally, the QED drug-likeness value is 0.4116, which is only moderate and does not compensate for the high polarity burden. Overall, despite the favorable sugar pattern 2 beta (1), the combination of hydroxy (1), enol (1), strongest acidic pKa 4.0108, NH/OH group count 4, TPSA 107.22, neutral fraction 0.0004, maximum absolute partial charge 0.4994, and hydrogen-bond donor count 4 supports a prediction that the molecule does not cross the BBB.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive analog overall. It shares the same BBB-favorable direction on several lipophilicity/shape-related features, including the absence of 3 copies of alkyl chloride in the query relative to the neighbor (query-minus-neighbor delta -3), which is one of the strongest shifts in this comparison and aligns with the BBB+ side. The query also has sugar pattern 2 beta once while the neighbor has none (delta +1), which again favors the BBB-crossing side in this pair. Against that, the query is more polar: NH/OH group count rises from 3 in the neighbor to 4 in the query (delta +1), and TPSA increases from 88.38 to 107.22 Å² (delta +18.84), moving beyond the commonly favorable BBB region and making passive entry less likely. The query is also more negative in estimated logP, from -0.4629 down to -1.4074 (delta -0.9445), which is less supportive of membrane permeation even though the neighbor comparison scored it favorably in that local context. Fraction of sp3 carbons drops from 1 to 0.5 (delta -0.5), which is another favorable shape-related shift for this specific analog pair. So Neighbor 1 contains both BBB-favorable and BBB-unfavorable signals, but the positive features, especially the alkyl chloride and sugar-pattern differences, keep it on the BBB-crossing side.
+
+Neighbor 2 is also a positive analog, but it is more conflicted. The query again has sugar pattern 2 beta once while the neighbor has none (delta +1), which is favorable for BBB crossing in the local comparison. However, the query’s TPSA is much higher: 107.22 versus 55.76 for the neighbor (delta +51.46), and that moves the query away from the lower TPSA region that is usually more compatible with BBB penetration. The NH/OH group count also rises sharply from 1 to 4 (delta +3), adding donor burden and polarity. The neutral fraction is especially notable: the neighbor is fully neutral, whereas the query has a neutral fraction of 0.0004 (delta -0.9996), indicating very little neutral species available for passive diffusion. The query also has hydroxy once while the neighbor has none (delta +1), which further hurts BBB compatibility. The only other feature here, maximum absolute partial charge, changes only slightly from 0.4967 to 0.4994 (delta +0.0026), and that small shift is comparatively minor. Even though the polarity features are unfavorable, the local analog evidence still keeps Neighbor 2 on the BBB-crossing side overall because of the sugar-pattern similarity signal.
+
+Neighbor 3 follows the same broad pattern as the other positive neighbors, but again with substantial polarity penalties. The query has sugar pattern 2 beta once while the neighbor has none (delta +1), which is favorable in this local pairing. At the same time, TPSA climbs from 49.77 in the neighbor to 107.22 in the query (delta +57.45), pushing the query well above the more BBB-permissive PSA region. NH/OH group count increases from 1 to 4 (delta +3), adding donor burden. The query’s estimated logP is lower than the neighbor’s, dropping from 1.3125 to -1.4074 (delta -2.7199), which moves away from the moderate lipophilicity range usually associated with BBB penetration. Neutral fraction also falls from a fully neutral neighbor to the query’s 0.0004 (delta -0.9996), again unfavorable for passive entry. The query additionally has hydroxy once while the neighbor has none (delta +1), reinforcing the polarity penalty. Even so, the sugar-pattern match remains a consistent positive analog cue, so Neighbor 3 is still aligned with the BBB-crossing class overall.
+
+Neighbor 4 is one of the negative analogs, yet its local comparison still contains mixed evidence. The query has sugar pattern 2 beta once while the neighbor has none (delta +1), and the query’s estimated logP is much lower, from 2.3433 down to -1.4074 (delta -3.7507), which in isolation would usually move away from BBB crossing because it leaves the molecule too lipophilic on the neighbor side and much less lipophilic in the query. However, the neighbor is extremely polar by PSA: 332.4 Å² versus 107.22 Å² in the query (delta -225.18), so the query is far less extreme than the neighbor, although still not in the ideal BBB range. The query also has enol once while the neighbor has none (delta +1), and it has hydroxy once while the neighbor has none (delta +1); both changes were treated as unfavorable for BBB crossing in this local pair. Maximum partial charge shifts only slightly, from 0.3292 to 0.3252 (delta -0.004), which is a minor effect compared with the polar-functional changes. Taken together, Neighbor 4 is a negative-class analog because the query retains BBB-limiting polar functionality despite being much less extreme than the neighbor on TPSA.
+
+Neighbor 5 is another negative analog with a similar split. The query has sugar pattern 2 beta once while the neighbor has none (delta +1), which is favorable for BBB crossing in isolation. The neighbor’s TPSA is 104.55 and the query’s is 107.22 (delta +2.67), so the query is slightly more polar than this neighbor and remains in a relatively unfavorable PSA region for BBB entry. The neighbor has uracil while the query does not (delta -1), which is favorable for BBB crossing in this local comparison. But the query also has one more hydrogen-bond donor than the neighbor, rising from 3 to 4 (delta +1), and that extra donor burden is unfavorable for BBB permeability. The query has enol once while the neighbor has none (delta +1), again an unfavorable shift, and maximum partial charge changes only marginally from 0.3301 to 0.3252 (delta -0.005), which does not offset the polar penalties. So although there are a couple of favorable structural differences, Neighbor 5 still sits in the non-crossing class because the donor and polarity profile is too burdensome.
+
+Neighbor 6 is the last negative analog, but it also shows why the query can separate from a non-crossing scaffold. The query has sugar pattern 2 beta once while the neighbor has none (delta +1), and the query’s estimated logP is much lower, from 0.9181 to -1.4074 (delta -2.3255), which is a major shift away from the neighbor’s more lipophilic state. The query is also much lighter: heavy-atom molecular weight falls from 282.19 to 168.06 (delta -114.13), which is a strong size reduction and generally consistent with better permeability. At the same time, the neighbor has ring count 4 while the query has ring count 1 (delta -3), and the query’s QED drug-likeness is lower, from 0.6618 to 0.4116 (delta -0.2502); these two changes were unfavorable in the local comparison. The query also has enol once while the neighbor has none (delta +1), which is another negative feature in this pair. Even with those drawbacks, the much lower heavy-atom molecular weight and lower logP make the query meaningfully less like this non-BBB neighbor, so Neighbor 6 remains a negative analog overall.
+
+Putting the six neighbors together, the three positive neighbors consistently share the sugar pattern 2 beta with the query, and although they also reveal that the query is quite polar with TPSA 107.22 Å², NH/OH count 4, and very low neutral fraction 0.0004, their combined local evidence still leans toward BBB crossing. The three negative neighbors are less similar in polarity and size: one is far more polar and much larger, another differs by uracil and donor/enol features, and the third differs strongly in heavy-atom molecular weight and ring count. Overall, the analog set supports the idea that the query is more consistent with the BBB-crossing class than with the non-crossing class, so the final prediction is option (B): crosses the BBB.
+
+Input 3. Target final label semantics
+option (B): crosses the BBB
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

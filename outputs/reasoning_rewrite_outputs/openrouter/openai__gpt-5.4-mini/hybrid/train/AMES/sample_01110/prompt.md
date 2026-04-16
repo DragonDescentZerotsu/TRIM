@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a trifluoromethyl group, with value 1, which by itself is not a classic Ames mutagenicity alert and can sometimes be associated with lower apparent bioavailability. However, it also contains a primary aromatic amine, value 1, which is a well-recognized mutagenic toxicophore and raises concern for bacterial DNA reactivity after metabolic activation. The ring count is 1, a relatively simple scaffold that does not by itself suggest a polycyclic aromatic mutagenic system, and the aromatic ring count is also 1, so there is no strong fused polycyclic aromatic pattern here. The strongest acidic pKa is 13.7388, indicating a very weakly acidic site that will be largely neutral under typical assay conditions, and the number of basic sites is 1, consistent with the presence of one ionizable basic nitrogen that could help bacterial uptake. On the exposure side, the hydrogen-bond acceptor count is 1 and the topological polar surface area is 26.02, both relatively low, which is compatible with reasonable permeability; the Labute surface area is 61.6328, also not especially large. The neutral fraction is 0.9992, so the molecule is overwhelmingly neutral at the configured pH, which supports passive uptake rather than limiting exposure through ionization. Taken together, there is a tension between the mutagenic concern from the primary aromatic amine and the generally compact, low-polarity profile, but the overall pattern is more consistent with a non-mutagenic outcome, so the final prediction is option (A): is not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive neighbor, but several differences make the query look less like that mutagenic example. The query has a much lower minimum absolute partial charge, 0.3987 versus 0.0319 in the neighbor, with delta +0.3668, and that feature here was associated with a shift toward not mutagenic. The query also contains trifluoromethyl once while the neighbor has none, another difference that favors not mutagenic. The query is lower in strongest basic pKa, 4.2923 versus 4.9402, with delta -0.6479, which in this comparison leans toward mutagenic, but that signal is outweighed by the query’s smaller ring count (1 vs 2), lower hydrogen-bond acceptor count (1 vs 2), and much lower topological polar surface area (26.02 vs 52.04, delta -26.02), all of which here align more with the not-mutagenic side. Overall, Neighbor 1 supports option (A) more than option (B).
+
+Neighbor 2 is also a positive neighbor and again the query differs in ways that mostly reduce similarity to the mutagenic example. Both molecules have trifluoromethyl, so that feature does not separate them, but the neighbor is much more hydrophobic, with estimated logP 5.984 versus 2.2876 and estimated logD 5.9688 versus 2.2873; the large negative deltas on the query side (-3.6964 for logP and -3.6815 for logD) both favor not mutagenic in this local comparison. The query also has a lower aromatic ring count, 1 versus 3, which reduces resemblance to the more aromatic mutagenic neighbor. Two features do lean the other way: the query has a higher minimum absolute partial charge, 0.3987 versus 0.2812, and a much smaller heavy-atom count, 11 versus 26, with deltas of +0.1175 and -15, respectively, both of which in this comparison were linked to mutagenic direction. But because the neighbor’s high logP/logD and larger aromatic framework are so different from the query, the overall local comparison still tilts to option (A).
+
+Neighbor 3 is the third positive neighbor and shows a mixed pattern, but the not-mutagenic side still dominates. The query has a higher maximum partial charge, 0.416 versus 0.1941, with delta +0.2219, which here leans not mutagenic. The query also lacks the two ketone groups present in the neighbor, and it has trifluoromethyl once while the neighbor has none; both of those changes favor not mutagenic in this pair. Against that, the query has a higher minimum absolute partial charge, 0.3987 versus 0.1941, and a slightly higher strongest basic pKa, 4.2923 versus 4.048, with deltas +0.2046 and +0.2443, both of which lean mutagenic. The query also has fewer hydrogen-bond acceptors, 1 versus 3, which again favors not mutagenic. Taken together, Neighbor 3 still aligns more with option (A) than option (B).
+
+Neighbor 4 is a negative neighbor, and the query differs from it in a way that cuts both directions. The query and neighbor both have trifluoromethyl, so that does not separate them, but the query additionally has a primary aromatic amine while the neighbor does not, and that is a classic mutagenic toxicophore signal in the local comparison. At the same time, the query has a smaller ring count, 1 versus 2, which here favors not mutagenic, and it has a much smaller Labute surface area, 61.6328 versus 112.2206, a large negative delta of -50.5878 that in this comparison was associated with mutagenic direction. The query also lacks the neighbor’s secondary aromatic amine and has fewer hydrogen-bond acceptors, 1 versus 2, both of which favor not mutagenic. Even though the aromatic amine and surface-area changes are concerning, the overall pattern is still closer to the not-mutagenic side than to a strongly mutagenic analogue.
+
+Neighbor 5 is another negative neighbor, but this one actually gives a clearer mutagenic signal relative to the query. The query has trifluoromethyl once while the neighbor has none, and the query’s ring count is lower, 1 versus 2, both favoring not mutagenic. However, the query and neighbor both have primary aromatic amine, and that shared toxicophoric feature matters. The query also has a much smaller Labute surface area, 61.6328 versus 115.3284, a large negative delta that here leans mutagenic, and the query’s strongest basic pKa is lower, 4.2923 versus 4.8205, which also favors mutagenic in this local setting. The strongest acidic pKa is almost unchanged, 13.7388 versus 13.7681, and that tiny decrease also points mutagenic here. So Neighbor 5 is the most concerning negative neighbor and supports option (B) locally.
+
+Neighbor 6 is the last negative neighbor and again contains a mixture of opposing signals. The query has trifluoromethyl once while the neighbor has none, and the query has fewer rings, 1 versus 4, and lower estimated logP, 2.2876 versus 5.852; all of those changes favor not mutagenic and fit a less bulky, less hydrophobic profile. But the neighbor has two primary aromatic amines while the query has one, which favors mutagenic in this comparison, and the query’s strongest basic pKa is lower, 4.2923 versus 4.9595, which also leans mutagenic. The strongest acidic pKa changes only slightly, 13.7388 versus 13.8029, but that small decrease again follows the mutagenic direction here. Even with those mutagenic-leaning features, the substantial reduction in ring count and hydrophobicity keeps the query closer to a not-mutagenic analogue than to this highly aromatic, more basic neighbor.
+
+Putting the six comparisons together, the three positive neighbors are all best explained by the query being less similar to the mutagenic examples on the whole, especially because of lower ring burden, lower polar surface area or hydrophobicity in some cases, and the absence of some heavy structural features seen in those neighbors. Among the three negative neighbors, one is clearly concerning because of the shared primary aromatic amine plus lower Labute surface area and lower pKa values, and another also has mutagenic-leaning aromatic-amine and pKa signals. Even so, the query’s overall profile is still closer to the not-mutagenic side: it is smaller, less aromatic, and less hydrophobic than the strongest mutagenic analogues, while the main mutagenic warning signs are not consistently reinforced across all six comparisons. The balance therefore supports option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

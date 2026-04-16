@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed profile for CYP3A4 substrate behavior. Hydantoin is present (1), and that strongly favors non-substrate behavior because it is a polar, heteroatom-rich motif that can reduce passive permeability. At the same time, nitro is present (1), which adds polarity but can also be found in compounds that still reach CYP3A4, so it is only a weak positive signal for substrate-like behavior. The estimated logD of 2.3894 is in a moderately lipophilic range, which is compatible with membrane exposure and therefore supports substrate potential. Trifluoromethyl is present (1), adding hydrophobic character and often improving the ability of a molecule to access metabolic environments, again leaning toward substrate behavior. The neutral fraction of 0.8729 is fairly high, suggesting the molecule is mostly uncharged at physiological pH and therefore more permeable than a strongly ionized compound. However, the strongest acidic pKa of 8.237 indicates an acidic site that is not far from physiological conditions, so some ionization remains plausible and this slightly weakens the substrate case. The heteroatom count of 10 and the topological polar surface area of 92.55 both point to substantial polarity, which can limit passive permeability and make enzyme access less favorable. The saturated heterocycle count of 1 and the ring count of 2 are relatively modest and do not by themselves create a strong permeability burden, but they also do not offset the polarity coming from the heteroatoms and polar functional groups. Overall, the structure has enough lipophilicity and neutral character to be accessible, but the hydantoin core together with the polar heteroatom-rich composition and TPSA of 92.55 provide stronger evidence against efficient CYP3A4 substrate behavior. The balance therefore favors option (A): is not a substrate to the enzyme CYP3A4.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close analog with mixed but mostly unfavorable evidence. The query has hydantoin once while the neighbor does not, and that added hydantoin is associated here with a strong shift toward non-substrate behavior. The query and neighbor are identical for maximum partial charge at 0.4226, so there is no separation there. The query lacks the neighbor’s secondary amide, which is one of the few features in this comparison that favors substrate behavior. However, the query also has no basic site while the neighbor has a strongest basic pKa of 3.4954, and that absence of a basic center is treated unfavorably in this pair. The query’s estimated logD is lower than the neighbor’s, 2.3894 versus 3.208 with delta -0.8186, and in this comparison that lower hydrophobicity is favorable for substrate behavior. Even so, the query also has lower QED drug-likeness, 0.5149 versus 0.6802 with delta -0.1652, which weakens the substrate case. Overall, the hydantoin difference, the no-basic-site situation, and the lower QED outweigh the smaller favorable logD and secondary-amide contrast, so Neighbor 1 supports the non-substrate label.
+
+Neighbor 2 is also mostly consistent with non-substrate behavior. Again, the query has hydantoin once while the neighbor does not, and that is a strong unfavorable difference for substrate status. The neighbor contains a lactam and an imine, both absent from the query; those differences each also weigh toward non-substrate behavior here. The query’s maximum partial charge is higher, 0.4226 versus 0.2698 with delta +0.1528, and that higher charge density is unfavorable in this comparison. The neighbor has a strongest basic pKa of 3.8212 while the query has no basic site, which again works against a substrate call. The only feature favoring substrate behavior is estimated logD: the query is slightly lower at 2.3894 versus 2.5476, delta -0.1582. But that small hydrophobicity advantage is not enough to offset the cluster of unfavorable structural and ionization differences. Neighbor 2 therefore reinforces the non-substrate assignment.
+
+Neighbor 3 gives a somewhat more balanced comparison, but it still ends up favoring non-substrate behavior overall. The same hydantoin mismatch is present, with the query having one hydantoin and the neighbor none, and that remains a strong unfavorable feature for substrate status. On the favorable side, the neighbor has two carboxylic ester groups while the query has none, and the query also has slightly higher fraction of sp3 carbons, 0.3333 versus 0.2941 with delta +0.0392, which supports substrate behavior in this local comparison. The query also has a higher maximum partial charge, 0.4226 versus 0.336 with delta +0.0866, again favoring substrate behavior here. Against that, the query has one saturated heterocycle while the neighbor has none, and that added saturated heterocycle is unfavorable in this pairing. The query’s topological polar surface area is lower, 92.55 versus 107.77 with delta -15.22, and that lower polarity is favorable for substrate accessibility. Even with those favorable polarity and saturation signals, the persistent hydantoin effect and the added saturated heterocycle keep the overall analog evidence leaning toward non-substrate behavior.
+
+Neighbor 4 is a negative neighbor and it is clearly aligned with the non-substrate label. The query has hydantoin once while the neighbor does not, and that is again a strong unfavorable distinction. Both molecules have nitro, so that feature does not separate them. The query’s maximum partial charge is higher, 0.4226 versus 0.3367 with delta +0.0859, which in this comparison favors non-substrate behavior. The query also has higher estimated logD, 2.3894 versus 2.1348 with delta +0.2546, which favors substrate behavior, but only modestly. More importantly, the query has one saturated ring while the neighbor has none, and that added saturated ring is unfavorable here. The query’s neutral fraction is lower, 0.8729 versus the neighbor being present as 1, with delta -0.1271, and that lower neutral fraction also weighs against substrate behavior. Taken together, the hydantoin difference, the extra saturated ring, and the lower neutral fraction dominate the modest logD advantage, so Neighbor 4 is consistent with the non-substrate class.
+
+Neighbor 5 is another negative neighbor that still points to the same conclusion. Both the query and the neighbor have hydantoin, so hydantoin no longer separates them here. The query’s maximum partial charge is higher, 0.4226 versus 0.3245 with delta +0.098, which again is unfavorable in this local comparison. On the other hand, the query has a much higher estimated logD, 2.3894 versus 1.427 with delta +0.9624, which favors substrate behavior quite strongly. The query also has nitro while the neighbor does not, and that difference favors substrate behavior in this pair. But the query’s neutral fraction is lower, 0.8729 versus 0.8985 with delta -0.0256, and the query and neighbor have the same fraction of sp3 carbons at 0.3333, so there is no gain from saturation there. Even with the favorable logD and nitro differences, the lower neutral fraction and higher maximum partial charge keep this comparison from supporting a substrate call, so Neighbor 5 still fits better with the non-substrate label.
+
+Neighbor 6 is the strongest of the negative neighbors for non-substrate behavior. The query has hydantoin once while the neighbor does not, which is an unfavorable distinction again. The query’s maximum partial charge is higher, 0.4226 versus 0.2689 with delta +0.1536, and that strongly disfavors substrate behavior in this comparison. Both molecules have nitro, so there is no difference there. The neighbor has two alkyl chloride groups while the query has none, and that absence in the query is favorable for substrate behavior. The query’s estimated logD is much higher, 2.3894 versus 0.9089 with delta +1.4805, which strongly favors substrate behavior. But the query also has one saturated ring while the neighbor has none, and that extra saturated ring is unfavorable. As with the other comparisons, the hydantoin and charge-related differences, plus the added saturated ring, outweigh the favorable hydrophobicity and alkyl-chloride contrast. Neighbor 6 therefore remains on the non-substrate side.
+
+Putting all six neighbors together, the three positive neighbors and the three negative neighbors are not giving a uniformly substrate-like picture. Several comparisons repeatedly penalize the query for having hydantoin, a higher maximum partial charge, lower neutral fraction in some cases, and added saturated or heterocyclic features. Although the query does show some substrate-favoring signals such as higher estimated logD in several comparisons, lower TPSA versus Neighbor 3, and the absence of certain polar or imine/lactam features seen in some neighbors, those advantages are not enough to overcome the repeated non-substrate-associated structural and ionization pattern centered on hydantoin and charge/polarity effects. The combined neighbor evidence therefore matches the final label: the query is not a substrate to CYP3A4.
+
+Input 3. Target final label semantics
+option (A): is not a substrate to the enzyme CYP3A4
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

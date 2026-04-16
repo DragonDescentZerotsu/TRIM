@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a phosphoric monoesterdiamide, which is a notable heteroatom-rich, ionizable functionality and can be associated with mutagenic liability in a broader structural context. It also has three alkyl chloride groups, a feature that raises concern because alkyl halides are classic electrophilic motifs and can contribute to direct DNA reactivity. In addition, the heteroatom count is 8, which indicates a fairly heteroatom-rich scaffold and is consistent with a polar, functionalized structure. There is only one sp3 carbon fractionally represented by a fraction of sp3 carbons value of 1, so the molecule is not especially saturated overall, and that relatively flat character can fit with structures that show mutagenic risk. The ring count is 1, which is modest and by itself does not suggest a large polycyclic aromatic system, and the aromatic ring count is 0, so there is no obvious fused aromatic toxicophore signal from aromaticity alone. The neutral fraction is 0.9954, meaning the molecule is predominantly neutral at the configured pH, which can support passive bacterial exposure. The estimated logP is 2.8352, a moderate lipophilicity that should not severely limit uptake. The strongest basic pKa is 5.0655, indicating a weakly basic site rather than a strongly protonated amine, but it still reflects ionizable functionality that may influence bacterial handling. The saturated heterocycle count is 1, adding one non-aromatic ring system to the scaffold, though this alone is not protective. Overall, despite a few features that could reduce concern, the electrophilic alkyl chloride pattern together with the heteroatom-rich, ionizable scaffold and the neutral state at assay pH make the molecule more consistent with a mutagenic outcome. The balance of evidence favors option (B), is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly strong mutagenic analog despite one countervailing charge feature. Relative to the neighbor, the query has one more alkyl chloride site (3 vs 2, delta +1), and it also has phosphoric monoesterdiamide once while the neighbor has none, both of which align with the mutagenic side of the comparison. The query also differs by having phosphonic acid derivative absent where the neighbor has 3 copies, and by having slightly higher heteroatom count (8 vs 7, delta +1), which is still consistent with the same overall direction here. The strongest basic pKa is also a little lower in the query (5.0655 vs 5.5005, delta -0.435), but the largest partial charge is higher in the query (0.3457 vs 0.2872, delta +0.0585), and that particular shift works against mutagenicity. Even so, the combination of added alkyl chloride functionality and the phosphoric monoesterdiamide feature leaves this neighbor overall more similar to a mutagenic structure than to a non-mutagenic one.
+
+Neighbor 2 also supports the mutagenic label overall, even though it mixes in some features that would normally cut the other way. The query again has one more alkyl chloride than the neighbor (3 vs 2, delta +1) and has phosphoric monoesterdiamide once where the neighbor has none, both favoring mutagenicity in this local comparison. The strongest basic pKa is nearly the same but slightly lower in the query (5.0655 vs 5.111, delta -0.0455), while the maximum partial charge is lower in the query (0.3457 vs 0.4086, delta -0.0629), which is unfavorable for the mutagenic side in this pair. The query also has a fully saturated carbon framework here, with fraction of sp3 carbons higher than the neighbor (1.0 vs 0.8571, delta +0.1429), and in this comparison that higher sp3 fraction works against mutagenicity. Even with those counterweights, the two structural additions tied to alkyl chloride and phosphoric monoesterdiamide keep the overall neighbor match on the mutagenic side.
+
+Neighbor 3 is even more clearly aligned with mutagenicity. The query retains the extra alkyl chloride pattern (3 vs 2, delta +1) and the phosphoric monoesterdiamide present in the query but absent in the neighbor, both of which favor the mutagenic class here. In addition, the neighbor contains phosphoric diamide while the query does not, so the query-minus-neighbor delta is -1 for that feature, and in this local comparison that difference still supports the mutagenic side. The strongest basic pKa is higher in the query (5.0655 vs 4.7667, delta +0.2988), and the heteroatom count is also higher in the query (8 vs 7, delta +1); both of those shifts align with the mutagenic direction in this pair. The only clear opposing feature is the maximum partial charge, which is slightly higher in the query (0.3457 vs 0.3378, delta +0.0079) and therefore works against mutagenicity here. Even so, the set of added chlorides, the phosphoric monoesterdiamide, and the higher basic pKa and heteroatom count make this a strong mutagenic neighbor.
+
+Neighbor 4 is labeled non-mutagenic, but the direct comparison still mostly points toward mutagenicity for the query rather than away from it. The query has phosphoric monoesterdiamide once while the neighbor has none, and the alkyl chloride count is the same at 3 in both molecules, so the main structural difference is the added monoesterdiamide feature in the query. The strongest basic pKa is lower in the query (5.0655 vs 5.3018, delta -0.2363), which is a modest counterpoint, and the query also has a much higher heteroatom count (8 vs 4, delta +4), again leaning toward the mutagenic side in this local match. Two features do point away from mutagenicity: the fraction of sp3 carbons is unchanged at 1.0, but that equality is associated with a negative shift in this comparison, and the minimum absolute partial charge is much higher in the query (0.3058 vs 0.0351, delta +0.2707), which also works against the mutagenic side. Even with those offsets, the presence of phosphoric monoesterdiamide and the much larger heteroatom burden make the query resemble the mutagenic class more than this non-mutagenic neighbor.
+
+Neighbor 5 is another non-mutagenic neighbor, but it still matches the query in a way that keeps the overall balance on the mutagenic side. The query has many more alkyl chloride groups than the neighbor (3 vs 0, delta +3) and also has phosphoric monoesterdiamide once where the neighbor has none, both of which are strong mutagenic-aligned features in this comparison. The neighbor additionally has lactone and oxepane, both absent from the query, and those missing ring features also favor the mutagenic side here. The query has a much higher heavy-atom molecular weight (305.444 vs 104.064, delta +201.38), which in this local comparison still tracks with the mutagenic direction. The main opposing feature is fraction of sp3 carbons: the query is fully sp3 (1.0 vs 0.8333, delta +0.1667), and that higher saturation works against mutagenicity here. But the strong gains in alkyl chloride count, the phosphoric monoesterdiamide, and the size difference still make this neighbor supportive of the final mutagenic call.
+
+Neighbor 6, despite being a non-mutagenic neighbor, also compares in a way that favors the mutagenic label for the query. The query again has phosphoric monoesterdiamide once while the neighbor has none, and it has one more alkyl chloride group than the neighbor (3 vs 2, delta +1). The query also has a much higher fraction of sp3 carbons than the neighbor (1.0 vs 0.4545, delta +0.5455), a higher strongest basic pKa (5.0655 vs 4.7553, delta +0.3102), and a much higher heteroatom count (8 vs 3, delta +5); in this specific comparison all of those shifts are aligned with the mutagenic side. The only feature that goes the other way is neutral fraction, which is slightly lower in the query (0.9954 vs 0.9977, delta -0.0023), but that difference is tiny and does not outweigh the broader structural shifts. Taken together, the query looks substantially closer to the mutagenic profile than to this neighbor’s non-mutagenic profile.
+
+Across all six neighbors, the same pattern repeats: the query consistently carries more alkyl chloride functionality and the phosphoric monoesterdiamide feature, and it often also shows higher heteroatom burden and related size/ionization differences that, in these local comparisons, line up with mutagenicity. A few features such as higher partial charge, higher sp3 fraction, or a slightly lower basic pKa sometimes work against that conclusion, but they are not strong enough to overcome the repeated mutagenic-leaning structural differences. With three mutagenic neighbors and three non-mutagenic neighbors all still comparing in a way that favors the mutagenic side overall, the most defensible final prediction is option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

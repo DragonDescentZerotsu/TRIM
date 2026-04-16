@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that can support oral exposure, but also some that work against it. A trifluoromethyl group count of 2 suggests added lipophilicity and often helps membrane partitioning, which is favorable for oral bioavailability. The presence of quinoline as 1 aromatic heterocycle is also consistent with a drug-like scaffold, and the QED drug-likeness value of 0.7594 is fairly strong, supporting an overall favorable oral profile. The neutral fraction of 0.0225 is low but still nonzero, so there is at least some neutral population available for passive permeation. The estimated logD of 2.7995 sits near a generally workable lipophilicity range, and the Labute surface area of 144.5837 is not obviously extreme, which is compatible with a candidate that can still be orally absorbed.
+
+At the same time, there are clear liabilities. Piperidine is present at 1, which often means a strongly basic, ionizable center that can reduce passive permeability when predominantly protonated. Secondary hydroxyl is present at 1, adding polarity and hydrogen-bonding capacity that can further hinder absorption. The maximum partial charge of 0.4329 and minimum absolute partial charge of 0.3868 both indicate notable charge localization, again suggesting a polar, ionizable character that can work against permeability. Although the lipophilicity is not poor, the balance is not ideal because the molecule combines a fairly lipophilic aromatic scaffold with a basic amine and a hydroxyl group, which can limit the fraction that crosses membranes efficiently.
+
+Overall, the favorable drug-likeness, the quinoline scaffold, the trifluoromethyl substitution, and the workable logD are enough to outweigh the polarity penalties, so the molecule is better classified as having oral bioavailability ≥ 20%.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is overall supportive of oral bioavailability ≥ 20% even though it contains a couple of opposing signals. The query has benzofuran absent in the neighbor, and that absence is associated here with a negative shift (query-minus-neighbor delta -1), which leans against the low-bioavailability class. More importantly, the query also has higher heteroatom count, 9 versus 3 in the neighbor (delta +6), and a slightly higher neutral fraction, 0.0225 versus 0.0114 (delta +0.0111); both changes are favorable because they reduce the likelihood that the molecule is trapped in a strongly polar or fully ionized state. The query additionally has 2 trifluoromethyl groups versus 0 in the neighbor (delta +2), another favorable difference in this comparison. The main counterweight is estimated logD: the query is higher, 2.7995 versus 1.4718 (delta +1.3277), and in this pair that higher lipophilicity signal works against the ≥ 20% class, but the stronger positive signals still dominate overall.
+
+Neighbor 2 is also supportive of the ≥ 20% class. The query has one secondary hydroxyl while the neighbor has none, which is unfavorable in this pair (delta +1), but several other changes are favorable and more influential. The query’s topological polar surface area is 45.15 versus 12.03 in the neighbor (delta +33.12), which is still within a moderate range rather than an extreme one, and in this comparison that increase aligns with better oral exposure. The neutral fraction is also higher, 0.0225 versus 0.0088 (delta +0.0137), again favoring the higher-bioavailability class. QED drug-likeness is lower in the query, 0.7594 versus 0.8384 (delta -0.0789), but that remains a fairly drug-like value and still contributes positively in this specific pairing. The query also has more basic sites, 2 versus 1 (delta +1), which is favorable here. The main opposing factor is estimated logD, 2.7995 versus 1.1916 (delta +1.6079), and that higher lipophilicity signal works against the ≥ 20% class in this local comparison, but the net effect still supports the higher-bioavailability label.
+
+Neighbor 3 gives a very similar picture to Neighbor 1. The query again has a much higher heteroatom count, 9 versus 3 (delta +6), and a higher neutral fraction, 0.0225 versus 0.0103 (delta +0.0122), both of which favor the ≥ 20% class in this pair. The query also carries 2 trifluoromethyl groups while the neighbor has none (delta +2), another favorable change. As before, the shared secondary hydroxyl is neutral in count terms but is assigned a negative local effect in this comparison, and estimated logD is again the main counterbalance: 2.7995 in the query versus 1.4844 in the neighbor (delta +1.3151), which works against the ≥ 20% class here. The query’s lower QED, 0.7594 versus 0.843 (delta -0.0835), still remains in a reasonable drug-like zone and favors the higher-bioavailability side in this matchup. Taken together, the favorable polarity/neutral-fraction and trifluoromethyl differences outweigh the logD penalty.
+
+Neighbor 4 is more mixed but still ends up favoring the ≥ 20% class overall. The query has higher QED, 0.7594 versus 0.5224 (delta +0.237), which is a strong positive sign in this comparison, and it also has one more trifluoromethyl group, 2 versus 1 (delta +1), further favoring the higher-bioavailability side. The query’s topological polar surface area is 45.15 versus 12.03 (delta +33.12), which again is compatible with the higher class in this local context, and the estimated logP is lower, 4.4479 versus 6.142 (delta -1.6941), which is favorable because the neighbor’s logP is quite high. The two clear liabilities are that the query has piperidine while the neighbor does not (delta +1), and the query has secondary hydroxyl while the neighbor does not (delta +1); both of those differences are assigned negative effects in this pair. Even with those liabilities, the stronger QED, trifluoromethyl, TPSA, and lower-logP signals keep this neighbor aligned with the ≥ 20% class.
+
+Neighbor 5 is likewise supportive of oral bioavailability ≥ 20%, though it contains a few opposing structural differences. The query’s QED is much higher, 0.7594 versus 0.5752 (delta +0.1842), which is a strong favorable signal. The query also has 2 trifluoromethyl groups while the neighbor has none (delta +2), and the neutral fraction is much lower in the neighbor, 0.1628 versus 0.0225 for the query (delta -0.1403), which makes the query look more favorable for the higher-bioavailability class. On the other hand, the query has piperidine and the neighbor does not (delta +1), the query has a higher fraction of sp3 carbons, 0.4706 versus 0.25 (delta +0.2206), and the shared secondary hydroxyl again carries a negative local effect in this pair. Those latter two features are not helpful in this exact comparison, but the overall balance still favors the query because the QED gain, the trifluoromethyl increase, and the much lower neutral fraction in the query outweigh the liabilities.
+
+Neighbor 6 also points toward the ≥ 20% class. The query has 2 trifluoromethyl groups versus 0 in the neighbor (delta +2), which is favorable. The neighbor has a tertiary hydroxyl while the query does not (delta -1), and that difference is unfavorable for the low-bioavailability side here. The shared secondary hydroxyl again is associated with a negative local effect, but the query also has a slightly lower strongest acidic pKa, 12.6743 versus 13.2496 (delta -0.5753), which is favorable in this matchup, along with higher QED, 0.7594 versus 0.3969 (delta +0.3625). The query’s estimated logP is lower than the neighbor’s, 4.4479 versus 6.4458 (delta -1.9979), and that lower lipophilicity is beneficial relative to the very high-logP neighbor. These combined effects make this neighbor clearly more consistent with the ≥ 20% class.
+
+Across all six neighbors, the positive-neighbor comparisons and the negative-neighbor comparisons both end up favoring the same label for the query: oral bioavailability ≥ 20%. The most repeated favorable themes are higher neutral fraction, better QED, lower or more balanced lipophilicity relative to extreme high-logD/high-logP neighbors, and the presence of 2 trifluoromethyl groups. The recurring liabilities are the secondary hydroxyl signal, occasional piperidine/tertiary hydroxyl differences, and the fact that the query’s logD is still on the higher side in some of the positive-neighbor comparisons. Even so, the consistent pattern across the six local analogs supports option (B) as the final prediction.
+
+Input 3. Target final label semantics
+option (B): has oral bioavailability ≥ 20%
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

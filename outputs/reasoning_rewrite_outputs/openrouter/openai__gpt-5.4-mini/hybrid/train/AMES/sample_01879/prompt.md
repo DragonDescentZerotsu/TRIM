@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The presence of an acyl chloride (1) is a strong mutagenicity alert because acyl chlorides are highly reactive electrophiles and can alkylate biological nucleophiles. That alone makes a mutagenic outcome plausible. Several other descriptors are also consistent with effective bacterial exposure: the heavy-atom count is 6, which is very small, the Labute surface area is 42.2989, and the exact molecular weight is 106.0185, all of which suggest a compact molecule that should not be severely limited by size. The estimated logP is 1.5519, a moderate lipophilicity that is compatible with membrane passage, and the topological polar surface area is only 17.07, which is quite low and again supports permeability. At the same time, some properties lean the other way: fraction of sp3 carbons is 0.75, indicating a fairly saturated, less aromatic structure, the ring count is 0, and the heteroatom count is only 2. The hydrogen-bond acceptor count is 1, also modest. These latter features do not resemble the highly aromatic, planar, or heavily heteroatom-rich patterns often associated with mutagenic alerts. Even so, the dominant chemical concern here is the acyl chloride functionality, and the overall profile still favors mutagenicity. The final prediction is option (B): is mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly strong mutagenic analog despite a few offsetting factors. The key shared feature is acyl chloride, which is a classic reactive toxicophore and on its own supports the mutagenic side of the comparison. Against that, the query has a much higher fraction of sp3 carbons than the neighbor, 0.75 versus 0.2222, with a delta of +0.5278; greater sp3 character is generally less aligned with planar aromatic toxicophore patterns, so that change is unfavorable for mutagenicity. Even so, the query also has lower Labute surface area, 42.2989 versus 70.991, delta -28.6922, and lower estimated logP, 1.5519 versus 2.3846, delta -0.8327; those shifts reduce size and lipophilicity somewhat, but in this local comparison they do not outweigh the shared acyl chloride alert and the overall resemblance to a mutagenic neighbor. The query also has lower ring count, 0 versus 1, delta -1, and lower exact molecular weight, 106.0185 versus 168.0342, delta -62.0157, both of which would tend to reduce exposure-related concern, but Neighbor 1 still remains a net mutagenic reference.
+
+Neighbor 2 is also mutagenic and adds another useful contrast. Here the query introduces acyl chloride where the neighbor has none, which is a substantial structural alert in the mutagenic direction. The query’s neutral fraction is higher, present as 1 versus 0.6611 in the neighbor, delta +0.3389, which can matter because more neutral material may pass membranes more readily, improving bacterial exposure. At the same time, the query again has a higher fraction of sp3 carbons, 0.75 versus 0.3, delta +0.45, and it lacks the neighbor’s three phenol groups, 0 versus 3, delta -3; both of those changes move away from the neighbor’s more polar, more oxygenated structure and are unfavorable for a mutagenic call in this local setting. The query also has lower Labute surface area, 42.2989 versus 81.4354, delta -39.1365, and lower heteroatom count, 2 versus 4, delta -2, which reduce polarity and size, but the acyl chloride plus the higher neutral fraction keep this comparison aligned with mutagenic analogs overall.
+
+Neighbor 3 again supports the mutagenic label. The shared acyl chloride is the most important feature here, giving the query the same reactive handle as a mutagenic neighbor. The query’s fraction of sp3 carbons is much higher, 0.75 versus 0.125, delta +0.625, which is a counterweight because the neighbor is far flatter and more aromatic-like. Still, the query has lower Labute surface area, 42.2989 versus 64.6261, delta -22.3272, and lower heavy-atom molecular weight, 99.496 versus 147.54, delta -48.044, plus lower exact molecular weight, 106.0185 versus 154.0185, delta -48. These size reductions can help exposure, and in this local context the strong acyl chloride match keeps Neighbor 3 on the mutagenic side even though the higher sp3 character and reduced size pull back somewhat.
+
+Neighbor 4 is a non-mutagenic neighbor, but it still compares to the query in a way that overall favors the mutagenic label. The query has acyl chloride while the neighbor does not, which is a major increase in mutagenic alerting chemistry. The neighbor has 2,1-benzisothiazole and the query does not; that ring system is a distinct structural difference, but it does not override the acyl chloride difference here. The query’s QED drug-likeness is lower, 0.4885 versus 0.9077, delta -0.4193; lower drug-likeness can coincide with less favorable overall property balance, but QED is only a coarse composite and not a direct mutagenicity rule. The query also has fewer rings, 0 versus 2, delta -2, which is usually less suggestive of planar polycyclic risk, and lower Labute surface area, 42.2989 versus 102.5886, delta -60.2897, plus lower molecular weight, 106.552 versus 254.742, delta -148.19, both of which could reduce exposure-related detection. Even so, the presence of acyl chloride in the query relative to a non-mutagenic neighbor remains the dominant lesson from this comparison and aligns with the mutagenic class.
+
+Neighbor 5 is essentially the same as Neighbor 4 and reinforces the same conclusion. The query again has acyl chloride while the neighbor does not, and the neighbor again has 2,1-benzisothiazole while the query does not. The query’s QED is again lower, 0.4885 versus 0.9077, delta -0.4193, while ring count is lower at 0 versus 2, delta -2. Labute surface area is much lower, 42.2989 versus 102.5886, delta -60.2897, and molecular weight is far lower, 106.552 versus 254.742, delta -148.19. Those reductions could point to weaker passive exposure or less complex structure, but the repeated acyl chloride contrast keeps the query closer to a mutagenic chemical alert than to the non-mutagenic neighbor.
+
+Neighbor 6 is the strongest of the non-mutagenic neighbors for exposure-related reasons, but it still ultimately points toward mutagenicity because of the query’s acyl chloride and other reactive-feature contrasts. The query has acyl chloride while the neighbor does not, which is again the central mutagenic feature. The query also has fewer heavy atoms, 6 versus 15, delta -9, and much lower molecular weight, 106.552 versus 202.297, delta -95.745, both of which could alter uptake and solubility in ways that change apparent assay behavior. The neighbor has an aldehyde while the query does not, and that is another functional-group difference to keep in mind, but the aldehyde is not enough here to flip the comparison away from the acyl chloride-bearing query. Ring count is lower in the query, 0 versus 1, delta -1, and Labute surface area is lower, 42.2989 versus 91.8229, delta -49.524, again reflecting a smaller, less extended scaffold. Even with those exposure-reducing shifts, the query’s acyl chloride makes it closer to the mutagenic side than to this non-mutagenic analog.
+
+Taken together, all six neighbors tell the same overall story: the query repeatedly carries acyl chloride relative to multiple mutagenic neighbors and in contrast to several non-mutagenic neighbors, which is the most persuasive structural alert in the set. The other descriptors mainly modulate exposure and scaffold character: higher fraction of sp3 carbons, lower ring count, lower molecular weight, lower Labute surface area, and lower QED can soften or complicate the comparison, but they do not erase the repeated reactive-functional-group signal. With three mutagenic neighbors and three non-mutagenic neighbors all examined, the balance still favors option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

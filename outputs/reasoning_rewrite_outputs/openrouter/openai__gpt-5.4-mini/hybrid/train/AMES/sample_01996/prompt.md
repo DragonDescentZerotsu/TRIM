@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule is extremely small, with a heavy-atom count of 3, exact molecular weight of 45.0215, and heavy-atom molecular weight of 42.017, all of which suggest very limited size and generally lower opportunity for broad bacterial exposure. Its Labute surface area of 18.3828 is also quite low, and the ring count of 0 together with a heteroatom count of 2 point to a simple, non-aromatic scaffold rather than a large, planar, polycyclic system. The fraction of sp3 carbons is 0, so the structure is fully unsaturated/flat in that sense, which can sometimes align with more alert-like chemistry, and the maximum partial charge of 0.0298 indicates some degree of localized charge character. QED drug-likeness is low at 0.2333, which is not a mutagenicity criterion by itself but is consistent with a less drug-like, structurally unusual molecule. The key feature weighing against mutagenicity is the presence of an oxime, which is not one of the classic AMES-positive toxicophores highlighted in the structural-alert list and can be compatible with non-mutagenic behavior in the absence of stronger activating motifs such as aromatic nitro, aromatic amine, epoxide, aziridine, nitroso, nitrosamine, or polycyclic aromatic systems. Balancing the mixed signals, the very small size, low surface area, and lack of rings or other obvious mutagenic structural alerts support a non-mutagenic outcome overall, despite the flatness and localized charge suggesting some structural alertness. Overall, the compound is best classified as not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is the closest positive neighbor at similarity 0.225, and the comparison is mixed but ultimately leans away from mutagenicity. The query is much smaller than the neighbor on heavy-atom molecular weight, 42.017 vs 102.072, with a delta of -60.055, which here is described as favoring option (A). The same size reduction appears for exact molecular weight, 45.0215 vs 113.0841, delta -68.0626, again favoring (B) only weakly in that local feature. Labute surface area also drops strongly, 18.3828 vs 49.2017, delta -30.8189, which in this comparison supports (B). But the shared oxime feature is unchanged, and that unchanged oxime is associated with an (A)-leaning effect here. The query is also more saturated in the sense of fraction of sp3 carbons, 0 vs 0.8333, delta -0.8333, which again favors (A), and it lacks the neighbor’s ring, with ring count 0 vs 1, delta -1, also favoring (A). Overall, despite a couple of exposure/size-related signals pointing toward (B), Neighbor 1 is net anti-mutagenic and fits the final label better than a positive call.
+
+Neighbor 2 is another positive neighbor at similarity 0.177, but here the evidence is closer to a mutagenic analog. The query is again much smaller than the neighbor: Labute surface area 18.3828 vs 58.7798, delta -40.397, and that feature favors (B) in this pair. Exact molecular weight is also sharply lower, 45.0215 vs 136.0637, delta -91.0422, and the heavy-atom count drops from 10 to 3, delta -7; both of those differences are treated here as favoring (B). QED is slightly lower too, 0.2333 vs 0.2592, delta -0.026, which also supports (B) in this local comparison. The one clearly opposing feature is oxime: the query has oxime once while the neighbor has none, delta +1, and that change favors (A). Even so, the size/shape and QED pattern dominate this neighbor, so Neighbor 2 is the strongest positive-neighbor argument for mutagenicity.
+
+Neighbor 3, with similarity 0.157, is a more subtle positive neighbor and ends up overall supporting the non-mutagenic label. The query again has a much smaller Labute surface area, 18.3828 vs 73.1625, delta -54.7797, which favors (B). But that is offset by a lower exact molecular weight, 45.0215 vs 184.0484, delta -139.0269, which here favors (A), and by a much smaller NH/OH group count, 1 vs 6, delta -5, also favoring (A). The neighbor contains 3 phenol groups while the query has none, delta -3, and that absence favors (A) as well. Although the query has a higher QED than the neighbor, 0.2333 vs 0.1371, delta +0.0961, which favors (B), and the heavy-atom count is far lower, 3 vs 13, delta -10, also favoring (B), the combined pattern still tilts this neighbor toward non-mutagenicity because the phenol-rich, polar neighbor looks more structurally burdensome than the compact query. So among the positive neighbors, Neighbor 3 backs the final A label.
+
+Neighbor 4 is the first negative neighbor, similarity 0.137, and it clearly resembles the non-mutagenic side overall. The query has much lower molecular weight than the neighbor, 45.041 vs 164.164, delta -119.123, which favors (A). It also has far fewer heavy atoms, 3 vs 12, delta -9, which in this pair favors (B), but that is countered by the unchanged oxime status, which supports (A) here. The query lacks the neighbor’s ring, with ring count 0 vs 1, delta -1, another (A)-leaning feature. QED is lower for the query, 0.2333 vs 0.3901, delta -0.1568, and maximum partial charge is also lower, 0.0298 vs 0.2697, delta -0.2399; both of those are treated in this comparison as favoring (B). Even so, the dominant message from this neighbor is that the query is the smaller, simpler analog, and Neighbor 4 overall supports option (A).
+
+Neighbor 5, at similarity 0.120, also points to the non-mutagenic side. The query has much lower molecular weight than the neighbor, 45.041 vs 198.27, delta -153.229, which favors (A). It has fewer heavy atoms, 3 vs 14, delta -11, which favors (B), but the query again shares the oxime motif, and that unchanged oxime favors (A) here. The neighbor has a much larger Labute surface area, 84.8864 vs 18.3828, delta -66.5036, which in this pair favors (B), and it contains 4 aminal motifs while the query has none, delta -4, which also favors (B). Still, the query lacks the neighbor’s ring, 0 vs 1, delta -1, favoring (A), and the overall contrast is between a bulky, more functionalized neighbor and a tiny oxime-containing query; the neighbor-level comparison ends up supporting the non-mutagenic label.
+
+Neighbor 6, similarity 0.112, is the weakest of the six but still fits the same overall direction. The query’s molecular weight is far lower, 45.041 vs 212.297, delta -167.256, which favors (A), and its rotatable-bond count is also lower, 0 vs 5, delta -5, again favoring (A). The oxime feature is unchanged, which also favors (A) in this local comparison. Against that, the neighbor has 4 aminal copies while the query has none, delta -4, which favors (B), and the neighbor’s QED is higher, 0.4079 vs 0.2333, delta -0.1746, also favoring (B). The ring count difference, 0 vs 1, delta -1, adds another (A)-leaning feature. Even with those mixed signals, the very large size and flexibility gap keeps Neighbor 6 aligned with the non-mutagenic side.
+
+Taken together, the positive neighbors are split but do not outweigh the stronger non-mutagenic pattern: Neighbor 1 and Neighbor 3 are both more consistent with option (A), while only Neighbor 2 leans clearly toward mutagenicity. Among the negative neighbors, all three—Neighbor 4, Neighbor 5, and Neighbor 6—are closer to the query than the mutagenic side in the most important size/complexity comparisons, and each ends up supporting option (A). The net balance across all six analogs therefore favors option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

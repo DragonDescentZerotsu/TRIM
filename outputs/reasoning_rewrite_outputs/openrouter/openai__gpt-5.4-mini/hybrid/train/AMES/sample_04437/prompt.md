@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an oxirane ring, and epoxides are a well-recognized mutagenicity toxicophore, so this is a strong structural alert for mutagenicity. It also has a secondary amide present (1), which can increase polarity and affect exposure, but by itself it is not a classic mutagenic alert. The ring system is relatively small, with ring count 2 and saturated heterocycle count 1, which does not suggest the kind of large polycyclic aromatic planar system often associated with mutagenicity. The estimated logP is 1.414, a moderate lipophilicity that does not obviously limit bacterial exposure, and the strongest acidic pKa is very high at 13.7538, indicating no strongly ionized acidic group under typical assay conditions. There is one basic site, while the strongest basic pKa is 3.9765, so that basic functionality is only weakly protonated and is not a particularly strong permeability-enhancing cation. The heteroatom count is 3, which reflects some polarity but is not, on its own, a mutagenicity alert. QED drug-likeness is 0.6939, a reasonably drug-like value that slightly tempers concern but does not override the clear epoxide alert. Overall, the direct structural liability from the oxirane, together with the supporting pattern of a small heterocycle-containing scaffold and moderate lipophilicity, makes the molecule more likely to be mutagenic, despite a few descriptors that are not strongly unfavorable by themselves.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly close mutagenic analog, and several shared or shifted features are consistent with that direction. Both structures contain oxirane, a clear mutagenicity toxicophore, which strongly favors the mutagenic label. The query also has a slightly lower QED drug-likeness than the neighbor (0.6939 vs 0.7266, delta -0.0327), and the query’s maximum partial charge is a bit higher (0.2583 vs 0.2542, delta +0.0041), while it has one more basic site (1 vs 0, delta +1) and one more ionizable site (2 vs 1, delta +1). The lower QED and higher ionizability could modestly reduce exposure, but the presence of oxirane and the added basic site support mutagenicity. The slightly higher estimated logP in the query (1.414 vs 1.0917, delta +0.3223) also fits a somewhat more lipophilic, potentially better-exposed molecule. Overall, Neighbor 1 supports option (B).
+
+Neighbor 2 also leans mutagenic overall. The query has a much higher strongest acidic pKa than the neighbor (13.7538 vs 12.8121, delta +0.9417), and the comparison explicitly favors the mutagenic side there. The neighbor contains an alkyl bromide that the query lacks, which by itself would weaken mutagenicity relative to that neighbor, but the query has oxirane while the neighbor does not, and oxirane is a strong mutagenic structural alert. The query’s QED is lower (0.6939 vs 0.7734, delta -0.0796), maximum partial charge is slightly higher (0.2583 vs 0.2207, delta +0.0375), minimum partial charge is more negative (0.3594 vs -0.3251, delta -0.0343 as stated), and ring count is higher (2 vs 1, delta +1), with the ring-count shift favoring the non-mutagenic side in that specific comparison. Even so, the oxirane and acidic pKa shifts outweigh the exposure-like counterweights. Taken together, Neighbor 2 still supports option (B).
+
+Neighbor 3 is the most mixed of the three mutagenic neighbors, but it still contains a decisive mutagenicity anchor. The query has oxirane while the neighbor does not, which strongly favors the mutagenic label. At the same time, the query has lower QED than the neighbor (0.6939 vs 0.8718, delta -0.178), lower estimated logD (1.4138 vs 3.4368, delta -2.023), and a higher maximum partial charge (0.2583 vs 0.2207, delta +0.0375), all of which were aligned with the non-mutagenic side in that comparison. The neutral fraction is also slightly higher in the query (0.9996 vs 0.9988, delta +0.0008), which in that setting favored mutagenicity, but the overall balance still came out non-mutagenic for this neighbor because the exposure-like and charge-related differences outweighed it. Even so, because oxirane is present in the query and absent in the neighbor, Neighbor 3 remains an important mutagenic analog rather than a clean negative example.
+
+Neighbor 4, from the non-mutagenic set, actually looks quite close in several respects but still highlights the query’s mutagenic structural alert. The query has oxirane once whereas the neighbor lacks it entirely, and that is the strongest difference in the comparison. The query also has a somewhat higher QED (0.6939 vs 0.6228, delta +0.0711), lower estimated logP (1.414 vs 1.645, delta -0.231), and slightly higher aliphatic ring count (1 vs 0, delta +1). In the supplied comparison, the QED and maximum absolute partial charge shifts (0.3594 vs 0.3263, delta +0.0331) favored the non-mutagenic side, while the presence of a secondary amide in both molecules supported the mutagenic side. Even though the overall pairwise comparison was still described as leaning mutagenic because of the oxirane, it is informative that this supposedly non-mutagenic neighbor lacks the oxirane alert; that makes the query look more mutagenically activated than the neighbor.
+
+Neighbor 5 reinforces the same pattern. Again, the neighbor lacks oxirane while the query has it once, and that is the dominant mutagenic feature. The query has slightly lower QED (0.6939 vs 0.7127, delta -0.0188), lower estimated logP (1.414 vs 1.6042, delta -0.1902), and a slightly higher maximum absolute partial charge (0.3594 vs 0.3257, delta +0.0337), with the identical secondary amide present in both. The heteroatom count is also unchanged at 3 vs 3 (delta 0), which in that comparison favored the non-mutagenic side. Even with those modest counterweights, the oxirane difference keeps the query more concerning than this non-mutagenic neighbor.
+
+Neighbor 6 is similar to Neighbor 5 in structure of evidence. The query again has oxirane once while the neighbor has none, which strongly favors mutagenicity. The query’s QED is slightly lower (0.6939 vs 0.7116, delta -0.0178), strongest acidic pKa is slightly lower (13.7538 vs 13.7975, delta -0.0437), and maximum absolute partial charge is slightly higher (0.3594 vs 0.3259, delta +0.0335), while both molecules share the secondary amide and the query has one more aliphatic ring (1 vs 0, delta +1). In this comparison, the QED and charge shifts were unfavorable to mutagenicity, but the oxirane and ring count differences still made the query look more mutagenic than the non-mutagenic neighbor overall.
+
+Putting all six neighbors together, the strongest recurring signal is the presence of oxirane in the query. That structural alert appears repeatedly as the key difference relative to the non-mutagenic neighbors and is also consistent with the mutagenic neighbors. Some exposure- or property-based features, such as lower QED in the query relative to several neighbors, slightly lower estimated logP in some comparisons, and shifts in charge or ionizable-site counts, introduce mixed evidence, but they do not outweigh the oxirane alert. Because the positive-neighbor comparisons and the negative-neighbor comparisons both repeatedly leave the query closer to mutagenic analogs than to truly benign ones, the overall prediction is option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

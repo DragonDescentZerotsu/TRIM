@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a nitroso group, which is a recognized mutagenicity toxicophore and strongly supports an Ames-positive outcome. It also has a hydroxylamine, another functional motif that can be associated with mutagenic behavior. In addition, an amine is present and the molecule has 8 heteroatoms, both of which increase heteroatom burden and can coincide with structural patterns seen among mutagenic compounds. The presence of a secondary aliphatic amine and the fact that the neutral fraction is extremely low at 0.0005 suggest a highly ionized species, which can reduce passive permeation and somewhat limit bacterial exposure; similarly, the NH/OH group count of 6 is fairly high and may also reduce permeability. However, that exposure-limiting tendency is outweighed by the clear mutagenic alerts from nitroso and hydroxylamine chemistry, along with the amine-rich, heteroatom-rich composition. The fraction of sp3 carbons is 1, indicating a very flat, low-sp3 character, which is compatible with aromatic-like structural motifs that often appear in mutagenic scaffolds. The nitrogen/oxygen atom count is 8, reinforcing the polar, heteroatom-rich nature of the molecule. Although the QED drug-likeness is low at 0.2032, which suggests a less drug-like profile and may correlate with problematic substructures, the dominant chemistry-level signal here is the presence of explicit mutagenic functional groups. Overall, the balance of evidence favors the molecule being mutagenic, so the predicted outcome is option (B).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a weak but still informative positive analogue: it has very low similarity, yet several differences align with a mutagenic outcome. The query is slightly less drug-like than the neighbor, with QED 0.2032 versus 0.1393 (delta +0.0638), and it also has nitroso present once while the neighbor has none, which is a well-recognized mutagenicity toxicophore. The query is also lower in maximum absolute partial charge, 0.3304 versus 0.5072 (delta -0.1767), and that electrostatic shift is consistent with the comparison’s mutagenic direction. At the same time, the query is fully sp3-rich with fraction sp3 carbon 1 versus 0.3636 (delta +0.6364), and it has no aromatic rings versus 2 in the neighbor (delta -2); those two features work against mutagenicity because they move away from the more flat, aromatic pattern often associated with Ames-positive chemistry. Heavy-atom molecular weight is also much lower in the query, 236.15 versus 416.264 (delta -180.114), which can change exposure but here still leaves the nitroso alert and the other mutagenicity-linked signals as the more important reading for this neighbor.
+
+Neighbor 2 is another positive analogue, but its evidence is mixed and somewhat context-dependent. The query has a much higher strongest basic pKa, 10.6039 versus 5.3501 (delta +5.2538), which means a more strongly basic site and a more ionized state near physiological conditions; that can alter exposure and bacterial accumulation in either direction depending on the scaffold. Even so, this neighbor retains nitroso in both molecules, and hydroxylamine in both molecules as well, so the query still shares two mutagenicity-relevant alerts. The query also has one secondary aliphatic amine while the neighbor has none (delta +1), which is not inherently a mutagenicity rule but does change the ionizable pattern. Against that, the query is less drug-like, with QED 0.2032 versus 0.498 (delta -0.2949), and it has a much larger NH/OH group count, 6 versus 1 (delta +5), which tends to increase polarity and can affect uptake. Taken together, the shared nitroso and hydroxylamine motifs keep this comparison aligned with a mutagenic assignment even though the basic pKa shift and higher donor burden could reduce or reshape exposure.
+
+Neighbor 3 is the strongest of the positive neighbors because it combines several mutagenicity-linked alerts with a substantial change in ionization and polarity. The query again has nitroso once while the neighbor has none, and it also has a pyrimidine that the neighbor lacks (delta -1), which adds a heteroaromatic context often seen in bioactive and sometimes alert-rich scaffolds. The query is much less drug-like, with QED 0.2032 versus 0.4674 (delta -0.2642), reinforcing that it sits in a less favorable overall chemical space. At the same time, the strongest basic pKa is much higher in the query, 10.6039 versus 5.5809 (delta +5.023), while the neutral fraction is far lower, 0.0005 versus 0.9767 (delta -0.9762); that means the query is overwhelmingly ionized at the configured pH, which can suppress passive diffusion but also marks a clear change in physicochemical character. The query also has the secondary aliphatic amine present while the neighbor does not (delta +1), again changing the ionizable profile. Even with the lower neutral fraction potentially limiting exposure, the shared nitroso alert, added pyrimidine context, and overall less favorable drug-likeness make this neighbor support mutagenicity.
+
+Neighbor 4 is one of the negative neighbors, but even here the comparison is not cleanly protective because some features still point toward mutagenicity. The query has a much higher rotatable-bond count, 13 versus 7 (delta +6), and that extra flexibility generally works against the rigid, compact features associated with better bacterial accumulation; this is the clearest reason this neighbor leans away from mutagenicity. The neighbor and query both have nitroso, which remains a strong mutagenicity alert, and the query also has hydroxylamine while the neighbor does not, both of which favor a mutagenic interpretation. The query is again less drug-like, with QED 0.2032 versus 0.5639 (delta -0.3608), and it has fraction sp3 carbon 1 versus 0.5 (delta +0.5), so it is much more saturated and less planar than the neighbor. Finally, the query has a secondary aliphatic amine that the neighbor lacks (delta +1), which changes the ionizable profile but does not override the substantial flexibility penalty. Overall, the high rotatable-bond count is the main reason this comparison sits on the non-mutagenic side, even though the nitroso and hydroxylamine motifs keep part of the signal in the mutagenic direction.
+
+Neighbor 5 is a negative neighbor in the same mixed way: there are strong mutagenicity alerts, but the chemical context still yields an overall non-mutagenic comparison. The query has nitroso once while the neighbor has none, and it also has hydroxylamine while the neighbor has none, so both of those classic alerts favor mutagenicity. The query additionally has an amine absent in the neighbor, and its minimum absolute partial charge is higher, 0.0962 versus 0.011 (delta +0.0852), indicating a different charge distribution that can influence polarity and interaction patterns. Yet the query is less drug-like, with QED 0.2032 versus 0.5953 (delta -0.3921), and it again has the secondary aliphatic amine absent from the neighbor. The key balancing factor is that the neighbor lacks any nitroso, amine, and hydroxylamine features, and the comparison still ends up on the non-mutagenic side despite the alert additions, showing that these changes alone are not sufficient to outweigh the broader context here.
+
+Neighbor 6 is the most clearly negative neighbor because several exposure- and ionization-related differences line up against mutagenicity even though some alerts are still present. Both molecules have nitroso, and the query also has hydroxylamine while the neighbor does not, so the mutagenic alert burden is still substantial. However, the neighbor has neutral fraction present at 1, while the query has only 0.0005 (delta -0.9995), meaning the query is almost entirely non-neutral at the configured pH; that kind of ionization can strongly reduce passive bacterial permeability. The query also has 2 primary aliphatic amines while the neighbor has none (delta +2), which increases the basic, ionizable character further. QED is again lower in the query, 0.2032 versus 0.4405 (delta -0.2374), but the more important effect here is that the neighbor's neutrality and lack of primary amines contrast with the query's highly ionized profile. The query also lacks the secondary aliphatic amine issue seen in other comparisons? No—the query has it once while the neighbor has none, which is another change in the ionizable set. Taken together, this neighbor shows how a strongly ionized, low-neutral-fraction molecule can be less likely to be read as mutagenic in spite of shared nitroso chemistry.
+
+Putting the six neighbors together, the positive analogues consistently keep the nitroso alert in view, and Neighbor 2 and Neighbor 3 add hydroxylamine or pyrimidine and more unfavorable drug-likeness, which strengthens the mutagenic side. The negative analogues are more mixed: Neighbor 4 and Neighbor 6 both contain strong non-mutagenic exposure or flexibility arguments, especially the higher rotatable-bond count in Neighbor 4 and the near-zero neutral fraction plus extra primary amines in Neighbor 6, even though all of them still retain some mutagenicity-linked alerts. Because the query repeatedly carries nitroso and hydroxylamine-like signals while also sitting in lower-QED, heavily ionized chemical space, the overall balance matches option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

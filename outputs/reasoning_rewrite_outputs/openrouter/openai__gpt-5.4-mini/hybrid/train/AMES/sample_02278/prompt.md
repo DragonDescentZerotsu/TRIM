@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several structural and physicochemical features that are compatible with Ames positivity. Its very low QED drug-likeness value of 0.2441 suggests an overall property profile that is not especially favorable, and the presence of chloride (1) adds a halogenated substituent often seen in compounds with mutagenic potential. The hydroxylamine group present (1) is particularly concerning because hydroxylamine-containing motifs can be associated with mutagenic behavior. The estimated logP of 0.9332 is not extreme, but it still indicates enough hydrophobic character to support uptake. The number of basic sites present (1) also suggests at least one ionizable nitrogen, which can improve bacterial accumulation and effective exposure. In addition, the Labute surface area of 46.3742 is moderate rather than very small, so the molecule is not obviously too compact to interact with bacterial systems.
+
+At the same time, there are a few features that lean the other way. The neutral fraction of 0.0001 is extremely low, meaning the molecule is almost entirely ionized under the configured conditions, which can reduce passive membrane permeation and lower bacterial bioavailability. The fraction of sp3 carbons of 0.6667 is relatively high, indicating a less flat and less aromatic scaffold, and the ring count of 0 means there is no obvious ring-driven aromatic toxicophore such as a fused polycyclic aromatic system. The N-oxide present (1) is also not a strong positive signal here and slightly counterbalances the other alerts.
+
+Overall, however, the presence of chloride, hydroxylamine, and a basic nitrogen, together with the low QED and moderate lipophilicity/surface area, makes the compound more consistent with mutagenic behavior than with a clean non-mutagenic profile. The protective signal from the very low neutral fraction is not enough to outweigh those structural alerts and exposure-favoring features, so the molecule is best classified as mutagenic (B).
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is overall more consistent with mutagenicity than the reference because the query has one chloride while the neighbor has none, and the query also shows much lower QED drug-likeness (0.2441 vs 0.432) together with lower heavy-atom count (7 vs 15) and lower Labute surface area (46.3742 vs 86.8192). Those differences are directionally aligned with the mutagenic side in this comparison. The main counterweight is fraction of sp3 carbons, where the query is much more saturated and three-dimensional (0.6667 vs 0.3; delta +0.3667), which goes the opposite way and weakens the mutagenic readout. The query also has a slightly higher maximum partial charge (0.3111 vs 0.3053; delta +0.0058), which here is unfavorable for mutagenicity. Even so, the chloride, lower QED, lower size, and lower surface area dominate, so Neighbor 1 supports option (B).
+
+Neighbor 2 also leans toward mutagenicity. Again the query contains a chloride and the neighbor does not, and the query’s QED is lower (0.2441 vs 0.4021), both of which favor the mutagenic side. The query has no basic site in the neighbor but does have one in the query (0 to 1), and basic ionizable nitrogens can increase bacterial accumulation and exposure, which fits the same direction here. The opposing signals are the query’s higher fraction of sp3 carbons (0.6667 vs 0) and higher maximum partial charge (0.3111 vs 0.269), while the minimum partial charge is more negative in the query (-0.4165 vs -0.2756; delta -0.1409), which also tilts away from mutagenicity. Even with those offsets, the chloride, lower QED, and presence of a basic site make this neighbor still more consistent with (B).
+
+Neighbor 3 is even more clearly aligned with mutagenicity because it combines the query’s chloride with lower QED (0.2441 vs 0.4479), lower heavy-atom count (7 vs 15), and lower Labute surface area (46.3742 vs 87.5671). The strongest structural difference is that the neighbor has 2 nitro groups while the query has 0, so the query lacks a classic mutagenic toxicophore; that would normally argue against mutagenicity. The query also has a more negative minimum partial charge (-0.4165 vs -0.2756; delta -0.1409), which likewise goes the other way. But in the neighbor comparison, the absence of nitro in the query only partially offsets the stronger exposure- and drug-likeness-related pattern, so the net comparison still favors (B).
+
+Neighbor 4 is a useful negative-neighbor comparison because several query features again look more mutagenicity-associated than the neighbor’s. The query has lower QED (0.2441 vs 0.432), lower Labute surface area (46.3742 vs 86.8192), and the chloride present in the query but absent in the neighbor. It also has hydroxylamine, which is a mutagenicity-relevant functional motif and therefore supports the mutagenic side. At the same time, the query has much lower molecular weight (123.539 vs 209.201) and a dramatically lower neutral fraction (0.0001 vs 1), and both of those differences point away from mutagenicity in this comparison by reducing the kind of exposure-related effects that can make a compound appear positive. Even so, the chloride, hydroxylamine, and lower QED outweigh those countervailing factors, so this neighbor still behaves more like a mutagenic analog than a non-mutagenic one.
+
+Neighbor 5 follows the same broad pattern. The query again has lower QED (0.2441 vs 0.4798), has hydroxylamine when the neighbor does not, and contains chloride when the neighbor does not; all of those features support the mutagenic side. The query also has lower Labute surface area (46.3742 vs 64.8143), which is directionally similar. The main opposing signals are the query’s much lower neutral fraction (0.0001 vs 1) and the fact that the neighbor has a ring count of 1 while the query has 0, which in this comparison are associated with the non-mutagenic side. Even so, the mutagenicity-associated features remain stronger overall, so Neighbor 5 still supports option (B).
+
+Neighbor 6 is very similar to Neighbor 4 and likewise ends up favoring mutagenicity overall. The query has lower QED (0.2441 vs 0.432), hydroxylamine present where the neighbor lacks it, lower Labute surface area (46.3742 vs 86.8192), and chloride present where the neighbor has none. These all point toward the mutagenic class. The counterweights are the query’s lower molecular weight (123.539 vs 209.201) and very low neutral fraction (0.0001 vs 1), both of which again reduce the likelihood of positive bacterial exposure and therefore lean toward non-mutagenicity in this analog setting. But, as with Neighbor 4, the mutagenicity-linked features dominate the comparison, so the overall direction remains (B).
+
+Putting the six neighbors together, the pattern is coherent: the query repeatedly differs from the neighbors by having chloride and hydroxylamine where those neighbors lack them, along with lower QED and lower surface area, which in these analog comparisons aligns with mutagenicity. A few features, especially higher fraction of sp3 carbons, lower neutral fraction, lower molecular weight, and lower ring count in some neighbors, provide partial resistance to that conclusion, but they do not outweigh the repeated mutagenicity-associated structural signals. Taken together, the neighborhood evidence supports option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

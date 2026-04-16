@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains a primary aromatic amine with count 2, which is a well-recognized mutagenicity toxicophore and therefore raises concern for an Ames-positive outcome. That concern is reinforced by the presence of a nitro group? No, nitro is absent at 0, so one major classic alert is not present, which weakens the case somewhat. Still, the structure also has alkyl aryl ether count 2, which by itself is not a strong mutagenicity driver and can be seen as comparatively neutral or even mildly unfavorable to strong DNA-reactive behavior. The neutral fraction is very high at 0.9902, meaning the molecule is predominantly neutral at the configured pH; that can support passive bacterial exposure rather than limit it, so it does not help argue for a clean negative. The estimated logP is 0.8682, a modest lipophilicity that is compatible with cellular access rather than extreme insolubility, so exposure should be feasible. The strongest basic pKa is 5.3959 and the number of basic sites is 2, indicating an ionizable nitrogen environment that can be relevant for bacterial accumulation and therefore can help reveal mutagenicity if a reactive motif is present. At the same time, the ring count is 1 and the aromatic ring count is 1, which argues against a highly polycyclic planar scaffold; there is no strong polycyclic aromatic toxicophore signal here. The QED drug-likeness value of 0.6426 is moderately favorable overall and does not by itself suggest a strong genotoxic liability. Balancing the clear aromatic amine alert against the absence of nitro and the lack of a larger polycyclic aromatic system, the overall evidence still favors a mutagenic classification, but not overwhelmingly so. Final prediction: B, mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive analog despite several features that point the other way. It has three aromatic rings versus one in the query (query-minus-neighbor delta -2), and the reduction in aromatic ring count is favorable here because higher fused aromaticity is one of the clearer mutagenicity anchors. The query also has higher QED drug-likeness (0.6426 vs 0.5456, delta +0.097), which by itself weakens the mutagenic argument because greater drug-likeness often coincides with less obvious alerting chemistry. At the same time, the query matches the neighbor on minimum partial charge exactly (-0.4945, delta 0), and that same neutral electrostatic character is associated with a favorable mutagenic interpretation in this comparison. The query is slightly higher in strongest basic pKa (5.3959 vs 5.3082, delta +0.0877), and it is also higher in strongest acidic pKa (13.8799 vs 12.5854, delta +1.2945); both of those shifts are treated as favoring the mutagenic side here. Even though the query has a much lower topological polar surface area than the neighbor (70.5 vs 96.28, delta -25.78), which would normally reduce passive exposure, this neighbor still overall supports mutagenicity because the aromatic-ring and acidity/basicity pattern outweigh the permeability-related decrease.
+
+Neighbor 2 is also a positive analog overall. It again has three aromatic rings versus one in the query (delta -2), so the query is less polyaromatic than this mutagenic reference, which pulls against the label. But the query is slightly lower in strongest basic pKa than the neighbor (5.3959 vs 5.4618, delta -0.0659), and that direction is favorable to mutagenicity in this specific comparison. The query matches the minimum partial charge exactly at -0.4945, and that unchanged electrostatic feature again aligns with the mutagenic side. The query is higher in strongest acidic pKa (13.8799 vs 12.6522, delta +1.2277), which also supports the mutagenic interpretation, while its QED drug-likeness is higher (0.6426 vs 0.5012, delta +0.1414), a shift that leans away from mutagenicity. The query also has lower topological polar surface area than the neighbor (70.5 vs 87.05, delta -16.55), which would usually reduce exposure, but the overall comparison still stays on the mutagenic side because the pKa pattern and the shared charge feature outweigh the more favorable drug-likeness and lower PSA.
+
+Neighbor 3 gives the strongest positive support among the mutagenic neighbors. The query has a higher strongest basic pKa than this neighbor (5.3959 vs 4.811, delta +0.5849), and importantly the query contains two primary aromatic amines versus one in the neighbor (delta +1). Since aromatic amines are a recognized mutagenicity alert, this extra amine count is a direct structural reason to favor option (B). The minimum partial charge is again unchanged at -0.4945 (delta 0), preserving the same electrostatic context that has been associated with the mutagenic side in these comparisons. The query is much less lipophilic than the neighbor, with estimated logP 0.8682 versus 3.6928 (delta -2.8246) and estimated logD 0.8639 versus 3.6917 (delta -2.8278); those decreases could reduce exposure, but they do not erase the structural alert from the extra aromatic amine. The query also has one ring versus two in the neighbor (delta -1), which is a small move away from the more aromatic, potentially more problematic scaffold. Even so, the presence of the second aromatic amine and the higher basic pKa make this neighbor overall favor mutagenicity.
+
+Neighbor 4 is a negative analog by the local comparison, but its evidence is mixed and still leaves the mutagenic label intact. The query has two primary aromatic amines versus zero in the neighbor (delta +2), which is a strong mutagenic feature, and its strongest basic pKa is higher as well (5.3959 vs 4.9695, delta +0.4264), again favoring option (B). The query is much more polar in surface area than the neighbor, with topological polar surface area 70.5 versus 30.49 (delta +40.01), and that increase supports greater exposure-related plausibility for mutagenicity. The query also has slightly lower neutral fraction than the neighbor (0.9902 vs 0.9963, delta -0.0061), which is another small shift in the mutagenic direction in this comparison. However, the query has fewer rings than the neighbor (1 vs 2, delta -1), and that difference favors option (A). The query also has more acidic sites overall, with four versus one (delta +3), and that shift is treated as unfavorable for mutagenicity here. Even with those opposing points, the aromatic amine count and basicity plus the higher polar surface area make this neighbor align overall with the mutagenic label.
+
+Neighbor 5 is another negative analog that still contains multiple mutagenicity-favoring features. The query has two primary aromatic amines versus one in the neighbor (delta +1), which is a clear mutagenic alert. Its strongest basic pKa is lower than the neighbor’s (5.3959 vs 6.916, delta -1.5201), and in this comparison that lower basicity still supports the mutagenic side. The query has fewer rings than the neighbor (1 vs 2, delta -1), which favors option (A), and it also has a slightly lower QED drug-likeness (0.6426 vs 0.6625, delta -0.0199), another small shift toward the non-mutagenic side. The query again has more acidic sites (four versus one, delta +3), which is treated as unfavorable for mutagenicity here, and the neighbor contains one alkyl aryl ether while the query contains two (delta +1), a difference that also points away from mutagenicity in this specific comparison. Even so, the extra aromatic amine and the basicity shift keep this neighbor aligned overall with option (B).
+
+Neighbor 6 is the one negative analog that most clearly leans away from mutagenicity, but even it does not overturn the overall pattern. The query has two primary aromatic amines versus zero in the neighbor (delta +2), which strongly favors the mutagenic label. The neighbor has two alkene groups while the query has none (delta -2), and that feature is also treated as favoring option (B) here. The query has fewer rings than the neighbor (1 vs 2, delta -1), which supports option (A), and its QED drug-likeness is higher (0.6426 vs 0.5481, delta +0.0945), another move toward the non-mutagenic side. The query also has a much higher strongest acidic pKa than the neighbor (13.8799 vs 8.2937, delta +5.5862), but in this comparison that shift is interpreted as unfavorable for mutagenicity. Finally, the number of acidic sites is identical at four in both molecules (delta 0), so that feature does not distinguish them. Because the ring count, QED, and acidic pKa favor the negative label here, Neighbor 6 is the strongest counterweight among the non-mutagenic neighbors, yet it is still outweighed by the aromatic amine signal.
+
+Taken together, the three positive neighbors consistently emphasize the same mutagenicity-relevant motifs: especially the aromatic ring pattern, the repeated presence or increase of primary aromatic amines, and the basicity/charge-related context. The three negative neighbors do introduce countervailing evidence through fewer rings, higher QED, and in one case lower apparent exposure-related polarity, but they do not eliminate the structural alert from the query’s two primary aromatic amines or the overall mutagenicity-favoring pattern across the closest analogs. On balance, the six comparisons support option (B): is mutagenic.
+
+Input 3. Target final label semantics
+option (B): is mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

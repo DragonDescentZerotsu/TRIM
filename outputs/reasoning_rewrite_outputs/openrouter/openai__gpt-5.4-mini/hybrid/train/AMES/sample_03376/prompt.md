@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule has an aldehyde group count of 2, and aldehydes are chemically alerting because they can be reactive electrophilic functionality, which raises concern for mutagenicity. That positive signal is tempered by several exposure- and property-related features that lean the other way: a QED drug-likeness of 0.6859 is reasonably moderate rather than poor, fraction of sp3 carbons at 0.6 suggests a fairly three-dimensional structure rather than an especially flat aromatic one, heteroatom count of 2 is relatively low, and estimated logP of 2.9391 is not extreme, so there is no obvious sign of very high lipophilicity or polarity that would strongly favor assay positivity through enhanced reactivity exposure. The aliphatic carbocycle count of 2 and saturated carbocycle count of 1 add some ring content, and Labute surface area of 102.7806 is moderate, but these are not by themselves clear mutagenicity alerts. An alkene count of 2 does not especially strengthen concern here, and the aromatic ring count of 0 removes one important mutagenic structural concern associated with fused aromatic systems. Overall, the molecule contains one notable reactive alert in the aldehyde functionality, but the rest of the descriptors do not strongly reinforce a mutagenic profile, so the balance of evidence supports it being not mutagenic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed but ultimately informative mutagenic analog: it has higher saturated carbocycle count than the query (neighbor 2 vs query 1, delta -1) and higher QED (0.7297 vs 0.6859, delta -0.0438), both of which favor the non-mutagenic side here, while the shared aldehyde motif and the fact that the neighbor has 2 acidic sites versus none in the query (delta -2) favor mutagenicity. The neighbor also has more heteroatoms (4 vs 2, delta -2). Overall, the exposure-like and composition differences outweigh the shared aldehyde and acidic-site signal, so this comparison is only a modest mutagenic analog and not enough to overturn the final call.
+
+Neighbor 2 is closer to the non-mutagenic side overall. It again has the same aldehyde pattern as the query, which is a mutagenic feature, but the query is lower in saturated carbocycle count than the neighbor (2 vs 1, delta -1 in the note’s comparison framing), lower in heteroatom count (2 vs 5, delta -3), and lower in heavy-atom count (17 vs 22, delta -5), all of which here align with reduced mutagenic concern in this neighbor-to-query comparison. The query also has higher QED than the neighbor (0.6859 vs 0.6322, delta +0.0537), which further supports the non-mutagenic side. Even with the aldehyde motif present, this neighbor sits on the side that better matches option (A).
+
+Neighbor 3 also leans toward option (A). It shares the aldehyde motif with the query, which is a mutagenic alert, and it has a higher ring count than the query (3 vs 2, delta -1) that would usually be less favorable. But the query is lower in QED than the neighbor only slightly in the opposite direction here (0.6859 vs 0.5995, delta +0.0864 favors A), has fewer heteroatoms (2 vs 3, delta -1), a stronger acidic-site situation is absent in the query versus a strongest acidic pKa of 13.7233 in the neighbor with delta not defined, and the query is less sp3-rich only modestly (0.6 vs 0.7333, delta -0.1333). Taken together, the non-mutagenic side dominates despite the shared aldehyde and the ring-count effect.
+
+Neighbor 4 is a strong non-mutagenic analog overall. It shares the aldehyde motif, and the alkene count is lower in the neighbor than in the query (1 vs 2, delta +1), both of which point toward mutagenicity, but several other features pull the other way: the neighbor’s QED is higher than the query’s (0.7625 vs 0.6859, delta -0.0766), the heteroatom count is higher in the neighbor (3 vs 2, delta -1), the fraction of sp3 carbons is higher (0.7333 vs 0.6, delta -0.1333), and the molecular weight is slightly higher (250.338 vs 232.323, delta -18.015). In this local comparison, the balance favors the non-mutagenic label despite the shared aldehyde and alkene-related signal.
+
+Neighbor 5 is similar to Neighbor 4 in being overall supportive of option (A), even though it also contains the shared aldehyde motif. Here the neighbor has a higher maximum partial charge than the query (0.3024 vs 0.1499, delta -0.1525), which in this context is one of the mutagenicity-leaning signals, and it also has one fewer alkene than the query (1 vs 2, delta +1), but the neighbor’s QED is higher than the query’s (0.5915 vs 0.6859, delta +0.0944), the ring count is higher in the neighbor (3 vs 2, delta -1), and the neighbor contains a carboxylic ester that the query lacks (delta -1), which collectively keeps the comparison on the non-mutagenic side. So even though some electronic and unsaturation features point toward B, the overall analog context remains more consistent with A.
+
+Neighbor 6 is another non-mutagenic analog. It again shares the aldehyde motif and has one fewer alkene than the query (1 vs 2, delta +1), both of which are mutagenicity-leaning features, but the query has essentially the same QED as the neighbor with a tiny decrease (0.6859 vs 0.6877, delta -0.0018), the heteroatom count is identical (2 vs 2, delta +0), the fraction of sp3 carbons is lower in the query (0.6 vs 0.7333, delta -0.1333), and the query’s minimum partial charge is slightly less negative than the neighbor’s (-0.2979 vs -0.3027, delta +0.0048). In the aggregate, that mix still favors the non-mutagenic label for this local comparison.
+
+Across the six neighbors, the mutagenicity-associated shared aldehyde motif appears repeatedly, and a few local features such as alkene count, maximum partial charge, or the acid-related descriptors sometimes point toward B. However, the more consistent pattern in the closest analogs is that the query is relatively small, more favorable in QED in several comparisons, and often separated from the more mutagenic neighbors by differences in heteroatom burden, ring/sp3 balance, or other exposure-like properties. Since the three non-mutagenic neighbors collectively outweigh the three mutagenic neighbors in the local neighborhood evidence, the overall prediction is option (A): is not mutagenic.
+
+Input 3. Target final label semantics
+option (A): is not mutagenic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

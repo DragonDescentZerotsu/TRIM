@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed safety profile, but the balance of properties looks more consistent with a non-toxic compound overall. A strongest basic pKa of 2.7385 is quite low, which argues against a strongly basic, cationic amphiphilic profile and is generally favorable from a liability standpoint. The presence of urethane groups at count 2 also fits a more drug-like, often manageable motif rather than an obvious toxicophore. Likewise, the fraction of sp3 carbons at 0.8333 is high, indicating a highly saturated, three-dimensional scaffold, which is typically less associated with the flat, promiscuous chemistry that often correlates with attrition.
+
+At the same time, there are several features that add some concern. A minimum partial charge of -0.449 and a minimum absolute partial charge of 0.4068 indicate a fairly polar electronic environment, and the topological polar surface area of 90.65 is moderately elevated. The estimated logD of 2.0227 and estimated logP of 2.0227 are both in a mid-range rather than a very low-polarity region, so they do not eliminate exposure or distribution concerns, even though they are not extreme. The absence of ammonium (0) is also notable because it means the molecule is not carrying a permanently cationic group, which somewhat limits the classic cationic amphiphilic liability pattern.
+
+The strongest acidic pKa of 12.3556 suggests that any acidic functionality is very weakly acidic and unlikely to be ionized under physiological conditions, which is not a strong toxicity flag by itself. Overall, the favorable low basicity, high sp3 character, and presence of urethane functionality outweigh the moderate polarity and lipophilicity signals. Taken together, the molecule is best classified as is not toxic, with a high confidence of 0.9833.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close toxic analog, and several of its features still make the query look safer by comparison. The query has essentially the same minimum partial charge as the neighbor (neighbor -0.4489 vs query -0.449, delta -0.0001), so this descriptor does not separate them much. The query is much more lipophilic, with estimated logP increasing from -1.6512 to 2.0227 (delta +3.6739), which is a meaningful safety concern because higher lipophilicity often aligns with broader exposure and liability. At the same time, the query has one additional urethane copy (1 to 2, delta +1), which is favorable here, and the query lacks any ammonium just as the neighbor does, so that feature is neutral in this comparison even though it is noted. The query is also more saturated, with fraction of sp3 carbons rising from 0.5333 to 0.8333 (delta +0.3), and higher saturation is generally a favorable developability direction. The minimum absolute partial charge changes only slightly (0.4040 to 0.4068, delta +0.0028), but the overall neighbor comparison still ends up leaning slightly toward the not-toxic side because the more favorable saturation and urethane pattern partly offset the lipophilicity signal.
+
+Neighbor 2 is another toxic analog, but the query again looks somewhat less concerning on balance. The minimum partial charge becomes slightly more negative in the query, from -0.4257 to -0.449 (delta -0.0233), which by itself is not reassuring. The query also still lacks ammonium just like the neighbor, so that remains neutral rather than differentiating. The strongest favorable shift is the jump in fraction of sp3 carbons from 0.4286 to 0.8333 (delta +0.4048), indicating a much more saturated and less flat structure, which is typically a better developability pattern. The query’s minimum absolute partial charge changes from 0.4257 to 0.4068 (delta -0.0189), and the hydrogen-bond acceptor count stays the same at 4 (delta 0), so those features do not create a strong new liability. The query also has two urethane groups versus none in the neighbor (delta +2), which is favorable in this local comparison. Even though some charge-related terms remain aligned with the toxic neighbor, the larger saturation and urethane differences keep this neighbor comparison leaning toward not toxic overall.
+
+Neighbor 3 is also toxic, but it provides perhaps the clearest local contrast favoring the query. The fraction of sp3 carbons rises sharply from 0.3333 in the neighbor to 0.8333 in the query (delta +0.5), a strong move toward a more saturated scaffold. The query’s estimated logP is much higher, increasing from -1.6657 to 2.0227 (delta +3.6884), which is the main unfavorable change because greater lipophilicity can raise safety risk. The neighbor and query both lack ammonium, so that feature again does not distinguish them. The neighbor contains 3 imine groups whereas the query has 0 (delta -3), which is favorable because it removes a potentially problematic motif present in the toxic analog. The minimum partial charge becomes more negative in the query, from -0.3641 to -0.449 (delta -0.0849), which is an unfavorable directional change, but the query also has 2 urethane groups versus 0 in the neighbor (delta +2), which supports the safer side. Taken together, the strong gains in saturation and removal of imines make this toxic neighbor look less similar in the most concerning respects, so the local evidence still trends toward not toxic.
+
+Neighbor 4 is a non-toxic analog, and it matches the query well on several stabilizing features. Both molecules have 2 urethane groups, so there is no difference there. Neither has ammonium, again making that feature neutral. The query has a much higher fraction of sp3 carbons, 0.8333 versus 0.2727 in the neighbor (delta +0.5606), which is a favorable shift toward a more saturated 3D scaffold. The maximum absolute partial charge is nearly unchanged, 0.4489 in the neighbor versus 0.449 in the query (delta +0.0001), and the minimum absolute partial charge is also extremely close, 0.4040 versus 0.4068 (delta +0.0028), so the charge pattern is very similar. The hydrogen-bond acceptor count is identical at 4. Because this neighbor is already not toxic and the query retains the same urethane and acceptor profile while increasing saturation, this comparison supports the not-toxic label.
+
+Neighbor 5 is another non-toxic analog, but the query differs in a mixed way. The query is more negative in minimum partial charge, from -0.4929 to -0.449 (delta +0.0439), which is not a major structural warning by itself. The estimated logP increases from 0.5302 to 2.0227 (delta +1.4925), moving into a more lipophilic region that can be less favorable for safety than the neighbor’s lower lipophilicity. The maximum absolute partial charge also shifts from 0.4929 to 0.449 (delta -0.0439), while neither compound has ammonium, so those features are not decisive on their own. What stands out most is the increase in fraction of sp3 carbons from 0.3636 to 0.8333 (delta +0.4697), which is a clear gain in saturation and three-dimensionality. The minimum absolute partial charge changes only slightly from 0.4041 to 0.4068 (delta +0.0028). Although the lipophilicity rise is a caution, the overall analog relationship still resembles a non-toxic scaffold with improved saturation, so it remains consistent with the safer class.
+
+Neighbor 6 is a toxic analog, and it contains the most obvious problematic motif among the neighbors. The neighbor has hydrazine, while the query does not, which is a meaningful favorable difference because hydrazine is a classic liability. The query also has higher maximum partial charge, 0.4068 versus 0.251 (delta +0.1559), and higher maximum absolute partial charge, 0.449 versus 0.3499 (delta +0.0991), both of which show a stronger charged character in the query. The fraction of sp3 carbons is much higher in the query, 0.8333 versus 0.4167 (delta +0.4167), which is a favorable move toward a less flat scaffold. The hydrogen-bond acceptor count rises from 3 to 4 (delta +1), and neither structure has ammonium. Even though the query is more charged on the partial-charge measures and has one more acceptor, the absence of hydrazine and the much higher saturation make it look less toxic overall than this toxic neighbor.
+
+Across the full set of neighbors, the pattern is consistent with the not-toxic label. The three toxic neighbors are countered by strong favorable shifts in saturation, removal of hydrazine and imines, and the presence of urethane groups in the query, while the three non-toxic neighbors show that the query stays aligned with the safer side of local chemical space despite its moderate logP. The main caution is the higher estimated logP around 2.0, but it is not extreme, and the more 3D, urethane-containing scaffold still resembles the non-toxic examples more than the toxic ones. Overall, the neighbor evidence supports option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```
