@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed toxicity profile. Its minimum partial charge of -0.4611 suggests a fairly polar/strongly negative region, which can be a liability in broader safety triage. The estimated logP of 3.8342 is on the higher side, pointing to increased lipophilicity, and together with a topological polar surface area of 68.04 and a hydrogen-bond acceptor count of 5, this gives a moderately polar but still quite lipophilic balance. The nitrogen/oxygen atom count of 5 is also consistent with a heteroatom content that supports polarity, while the minimum absolute partial charge of 0.3157 indicates notable charge separation. On the other hand, the fraction of sp3 carbons is 0.8667, which is strongly favorable because the scaffold is highly saturated and three-dimensional rather than flat and aromatic-heavy. The presence of a dialkyl thioether is likewise a favorable structural element here, since it avoids some of the more prominent structural alerts associated with reactive or highly aromatic motifs. The strongest acidic pKa of 13.8011 is very high, implying that acidic functionality is weakly ionizing and not especially concerning for exposure-driven toxicity. Although ammonium is absent, which removes one obvious cationic liability, the overall pattern still contains several moderate-risk descriptors from lipophilicity and polarity. Even so, the highly sp3-rich scaffold and the thioether pattern appear to dominate the net assessment, leading to an overall prediction of not toxic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a mixed comparison, but the balance is slightly unfavorable because several features align with toxicity-prone chemistry. The shared ammonium state is neutral here because both the neighbor and the query lack ammonium, yet that same neutral status is still associated with a positive toxic-direction effect in the original comparison. The query adds one dialkyl thioether relative to the neighbor, which is a favorable change and goes the other way, but the query also has a more negative minimum partial charge, shifting from -0.3897 in the neighbor to -0.4611 in the query with delta -0.0714, and that change is treated as toxic-leaning. Hydrogen-bond acceptor count stays at 5 versus 5, so there is no compensating difference there, while estimated logP rises from 1.8957 to 3.8342 with delta +1.9385, placing the query in a much more lipophilic region that is generally less comfortable for safety. The saturated ring count also increases from 3 to 5 with delta +2, which partly offsets the lipophilicity concern because a more saturated scaffold is often less flat and can be more favorable for developability. Overall, Neighbor 1 is only weakly supportive of the non-toxic label, but the low total effect reflects a near-canceling balance rather than a strong match.
+
+Neighbor 2 shows a similar pattern, again with several favorable and unfavorable elements competing. As in Neighbor 1, neither molecule has ammonium, and that shared state is associated with a toxic-leaning effect in the comparison. The query has one dialkyl thioether while the neighbor has none, which is favorable for the non-toxic side. The minimum partial charge becomes more negative in the query, from -0.3928 to -0.4611 with delta -0.0683, again aligning with the toxic side of the local comparison. Hydrogen-bond acceptor count is unchanged at 5 versus 5, so this feature is neutral between the two molecules. In contrast, fraction of sp3 carbons rises from 0.8095 to 0.8667 with delta +0.0571, which is favorable because greater saturation and 3D character are generally more compatible with better developability. Estimated logP also increases markedly, from 1.7816 to 3.8342 with delta +2.0526, and that higher lipophilicity is again an unfavorable counterweight. Taken together, Neighbor 2 still ends up only slightly supportive of the non-toxic label, because the more favorable saturation and thioether features roughly balance the more toxic-leaning charge and lipophilicity shifts.
+
+Neighbor 3 is close to Neighbor 2 in structure of evidence and remains a weak positive analog overall. The query again has one dialkyl thioether where the neighbor has none, supporting the non-toxic side. The shared lack of ammonium contributes the same toxic-leaning signal seen before, and the minimum partial charge is again more negative in the query, from -0.3928 to -0.4611 with delta -0.0683, which stays on the unfavorable side. Hydrogen-bond acceptor count remains 5 versus 5, so there is no shift there. Estimated logP rises from 1.5576 in the neighbor to 3.8342 in the query, delta +2.2766, which is the strongest lipophilicity increase among the toxic neighbors and is unfavorable from a safety perspective. However, the saturated ring count also increases from 3 to 5 with delta +2, again moving the query toward a more saturated scaffold that is generally less problematic than a flatter aromatic framework. Even with the lipophilicity increase, Neighbor 3 still lands just on the non-toxic side because the saturation and thioether features partially offset the charge and logP concerns.
+
+Neighbor 4 is one of the clearest non-toxic analogs among the six because it shares several favorable directions with the query. The query has a much higher fraction of sp3 carbons, rising from 0.5882 to 0.8667 with delta +0.2784, which strongly favors the non-toxic side by making the scaffold more saturated and 3D. The query also has one dialkyl thioether while the neighbor has none, another favorable change. Two features go the other way: hydrogen-bond acceptor count increases from 3 to 5 with delta +2, and estimated logP rises sharply from 0.5138 to 3.8342 with delta +3.3204. Both changes move the query toward a more polar-acceptor-rich but also more lipophilic profile, which is less ideal for balanced ADME and is therefore unfavorable. The fact that neither molecule has ammonium provides another toxic-leaning shared signal, and the strongest acidic pKa stays essentially unchanged at 13.8111 versus 13.8011 with delta -0.01, so acidity is not helping distinguish them. Even with the higher HBA and logP, the much stronger gains in saturation and the added thioether make Neighbor 4 overall supportive of the non-toxic label.
+
+Neighbor 5 is also supportive of the non-toxic label, though it includes some unfavorable offsets. The query has lower fraction of sp3 carbons than the neighbor, 0.8667 versus 0.913 with delta -0.0464, but the comparison still treats the high saturation in both molecules as part of a favorable, less flat scaffold space. The query again has one dialkyl thioether while the neighbor has none, which is favorable. On the unfavorable side, hydrogen-bond acceptor count increases from 3 to 5 with delta +2, and the presence of no ammonium in both molecules again carries a toxic-leaning signal in the local comparison. The maximum absolute partial charge is almost unchanged, from 0.4618 in the neighbor to 0.4611 in the query with delta -0.0007, so this feature is essentially neutral, despite being annotated with a toxic-side direction in the pairwise comparison. Estimated logP decreases from 5.166 to 3.8342 with delta -1.3318, which is favorable because it brings the query away from the very lipophilic region and closer to a more balanced range. Overall, Neighbor 5 still supports the non-toxic label because the lower lipophilicity and the thioether feature outweigh the moderate penalties from higher HBA and the shared ammonium absence.
+
+Neighbor 6 is another clear positive analog. The neighbor contains morpholine, while the query does not, and that difference is favorable for the query in this comparison. The query has slightly lower fraction of sp3 carbons than the neighbor, 0.8667 versus 0.9062 with delta -0.0396, but both are still highly saturated. The query also has one dialkyl thioether while the neighbor has none, again favoring the non-toxic side. As with the other neighbors, the shared absence of ammonium is a toxic-leaning shared feature, and hydrogen-bond acceptor count rises from 4 to 5 with delta +1, which is another modest unfavorable shift. Maximum absolute partial charge also increases slightly from 0.4556 to 0.4611 with delta +0.0055, which is a small shift but still treated as unfavorable in the local comparison. Even so, the combination of removing morpholine, retaining high saturation, and adding the thioether keeps Neighbor 6 aligned with the non-toxic label overall.
+
+Across the six neighbors, the strongest recurring pattern is that the query repeatedly matches or improves on the non-toxic analogs through high saturation, thioether presence, and in some cases lower logP relative to the more lipophilic neighbor. The toxic neighbors do show several unfavorable features in the query, especially the higher estimated logP and more negative minimum partial charge, but those signals are repeatedly counterbalanced by favorable scaffold features such as increased saturated ring count or fraction sp3. Because the three negative neighbors are only weakly unfavorable overall and the three positive neighbors are supported by multiple favorable structural comparisons, the combined evidence is consistent with option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

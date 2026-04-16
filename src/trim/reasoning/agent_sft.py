@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from concurrent.futures import FIRST_COMPLETED, Future, ProcessPoolExecutor, wait
 import json
 from pathlib import Path
 from typing import Any
@@ -15,6 +16,12 @@ from trim.reasoning.task_user_prompts import (
 )
 from trim.utils.io import ensure_directory
 from trim.utils.paths import DATA_ROOT, DEFAULT_PROCESSED_DATA_ROOT, OUTPUTS_ROOT, resolve_project_path
+
+try:
+    from tqdm.auto import tqdm
+except Exception:  # pragma: no cover - tqdm is optional in some environments
+    def tqdm(iterable=None, **kwargs):
+        return iterable
 
 
 AGENT_REASONING_SFT_SCHEMA_VERSION = "trim_agent_reasoning_sft_messages_v1"
@@ -38,6 +45,8 @@ LOCAL_TOOL_BRIDGE = (
     "Let me compare this molecule against similar labeled molecules with compare_similar_mols."
 )
 
+_AGENT_SFT_WORKER_CONTEXT: dict[str, Any] = {}
+
 
 def _dataset_output_dir(
     *,
@@ -47,6 +56,79 @@ def _dataset_output_dir(
     split: str,
 ) -> Path:
     return ensure_directory(resolve_project_path(output_root) / provider / model_slug(model) / split)
+
+
+def _read_jsonl_records(path: Path) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    if not path.exists():
+        return records
+    with path.open("r", encoding="utf-8") as handle:
+        for line in handle:
+            stripped = line.strip()
+            if not stripped:
+                continue
+            parsed = json.loads(stripped)
+            if not isinstance(parsed, dict):
+                raise ValueError(f"Expected JSON object line in {path}")
+            records.append(parsed)
+    return records
+
+
+def _longest_matching_prefix_length(
+    *,
+    existing_indices: list[int],
+    target_indices: list[int],
+) -> int:
+    prefix_len = 0
+    for existing_index, target_index in zip(existing_indices, target_indices, strict=False):
+        if int(existing_index) != int(target_index):
+            break
+        prefix_len += 1
+    return prefix_len
+
+
+def _load_existing_task_records(
+    *,
+    output_path: Path,
+    task: str,
+    split: str,
+    target_indices: list[int],
+) -> list[dict[str, Any]]:
+    existing_records = _read_jsonl_records(output_path)
+    if not existing_records:
+        return []
+
+    existing_indices: list[int] = []
+    for record in existing_records:
+        if str(record.get("task")) != task:
+            raise ValueError(f"Existing JSONL task mismatch in {output_path}: {record.get('task')!r}")
+        if str(record.get("split")) != split:
+            raise ValueError(f"Existing JSONL split mismatch in {output_path}: {record.get('split')!r}")
+        sample_index = int(record["sample_index"])
+        existing_indices.append(sample_index)
+
+    if len(existing_indices) != len(set(existing_indices)):
+        raise ValueError(f"Duplicate sample_index entries found in existing JSONL: {output_path}")
+    if existing_indices != sorted(existing_indices):
+        raise ValueError(f"Existing JSONL is not sorted by sample_index: {output_path}")
+
+    prefix_len = _longest_matching_prefix_length(
+        existing_indices=existing_indices,
+        target_indices=target_indices,
+    )
+    prefix_records = existing_records[:prefix_len]
+
+    if prefix_len < len(existing_records):
+        with output_path.open("w", encoding="utf-8") as handle:
+            for record in prefix_records:
+                handle.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+    return prefix_records
+
+
+def _append_jsonl_record(handle, record: dict[str, Any]) -> None:
+    handle.write(json.dumps(record, ensure_ascii=False) + "\n")
+    handle.flush()
 
 
 def _rewrite_result_path(
@@ -254,6 +336,81 @@ def build_task_tool_runner(
     )
 
 
+def _prewarm_tool_runner(tool_runner: Any, *, task: str) -> None:
+    get_smiles_index = getattr(tool_runner, "_get_smiles_index", None)
+    if callable(get_smiles_index):
+        get_smiles_index()
+
+    get_train_feature_cache = getattr(tool_runner, "_get_train_feature_cache", None)
+    if callable(get_train_feature_cache):
+        get_train_feature_cache()
+
+    retriever = getattr(tool_runner, "retriever", None)
+    if retriever is not None:
+        load_train_metadata = getattr(retriever, "_load_train_metadata", None)
+        if callable(load_train_metadata):
+            load_train_metadata(task)
+        load_similarity_file = getattr(retriever, "_load_similarity_file", None)
+        if callable(load_similarity_file):
+            for family in ("Morgan_similarity", "Feature_Morgan_similarity"):
+                load_similarity_file(task, family, "train")
+
+
+def _init_agent_sft_worker(
+    task: str,
+    split: str,
+    rewrite_output_root: str,
+    provider: str,
+    model: str,
+    prompt_root: str,
+    feature_set_name: str,
+    manifest_root: str,
+    dataset_root: str,
+    cache_root: str,
+) -> None:
+    tool_runner = build_task_tool_runner(
+        task=task,
+        feature_set_name=feature_set_name,
+        manifest_root=manifest_root,
+        dataset_root=dataset_root,
+        cache_root=cache_root,
+    )
+    _prewarm_tool_runner(tool_runner, task=task)
+    _AGENT_SFT_WORKER_CONTEXT.clear()
+    _AGENT_SFT_WORKER_CONTEXT.update(
+        {
+            "task": task,
+            "split": split,
+            "rewrite_output_root": rewrite_output_root,
+            "provider": provider,
+            "model": model,
+            "prompt_root": prompt_root,
+            "tool_runner": tool_runner,
+        }
+    )
+
+
+def _build_agent_reasoning_sft_record_worker(
+    sample_index: int,
+    smiles: str,
+    gt_label: int,
+) -> dict[str, Any]:
+    if not _AGENT_SFT_WORKER_CONTEXT:
+        raise RuntimeError("Agent SFT worker context is not initialized")
+    return build_agent_reasoning_sft_record(
+        task=str(_AGENT_SFT_WORKER_CONTEXT["task"]),
+        split=str(_AGENT_SFT_WORKER_CONTEXT["split"]),
+        sample_index=int(sample_index),
+        smiles=smiles,
+        gt_label=int(gt_label),
+        tool_runner=_AGENT_SFT_WORKER_CONTEXT["tool_runner"],
+        rewrite_output_root=str(_AGENT_SFT_WORKER_CONTEXT["rewrite_output_root"]),
+        provider=str(_AGENT_SFT_WORKER_CONTEXT["provider"]),
+        model=str(_AGENT_SFT_WORKER_CONTEXT["model"]),
+        prompt_root=str(_AGENT_SFT_WORKER_CONTEXT["prompt_root"]),
+    )
+
+
 def build_agent_reasoning_sft_record(
     *,
     task: str,
@@ -361,6 +518,8 @@ def build_agent_reasoning_sft_for_task(
     feature_set_name: str = DEFAULT_AGENT_TOOL_FEATURE_SET_NAME,
     manifest_root: str | Path = DEFAULT_AGENT_TOOL_MANIFEST_ROOT,
     cache_root: str | Path = DEFAULT_TOOL_CACHE_ROOT,
+    max_concurrency: int = 1,
+    skip_existing: bool = True,
 ) -> dict[str, Any]:
     split_payload = load_tdc_split(task, split, data_root=dataset_root)
     rewritten_sample_indices = list_fully_rewritten_sample_indices(
@@ -370,32 +529,6 @@ def build_agent_reasoning_sft_for_task(
         provider=provider,
         model=model,
     )
-    tool_runner = build_task_tool_runner(
-        task=task,
-        feature_set_name=feature_set_name,
-        manifest_root=manifest_root,
-        dataset_root=dataset_root,
-        cache_root=cache_root,
-    )
-
-    records: list[dict[str, Any]] = []
-    for sample_index in rewritten_sample_indices:
-        smiles = split_payload.smiles[sample_index]
-        gt_label = int(split_payload.labels[sample_index])
-        records.append(
-            build_agent_reasoning_sft_record(
-                task=task,
-                split=split,
-                sample_index=sample_index,
-                smiles=smiles,
-                gt_label=gt_label,
-                tool_runner=tool_runner,
-                rewrite_output_root=rewrite_output_root,
-                provider=provider,
-                model=model,
-                prompt_root=prompt_root,
-            )
-        )
 
     output_path = _dataset_output_dir(
         output_root=output_root,
@@ -403,9 +536,122 @@ def build_agent_reasoning_sft_for_task(
         model=model,
         split=split,
     ) / f"{task}.jsonl"
-    with output_path.open("w", encoding="utf-8") as handle:
-        for record in records:
-            handle.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+    existing_records: list[dict[str, Any]] = []
+    if skip_existing:
+        existing_records = _load_existing_task_records(
+            output_path=output_path,
+            task=task,
+            split=split,
+            target_indices=rewritten_sample_indices,
+        )
+
+    completed_count = len(existing_records)
+    pending_sample_indices = rewritten_sample_indices[completed_count:]
+
+    records = list(existing_records)
+    sample_iterator = tqdm(
+        rewritten_sample_indices,
+        desc=f"{task} ({split})",
+        leave=False,
+        initial=completed_count,
+    )
+    if pending_sample_indices:
+        open_mode = "a" if completed_count > 0 else "w"
+        with output_path.open(open_mode, encoding="utf-8") as handle:
+            next_write_position = completed_count
+            pending_buffer: dict[int, dict[str, Any]] = {}
+            max_workers = max(1, int(max_concurrency))
+            if max_workers == 1:
+                tool_runner = build_task_tool_runner(
+                    task=task,
+                    feature_set_name=feature_set_name,
+                    manifest_root=manifest_root,
+                    dataset_root=dataset_root,
+                    cache_root=cache_root,
+                )
+                _prewarm_tool_runner(tool_runner, task=task)
+                for sample_index in pending_sample_indices:
+                    sample_index = int(sample_index)
+                    record = build_agent_reasoning_sft_record(
+                        task=task,
+                        split=split,
+                        sample_index=sample_index,
+                        smiles=split_payload.smiles[sample_index],
+                        gt_label=int(split_payload.labels[sample_index]),
+                        tool_runner=tool_runner,
+                        rewrite_output_root=rewrite_output_root,
+                        provider=provider,
+                        model=model,
+                        prompt_root=prompt_root,
+                    )
+                    records.append(record)
+                    _append_jsonl_record(handle, record)
+                    next_write_position += 1
+                    sample_iterator.update(1)
+            else:
+                with ProcessPoolExecutor(
+                    max_workers=max_workers,
+                    initializer=_init_agent_sft_worker,
+                    initargs=(
+                        task,
+                        split,
+                        str(rewrite_output_root),
+                        provider,
+                        model,
+                        str(prompt_root),
+                        feature_set_name,
+                        str(manifest_root),
+                        str(dataset_root),
+                        str(cache_root),
+                    ),
+                ) as executor:
+                    in_flight: dict[Future[dict[str, Any]], int] = {}
+                    submit_index = 0
+
+                    while submit_index < len(pending_sample_indices) and len(in_flight) < max_workers:
+                        sample_index = int(pending_sample_indices[submit_index])
+                        in_flight[
+                            executor.submit(
+                                _build_agent_reasoning_sft_record_worker,
+                                sample_index,
+                                split_payload.smiles[sample_index],
+                                int(split_payload.labels[sample_index]),
+                            )
+                        ] = sample_index
+                        submit_index += 1
+
+                    while in_flight:
+                        done, _ = wait(in_flight.keys(), return_when=FIRST_COMPLETED)
+                        for future in done:
+                            sample_index = in_flight.pop(future)
+                            record = future.result()
+                            pending_buffer[int(sample_index)] = record
+
+                        while next_write_position < len(rewritten_sample_indices):
+                            expected_sample_index = int(rewritten_sample_indices[next_write_position])
+                            record = pending_buffer.get(expected_sample_index)
+                            if record is None:
+                                break
+                            records.append(record)
+                            _append_jsonl_record(handle, record)
+                            pending_buffer.pop(expected_sample_index, None)
+                            next_write_position += 1
+                            sample_iterator.update(1)
+
+                        while submit_index < len(pending_sample_indices) and len(in_flight) < max_workers:
+                            sample_index = int(pending_sample_indices[submit_index])
+                            in_flight[
+                                executor.submit(
+                                    _build_agent_reasoning_sft_record_worker,
+                                    sample_index,
+                                    split_payload.smiles[sample_index],
+                                    int(split_payload.labels[sample_index]),
+                                )
+                            ] = sample_index
+                            submit_index += 1
+
+    sample_iterator.close()
 
     return {
         "task": task,
@@ -429,12 +675,15 @@ def build_agent_reasoning_sft_datasets(
     feature_set_name: str = DEFAULT_AGENT_TOOL_FEATURE_SET_NAME,
     manifest_root: str | Path = DEFAULT_AGENT_TOOL_MANIFEST_ROOT,
     cache_root: str | Path = DEFAULT_TOOL_CACHE_ROOT,
+    max_concurrency: int = 1,
+    skip_existing: bool = True,
 ) -> dict[str, Any]:
     task_list = tasks or load_task_names_from_manifest_index(manifest_index_path)
     summaries: list[dict[str, Any]] = []
     total_records = 0
 
-    for task in task_list:
+    task_iterator = tqdm(task_list, desc=f"Agent SFT ({split})")
+    for task in task_iterator:
         summary = build_agent_reasoning_sft_for_task(
             task=task,
             split=split,
@@ -447,6 +696,8 @@ def build_agent_reasoning_sft_datasets(
             feature_set_name=feature_set_name,
             manifest_root=manifest_root,
             cache_root=cache_root,
+            max_concurrency=max_concurrency,
+            skip_existing=skip_existing,
         )
         summaries.append(summary)
         total_records += int(summary["num_records"])
@@ -456,6 +707,8 @@ def build_agent_reasoning_sft_datasets(
         "provider": provider,
         "model": model,
         "split": split,
+        "max_concurrency": int(max_concurrency),
+        "skip_existing": bool(skip_existing),
         "num_tasks": len(summaries),
         "num_records": total_records,
         "tasks": summaries,

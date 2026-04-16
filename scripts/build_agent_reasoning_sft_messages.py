@@ -50,6 +50,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--feature-set-name", default=DEFAULT_AGENT_TOOL_FEATURE_SET_NAME)
     parser.add_argument("--manifest-root", default=str(DEFAULT_AGENT_TOOL_MANIFEST_ROOT))
     parser.add_argument("--cache-root", default=str(DEFAULT_TOOL_CACHE_ROOT))
+    parser.add_argument(
+        "--max-concurrency",
+        type=int,
+        default=1,
+        help="Number of worker processes to use per task when assembling samples.",
+    )
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Rebuild task JSONL files from scratch instead of resuming from existing outputs.",
+    )
     return parser.parse_args()
 
 
@@ -68,6 +79,8 @@ def main() -> int:
         feature_set_name=args.feature_set_name,
         manifest_root=args.manifest_root,
         cache_root=args.cache_root,
+        max_concurrency=args.max_concurrency,
+        skip_existing=not args.overwrite,
     )
     print(json.dumps(summary, indent=2, ensure_ascii=False))
     return 0

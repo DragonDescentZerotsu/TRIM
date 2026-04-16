@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are generally compatible with a non-toxic profile. A minimum partial charge of -0.871 suggests a strongly negative site, but by itself that is not a clear toxicity flag. The presence of an ammonium group (1) introduces a cationic center, yet on its own this is not necessarily problematic unless paired with much higher lipophilicity. The aryl iodide count of 4 is a structural motif that can be viewed cautiously, but it is not automatically associated with clinical toxicity. The maximum absolute partial charge of 0.871 is also a moderate polarity indicator rather than a clear liability. The fraction of sp3 carbons is 0.1333, which is quite low and indicates a fairly flat, aromatic-rich scaffold; low saturation can be less favorable for overall developability. The nitrogen/oxygen atom count of 5 and hydrogen-bond acceptor count of 4 indicate a moderate heteroatom burden, but not an extreme polarity profile. The diaryl ether present (1) adds an aromatic linker motif that can sometimes accompany less favorable developability. The estimated logP of 1.8738 is only moderate, which is reassuring because it is not in the high-lipophilicity range typically associated with stronger nonspecific risk. The strongest acidic pKa of 2.1742 suggests a fairly strong acidic site, which would be mostly ionized at physiological pH and can reduce passive accumulation. Taken together, the molecule has some mixed structural signals, including low sp3 character and several aromatic features, but its moderate lipophilicity and ionization profile make the overall picture more consistent with option (A): is not toxic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a positive analog despite one mixed signal. It matches the query on hydrogen-bond acceptor count at 4, which is a neutral comparison here, but several other differences favor a non-toxic label: the query has a much more negative minimum partial charge (−0.871 vs −0.4572; delta −0.4138), which is strongly aligned with the safer side in this comparison, the query also has ammonium once while the neighbor has none (delta +1), and the query’s estimated logD is far lower (−4.2905 vs 5.5495; delta −9.84), which is a large shift away from the very lipophilic regime that often carries safety concerns. The query also has 4 aryl iodides while the neighbor has 0, and both share diaryl ether. Taken together, the balance of the shared features in Neighbor 1 supports the non-toxic label.
+
+Neighbor 2 gives a similar overall picture. The query again has a more negative minimum partial charge (−0.871 vs −0.4257; delta −0.4453), lacks the ammonium seen in the query-side feature comparison? Actually the neighbor has no ammonium while the query has one (delta +1), and the query carries 4 aryl iodides where the neighbor has 0. The query’s maximum absolute partial charge is also higher (0.871 vs 0.475; delta +0.3961), yet in this local comparison that feature still aligns with the non-toxic side. The only features leaning the other way are the lower fraction of sp3 carbons in the query (0.1333 vs 0.4286; delta −0.2952) and the tie on hydrogen-bond acceptor count at 4, both of which are comparatively weaker than the strong charge and ammonium/logD-related differences. Overall, Neighbor 2 still supports not toxic.
+
+Neighbor 3 also supports the non-toxic label through the same core pattern. The query has a more negative minimum partial charge (−0.871 vs −0.4932; delta −0.3778), ammonium once while the neighbor has none (delta +1), and 4 aryl iodides versus 0 in the neighbor. The query’s maximum absolute partial charge is higher (0.871 vs 0.4932; delta +0.3778), which here still aligns with the safer side, and the query contains diaryl ether once while the neighbor has none, a feature that goes the other direction. The one clearly unfavorable item in this pair is that the neighbor has 2,4-thiazolidinedione while the query does not, but that is outweighed by the stronger charge/ionization and aryl-iodide differences. So Neighbor 3 remains consistent with not toxic overall.
+
+Neighbor 4 is a negative analog, but it still provides a largely protective comparison for the query. The query has a larger maximum absolute partial charge (0.871 vs 0.5439; delta +0.3271) and a more negative minimum partial charge (−0.871 vs −0.5439; delta −0.3271), and both compounds have ammonium, all of which align with the non-toxic side here. The query does have higher estimated logP (1.8738 vs −1.9993; delta +3.8731), and that more lipophilic profile is the main unfavorable element because higher lipophilicity can worsen developability and safety balance. The query also lacks the two phenol groups present in the neighbor, which again favors not toxic, while diaryl ether is present in the query but absent in the neighbor, which goes the other way. Even with those opposing features, the stronger charge pattern and the loss of phenol burden keep Neighbor 4 closer to the non-toxic side.
+
+Neighbor 5 is similar to Neighbor 4 and again mostly supports not toxic. The query exceeds the neighbor in maximum absolute partial charge (0.871 vs 0.5439; delta +0.3271) and has a more negative minimum partial charge (−0.871 vs −0.5439; delta −0.3271), and both contain ammonium. The query also has a higher estimated logP (1.8738 vs −1.7049; delta +3.5787), which is the main feature leaning toward toxicity in this pair. In addition, the query has one more hydrogen-bond acceptor than the neighbor (4 vs 3; delta +1), and it contains diaryl ether while the neighbor does not; both of those are the unfavorable directions in this comparison. Still, the stronger ionization-related differences keep the overall analogy closer to the non-toxic label.
+
+Neighbor 6 follows the same general pattern as Neighbor 5. The query again has a higher maximum absolute partial charge (0.871 vs 0.5439; delta +0.3271), a more negative minimum partial charge (−0.871 vs −0.5439; delta −0.3271), and both compounds have ammonium, all of which support the safer side of the comparison. Against that, the query has lower fraction of sp3 carbons (0.1333 vs 0.4615; delta −0.3282), which is unfavorable in this pair, and it also has a higher estimated logP (1.8738 vs −0.1265; delta +2.0003) plus one more hydrogen-bond acceptor than the neighbor (4 vs 3; delta +1), both of which lean toward toxicity. Even so, the strong charge-related similarity still makes the query look more like the non-toxic analog overall.
+
+Putting all six neighbors together, the three positive neighbors are dominated by charge, ammonium, and very low estimated logD patterns that consistently favor the non-toxic class, while the three negative neighbors are only partially offset by higher logP, lower sp3 character, and a few heteroatom/H-bonding differences. Across the full local neighborhood, the charge distribution and ionization pattern are the strongest recurring signals, and they align more often with the non-toxic side than with the toxic side. The combined analog evidence therefore supports option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows several features that are generally consistent with a less toxic profile. Its minimum partial charge is -0.6229, and the maximum absolute partial charge is 0.6229, which suggests a moderate and not extreme charge distribution rather than highly polarized chemistry. The N-oxide is present at 1, and with a hydrogen-bond acceptor count of 2, the polarity burden still looks modest. The nitrogen/oxygen atom count is 4, which is not especially high and supports a relatively limited heteroatom load. The strongest acidic pKa is not defined because there is no acidic site, so there is no strong acidic functionality that would add ionization-related liability. The fraction of sp3 carbons is 0.125, which is low and indicates a fairly flat scaffold, a mixed signal rather than an obviously favorable one, but not by itself a strong toxicity warning.
+
+There are also a few features that add some caution. An amine is present at 1, and ammonium is absent at 0; together, that points to a basic amine without pre-existing quaternization, which can sometimes increase cationic character. The imine count is 2, which is a mild concern because imine-like functionality can add reactivity or instability depending on context. Even so, these liabilities are partially offset by the low acceptor count, the absence of an acidic site, and the moderate charge extrema.
+
+Overall, the balance of descriptors looks more compatible with a not-toxic classification than with a toxic one, so the molecule is best predicted as option (A): is not toxic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close positive analog and several of its matched features line up in a way that favors the non-toxic label. The query has a much more negative minimum partial charge than the neighbor, with -0.6229 versus -0.3355 and a delta of -0.2874, which is the kind of shift that can support a less liabilities-prone polarity pattern. It also has one N-oxide while the neighbor has none, and that change is associated here with a favorable move toward the non-toxic side. The neighbor and query both lack ammonium, but that shared state is not enough to outweigh the other features; the comparison also shows the query has fewer hydrogen-bond acceptors, 2 versus 5 with delta -3, and two imine groups versus none in the neighbor, alongside a much lower estimated logD, 1.031 versus 5.2682 with delta -4.2372. Taken together, this neighbor mainly supports option (A): is not toxic, even though the shared absence of ammonium and the extra imine features add some counterweight.
+
+Neighbor 2 gives a very similar overall picture and again leans toward non-toxicity. The query is more negative at minimum partial charge, -0.6229 versus -0.3382 with delta -0.2846, and it has the N-oxide that the neighbor lacks. The query also has fewer hydrogen-bond acceptors, 2 versus 4 with delta -2. In addition, the neighbor’s strongest acidic pKa is 13.2652 while the query has no acidic site, so that acid-site comparison is treated as favorable for the query here. The N/O count is the same at 4 in both molecules, so that feature is neutral, while the shared lack of ammonium again gives a smaller opposing signal. Overall, the lower acceptor burden, the absence of an acidic site, the more negative minimum partial charge, and the presence of N-oxide make this positive neighbor consistent with option (A): is not toxic.
+
+Neighbor 3 is another positive analog that still ends up supporting the non-toxic class despite one opposing flexibility signal. The query again has the more negative minimum partial charge, -0.6229 versus -0.4257 with delta -0.1971, and it carries one N-oxide while the neighbor has none. It also has a lower hydrogen-bond acceptor count, 2 versus 4 with delta -2, and a higher maximum absolute partial charge, 0.6229 versus 0.475 with delta +0.1479. Those shifts are favorable in this comparison, but the query has a lower fraction of sp3 carbons, 0.125 versus 0.4286 with delta -0.3036, which is the one feature here that tilts toward toxicity because the neighbor is more saturated and 3D. Even with that drawback, the combined charge and acceptor pattern still makes Neighbor 3 overall support option (A): is not toxic.
+
+Neighbor 4 is the first negative analog, but its comparison still points back toward the non-toxic label because the query looks better on several key descriptors. The query has one N-oxide while the neighbor has none, and the query’s minimum partial charge is again more negative, -0.6229 versus -0.3132 with delta -0.3097. The acceptor count is equal at 2 versus 2, which is neutral, and the query has one fewer imine, 2 versus 1 in the neighbor, with that specific change favoring the non-toxic side in this comparison. The shared absence of ammonium and the identical fraction of sp3 carbons, both at 0.125, give mixed signals; here those two features do not create enough toxicity pressure to overturn the better charge and N-oxide profile. So even though Neighbor 4 belongs to the toxic set, the local analog comparison still leans toward option (A): is not toxic.
+
+Neighbor 5, also from the negative set, has a similarly mixed but ultimately favorable comparison for the query. The query has one N-oxide while the neighbor has none, and its minimum partial charge is more negative, -0.6229 versus -0.281 with delta -0.3419, which is again the clearest favorable pattern. The query has fewer hydrogen-bond acceptors, 2 versus 4 with delta -2, but it also has a higher maximum partial charge, 0.3151 versus 0.1589 with delta +0.1562, which in this specific comparison goes the wrong way. The shared absence of ammonium contributes an opposing signal, and the fraction of sp3 carbons is nearly unchanged, 0.125 versus 0.1176 with delta +0.0074, with that small shift also leaning toxic in the note. Even with those counterpoints, the stronger polarity/charge and reduced acceptor burden keep Neighbor 5 aligned overall with option (A): is not toxic.
+
+Neighbor 6 is the last negative analog, and it reinforces the same general pattern. The query has the N-oxide that the neighbor lacks, a more negative minimum partial charge of -0.6229 versus -0.3641 with delta -0.2587, and fewer hydrogen-bond acceptors, 2 versus 3 with delta -1. As in the other comparisons, the shared lack of ammonium is a weak opposing feature, and the identical fraction of sp3 carbons at 0.125 gives another small toxicity-leaning signal. The neighbor also has one imine while the query has two, so that feature again favors the non-toxic side in this comparison. Altogether, the charge and acceptor differences are more persuasive than the minor countersignals, so Neighbor 6 also supports option (A): is not toxic.
+
+Across all six neighbors, the same core theme repeats: the query consistently shows the more negative minimum partial charge, lower hydrogen-bond acceptor burden, and presence of N-oxide relative to most neighbors, while the only recurring toxicity-leaning counterpoints are the shared absence of ammonium in several comparisons, the occasional imine increase, and in one case a lower fraction of sp3 carbons. The positive neighbors already lean toward non-toxicity, and even the toxic neighbors compare favorably to the query on the most informative features. Taken together, the six local analogs support the final prediction that the molecule is option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

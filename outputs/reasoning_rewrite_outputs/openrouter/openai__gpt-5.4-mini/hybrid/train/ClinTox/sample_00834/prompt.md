@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed toxicity profile, but the balance of properties is more consistent with a not-toxic classification. Its minimum partial charge is -0.5494 and its maximum absolute partial charge is 0.5494, which are consistent with a modest polarity profile rather than extreme charge localization. The strongest basic pKa is 1.6699, indicating only weak basicity, and the presence of ammonium is absent (0), so there is little sign of a strongly cationic, lysosomotropic basic motif. Although the strongest acidic pKa is 4.2478, suggesting some ionizable acidity, that alone is not a strong toxicity driver here. The 1H-pyrrole is present (1), which is a structural feature that can be viewed as mildly unfavorable, but it is not enough by itself to dominate the overall profile. Fraction of sp3 carbons is 0.2, indicating a relatively flat and aromatic structure, which is less favorable than a more saturated scaffold. The nitrogen/oxygen atom count is 4, the topological polar surface area is 62.13, and the hydrogen-bond acceptor count is 4; together these suggest moderate polarity without extreme polar burden. Overall, the molecule does not look highly lipophilic or strongly basic, and while it contains some potentially unfavorable structural and ionization features, the combined descriptor pattern is still more compatible with a compound that is not toxic than one that is toxic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a fairly close toxic analog, but the query differs in a few ways that are mixed overall. The query has a more negative minimum partial charge, changing from -0.4775 to -0.5494 with a delta of -0.0719, and that shift is associated here with a large favorable move away from toxicity. The query also has a higher maximum absolute partial charge, 0.5494 versus 0.4775 with a delta of +0.0719, which again supports the not-toxic side. The nitrogen/oxygen atom count is unchanged at 4, with delta 0, and that keeps the comparison centered on the same heteroatom burden. Against that, the query contains 1H-pyrrole once while the neighbor has none, and that added pyrrole is an unfavorable feature for toxicity. Hydrogen-bond acceptor count also rises from 3 to 4, another change that leans toward toxicity in this local comparison. The neighbor and query both lack ammonium, so that feature is neutral structurally here despite being associated with the toxic side in the local split. Even with the pyrrole and acceptor increase, the charge-related changes dominate enough that this neighbor still sits slightly on the not-toxic side overall.
+
+Neighbor 2 shows a similar pattern but with a stronger mix of toxic-leaning motifs. The query again has a more negative minimum partial charge, from -0.3387 in the neighbor to -0.5494 in the query, delta -0.2108, which strongly favors the not-toxic side in this neighborhood. However, the query has 1H-pyrrole once whereas the neighbor has none, and that remains a toxic-leaning difference. Ammonium is absent in both molecules, so there is no separating effect there. The query also keeps hydrogen-bond acceptor count at 4, matching the neighbor’s 4, but in this local context that unchanged acceptor burden still aligns with the toxic direction. In addition, the fraction of sp3 carbons drops from 0.4167 to 0.2, delta -0.2167, meaning the query is less saturated and more flattened than the neighbor; here that shift is unfavorable because the local comparison associates lower sp3 character with toxicity. The neighbor has 1,2,5-oxadiazole while the query does not, delta -1, and that missing heterocycle is another toxic-leaning difference for the query. Taken together, the strong charge shift helps, but the pyrrole, acceptor pattern, lower sp3 fraction, and loss of 1,2,5-oxadiazole make this neighbor still only weakly aligned with not toxicity.
+
+Neighbor 3 is the clearest of the three toxic neighbors for balancing the final call, because it mixes a few favorable charge features with several toxic-leaning structural differences. The query has 1H-pyrrole once while the neighbor has none, again adding a toxicity-associated motif. Its minimum partial charge is more negative, moving from -0.4572 to -0.5494 with delta -0.0922, which is favorable for not toxicity, and the minimum absolute partial charge also decreases from 0.3234 to 0.2089 with delta -0.1145, again supporting the not-toxic direction. But the neighbor and query both lack ammonium, so that feature does not distinguish them. The query also raises hydrogen-bond acceptor count from 3 to 4, delta +1, which in this neighborhood is a toxic-leaning change. Most importantly, the estimated logD drops sharply from 3.0637 in the neighbor to -2.1962 in the query, delta -5.2599. Since higher lipophilicity can be a safety liability for ionizable molecules, this very large move to a much lower logD is a substantial factor favoring the not-toxic side. Even so, the pyrrole and acceptor increase keep the comparison from being purely favorable.
+
+Neighbor 4 is a non-toxic neighbor and it gives a strong anchor for the not-toxic label because several of its values are extremely close to the query. The query’s maximum absolute partial charge is 0.5494 versus 0.5448 in the neighbor, delta +0.0046, and that tiny increase is interpreted here as unfavorable to toxicity. The minimum partial charge is also slightly more negative in the query, -0.5494 versus -0.5448, delta -0.0046, which is favorable. The same neighborhood also shows the query has fraction of sp3 carbons 0.2 instead of 0, delta +0.2, a change that in this comparison leans toxic because the neighbor is entirely flat while the query is somewhat more saturated. Hydrogen-bond acceptor count rises from 2 to 4, delta +2, another toxic-leaning move. The query has 1H-pyrrole once while the neighbor has none, and that too is unfavorable. Both molecules still lack ammonium, so there is no separation there, although the local effect is toxic-leaning. Even with the sp3, acceptor, and pyrrole differences, the very close charge profile makes this neighbor overall resemble the not-toxic class more than the toxic class.
+
+Neighbor 5 is another non-toxic neighbor and is particularly informative because it is nearly matched to the query on charge extrema. The maximum absolute partial charge changes only from 0.5482 to 0.5494, delta +0.0012, and the minimum partial charge changes from -0.5482 to -0.5494, delta -0.0012; both tiny shifts stay on the not-toxic side in this local setting. The query again has 1H-pyrrole once while the neighbor has none, which is unfavorable. Hydrogen-bond acceptor count increases from 3 to 4, delta +1, also leaning toxic. Both structures lack ammonium, which does not separate them but is still treated as a toxic-leaning local feature. The fraction of sp3 carbons rises from 0.1111 to 0.2, delta +0.0889, meaning the query is slightly less flat than the neighbor; in this comparison that is again aligned with the toxic side. Even so, the exceptionally close charge match to a non-toxic neighbor keeps this comparison overall nearer the not-toxic class than the toxic one.
+
+Neighbor 6 provides a similar non-toxic anchor with a few local differences that favor the query on charge but not on the other features. The maximum absolute partial charge is almost identical, 0.5498 in the neighbor versus 0.5494 in the query, delta -0.0004, and the minimum partial charge is also essentially the same, -0.5498 versus -0.5494, delta +0.0004; both support the not-toxic side. By contrast, the query has hydrogen-bond acceptor count 4 instead of 2, delta +2, and 1H-pyrrole once while the neighbor has none, both of which are toxic-leaning differences. The neighbor and query both lack ammonium, which remains neutral structurally but is part of the same local toxic-leaning pattern. Finally, the maximum partial charge increases from 0.0458 to 0.2089, delta +0.1631, which is also unfavorable in this neighborhood. Even with the higher acceptor count and pyrrole presence, the near-perfect charge similarity to a non-toxic neighbor is an important stabilizing factor.
+
+Putting all six neighbors together, the three toxic neighbors show that the query repeatedly carries 1H-pyrrole, higher hydrogen-bond acceptor count, and in one case lower sp3 fraction relative to toxic analogs, but those are counterbalanced by very favorable charge and logD shifts, especially the much more negative minimum partial charge in Neighbors 1 and 2 and the large drop in estimated logD in Neighbor 3. The three non-toxic neighbors are especially close on charge extrema, and the query’s chemistry remains broadly consistent with that not-toxic reference set despite the pyrrole and acceptor increases. Overall, the local evidence lands slightly on the not-toxic side, matching option (A).
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

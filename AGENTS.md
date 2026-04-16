@@ -268,8 +268,13 @@ If you are on `node002`, default to the `vllm` conda environment when you need R
           - `tool(compare_similar_mols result)`
           - `assistant(local reasoning + hybrid reasoning + final Answer)`
         - 当前 agent SFT builder **不再遍历全 split 全部 sample**，而是只消费 `global/local/hybrid` 三类 rewrite 输出都真实存在的 sample index 交集；因此 `both_wrong` 被过滤掉、或某类 rewrite 尚未成功的 sample，不会再让后续 SFT 构建报错
+        - 现在已支持 sample 级**多进程**组装、按 `sample_index` 稳定排序写出、以及边生成边 append JSONL
+        - 现在已支持断点续跑：若某个 task 的 JSONL 已存在且前缀有效，会自动跳过已完成样本并从后续 sample 继续写；只有显式 `--overwrite` 才会整 task 重建
+        - 当前 task 外层和 sample 内层都带 `tqdm` 进度条
       - `scripts/build_agent_reasoning_sft_messages.py`
         - 按 task 批量导出最终 agent SFT `messages` 数据
+        - 已支持 `--max-concurrency`，当前表示每个 task 内用于组装 sample 的 worker 进程数
+        - 已支持 `--overwrite`；默认行为是不覆盖已有 JSONL，而是自动续跑
       - 正式输出目录：
         - `data/sft/agent_reasoning_messages/<provider>/<model_slug>/<split>/<task>.jsonl`
         - 同目录 manifest：`data/sft/agent_reasoning_messages/<provider>/<model_slug>/<split>/manifest.json`

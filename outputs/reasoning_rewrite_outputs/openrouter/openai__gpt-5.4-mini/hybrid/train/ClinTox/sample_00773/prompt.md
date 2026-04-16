@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains 2-imidazoline (1), which is a small heterocyclic motif rather than a bulky aromatic system, so that feature is compatible with a less problematic profile. Its strongest acidic pKa is not defined because there is no acidic site, which avoids acidic ionization liabilities and is consistent with a simpler ionization pattern. The hydrogen-bond acceptor count is 1, the nitrogen/oxygen atom count is 2, and the heteroatom count is 2; all of these are low, which supports limited polarity burden. The topological polar surface area is 26, a relatively low value that is generally favorable for passive permeability and does not suggest a highly polar, exposure-stressing compound. The estimated logP is 0.1888, which is quite low and indicates limited lipophilicity, reducing concern for the kinds of lipophilic accumulation or nonspecific liability often seen with more hydrophobic molecules. The minimum partial charge is -0.274 and the maximum absolute partial charge is 0.274, showing some polarity but not an extreme charge distribution. The absence of ammonium (0) also argues against a strongly cationic, lysosomotropic character. Overall, the descriptor pattern is dominated by low polarity burden, low lipophilicity, and modest heteroatom content, which outweigh the isolated charge-related concerns and supports a not-toxic classification.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a close toxic analog, but several features of the query are less concerning than the neighbor’s. The query has a less negative minimum partial charge, shifting from -0.4572 in the neighbor to -0.274 in the query with a +0.1832 delta, and that change aligns with a less toxic direction here. The query also adds 2-imidazoline once, whereas the neighbor lacks it, and that difference favors the not-toxic class. In addition, the query has a much lower hydrogen-bond acceptor count, 1 versus 3 in the neighbor, and a lower topological polar surface area, 26 versus 72.63 with a -46.63 delta; both changes move away from the more polar, less permeable profile associated with higher safety risk. The neighbor also has a defined strongest acidic pKa of 13.5617 while the query has no acidic site, which further separates the query from that toxic analog. Although the neighbor lacks ammonium just as the query does, that point alone does not outweigh the more favorable polarity pattern in the query.
+
+Neighbor 2 shows the same overall pattern. The neighbor again has a more negative minimum partial charge, -0.3981 versus -0.274 in the query, and the +0.1241 delta in the query is less toxic on that axis. The query retains 2-imidazoline once while the neighbor has none, which again supports the not-toxic class. The query also has far fewer hydrogen-bond acceptors, 1 instead of 5, consistent with a simpler, less polar profile. The strongest acidic pKa is 10.6107 in the neighbor while the query has no acidic site, so the query is missing that acidic functionality. The one feature that leans the other way is piperidine: the neighbor has piperidine and the query does not, a difference that in this comparison favors toxicity. Even so, the combined reduction in acceptor burden and the presence of 2-imidazoline make the query look less toxic overall than this neighbor.
+
+Neighbor 3 is also a toxic analog, but again the query differs in a direction that supports not toxic. The neighbor’s minimum partial charge is -0.4968, compared with -0.274 in the query, so the query’s +0.2227 shift is much less negative. The query has 2-imidazoline once while the neighbor has none, which is favorable for the not-toxic side in this pair. The query also reduces hydrogen-bond acceptor count from 3 to 1 and nitrogen/oxygen atom count from 3 to 2, both of which indicate a smaller heteroatom and hydrogen-bonding burden. The neighbor has no ammonium just as the query does, but that shared absence does not offset the query’s simpler polarity profile. Finally, the neighbor has a strongest acidic pKa of 13.977 while the query has no acidic site, which again keeps the query away from that acidic analog.
+
+Neighbor 4 is on the not-toxic side and is highly similar overall, which is important because it closely matches the query’s core polarity pattern. Both molecules have hydrogen-bond acceptor count 1, both have 2-imidazoline, and both have topological polar surface area 26, so there is little separation on these major descriptors. The tiny charge differences are not decisive: minimum partial charge is -0.2743 in the neighbor versus -0.274 in the query, and maximum absolute partial charge is 0.2743 versus 0.274. Those near-identical values leave only a very small numerical tilt. Neither molecule has ammonium. Taken together, this neighbor reinforces that the query sits in the same low-PSA, low-acceptor region as a non-toxic analog.
+
+Neighbor 5 is a not-toxic neighbor as well, but it also highlights which features would have looked more concerning if they were dominant. The neighbor has a larger maximum absolute partial charge, 0.3299 versus 0.274 in the query, and a more extreme minimum partial charge, -0.3299 versus -0.274, both of which in this comparison align with toxicity. It also contains ammonium, whereas the query does not, and that difference again points toward toxicity for the neighbor relative to the query. On the other hand, the query has 2-imidazoline once while the neighbor has none, and the query has one hydrogen-bond acceptor versus zero in the neighbor; those features compensate and support the not-toxic class overall. The neighbor’s alkyne is absent in the query, which here favors not toxic. Even though several atomic-charge and ammonium features look more toxic in the neighbor, the presence of 2-imidazoline and the acceptor pattern keep the query aligned with the safer neighbor.
+
+Neighbor 6 is another not-toxic neighbor and gives a balanced, slightly mixed comparison. The query has fewer hydrogen-bond acceptors, 1 versus 2 in the neighbor, and the neighbor’s topological polar surface area is higher at 43.23 compared with 26 in the query; both changes favor not toxic for the query. The query and neighbor both have 2-imidazoline, so that stabilizing feature is shared. Against that, the neighbor has a higher maximum absolute partial charge, 0.3487 versus 0.274, and a slightly more negative minimum partial charge, -0.2904 versus -0.274; in this comparison those charge differences lean toward toxicity for the neighbor relative to the query. Neither molecule has ammonium. Overall, the lower acceptor burden and lower polar surface area keep the query closer to this non-toxic analog than to a toxic one.
+
+Putting all six neighbors together, the three toxic neighbors are separated from the query mainly by more extreme negative minimum partial charge, higher hydrogen-bond acceptor burden, and in some cases higher nitrogen/oxygen count, while the query consistently shows the favorable presence of 2-imidazoline and a lower polarity profile. The three not-toxic neighbors are especially supportive because they share the same low-PSA, low-acceptor character, and one of them matches the query almost exactly on the key descriptors. Despite a few mixed charge or ammonium signals, the repeated pattern across the nearest analogs is closer to the not-toxic class. The final prediction is therefore option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

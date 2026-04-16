@@ -1,0 +1,64 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule shows a mixed ionization profile that is not especially suggestive of a toxic, highly lipophilic cationic scaffold. The strongest basic pKa is 2.6071, which is quite low and therefore argues against a strongly basic, lysosomotropic amine pattern that would typically raise concern. The strongest acidic pKa is 13.8279, indicating a very weakly acidic site that is unlikely to be heavily ionized under physiological conditions. An imidazole is present (1), which is a notable heteroaromatic feature because imidazoles can influence binding and ionization behavior, but by itself it is not a strong toxicity alert. An ammonium group is absent (0), which also lowers concern for a permanently or strongly cationic motif.
+
+Several size and polarity descriptors look moderate rather than extreme. The topological polar surface area is 81.19, which sits in a reasonable middle range rather than being very high, so it does not strongly suggest severe permeability problems. The hydrogen-bond acceptor count is 5 and the nitrogen/oxygen atom count is 6, both of which are compatible with a fairly typical heteroatom burden rather than an unusually polar or highly decorated structure. The minimum partial charge is -0.3923, the minimum absolute partial charge is 0.3424, the maximum absolute partial charge is 0.3923, and the maximum positive or negative character implied by those values is modest; together these suggest some polarity but not an extreme charge distribution.
+
+Taken together, the mixture is balanced: the imidazole and moderate polar surface area add some concern, but the low strongest basic pKa, absence of ammonium, and weak acidic character are reassuring. Overall, the structural and ionization features are more consistent with option (A), is not toxic, and the model confidence is high.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is mixed but ends up slightly favoring the non-toxic side overall. The strongest clearly favorable feature is estimated logD: the neighbor is at 4.5938 while the query is only 0.092, a large drop of -4.5018. Since high logD can be associated with lipophilic accumulation risk, moving far lower is directionally reassuring. Against that, the query is a bit more negative at minimum partial charge (-0.3923 vs -0.3577, delta -0.0345) and minimum absolute partial charge (0.3424 vs 0.3577, delta -0.0153), and those shifts are tied in the note to a toxic direction. The shared nitro group is helpful for the query relative to the toxic neighbor, and the query also lacks ammonium, whereas the neighbor has ammonium; that absence is handled as a toxic-direction difference in the note, but it does not outweigh the large logD improvement and the shared nitro context. The shared imidazole is another toxic-direction similarity, yet the overall comparison still lands only barely on the not-toxic side.
+
+Neighbor 2 also has a mixed profile, but it is slightly more concerning than Neighbor 1 on the local descriptors, even though the overall comparison still supports the non-toxic label for the query. The query’s minimum partial charge is slightly less negative than the neighbor’s (-0.3923 vs -0.3950, delta +0.0028), and the note treats that direction as toxic. The query and neighbor both lack ammonium, which is also aligned with the toxic direction in this comparison, and the query has imidazole once while the neighbor does not, another toxic-leaning difference. The query also has a higher minimum absolute partial charge (0.3424 vs 0.2670, delta +0.0754), which is again treated as toxic in the note. The main counterweight is hydrogen-bond acceptor count: the query has 5 versus the neighbor’s 9, a reduction of -4 that is favorable because lower acceptor burden generally tracks with reduced polarity and better permeability. The query also has a stronger acidic pKa (13.8279 vs 10.8084, delta +3.0195), which is a directional shift noted here as toxic, but the overall similarity pattern still leaves this neighbor only weakly informative and slightly on the non-toxic side in aggregate.
+
+Neighbor 3 is the most clearly toxic-leaning of the positive neighbors, even though it still does not overturn the final label. The query is more negative in minimum partial charge (-0.3923 vs -0.3641, delta -0.0282), and the note links that shift to toxicity. Minimum absolute partial charge is also lower for the query (0.3424 vs 0.3522, delta -0.0098), again treated as toxic-direction evidence. Both molecules have imidazole, which does not separate them but sits within the toxic-leaning shared chemistry in this comparison. The query has fewer hetero N nonbasic atoms, dropping from 2 in the neighbor to 0 in the query (delta -2), and the query’s QED is also a bit lower (0.5159 vs 0.5601, delta -0.0443), both of which are unfavorable here. Together, Neighbor 3 looks more like a toxic analog than a benign one, so it serves as the strongest warning among the toxic neighbors.
+
+Neighbor 4, one of the non-toxic neighbors, is actually quite unfavorable on several local functional-group differences, but it still ends up supporting the query’s non-toxic classification because the shared charge pattern and surface features are not extreme. The neighbor contains isothiourea, while the query does not, and that absence is treated as toxic-direction evidence. The query also adds primary hydroxyl and imidazole, both present in the query but absent in the neighbor, and those additions are each associated with toxic-direction differences in this comparison. The query’s minimum absolute partial charge is slightly lower (0.3424 vs 0.3452, delta -0.0028) and its maximum absolute partial charge is lower as well (0.3923 vs 0.4259, delta -0.0336); both shifts are interpreted here as toxic-direction differences. Even so, this neighbor still sits on the non-toxic side overall, likely because these are small charge-feature changes rather than a large lipophilicity or size shift.
+
+Neighbor 5 is a useful counterexample: even though several structural features look less favorable, the overall comparison still supports the non-toxic label. The query has a slightly higher strongest acidic pKa (13.8279 vs 13.7012, delta +0.1267), and in this neighbor that change is favorable. The larger issue is estimated logP: the query is much more lipophilic than the neighbor (0.092 vs -2.2131, delta +2.3051), which is toxic-leaning because higher lipophilicity can worsen developability and safety risk. The query also contains purine, primary hydroxyl, and imidazole, while the neighbor lacks those features; in this comparison those are each treated as toxic-direction differences. Despite that cluster of unfavorable structural changes, the overall similarity comparison still comes out on the non-toxic side, so this neighbor mainly shows that the query’s local chemistry is not uniformly benign, but it is not enough to override the final label.
+
+Neighbor 6 is the clearest non-toxic neighbor and provides the strongest support for the final label. The query lacks the neighbor’s two chlorides, and that large removal is strongly favorable: the delta is -2, and the note assigns a large non-toxic direction to that change. The query also has a higher fraction of sp3 carbons (0.5 vs 0.2727, delta +0.2273), which is favorable because greater saturation and 3D character are generally associated with better developability. The query does introduce imidazole, which is toxic-leaning in this comparison, and the query’s maximum absolute partial charge is slightly lower (0.3923 vs 0.3941, delta -0.0018), which is also treated as toxic-direction evidence. Both molecules have nitro, so that alert-like feature does not distinguish them. Even with those caveats, the chloride reduction and higher sp3 character make Neighbor 6 a strong non-toxic analog.
+
+Taken together, the six neighbors are split in a way that still supports option (A): is not toxic. The three toxic neighbors are not purely toxic across every descriptor; they show a mix of charge, ionization, and heteroatom-pattern effects, while the three non-toxic neighbors include one very strong benign analog with lower chloride burden and higher sp3 character. The query’s markedly lower logD relative to the most lipophilic toxic neighbor, its reduced acceptor burden relative to another toxic neighbor, and its improved saturation relative to the strongest non-toxic neighbor are the main balancing features. Although several local motifs such as imidazole, nitro, and charge extrema appear in both directions across the comparisons, the net neighborhood evidence is slightly more consistent with the non-toxic class, matching option (A).
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+The molecule contains an imide acidic group, and imides can increase polarity and ionization, which is generally more consistent with a non-toxic profile than with a highly lipophilic, membrane-accumulating one. Its minimum partial charge is -0.2942 and its maximum absolute partial charge is 0.2942, both indicating a modest but definite polar character rather than an extreme hydrophobic scaffold. The presence of thiomorpholine is also favorable, since this saturated, heterocyclic motif is less concerning than strongly flat aromatic systems and can support a more balanced physicochemical profile. At the same time, ammonium is absent (0), so there is no obvious extra cationic burden that would suggest a classic cationic amphiphilic liability. The topological polar surface area is 46.17, which sits in a favorable range for oral-like permeability and does not look excessively polar, while the nitrogen/oxygen atom count is 3, again suggesting a manageable heteroatom burden rather than an overloaded polar structure. The estimated logD is 1.6765 and the estimated logP is 1.6815, both moderate rather than high, which is reassuring because they do not point to strong lipophilicity-driven accumulation or promiscuity. The strongest acidic pKa is 9.3382, which is consistent with an acidic site that can remain ionizable but does not by itself imply a toxic liability. Overall, the molecule shows a mixed but slightly favorable balance: the imide acidic functionality and modest polarity support the non-toxic side, and the moderate logD/logP values and reasonable PSA reinforce that interpretation. Taken together, the structure is more consistent with option (A): is not toxic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is the closest toxic-side analog, but its internal balance is mixed. The query has thiomorpholine once while the neighbor does not, and that absence-to-presence change is associated with a favorable shift for the not-toxic label. At the same time, the query’s minimum partial charge is less negative than the neighbor’s, moving from -0.3981 to -0.2942 with a delta of +0.1038, which is the more concerning direction here because the local comparison links that shift to a toxic-side tendency. The query and neighbor both lack ammonium, which does not create separation, and the query has fewer hydrogen-bond acceptors, dropping from 5 to 3 with delta -2, a change that is favorable for the not-toxic side because it reduces polarity burden. Both also share imide acidic, so that feature does not discriminate them. The neighbor has piperidine while the query does not, which is again a toxic-side feature in that comparison. Overall, Neighbor 1 is nearly balanced but ends slightly on the not-toxic side because the thiomorpholine presence and lower acceptor count offset the charge and piperidine signals.
+
+Neighbor 2 is also a toxic-side neighbor, and here the toxic-leaning features are strong, but several query features counteract them. The query’s minimum partial charge is less negative than the neighbor’s, changing from -0.4918 to -0.2942 with a delta of +0.1975, which in this local context aligns with a toxic-side shift. The query also has imide acidic once while the neighbor lacks it, another toxic-leaning difference. Both molecules lack ammonium, so that feature is shared rather than separating them. Against that, the query has thiomorpholine once and the neighbor does not, which is favorable for the not-toxic label in this comparison. The query’s QED drug-likeness is slightly lower, 0.7933 versus 0.8209 with delta -0.0276, a modest unfavorable shift because lower QED indicates a less balanced compound profile. Finally, the query has far fewer rotatable bonds, 2 versus 7 with delta -5, which is favorable because lower flexibility generally supports better developability. Taken together, Neighbor 2 remains only weakly informative overall: the toxic-associated charge and imide differences are partly offset by the thiomorpholine and lower flexibility, so it does not strongly overturn the not-toxic call.
+
+Neighbor 3 closely mirrors Neighbor 2 and shows the same broad pattern. The query again has a less negative minimum partial charge than the neighbor, moving from -0.4932 to -0.2942 with delta +0.199, which is unfavorable for the not-toxic side in this comparison. The query has imide acidic once while the neighbor has none, another toxic-side difference. The query also has thiomorpholine once while the neighbor lacks it, which is favorable for the not-toxic side. Both lack ammonium, so there is no separation there. The query has fewer hydrogen-bond acceptors, 3 versus 5 with delta -2, which is a favorable polarity reduction. It also has many fewer rotatable bonds, 2 versus 7 with delta -5, again supporting the not-toxic side by reducing flexibility. So although Neighbor 3 contains the same toxic-leaning charge and imide signals as Neighbor 2, the lower acceptor count and lower rotatable-bond count keep the overall comparison from moving away from the not-toxic label.
+
+Neighbor 4 is a negative-neighbor analog, but the query still compares favorably on the key structural features that appear in the note. The query has thiomorpholine once while the neighbor does not, and that difference is the clearest not-toxic signal in this comparison. The neighbor lacks imide acidic while the query has it once, which is a toxic-side difference. The query’s maximum absolute partial charge is lower, 0.2942 versus 0.3375 with delta -0.0433, and its minimum partial charge is less negative, -0.2942 versus -0.3375 with delta +0.0433; both charge changes are treated as toxic-leaning in this local setting. The query also has one more hydrogen-bond acceptor, 3 versus 2 with delta +1, and that increase is unfavorable here because it adds polarity burden. Neither molecule has ammonium. Even so, the thiomorpholine difference provides a meaningful not-toxic counterweight, and the overall comparison still lands on the not-toxic side despite several charge-related concerns.
+
+Neighbor 5 is similar to Neighbor 4 in structure and again presents a mixed but ultimately not-toxic-leaning comparison. The query has imide acidic once while the neighbor lacks it, which is unfavorable. The query also has thiomorpholine once while the neighbor does not, which is favorable. Hydrogen-bond acceptor count is higher in the query, 3 versus 2 with delta +1, and that is treated as a toxic-leaning increase in this pair. The query’s maximum absolute partial charge is lower, 0.2942 versus 0.3245 with delta -0.0303, which is again read as toxic-leaning here. Neither molecule has ammonium. The query’s minimum partial charge is less negative, -0.2942 versus -0.3192 with delta +0.025, another toxic-leaning shift in this local comparison. Even with several unfavorable charge and acceptor changes, the thiomorpholine presence keeps the comparison from moving away from the not-toxic side overall.
+
+Neighbor 6 is nearly the same as Neighbor 5 and should be read the same way. The query has imide acidic once while the neighbor lacks it, which is the main toxic-leaning difference. The query again has thiomorpholine once while the neighbor does not, providing the same favorable not-toxic signal as in Neighbor 5. Hydrogen-bond acceptor count is higher in the query, 3 versus 2 with delta +1, which is unfavorable here. The query’s maximum absolute partial charge is lower, 0.2942 versus 0.3246 with delta -0.0304, and the minimum partial charge is less negative, -0.2942 versus -0.3217 with delta +0.0275; both changes are treated as toxic-leaning in this comparison. Neither molecule has ammonium. As with Neighbor 5, the local evidence is mixed, but the thiomorpholine feature prevents the comparison from favoring toxicity overall.
+
+Putting all six neighbors together, the three toxic-side neighbors are only weakly or moderately offset by the query’s thiomorpholine presence, lower rotatable-bond count in Neighbors 2 and 3, and lower hydrogen-bond acceptor count in Neighbors 1 and 3. The three not-toxic-side neighbors still contain several toxic-leaning charge and acceptor shifts, but each is counterbalanced by the same thiomorpholine feature that the query carries and the generally more compact, less flexible profile seen in the positive neighbors. The combined local evidence therefore remains consistent with the final label: the query is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

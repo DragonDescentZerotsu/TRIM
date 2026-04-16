@@ -1,0 +1,60 @@
+You are writing only the final integration-layer reasoning for a chemistry classification example.
+
+Background
+The goal is to combine a single-molecule analysis and a multi-molecule comparison analysis into the final short synthesis that supports the classification decision.
+The detailed single-molecule analysis and detailed multi-molecule comparison analysis have already been written upstream.
+Your job here is only to write the final integrated conclusion layer, not to rewrite the full end-to-end reasoning from scratch.
+
+Input 1. Polished single-molecule analysis
+Purine is present (1), and that heteroaromatic motif can be part of a drug-like scaffold rather than an obvious toxicity liability on its own. Uracil is also present (1), which adds polarity and heteroatom richness and is not inherently concerning by itself. The strongest basic pKa is 2.3832, which is quite low and suggests the molecule is not strongly basic; that is generally less consistent with cationic amphiphilic, lysosomotropic behavior. The molecule has no acidic site, so the strongest acidic pKa is not defined, which removes another obvious ionizable liability from consideration. At the same time, several polarity-related descriptors are not especially favorable: the minimum partial charge is -0.3279, the maximum absolute partial charge is 0.3317, the topological polar surface area is 61.82, and the nitrogen/oxygen atom count is 6. These values indicate a fairly polar, heteroatom-containing molecule, which can support permeability balance, though the TPSA of 61.82 is not extreme. The aromatic heterocycle count is 2, so the aromatic burden is present but not especially high. Finally, ammonium is absent (0), which is consistent with the low basicity and again argues against a strongly cationic, accumulation-prone profile. Overall, the molecule has a mixed pattern of moderate polarity with low basicity and no clear acidic or ammonium-driven liability, which supports a conclusion of not toxic.
+
+Input 2. Polished multi-molecule comparison analysis
+Neighbor 1 is a favorable analog for a not-toxic call overall. It lacks purine and uracil relative to the query, while the query has each once (query-minus-neighbor delta +1 for both), and both of those differences are described as favoring option (A). The same neighbor does show some more concerning charge-related shifts: the query’s minimum partial charge is slightly less negative than the neighbor’s (neighbor -0.3641 vs query -0.3279, delta +0.0363), and the query’s minimum absolute partial charge is also a bit lower (neighbor 0.3522 vs query 0.3279, delta -0.0243), which each lean toward option (B). There is also a case where neither molecule has ammonium, which is treated as a toxic-leaning signal, but that is outweighed here by the purine, uracil, and acidic-site comparison: the neighbor has a very strong acidic pKa of 12.0462 while the query has no acidic site, a difference that is favorable to option (A). Taken together, Neighbor 1 still tilts toward not toxic.
+
+Neighbor 2 is also ultimately supportive of option (A), although it mixes favorable and unfavorable signals. Again, the query has purine and uracil once each while the neighbor has neither, and both of those absences in the neighbor favor not toxic. Against that, the query’s minimum partial charge is slightly less negative than the neighbor’s (neighbor -0.3355 vs query -0.3279, delta +0.0076), which is unfavorable, and the lack of ammonium on both sides again leans toxic. The query also has a much lower estimated logD than the neighbor (neighbor 5.2682 vs query -1.0293, delta -6.2975), and that large drop is favorable to option (A), since moving away from a very lipophilic value reduces concern for accumulation or other lipophilicity-linked liabilities. Finally, the query has one more hydrogen-bond acceptor than the neighbor (neighbor 5 vs query 6, delta +1), which is treated as a toxic-leaning shift because it increases polarity burden, but the strong favorable logD difference plus the purine/uracil pattern keeps the overall comparison on the not-toxic side.
+
+Neighbor 3 continues the same overall pattern. The query again has purine and uracil once each whereas the neighbor has neither, both favoring option (A). The neighbor’s minimum partial charge is more negative than the query’s (neighbor -0.4376 vs query -0.3279, delta +0.1097), which is an unfavorable shift toward option (B), and the absence of ammonium on both molecules is again a toxic-leaning signal. The neighbor’s strongest acidic pKa is 13.3118 while the query has no acidic site; that comparison is favorable to not toxic. In addition, the neighbor has a higher fraction of sp3 carbons, 0.65 versus the query’s 0.375 (delta -0.275), and in this comparison that lower sp3 fraction in the query is treated as unfavorable. Even with those mixed effects, the repeated purine/uracil advantage and the acidic-site comparison keep Neighbor 3 slightly aligned with option (A).
+
+Neighbor 4 is one of the negative-class neighbors, but it still contains several features that favor the not-toxic label when compared to the query. The query’s minimum partial charge is less negative than the neighbor’s (neighbor -0.4651 vs query -0.3279, delta +0.1373), which is toxic-leaning, and the query’s maximum absolute partial charge is lower than the neighbor’s (neighbor 0.4651 vs query 0.3317, delta -0.1334), which is also toxic-leaning. Both molecules lack ammonium, another toxic-leaning shared feature. However, the query has purine and uracil once each while the neighbor has neither, and both of those differences favor option (A). The neighbor also has a lactone while the query does not (delta -1), which is treated as toxic-leaning for the neighbor and therefore relatively favorable to the query’s not-toxic status. Overall, despite the charge-based concerns, Neighbor 4 still supports option (A).
+
+Neighbor 5 gives a similarly mixed but ultimately not-toxic-supportive comparison. The query has purine and uracil once each while the neighbor has neither, both favoring option (A). In the opposite direction, the neighbor has a tetrazole that the query lacks, and that difference is treated as toxic-leaning. The query’s neutral fraction is much higher than the neighbor’s: the neighbor is at 0.0004 while the query is present at 1, with a delta of +0.9996, and that higher neutral fraction is favorable to not toxic in this comparison. The absence of ammonium on both sides again leans toxic, and the query’s maximum absolute partial charge is only slightly higher than the neighbor’s (neighbor 0.3302 vs query 0.3317, delta +0.0015), which is also treated as toxic-leaning here. Even so, the purine/uracil advantages and the much higher neutral fraction keep Neighbor 5 aligned with option (A).
+
+Neighbor 6 is the strongest of the negative-class neighbors for the not-toxic call. The neighbor lacks uracil while the query has it once, which favors option (A), and both molecules have purine, so that feature is neutral here. The query’s minimum partial charge is less negative than the neighbor’s (neighbor -0.4654 vs query -0.3279, delta +0.1376), which is unfavorable, and the query’s maximum absolute partial charge is lower than the neighbor’s (neighbor 0.4654 vs query 0.3317, delta -0.1337), another toxic-leaning shift. Both molecules lack ammonium, which again leans toxic in this feature framing. But the neighbor’s estimated logP is 0.541 versus the query’s -1.0293 (delta -1.5703), and that lower logP in the query is favorable to option (A), consistent with a less lipophilic, less accumulation-prone profile. With the uracil difference and the lower logP, Neighbor 6 still supports not toxic overall.
+
+Across all six neighbors, the same broad pattern emerges: the query repeatedly looks better on the purine/uracil comparisons, and several neighbors also show favorable shifts in lipophilicity or ionization-related descriptors such as lower estimated logD or logP, higher neutral fraction, or a more favorable acidic-site context. Some charge descriptors and the repeated absence of ammonium lean the other way, but those signals are not strong enough to overturn the repeated not-toxic-leaning structural comparisons. Taken together, the neighbor evidence is most consistent with option (A): is not toxic.
+
+Input 3. Target final label semantics
+option (A): is not toxic
+
+Hard requirements:
+1. Use only the supplied single-molecule analysis, multi-molecule comparison analysis, and target label semantics.
+2. The final reasoning must be consistent with the supplied single-molecule analysis and multi-molecule comparison analysis. Do not invent extra evidence.
+3. Resolve agreement or disagreement between the single-molecule view and the multi-molecule comparison view in a natural way.
+4. The final conclusion must match the target label.
+5. Do not explicitly say that the target label is ground truth or that you were given the answer.
+6. Do not mention prompt instructions, datasets, training, or model internals.
+7. The final `reasoning` must read like direct scientific reasoning, not commentary about source materials. Do not say "draft", "playbook", "prompt", "input", "instruction", or similar metadata words in the final text.
+8. Do not write phrases such as "the single-molecule analysis says", "the comparison analysis says", or "these two analyses are being fused". Translate those ideas into direct chemistry reasoning instead.
+9. Write only the final integration layer. Do not restate the full single-molecule analysis in detail, and do not restate the full multi-molecule comparison analysis in detail.
+10. Keep the reasoning focused on how the two already-written analyses combine into one final judgment.
+11. A good answer is usually shorter and more synthesis-heavy than either upstream analysis.
+12. Do not enumerate all upstream features again unless a small number of them are truly necessary to explain the final decision.
+
+Preferred style:
+- Concise but decisive
+- Synthesis-heavy rather than recap-heavy
+- Focused on reconciliation, weighting, and final judgment
+- Shorter than the upstream analyses
+
+Return JSON with exactly this schema:
+```json
+{
+  "reasoning": "...",
+  "quality_check": {
+    "consistent_with_single_molecule_analysis": true or false,
+    "consistent_with_multi_molecule_comparison": true or false,
+    "final_label_matches_target": true or false,
+    "does_not_explicitly_reference_ground_truth": true or false
+  }
+}
+```

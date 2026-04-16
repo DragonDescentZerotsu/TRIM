@@ -335,3 +335,94 @@ def test_build_agent_reasoning_sft_datasets_writes_per_task_jsonl_in_sample_orde
     assert [row["sample_index"] for row in ames_rows] == [1]
     assert [row["smiles"] for row in ames_rows] == ["AMES_1"]
     assert summary["summary_path"] == str(manifest_path.resolve())
+
+
+def test_build_agent_reasoning_sft_datasets_resumes_from_existing_jsonl_prefix(tmp_path: Path, monkeypatch):
+    rewrite_root = tmp_path / "rewrite_outputs"
+    output_root = tmp_path / "sft"
+    provider = "openrouter"
+    model = "openai/gpt-5.4-mini"
+    model_slug = "openai__gpt-5.4-mini"
+    task = "BBB_Martins"
+
+    for sample_index in (0, 1, 2):
+        for mode in ("global", "local", "hybrid"):
+            _write_rewrite_result(
+                rewrite_root,
+                provider=provider,
+                model_slug=model_slug,
+                mode=mode,
+                split="train",
+                task=task,
+                sample_index=sample_index,
+                reasoning=f"{task} {mode} reasoning {sample_index}",
+            )
+
+    def _fake_split(task_name: str, split: str, data_root=None):
+        assert task_name == task
+        assert split == "train"
+        return _FakeSplit(smiles=["BBB_0", "BBB_1", "BBB_2"], labels=[1, 0, 1])
+
+    monkeypatch.setattr("trim.reasoning.agent_sft.load_tdc_split", _fake_split)
+    monkeypatch.setattr("trim.reasoning.agent_sft.render_task_user_message", lambda **kwargs: f"prompt::{kwargs['smiles']}")
+    monkeypatch.setattr("trim.reasoning.agent_sft.load_task_label_semantics", lambda task_name: None)
+
+    class _CountingToolRunner(_FakeToolRunner):
+        def __init__(self):
+            self.calls: list[str] = []
+
+        def get_mol_properties_and_fg(self, smiles: str) -> str:
+            self.calls.append(f"global::{smiles}")
+            return super().get_mol_properties_and_fg(smiles)
+
+        def compare_similar_mols(self, smiles: str) -> str:
+            self.calls.append(f"local::{smiles}")
+            return super().compare_similar_mols(smiles)
+
+    tool_runner = _CountingToolRunner()
+    monkeypatch.setattr("trim.reasoning.agent_sft.build_task_tool_runner", lambda **kwargs: tool_runner)
+
+    output_dir = output_root / provider / model_slug / "train"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    existing_path = output_dir / f"{task}.jsonl"
+    prefix_record = {
+        "schema_version": "trim_agent_reasoning_sft_messages_v1",
+        "task": task,
+        "split": "train",
+        "sample_index": 0,
+        "sample_id": "train_sample_0",
+        "smiles": "BBB_0",
+        "gt_label": 1,
+        "final_answer_option": "B",
+        "source_paths": {
+            "global_result_json": "g0",
+            "local_result_json": "l0",
+            "hybrid_result_json": "h0",
+        },
+        "messages": [{"role": "user", "content": "existing"}],
+    }
+    existing_path.write_text(json.dumps(prefix_record, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    summary = build_agent_reasoning_sft_datasets(
+        tasks=[task],
+        split="train",
+        rewrite_output_root=rewrite_root,
+        provider=provider,
+        model=model,
+        output_root=output_root,
+        max_concurrency=1,
+        skip_existing=True,
+    )
+
+    rows = [json.loads(line) for line in existing_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    assert [row["sample_index"] for row in rows] == [0, 1, 2]
+    assert rows[0]["messages"] == [{"role": "user", "content": "existing"}]
+    assert rows[1]["smiles"] == "BBB_1"
+    assert rows[2]["smiles"] == "BBB_2"
+    assert sorted(tool_runner.calls) == [
+        "global::BBB_1",
+        "global::BBB_2",
+        "local::BBB_1",
+        "local::BBB_2",
+    ]
+    assert summary["num_records"] == 3
