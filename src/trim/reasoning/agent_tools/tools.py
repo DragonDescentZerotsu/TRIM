@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import math
 from pathlib import Path
 
@@ -25,8 +27,17 @@ from trim.reasoning.evidence.global_evidence import (
 )
 from trim.reasoning.evidence.local_evidence import _delta_value_payload, _resolve_raw_feature_columns
 from trim.reasoning.semantics import build_feature_semantics_map
-from trim.utils.io import load_pickle
-from trim.utils.paths import DEFAULT_PROCESSED_DATA_ROOT, DEFAULT_SIMILARITY_CACHE_ROOT
+from trim.utils.io import load_json, load_pickle, save_json
+from trim.utils.paths import (
+    DEFAULT_PROCESSED_DATA_ROOT,
+    DEFAULT_SIMILARITY_CACHE_ROOT,
+    OUTPUTS_ROOT,
+    resolve_project_path,
+)
+
+
+AGENT_TOOL_PAYLOAD_CACHE_SCHEMA_VERSION = "trim_agent_tool_payload_cache_v1"
+DEFAULT_AGENT_TOOL_CACHE_ROOT = OUTPUTS_ROOT / "reasoning_agent_tools" / "tool_cache"
 
 
 def _safe_scalar(value: object) -> object:
@@ -195,11 +206,16 @@ class TaskReasoningAgentTools:
         manifest: dict[str, object],
         dataset_root: str | Path = DEFAULT_PROCESSED_DATA_ROOT,
         cache_root: str | Path = DEFAULT_SIMILARITY_CACHE_ROOT,
+        tool_cache_root: str | Path = DEFAULT_AGENT_TOOL_CACHE_ROOT,
+        enable_tool_cache: bool = True,
     ):
         self.task = str(task)
         self.manifest = manifest
         self.dataset_root = Path(dataset_root)
         self.cache_root = Path(cache_root)
+        self.feature_set_name = str(manifest.get("feature_set_name", DEFAULT_AGENT_TOOL_FEATURE_SET_NAME))
+        self.tool_cache_root = resolve_project_path(tool_cache_root)
+        self.enable_tool_cache = bool(enable_tool_cache)
 
         bundle_paths = dict(manifest["bundle_paths"])
         self.global_bundle = load_pickle(bundle_paths["global_bundle_path"])
@@ -227,6 +243,8 @@ class TaskReasoningAgentTools:
         self._train_raw_df = None
         self._train_raw_values = None
         self._train_index_by_smiles: dict[str, int] | None = None
+        self._tool_payload_cache: dict[tuple[str, str], dict[str, object]] = {}
+        self._tool_cache_namespace = self._build_tool_cache_namespace()
 
     @classmethod
     def from_task(
@@ -237,6 +255,8 @@ class TaskReasoningAgentTools:
         manifest_root: str | Path = DEFAULT_AGENT_TOOL_MANIFEST_ROOT,
         dataset_root: str | Path = DEFAULT_PROCESSED_DATA_ROOT,
         cache_root: str | Path = DEFAULT_SIMILARITY_CACHE_ROOT,
+        tool_cache_root: str | Path = DEFAULT_AGENT_TOOL_CACHE_ROOT,
+        enable_tool_cache: bool = True,
     ) -> "TaskReasoningAgentTools":
         manifest = load_task_tool_manifest(
             task=task,
@@ -248,7 +268,116 @@ class TaskReasoningAgentTools:
             manifest=manifest,
             dataset_root=dataset_root,
             cache_root=cache_root,
+            tool_cache_root=tool_cache_root,
+            enable_tool_cache=enable_tool_cache,
         )
+
+    def _cache_file_signature(self, path_like: str | Path) -> dict[str, object]:
+        path = Path(path_like)
+        resolved_path = path if path.is_absolute() else resolve_project_path(path)
+        signature: dict[str, object] = {"path": str(resolved_path.resolve())}
+        if resolved_path.exists():
+            stat = resolved_path.stat()
+            signature["mtime_ns"] = int(stat.st_mtime_ns)
+            signature["size"] = int(stat.st_size)
+        else:
+            signature["missing"] = True
+        return signature
+
+    def _similarity_cache_signatures(self) -> dict[str, dict[str, object]]:
+        signatures: dict[str, dict[str, object]] = {}
+        for family in ("Morgan_similarity", "Feature_Morgan_similarity"):
+            for split in ("train", "valid", "test"):
+                relative_key = f"{family}/{split}"
+                path = self.cache_root / family / "by_task" / self.task / f"{split}_similarity.pkl"
+                signatures[relative_key] = self._cache_file_signature(path)
+        return signatures
+
+    def _build_tool_cache_namespace(self) -> str:
+        bundle_paths = dict(self.manifest["bundle_paths"])
+        signature_payload = {
+            "schema_version": AGENT_TOOL_PAYLOAD_CACHE_SCHEMA_VERSION,
+            "task": self.task,
+            "feature_set_name": self.feature_set_name,
+            "manifest": {
+                "schema_version": self.manifest.get("schema_version"),
+                "global_tool": self.manifest.get("global_tool"),
+                "local_tool": self.manifest.get("local_tool"),
+            },
+            "bundle_files": {
+                name: self._cache_file_signature(path_like)
+                for name, path_like in bundle_paths.items()
+            },
+            "similarity_cache_files": self._similarity_cache_signatures(),
+        }
+        serialized = json.dumps(signature_payload, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+        return hashlib.sha1(serialized.encode("utf-8")).hexdigest()[:16]
+
+    def _tool_cache_path(self, *, tool_name: str, smiles: str) -> Path:
+        smiles_digest = hashlib.sha1(str(smiles).encode("utf-8")).hexdigest()
+        return (
+            self.tool_cache_root
+            / self.feature_set_name
+            / self.task
+            / self._tool_cache_namespace
+            / tool_name
+            / f"{smiles_digest}.json"
+        )
+
+    def has_cached_tool_payload(self, *, tool_name: str, smiles: str) -> bool:
+        return self._tool_cache_path(tool_name=tool_name, smiles=smiles).exists()
+
+    def _load_cached_tool_payload(self, *, tool_name: str, smiles: str) -> dict[str, object] | None:
+        cache_key = (tool_name, str(smiles))
+        if cache_key in self._tool_payload_cache:
+            return self._tool_payload_cache[cache_key]
+        if not self.enable_tool_cache:
+            return None
+
+        cache_path = self._tool_cache_path(tool_name=tool_name, smiles=smiles)
+        if not cache_path.exists():
+            return None
+
+        try:
+            cached_record = load_json(cache_path)
+        except Exception:
+            return None
+        if str(cached_record.get("tool_name")) != tool_name:
+            return None
+        if str(cached_record.get("smiles")) != str(smiles):
+            return None
+        payload = cached_record.get("payload")
+        if not isinstance(payload, dict):
+            return None
+        self._tool_payload_cache[cache_key] = payload
+        return payload
+
+    def _store_cached_tool_payload(
+        self,
+        *,
+        tool_name: str,
+        smiles: str,
+        payload: dict[str, object],
+    ) -> dict[str, object]:
+        cache_key = (tool_name, str(smiles))
+        self._tool_payload_cache[cache_key] = payload
+        if not self.enable_tool_cache:
+            return payload
+
+        cache_path = self._tool_cache_path(tool_name=tool_name, smiles=smiles)
+        save_json(
+            cache_path,
+            {
+                "schema_version": AGENT_TOOL_PAYLOAD_CACHE_SCHEMA_VERSION,
+                "tool_name": tool_name,
+                "task": self.task,
+                "feature_set_name": self.feature_set_name,
+                "cache_namespace": self._tool_cache_namespace,
+                "smiles": str(smiles),
+                "payload": payload,
+            },
+        )
+        return payload
 
     def _get_smiles_index(self) -> dict[str, list[dict[str, object]]]:
         if self._smiles_index is None:
@@ -349,6 +478,10 @@ class TaskReasoningAgentTools:
         return differences
 
     def get_mol_properties_and_fg_payload(self, smiles: str) -> dict[str, object]:
+        cached_payload = self._load_cached_tool_payload(tool_name="get_mol_properties_and_fg", smiles=smiles)
+        if cached_payload is not None:
+            return cached_payload
+
         raw_feature_df = self.feature_source.load([smiles])
         aligned_df, transformed_df = transform_feature_frame(raw_feature_df, self.global_bundle["preprocessor"])
         x_matrix = transformed_df.to_numpy(dtype=float)
@@ -421,7 +554,11 @@ class TaskReasoningAgentTools:
             "present_functional_groups": present_functional_groups,
             "features": dense_features,
         }
-        return payload
+        return self._store_cached_tool_payload(
+            tool_name="get_mol_properties_and_fg",
+            smiles=smiles,
+            payload=payload,
+        )
 
     def get_mol_properties_and_fg(self, smiles: str) -> str:
         return _render_global_payload_text(self.get_mol_properties_and_fg_payload(smiles))
@@ -567,6 +704,10 @@ class TaskReasoningAgentTools:
         )
 
     def compare_similar_mols_payload(self, smiles: str) -> dict[str, object]:
+        cached_payload = self._load_cached_tool_payload(tool_name="compare_similar_mols", smiles=smiles)
+        if cached_payload is not None:
+            return cached_payload
+
         query_metadata = self._resolve_query_metadata(smiles)
         query_split = str(query_metadata["split"])
         query_label = int(query_metadata["label"])
@@ -607,7 +748,7 @@ class TaskReasoningAgentTools:
         local_score = float(aggregated["s_local"])
         local_prediction = 1 if local_score >= 0.5 else 0
 
-        return {
+        payload = {
             "tool_name": "compare_similar_mols",
             "task": self.task,
             "smiles": str(smiles),
@@ -628,6 +769,11 @@ class TaskReasoningAgentTools:
             "positive_neighbors": positive_neighbors,
             "negative_neighbors": negative_neighbors,
         }
+        return self._store_cached_tool_payload(
+            tool_name="compare_similar_mols",
+            smiles=smiles,
+            payload=payload,
+        )
 
     def compare_similar_mols(self, smiles: str) -> str:
         return _render_local_payload_text(self.compare_similar_mols_payload(smiles))

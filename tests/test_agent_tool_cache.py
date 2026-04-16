@@ -1,0 +1,80 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+from trim.reasoning.agent_tools.tools import TaskReasoningAgentTools
+
+
+def _write_stub_file(path: Path, contents: str = "stub") -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(contents, encoding="utf-8")
+    return path
+
+
+def _build_fake_tool_runner(tmp_path: Path) -> TaskReasoningAgentTools:
+    bundle_root = tmp_path / "bundles"
+    global_bundle = _write_stub_file(bundle_root / "global.pkl", "global")
+    pos_bundle = _write_stub_file(bundle_root / "pos.pkl", "pos")
+    neg_bundle = _write_stub_file(bundle_root / "neg.pkl", "neg")
+
+    similarity_root = tmp_path / "similarity"
+    for family in ("Morgan_similarity", "Feature_Morgan_similarity"):
+        for split in ("train", "valid", "test"):
+            _write_stub_file(
+                similarity_root / family / "by_task" / "BBB_Martins" / f"{split}_similarity.pkl",
+                f"{family}-{split}",
+            )
+
+    tools = TaskReasoningAgentTools.__new__(TaskReasoningAgentTools)
+    tools.task = "BBB_Martins"
+    tools.feature_set_name = "core_pka_no_fr"
+    tools.manifest = {
+        "schema_version": "manifest_v1",
+        "bundle_paths": {
+            "global_bundle_path": str(global_bundle),
+            "pos_bundle_path": str(pos_bundle),
+            "neg_bundle_path": str(neg_bundle),
+        },
+        "global_tool": {"top_k_per_sample": 6, "dense_feature_names": ["a"]},
+        "local_tool": {"top_k_pos": 3, "top_k_neg": 3, "top_term_k_per_neighbor": 6},
+    }
+    tools.cache_root = similarity_root
+    tools.tool_cache_root = tmp_path / "tool_cache"
+    tools.enable_tool_cache = True
+    tools._tool_payload_cache = {}
+    tools._tool_cache_namespace = tools._build_tool_cache_namespace()
+    return tools
+
+
+def test_tool_payload_cache_round_trip_uses_disk_cache(tmp_path: Path):
+    tools = _build_fake_tool_runner(tmp_path)
+    payload = {
+        "tool_name": "get_mol_properties_and_fg",
+        "task": "BBB_Martins",
+        "smiles": "CCO",
+        "features": [],
+    }
+
+    tools._store_cached_tool_payload(
+        tool_name="get_mol_properties_and_fg",
+        smiles="CCO",
+        payload=payload,
+    )
+
+    cache_path = tools._tool_cache_path(tool_name="get_mol_properties_and_fg", smiles="CCO")
+    assert cache_path.exists()
+
+    tools._tool_payload_cache = {}
+    loaded_payload = tools._load_cached_tool_payload(tool_name="get_mol_properties_and_fg", smiles="CCO")
+    assert loaded_payload == payload
+
+
+def test_tool_cache_namespace_changes_when_bundle_files_change(tmp_path: Path):
+    tools = _build_fake_tool_runner(tmp_path)
+    namespace_before = tools._build_tool_cache_namespace()
+
+    bundle_path = Path(tools.manifest["bundle_paths"]["global_bundle_path"])
+    bundle_path.write_text("global-v2-with-different-size", encoding="utf-8")
+
+    namespace_after = tools._build_tool_cache_namespace()
+    assert namespace_after != namespace_before

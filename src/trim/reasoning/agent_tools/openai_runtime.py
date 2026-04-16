@@ -98,6 +98,8 @@ def build_task_bound_openai_tool_bundle(
     manifest_root: str | Path = DEFAULT_AGENT_TOOL_MANIFEST_ROOT,
     dataset_root: str | Path = DEFAULT_PROCESSED_DATA_ROOT,
     cache_root: str | Path = DEFAULT_SIMILARITY_CACHE_ROOT,
+    tool_cache_root: str | Path = OUTPUTS_ROOT / "reasoning_agent_tools" / "tool_cache",
+    enable_tool_cache: bool = True,
 ) -> OpenAITaskAgentToolBundle:
     from .tools import TaskReasoningAgentTools
 
@@ -109,6 +111,8 @@ def build_task_bound_openai_tool_bundle(
             manifest_root=manifest_root,
             dataset_root=dataset_root,
             cache_root=cache_root,
+            tool_cache_root=tool_cache_root,
+            enable_tool_cache=enable_tool_cache,
         ),
         tool_schemas=build_openai_agent_tool_schemas(task=task),
     )

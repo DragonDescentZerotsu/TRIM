@@ -5,10 +5,13 @@ from importlib import import_module
 
 __all__ = [
     "AGENT_TOOL_SCHEMA_VERSION",
+    "DEFAULT_AGENT_TOOL_CACHE_ROOT",
     "DEFAULT_AGENT_TOOL_FEATURE_SET_NAME",
     "DEFAULT_AGENT_TOOL_MANIFEST_ROOT",
+    "DEFAULT_AGENT_TOOL_PREWARM_SUMMARY_ROOT",
     "OpenAITaskAgentToolBundle",
     "OPENAI_AGENT_TOOL_SCHEMAS",
+    "SUPPORTED_AGENT_TOOL_NAMES",
     "SUPPORTED_OPENAI_TOOL_NAMES",
     "TaskReasoningAgentTools",
     "build_all_task_tool_manifests",
@@ -17,11 +20,14 @@ __all__ = [
     "build_task_tool_manifest",
     "get_task_tool_manifest_path",
     "load_task_tool_manifest",
+    "prewarm_agent_tool_cache",
+    "prewarm_agent_tool_cache_for_task",
 ]
 
 
 _MODULE_BY_EXPORT = {
     "AGENT_TOOL_SCHEMA_VERSION": ".manifests",
+    "DEFAULT_AGENT_TOOL_CACHE_ROOT": ".tools",
     "DEFAULT_AGENT_TOOL_FEATURE_SET_NAME": ".manifests",
     "DEFAULT_AGENT_TOOL_MANIFEST_ROOT": ".manifests",
     "TaskReasoningAgentTools": ".tools",
@@ -29,6 +35,10 @@ _MODULE_BY_EXPORT = {
     "build_task_tool_manifest": ".manifests",
     "get_task_tool_manifest_path": ".manifests",
     "load_task_tool_manifest": ".manifests",
+    "DEFAULT_AGENT_TOOL_PREWARM_SUMMARY_ROOT": ".prewarm",
+    "SUPPORTED_AGENT_TOOL_NAMES": ".prewarm",
+    "prewarm_agent_tool_cache": ".prewarm",
+    "prewarm_agent_tool_cache_for_task": ".prewarm",
     "OPENAI_AGENT_TOOL_SCHEMAS": ".openai_schemas",
     "build_openai_agent_tool_schemas": ".openai_schemas",
     "OpenAITaskAgentToolBundle": ".openai_runtime",
