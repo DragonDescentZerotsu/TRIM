@@ -108,3 +108,146 @@ The prewarm summary is written to:
 - `outputs/reasoning_agent_tools/tool_cache_prewarm/<feature_set_name>/manifest.json`
 
 If another project wants the simplest possible integration path, the easiest option is to keep TRIM as a dependency or submodule and call `build_task_bound_openai_tool_bundle(...)` directly, instead of copying `tools.py` in isolation. The runtime depends on TRIM task manifests, processed splits, similarity caches, and saved model bundles.
+
+## vLLM Load Balancing with HAProxy
+
+If a single local `vllm serve` instance is too slow for reasoning rewrites, a practical setup is:
+
+- host multiple identical vLLM servers on different ports
+- put HAProxy in front of them
+- point TRIM to one HAProxy endpoint via `--api-base`
+
+The resulting flow looks like:
+
+```text
+scripts/run_reasoning_rewrites.py
+  -> http://127.0.0.1:9000/v1
+    -> HAProxy
+      -> http://127.0.0.1:8001/v1
+      -> http://127.0.0.1:8002/v1
+      -> http://127.0.0.1:8003/v1
+      -> http://127.0.0.1:8004/v1
+```
+
+### 1. Start Multiple vLLM Backends
+
+Use the same model and the same served model name on every backend. For example:
+
+```bash
+vllm serve /path/to/model --port 8001 --served-model-name gpt-oss-120b
+vllm serve /path/to/model --port 8002 --served-model-name gpt-oss-120b
+vllm serve /path/to/model --port 8003 --served-model-name gpt-oss-120b
+vllm serve /path/to/model --port 8004 --served-model-name gpt-oss-120b
+```
+
+Before adding HAProxy, verify that each backend responds:
+
+```bash
+curl -sS http://127.0.0.1:8001/v1/models
+curl -sS http://127.0.0.1:8002/v1/models
+curl -sS http://127.0.0.1:8003/v1/models
+curl -sS http://127.0.0.1:8004/v1/models
+```
+
+### 2. Create an HAProxy Config
+
+Save a config such as `/tmp/haproxy-vllm.cfg`:
+
+```cfg
+global
+    log stdout format raw local0 info
+    maxconn 4096
+
+defaults
+    mode http
+    log global
+    option httplog
+    option dontlognull
+    timeout connect 5s
+    timeout client 600s
+    timeout server 600s
+    timeout http-request 30s
+    retries 2
+    option redispatch
+
+frontend vllm_front
+    bind 127.0.0.1:9000
+    default_backend vllm_back
+
+backend vllm_back
+    balance leastconn
+    option httpchk GET /v1/models
+    http-check expect status 200
+
+    http-response set-header X-Served-By %[srv_name]
+
+    server g1 127.0.0.1:8001 check inter 5s fall 2 rise 1
+    server g2 127.0.0.1:8002 check inter 5s fall 2 rise 1
+    server g3 127.0.0.1:8003 check inter 5s fall 2 rise 1
+    server g4 127.0.0.1:8004 check inter 5s fall 2 rise 1
+```
+
+Notes:
+
+- `balance leastconn` is a good default for rewrite workloads with uneven sample runtimes.
+- `GET /v1/models` is used as a health check.
+- `X-Served-By` makes it easy to confirm which backend handled a response.
+- Keep HAProxy timeouts at least as large as the TRIM rewrite timeout, and usually a bit larger.
+
+### 3. Validate and Start HAProxy
+
+Check the config:
+
+```bash
+haproxy -f /tmp/haproxy-vllm.cfg -c
+```
+
+Run in the foreground first while debugging:
+
+```bash
+haproxy -f /tmp/haproxy-vllm.cfg -db
+```
+
+Then verify the proxy endpoint:
+
+```bash
+curl -i http://127.0.0.1:9000/v1/models
+```
+
+If you repeat that request several times, the `X-Served-By` response header should rotate across `g1`, `g2`, `g3`, and `g4`.
+
+### 4. Point TRIM to HAProxy
+
+Once the proxy is up, pass the HAProxy endpoint to the rewrite script:
+
+```bash
+/data1/tianang/anaconda3/envs/vllm/bin/python scripts/run_reasoning_rewrites.py \
+  --provider vllm \
+  --model gpt-oss-120b \
+  --api-base http://127.0.0.1:9000/v1 \
+  --mode all \
+  --split train \
+  --task AMES \
+  --max-concurrency 4 \
+  --timeout-s 600
+```
+
+TRIM still sees only one OpenAI-compatible endpoint. HAProxy handles distribution across the backend vLLM instances.
+
+### 5. Recommended Rollout Strategy
+
+For a new deployment, the safest order is:
+
+1. Start two vLLM backends, not four.
+2. Verify each backend directly with `curl .../v1/models`.
+3. Start HAProxy and verify `http://127.0.0.1:9000/v1/models`.
+4. Run a small TRIM smoke test such as `--max-samples 5`.
+5. Increase `--max-concurrency` gradually.
+6. Add more backend ports only after the smaller setup is stable.
+
+### 6. Practical Caveats
+
+- All backends should expose the same `--served-model-name`, because TRIM sends one `model` string in the request payload.
+- HAProxy does not rewrite the JSON body, so mixing different served model names behind one proxy is not recommended.
+- Existing `result.json` files are reused unless `--overwrite` is passed.
+- If many samples fail with `timed out`, first lower `--max-concurrency` and increase `--timeout-s` before increasing retries.

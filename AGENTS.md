@@ -2,7 +2,7 @@
 
 ## Env Instructions
 
-If you are on `node002`, default to the `vllm` conda environment when you need RDKit or the local project dependencies. conda is at: /data1/tianang/anaconda3/condabin/conda
+If you are on `node002` or `node001`, default to the `vllm` conda environment when you need RDKit or the local project dependencies. conda is at: /data1/tianang/anaconda3/condabin/conda
 
 ## Current Progress Snapshot
 
