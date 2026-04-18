@@ -15,6 +15,7 @@ if str(SRC_ROOT) not in sys.path:
 from trim.reasoning.evidence.global_evidence import extract_global_evidence_for_split
 from trim.reasoning.evidence.local_evidence import extract_local_evidence_for_split
 from trim.utils.io import load_json, save_json
+from trim.utils.paths import resolve_project_path
 
 
 DEFAULT_MANIFEST_INDEX = (
@@ -61,10 +62,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def _resolve_path(path_like: str | Path) -> Path:
-    path = Path(path_like).expanduser()
-    if path.is_absolute():
-        return path.resolve()
-    return (Path.cwd() / path).resolve()
+    return resolve_project_path(path_like)
 
 
 def _selected_tasks(index_payload: dict[str, object], requested_tasks: list[str] | None) -> list[dict[str, object]]:
@@ -102,9 +100,12 @@ def main() -> int:
 
     for task_row in task_rows:
         task = str(task_row["task"])
-        manifest_path = Path(str(task_row["manifest_path"])).resolve()
+        manifest_path = _resolve_path(task_row["manifest_path"])
         task_manifest = load_json(manifest_path)
-        bundle_paths = dict(task_manifest["bundle_paths"])
+        bundle_paths = {
+            str(name): str(_resolve_path(path_like))
+            for name, path_like in dict(task_manifest["bundle_paths"]).items()
+        }
         local_tool = dict(task_manifest["local_tool"])
 
         print(f"[reasoning-evidence] task={task}")

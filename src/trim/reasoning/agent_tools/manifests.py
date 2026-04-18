@@ -10,6 +10,8 @@ from trim.utils.paths import (
     DEFAULT_PROCESSED_DATA_ROOT,
     DEFAULT_SIMILARITY_CACHE_ROOT,
     OUTPUTS_ROOT,
+    PROJECT_ROOT,
+    resolve_project_path,
 )
 
 
@@ -20,6 +22,33 @@ DEFAULT_GLOBAL_TOP_K = 10
 DEFAULT_LOCAL_TOP_TERM_K = 6
 DEFAULT_LOCAL_TOP_K_POS = 3
 DEFAULT_LOCAL_TOP_K_NEG = 3
+
+
+def _serialize_project_path(path_like: str | Path) -> str:
+    path = Path(path_like).expanduser()
+    if not path.is_absolute():
+        return str(path)
+    try:
+        return str(path.relative_to(PROJECT_ROOT))
+    except ValueError:
+        return str(path)
+
+
+def _resolve_saved_project_path(path_like: str | Path) -> str:
+    return str(resolve_project_path(path_like))
+
+
+def _resolve_manifest_payload_paths(payload: dict[str, object]) -> dict[str, object]:
+    normalized = dict(payload)
+
+    bundle_paths = normalized.get("bundle_paths")
+    if isinstance(bundle_paths, dict):
+        normalized["bundle_paths"] = {
+            str(name): _resolve_saved_project_path(path_like)
+            for name, path_like in bundle_paths.items()
+        }
+
+    return normalized
 
 
 def _task_label_semantics(task: str) -> dict[int, dict[str, str]]:
@@ -105,9 +134,9 @@ def discover_task_bundle_paths(
     )[0]
 
     return {
-        "global_bundle_path": str(global_bundle_path.resolve()),
-        "pos_bundle_path": str(pos_bundle_path.resolve()),
-        "neg_bundle_path": str(neg_bundle_path.resolve()),
+        "global_bundle_path": _serialize_project_path(global_bundle_path),
+        "pos_bundle_path": _serialize_project_path(pos_bundle_path),
+        "neg_bundle_path": _serialize_project_path(neg_bundle_path),
     }
 
 
@@ -126,7 +155,14 @@ def load_task_tool_manifest(
     feature_set_name: str = DEFAULT_AGENT_TOOL_FEATURE_SET_NAME,
     manifest_root: str | Path = DEFAULT_AGENT_TOOL_MANIFEST_ROOT,
 ) -> dict[str, object]:
-    return load_json(get_task_tool_manifest_path(task=task, feature_set_name=feature_set_name, manifest_root=manifest_root))
+    manifest_path = resolve_project_path(
+        get_task_tool_manifest_path(
+            task=task,
+            feature_set_name=feature_set_name,
+            manifest_root=manifest_root,
+        )
+    )
+    return _resolve_manifest_payload_paths(load_json(manifest_path))
 
 
 def build_task_tool_manifest(
@@ -149,9 +185,13 @@ def build_task_tool_manifest(
         feature_set_name=feature_set_name,
         outputs_root=outputs_root,
     )
-    global_bundle = load_pickle(bundle_paths["global_bundle_path"])
-    pos_bundle = load_pickle(bundle_paths["pos_bundle_path"])
-    neg_bundle = load_pickle(bundle_paths["neg_bundle_path"])
+    resolved_bundle_paths = {
+        key: _resolve_saved_project_path(path_like)
+        for key, path_like in bundle_paths.items()
+    }
+    global_bundle = load_pickle(resolved_bundle_paths["global_bundle_path"])
+    pos_bundle = load_pickle(resolved_bundle_paths["pos_bundle_path"])
+    neg_bundle = load_pickle(resolved_bundle_paths["neg_bundle_path"])
 
     global_feature_columns = [str(column) for column in global_bundle["feature_columns"]]
     pos_raw_feature_columns = _resolve_raw_feature_columns(pos_bundle)
@@ -168,8 +208,8 @@ def build_task_tool_manifest(
         "schema_version": AGENT_TOOL_SCHEMA_VERSION,
         "task": task,
         "feature_set_name": feature_set_name,
-        "dataset_root": str(Path(dataset_root).resolve()),
-        "cache_root": str(Path(cache_root).resolve()),
+        "dataset_root": _serialize_project_path(dataset_root),
+        "cache_root": _serialize_project_path(cache_root),
         "bundle_paths": bundle_paths,
         "label_semantics": _task_label_semantics(task),
         "global_tool": {
@@ -244,12 +284,12 @@ def build_all_task_tool_manifests(
         task_entries.append(
             {
                 "task": task,
-                "manifest_path": str(
+                "manifest_path": _serialize_project_path(
                     get_task_tool_manifest_path(
                         task=task,
                         feature_set_name=feature_set_name,
                         manifest_root=manifest_root,
-                    ).resolve()
+                    )
                 ),
                 "global_dense_feature_count": int(manifest["global_tool"]["dense_feature_count"]),
                 "local_dense_feature_count": int(manifest["local_tool"]["dense_feature_count"]),
