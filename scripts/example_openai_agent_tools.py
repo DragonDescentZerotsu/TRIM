@@ -13,12 +13,12 @@ SRC_ROOT = PROJECT_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-from trim.reasoning.agent_tools import build_task_bound_openai_tool_bundle
+from trim.reasoning.agent_tools import build_openai_tool_runtime
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Example usage for task-bound OpenAI agent tools, including cache timing."
+        description="Example usage for task-aware OpenAI agent tools, including cache timing."
     )
     parser.add_argument("--task", default="BBB_Martins")
     parser.add_argument(
@@ -39,21 +39,21 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _time_tool_call(bundle, *, tool_name: str, smiles: str) -> tuple[str, float]:
+def _time_tool_call(runtime, *, task: str, tool_name: str, smiles: str) -> tuple[str, float]:
     started_at = time.perf_counter()
-    result = bundle.call_tool(tool_name, {"smiles": smiles})
+    result = runtime.call_tool(tool_name, {"smiles": smiles}, task=task)
     elapsed_s = time.perf_counter() - started_at
     return result, elapsed_s
 
 
-def _print_cache_speed_demo(bundle, *, smiles: str) -> None:
+def _print_cache_speed_demo(runtime, *, task: str, smiles: str) -> None:
     print("Cache timing demo:")
+    tool_runner = runtime.get_runner(task)
     for tool_name in ("get_mol_properties_and_fg", "compare_similar_mols"):
-        tool_runner = bundle.tool_runner
         had_cache_before = tool_runner.has_cached_tool_payload(tool_name=tool_name, smiles=smiles)
-        _, first_elapsed_s = _time_tool_call(bundle, tool_name=tool_name, smiles=smiles)
+        _, first_elapsed_s = _time_tool_call(runtime, task=task, tool_name=tool_name, smiles=smiles)
         has_cache_after_first = tool_runner.has_cached_tool_payload(tool_name=tool_name, smiles=smiles)
-        _, second_elapsed_s = _time_tool_call(bundle, tool_name=tool_name, smiles=smiles)
+        _, second_elapsed_s = _time_tool_call(runtime, task=task, tool_name=tool_name, smiles=smiles)
 
         print(f"- {tool_name}")
         print(f"  cache existed before first call: {had_cache_before}")
@@ -69,10 +69,10 @@ def main() -> int:
     task = args.task
     smiles = args.smiles
 
-    bundle_kwargs = {"task": task}
+    runtime_kwargs = {}
     if args.tool_cache_root:
-        bundle_kwargs["tool_cache_root"] = args.tool_cache_root
-    bundle = build_task_bound_openai_tool_bundle(**bundle_kwargs)
+        runtime_kwargs["tool_cache_root"] = args.tool_cache_root
+    runtime = build_openai_tool_runtime(**runtime_kwargs)
 
     print(f"Task: {task}")
     print(f"SMILES: {smiles}")
@@ -80,11 +80,11 @@ def main() -> int:
 
     if not args.skip_schema:
         print("OpenAI tool schemas:")
-        print(json.dumps(bundle.tools, indent=2, ensure_ascii=False))
+        print(json.dumps(runtime.tools, indent=2, ensure_ascii=False))
         print()
 
     print("Direct tool call example:")
-    print(bundle.call_tool("get_mol_properties_and_fg", {"smiles": smiles}))
+    print(runtime.call_tool("get_mol_properties_and_fg", {"smiles": smiles}, task=task))
     print()
 
     print("OpenAI-style function-call payload example:")
@@ -95,10 +95,10 @@ def main() -> int:
             "arguments": json.dumps({"smiles": smiles}),
         },
     }
-    print(bundle.call_openai_function_call(mock_tool_call))
+    print(runtime.call_openai_function_call(mock_tool_call, task=task))
     print()
 
-    _print_cache_speed_demo(bundle, smiles=smiles)
+    _print_cache_speed_demo(runtime, task=task, smiles=smiles)
     return 0
 
 

@@ -336,21 +336,25 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
         - 入口：
           - `build_openai_agent_tool_schemas(task=...)`
           - `OPENAI_AGENT_TOOL_SCHEMAS`
-      - task 绑定后的 runtime helper：
+      - 当前推荐的 task-aware runtime helper：
         - `src/trim/reasoning/agent_tools/openai_runtime.py`
         - 入口：
-          - `build_task_bound_openai_tool_bundle(task=...)`
-          - `OpenAITaskAgentToolBundle`
-      - 这个 helper 的用途是把两件事绑在一起：
-        - `bundle.tools`：直接喂给 OpenAI agent 的 tool JSON
-        - `bundle.call_tool(...)` / `bundle.call_openai_function_call(...)`：执行 agent 发起的 tool call 并返回文本结果
-      - 这样能保证 schema、task 上下文、真实执行逻辑三者一致，方便新人上手，也减少调错配的概率
+          - `build_openai_tool_runtime(...)`
+          - `OpenAIAgentToolRuntime`
+      - 兼容入口仍保留：
+        - `build_task_bound_openai_tool_bundle(task=...)`
+        - `OpenAITaskAgentToolBundle`
+      - 当前推荐 helper 的用途是把两件事绑在一起：
+        - `runtime.tools`：直接喂给 OpenAI agent 的 tool JSON；schema 里仍然只有 `smiles`
+        - `runtime.call_tool(..., task=...)` / `runtime.call_openai_function_call(..., task=...)`：由外层代码手动传入 `task` 后执行 tool call
+      - `runtime` 会在进程内按 `task` 缓存 `TaskReasoningAgentTools` runner，所以同一个 task 不会每次调用都重新初始化
+      - runner 内部仍默认优先读取已有的 tool payload cache；只有 cache miss 时才会现场计算并回写
     - 最简使用示例：
       - `scripts/example_openai_agent_tools.py`
       - 用法是：
-        - 先 `build_task_bound_openai_tool_bundle(task=\"BBB_Martins\")`
-        - 把 `bundle.tools` 传给 OpenAI
-        - 收到 function call 后，用 `bundle.call_tool(...)` 或 `bundle.call_openai_function_call(...)` 执行
+        - 先 `build_openai_tool_runtime()`
+        - 把 `runtime.tools` 传给 OpenAI
+        - 收到 function call 后，用 `runtime.call_tool(..., task=...)` 或 `runtime.call_openai_function_call(..., task=...)` 执行
       - 该脚本现在还额外支持：
         - `--task`
         - `--smiles`
@@ -359,15 +363,16 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
       - 当前 `example` 末尾会自动打印两类 tool 的 cache timing demo，用于快速确认“首次生成缓存”和“第二次直接读缓存”的耗时差
     - 一个最小代码片段如下：
       - ```python
-        from trim.reasoning.agent_tools import build_task_bound_openai_tool_bundle
+        from trim.reasoning.agent_tools import build_openai_tool_runtime
 
-        bundle = build_task_bound_openai_tool_bundle(task="BBB_Martins")
-        tools = bundle.tools
+        runtime = build_openai_tool_runtime()
+        tools = runtime.tools
 
         # 直接执行某个 tool
-        text_result = bundle.call_tool(
+        text_result = runtime.call_tool(
             "get_mol_properties_and_fg",
             {"smiles": "CC(C)(C)OC(=O)CCCc1ccc(N(CCCl)CCCl)cc1"},
+            task="BBB_Martins",
         )
 
         # 或执行 OpenAI 风格的 function call payload
@@ -378,7 +383,7 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
                 "arguments": "{\"smiles\": \"CC(C)(C)OC(=O)CCCc1ccc(N(CCCl)CCCl)cc1\"}",
             },
         }
-        local_text = bundle.call_openai_function_call(tool_call)
+        local_text = runtime.call_openai_function_call(tool_call, task="BBB_Martins")
         ```
     - 已新增批量预热脚本与 helper，供后续正式跑 agent / SFT 前先把 tool cache 热起来：
       - `src/trim/reasoning/agent_tools/prewarm.py`
@@ -397,7 +402,7 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
         - 默认 summary 输出：
           - `outputs/reasoning_agent_tools/tool_cache_prewarm/<feature_set_name>/manifest.json`
     - 对外推荐的最简集成方式仍然是：
-      - 直接调用 `build_task_bound_openai_tool_bundle(task=...)`
+      - 直接调用 `build_openai_tool_runtime(...)`
       - 若外部项目要复用，优先把 TRIM 当依赖或 submodule，而不是单独拷走 `tools.py`
       - 因为 runtime 同时依赖：
         - task manifests

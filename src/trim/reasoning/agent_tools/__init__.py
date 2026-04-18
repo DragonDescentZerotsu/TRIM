@@ -9,6 +9,7 @@ __all__ = [
     "DEFAULT_AGENT_TOOL_FEATURE_SET_NAME",
     "DEFAULT_AGENT_TOOL_MANIFEST_ROOT",
     "DEFAULT_AGENT_TOOL_PREWARM_SUMMARY_ROOT",
+    "OpenAIAgentToolRuntime",
     "OpenAITaskAgentToolBundle",
     "OPENAI_AGENT_TOOL_SCHEMAS",
     "SUPPORTED_AGENT_TOOL_NAMES",
@@ -16,6 +17,7 @@ __all__ = [
     "TaskReasoningAgentTools",
     "build_all_task_tool_manifests",
     "build_openai_agent_tool_schemas",
+    "build_openai_tool_runtime",
     "build_task_bound_openai_tool_bundle",
     "build_task_tool_manifest",
     "get_task_tool_manifest_path",
@@ -41,8 +43,10 @@ _MODULE_BY_EXPORT = {
     "prewarm_agent_tool_cache_for_task": ".prewarm",
     "OPENAI_AGENT_TOOL_SCHEMAS": ".openai_schemas",
     "build_openai_agent_tool_schemas": ".openai_schemas",
+    "OpenAIAgentToolRuntime": ".openai_runtime",
     "OpenAITaskAgentToolBundle": ".openai_runtime",
     "SUPPORTED_OPENAI_TOOL_NAMES": ".openai_runtime",
+    "build_openai_tool_runtime": ".openai_runtime",
     "build_task_bound_openai_tool_bundle": ".openai_runtime",
 }
 

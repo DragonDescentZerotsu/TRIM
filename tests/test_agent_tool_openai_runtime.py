@@ -4,7 +4,9 @@ import sys
 from types import SimpleNamespace
 
 from trim.reasoning.agent_tools.openai_runtime import (
+    OpenAIAgentToolRuntime,
     OpenAITaskAgentToolBundle,
+    build_openai_tool_runtime,
     build_task_bound_openai_tool_bundle,
 )
 
@@ -70,3 +72,52 @@ def test_build_task_bound_openai_tool_bundle_uses_task_bound_schema_and_runner(m
         "compare_similar_mols",
     ]
     assert "BBB_Martins" in bundle.tools[1]["description"]
+
+
+def test_openai_tool_runtime_dispatches_with_explicit_task():
+    runtime = OpenAIAgentToolRuntime(
+        tool_schemas=[{"name": "get_mol_properties_and_fg"}, {"name": "compare_similar_mols"}],
+    )
+    runtime._tool_runner_cache["BBB_Martins"] = _FakeRunner()
+
+    assert runtime.call_tool(
+        "get_mol_properties_and_fg",
+        {"smiles": "CCO"},
+        task="BBB_Martins",
+    ) == "global::CCO"
+    assert runtime.call_openai_function_call(
+        {
+            "type": "function_call",
+            "function": {
+                "name": "compare_similar_mols",
+                "arguments": '{"smiles":"CCN"}',
+            },
+        },
+        task="BBB_Martins",
+    ) == "local::CCN"
+
+
+def test_openai_tool_runtime_caches_runner_per_task(monkeypatch):
+    build_calls: list[str] = []
+
+    class _FakeToolsClass:
+        @classmethod
+        def from_task(cls, **kwargs):
+            task = str(kwargs["task"])
+            build_calls.append(task)
+            return _FakeRunner()
+
+    monkeypatch.setitem(
+        sys.modules,
+        "trim.reasoning.agent_tools.tools",
+        SimpleNamespace(TaskReasoningAgentTools=_FakeToolsClass),
+    )
+
+    runtime = build_openai_tool_runtime()
+    runner_a = runtime.get_runner("BBB_Martins")
+    runner_b = runtime.get_runner("BBB_Martins")
+    runner_c = runtime.get_runner("AMES")
+
+    assert runner_a is runner_b
+    assert runner_a is not runner_c
+    assert build_calls == ["BBB_Martins", "AMES"]

@@ -25,23 +25,26 @@ TRIM also exposes two task-bound text-returning tools for the reasoning / agent 
 - `get_mol_properties_and_fg(smiles)`
 - `compare_similar_mols(smiles)`
 
-The recommended entrypoint is `build_task_bound_openai_tool_bundle(...)`, which keeps the OpenAI tool schemas and the runtime implementation aligned.
+The recommended entrypoint is `build_openai_tool_runtime(...)`. The OpenAI tool schemas still expose only `smiles`, while the caller provides `task` manually at execution time.
 
 ### Local Python Usage
 
 ```python
-from trim.reasoning.agent_tools import build_task_bound_openai_tool_bundle
+from trim.reasoning.agent_tools import build_openai_tool_runtime
 
-bundle = build_task_bound_openai_tool_bundle(task="BBB_Martins")
+runtime = build_openai_tool_runtime()
+tools = runtime.tools
 
-global_text = bundle.call_tool(
+global_text = runtime.call_tool(
     "get_mol_properties_and_fg",
     {"smiles": "O=C(c1ccccc1)c1ccc2n1CCC2C(=O)O"},
+    task="BBB_Martins",
 )
 
-local_text = bundle.call_tool(
+local_text = runtime.call_tool(
     "compare_similar_mols",
     {"smiles": "O=C(c1ccccc1)c1ccc2n1CCC2C(=O)O"},
+    task="BBB_Martins",
 )
 
 print(global_text)
@@ -54,10 +57,10 @@ print(local_text)
 ```python
 import json
 
-from trim.reasoning.agent_tools import build_task_bound_openai_tool_bundle
+from trim.reasoning.agent_tools import build_openai_tool_runtime
 
-bundle = build_task_bound_openai_tool_bundle(task="BBB_Martins")
-tools = bundle.tools
+runtime = build_openai_tool_runtime()
+tools = runtime.tools
 
 tool_call = {
     "type": "function_call",
@@ -67,9 +70,11 @@ tool_call = {
     },
 }
 
-tool_result_text = bundle.call_openai_function_call(tool_call)
+tool_result_text = runtime.call_openai_function_call(tool_call, task="BBB_Martins")
 print(tool_result_text)
 ```
+
+`build_task_bound_openai_tool_bundle(task=...)` is still available as a compatibility wrapper if another integration prefers a task-fixed executor.
 
 ### Smoke Test
 
@@ -107,7 +112,7 @@ The prewarm summary is written to:
 
 - `outputs/reasoning_agent_tools/tool_cache_prewarm/<feature_set_name>/manifest.json`
 
-If another project wants the simplest possible integration path, the easiest option is to keep TRIM as a dependency or submodule and call `build_task_bound_openai_tool_bundle(...)` directly, instead of copying `tools.py` in isolation. The runtime depends on TRIM task manifests, processed splits, similarity caches, and saved model bundles.
+If another project wants the simplest possible integration path, the easiest option is to keep TRIM as a dependency or submodule and call `build_openai_tool_runtime(...)` directly, instead of copying `tools.py` in isolation. The runtime depends on TRIM task manifests, processed splits, similarity caches, and saved model bundles.
 
 ## vLLM Load Balancing with HAProxy
 
