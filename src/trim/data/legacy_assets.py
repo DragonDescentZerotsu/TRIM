@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import shutil
 from pathlib import Path
 
 from trim.utils.paths import (
@@ -33,6 +34,23 @@ def ensure_symlink(link_path: str | Path, target_path: str | Path, *, force: boo
     return link
 
 
+def ensure_local_copy(dest_path: str | Path, source_path: str | Path, *, force: bool = False) -> Path:
+    dest = Path(dest_path)
+    source = Path(source_path)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+
+    if dest.is_symlink():
+        dest.unlink()
+    elif dest.exists():
+        if dest.is_dir():
+            raise IsADirectoryError(f"Refusing to replace directory {dest} with a file copy")
+        if not force:
+            return dest
+
+    shutil.copy2(source, dest)
+    return dest
+
+
 def prepare_legacy_assets(*, force: bool = False) -> dict[str, str]:
     created: dict[str, str] = {}
 
@@ -45,10 +63,9 @@ def prepare_legacy_assets(*, force: bool = False) -> dict[str, str]:
 
     DEFAULT_FG_FEATURE_ROOT.mkdir(parents=True, exist_ok=True)
     fg_target = DEFAULT_FG_FEATURE_ROOT / LEGACY_FG_FEATURE_CSV.name
-    created["fg_feature_csv"] = str(ensure_symlink(fg_target, LEGACY_FG_FEATURE_CSV, force=force))
+    created["fg_feature_csv"] = str(ensure_local_copy(fg_target, LEGACY_FG_FEATURE_CSV, force=force))
 
     created["similarity_cache"] = str(
         ensure_symlink(DEFAULT_SIMILARITY_CACHE_ROOT, LEGACY_SIMILARITY_CACHE_ROOT, force=force)
     )
     return created
-

@@ -52,7 +52,9 @@ def main() -> int:
         if args.tasks
         else list_tasks(args.data_root)
     )
-    feature_configs = args.feature_configs or ["configs/features/rdkit_descriptors_and_pka_easy_to_NLP_Lv1.json"]
+    feature_configs = args.feature_configs or [
+        "configs/features/rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts.json"
+    ]
     feature_bundle = build_feature_source_bundle(feature_configs)
     retriever = CachedSimilarityRetriever(cache_root=args.cache_root, data_root=args.data_root)
     config = PairTrainingConfig(

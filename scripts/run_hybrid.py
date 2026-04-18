@@ -43,7 +43,9 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    feature_configs = args.feature_configs or ["configs/features/rdkit_descriptors_and_pka_easy_to_NLP_Lv1.json"]
+    feature_configs = args.feature_configs or [
+        "configs/features/rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts.json"
+    ]
     print(
         f"[hybrid-eval] task={args.task} split={args.split} "
         f"top_k_pos={args.top_k_pos} top_k_neg={args.top_k_neg} "
