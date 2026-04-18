@@ -3,6 +3,7 @@ from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
 from pathlib import Path
+import re
 import time
 from typing import Any
 
@@ -33,8 +34,21 @@ _META_LANGUAGE_TERMS = (
     "prompt",
     "input",
     "instruction",
-    "contribution",
     "pair score",
+)
+
+_HARD_FAIL_META_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("contribution_numeric", re.compile(r"contribution\s*[:=]?\s*[-+]?\d", re.IGNORECASE)),
+    ("parenthesized_contribution_numeric", re.compile(r"\(contribution\s*[:=]?\s*[-+]?\d", re.IGNORECASE)),
+    ("model_assigns_contribution", re.compile(r"model assigns .*contribution", re.IGNORECASE)),
+    ("contribution_listed", re.compile(r"contribution listed", re.IGNORECASE)),
+    ("contribution_interpreted", re.compile(r"contribution is interpreted", re.IGNORECASE)),
+    ("contribution_recorded", re.compile(r"contribution is recorded", re.IGNORECASE)),
+    ("contribution_here_is", re.compile(r"contribution here is", re.IGNORECASE)),
+    ("feature_contribution", re.compile(r"feature contribution", re.IGNORECASE)),
+    ("pairwise_contribution", re.compile(r"pairwise contribution", re.IGNORECASE)),
+    ("weighted_contribution", re.compile(r"weighted contribution", re.IGNORECASE)),
+    ("summed_contributions", re.compile(r"summed contributions", re.IGNORECASE)),
 )
 
 
@@ -181,10 +195,16 @@ def collect_reasoning_post_checks(*, mode: str, parsed_output: dict[str, Any]) -
     reasoning_text = str(parsed_output.get(reasoning_key, "") or "")
     lowered = reasoning_text.lower()
     meta_terms_found = [term for term in _META_LANGUAGE_TERMS if term in lowered]
+    meta_patterns_found = [
+        pattern_name
+        for pattern_name, pattern in _HARD_FAIL_META_PATTERNS
+        if pattern.search(reasoning_text)
+    ]
     return {
         "reasoning_key": reasoning_key,
-        "meta_reference_free": len(meta_terms_found) == 0,
+        "meta_reference_free": len(meta_terms_found) == 0 and len(meta_patterns_found) == 0,
         "meta_terms_found": meta_terms_found,
+        "meta_patterns_found": meta_patterns_found,
     }
 
 
@@ -199,9 +219,84 @@ def validate_saved_rewrite_output(*, mode: str, payload: dict[str, Any]) -> None
     if not isinstance(post_checks, dict):
         post_checks = collect_reasoning_post_checks(mode=mode, parsed_output=parsed_output)
     if not bool(post_checks.get("meta_reference_free")):
+        meta_terms = list(post_checks.get("meta_terms_found", []) or [])
+        meta_patterns = list(post_checks.get("meta_patterns_found", []) or [])
+        found_items = meta_terms + meta_patterns
         raise ValueError(
-            f"Rewrite post-check failed for mode={mode}: meta terms found {post_checks.get('meta_terms_found', [])!r}"
+            f"Rewrite post-check failed for mode={mode}: meta terms found {found_items!r}"
         )
+
+
+def _build_rewrite_output_payload(
+    *,
+    candidate_payload: dict[str, Any],
+    mode: str,
+    llm_config: LLMRequestConfig,
+    sample_index: int,
+    prompt_path: Path,
+    raw_text_path: Path,
+    parsed_output: dict[str, Any],
+    post_checks: dict[str, Any],
+    response_content: str,
+    raw_response: Any,
+    attempt_count: int,
+    recovered_from_existing_response_text: bool = False,
+) -> dict[str, Any]:
+    return {
+        "schema_version": "trim_reasoning_rewrite_output_v1",
+        "mode": mode,
+        "provider": llm_config.provider,
+        "model": llm_config.model,
+        "api_base": llm_config.api_base,
+        "task": str(candidate_payload["task"]),
+        "split": str(candidate_payload["split"]),
+        "sample_id": str(candidate_payload["sample_id"]),
+        "sample_index": int(sample_index),
+        "prompt_path": str(prompt_path.resolve()),
+        "response_text_path": str(raw_text_path.resolve()),
+        "candidate_json_path": str(candidate_payload.get("_candidate_json_path", "")),
+        "parsed_output": parsed_output,
+        "post_checks": post_checks,
+        "response_content": response_content,
+        "raw_response": raw_response,
+        "attempt_count": int(attempt_count),
+        "recovered_from_existing_response_text": bool(recovered_from_existing_response_text),
+    }
+
+
+def _recover_saved_response_output(
+    *,
+    candidate_payload: dict[str, Any],
+    mode: str,
+    llm_config: LLMRequestConfig,
+    sample_index: int,
+    prompt_path: Path,
+    raw_text_path: Path,
+    output_path: Path,
+) -> dict[str, Any] | None:
+    if not raw_text_path.exists():
+        return None
+
+    response_content = raw_text_path.read_text(encoding="utf-8")
+    parsed_output = extract_json_from_response_text(response_content)
+    post_checks = collect_reasoning_post_checks(mode=mode, parsed_output=parsed_output)
+    payload = _build_rewrite_output_payload(
+        candidate_payload=candidate_payload,
+        mode=mode,
+        llm_config=llm_config,
+        sample_index=sample_index,
+        prompt_path=prompt_path,
+        raw_text_path=raw_text_path,
+        parsed_output=parsed_output,
+        post_checks=post_checks,
+        response_content=response_content,
+        raw_response={"recovered_from_response_text": True},
+        attempt_count=0,
+        recovered_from_existing_response_text=True,
+    )
+    validate_saved_rewrite_output(mode=mode, payload=payload)
+    save_json(output_path, payload)
+    return payload
 
 
 def run_single_rewrite(
@@ -252,6 +347,22 @@ def run_single_rewrite(
     )
     prompt_path.write_text(prompt_text, encoding="utf-8")
 
+    if skip_existing and not output_path.exists():
+        try:
+            recovered_payload = _recover_saved_response_output(
+                candidate_payload=candidate_payload,
+                mode=mode,
+                llm_config=llm_config,
+                sample_index=sample_index,
+                prompt_path=prompt_path,
+                raw_text_path=raw_text_path,
+                output_path=output_path,
+            )
+            if recovered_payload is not None:
+                return recovered_payload
+        except Exception:
+            pass
+
     total_attempts = max(1, int(max_retries) + 1)
     last_error: Exception | None = None
     for attempt_index in range(1, total_attempts + 1):
@@ -261,25 +372,19 @@ def run_single_rewrite(
             parsed_output = extract_json_from_response_text(str(completion["content"]))
             post_checks = collect_reasoning_post_checks(mode=mode, parsed_output=parsed_output)
 
-            payload = {
-                "schema_version": "trim_reasoning_rewrite_output_v1",
-                "mode": mode,
-                "provider": llm_config.provider,
-                "model": llm_config.model,
-                "api_base": llm_config.api_base,
-                "task": task,
-                "split": split,
-                "sample_id": str(candidate_payload["sample_id"]),
-                "sample_index": sample_index,
-                "prompt_path": str(prompt_path.resolve()),
-                "response_text_path": str(raw_text_path.resolve()),
-                "candidate_json_path": str(candidate_payload.get("_candidate_json_path", "")),
-                "parsed_output": parsed_output,
-                "post_checks": post_checks,
-                "response_content": str(completion["content"]),
-                "raw_response": completion["raw_response"],
-                "attempt_count": int(attempt_index),
-            }
+            payload = _build_rewrite_output_payload(
+                candidate_payload=candidate_payload,
+                mode=mode,
+                llm_config=llm_config,
+                sample_index=sample_index,
+                prompt_path=prompt_path,
+                raw_text_path=raw_text_path,
+                parsed_output=parsed_output,
+                post_checks=post_checks,
+                response_content=str(completion["content"]),
+                raw_response=completion["raw_response"],
+                attempt_count=attempt_index,
+            )
             validate_saved_rewrite_output(mode=mode, payload=payload)
             save_json(output_path, payload)
             return payload
