@@ -32,12 +32,16 @@ from trim.utils.paths import (
     DEFAULT_PROCESSED_DATA_ROOT,
     DEFAULT_SIMILARITY_CACHE_ROOT,
     OUTPUTS_ROOT,
+    PROJECT_ROOT,
     resolve_project_path,
 )
 
 
 AGENT_TOOL_PAYLOAD_CACHE_SCHEMA_VERSION = "trim_agent_tool_payload_cache_v1"
+AGENT_TOOL_CACHE_SIGNATURE_VERSION = "portable_v2"
 DEFAULT_AGENT_TOOL_CACHE_ROOT = OUTPUTS_ROOT / "reasoning_agent_tools" / "tool_cache"
+TOOL_CACHE_CONTENT_DIGEST_MAX_BYTES = 64 * 1024 * 1024
+TOOL_CACHE_CONTENT_DIGEST_CHUNK_BYTES = 1024 * 1024
 
 
 def _safe_scalar(value: object) -> object:
@@ -244,6 +248,7 @@ class TaskReasoningAgentTools:
         self._train_raw_values = None
         self._train_index_by_smiles: dict[str, int] | None = None
         self._tool_payload_cache: dict[tuple[str, str], dict[str, object]] = {}
+        self._compatible_tool_cache_path_cache: dict[tuple[str, str], Path | None] = {}
         self._tool_cache_namespace = self._build_tool_cache_namespace()
 
     @classmethod
@@ -272,14 +277,38 @@ class TaskReasoningAgentTools:
             enable_tool_cache=enable_tool_cache,
         )
 
+    def _portable_cache_path(self, path_like: str | Path, resolved_path: Path) -> str:
+        path = Path(path_like)
+        if not path.is_absolute():
+            return path.as_posix()
+        try:
+            return resolved_path.resolve().relative_to(PROJECT_ROOT.resolve()).as_posix()
+        except ValueError:
+            return str(resolved_path.resolve())
+
+    def _content_digest(self, path: Path) -> str:
+        digest = hashlib.sha256()
+        with path.open("rb") as handle:
+            while True:
+                chunk = handle.read(TOOL_CACHE_CONTENT_DIGEST_CHUNK_BYTES)
+                if not chunk:
+                    break
+                digest.update(chunk)
+        return digest.hexdigest()
+
     def _cache_file_signature(self, path_like: str | Path) -> dict[str, object]:
         path = Path(path_like)
         resolved_path = path if path.is_absolute() else resolve_project_path(path)
-        signature: dict[str, object] = {"path": str(resolved_path.resolve())}
+        signature: dict[str, object] = {"path": self._portable_cache_path(path, resolved_path)}
         if resolved_path.exists():
             stat = resolved_path.stat()
-            signature["mtime_ns"] = int(stat.st_mtime_ns)
             signature["size"] = int(stat.st_size)
+            if stat.st_size <= TOOL_CACHE_CONTENT_DIGEST_MAX_BYTES:
+                signature["sha256"] = self._content_digest(resolved_path)
+            else:
+                signature["sha256"] = None
+                signature["sha256_skipped_reason"] = "file_exceeds_digest_size_limit"
+                signature["sha256_size_limit_bytes"] = int(TOOL_CACHE_CONTENT_DIGEST_MAX_BYTES)
         else:
             signature["missing"] = True
         return signature
@@ -297,6 +326,7 @@ class TaskReasoningAgentTools:
         bundle_paths = dict(self.manifest["bundle_paths"])
         signature_payload = {
             "schema_version": AGENT_TOOL_PAYLOAD_CACHE_SCHEMA_VERSION,
+            "cache_signature_version": AGENT_TOOL_CACHE_SIGNATURE_VERSION,
             "task": self.task,
             "feature_set_name": self.feature_set_name,
             "manifest": {
@@ -314,7 +344,7 @@ class TaskReasoningAgentTools:
         return hashlib.sha1(serialized.encode("utf-8")).hexdigest()[:16]
 
     def _tool_cache_path(self, *, tool_name: str, smiles: str) -> Path:
-        smiles_digest = hashlib.sha1(str(smiles).encode("utf-8")).hexdigest()
+        smiles_digest = self._smiles_cache_digest(smiles)
         return (
             self.tool_cache_root
             / self.feature_set_name
@@ -324,8 +354,69 @@ class TaskReasoningAgentTools:
             / f"{smiles_digest}.json"
         )
 
+    def _smiles_cache_digest(self, smiles: str) -> str:
+        return hashlib.sha1(str(smiles).encode("utf-8")).hexdigest()
+
     def has_cached_tool_payload(self, *, tool_name: str, smiles: str) -> bool:
-        return self._tool_cache_path(tool_name=tool_name, smiles=smiles).exists()
+        return self._find_compatible_cached_tool_payload_path(tool_name=tool_name, smiles=smiles) is not None
+
+    def _read_cached_tool_payload(
+        self,
+        cache_path: Path,
+        *,
+        tool_name: str,
+        smiles: str,
+    ) -> dict[str, object] | None:
+        try:
+            cached_record = load_json(cache_path)
+        except Exception:
+            return None
+        if str(cached_record.get("tool_name")) != tool_name:
+            return None
+        if str(cached_record.get("task")) != self.task:
+            return None
+        if str(cached_record.get("feature_set_name")) != self.feature_set_name:
+            return None
+        if str(cached_record.get("smiles")) != str(smiles):
+            return None
+
+        record_signature_version = cached_record.get("cache_signature_version")
+        record_namespace = cached_record.get("cache_namespace")
+        if record_signature_version == AGENT_TOOL_CACHE_SIGNATURE_VERSION:
+            if str(record_namespace) != self._tool_cache_namespace:
+                return None
+        elif record_signature_version is not None:
+            return None
+
+        payload = cached_record.get("payload")
+        if not isinstance(payload, dict):
+            return None
+        return payload
+
+    def _find_compatible_cached_tool_payload_path(self, *, tool_name: str, smiles: str) -> Path | None:
+        current_path = self._tool_cache_path(tool_name=tool_name, smiles=smiles)
+        if current_path.exists() and self._read_cached_tool_payload(current_path, tool_name=tool_name, smiles=smiles):
+            return current_path
+
+        cache_key = (tool_name, str(smiles))
+        path_cache = getattr(self, "_compatible_tool_cache_path_cache", None)
+        if path_cache is not None and cache_key in path_cache:
+            return path_cache[cache_key]
+
+        smiles_digest = self._smiles_cache_digest(smiles)
+        task_cache_root = self.tool_cache_root / self.feature_set_name / self.task
+        candidate_paths = sorted(task_cache_root.glob(f"*/{tool_name}/{smiles_digest}.json"))
+        for candidate_path in candidate_paths:
+            if candidate_path == current_path:
+                continue
+            if self._read_cached_tool_payload(candidate_path, tool_name=tool_name, smiles=smiles):
+                if path_cache is not None:
+                    path_cache[cache_key] = candidate_path
+                return candidate_path
+
+        if path_cache is not None:
+            path_cache[cache_key] = None
+        return None
 
     def _load_cached_tool_payload(self, *, tool_name: str, smiles: str) -> dict[str, object] | None:
         cache_key = (tool_name, str(smiles))
@@ -334,20 +425,12 @@ class TaskReasoningAgentTools:
         if not self.enable_tool_cache:
             return None
 
-        cache_path = self._tool_cache_path(tool_name=tool_name, smiles=smiles)
-        if not cache_path.exists():
+        cache_path = self._find_compatible_cached_tool_payload_path(tool_name=tool_name, smiles=smiles)
+        if cache_path is None:
             return None
 
-        try:
-            cached_record = load_json(cache_path)
-        except Exception:
-            return None
-        if str(cached_record.get("tool_name")) != tool_name:
-            return None
-        if str(cached_record.get("smiles")) != str(smiles):
-            return None
-        payload = cached_record.get("payload")
-        if not isinstance(payload, dict):
+        payload = self._read_cached_tool_payload(cache_path, tool_name=tool_name, smiles=smiles)
+        if payload is None:
             return None
         self._tool_payload_cache[cache_key] = payload
         return payload
@@ -369,6 +452,7 @@ class TaskReasoningAgentTools:
             cache_path,
             {
                 "schema_version": AGENT_TOOL_PAYLOAD_CACHE_SCHEMA_VERSION,
+                "cache_signature_version": AGENT_TOOL_CACHE_SIGNATURE_VERSION,
                 "tool_name": tool_name,
                 "task": self.task,
                 "feature_set_name": self.feature_set_name,
