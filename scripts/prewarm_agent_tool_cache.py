@@ -20,6 +20,7 @@ from trim.reasoning.agent_tools import (
     SUPPORTED_AGENT_TOOL_NAMES,
     prewarm_agent_tool_cache,
 )
+from trim.reasoning.agent_tools.tools import SUPPORTED_NEIGHBORS_PER_LABEL
 from trim.reasoning.task_user_prompts import DEFAULT_TASK_MANIFEST_INDEX
 from trim.utils.paths import DEFAULT_PROCESSED_DATA_ROOT, DEFAULT_SIMILARITY_CACHE_ROOT
 
@@ -46,6 +47,17 @@ def parse_args() -> argparse.Namespace:
         default=None,
         choices=list(SUPPORTED_AGENT_TOOL_NAMES),
         help="Tool(s) to prewarm. Repeat to select a subset. Defaults to both tools.",
+    )
+    parser.add_argument(
+        "--neighbors-per-label",
+        action="append",
+        type=int,
+        default=None,
+        choices=list(SUPPORTED_NEIGHBORS_PER_LABEL),
+        help=(
+            "Neighbor count to prewarm for compare_similar_mols. Repeat to prewarm multiple "
+            "versions. Defaults to 3."
+        ),
     )
     parser.add_argument(
         "--manifest-index",
@@ -102,6 +114,7 @@ def main() -> int:
         cache_root=args.cache_root,
         tool_cache_root=args.tool_cache_root,
         tool_names=args.tool,
+        neighbors_per_label_values=args.neighbors_per_label,
         max_concurrency=args.max_concurrency,
         force_refresh=args.force_refresh,
         max_smiles_per_task=args.max_smiles_per_task,

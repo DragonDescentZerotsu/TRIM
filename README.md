@@ -25,7 +25,7 @@ TRIM also exposes two task-bound text-returning tools for the reasoning / agent 
 - `get_mol_properties_and_fg(smiles)`
 - `compare_similar_mols(smiles)`
 
-The recommended entrypoint is `build_openai_tool_runtime(...)`. The OpenAI tool schemas still expose only `smiles`, while the caller provides `task` manually at execution time.
+The recommended entrypoint is `build_openai_tool_runtime(...)`. The OpenAI tool schemas still expose only `smiles`, while the caller provides `task` and optional execution settings manually at execution time.
 
 ### Local Python Usage
 
@@ -34,17 +34,21 @@ from trim.reasoning.agent_tools import build_openai_tool_runtime
 
 runtime = build_openai_tool_runtime()
 tools = runtime.tools
+neighbors_per_label = 2  # allowed values: 1, 2, 3; default is 3
 
 global_text = runtime.call_tool(
     "get_mol_properties_and_fg",
     {"smiles": "O=C(c1ccccc1)c1ccc2n1CCC2C(=O)O"},
     task="BBB_Martins",
+    # Accepted for consistency, but ignored by this single-molecule tool.
+    neighbors_per_label=neighbors_per_label,
 )
 
 local_text = runtime.call_tool(
     "compare_similar_mols",
     {"smiles": "O=C(c1ccccc1)c1ccc2n1CCC2C(=O)O"},
     task="BBB_Martins",
+    neighbors_per_label=neighbors_per_label,
 )
 
 print(global_text)
@@ -61,6 +65,7 @@ from trim.reasoning.agent_tools import build_openai_tool_runtime
 
 runtime = build_openai_tool_runtime()
 tools = runtime.tools
+neighbors_per_label = 2
 
 tool_call = {
     "type": "function_call",
@@ -70,9 +75,15 @@ tool_call = {
     },
 }
 
-tool_result_text = runtime.call_openai_function_call(tool_call, task="BBB_Martins")
+tool_result_text = runtime.call_openai_function_call(
+    tool_call,
+    task="BBB_Martins",
+    neighbors_per_label=neighbors_per_label,
+)
 print(tool_result_text)
 ```
+
+The LLM/function-call payload still contains only `smiles`. `task` and `neighbors_per_label` are runtime context supplied by the caller. `neighbors_per_label=2` means `compare_similar_mols` returns up to 2 positive-label neighbors and up to 2 negative-label neighbors. The default remains `3`, matching the original 3 positive + 3 negative behavior.
 
 `build_task_bound_openai_tool_bundle(task=...)` is still available as a compatibility wrapper if another integration prefers a task-fixed executor.
 
@@ -84,20 +95,23 @@ Run the bundled example script:
 /data1/tianang/anaconda3/envs/vllm/bin/python scripts/example_openai_agent_tools.py \
   --task BBB_Martins \
   --smiles 'O=C(c1ccccc1)c1ccc2n1CCC2C(=O)O' \
+  --neighbors-per-label 2 \
   --skip-schema
 ```
 
-This script now also prints a small cache timing demo for both tools.
+This script prints the full text returned by both tools, plus a small OpenAI-style function-call execution example.
 
 ## Tool Cache
 
 Tool payloads are cached under:
 
 - `outputs/reasoning_agent_tools/tool_cache/<feature_set_name>/<task>/<cache_namespace>/<tool_name>/<sha1(smiles)>.json`
+- `outputs/reasoning_agent_tools/tool_cache/<feature_set_name>/<task>/<cache_namespace>/compare_similar_mols/neighbors_per_label_<N>/<sha1(smiles)>.json`
 
 Notes:
 
 - `compare_similar_mols` cache is task-scoped, not shared across tasks.
+- `compare_similar_mols` cache is also partitioned by `neighbors_per_label`, so 1+1, 2+2, and 3+3 outputs do not collide.
 - The cache is keyed by task plus SMILES, not by an explicit train/valid/test directory.
 - The saved payload still contains the original `smiles` field inside the JSON, even though the filename is hashed.
 
@@ -105,7 +119,10 @@ To prewarm the cache for all tasks and all unique SMILES across `train/valid/tes
 
 ```bash
 /data1/tianang/anaconda3/envs/vllm/bin/python scripts/prewarm_agent_tool_cache.py \
-  --max-concurrency 16
+  --max-concurrency 16 \
+  --neighbors-per-label 1 \
+  --neighbors-per-label 2 \
+  --neighbors-per-label 3
 ```
 
 The prewarm summary is written to:

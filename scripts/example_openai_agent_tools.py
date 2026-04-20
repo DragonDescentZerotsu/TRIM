@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-import time
 from pathlib import Path
 
 THIS_DIR = Path(__file__).resolve().parent
@@ -14,11 +13,12 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from trim.reasoning.agent_tools import build_openai_tool_runtime
+from trim.reasoning.agent_tools.tools import SUPPORTED_NEIGHBORS_PER_LABEL
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Example usage for task-aware OpenAI agent tools, including cache timing."
+        description="Minimal example for task-aware OpenAI agent tools."
     )
     parser.add_argument("--task", default="CYP3A4_Substrate_CarbonMangels")
     parser.add_argument(
@@ -34,47 +34,23 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--tool-cache-root",
         default=None,
-        help="Optional tool cache root. Use a fresh tmp directory if you want a clean cold-vs-hot cache timing run.",
+        help="Optional tool cache root.",
+    )
+    parser.add_argument(
+        "--neighbors-per-label",
+        type=int,
+        default=3,
+        choices=list(SUPPORTED_NEIGHBORS_PER_LABEL),
+        help="Number of positive and negative neighbors per label for compare_similar_mols.",
     )
     return parser.parse_args()
-
-
-def _time_tool_call(runtime, *, task: str, tool_name: str, smiles: str) -> tuple[str, float]:
-    started_at = time.perf_counter()
-    result = runtime.call_tool(tool_name, {"smiles": smiles}, task=task)
-    elapsed_s = time.perf_counter() - started_at
-    return result, elapsed_s
-
-
-def _print_cache_speed_demo(runtime, *, task: str, smiles: str) -> None:
-    print("Cache timing demo:")
-    tool_runner = runtime.get_runner(task)
-    resolved_smiles = (
-        tool_runner._resolve_tool_smiles(smiles)
-        if hasattr(tool_runner, "_resolve_tool_smiles")
-        else smiles
-    )
-    if resolved_smiles != smiles:
-        print(f"Resolved cache/query SMILES: {resolved_smiles}")
-    for tool_name in ("get_mol_properties_and_fg", "compare_similar_mols"):
-        had_cache_before = tool_runner.has_cached_tool_payload(tool_name=tool_name, smiles=resolved_smiles)
-        _, first_elapsed_s = _time_tool_call(runtime, task=task, tool_name=tool_name, smiles=smiles)
-        has_cache_after_first = tool_runner.has_cached_tool_payload(tool_name=tool_name, smiles=resolved_smiles)
-        _, second_elapsed_s = _time_tool_call(runtime, task=task, tool_name=tool_name, smiles=smiles)
-
-        print(f"- {tool_name}")
-        print(f"  cache existed before first call: {had_cache_before}")
-        print(f"  cache exists after first call: {has_cache_after_first}")
-        print(f"  first call elapsed: {first_elapsed_s:.3f}s")
-        print(f"  second call elapsed: {second_elapsed_s:.3f}s")
-
-    print()
 
 
 def main() -> int:
     args = parse_args()
     task = args.task
     smiles = args.smiles
+    neighbors_per_label = int(args.neighbors_per_label)
 
     runtime_kwargs = {}
     if args.tool_cache_root:
@@ -83,6 +59,7 @@ def main() -> int:
 
     print(f"Task: {task}")
     print(f"SMILES: {smiles}")
+    print(f"Neighbors per label: {neighbors_per_label}")
     print()
 
     if not args.skip_schema:
@@ -90,11 +67,28 @@ def main() -> int:
         print(json.dumps(runtime.tools, indent=2, ensure_ascii=False))
         print()
 
-    print("Direct tool call example:")
-    print(runtime.call_tool("get_mol_properties_and_fg", {"smiles": smiles}, task=task))
+    print("1) Single-molecule tool")
+    global_text = runtime.call_tool(
+        "get_mol_properties_and_fg",
+        {"smiles": smiles},
+        task=task,
+        # This argument is accepted for consistency but ignored by this tool.
+        neighbors_per_label=neighbors_per_label,
+    )
+    print(global_text)
     print()
 
-    print("OpenAI-style function-call payload example:")
+    print("2) Similar-neighbor tool")
+    local_text = runtime.call_tool(
+        "compare_similar_mols",
+        {"smiles": smiles},
+        task=task,
+        neighbors_per_label=neighbors_per_label,
+    )
+    print(local_text)
+    print()
+
+    print("3) OpenAI function-call execution")
     mock_tool_call = {
         "type": "function_call",
         "function": {
@@ -102,10 +96,14 @@ def main() -> int:
             "arguments": json.dumps({"smiles": smiles}),
         },
     }
-    print(runtime.call_openai_function_call(mock_tool_call, task=task))
+    tool_result = runtime.call_openai_function_call(
+        mock_tool_call,
+        task=task,
+        # The LLM only supplied smiles; the outer runtime supplies task and neighbor count.
+        neighbors_per_label=neighbors_per_label,
+    )
+    print(tool_result)
     print()
-
-    _print_cache_speed_demo(runtime, task=task, smiles=smiles)
     return 0
 
 

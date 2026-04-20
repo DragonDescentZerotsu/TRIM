@@ -73,6 +73,122 @@ def test_tool_payload_cache_round_trip_uses_disk_cache(tmp_path: Path):
     assert loaded_payload == payload
 
 
+def test_compare_tool_payload_cache_is_partitioned_by_neighbors_per_label(tmp_path: Path):
+    tools = _build_fake_tool_runner(tmp_path)
+    payload_one = {
+        "tool_name": "compare_similar_mols",
+        "task": "BBB_Martins",
+        "smiles": "CCO",
+        "neighbors_per_label": 1,
+        "positive_neighbors": ["p1"],
+        "negative_neighbors": ["n1"],
+    }
+    payload_two = {
+        "tool_name": "compare_similar_mols",
+        "task": "BBB_Martins",
+        "smiles": "CCO",
+        "neighbors_per_label": 2,
+        "positive_neighbors": ["p1", "p2"],
+        "negative_neighbors": ["n1", "n2"],
+    }
+
+    tools._store_cached_tool_payload(
+        tool_name="compare_similar_mols",
+        smiles="CCO",
+        payload=payload_one,
+        neighbors_per_label=1,
+    )
+    tools._store_cached_tool_payload(
+        tool_name="compare_similar_mols",
+        smiles="CCO",
+        payload=payload_two,
+        neighbors_per_label=2,
+    )
+
+    path_one = tools._tool_cache_path(
+        tool_name="compare_similar_mols",
+        smiles="CCO",
+        cache_variant="neighbors_per_label_1",
+    )
+    path_two = tools._tool_cache_path(
+        tool_name="compare_similar_mols",
+        smiles="CCO",
+        cache_variant="neighbors_per_label_2",
+    )
+    assert path_one.exists()
+    assert path_two.exists()
+    assert path_one != path_two
+
+    tools._tool_payload_cache = {}
+    assert (
+        tools._load_cached_tool_payload(
+            tool_name="compare_similar_mols",
+            smiles="CCO",
+            neighbors_per_label=1,
+        )
+        == payload_one
+    )
+    assert (
+        tools._load_cached_tool_payload(
+            tool_name="compare_similar_mols",
+            smiles="CCO",
+            neighbors_per_label=2,
+        )
+        == payload_two
+    )
+
+
+def test_compare_tool_payload_cache_reads_legacy_default_neighbor_cache_only_for_default(tmp_path: Path):
+    tools = _build_fake_tool_runner(tmp_path)
+    payload = {
+        "tool_name": "compare_similar_mols",
+        "task": "BBB_Martins",
+        "smiles": "CCO",
+        "positive_neighbors": ["p1", "p2", "p3"],
+        "negative_neighbors": ["n1", "n2", "n3"],
+    }
+    smiles_digest = tools._smiles_cache_digest("CCO")
+    legacy_path = (
+        tools.tool_cache_root
+        / tools.feature_set_name
+        / tools.task
+        / "legacy_namespace"
+        / "compare_similar_mols"
+        / f"{smiles_digest}.json"
+    )
+    save_json(
+        legacy_path,
+        {
+            "schema_version": "trim_agent_tool_payload_cache_v1",
+            "tool_name": "compare_similar_mols",
+            "task": "BBB_Martins",
+            "feature_set_name": tools.feature_set_name,
+            "cache_namespace": "legacy_namespace",
+            "smiles": "CCO",
+            "payload": payload,
+        },
+    )
+
+    assert tools.has_cached_tool_payload(
+        tool_name="compare_similar_mols",
+        smiles="CCO",
+        neighbors_per_label=3,
+    )
+    assert not tools.has_cached_tool_payload(
+        tool_name="compare_similar_mols",
+        smiles="CCO",
+        neighbors_per_label=1,
+    )
+    assert (
+        tools._load_cached_tool_payload(
+            tool_name="compare_similar_mols",
+            smiles="CCO",
+            neighbors_per_label=3,
+        )
+        == payload
+    )
+
+
 def test_tool_cache_namespace_changes_when_bundle_files_change(tmp_path: Path):
     tools = _build_fake_tool_runner(tmp_path)
     namespace_before = tools._build_tool_cache_namespace()

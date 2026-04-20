@@ -15,8 +15,10 @@ class _FakeRunner:
     def get_mol_properties_and_fg(self, smiles: str) -> str:
         return f"global::{smiles}"
 
-    def compare_similar_mols(self, smiles: str) -> str:
-        return f"local::{smiles}"
+    def compare_similar_mols(self, smiles: str, *, neighbors_per_label: int = 3) -> str:
+        if neighbors_per_label == 3:
+            return f"local::{smiles}"
+        return f"local::{smiles}::neighbors_per_label={neighbors_per_label}"
 
 
 def test_openai_tool_bundle_dispatches_tool_calls():
@@ -28,6 +30,10 @@ def test_openai_tool_bundle_dispatches_tool_calls():
 
     assert bundle.call_tool("get_mol_properties_and_fg", {"smiles": "CCO"}) == "global::CCO"
     assert bundle.call_tool("compare_similar_mols", '{"smiles":"CCN"}') == "local::CCN"
+    assert (
+        bundle.call_tool("compare_similar_mols", '{"smiles":"CCN"}', neighbors_per_label=2)
+        == "local::CCN::neighbors_per_label=2"
+    )
 
 
 def test_openai_tool_bundle_accepts_openai_style_function_payload():
@@ -45,6 +51,10 @@ def test_openai_tool_bundle_accepts_openai_style_function_payload():
         },
     }
     assert bundle.call_openai_function_call(tool_call) == "local::CCCl"
+    assert (
+        bundle.call_openai_function_call(tool_call, neighbors_per_label=1)
+        == "local::CCCl::neighbors_per_label=1"
+    )
 
     object_style_tool_call = SimpleNamespace(
         name="get_mol_properties_and_fg",
@@ -95,6 +105,23 @@ def test_openai_tool_runtime_dispatches_with_explicit_task():
         },
         task="BBB_Martins",
     ) == "local::CCN"
+    assert runtime.call_openai_function_call(
+        {
+            "type": "function_call",
+            "function": {
+                "name": "compare_similar_mols",
+                "arguments": '{"smiles":"CCN"}',
+            },
+        },
+        task="BBB_Martins",
+        neighbors_per_label=2,
+    ) == "local::CCN::neighbors_per_label=2"
+    assert runtime.call_tool(
+        "get_mol_properties_and_fg",
+        {"smiles": "CCO"},
+        task="BBB_Martins",
+        neighbors_per_label=1,
+    ) == "global::CCO"
 
 
 def test_openai_tool_runtime_caches_runner_per_task(monkeypatch):

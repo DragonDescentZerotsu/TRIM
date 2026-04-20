@@ -24,7 +24,7 @@ def _compare_tool_description(task: str | None) -> str:
         f"{task_scope}. The input SMILES must belong to that task dataset so the tool can identify "
         "the query split and retrieve the nearest training-set neighbors. The tool returns plain text "
         "with a short definition of query/neighbor/delta, then positive and negative neighbors "
-        "(typically 3 positive and 3 negative, depending on the active manifest), each with "
+        "(the executing runtime chooses how many per label, defaulting to 3), each with "
         "neighbor/query/delta values for the 36 dense properties plus functional-group differences."
     )
 

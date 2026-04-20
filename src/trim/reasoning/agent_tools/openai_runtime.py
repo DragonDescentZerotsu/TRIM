@@ -70,11 +70,17 @@ def _read_tool_call_field(tool_call: Any, field_name: str) -> Any:
     return None
 
 
-def _call_tool_runner(tool_runner: Any, *, name: str, smiles: str) -> str:
+def _call_tool_runner(
+    tool_runner: Any,
+    *,
+    name: str,
+    smiles: str,
+    neighbors_per_label: int = 3,
+) -> str:
     if name == "get_mol_properties_and_fg":
         return tool_runner.get_mol_properties_and_fg(smiles)
     if name == "compare_similar_mols":
-        return tool_runner.compare_similar_mols(smiles)
+        return tool_runner.compare_similar_mols(smiles, neighbors_per_label=neighbors_per_label)
     raise ValueError(f"Unsupported tool name: {name}")
 
 
@@ -144,20 +150,43 @@ class OpenAIAgentToolRuntime:
             self._tool_runner_cache[task_name] = tool_runner
             return tool_runner
 
-    def call_tool(self, name: str, arguments: str | Mapping[str, Any], *, task: str) -> str:
+    def call_tool(
+        self,
+        name: str,
+        arguments: str | Mapping[str, Any],
+        *,
+        task: str,
+        neighbors_per_label: int = 3,
+    ) -> str:
         normalized_arguments = _coerce_arguments(arguments)
         smiles = normalized_arguments["smiles"]
         tool_runner = self.get_runner(task)
-        return _call_tool_runner(tool_runner, name=name, smiles=smiles)
+        return _call_tool_runner(
+            tool_runner,
+            name=name,
+            smiles=smiles,
+            neighbors_per_label=neighbors_per_label,
+        )
 
-    def call_openai_function_call(self, tool_call: Any, *, task: str) -> str:
+    def call_openai_function_call(
+        self,
+        tool_call: Any,
+        *,
+        task: str,
+        neighbors_per_label: int = 3,
+    ) -> str:
         name = _read_tool_call_field(tool_call, "name")
         arguments = _read_tool_call_field(tool_call, "arguments")
         if not isinstance(name, str) or not name:
             raise ValueError("Could not read tool-call name from OpenAI function call payload")
         if arguments is None:
             raise ValueError("Could not read tool-call arguments from OpenAI function call payload")
-        return self.call_tool(name=name, arguments=arguments, task=task)
+        return self.call_tool(
+            name=name,
+            arguments=arguments,
+            task=task,
+            neighbors_per_label=neighbors_per_label,
+        )
 
 
 @dataclass
@@ -170,19 +199,35 @@ class OpenAITaskAgentToolBundle:
     def tools(self) -> list[dict[str, object]]:
         return deepcopy(self.tool_schemas)
 
-    def call_tool(self, name: str, arguments: str | Mapping[str, Any]) -> str:
+    def call_tool(
+        self,
+        name: str,
+        arguments: str | Mapping[str, Any],
+        *,
+        neighbors_per_label: int = 3,
+    ) -> str:
         normalized_arguments = _coerce_arguments(arguments)
         smiles = normalized_arguments["smiles"]
-        return _call_tool_runner(self.tool_runner, name=name, smiles=smiles)
+        return _call_tool_runner(
+            self.tool_runner,
+            name=name,
+            smiles=smiles,
+            neighbors_per_label=neighbors_per_label,
+        )
 
-    def call_openai_function_call(self, tool_call: Any) -> str:
+    def call_openai_function_call(
+        self,
+        tool_call: Any,
+        *,
+        neighbors_per_label: int = 3,
+    ) -> str:
         name = _read_tool_call_field(tool_call, "name")
         arguments = _read_tool_call_field(tool_call, "arguments")
         if not isinstance(name, str) or not name:
             raise ValueError("Could not read tool-call name from OpenAI function call payload")
         if arguments is None:
             raise ValueError("Could not read tool-call arguments from OpenAI function call payload")
-        return self.call_tool(name=name, arguments=arguments)
+        return self.call_tool(name=name, arguments=arguments, neighbors_per_label=neighbors_per_label)
 
 
 def build_openai_tool_runtime(

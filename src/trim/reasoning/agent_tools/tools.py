@@ -40,8 +40,27 @@ from trim.utils.paths import (
 AGENT_TOOL_PAYLOAD_CACHE_SCHEMA_VERSION = "trim_agent_tool_payload_cache_v1"
 AGENT_TOOL_CACHE_SIGNATURE_VERSION = "portable_v2"
 DEFAULT_AGENT_TOOL_CACHE_ROOT = OUTPUTS_ROOT / "reasoning_agent_tools" / "tool_cache"
+DEFAULT_NEIGHBORS_PER_LABEL = 3
+SUPPORTED_NEIGHBORS_PER_LABEL = (1, 2, 3)
 TOOL_CACHE_CONTENT_DIGEST_MAX_BYTES = 64 * 1024 * 1024
 TOOL_CACHE_CONTENT_DIGEST_CHUNK_BYTES = 1024 * 1024
+
+
+def _normalize_neighbors_per_label(value: object = DEFAULT_NEIGHBORS_PER_LABEL) -> int:
+    if value is None:
+        return DEFAULT_NEIGHBORS_PER_LABEL
+    if isinstance(value, bool):
+        raise ValueError("neighbors_per_label must be one of 1, 2, or 3")
+    try:
+        normalized = int(value)
+        numeric_value = float(value)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("neighbors_per_label must be one of 1, 2, or 3") from exc
+    if not math.isfinite(numeric_value) or numeric_value != float(normalized):
+        raise ValueError("neighbors_per_label must be one of 1, 2, or 3")
+    if normalized not in SUPPORTED_NEIGHBORS_PER_LABEL:
+        raise ValueError("neighbors_per_label must be one of 1, 2, or 3")
+    return normalized
 
 
 def _safe_scalar(value: object) -> object:
@@ -267,8 +286,8 @@ class TaskReasoningAgentTools:
         self._train_raw_df = None
         self._train_raw_values = None
         self._train_index_by_smiles: dict[str, int] | None = None
-        self._tool_payload_cache: dict[tuple[str, str], dict[str, object]] = {}
-        self._compatible_tool_cache_path_cache: dict[tuple[str, str], Path | None] = {}
+        self._tool_payload_cache: dict[tuple[str, str, str], dict[str, object]] = {}
+        self._compatible_tool_cache_path_cache: dict[tuple[str, str, str], Path | None] = {}
         self._resolved_smiles_cache: dict[str, str] = {}
         self._tool_cache_namespace = self._build_tool_cache_namespace()
 
@@ -364,22 +383,48 @@ class TaskReasoningAgentTools:
         serialized = json.dumps(signature_payload, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
         return hashlib.sha1(serialized.encode("utf-8")).hexdigest()[:16]
 
-    def _tool_cache_path(self, *, tool_name: str, smiles: str) -> Path:
+    def _tool_cache_variant(self, *, tool_name: str, neighbors_per_label: object = None) -> str | None:
+        if tool_name != "compare_similar_mols":
+            return None
+        return f"neighbors_per_label_{_normalize_neighbors_per_label(neighbors_per_label)}"
+
+    def _tool_cache_path(
+        self,
+        *,
+        tool_name: str,
+        smiles: str,
+        cache_variant: str | None = None,
+    ) -> Path:
         smiles_digest = self._smiles_cache_digest(smiles)
-        return (
+        tool_dir = (
             self.tool_cache_root
             / self.feature_set_name
             / self.task
             / self._tool_cache_namespace
             / tool_name
-            / f"{smiles_digest}.json"
         )
+        if cache_variant:
+            tool_dir = tool_dir / cache_variant
+        return tool_dir / f"{smiles_digest}.json"
 
     def _smiles_cache_digest(self, smiles: str) -> str:
         return hashlib.sha1(str(smiles).encode("utf-8")).hexdigest()
 
-    def has_cached_tool_payload(self, *, tool_name: str, smiles: str) -> bool:
-        return self._find_compatible_cached_tool_payload_path(tool_name=tool_name, smiles=smiles) is not None
+    def has_cached_tool_payload(
+        self,
+        *,
+        tool_name: str,
+        smiles: str,
+        neighbors_per_label: object = None,
+    ) -> bool:
+        return (
+            self._find_compatible_cached_tool_payload_path(
+                tool_name=tool_name,
+                smiles=smiles,
+                neighbors_per_label=neighbors_per_label,
+            )
+            is not None
+        )
 
     def _read_cached_tool_payload(
         self,
@@ -387,6 +432,7 @@ class TaskReasoningAgentTools:
         *,
         tool_name: str,
         smiles: str,
+        neighbors_per_label: object = None,
     ) -> dict[str, object] | None:
         try:
             cached_record = load_json(cache_path)
@@ -412,25 +458,75 @@ class TaskReasoningAgentTools:
         payload = cached_record.get("payload")
         if not isinstance(payload, dict):
             return None
+
+        if tool_name == "compare_similar_mols":
+            expected_neighbors_per_label = _normalize_neighbors_per_label(neighbors_per_label)
+            cached_neighbors_per_label = payload.get("neighbors_per_label")
+            if cached_neighbors_per_label is None:
+                cache_parameters = cached_record.get("cache_parameters")
+                if isinstance(cache_parameters, dict):
+                    cached_neighbors_per_label = cache_parameters.get("neighbors_per_label")
+            if cached_neighbors_per_label is None:
+                if expected_neighbors_per_label != DEFAULT_NEIGHBORS_PER_LABEL:
+                    return None
+            else:
+                try:
+                    cached_neighbors_per_label = _normalize_neighbors_per_label(cached_neighbors_per_label)
+                except ValueError:
+                    return None
+                if cached_neighbors_per_label != expected_neighbors_per_label:
+                    return None
         return payload
 
-    def _find_compatible_cached_tool_payload_path(self, *, tool_name: str, smiles: str) -> Path | None:
-        current_path = self._tool_cache_path(tool_name=tool_name, smiles=smiles)
-        if current_path.exists() and self._read_cached_tool_payload(current_path, tool_name=tool_name, smiles=smiles):
+    def _candidate_tool_cache_paths(
+        self,
+        *,
+        tool_name: str,
+        smiles: str,
+        cache_variant: str | None,
+    ) -> list[Path]:
+        smiles_digest = self._smiles_cache_digest(smiles)
+        task_cache_root = self.tool_cache_root / self.feature_set_name / self.task
+        candidate_paths = sorted(task_cache_root.glob(f"*/{tool_name}/{smiles_digest}.json"))
+        if cache_variant:
+            candidate_paths.extend(sorted(task_cache_root.glob(f"*/{tool_name}/{cache_variant}/{smiles_digest}.json")))
+        return candidate_paths
+
+    def _find_compatible_cached_tool_payload_path(
+        self,
+        *,
+        tool_name: str,
+        smiles: str,
+        neighbors_per_label: object = None,
+    ) -> Path | None:
+        cache_variant = self._tool_cache_variant(tool_name=tool_name, neighbors_per_label=neighbors_per_label)
+        current_path = self._tool_cache_path(tool_name=tool_name, smiles=smiles, cache_variant=cache_variant)
+        if current_path.exists() and self._read_cached_tool_payload(
+            current_path,
+            tool_name=tool_name,
+            smiles=smiles,
+            neighbors_per_label=neighbors_per_label,
+        ):
             return current_path
 
-        cache_key = (tool_name, str(smiles))
+        cache_key = (tool_name, str(smiles), str(cache_variant or ""))
         path_cache = getattr(self, "_compatible_tool_cache_path_cache", None)
         if path_cache is not None and cache_key in path_cache:
             return path_cache[cache_key]
 
-        smiles_digest = self._smiles_cache_digest(smiles)
-        task_cache_root = self.tool_cache_root / self.feature_set_name / self.task
-        candidate_paths = sorted(task_cache_root.glob(f"*/{tool_name}/{smiles_digest}.json"))
-        for candidate_path in candidate_paths:
+        for candidate_path in self._candidate_tool_cache_paths(
+            tool_name=tool_name,
+            smiles=smiles,
+            cache_variant=cache_variant,
+        ):
             if candidate_path == current_path:
                 continue
-            if self._read_cached_tool_payload(candidate_path, tool_name=tool_name, smiles=smiles):
+            if self._read_cached_tool_payload(
+                candidate_path,
+                tool_name=tool_name,
+                smiles=smiles,
+                neighbors_per_label=neighbors_per_label,
+            ):
                 if path_cache is not None:
                     path_cache[cache_key] = candidate_path
                 return candidate_path
@@ -439,18 +535,34 @@ class TaskReasoningAgentTools:
             path_cache[cache_key] = None
         return None
 
-    def _load_cached_tool_payload(self, *, tool_name: str, smiles: str) -> dict[str, object] | None:
-        cache_key = (tool_name, str(smiles))
+    def _load_cached_tool_payload(
+        self,
+        *,
+        tool_name: str,
+        smiles: str,
+        neighbors_per_label: object = None,
+    ) -> dict[str, object] | None:
+        cache_variant = self._tool_cache_variant(tool_name=tool_name, neighbors_per_label=neighbors_per_label)
+        cache_key = (tool_name, str(smiles), str(cache_variant or ""))
         if cache_key in self._tool_payload_cache:
             return self._tool_payload_cache[cache_key]
         if not self.enable_tool_cache:
             return None
 
-        cache_path = self._find_compatible_cached_tool_payload_path(tool_name=tool_name, smiles=smiles)
+        cache_path = self._find_compatible_cached_tool_payload_path(
+            tool_name=tool_name,
+            smiles=smiles,
+            neighbors_per_label=neighbors_per_label,
+        )
         if cache_path is None:
             return None
 
-        payload = self._read_cached_tool_payload(cache_path, tool_name=tool_name, smiles=smiles)
+        payload = self._read_cached_tool_payload(
+            cache_path,
+            tool_name=tool_name,
+            smiles=smiles,
+            neighbors_per_label=neighbors_per_label,
+        )
         if payload is None:
             return None
         self._tool_payload_cache[cache_key] = payload
@@ -462,13 +574,18 @@ class TaskReasoningAgentTools:
         tool_name: str,
         smiles: str,
         payload: dict[str, object],
+        neighbors_per_label: object = None,
     ) -> dict[str, object]:
-        cache_key = (tool_name, str(smiles))
+        cache_variant = self._tool_cache_variant(tool_name=tool_name, neighbors_per_label=neighbors_per_label)
+        cache_key = (tool_name, str(smiles), str(cache_variant or ""))
         self._tool_payload_cache[cache_key] = payload
         if not self.enable_tool_cache:
             return payload
 
-        cache_path = self._tool_cache_path(tool_name=tool_name, smiles=smiles)
+        cache_path = self._tool_cache_path(tool_name=tool_name, smiles=smiles, cache_variant=cache_variant)
+        cache_parameters = {}
+        if tool_name == "compare_similar_mols":
+            cache_parameters["neighbors_per_label"] = _normalize_neighbors_per_label(neighbors_per_label)
         save_json(
             cache_path,
             {
@@ -478,6 +595,8 @@ class TaskReasoningAgentTools:
                 "task": self.task,
                 "feature_set_name": self.feature_set_name,
                 "cache_namespace": self._tool_cache_namespace,
+                "cache_variant": cache_variant,
+                "cache_parameters": cache_parameters,
                 "smiles": str(smiles),
                 "payload": payload,
             },
@@ -600,7 +719,12 @@ class TaskReasoningAgentTools:
         differences.sort(key=lambda item: (str(item["display_name"]), str(item["feature_name"])))
         return differences
 
-    def get_mol_properties_and_fg_payload(self, smiles: str) -> dict[str, object]:
+    def get_mol_properties_and_fg_payload(
+        self,
+        smiles: str,
+        *,
+        neighbors_per_label: object = None,
+    ) -> dict[str, object]:
         smiles = self._resolve_tool_smiles(smiles)
         cached_payload = self._load_cached_tool_payload(tool_name="get_mol_properties_and_fg", smiles=smiles)
         if cached_payload is not None:
@@ -684,7 +808,12 @@ class TaskReasoningAgentTools:
             payload=payload,
         )
 
-    def get_mol_properties_and_fg(self, smiles: str) -> str:
+    def get_mol_properties_and_fg(
+        self,
+        smiles: str,
+        *,
+        neighbors_per_label: object = None,
+    ) -> str:
         return _render_global_payload_text(self.get_mol_properties_and_fg_payload(smiles))
 
     def _build_neighbor_feature_payloads(
@@ -827,9 +956,19 @@ class TaskReasoningAgentTools:
             [float(neighbor.similarity) for neighbor in valid_neighbors],
         )
 
-    def compare_similar_mols_payload(self, smiles: str) -> dict[str, object]:
+    def compare_similar_mols_payload(
+        self,
+        smiles: str,
+        *,
+        neighbors_per_label: object = DEFAULT_NEIGHBORS_PER_LABEL,
+    ) -> dict[str, object]:
+        neighbors_per_label = _normalize_neighbors_per_label(neighbors_per_label)
         smiles = self._resolve_tool_smiles(smiles)
-        cached_payload = self._load_cached_tool_payload(tool_name="compare_similar_mols", smiles=smiles)
+        cached_payload = self._load_cached_tool_payload(
+            tool_name="compare_similar_mols",
+            smiles=smiles,
+            neighbors_per_label=neighbors_per_label,
+        )
         if cached_payload is not None:
             return cached_payload
 
@@ -850,7 +989,7 @@ class TaskReasoningAgentTools:
             query_raw_row=query_raw_row,
             query_raw_values=query_raw_values,
             desired_label=1,
-            top_k_neighbors=int(self.manifest["local_tool"]["top_k_pos"]),
+            top_k_neighbors=neighbors_per_label,
             model_bundle=self.pos_bundle,
         )
         negative_neighbors, neg_scores, neg_similarities = self._build_neighbor_group_payload(
@@ -860,7 +999,7 @@ class TaskReasoningAgentTools:
             query_raw_row=query_raw_row,
             query_raw_values=query_raw_values,
             desired_label=0,
-            top_k_neighbors=int(self.manifest["local_tool"]["top_k_neg"]),
+            top_k_neighbors=neighbors_per_label,
             model_bundle=self.neg_bundle,
         )
 
@@ -889,6 +1028,11 @@ class TaskReasoningAgentTools:
             "local_score": local_score,
             "s_pos": float(aggregated["s_pos"]) if not math.isnan(float(aggregated["s_pos"])) else None,
             "s_neg": float(aggregated["s_neg"]) if not math.isnan(float(aggregated["s_neg"])) else None,
+            "neighbors_per_label": int(neighbors_per_label),
+            "top_k_pos": int(neighbors_per_label),
+            "top_k_neg": int(neighbors_per_label),
+            "num_positive_neighbors": int(len(positive_neighbors)),
+            "num_negative_neighbors": int(len(negative_neighbors)),
             "dense_feature_count": int(self.manifest["local_tool"]["dense_feature_count"]),
             "dense_feature_names": list(self.manifest["local_tool"]["dense_feature_names"]),
             "positive_neighbors": positive_neighbors,
@@ -898,7 +1042,15 @@ class TaskReasoningAgentTools:
             tool_name="compare_similar_mols",
             smiles=smiles,
             payload=payload,
+            neighbors_per_label=neighbors_per_label,
         )
 
-    def compare_similar_mols(self, smiles: str) -> str:
-        return _render_local_payload_text(self.compare_similar_mols_payload(smiles))
+    def compare_similar_mols(
+        self,
+        smiles: str,
+        *,
+        neighbors_per_label: object = DEFAULT_NEIGHBORS_PER_LABEL,
+    ) -> str:
+        return _render_local_payload_text(
+            self.compare_similar_mols_payload(smiles, neighbors_per_label=neighbors_per_label)
+        )

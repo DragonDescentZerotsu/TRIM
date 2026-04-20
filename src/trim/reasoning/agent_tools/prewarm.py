@@ -5,7 +5,12 @@ from pathlib import Path
 from typing import Any
 
 from trim.data.datasets import load_tdc_split
-from trim.reasoning.agent_tools.tools import DEFAULT_AGENT_TOOL_CACHE_ROOT, TaskReasoningAgentTools
+from trim.reasoning.agent_tools.tools import (
+    DEFAULT_AGENT_TOOL_CACHE_ROOT,
+    DEFAULT_NEIGHBORS_PER_LABEL,
+    TaskReasoningAgentTools,
+    _normalize_neighbors_per_label,
+)
 from trim.reasoning.agent_tools.manifests import (
     DEFAULT_AGENT_TOOL_FEATURE_SET_NAME,
     DEFAULT_AGENT_TOOL_MANIFEST_ROOT,
@@ -39,6 +44,15 @@ def _normalize_tool_names(tool_names: list[str] | tuple[str, ...] | None) -> tup
         raise ValueError(f"Unsupported tool names: {invalid!r}")
     if not resolved:
         raise ValueError("At least one tool name must be selected for prewarming")
+    return resolved
+
+
+def _normalize_neighbors_per_label_values(values: list[int] | tuple[int, ...] | None) -> tuple[int, ...]:
+    if values is None:
+        return (DEFAULT_NEIGHBORS_PER_LABEL,)
+    resolved = tuple(dict.fromkeys(_normalize_neighbors_per_label(value) for value in values))
+    if not resolved:
+        raise ValueError("At least one neighbors_per_label value must be selected")
     return resolved
 
 
@@ -135,24 +149,35 @@ def _prewarm_single_smiles(
     *,
     smiles: str,
     selected_tools: tuple[str, ...],
+    neighbors_per_label_values: tuple[int, ...],
     force_refresh: bool,
 ) -> dict[str, Any]:
     warmed_tools: list[str] = []
     skipped_tools: list[str] = []
 
     for tool_name in selected_tools:
-        is_cached = tool_runner.has_cached_tool_payload(tool_name=tool_name, smiles=smiles)
-        if is_cached and not force_refresh:
-            skipped_tools.append(tool_name)
-            continue
-
         if tool_name == "get_mol_properties_and_fg":
+            is_cached = tool_runner.has_cached_tool_payload(tool_name=tool_name, smiles=smiles)
+            if is_cached and not force_refresh:
+                skipped_tools.append(tool_name)
+                continue
             tool_runner.get_mol_properties_and_fg_payload(smiles)
+            warmed_tools.append(tool_name)
         elif tool_name == "compare_similar_mols":
-            tool_runner.compare_similar_mols_payload(smiles)
+            for neighbors_per_label in neighbors_per_label_values:
+                tool_label = f"{tool_name}:neighbors_per_label={neighbors_per_label}"
+                is_cached = tool_runner.has_cached_tool_payload(
+                    tool_name=tool_name,
+                    smiles=smiles,
+                    neighbors_per_label=neighbors_per_label,
+                )
+                if is_cached and not force_refresh:
+                    skipped_tools.append(tool_label)
+                    continue
+                tool_runner.compare_similar_mols_payload(smiles, neighbors_per_label=neighbors_per_label)
+                warmed_tools.append(tool_label)
         else:  # pragma: no cover - guarded by _normalize_tool_names
             raise ValueError(f"Unsupported tool name: {tool_name!r}")
-        warmed_tools.append(tool_name)
 
     return {
         "smiles": str(smiles),
@@ -170,6 +195,7 @@ def _init_prewarm_worker(
     tool_cache_root: str,
     query_splits: tuple[str, ...],
     selected_tools: tuple[str, ...],
+    neighbors_per_label_values: tuple[int, ...],
 ) -> None:
     tool_runner = build_task_tool_runner(
         task=task,
@@ -190,6 +216,7 @@ def _init_prewarm_worker(
         {
             "tool_runner": tool_runner,
             "selected_tools": selected_tools,
+            "neighbors_per_label_values": neighbors_per_label_values,
         }
     )
 
@@ -201,8 +228,18 @@ def _prewarm_single_smiles_worker(smiles: str, force_refresh: bool) -> dict[str,
         _PREWARM_WORKER_CONTEXT["tool_runner"],
         smiles=smiles,
         selected_tools=_PREWARM_WORKER_CONTEXT["selected_tools"],
+        neighbors_per_label_values=_PREWARM_WORKER_CONTEXT["neighbors_per_label_values"],
         force_refresh=force_refresh,
     )
+
+
+def _update_prewarm_counts(summary: dict[str, Any], tool_labels: list[str], *, prefix: str) -> None:
+    for tool_label in tool_labels:
+        tool_name = tool_label.split(":", 1)[0]
+        summary[f"{prefix}_{tool_name}"] += 1
+        if tool_label.startswith("compare_similar_mols:neighbors_per_label="):
+            value = tool_label.rsplit("=", 1)[1]
+            summary[f"{prefix}_compare_similar_mols_neighbors_per_label_{value}"] += 1
 
 
 def prewarm_agent_tool_cache_for_task(
@@ -215,12 +252,14 @@ def prewarm_agent_tool_cache_for_task(
     cache_root: str | Path = DEFAULT_SIMILARITY_CACHE_ROOT,
     tool_cache_root: str | Path = DEFAULT_AGENT_TOOL_CACHE_ROOT,
     tool_names: list[str] | tuple[str, ...] | None = None,
+    neighbors_per_label_values: list[int] | tuple[int, ...] | None = None,
     max_concurrency: int = 1,
     force_refresh: bool = False,
     max_smiles: int | None = None,
 ) -> dict[str, Any]:
     resolved_splits = _normalize_splits(splits)
     selected_tools = _normalize_tool_names(tool_names)
+    resolved_neighbors_per_label_values = _normalize_neighbors_per_label_values(neighbors_per_label_values)
     smiles_list, split_row_counts = _collect_task_smiles(
         task=task,
         splits=resolved_splits,
@@ -236,10 +275,15 @@ def prewarm_agent_tool_cache_for_task(
         "num_unique_smiles": int(len(smiles_list)),
         "force_refresh": bool(force_refresh),
         "max_smiles": None if max_smiles is None else int(max_smiles),
+        "neighbors_per_label_values": list(resolved_neighbors_per_label_values),
     }
     for tool_name in selected_tools:
         summary[f"warmed_{tool_name}"] = 0
         summary[f"skipped_{tool_name}"] = 0
+    if "compare_similar_mols" in selected_tools:
+        for neighbors_per_label in resolved_neighbors_per_label_values:
+            summary[f"warmed_compare_similar_mols_neighbors_per_label_{neighbors_per_label}"] = 0
+            summary[f"skipped_compare_similar_mols_neighbors_per_label_{neighbors_per_label}"] = 0
 
     progress = tqdm(total=len(smiles_list), desc=f"{task} (tool cache)", leave=False)
     max_workers = max(1, int(max_concurrency))
@@ -264,12 +308,11 @@ def prewarm_agent_tool_cache_for_task(
                 tool_runner,
                 smiles=smiles,
                 selected_tools=selected_tools,
+                neighbors_per_label_values=resolved_neighbors_per_label_values,
                 force_refresh=force_refresh,
             )
-            for tool_name in result["warmed_tools"]:
-                summary[f"warmed_{tool_name}"] += 1
-            for tool_name in result["skipped_tools"]:
-                summary[f"skipped_{tool_name}"] += 1
+            _update_prewarm_counts(summary, result["warmed_tools"], prefix="warmed")
+            _update_prewarm_counts(summary, result["skipped_tools"], prefix="skipped")
             progress.update(1)
     else:
         with ProcessPoolExecutor(
@@ -284,6 +327,7 @@ def prewarm_agent_tool_cache_for_task(
                 str(tool_cache_root),
                 resolved_splits,
                 selected_tools,
+                resolved_neighbors_per_label_values,
             ),
         ) as executor:
             in_flight: dict[Future[dict[str, Any]], str] = {}
@@ -299,10 +343,8 @@ def prewarm_agent_tool_cache_for_task(
                 for future in done:
                     _ = in_flight.pop(future)
                     result = future.result()
-                    for tool_name in result["warmed_tools"]:
-                        summary[f"warmed_{tool_name}"] += 1
-                    for tool_name in result["skipped_tools"]:
-                        summary[f"skipped_{tool_name}"] += 1
+                    _update_prewarm_counts(summary, result["warmed_tools"], prefix="warmed")
+                    _update_prewarm_counts(summary, result["skipped_tools"], prefix="skipped")
                     progress.update(1)
 
                 while submit_index < len(smiles_list) and len(in_flight) < max_workers:
@@ -325,6 +367,7 @@ def prewarm_agent_tool_cache(
     cache_root: str | Path = DEFAULT_SIMILARITY_CACHE_ROOT,
     tool_cache_root: str | Path = DEFAULT_AGENT_TOOL_CACHE_ROOT,
     tool_names: list[str] | tuple[str, ...] | None = None,
+    neighbors_per_label_values: list[int] | tuple[int, ...] | None = None,
     max_concurrency: int = 1,
     force_refresh: bool = False,
     max_smiles_per_task: int | None = None,
@@ -332,6 +375,7 @@ def prewarm_agent_tool_cache(
 ) -> dict[str, Any]:
     resolved_splits = _normalize_splits(splits)
     selected_tools = _normalize_tool_names(tool_names)
+    resolved_neighbors_per_label_values = _normalize_neighbors_per_label_values(neighbors_per_label_values)
     task_list = tasks or load_task_names_from_manifest_index(manifest_index_path)
 
     task_summaries: list[dict[str, Any]] = []
@@ -350,6 +394,7 @@ def prewarm_agent_tool_cache(
             cache_root=cache_root,
             tool_cache_root=tool_cache_root,
             tool_names=selected_tools,
+            neighbors_per_label_values=resolved_neighbors_per_label_values,
             max_concurrency=max_concurrency,
             force_refresh=force_refresh,
             max_smiles=max_smiles_per_task,
@@ -372,6 +417,7 @@ def prewarm_agent_tool_cache(
         "tool_cache_root": str(resolve_project_path(tool_cache_root)),
         "splits": list(resolved_splits),
         "selected_tools": list(selected_tools),
+        "neighbors_per_label_values": list(resolved_neighbors_per_label_values),
         "max_concurrency": int(max_concurrency),
         "force_refresh": bool(force_refresh),
         "max_smiles_per_task": None if max_smiles_per_task is None else int(max_smiles_per_task),
