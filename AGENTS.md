@@ -335,6 +335,7 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
         - 开头先给一句 `query / neighbor / delta` 的定义
         - 然后给 `positive neighbors:` 和 `negative neighbors:`
         - 默认是 3 个正类邻居 + 3 个负类邻居，总编号连续为 `Neighbor 1..6`
+        - 现在支持 `neighbors_per_label=1|2|3`，用于控制每个 label 返回几个 neighbor；OpenAI schema 里仍然只有 `smiles`，neighbor 数由外层 runtime / script 参数传入
         - 每个 neighbor 下会列 36 个 dense properties，格式是：
           - `display_name: neighbor=... | query=... | delta=...`
         - 最后补 `functional group differences:`
@@ -346,14 +347,18 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
     - 当前 tool payload cache 也已经正式接上：
       - 默认根目录：`outputs/reasoning_agent_tools/tool_cache`
       - 路径粒度是：
-        - `<feature_set_name>/<task>/<cache_namespace>/<tool_name>/<sha1(smiles)>.json`
+        - `get_mol_properties_and_fg`：`<feature_set_name>/<task>/<cache_namespace>/get_mol_properties_and_fg/<sha1(smiles)>.json`
+        - `compare_similar_mols`：`<feature_set_name>/<task>/<cache_namespace>/compare_similar_mols/neighbors_per_label_<1|2|3>/<sha1(smiles)>.json`
       - 其中：
         - `compare_similar_mols` 是**按 task 隔离缓存**，不会跨任务复用
-        - 缓存 key 是 `task + smiles`，**不是**按 `train/valid/test` 单独分目录
+        - 缓存 key 是 `task + smiles + neighbors_per_label`，**不是**按 `train/valid/test` 单独分目录
+        - 老的默认 3-neighbor cache 可能没有 `neighbors_per_label_3` 子目录；当前读取逻辑会把它只当作 `neighbors_per_label=3` 的兼容 cache，不会误用于 1/2-neighbor 设置
         - tool lookup 允许外部传入 raw SMILES；若原串不在当前 task 的 processed index/cache 中，runner 会用 RDKit `LargestFragmentChooser(preferOrganic=True)` + canonical isomeric SMILES 回退到当前 processed/cached SMILES
         - 同一 SMILES 若同时出现在多个 split，当前 query metadata 解析优先级是 `valid > test > train`
       - 文件名与中间目录看起来像“乱码”是正常的：
-        - `cache_namespace` 是 manifest / bundle / similarity cache 文件签名的哈希，用来自动隔离不同版本配置
+        - 当前 `cache_namespace` 使用 `portable_v3` 逻辑签名，目标是跨机器复用；它主要依赖 task / feature set / manifest / bundle 稳定元数据和 project-relative 路径，不再让 pickle 文件字节 hash 直接决定 namespace
+        - 新 cache namespace 根目录会写 `cache_signature.json`，里面保留 bundle / similarity cache 的 size 与 sha256 诊断信息；这些诊断字段用于排查，不作为跨机器复用的主 key
+        - 旧 `portable_v2` cache 仍作为兼容 fallback 读取，因此已有 `f55...` / `657...` 这类旧目录不需要手动迁移
         - 最终文件名是 `sha1(smiles)`，避免原始 SMILES 太长或包含不适合做文件名的字符
       - 每个缓存 JSON 内部仍然保留原始 `smiles` 字段，便于排查
     - OpenAI function-calling / Responses API 侧的 schema 与 runtime helper 已单独整理：
@@ -386,6 +391,7 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
         - `--smiles`
         - `--skip-schema`
         - `--tool-cache-root`
+        - `--neighbors-per-label 1|2|3`
       - 当前 `example` 末尾会自动打印两类 tool 的 cache timing demo，用于快速确认“首次生成缓存”和“第二次直接读缓存”的耗时差
     - 一个最小代码片段如下：
       - ```python
@@ -423,6 +429,7 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
           - 默认跳过已有缓存；显式 `force_refresh=True` 时重算
       - `scripts/prewarm_agent_tool_cache.py`
         - 用于一条命令预热所有 task 的所有唯一 SMILES
+        - 支持 `--neighbors-per-label`，可重复指定要预热的 neighbor 数；默认预热当前默认值
         - 常用命令：
           - `/data1/tianang/anaconda3/envs/vllm/bin/python scripts/prewarm_agent_tool_cache.py --max-concurrency 16`
         - 默认 summary 输出：
