@@ -39,7 +39,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--neighbors-per-label",
         type=int,
-        default=3,
+        default=1,
         choices=list(SUPPORTED_NEIGHBORS_PER_LABEL),
         help="Number of positive and negative neighbors per label for compare_similar_mols.",
     )
