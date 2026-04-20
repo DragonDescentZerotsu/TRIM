@@ -66,7 +66,9 @@ def test_tool_payload_cache_round_trip_uses_disk_cache(tmp_path: Path):
     )
 
     cache_path = tools._tool_cache_path(tool_name="get_mol_properties_and_fg", smiles="CCO")
+    signature_path = cache_path.parents[1] / "cache_signature.json"
     assert cache_path.exists()
+    assert signature_path.exists()
 
     tools._tool_payload_cache = {}
     loaded_payload = tools._load_cached_tool_payload(tool_name="get_mol_properties_and_fg", smiles="CCO")
@@ -189,7 +191,7 @@ def test_compare_tool_payload_cache_reads_legacy_default_neighbor_cache_only_for
     )
 
 
-def test_tool_cache_namespace_changes_when_bundle_files_change(tmp_path: Path):
+def test_tool_cache_namespace_ignores_bundle_file_byte_changes(tmp_path: Path):
     tools = _build_fake_tool_runner(tmp_path)
     namespace_before = tools._build_tool_cache_namespace()
 
@@ -197,7 +199,7 @@ def test_tool_cache_namespace_changes_when_bundle_files_change(tmp_path: Path):
     bundle_path.write_text("global-v2-with-different-size", encoding="utf-8")
 
     namespace_after = tools._build_tool_cache_namespace()
-    assert namespace_after != namespace_before
+    assert namespace_after == namespace_before
 
 
 def test_tool_cache_namespace_ignores_file_mtime_changes(tmp_path: Path):
@@ -211,15 +213,72 @@ def test_tool_cache_namespace_ignores_file_mtime_changes(tmp_path: Path):
     assert namespace_after == namespace_before
 
 
-def test_tool_cache_namespace_uses_small_file_content_digest(tmp_path: Path):
+def test_tool_cache_diagnostics_track_small_file_content_digest(tmp_path: Path):
     tools = _build_fake_tool_runner(tmp_path)
     namespace_before = tools._build_tool_cache_namespace()
+    diagnostics_before = tools._build_tool_cache_diagnostic_payload()
 
     bundle_path = Path(tools.manifest["bundle_paths"]["global_bundle_path"])
     bundle_path.write_text("GLOBAL", encoding="utf-8")
 
     namespace_after = tools._build_tool_cache_namespace()
-    assert namespace_after != namespace_before
+    diagnostics_after = tools._build_tool_cache_diagnostic_payload()
+    assert namespace_after == namespace_before
+    assert (
+        diagnostics_after["bundle_file_diagnostics"]["global_bundle_path"]["sha256"]
+        != diagnostics_before["bundle_file_diagnostics"]["global_bundle_path"]["sha256"]
+    )
+
+
+def test_tool_cache_namespace_uses_project_relative_symlink_path(tmp_path: Path, monkeypatch):
+    tools = _build_fake_tool_runner(tmp_path)
+    project_root = tmp_path / "project"
+    outside_root = tmp_path / "outside"
+    project_root.mkdir()
+    outside_root.mkdir()
+    target_path = outside_root / "target.pkl"
+    target_path.write_text("target", encoding="utf-8")
+    symlink_path = project_root / "link.pkl"
+    symlink_path.symlink_to(target_path)
+
+    monkeypatch.setattr("trim.reasoning.agent_tools.tools.PROJECT_ROOT", project_root)
+
+    assert tools._cache_file_identity(symlink_path)["path"] == "link.pkl"
+    assert tools._cache_file_signature(symlink_path)["path"] == "link.pkl"
+
+
+def test_tool_payload_cache_accepts_legacy_portable_v2_namespace(tmp_path: Path):
+    tools = _build_fake_tool_runner(tmp_path)
+    payload = {
+        "tool_name": "get_mol_properties_and_fg",
+        "task": "BBB_Martins",
+        "smiles": "CCO",
+        "features": [],
+    }
+    smiles_digest = tools._smiles_cache_digest("CCO")
+    legacy_path = (
+        tools.tool_cache_root
+        / tools.feature_set_name
+        / tools.task
+        / "portable_v2_namespace"
+        / "get_mol_properties_and_fg"
+        / f"{smiles_digest}.json"
+    )
+    save_json(
+        legacy_path,
+        {
+            "schema_version": "trim_agent_tool_payload_cache_v1",
+            "cache_signature_version": "portable_v2",
+            "tool_name": "get_mol_properties_and_fg",
+            "task": "BBB_Martins",
+            "feature_set_name": tools.feature_set_name,
+            "cache_namespace": "portable_v2_namespace",
+            "smiles": "CCO",
+            "payload": payload,
+        },
+    )
+
+    assert tools._load_cached_tool_payload(tool_name="get_mol_properties_and_fg", smiles="CCO") == payload
 
 
 def test_tool_payload_cache_can_read_legacy_namespace_without_migrating(tmp_path: Path):

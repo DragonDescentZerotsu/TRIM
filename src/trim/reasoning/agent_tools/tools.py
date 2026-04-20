@@ -38,7 +38,8 @@ from trim.utils.paths import (
 
 
 AGENT_TOOL_PAYLOAD_CACHE_SCHEMA_VERSION = "trim_agent_tool_payload_cache_v1"
-AGENT_TOOL_CACHE_SIGNATURE_VERSION = "portable_v2"
+AGENT_TOOL_CACHE_SIGNATURE_VERSION = "portable_v3"
+LEGACY_COMPATIBLE_CACHE_SIGNATURE_VERSIONS = {"portable_v2"}
 DEFAULT_AGENT_TOOL_CACHE_ROOT = OUTPUTS_ROOT / "reasoning_agent_tools" / "tool_cache"
 DEFAULT_NEIGHBORS_PER_LABEL = 3
 SUPPORTED_NEIGHBORS_PER_LABEL = (1, 2, 3)
@@ -70,6 +71,29 @@ def _safe_scalar(value: object) -> object:
         except Exception:
             return value
     return value
+
+
+def _stable_json_value(value: object) -> object:
+    value = _safe_scalar(value)
+    if isinstance(value, Path):
+        return value.as_posix()
+    if isinstance(value, dict):
+        return {str(key): _stable_json_value(value[key]) for key in sorted(value, key=str)}
+    if isinstance(value, (list, tuple)):
+        return [_stable_json_value(item) for item in value]
+    if isinstance(value, set):
+        return [_stable_json_value(item) for item in sorted(value, key=str)]
+    if isinstance(value, np.ndarray):
+        return _stable_json_value(value.tolist())
+    if isinstance(value, float):
+        if math.isnan(value):
+            return None
+        if math.isinf(value):
+            return "Infinity" if value > 0 else "-Infinity"
+        return value
+    if isinstance(value, (str, int, bool)) or value is None:
+        return value
+    return str(value)
 
 
 def _sorted_rank_map(term_contributions: np.ndarray) -> dict[int, int]:
@@ -321,10 +345,20 @@ class TaskReasoningAgentTools:
         path = Path(path_like)
         if not path.is_absolute():
             return path.as_posix()
+        project_root = PROJECT_ROOT.resolve()
         try:
-            return resolved_path.resolve().relative_to(PROJECT_ROOT.resolve()).as_posix()
+            return path.relative_to(project_root).as_posix()
+        except ValueError:
+            pass
+        try:
+            return resolved_path.resolve().relative_to(project_root).as_posix()
         except ValueError:
             return str(resolved_path.resolve())
+
+    def _cache_file_identity(self, path_like: str | Path) -> dict[str, object]:
+        path = Path(path_like)
+        resolved_path = path if path.is_absolute() else resolve_project_path(path)
+        return {"path": self._portable_cache_path(path, resolved_path)}
 
     def _content_digest(self, path: Path) -> str:
         digest = hashlib.sha256()
@@ -362,9 +396,61 @@ class TaskReasoningAgentTools:
                 signatures[relative_key] = self._cache_file_signature(path)
         return signatures
 
-    def _build_tool_cache_namespace(self) -> str:
+    def _similarity_cache_identities(self) -> dict[str, dict[str, object]]:
+        identities: dict[str, dict[str, object]] = {}
+        for family in ("Morgan_similarity", "Feature_Morgan_similarity"):
+            for split in ("train", "valid", "test"):
+                relative_key = f"{family}/{split}"
+                path = self.cache_root / family / "by_task" / self.task / f"{split}_similarity.pkl"
+                identities[relative_key] = self._cache_file_identity(path)
+        return identities
+
+    def _portable_path_values(self, path_values: object) -> object:
+        if isinstance(path_values, (str, Path)):
+            path = Path(path_values)
+            resolved_path = path if path.is_absolute() else resolve_project_path(path)
+            return self._portable_cache_path(path, resolved_path)
+        if isinstance(path_values, (list, tuple)):
+            return [self._portable_path_values(path_value) for path_value in path_values]
+        return _stable_json_value(path_values)
+
+    def _bundle_metadata_signature(self, bundle_name: str) -> dict[str, object]:
+        bundle_by_name = {
+            "global_bundle_path": getattr(self, "global_bundle", None),
+            "pos_bundle_path": getattr(self, "pos_bundle", None),
+            "neg_bundle_path": getattr(self, "neg_bundle", None),
+        }
+        bundle = bundle_by_name.get(bundle_name)
+        if not isinstance(bundle, dict):
+            return {}
+
+        common_keys = (
+            "task",
+            "model_type",
+            "neighbor_label",
+            "feature_set_name",
+            "feature_config_paths",
+            "feature_columns",
+            "raw_feature_columns",
+            "pair_columns",
+            "ebm_params",
+            "pair_params",
+            "training_config",
+            "metrics",
+        )
+        metadata: dict[str, object] = {}
+        for key in common_keys:
+            if key not in bundle:
+                continue
+            if key == "feature_config_paths":
+                metadata[key] = self._portable_path_values(bundle[key])
+            else:
+                metadata[key] = _stable_json_value(bundle[key])
+        return metadata
+
+    def _build_tool_cache_namespace_payload(self) -> dict[str, object]:
         bundle_paths = dict(self.manifest["bundle_paths"])
-        signature_payload = {
+        return {
             "schema_version": AGENT_TOOL_PAYLOAD_CACHE_SCHEMA_VERSION,
             "cache_signature_version": AGENT_TOOL_CACHE_SIGNATURE_VERSION,
             "task": self.task,
@@ -375,13 +461,52 @@ class TaskReasoningAgentTools:
                 "local_tool": self.manifest.get("local_tool"),
             },
             "bundle_files": {
+                name: {
+                    **self._cache_file_identity(path_like),
+                    "metadata": self._bundle_metadata_signature(name),
+                }
+                for name, path_like in bundle_paths.items()
+            },
+            "similarity_cache_files": self._similarity_cache_identities(),
+        }
+
+    def _build_tool_cache_diagnostic_payload(self) -> dict[str, object]:
+        bundle_paths = dict(self.manifest["bundle_paths"])
+        return {
+            "schema_version": AGENT_TOOL_PAYLOAD_CACHE_SCHEMA_VERSION,
+            "cache_signature_version": AGENT_TOOL_CACHE_SIGNATURE_VERSION,
+            "task": self.task,
+            "feature_set_name": self.feature_set_name,
+            "namespace_payload": self._build_tool_cache_namespace_payload(),
+            "bundle_file_diagnostics": {
                 name: self._cache_file_signature(path_like)
                 for name, path_like in bundle_paths.items()
             },
-            "similarity_cache_files": self._similarity_cache_signatures(),
+            "similarity_cache_file_diagnostics": self._similarity_cache_signatures(),
         }
+
+    def _build_tool_cache_namespace(self) -> str:
+        signature_payload = self._build_tool_cache_namespace_payload()
         serialized = json.dumps(signature_payload, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
         return hashlib.sha1(serialized.encode("utf-8")).hexdigest()[:16]
+
+    def _tool_cache_namespace_dir(self) -> Path:
+        return self.tool_cache_root / self.feature_set_name / self.task / self._tool_cache_namespace
+
+    def _store_tool_cache_signature_manifest(self) -> None:
+        if not self.enable_tool_cache:
+            return
+        namespace_dir = self._tool_cache_namespace_dir()
+        signature_path = namespace_dir / "cache_signature.json"
+        if signature_path.exists():
+            return
+        save_json(
+            signature_path,
+            {
+                "cache_namespace": self._tool_cache_namespace,
+                "signature": self._build_tool_cache_diagnostic_payload(),
+            },
+        )
 
     def _tool_cache_variant(self, *, tool_name: str, neighbors_per_label: object = None) -> str | None:
         if tool_name != "compare_similar_mols":
@@ -397,10 +522,7 @@ class TaskReasoningAgentTools:
     ) -> Path:
         smiles_digest = self._smiles_cache_digest(smiles)
         tool_dir = (
-            self.tool_cache_root
-            / self.feature_set_name
-            / self.task
-            / self._tool_cache_namespace
+            self._tool_cache_namespace_dir()
             / tool_name
         )
         if cache_variant:
@@ -452,6 +574,8 @@ class TaskReasoningAgentTools:
         if record_signature_version == AGENT_TOOL_CACHE_SIGNATURE_VERSION:
             if str(record_namespace) != self._tool_cache_namespace:
                 return None
+        elif record_signature_version in LEGACY_COMPATIBLE_CACHE_SIGNATURE_VERSIONS:
+            pass
         elif record_signature_version is not None:
             return None
 
@@ -586,6 +710,7 @@ class TaskReasoningAgentTools:
         cache_parameters = {}
         if tool_name == "compare_similar_mols":
             cache_parameters["neighbors_per_label"] = _normalize_neighbors_per_label(neighbors_per_label)
+        self._store_tool_cache_signature_manifest()
         save_json(
             cache_path,
             {
