@@ -8,11 +8,11 @@ from trim.reasoning.agent_sft import (
     COMPARE_SIMILAR_MOLS_TOOL_NAME,
     GET_MOL_PROPERTIES_CALL_ID,
     GET_MOL_PROPERTIES_TOOL_NAME,
-    GLOBAL_TOOL_BRIDGE,
     LOCAL_TOOL_BRIDGE,
     build_agent_reasoning_sft_datasets,
     build_agent_reasoning_sft_for_task,
     build_agent_reasoning_sft_record,
+    build_global_tool_bridge,
 )
 
 
@@ -133,7 +133,10 @@ def test_build_agent_reasoning_sft_record_assembles_expected_six_message_transcr
     assert messages[0]["content"] == "user::BBB_Martins::CCO"
 
     assert messages[1]["content"] == ""
-    assert messages[1]["thinking"] == GLOBAL_TOOL_BRIDGE
+    assert messages[1]["thinking"] == build_global_tool_bridge(task)
+    assert messages[1]["thinking"].startswith(
+        "We need to predict BBB crossing status (does not cross the BBB or crosses the BBB)"
+    )
     assert messages[1]["tool_calls"][0]["id"] == GET_MOL_PROPERTIES_CALL_ID
     assert messages[1]["tool_calls"][0]["function"]["name"] == GET_MOL_PROPERTIES_TOOL_NAME
     assert messages[1]["tool_calls"][0]["function"]["arguments"] == '{"smiles": "CCO"}'

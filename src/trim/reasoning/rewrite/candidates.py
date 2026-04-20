@@ -5,6 +5,7 @@ from typing import Any
 
 from trim.reasoning.semantics.task_semantics import load_task_label_semantics
 from trim.reasoning.rewrite.playbooks import load_task_playbook
+from trim.reasoning.rewrite.playbooks import resolve_playbook_root
 from trim.utils.io import ensure_directory, load_json, save_json
 from trim.utils.paths import OUTPUTS_ROOT, resolve_project_path
 
@@ -268,6 +269,7 @@ def build_rewrite_candidates(
     local_dir: str | Path,
     output_dir: str | Path | None = None,
     playbook_root: str | Path | None = None,
+    allow_missing_playbook: bool = False,
     sample_indices: list[int] | None = None,
     max_samples: int | None = None,
     expected_neighbor_count: int = 6,
@@ -306,7 +308,13 @@ def build_rewrite_candidates(
         split = str(global_payload["split"])
         task_name = task if task_name is None else task_name
         split_name = split if split_name is None else split_name
-        playbook_text, playbook_path = load_task_playbook(task, playbook_root=playbook_root)
+        try:
+            playbook_text, playbook_path = load_task_playbook(task, playbook_root=playbook_root)
+        except FileNotFoundError:
+            if not allow_missing_playbook:
+                raise
+            playbook_path = (resolve_playbook_root(playbook_root) / f"{task}.md").resolve()
+            playbook_text = ""
 
         global_correct = bool(global_payload["global_prediction_correct"])
         local_correct = bool(local_payload["local_prediction_correct"])
@@ -354,6 +362,7 @@ def build_rewrite_candidates(
         "split": split_name,
         "global_dir": str(resolve_project_path(global_dir)),
         "local_dir": str(resolve_project_path(local_dir)),
+        "allow_missing_playbook": bool(allow_missing_playbook),
         "kept_record_count": int(len(kept_records)),
         "dropped_record_count": int(len(dropped_records)),
         "kept_sample_indices": [int(record["sample_index"]) for record in kept_records],

@@ -20,6 +20,29 @@ OPTION_PATTERN = re.compile(
     re.DOTALL,
 )
 
+BRIEF_TASK_SEMANTICS_BY_TASK = {
+    "AMES": "mutagenicity (not mutagenic or mutagenic)",
+    "BBB_Martins": "BBB crossing status (does not cross the BBB or crosses the BBB)",
+    "Bioavailability_Ma": "oral bioavailability (<20% or >=20%)",
+    "CYP2C9_Substrate_CarbonMangels": "CYP2C9 substrate status (not a substrate or substrate)",
+    "CYP2D6_Substrate_CarbonMangels": "CYP2D6 substrate status (not a substrate or substrate)",
+    "CYP3A4_Substrate_CarbonMangels": "CYP3A4 substrate status (not a substrate or substrate)",
+    "Carcinogens_Lagunin": "carcinogenicity (not a carcinogen or carcinogen)",
+    "ClinTox": "clinical toxicity (not toxic or toxic)",
+    "DILI": "drug-induced liver injury risk (cannot cause DILI or can cause DILI)",
+    "HIA_Hou": "human intestinal absorption (cannot be absorbed or can be absorbed)",
+    "PAMPA_NCATS": "PAMPA membrane permeability (not permeable or permeable in a PAMPA assay)",
+    "Pgp_Broccatelli": "P-glycoprotein inhibition status (not a Pgp inhibitor or Pgp inhibitor)",
+    "SARSCoV2_3CLPro_Diamond": (
+        "SARS-CoV-2 3CL protease binding (does not bind or binds SARS-CoV-2 3CL protease)"
+    ),
+    "SARSCoV2_Vitro_Touret": (
+        "SARS-CoV-2 replication inhibition (does not inhibit or inhibits SARS-CoV-2 replication)"
+    ),
+    "Skin_Reaction": "skin reaction risk (does not cause a skin reaction or causes a skin reaction)",
+    "hERG": "hERG blocking liability (does not block hERG or blocks hERG)",
+}
+
 
 def load_task_label_semantics(
     task: str,
@@ -81,3 +104,21 @@ def load_task_label_semantics(
                     },
                 }
     return None
+
+
+def load_brief_task_semantics(
+    task: str,
+    prompt_root: str | Path | None = None,
+) -> str:
+    brief = BRIEF_TASK_SEMANTICS_BY_TASK.get(task)
+    if brief:
+        return brief
+
+    semantics = load_task_label_semantics(task, prompt_root=prompt_root)
+    if semantics is not None:
+        label_zero = str(semantics.get(0, {}).get("text", "")).strip()
+        label_one = str(semantics.get(1, {}).get("text", "")).strip()
+        if label_zero and label_one:
+            return f"whether it {label_zero} or {label_one}"
+
+    return task.replace("_", " ")

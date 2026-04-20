@@ -45,6 +45,7 @@ def _build_fake_tool_runner(tmp_path: Path) -> TaskReasoningAgentTools:
     tools.enable_tool_cache = True
     tools._tool_payload_cache = {}
     tools._compatible_tool_cache_path_cache = {}
+    tools._resolved_smiles_cache = {}
     tools._tool_cache_namespace = tools._build_tool_cache_namespace()
     return tools
 
@@ -141,3 +142,25 @@ def test_tool_payload_cache_can_read_legacy_namespace_without_migrating(tmp_path
     assert loaded_payload == payload
     current_path = tools._tool_cache_path(tool_name="get_mol_properties_and_fg", smiles="CCO")
     assert not current_path.exists()
+
+
+def test_tool_smiles_lookup_falls_back_to_canonical_task_smiles(tmp_path: Path, monkeypatch):
+    tools = _build_fake_tool_runner(tmp_path)
+    tools._smiles_index = {
+        "canonical": [
+            {
+                "split": "valid",
+                "label": 0,
+                "scaffold": "scaffold",
+            }
+        ]
+    }
+
+    monkeypatch.setattr(
+        "trim.reasoning.agent_tools.tools._canonicalize_smiles_for_tool_lookup",
+        lambda smiles: "canonical" if smiles == "raw" else None,
+    )
+
+    assert tools._resolve_tool_smiles("raw") == "canonical"
+    assert tools._resolve_tool_smiles("canonical") == "canonical"
+    assert tools._resolve_tool_smiles("unknown") == "unknown"

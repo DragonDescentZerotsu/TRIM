@@ -7,7 +7,7 @@ from typing import Any
 
 from trim.data.datasets import load_tdc_split
 from trim.reasoning.rewrite.pipeline import extract_reasoning_text_for_mode, load_mode_output_json, model_slug
-from trim.reasoning.semantics.task_semantics import load_task_label_semantics
+from trim.reasoning.semantics.task_semantics import load_brief_task_semantics, load_task_label_semantics
 from trim.reasoning.task_user_prompts import (
     DEFAULT_TASK_MANIFEST_INDEX,
     DEFAULT_TASK_USER_PROMPT_ROOT,
@@ -38,11 +38,14 @@ COMPARE_SIMILAR_MOLS_TOOL_NAME = "compare_similar_mols"
 GET_MOL_PROPERTIES_CALL_ID = "call_get_mol_properties_and_fg"
 COMPARE_SIMILAR_MOLS_CALL_ID = "call_compare_similar_mols"
 
-GLOBAL_TOOL_BRIDGE = (
-    "Let me first inspect the molecule's intrinsic properties with get_mol_properties_and_fg."
+GLOBAL_TOOL_BRIDGE_TEMPLATE = (
+    "We need to predict {brief_task_semantics} for the given SMILES. "
+    "We can use the tool get_mol_properties_and_fg to get actual properties and functional groups, "
+    "then base our prediction on this information. Let's call it."
 )
+GLOBAL_TOOL_BRIDGE = GLOBAL_TOOL_BRIDGE_TEMPLATE.format(brief_task_semantics="the target drug property")
 LOCAL_TOOL_BRIDGE = (
-    "Let me compare this molecule against similar labeled molecules with compare_similar_mols."
+    "We can also use compare_similar_mols to see similar compounds to make more informed predictions. Let's try."
 )
 
 _AGENT_SFT_WORKER_CONTEXT: dict[str, Any] = {}
@@ -317,6 +320,10 @@ def _resolve_final_answer_option(task: str, gt_label: int) -> str:
     return "A" if int(gt_label) == 0 else "B"
 
 
+def build_global_tool_bridge(task: str) -> str:
+    return GLOBAL_TOOL_BRIDGE_TEMPLATE.format(brief_task_semantics=load_brief_task_semantics(task))
+
+
 def build_task_tool_runner(
     *,
     task: str,
@@ -450,7 +457,7 @@ def build_agent_reasoning_sft_record(
         },
         {
             "role": "assistant",
-            "thinking": GLOBAL_TOOL_BRIDGE,
+            "thinking": build_global_tool_bridge(task),
             "content": "",
             "tool_calls": [
                 _tool_call(

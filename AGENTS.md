@@ -127,7 +127,7 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
         - 根 summary 在 `outputs/reasoning_rewrite_filters/summary.json`
       - `scripts/build_rewrite_candidates.py`
         - 合并 global/local reasoning evidence
-        - 加载 task playbook
+        - 默认加载 task playbook；no-playbook ablation 可用 `--allow-missing-playbook` 跳过缺失 playbook 并写入空 playbook 文本
         - 过滤 `both_wrong`
         - 产出 `global_rewrite` / `local_rewrite` / `hybrid_rewrite` 三类最小输入 candidate JSON
       - `scripts/render_rewrite_prompts.py`
@@ -148,6 +148,8 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
         - 默认数据来源是 `outputs/reasoning_rewrite_filters/<split>/<task>/kept_records.json`
         - 默认 candidate cache 根目录是 `outputs/reasoning_rewrite_candidates/from_filters`
         - 默认 rewrite 输出根目录是 `outputs/reasoning_rewrite_outputs/<provider>/<model_slug>/<mode>/<split>/<task>/`
+        - no-playbook ablation 需要显式指定 `--template-root prompt_templates/reasoning_sft_wo_playbook`，建议输出到 `outputs/reasoning_rewrite_outputs_wo_playbook`
+        - 已支持 `--allow-missing-playbook`，用于不依赖 `playbooks/<task>.md` 的 rewrite 对照实验
         - 当前正式输出布局已改为 **每个 sample 一个子目录**：
           - `.../<mode>/<split>/<task>/sample_00000/result.json`
           - `.../<mode>/<split>/<task>/sample_00000/prompt.md`
@@ -166,6 +168,11 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
       - `prompt_templates/reasoning_sft/rewrite_global_reasoning.md`
       - `prompt_templates/reasoning_sft/rewrite_local_reasoning.md`
       - `prompt_templates/reasoning_sft/rewrite_hybrid_reasoning.md`
+    - 已新增 no-playbook rewrite ablation templates：
+      - `prompt_templates/reasoning_sft_wo_playbook/rewrite_global_reasoning.md`
+      - `prompt_templates/reasoning_sft_wo_playbook/rewrite_local_reasoning.md`
+      - `prompt_templates/reasoning_sft_wo_playbook/rewrite_hybrid_reasoning.md`
+      - 这套模板不注入 `TASK_PLAYBOOK`；`global/local` 允许 LLM 用常见化学/ADMET知识解释已给出的 feature 值，但不能新增证据或改写原 draft 的标签方向
     - 当前 rewrite template 约定：
       - `global_rewrite` 只输入 task playbook 和 `global_middle_draft`
         - 现在 template 的自然语言表述已经去掉 `global` 这种系统内部术语，改成更自然的 `single-molecule analysis notes`
@@ -189,6 +196,7 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
         - `instruction`
         - `contribution`
         - `pair score`
+      - no-playbook 模板额外强调不要输出分类器内部打分或概率，例如 `predictive score`、`overall score`、`net score`、`confidence`
     - 当前 rewrite 输出 JSON schema 也已统一简化：
       - `global` / `local` / `hybrid` 三类最终文本字段现在都统一使用 `parsed_output.reasoning`
       - 不再继续扩展或依赖 `global_reasoning` / `local_reasoning` / `hybrid_reasoning` 这套旧字段命名
@@ -206,19 +214,14 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
         - `post_checks.reasoning_key`
         - `post_checks.meta_reference_free`
         - `post_checks.meta_terms_found`
+        - `post_checks.meta_patterns_found`
+      - hard-fail patterns 已加严，会拦截 `model treats/flags/scores`、`note treats/flags`、`comparison treats/scores`、`contribution deems/scores`、`predictive/overall/net score` 等元话语
+      - `validate_saved_rewrite_output(...)` 现在会用当前规则重新计算 post-check；旧输出不会因为保存了旧版 `post_checks` 就被误判为可复用
     - 当前 JSON 解析器也做过一轮稳健性增强：
       - 位置：`src/trim/reasoning/rewrite/llm.py`
       - `extract_json_from_response_text(...)` 现在对“模型返回近似 JSON、但字符串内部混入未转义换行/控制字符”的情况有 fallback 修复
       - 已通过测试覆盖，避免后续批量 rewrite 时因为格式小瑕疵直接整条失败
-    - 已新增 repo 内 playbook 入口：
-      - `playbooks/BBB_Martins.md`
-      - `playbooks/AMES.md`
-      - `playbooks/Bioavailability_Ma.md`
-      - `playbooks/Carcinogens_Lagunin.md`
-      - `playbooks/ClinTox.md`
-      - `playbooks/CYP2C9_Substrate_CarbonMangels.md`
-      - 默认约定所有 task playbook 放在 `playbooks/<task>.md`
-      - 当前真正能跑 rewrite 的 task 仍取决于对应 playbook 是否已经补齐；运行前应先检查目标 task 的 playbook 是否存在
+    - 16 个 task 的 repo 内 playbook 已补齐，统一放在 `playbooks/<task>.md`
     - 已新增 playbook research prompt 基础设施：
       - `prompt_templates/playbooks/deepresearch_threshold_playbook_prompt_template.md`
         - 用于为单个 task 生成“36 个默认 RDKit/pKa properties 的文献阈值/范围 + 官能团定性 notes”的 DeepResearch prompt
@@ -260,6 +263,8 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
     - 已新增 agent reasoning SFT messages builder：
       - `src/trim/reasoning/agent_sft.py`
         - 把 task user prompt、tool text 返回、以及 polished `global/local/hybrid` reasoning 组装成最终 OpenAI-style `messages`
+        - 第一段 tool-call 过渡语现在是 task-aware 的 `build_global_tool_bridge(task)`，会先写 `We need to predict {brief_task_semantics} for the given SMILES...`，再调用 `get_mol_properties_and_fg`
+          - 16 个任务的简短语义统一维护在 `src/trim/reasoning/semantics/task_semantics.py` 的 `BRIEF_TASK_SEMANTICS_BY_TASK`
         - 当前 transcript 结构是：
           - `user`
           - `assistant(tool_call=get_mol_properties_and_fg)`
@@ -275,6 +280,7 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
         - 按 task 批量导出最终 agent SFT `messages` 数据
         - 已支持 `--max-concurrency`，当前表示每个 task 内用于组装 sample 的 worker 进程数
         - 已支持 `--overwrite`；默认行为是不覆盖已有 JSONL，而是自动续跑
+        - 若修改了过渡语、prompt 拼接或输出格式，重建已有 SFT JSONL 时必须显式加 `--overwrite`
       - 正式输出目录：
         - `data/sft/agent_reasoning_messages/<provider>/<model_slug>/<split>/<task>.jsonl`
         - 同目录 manifest：`data/sft/agent_reasoning_messages/<provider>/<model_slug>/<split>/manifest.json`
@@ -285,6 +291,7 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
     - `scripts/run_reasoning_rewrites.py` / `src/trim/reasoning/rewrite/pipeline.py` 最近又补过一轮可用性增强，后续批量跑时不要忘：
       - 已支持 `max_concurrency`，按 sample 级并发请求 API；单 sample 内仍保持 `global -> local -> hybrid` 顺序
       - 已支持 `max_retries` 与 `retry_delay_s`
+      - `--max-samples` 现在会严格使用本次 candidate manifest 里的 `sample_files`，不会被旧 candidate cache 中更多 sample 文件绕过
       - 现在不仅 API/解析异常会重试，`post_checks.meta_reference_free == false` 这类 post-check 不合格也会被当成失败并触发重试
       - 单条 sample 多次失败后不会中断整 task；失败会记录进对应 task 的 rewrite `manifest.json`
       - 当前每个 task 都会显示 `tqdm` 进度条
@@ -325,6 +332,7 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
       - 其中：
         - `compare_similar_mols` 是**按 task 隔离缓存**，不会跨任务复用
         - 缓存 key 是 `task + smiles`，**不是**按 `train/valid/test` 单独分目录
+        - tool lookup 允许外部传入 raw SMILES；若原串不在当前 task 的 processed index/cache 中，runner 会用 RDKit `LargestFragmentChooser(preferOrganic=True)` + canonical isomeric SMILES 回退到当前 processed/cached SMILES
         - 同一 SMILES 若同时出现在多个 split，当前 query metadata 解析优先级是 `valid > test > train`
       - 文件名与中间目录看起来像“乱码”是正常的：
         - `cache_namespace` 是 manifest / bundle / similarity cache 文件签名的哈希，用来自动隔离不同版本配置
@@ -1298,9 +1306,7 @@ global 与 local 本来来自不同 teacher：
 - `outputs/reasoning_evidence/.../*.json`
 
 #### 2. Playbook / literature background
-任务级、property 级解释背景，例如：
-- `playbooks/BBB_Martins.md`
-- `playbooks/DILI.md`
+任务级、property 级解释背景：`playbooks/<task>.md`
 
 #### 3. LLM rewritten reasoning outputs
 单步生成的最终 reasoning，例如：
@@ -1399,7 +1405,7 @@ playbook 不是“另一个规则分类器”，而是：
 
 ### 25.3 playbook 的组织形式
 
-每个任务都会有已经由 DeepResearch 系统生成好的playbook，你不用关注怎么生成playbook，所有playbook会分任务放在对应目录下面
+每个任务的 playbook 已统一放在 `playbooks/<task>.md`。
 
 ---
 

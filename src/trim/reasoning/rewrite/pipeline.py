@@ -40,7 +40,21 @@ _META_LANGUAGE_TERMS = (
 _HARD_FAIL_META_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("contribution_numeric", re.compile(r"contribution\s*[:=]?\s*[-+]?\d", re.IGNORECASE)),
     ("parenthesized_contribution_numeric", re.compile(r"\(contribution\s*[:=]?\s*[-+]?\d", re.IGNORECASE)),
+    ("predictive_score", re.compile(r"\bpredictive score\b", re.IGNORECASE)),
+    ("overall_score", re.compile(r"\boverall score\b", re.IGNORECASE)),
+    ("net_score", re.compile(r"\bnet score\b", re.IGNORECASE)),
+    ("model_predicts", re.compile(r"\bmodel (?:therefore )?predicts\b", re.IGNORECASE)),
+    ("model_treats", re.compile(r"\bmodel treats\b", re.IGNORECASE)),
+    ("model_scores", re.compile(r"\bmodel scores\b", re.IGNORECASE)),
+    ("model_flags", re.compile(r"\bmodel (?:flagged|flags)\b", re.IGNORECASE)),
+    ("model_signal", re.compile(r"\bmodel(?:'s)? signal\b", re.IGNORECASE)),
     ("model_assigns_contribution", re.compile(r"model assigns .*contribution", re.IGNORECASE)),
+    ("note_treats", re.compile(r"\bnote treats\b", re.IGNORECASE)),
+    ("note_flags", re.compile(r"\bnote (?:flagged|flags)\b", re.IGNORECASE)),
+    ("comparison_treats", re.compile(r"\bcomparison treats\b", re.IGNORECASE)),
+    ("comparison_scores", re.compile(r"\bcomparison scores\b", re.IGNORECASE)),
+    ("contribution_deems", re.compile(r"\bcontribution deems\b", re.IGNORECASE)),
+    ("contribution_scores", re.compile(r"\bcontribution scores\b", re.IGNORECASE)),
     ("contribution_listed", re.compile(r"contribution listed", re.IGNORECASE)),
     ("contribution_interpreted", re.compile(r"contribution is interpreted", re.IGNORECASE)),
     ("contribution_recorded", re.compile(r"contribution is recorded", re.IGNORECASE)),
@@ -98,6 +112,7 @@ def build_candidates_from_filtered_records(
     playbook_root: str | Path,
     candidate_root: str | Path = DEFAULT_CANDIDATE_ROOT,
     max_samples: int | None = None,
+    allow_missing_playbook: bool = False,
 ) -> dict[str, Any]:
     kept_records = load_filtered_kept_records(filtered_root=filtered_root, split=split, task=task)
     sample_indices = [int(record["sample_index"]) for record in kept_records]
@@ -108,6 +123,7 @@ def build_candidates_from_filtered_records(
         local_dir=resolve_project_path(local_root) / task / split,
         output_dir=resolve_project_path(candidate_root) / split / task,
         playbook_root=playbook_root,
+        allow_missing_playbook=allow_missing_playbook,
         sample_indices=sample_indices,
     )
 
@@ -215,9 +231,7 @@ def validate_saved_rewrite_output(*, mode: str, payload: dict[str, Any]) -> None
 
     extract_reasoning_text_for_mode(payload=payload, mode=mode)
 
-    post_checks = payload.get("post_checks")
-    if not isinstance(post_checks, dict):
-        post_checks = collect_reasoning_post_checks(mode=mode, parsed_output=parsed_output)
+    post_checks = collect_reasoning_post_checks(mode=mode, parsed_output=parsed_output)
     if not bool(post_checks.get("meta_reference_free")):
         meta_terms = list(post_checks.get("meta_terms_found", []) or [])
         meta_patterns = list(post_checks.get("meta_patterns_found", []) or [])
@@ -416,6 +430,7 @@ def run_rewrite_batch(
     output_root: str | Path = DEFAULT_REWRITE_OUTPUT_ROOT,
     template_root: str | Path | None = None,
     max_samples: int | None = None,
+    allow_missing_playbook: bool = False,
     max_concurrency: int = 1,
     max_retries: int = 0,
     retry_delay_s: float = 0.0,
@@ -430,9 +445,14 @@ def run_rewrite_batch(
         playbook_root=playbook_root,
         candidate_root=candidate_root,
         max_samples=max_samples,
+        allow_missing_playbook=allow_missing_playbook,
     )
     candidate_dir = Path(candidate_manifest["artifacts"]["output_dir"])
-    candidate_paths = sorted(candidate_dir.glob("sample_*.json"))
+    manifest_sample_files = candidate_manifest.get("artifacts", {}).get("sample_files")
+    if manifest_sample_files:
+        candidate_paths = [resolve_project_path(path) for path in manifest_sample_files]
+    else:
+        candidate_paths = sorted(candidate_dir.glob("sample_*.json"))
 
     requested_modes = ["global", "local", "hybrid"] if mode == "all" else [mode]
 

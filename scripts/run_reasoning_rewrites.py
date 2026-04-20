@@ -46,6 +46,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--global-root", default=DEFAULT_GLOBAL_ROOT)
     parser.add_argument("--local-root", default=DEFAULT_LOCAL_ROOT)
     parser.add_argument("--playbook-root", default="playbooks")
+    parser.add_argument(
+        "--allow-missing-playbook",
+        action="store_true",
+        help="Allow no-playbook rewrite runs to proceed when playbooks/<task>.md is missing.",
+    )
     parser.add_argument("--candidate-root", default=str(DEFAULT_CANDIDATE_ROOT))
     parser.add_argument("--output-root", default=str(DEFAULT_REWRITE_OUTPUT_ROOT))
     parser.add_argument("--template-root", default="prompt_templates/reasoning_sft")
@@ -93,6 +98,7 @@ def main() -> int:
             global_root=args.global_root,
             local_root=args.local_root,
             playbook_root=args.playbook_root,
+            allow_missing_playbook=args.allow_missing_playbook,
             candidate_root=args.candidate_root,
             output_root=args.output_root,
             template_root=args.template_root,

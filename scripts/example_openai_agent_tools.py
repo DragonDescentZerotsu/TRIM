@@ -20,10 +20,10 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Example usage for task-aware OpenAI agent tools, including cache timing."
     )
-    parser.add_argument("--task", default="BBB_Martins")
+    parser.add_argument("--task", default="CYP3A4_Substrate_CarbonMangels")
     parser.add_argument(
         "--smiles",
-        default="CC(C)(C)OC(=O)CCCc1ccc(N(CCCl)CCCl)cc1",
+        default="C[C@@H]1CC[C@H]2[C@@H](C)[C@@H](OC(=O)CCC(=O)O)O[C@@H]3O[C@@]4(C)CC[C@@H]1[C@@]23OO4",
         help="SMILES to query with both tools.",
     )
     parser.add_argument(
@@ -49,10 +49,17 @@ def _time_tool_call(runtime, *, task: str, tool_name: str, smiles: str) -> tuple
 def _print_cache_speed_demo(runtime, *, task: str, smiles: str) -> None:
     print("Cache timing demo:")
     tool_runner = runtime.get_runner(task)
+    resolved_smiles = (
+        tool_runner._resolve_tool_smiles(smiles)
+        if hasattr(tool_runner, "_resolve_tool_smiles")
+        else smiles
+    )
+    if resolved_smiles != smiles:
+        print(f"Resolved cache/query SMILES: {resolved_smiles}")
     for tool_name in ("get_mol_properties_and_fg", "compare_similar_mols"):
-        had_cache_before = tool_runner.has_cached_tool_payload(tool_name=tool_name, smiles=smiles)
+        had_cache_before = tool_runner.has_cached_tool_payload(tool_name=tool_name, smiles=resolved_smiles)
         _, first_elapsed_s = _time_tool_call(runtime, task=task, tool_name=tool_name, smiles=smiles)
-        has_cache_after_first = tool_runner.has_cached_tool_payload(tool_name=tool_name, smiles=smiles)
+        has_cache_after_first = tool_runner.has_cached_tool_payload(tool_name=tool_name, smiles=resolved_smiles)
         _, second_elapsed_s = _time_tool_call(runtime, task=task, tool_name=tool_name, smiles=smiles)
 
         print(f"- {tool_name}")

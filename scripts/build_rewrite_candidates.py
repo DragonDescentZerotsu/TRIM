@@ -27,6 +27,11 @@ def parse_args() -> argparse.Namespace:
         help="Directory containing task playbooks named <task>.md",
     )
     parser.add_argument(
+        "--allow-missing-playbook",
+        action="store_true",
+        help="Allow candidate generation to continue with an empty playbook field if <task>.md is missing.",
+    )
+    parser.add_argument(
         "--output-dir",
         default="outputs/reasoning_rewrite_candidates",
         help="Output directory for filtered candidate JSON files and manifest",
@@ -55,6 +60,7 @@ def main() -> int:
         local_dir=args.local_dir,
         output_dir=args.output_dir,
         playbook_root=args.playbook_root,
+        allow_missing_playbook=args.allow_missing_playbook,
         sample_indices=args.sample_indices,
         max_samples=args.max_samples,
         expected_neighbor_count=args.expected_neighbor_count,

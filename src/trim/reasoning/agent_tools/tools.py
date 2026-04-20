@@ -202,6 +202,26 @@ def _render_local_payload_text(payload: dict[str, object]) -> str:
     return "\n".join(lines)
 
 
+def _canonicalize_smiles_for_tool_lookup(smiles: str) -> str | None:
+    try:
+        from rdkit import Chem
+        from rdkit.Chem.MolStandardize import rdMolStandardize
+    except Exception:
+        return None
+
+    mol = Chem.MolFromSmiles(str(smiles))
+    if mol is None:
+        return None
+    try:
+        mol = rdMolStandardize.LargestFragmentChooser(preferOrganic=True).choose(mol)
+    except Exception:
+        pass
+    try:
+        return Chem.MolToSmiles(mol, canonical=True, isomericSmiles=True)
+    except Exception:
+        return None
+
+
 class TaskReasoningAgentTools:
     def __init__(
         self,
@@ -249,6 +269,7 @@ class TaskReasoningAgentTools:
         self._train_index_by_smiles: dict[str, int] | None = None
         self._tool_payload_cache: dict[tuple[str, str], dict[str, object]] = {}
         self._compatible_tool_cache_path_cache: dict[tuple[str, str], Path | None] = {}
+        self._resolved_smiles_cache: dict[str, str] = {}
         self._tool_cache_namespace = self._build_tool_cache_namespace()
 
     @classmethod
@@ -479,6 +500,24 @@ class TaskReasoningAgentTools:
             self._smiles_index = index
         return self._smiles_index
 
+    def _resolve_tool_smiles(self, smiles: str) -> str:
+        smiles_text = str(smiles)
+        if smiles_text in self._resolved_smiles_cache:
+            return self._resolved_smiles_cache[smiles_text]
+
+        index = self._get_smiles_index()
+        if smiles_text in index:
+            self._resolved_smiles_cache[smiles_text] = smiles_text
+            return smiles_text
+
+        canonical_smiles = _canonicalize_smiles_for_tool_lookup(smiles_text)
+        if canonical_smiles and canonical_smiles in index:
+            self._resolved_smiles_cache[smiles_text] = canonical_smiles
+            return canonical_smiles
+
+        self._resolved_smiles_cache[smiles_text] = smiles_text
+        return smiles_text
+
     def _resolve_query_metadata(self, smiles: str) -> dict[str, object]:
         index = self._get_smiles_index()
         try:
@@ -562,6 +601,7 @@ class TaskReasoningAgentTools:
         return differences
 
     def get_mol_properties_and_fg_payload(self, smiles: str) -> dict[str, object]:
+        smiles = self._resolve_tool_smiles(smiles)
         cached_payload = self._load_cached_tool_payload(tool_name="get_mol_properties_and_fg", smiles=smiles)
         if cached_payload is not None:
             return cached_payload
@@ -788,6 +828,7 @@ class TaskReasoningAgentTools:
         )
 
     def compare_similar_mols_payload(self, smiles: str) -> dict[str, object]:
+        smiles = self._resolve_tool_smiles(smiles)
         cached_payload = self._load_cached_tool_payload(tool_name="compare_similar_mols", smiles=smiles)
         if cached_payload is not None:
             return cached_payload
