@@ -27,11 +27,16 @@ except Exception:  # pragma: no cover - tqdm is optional in some environments
 AGENT_REASONING_SFT_SCHEMA_VERSION = "trim_agent_reasoning_sft_messages_v1"
 DEFAULT_AGENT_REASONING_SFT_OUTPUT_ROOT = DATA_ROOT / "sft" / "agent_reasoning_messages"
 DEFAULT_REWRITE_OUTPUT_ROOT = OUTPUTS_ROOT / "reasoning_rewrite_outputs"
+DEFAULT_REWRITE_FILTER_ROOT = OUTPUTS_ROOT / "reasoning_rewrite_filters"
 DEFAULT_REWRITE_PROVIDER = "openrouter"
 DEFAULT_REWRITE_MODEL = "openai/gpt-5.4-mini"
 DEFAULT_AGENT_TOOL_FEATURE_SET_NAME = "fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts"
 DEFAULT_AGENT_TOOL_MANIFEST_ROOT = OUTPUTS_ROOT / "reasoning_agent_tools" / "manifests"
 DEFAULT_TOOL_CACHE_ROOT = "data/cache/tdc_mol_fingerprints"
+SFT_MODE_FULL = "full"
+SFT_MODE_GLOBAL_ONLY = "global_only"
+SFT_MODE_LOCAL_ONLY = "local_only"
+SFT_MODES = (SFT_MODE_FULL, SFT_MODE_GLOBAL_ONLY, SFT_MODE_LOCAL_ONLY)
 
 GET_MOL_PROPERTIES_TOOL_NAME = "get_mol_properties_and_fg"
 COMPARE_SIMILAR_MOLS_TOOL_NAME = "compare_similar_mols"
@@ -47,6 +52,11 @@ GLOBAL_TOOL_BRIDGE = GLOBAL_TOOL_BRIDGE_TEMPLATE.format(brief_task_semantics="th
 LOCAL_TOOL_BRIDGE = (
     "We can also use compare_similar_mols to see similar compounds to make more informed predictions. Let's try."
 )
+LOCAL_ONLY_TOOL_BRIDGE_TEMPLATE = (
+    "We need to predict {brief_task_semantics} for the given SMILES. "
+    "We can use the tool compare_similar_mols to retrieve similar compounds and compare them with the query, "
+    "then base our prediction on this neighbor evidence. Let's call it."
+)
 
 _AGENT_SFT_WORKER_CONTEXT: dict[str, Any] = {}
 
@@ -57,8 +67,29 @@ def _dataset_output_dir(
     provider: str,
     model: str,
     split: str,
+    sft_mode: str = SFT_MODE_FULL,
 ) -> Path:
-    return ensure_directory(resolve_project_path(output_root) / provider / model_slug(model) / split)
+    validated_mode = _validate_sft_mode(sft_mode)
+    root = resolve_project_path(output_root) / provider / model_slug(model)
+    if validated_mode != SFT_MODE_FULL:
+        root = root / validated_mode
+    return ensure_directory(root / split)
+
+
+def _validate_sft_mode(sft_mode: str) -> str:
+    normalized = str(sft_mode).strip()
+    if normalized not in SFT_MODES:
+        raise ValueError(f"Unsupported SFT mode {sft_mode!r}; expected one of {SFT_MODES}")
+    return normalized
+
+
+def _rewrite_modes_for_sft_mode(sft_mode: str) -> tuple[str, ...]:
+    validated_mode = _validate_sft_mode(sft_mode)
+    if validated_mode == SFT_MODE_GLOBAL_ONLY:
+        return ("global",)
+    if validated_mode == SFT_MODE_LOCAL_ONLY:
+        return ("local",)
+    return ("global", "local", "hybrid")
 
 
 def _read_jsonl_records(path: Path) -> list[dict[str, Any]]:
@@ -95,6 +126,7 @@ def _load_existing_task_records(
     output_path: Path,
     task: str,
     split: str,
+    sft_mode: str = SFT_MODE_FULL,
     target_indices: list[int],
 ) -> list[dict[str, Any]]:
     existing_records = _read_jsonl_records(output_path)
@@ -107,6 +139,9 @@ def _load_existing_task_records(
             raise ValueError(f"Existing JSONL task mismatch in {output_path}: {record.get('task')!r}")
         if str(record.get("split")) != split:
             raise ValueError(f"Existing JSONL split mismatch in {output_path}: {record.get('split')!r}")
+        existing_mode = record.get("sft_mode")
+        if existing_mode is not None and str(existing_mode) != sft_mode:
+            raise ValueError(f"Existing JSONL SFT mode mismatch in {output_path}: {existing_mode!r}")
         sample_index = int(record["sample_index"])
         existing_indices.append(sample_index)
 
@@ -190,6 +225,33 @@ def _sample_indices_with_saved_rewrites(
     return sample_indices
 
 
+def _load_rewrite_filter_records(
+    *,
+    filter_root: str | Path,
+    split: str,
+    task: str,
+) -> list[dict[str, Any]]:
+    records_path = resolve_project_path(filter_root) / split / task / "kept_records.json"
+    if not records_path.exists():
+        raise FileNotFoundError(
+            f"Rewrite filter records are required for ablation SFT modes but were not found: {records_path}"
+        )
+    payload = json.loads(records_path.read_text(encoding="utf-8"))
+    if not isinstance(payload, list):
+        raise ValueError(f"Expected a JSON list in rewrite filter records: {records_path}")
+
+    records: list[dict[str, Any]] = []
+    for row in payload:
+        if not isinstance(row, dict):
+            raise ValueError(f"Expected object rows in rewrite filter records: {records_path}")
+        if str(row.get("task")) != task:
+            raise ValueError(f"Rewrite filter task mismatch in {records_path}: {row.get('task')!r}")
+        if str(row.get("split")) != split:
+            raise ValueError(f"Rewrite filter split mismatch in {records_path}: {row.get('split')!r}")
+        records.append(row)
+    return records
+
+
 def list_fully_rewritten_sample_indices(
     *,
     task: str,
@@ -219,6 +281,51 @@ def list_fully_rewritten_sample_indices(
     return shared_indices
 
 
+def list_rewritten_sample_indices_for_sft_mode(
+    *,
+    task: str,
+    split: str,
+    sft_mode: str = SFT_MODE_FULL,
+    rewrite_output_root: str | Path = DEFAULT_REWRITE_OUTPUT_ROOT,
+    rewrite_filter_root: str | Path = DEFAULT_REWRITE_FILTER_ROOT,
+    provider: str = DEFAULT_REWRITE_PROVIDER,
+    model: str = DEFAULT_REWRITE_MODEL,
+) -> list[int]:
+    validated_mode = _validate_sft_mode(sft_mode)
+    if validated_mode == SFT_MODE_FULL:
+        return list_fully_rewritten_sample_indices(
+            task=task,
+            split=split,
+            rewrite_output_root=rewrite_output_root,
+            provider=provider,
+            model=model,
+        )
+
+    rewrite_mode = "global" if validated_mode == SFT_MODE_GLOBAL_ONLY else "local"
+    correct_field = f"{rewrite_mode}_prediction_correct"
+    records = _load_rewrite_filter_records(filter_root=rewrite_filter_root, split=split, task=task)
+    correct_indices = {
+        int(record["sample_index"])
+        for record in records
+        if bool(record.get(correct_field))
+    }
+    saved_indices = _sample_indices_with_saved_rewrites(
+        rewrite_output_root=rewrite_output_root,
+        provider=provider,
+        model=model,
+        mode=rewrite_mode,
+        split=split,
+        task=task,
+    )
+    selected_indices = sorted(correct_indices.intersection(saved_indices))
+    if not selected_indices:
+        raise FileNotFoundError(
+            f"No rewritten {validated_mode} samples found for task={task!r}, split={split!r}, "
+            f"provider={provider!r}, model={model!r}"
+        )
+    return selected_indices
+
+
 def _tool_call(*, call_id: str, name: str, smiles: str) -> dict[str, Any]:
     return {
         "id": call_id,
@@ -245,11 +352,15 @@ def _load_reasoning_bundle(
     rewrite_output_root: str | Path,
     provider: str,
     model: str,
+    modes: tuple[str, ...] = ("global", "local", "hybrid"),
 ) -> dict[str, Any]:
     bundles: dict[str, dict[str, Any]] = {}
     paths: dict[str, str] = {}
 
-    for mode in ("global", "local", "hybrid"):
+    if not modes:
+        raise ValueError("At least one rewrite mode is required")
+
+    for mode in modes:
         result_path = _rewrite_result_path(
             output_root=rewrite_output_root,
             provider=provider,
@@ -279,8 +390,9 @@ def _load_reasoning_bundle(
         bundles[mode] = payload
         paths[f"{mode}_result_json"] = str(result_path.resolve())
 
-    sample_id = str(bundles["global"].get("sample_id", "") or "")
-    for mode in ("local", "hybrid"):
+    first_mode = modes[0]
+    sample_id = str(bundles[first_mode].get("sample_id", "") or "")
+    for mode in modes[1:]:
         other_sample_id = str(bundles[mode].get("sample_id", "") or "")
         if sample_id != other_sample_id:
             raise ValueError(
@@ -288,22 +400,16 @@ def _load_reasoning_bundle(
                 f"{sample_id!r} != {other_sample_id!r}"
             )
 
-    return {
+    result: dict[str, Any] = {
         "sample_id": sample_id,
         "source_paths": paths,
-        "global_reasoning": _require_non_empty_text(
-            extract_reasoning_text_for_mode(payload=bundles["global"], mode="global"),
-            context=f"global reasoning for {task} sample {sample_index}",
-        ),
-        "local_reasoning": _require_non_empty_text(
-            extract_reasoning_text_for_mode(payload=bundles["local"], mode="local"),
-            context=f"local reasoning for {task} sample {sample_index}",
-        ),
-        "hybrid_reasoning": _require_non_empty_text(
-            extract_reasoning_text_for_mode(payload=bundles["hybrid"], mode="hybrid"),
-            context=f"hybrid reasoning for {task} sample {sample_index}",
-        ),
     }
+    for mode in modes:
+        result[f"{mode}_reasoning"] = _require_non_empty_text(
+            extract_reasoning_text_for_mode(payload=bundles[mode], mode=mode),
+            context=f"{mode} reasoning for {task} sample {sample_index}",
+        )
+    return result
 
 
 def _resolve_final_answer_option(task: str, gt_label: int) -> str:
@@ -322,6 +428,10 @@ def _resolve_final_answer_option(task: str, gt_label: int) -> str:
 
 def build_global_tool_bridge(task: str) -> str:
     return GLOBAL_TOOL_BRIDGE_TEMPLATE.format(brief_task_semantics=load_brief_task_semantics(task))
+
+
+def build_local_only_tool_bridge(task: str) -> str:
+    return LOCAL_ONLY_TOOL_BRIDGE_TEMPLATE.format(brief_task_semantics=load_brief_task_semantics(task))
 
 
 def build_task_tool_runner(
@@ -343,10 +453,14 @@ def build_task_tool_runner(
     )
 
 
-def _prewarm_tool_runner(tool_runner: Any, *, task: str) -> None:
+def _prewarm_tool_runner(tool_runner: Any, *, task: str, sft_mode: str = SFT_MODE_FULL) -> None:
+    validated_mode = _validate_sft_mode(sft_mode)
     get_smiles_index = getattr(tool_runner, "_get_smiles_index", None)
     if callable(get_smiles_index):
         get_smiles_index()
+
+    if validated_mode == SFT_MODE_GLOBAL_ONLY:
+        return
 
     get_train_feature_cache = getattr(tool_runner, "_get_train_feature_cache", None)
     if callable(get_train_feature_cache):
@@ -366,6 +480,7 @@ def _prewarm_tool_runner(tool_runner: Any, *, task: str) -> None:
 def _init_agent_sft_worker(
     task: str,
     split: str,
+    sft_mode: str,
     rewrite_output_root: str,
     provider: str,
     model: str,
@@ -382,12 +497,13 @@ def _init_agent_sft_worker(
         dataset_root=dataset_root,
         cache_root=cache_root,
     )
-    _prewarm_tool_runner(tool_runner, task=task)
+    _prewarm_tool_runner(tool_runner, task=task, sft_mode=sft_mode)
     _AGENT_SFT_WORKER_CONTEXT.clear()
     _AGENT_SFT_WORKER_CONTEXT.update(
         {
             "task": task,
             "split": split,
+            "sft_mode": sft_mode,
             "rewrite_output_root": rewrite_output_root,
             "provider": provider,
             "model": model,
@@ -407,6 +523,7 @@ def _build_agent_reasoning_sft_record_worker(
     return build_agent_reasoning_sft_record(
         task=str(_AGENT_SFT_WORKER_CONTEXT["task"]),
         split=str(_AGENT_SFT_WORKER_CONTEXT["split"]),
+        sft_mode=str(_AGENT_SFT_WORKER_CONTEXT["sft_mode"]),
         sample_index=int(sample_index),
         smiles=smiles,
         gt_label=int(gt_label),
@@ -422,6 +539,7 @@ def build_agent_reasoning_sft_record(
     *,
     task: str,
     split: str,
+    sft_mode: str = SFT_MODE_FULL,
     sample_index: int,
     smiles: str,
     gt_label: int,
@@ -431,6 +549,7 @@ def build_agent_reasoning_sft_record(
     model: str = DEFAULT_REWRITE_MODEL,
     prompt_root: str | Path = DEFAULT_TASK_USER_PROMPT_ROOT,
 ) -> dict[str, Any]:
+    validated_mode = _validate_sft_mode(sft_mode)
     reasoning_bundle = _load_reasoning_bundle(
         task=task,
         split=split,
@@ -438,68 +557,140 @@ def build_agent_reasoning_sft_record(
         rewrite_output_root=rewrite_output_root,
         provider=provider,
         model=model,
+        modes=_rewrite_modes_for_sft_mode(validated_mode),
     )
     user_message = render_task_user_message(task=task, smiles=smiles, prompt_root=prompt_root)
-    global_tool_text = _require_non_empty_text(
-        tool_runner.get_mol_properties_and_fg(smiles),
-        context=f"{GET_MOL_PROPERTIES_TOOL_NAME} for {task} sample {sample_index}",
-    )
-    local_tool_text = _require_non_empty_text(
-        tool_runner.compare_similar_mols(smiles),
-        context=f"{COMPARE_SIMILAR_MOLS_TOOL_NAME} for {task} sample {sample_index}",
-    )
-
     final_answer_option = _resolve_final_answer_option(task, gt_label)
-    messages = [
-        {
-            "role": "user",
-            "content": user_message,
-        },
-        {
-            "role": "assistant",
-            "thinking": build_global_tool_bridge(task),
-            "content": "",
-            "tool_calls": [
-                _tool_call(
-                    call_id=GET_MOL_PROPERTIES_CALL_ID,
-                    name=GET_MOL_PROPERTIES_TOOL_NAME,
-                    smiles=smiles,
-                )
-            ],
-        },
-        {
-            "role": "tool",
-            "tool_call_id": GET_MOL_PROPERTIES_CALL_ID,
-            "name": GET_MOL_PROPERTIES_TOOL_NAME,
-            "content": global_tool_text,
-        },
-        {
-            "role": "assistant",
-            "thinking": f"{reasoning_bundle['global_reasoning']}\n\n{LOCAL_TOOL_BRIDGE}",
-            "content": "",
-            "tool_calls": [
-                _tool_call(
-                    call_id=COMPARE_SIMILAR_MOLS_CALL_ID,
-                    name=COMPARE_SIMILAR_MOLS_TOOL_NAME,
-                    smiles=smiles,
-                )
-            ],
-        },
-        {
-            "role": "tool",
-            "tool_call_id": COMPARE_SIMILAR_MOLS_CALL_ID,
-            "name": COMPARE_SIMILAR_MOLS_TOOL_NAME,
-            "content": local_tool_text,
-        },
-        {
-            "role": "assistant",
-            "thinking": f"{reasoning_bundle['local_reasoning']}\n\n{reasoning_bundle['hybrid_reasoning']}",
-            "content": f"Answer: ({final_answer_option})",
-        },
-    ]
+
+    messages: list[dict[str, Any]]
+    if validated_mode == SFT_MODE_GLOBAL_ONLY:
+        global_tool_text = _require_non_empty_text(
+            tool_runner.get_mol_properties_and_fg(smiles),
+            context=f"{GET_MOL_PROPERTIES_TOOL_NAME} for {task} sample {sample_index}",
+        )
+        messages = [
+            {
+                "role": "user",
+                "content": user_message,
+            },
+            {
+                "role": "assistant",
+                "thinking": build_global_tool_bridge(task),
+                "content": "",
+                "tool_calls": [
+                    _tool_call(
+                        call_id=GET_MOL_PROPERTIES_CALL_ID,
+                        name=GET_MOL_PROPERTIES_TOOL_NAME,
+                        smiles=smiles,
+                    )
+                ],
+            },
+            {
+                "role": "tool",
+                "tool_call_id": GET_MOL_PROPERTIES_CALL_ID,
+                "name": GET_MOL_PROPERTIES_TOOL_NAME,
+                "content": global_tool_text,
+            },
+            {
+                "role": "assistant",
+                "thinking": reasoning_bundle["global_reasoning"],
+                "content": f"Answer: ({final_answer_option})",
+            },
+        ]
+    elif validated_mode == SFT_MODE_LOCAL_ONLY:
+        local_tool_text = _require_non_empty_text(
+            tool_runner.compare_similar_mols(smiles),
+            context=f"{COMPARE_SIMILAR_MOLS_TOOL_NAME} for {task} sample {sample_index}",
+        )
+        messages = [
+            {
+                "role": "user",
+                "content": user_message,
+            },
+            {
+                "role": "assistant",
+                "thinking": build_local_only_tool_bridge(task),
+                "content": "",
+                "tool_calls": [
+                    _tool_call(
+                        call_id=COMPARE_SIMILAR_MOLS_CALL_ID,
+                        name=COMPARE_SIMILAR_MOLS_TOOL_NAME,
+                        smiles=smiles,
+                    )
+                ],
+            },
+            {
+                "role": "tool",
+                "tool_call_id": COMPARE_SIMILAR_MOLS_CALL_ID,
+                "name": COMPARE_SIMILAR_MOLS_TOOL_NAME,
+                "content": local_tool_text,
+            },
+            {
+                "role": "assistant",
+                "thinking": reasoning_bundle["local_reasoning"],
+                "content": f"Answer: ({final_answer_option})",
+            },
+        ]
+    else:
+        global_tool_text = _require_non_empty_text(
+            tool_runner.get_mol_properties_and_fg(smiles),
+            context=f"{GET_MOL_PROPERTIES_TOOL_NAME} for {task} sample {sample_index}",
+        )
+        local_tool_text = _require_non_empty_text(
+            tool_runner.compare_similar_mols(smiles),
+            context=f"{COMPARE_SIMILAR_MOLS_TOOL_NAME} for {task} sample {sample_index}",
+        )
+        messages = [
+            {
+                "role": "user",
+                "content": user_message,
+            },
+            {
+                "role": "assistant",
+                "thinking": build_global_tool_bridge(task),
+                "content": "",
+                "tool_calls": [
+                    _tool_call(
+                        call_id=GET_MOL_PROPERTIES_CALL_ID,
+                        name=GET_MOL_PROPERTIES_TOOL_NAME,
+                        smiles=smiles,
+                    )
+                ],
+            },
+            {
+                "role": "tool",
+                "tool_call_id": GET_MOL_PROPERTIES_CALL_ID,
+                "name": GET_MOL_PROPERTIES_TOOL_NAME,
+                "content": global_tool_text,
+            },
+            {
+                "role": "assistant",
+                "thinking": f"{reasoning_bundle['global_reasoning']}\n\n{LOCAL_TOOL_BRIDGE}",
+                "content": "",
+                "tool_calls": [
+                    _tool_call(
+                        call_id=COMPARE_SIMILAR_MOLS_CALL_ID,
+                        name=COMPARE_SIMILAR_MOLS_TOOL_NAME,
+                        smiles=smiles,
+                    )
+                ],
+            },
+            {
+                "role": "tool",
+                "tool_call_id": COMPARE_SIMILAR_MOLS_CALL_ID,
+                "name": COMPARE_SIMILAR_MOLS_TOOL_NAME,
+                "content": local_tool_text,
+            },
+            {
+                "role": "assistant",
+                "thinking": f"{reasoning_bundle['local_reasoning']}\n\n{reasoning_bundle['hybrid_reasoning']}",
+                "content": f"Answer: ({final_answer_option})",
+            },
+        ]
 
     return {
         "schema_version": AGENT_REASONING_SFT_SCHEMA_VERSION,
+        "sft_mode": validated_mode,
         "task": task,
         "split": split,
         "sample_index": int(sample_index),
@@ -516,7 +707,9 @@ def build_agent_reasoning_sft_for_task(
     *,
     task: str,
     split: str = "train",
+    sft_mode: str = SFT_MODE_FULL,
     rewrite_output_root: str | Path = DEFAULT_REWRITE_OUTPUT_ROOT,
+    rewrite_filter_root: str | Path = DEFAULT_REWRITE_FILTER_ROOT,
     provider: str = DEFAULT_REWRITE_PROVIDER,
     model: str = DEFAULT_REWRITE_MODEL,
     dataset_root: str | Path = DEFAULT_PROCESSED_DATA_ROOT,
@@ -528,11 +721,14 @@ def build_agent_reasoning_sft_for_task(
     max_concurrency: int = 1,
     skip_existing: bool = True,
 ) -> dict[str, Any]:
+    validated_mode = _validate_sft_mode(sft_mode)
     split_payload = load_tdc_split(task, split, data_root=dataset_root)
-    rewritten_sample_indices = list_fully_rewritten_sample_indices(
+    rewritten_sample_indices = list_rewritten_sample_indices_for_sft_mode(
         task=task,
         split=split,
+        sft_mode=validated_mode,
         rewrite_output_root=rewrite_output_root,
+        rewrite_filter_root=rewrite_filter_root,
         provider=provider,
         model=model,
     )
@@ -542,6 +738,7 @@ def build_agent_reasoning_sft_for_task(
         provider=provider,
         model=model,
         split=split,
+        sft_mode=validated_mode,
     ) / f"{task}.jsonl"
 
     existing_records: list[dict[str, Any]] = []
@@ -550,6 +747,7 @@ def build_agent_reasoning_sft_for_task(
             output_path=output_path,
             task=task,
             split=split,
+            sft_mode=validated_mode,
             target_indices=rewritten_sample_indices,
         )
 
@@ -577,12 +775,13 @@ def build_agent_reasoning_sft_for_task(
                     dataset_root=dataset_root,
                     cache_root=cache_root,
                 )
-                _prewarm_tool_runner(tool_runner, task=task)
+                _prewarm_tool_runner(tool_runner, task=task, sft_mode=validated_mode)
                 for sample_index in pending_sample_indices:
                     sample_index = int(sample_index)
                     record = build_agent_reasoning_sft_record(
                         task=task,
                         split=split,
+                        sft_mode=validated_mode,
                         sample_index=sample_index,
                         smiles=split_payload.smiles[sample_index],
                         gt_label=int(split_payload.labels[sample_index]),
@@ -603,6 +802,7 @@ def build_agent_reasoning_sft_for_task(
                     initargs=(
                         task,
                         split,
+                        validated_mode,
                         str(rewrite_output_root),
                         provider,
                         model,
@@ -663,6 +863,7 @@ def build_agent_reasoning_sft_for_task(
     return {
         "task": task,
         "split": split,
+        "sft_mode": validated_mode,
         "num_records": len(records),
         "output_path": str(output_path.resolve()),
     }
@@ -672,8 +873,10 @@ def build_agent_reasoning_sft_datasets(
     *,
     tasks: list[str] | None = None,
     split: str = "train",
+    sft_mode: str = SFT_MODE_FULL,
     manifest_index_path: str | Path = DEFAULT_TASK_MANIFEST_INDEX,
     rewrite_output_root: str | Path = DEFAULT_REWRITE_OUTPUT_ROOT,
+    rewrite_filter_root: str | Path = DEFAULT_REWRITE_FILTER_ROOT,
     provider: str = DEFAULT_REWRITE_PROVIDER,
     model: str = DEFAULT_REWRITE_MODEL,
     dataset_root: str | Path = DEFAULT_PROCESSED_DATA_ROOT,
@@ -685,16 +888,19 @@ def build_agent_reasoning_sft_datasets(
     max_concurrency: int = 1,
     skip_existing: bool = True,
 ) -> dict[str, Any]:
+    validated_mode = _validate_sft_mode(sft_mode)
     task_list = tasks or load_task_names_from_manifest_index(manifest_index_path)
     summaries: list[dict[str, Any]] = []
     total_records = 0
 
-    task_iterator = tqdm(task_list, desc=f"Agent SFT ({split})")
+    task_iterator = tqdm(task_list, desc=f"Agent SFT {validated_mode} ({split})")
     for task in task_iterator:
         summary = build_agent_reasoning_sft_for_task(
             task=task,
             split=split,
+            sft_mode=validated_mode,
             rewrite_output_root=rewrite_output_root,
+            rewrite_filter_root=rewrite_filter_root,
             provider=provider,
             model=model,
             dataset_root=dataset_root,
@@ -711,6 +917,7 @@ def build_agent_reasoning_sft_datasets(
 
     payload = {
         "schema_version": AGENT_REASONING_SFT_SCHEMA_VERSION,
+        "sft_mode": validated_mode,
         "provider": provider,
         "model": model,
         "split": split,
@@ -725,6 +932,7 @@ def build_agent_reasoning_sft_datasets(
         provider=provider,
         model=model,
         split=split,
+        sft_mode=validated_mode,
     ) / "manifest.json"
     summary_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     payload["summary_path"] = str(summary_path.resolve())

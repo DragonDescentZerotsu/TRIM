@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BBB_Martins local_only Trace</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f1ea;
+      --panel: #fffdf8;
+      --border: #d9d0c3;
+      --text: #1f1a14;
+      --muted: #6f6559;
+      --user: #d7eadf;
+      --assistant: #e8ddc8;
+      --tool: #d9e6f5;
+      --shadow: 0 12px 30px rgba(80, 58, 35, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at top left, rgba(188, 166, 137, 0.24), transparent 28%),
+        linear-gradient(180deg, #f8f4ee 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+
+    .page {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+
+    .hero {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+      line-height: 1.1;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .meta-item {
+      background: rgba(255, 250, 242, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      min-width: 0;
+    }
+
+    .meta-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .meta-value {
+      font-size: 15px;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .source-paths {
+      margin-top: 16px;
+      background: rgba(255, 250, 242, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 16px;
+    }
+
+    .message {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .message-user {
+      border-left: 8px solid var(--user);
+    }
+
+    .message-assistant {
+      border-left: 8px solid var(--assistant);
+    }
+
+    .message-tool {
+      border-left: 8px solid var(--tool);
+    }
+
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .role-user {
+      background: var(--user);
+    }
+
+    .role-assistant {
+      background: var(--assistant);
+    }
+
+    .role-tool {
+      background: var(--tool);
+    }
+
+    .message-index {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .meta-line {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .block {
+      margin-top: 12px;
+    }
+
+    .block-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .tool-call {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: rgba(245, 242, 234, 0.7);
+      margin-top: 10px;
+    }
+
+    .tool-call-name {
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.5;
+      font-size: 14px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>BBB_Martins local_only Trace</h1>
+      <p class="subtitle">A single-record viewer for sample 0 from the train split in /data1/tianang/Projects/TRIM/data/sft/agent_reasoning_messages/openrouter/openai__gpt-5.4-mini/local_only/train/BBB_Martins.jsonl.</p>
+      <div class="meta-grid"><div class="meta-item"><div class="meta-label">SFT mode</div><div class="meta-value">local_only</div></div><div class="meta-item"><div class="meta-label">Task</div><div class="meta-value">BBB_Martins</div></div><div class="meta-item"><div class="meta-label">Split</div><div class="meta-value">train</div></div><div class="meta-item"><div class="meta-label">Sample index</div><div class="meta-value">0</div></div><div class="meta-item"><div class="meta-label">Sample id</div><div class="meta-value">train_sample_0</div></div><div class="meta-item"><div class="meta-label">Ground-truth label</div><div class="meta-value">1</div></div><div class="meta-item"><div class="meta-label">Final answer</div><div class="meta-value">B</div></div><div class="meta-item"><div class="meta-label">SMILES</div><div class="meta-value">CC(C)(C)OC(=O)CCCc1ccc(N(CCCl)CCCl)cc1</div></div></div>
+      <details class="source-paths" open><summary>Source Paths</summary><pre>{
+  &quot;local_result_json&quot;: &quot;/data1/tianang/Projects/TRIM/outputs/reasoning_rewrite_outputs/openrouter/openai__gpt-5.4-mini/local/train/BBB_Martins/sample_00000/result.json&quot;
+}</pre></details>
+    </section>
+    <section class="timeline">
+      <article class="message message-user"><div class="message-header"><span class="role-badge role-user">User</span><span class="message-index">Message 1</span></div><section class="block"><div class="block-title">Content</div><pre>Instructions: Answer the following question about drug properties.
+Context: As a membrane separating circulating blood and brain extracellular fluid, the blood-brain barrier (BBB) is the protection layer that blocks most foreign drugs. Thus the ability of a drug to penetrate the barrier to deliver to the site of action forms a crucial challenge in development of drugs for central nervous system.
+Question: Given a drug SMILES string, predict whether it
+(A) does not cross the BBB (B) crosses the BBB
+Drug SMILES: CC(C)(C)OC(=O)CCCc1ccc(N(CCCl)CCCl)cc1
+Please think step by step and then put ONLY your final choice ((A) or (B)) after &quot;Answer:&quot;</pre></section></article><article class="message message-assistant"><div class="message-header"><span class="role-badge role-assistant">Assistant</span><span class="message-index">Message 2</span></div><section class="block"><div class="block-title">Thinking</div><pre>We need to predict BBB crossing status (does not cross the BBB or crosses the BBB) for the given SMILES. We can use the tool compare_similar_mols to retrieve similar compounds and compare them with the query, then base our prediction on this neighbor evidence. Let&#x27;s call it.</pre></section><section class="block"><div class="block-title">Tool Calls</div><div class="tool-call"><div class="tool-call-name">Call 1: compare_similar_mols</div><pre>{
+  &quot;smiles&quot;: &quot;CC(C)(C)OC(=O)CCCc1ccc(N(CCCl)CCCl)cc1&quot;
+}</pre></div></section></article><article class="message message-tool"><div class="message-header"><span class="role-badge role-tool">Tool</span><span class="message-index">Message 3</span></div><div class="meta-line">Tool name: <code>compare_similar_mols</code> | Tool call id: <code>call_compare_similar_mols</code></div><section class="block"><div class="block-title">Content</div><pre>Definitions: query is the target molecule being analyzed, neighbor is a retrieved training-set analog for this task, and delta means query value minus neighbor value.
+
+positive neighbors:
+Neighbor 1
+label: crosses the BBB
+similarity: 0.2432
+smiles: CCC(=O)O[C@](Cc1ccccc1)(c1ccccc1)[C@H](C)CN(C)C
+properties:
+neutral fraction: neighbor=0.0449 | query=0.9977 | delta=+0.9528
+estimated logD: neighbor=2.9279 | query=4.634 | delta=+1.7061
+strongest acidic pKa: neighbor=not applicable (no acidic site) | query=not applicable (no acidic site) | delta=not defined because neither molecule has an acidic site
+strongest basic pKa: neighbor=8.7276 | query=4.7646 | delta=-3.963
+number of acidic sites: neighbor=0 | query=0 | delta=+0
+number of basic sites: neighbor=1 | query=1 | delta=+0
+number of ionizable sites: neighbor=1 | query=1 | delta=+0
+exact molecular weight: neighbor=339.2198 | query=359.1419 | delta=+19.9221
+fraction of sp3 carbons: neighbor=0.4091 | query=0.6111 | delta=+0.202
+heavy-atom count: neighbor=25 | query=23 | delta=-2
+heavy-atom molecular weight: neighbor=310.247 | query=333.109 | delta=+22.862
+Labute surface area: neighbor=151.1728 | query=149.4521 | delta=-1.7207
+maximum absolute partial charge: neighbor=0.4535 | query=0.4599 | delta=+0.0065
+maximum partial charge: neighbor=0.3059 | query=0.3058 | delta=-0.0001
+minimum absolute partial charge: neighbor=0.3059 | query=0.3058 | delta=-0.0001
+minimum partial charge: neighbor=-0.4535 | query=-0.4599 | delta=-0.0065
+estimated logP: neighbor=4.2755 | query=4.635 | delta=+0.3595
+molecular weight: neighbor=339.479 | query=360.325 | delta=+20.846
+NH/OH group count: neighbor=0 | query=0 | delta=+0
+nitrogen/oxygen atom count: neighbor=3 | query=3 | delta=+0
+aliphatic carbocycle count: neighbor=0 | query=0 | delta=+0
+aliphatic heterocycle count: neighbor=0 | query=0 | delta=+0
+aliphatic ring count: neighbor=0 | query=0 | delta=+0
+aromatic carbocycle count: neighbor=2 | query=1 | delta=-1
+aromatic heterocycle count: neighbor=0 | query=0 | delta=+0
+aromatic ring count: neighbor=2 | query=1 | delta=-1
+hydrogen-bond acceptor count: neighbor=3 | query=3 | delta=+0
+hydrogen-bond donor count: neighbor=0 | query=0 | delta=+0
+heteroatom count: neighbor=3 | query=5 | delta=+2
+rotatable-bond count: neighbor=8 | query=9 | delta=+1
+saturated carbocycle count: neighbor=0 | query=0 | delta=+0
+saturated heterocycle count: neighbor=0 | query=0 | delta=+0
+saturated ring count: neighbor=0 | query=0 | delta=+0
+ring count: neighbor=2 | query=1 | delta=-1
+topological polar surface area: neighbor=29.54 | query=29.54 | delta=+0
+QED drug-likeness: neighbor=0.6726 | query=0.4748 | delta=-0.1977
+functional group differences:
+alkyl chloride: neighbor=0 | query=2 | delta=+2
+benzene: neighbor=2 | query=1 | delta=-1
+tertiary aliphatic amine: neighbor=1 | query=0 | delta=-1
+tertiary mixed amine: neighbor=0 | query=1 | delta=+1
+
+Neighbor 2
+label: crosses the BBB
+similarity: 0.2232
+smiles: CCN(CC)CCOC(=O)C(O)(c1ccccc1)c1ccccc1
+properties:
+neutral fraction: neighbor=0.0871 | query=0.9977 | delta=+0.9106
+estimated logD: neighbor=1.7475 | query=4.634 | delta=+2.8865
+strongest acidic pKa: neighbor=11.4765 | query=not applicable (no acidic site) | delta=not defined because one molecule has no acidic site
+strongest basic pKa: neighbor=8.4204 | query=4.7646 | delta=-3.6558
+number of acidic sites: neighbor=1 | query=0 | delta=-1
+number of basic sites: neighbor=1 | query=1 | delta=+0
+number of ionizable sites: neighbor=2 | query=1 | delta=-1
+exact molecular weight: neighbor=327.1834 | query=359.1419 | delta=+31.9584
+fraction of sp3 carbons: neighbor=0.35 | query=0.6111 | delta=+0.2611
+heavy-atom count: neighbor=24 | query=23 | delta=-1
+heavy-atom molecular weight: neighbor=302.224 | query=333.109 | delta=+30.885
+Labute surface area: neighbor=143.2372 | query=149.4521 | delta=+6.215
+maximum absolute partial charge: neighbor=0.4617 | query=0.4599 | delta=-0.0017
+maximum partial charge: neighbor=0.3472 | query=0.3058 | delta=-0.0414
+minimum absolute partial charge: neighbor=0.3472 | query=0.3058 | delta=-0.0414
+minimum partial charge: neighbor=-0.4617 | query=-0.4599 | delta=+0.0017
+estimated logP: neighbor=2.8075 | query=4.635 | delta=+1.8275
+molecular weight: neighbor=327.424 | query=360.325 | delta=+32.901
+NH/OH group count: neighbor=1 | query=0 | delta=-1
+nitrogen/oxygen atom count: neighbor=4 | query=3 | delta=-1
+aliphatic carbocycle count: neighbor=0 | query=0 | delta=+0
+aliphatic heterocycle count: neighbor=0 | query=0 | delta=+0
+aliphatic ring count: neighbor=0 | query=0 | delta=+0
+aromatic carbocycle count: neighbor=2 | query=1 | delta=-1
+aromatic heterocycle count: neighbor=0 | query=0 | delta=+0
+aromatic ring count: neighbor=2 | query=1 | delta=-1
+hydrogen-bond acceptor count: neighbor=4 | query=3 | delta=-1
+hydrogen-bond donor count: neighbor=1 | query=0 | delta=-1
+heteroatom count: neighbor=4 | query=5 | delta=+1
+rotatable-bond count: neighbor=8 | query=9 | delta=+1
+saturated carbocycle count: neighbor=0 | query=0 | delta=+0
+saturated heterocycle count: neighbor=0 | query=0 | delta=+0
+saturated ring count: neighbor=0 | query=0 | delta=+0
+ring count: neighbor=2 | query=1 | delta=-1
+topological polar surface area: neighbor=49.77 | query=29.54 | delta=-20.23
+QED drug-likeness: neighbor=0.7576 | query=0.4748 | delta=-0.2828
+functional group differences:
+alkyl chloride: neighbor=0 | query=2 | delta=+2
+benzene: neighbor=2 | query=1 | delta=-1
+tertiary aliphatic amine: neighbor=1 | query=0 | delta=-1
+tertiary hydroxyl: neighbor=1 | query=0 | delta=-1
+tertiary mixed amine: neighbor=0 | query=1 | delta=+1
+
+Neighbor 3
+label: crosses the BBB
+similarity: 0.2172
+smiles: CN(C)CCOC(=O)CCC1CCCCC1
+properties:
+neutral fraction: neighbor=0.1992 | query=0.9977 | delta=+0.7985
+estimated logD: neighbor=1.7511 | query=4.634 | delta=+2.8829
+strongest acidic pKa: neighbor=not applicable (no acidic site) | query=not applicable (no acidic site) | delta=not defined because neither molecule has an acidic site
+strongest basic pKa: neighbor=8.0041 | query=4.7646 | delta=-3.2395
+number of acidic sites: neighbor=0 | query=0 | delta=+0
+number of basic sites: neighbor=1 | query=1 | delta=+0
+number of ionizable sites: neighbor=1 | query=1 | delta=+0
+exact molecular weight: neighbor=227.1885 | query=359.1419 | delta=+131.9534
+fraction of sp3 carbons: neighbor=0.9231 | query=0.6111 | delta=-0.312
+heavy-atom count: neighbor=16 | query=23 | delta=+7
+heavy-atom molecular weight: neighbor=202.148 | query=333.109 | delta=+130.961
+Labute surface area: neighbor=99.1476 | query=149.4521 | delta=+50.3045
+maximum absolute partial charge: neighbor=0.4643 | query=0.4599 | delta=-0.0044
+maximum partial charge: neighbor=0.3053 | query=0.3058 | delta=+0.0005
+minimum absolute partial charge: neighbor=0.3053 | query=0.3058 | delta=+0.0005
+minimum partial charge: neighbor=-0.4643 | query=-0.4599 | delta=+0.0044
+estimated logP: neighbor=2.4517 | query=4.635 | delta=+2.1833
+molecular weight: neighbor=227.348 | query=360.325 | delta=+132.977
+NH/OH group count: neighbor=0 | query=0 | delta=+0
+nitrogen/oxygen atom count: neighbor=3 | query=3 | delta=+0
+aliphatic carbocycle count: neighbor=1 | query=0 | delta=-1
+aliphatic heterocycle count: neighbor=0 | query=0 | delta=+0
+aliphatic ring count: neighbor=1 | query=0 | delta=-1
+aromatic carbocycle count: neighbor=0 | query=1 | delta=+1
+aromatic heterocycle count: neighbor=0 | query=0 | delta=+0
+aromatic ring count: neighbor=0 | query=1 | delta=+1
+hydrogen-bond acceptor count: neighbor=3 | query=3 | delta=+0
+hydrogen-bond donor count: neighbor=0 | query=0 | delta=+0
+heteroatom count: neighbor=3 | query=5 | delta=+2
+rotatable-bond count: neighbor=6 | query=9 | delta=+3
+saturated carbocycle count: neighbor=1 | query=0 | delta=-1
+saturated heterocycle count: neighbor=0 | query=0 | delta=+0
+saturated ring count: neighbor=1 | query=0 | delta=-1
+ring count: neighbor=1 | query=1 | delta=+0
+topological polar surface area: neighbor=29.54 | query=29.54 | delta=+0
+QED drug-likeness: neighbor=0.6528 | query=0.4748 | delta=-0.178
+functional group differences:
+alkyl chloride: neighbor=0 | query=2 | delta=+2
+benzene: neighbor=0 | query=1 | delta=+1
+tertiary aliphatic amine: neighbor=1 | query=0 | delta=-1
+tertiary mixed amine: neighbor=0 | query=1 | delta=+1
+
+negative neighbors:
+Neighbor 4
+label: does not cross the BBB
+similarity: 0.2385
+smiles: CC(COc1ccccc1)N(CCCl)Cc1ccccc1
+properties:
+neutral fraction: neighbor=0.9764 | query=0.9977 | delta=+0.0213
+estimated logD: neighbor=4.1845 | query=4.634 | delta=+0.4495
+strongest acidic pKa: neighbor=not applicable (no acidic site) | query=not applicable (no acidic site) | delta=not defined because neither molecule has an acidic site
+strongest basic pKa: neighbor=5.7837 | query=4.7646 | delta=-1.0191
+number of acidic sites: neighbor=0 | query=0 | delta=+0
+number of basic sites: neighbor=1 | query=1 | delta=+0
+number of ionizable sites: neighbor=1 | query=1 | delta=+0
+exact molecular weight: neighbor=303.139 | query=359.1419 | delta=+56.0029
+fraction of sp3 carbons: neighbor=0.3333 | query=0.6111 | delta=+0.2778
+heavy-atom count: neighbor=21 | query=23 | delta=+2
+heavy-atom molecular weight: neighbor=281.657 | query=333.109 | delta=+51.452
+Labute surface area: neighbor=131.8548 | query=149.4521 | delta=+17.5973
+maximum absolute partial charge: neighbor=0.492 | query=0.4599 | delta=-0.032
+maximum partial charge: neighbor=0.1189 | query=0.3058 | delta=+0.1869
+minimum absolute partial charge: neighbor=0.1189 | query=0.3058 | delta=+0.1869
+minimum partial charge: neighbor=-0.492 | query=-0.4599 | delta=+0.032
+estimated logP: neighbor=4.1949 | query=4.635 | delta=+0.4401
+molecular weight: neighbor=303.833 | query=360.325 | delta=+56.492
+NH/OH group count: neighbor=0 | query=0 | delta=+0
+nitrogen/oxygen atom count: neighbor=2 | query=3 | delta=+1
+aliphatic carbocycle count: neighbor=0 | query=0 | delta=+0
+aliphatic heterocycle count: neighbor=0 | query=0 | delta=+0
+aliphatic ring count: neighbor=0 | query=0 | delta=+0
+aromatic carbocycle count: neighbor=2 | query=1 | delta=-1
+aromatic heterocycle count: neighbor=0 | query=0 | delta=+0
+aromatic ring count: neighbor=2 | query=1 | delta=-1
+hydrogen-bond acceptor count: neighbor=2 | query=3 | delta=+1
+hydrogen-bond donor count: neighbor=0 | query=0 | delta=+0
+heteroatom count: neighbor=3 | query=5 | delta=+2
+rotatable-bond count: neighbor=8 | query=9 | delta=+1
+saturated carbocycle count: neighbor=0 | query=0 | delta=+0
+saturated heterocycle count: neighbor=0 | query=0 | delta=+0
+saturated ring count: neighbor=0 | query=0 | delta=+0
+ring count: neighbor=2 | query=1 | delta=-1
+topological polar surface area: neighbor=12.47 | query=29.54 | delta=+17.07
+QED drug-likeness: neighbor=0.6779 | query=0.4748 | delta=-0.2031
+functional group differences:
+alkyl aryl ether: neighbor=1 | query=0 | delta=-1
+alkyl chloride: neighbor=1 | query=2 | delta=+1
+benzene: neighbor=2 | query=1 | delta=-1
+carboxylic ester: neighbor=0 | query=1 | delta=+1
+tertiary aliphatic amine: neighbor=1 | query=0 | delta=-1
+tertiary mixed amine: neighbor=0 | query=1 | delta=+1
+
+Neighbor 5
+label: does not cross the BBB
+similarity: 0.2183
+smiles: CCCNCC(O)COc1ccccc1C(=O)CCc1ccccc1
+properties:
+neutral fraction: neighbor=0.0205 | query=0.9977 | delta=+0.9772
+estimated logD: neighbor=1.5529 | query=4.634 | delta=+3.0811
+strongest acidic pKa: neighbor=13.8133 | query=not applicable (no acidic site) | delta=not defined because one molecule has no acidic site
+strongest basic pKa: neighbor=9.0795 | query=4.7646 | delta=-4.3149
+number of acidic sites: neighbor=1 | query=0 | delta=-1
+number of basic sites: neighbor=1 | query=1 | delta=+0
+number of ionizable sites: neighbor=2 | query=1 | delta=-1
+exact molecular weight: neighbor=341.1991 | query=359.1419 | delta=+17.9428
+fraction of sp3 carbons: neighbor=0.381 | query=0.6111 | delta=+0.2302
+heavy-atom count: neighbor=25 | query=23 | delta=-2
+heavy-atom molecular weight: neighbor=314.235 | query=333.109 | delta=+18.874
+Labute surface area: neighbor=149.3921 | query=149.4521 | delta=+0.06
+maximum absolute partial charge: neighbor=0.4901 | query=0.4599 | delta=-0.0301
+maximum partial charge: neighbor=0.1664 | query=0.3058 | delta=+0.1394
+minimum absolute partial charge: neighbor=0.1664 | query=0.3058 | delta=+0.1394
+minimum partial charge: neighbor=-0.4901 | query=-0.4599 | delta=+0.0301
+estimated logP: neighbor=3.2414 | query=4.635 | delta=+1.3936
+molecular weight: neighbor=341.451 | query=360.325 | delta=+18.874
+NH/OH group count: neighbor=2 | query=0 | delta=-2
+nitrogen/oxygen atom count: neighbor=4 | query=3 | delta=-1
+aliphatic carbocycle count: neighbor=0 | query=0 | delta=+0
+aliphatic heterocycle count: neighbor=0 | query=0 | delta=+0
+aliphatic ring count: neighbor=0 | query=0 | delta=+0
+aromatic carbocycle count: neighbor=2 | query=1 | delta=-1
+aromatic heterocycle count: neighbor=0 | query=0 | delta=+0
+aromatic ring count: neighbor=2 | query=1 | delta=-1
+hydrogen-bond acceptor count: neighbor=4 | query=3 | delta=-1
+hydrogen-bond donor count: neighbor=2 | query=0 | delta=-2
+heteroatom count: neighbor=4 | query=5 | delta=+1
+rotatable-bond count: neighbor=11 | query=9 | delta=-2
+saturated carbocycle count: neighbor=0 | query=0 | delta=+0
+saturated heterocycle count: neighbor=0 | query=0 | delta=+0
+saturated ring count: neighbor=0 | query=0 | delta=+0
+ring count: neighbor=2 | query=1 | delta=-1
+topological polar surface area: neighbor=58.56 | query=29.54 | delta=-29.02
+QED drug-likeness: neighbor=0.4865 | query=0.4748 | delta=-0.0117
+functional group differences:
+alkyl aryl ether: neighbor=1 | query=0 | delta=-1
+alkyl chloride: neighbor=0 | query=2 | delta=+2
+benzene: neighbor=2 | query=1 | delta=-1
+carboxylic ester: neighbor=0 | query=1 | delta=+1
+ketone: neighbor=1 | query=0 | delta=-1
+secondary aliphatic amine: neighbor=1 | query=0 | delta=-1
+secondary hydroxyl: neighbor=1 | query=0 | delta=-1
+tertiary mixed amine: neighbor=0 | query=1 | delta=+1
+
+Neighbor 6
+label: does not cross the BBB
+similarity: 0.2077
+smiles: COc1ccc(CCN(C)CCCC(C#N)(c2ccc(OC)c(OC)c2)C(C)C)cc1OC
+properties:
+neutral fraction: neighbor=0.0156 | query=0.9977 | delta=+0.9821
+estimated logD: neighbor=3.2856 | query=4.634 | delta=+1.3484
+strongest acidic pKa: neighbor=not applicable (no acidic site) | query=not applicable (no acidic site) | delta=not defined because neither molecule has an acidic site
+strongest basic pKa: neighbor=9.2007 | query=4.7646 | delta=-4.4361
+number of acidic sites: neighbor=0 | query=0 | delta=+0
+number of basic sites: neighbor=1 | query=1 | delta=+0
+number of ionizable sites: neighbor=1 | query=1 | delta=+0
+exact molecular weight: neighbor=454.2832 | query=359.1419 | delta=-95.1413
+fraction of sp3 carbons: neighbor=0.5185 | query=0.6111 | delta=+0.0926
+heavy-atom count: neighbor=33 | query=23 | delta=-10
+heavy-atom molecular weight: neighbor=416.307 | query=333.109 | delta=-83.198
+Labute surface area: neighbor=198.5692 | query=149.4521 | delta=-49.1171
+maximum absolute partial charge: neighbor=0.4929 | query=0.4599 | delta=-0.0329
+maximum partial charge: neighbor=0.1605 | query=0.3058 | delta=+0.1453
+minimum absolute partial charge: neighbor=0.1605 | query=0.3058 | delta=+0.1453
+minimum partial charge: neighbor=-0.4929 | query=-0.4599 | delta=+0.0329
+estimated logP: neighbor=5.0931 | query=4.635 | delta=-0.4581
+molecular weight: neighbor=454.611 | query=360.325 | delta=-94.286
+NH/OH group count: neighbor=0 | query=0 | delta=+0
+nitrogen/oxygen atom count: neighbor=6 | query=3 | delta=-3
+aliphatic carbocycle count: neighbor=0 | query=0 | delta=+0
+aliphatic heterocycle count: neighbor=0 | query=0 | delta=+0
+aliphatic ring count: neighbor=0 | query=0 | delta=+0
+aromatic carbocycle count: neighbor=2 | query=1 | delta=-1
+aromatic heterocycle count: neighbor=0 | query=0 | delta=+0
+aromatic ring count: neighbor=2 | query=1 | delta=-1
+hydrogen-bond acceptor count: neighbor=6 | query=3 | delta=-3
+hydrogen-bond donor count: neighbor=0 | query=0 | delta=+0
+heteroatom count: neighbor=6 | query=5 | delta=-1
+rotatable-bond count: neighbor=13 | query=9 | delta=-4
+saturated carbocycle count: neighbor=0 | query=0 | delta=+0
+saturated heterocycle count: neighbor=0 | query=0 | delta=+0
+saturated ring count: neighbor=0 | query=0 | delta=+0
+ring count: neighbor=2 | query=1 | delta=-1
+topological polar surface area: neighbor=63.95 | query=29.54 | delta=-34.41
+QED drug-likeness: neighbor=0.4199 | query=0.4748 | delta=+0.0549
+functional group differences:
+alkyl aryl ether: neighbor=4 | query=0 | delta=-4
+alkyl chloride: neighbor=0 | query=2 | delta=+2
+benzene: neighbor=2 | query=1 | delta=-1
+carboxylic ester: neighbor=0 | query=1 | delta=+1
+nitrile: neighbor=1 | query=0 | delta=-1
+tertiary aliphatic amine: neighbor=1 | query=0 | delta=-1
+tertiary mixed amine: neighbor=0 | query=1 | delta=+1</pre></section></article><article class="message message-assistant"><div class="message-header"><span class="role-badge role-assistant">Assistant</span><span class="message-index">Message 4</span></div><section class="block"><div class="block-title">Thinking</div><pre>Neighbor 1 is a positive neighbor, and although it is assigned the BBB-crossing class, the comparison is mixed. The query has one tertiary mixed amine while the neighbor has none, which is a notable polar/basic-site difference that on its own leans away from BBB penetration. However, the query matches the neighbor exactly in topological polar surface area at 29.54 Å², a value well within the low-PSA region that is generally compatible with BBB passage, and the query also has a much higher neutral fraction, 0.9977 versus 0.0449 (delta +0.9528), which strongly favors passive entry. The query additionally has 2 alkyl chloride copies versus 0 in the neighbor, and NH/OH group count remains 0 in both cases. Even though the tertiary mixed amine difference is unfavorable, the low PSA, very high neutral fraction, and unchanged donor count make this comparison overall supportive of the BBB-crossing label.
+
+Neighbor 2 is also a positive neighbor and gives a clearer BBB-favorable picture. Again, the query has one tertiary mixed amine while the neighbor has none, which is the main unfavorable point. But the neighbor’s estimated logP is 2.8075 compared with the query’s 4.635, so the query is noticeably more lipophilic than the neighbor; in isolation, very high lipophilicity can be a mixed signal because CNS rules often favor a moderate window rather than extreme values. Even so, the query has lower QED drug-likeness than the neighbor, which is unfavorable in general developability terms, but it also has 2 alkyl chlorides versus 0, a higher fraction of sp3 carbons (0.6111 vs 0.35, delta +0.2611), and one fewer hydrogen-bond donor (0 vs 1). The combination of lower donor burden and more saturated character helps offset the tertiary mixed amine penalty, so this neighbor still aligns better with BBB crossing than with non-crossing.
+
+Neighbor 3, another positive neighbor, again mixes one clearly unfavorable feature with several favorable ones. The query has one tertiary mixed amine where the neighbor has none, which is the strongest reason this pair could argue against BBB passage. But the topological polar surface area is identical at 29.54 Å², which is strongly in the CNS-friendly range, and the neutral fraction is much higher in the query, 0.9977 versus 0.1992 (delta +0.7985), supporting better membrane passage. The query also has 2 alkyl chlorides versus 0. The only other features here are a small shift in minimum partial charge, from -0.4643 in the neighbor to -0.4599 in the query (delta +0.0044), and a larger increase in rotatable-bond count from 6 to 9 (delta +3), which adds flexibility and is less favorable for BBB permeability. Even with those counterweights, the low PSA and much higher neutral fraction make this positive neighbor still support the BBB-crossing label overall.
+
+Neighbor 4 is a negative neighbor, but the comparison is not uniformly against the query. The query again has one tertiary mixed amine while the neighbor has none, which is unfavorable. On the other hand, the query’s fraction of sp3 carbons is higher, 0.6111 versus 0.3333 (delta +0.2778), which generally points toward a more saturated scaffold and can be compatible with CNS-like properties. The problematic parts are the query’s higher estimated logD, 4.634 versus 4.1845, which is more extreme than the moderate logD7.4 region usually preferred for BBB penetration, and the lower QED drug-likeness, 0.4748 versus 0.6779. The query also has a higher heteroatom count, 5 versus 3, and a much higher topological polar surface area, 29.54 versus 12.47 (delta +17.07). Those polarity/heteroatom increases are the main reasons this neighbor is a non-crossing example, and they make the query look less favorable than this BBB-negative analog despite the extra sp3 character.
+
+Neighbor 5 is another negative neighbor, and here the comparison is more mixed but still ultimately informative. The query again has a tertiary mixed amine while the neighbor does not, which is unfavorable. The query also has much higher estimated logP, 4.635 versus 3.2414, a value that is beyond the moderate lipophilicity window often favored for BBB penetration, and its QED drug-likeness is slightly lower, 0.4748 versus 0.4865. Those are all negative signs. However, the query has much lower topological polar surface area, 29.54 versus 58.56 (delta -29.02), which is a major shift into a more BBB-permissive PSA region, and much higher estimated logD, 4.634 versus 1.5529, which increases the lipophilic character of the neutral fraction at pH 7.4. The query also has a higher maximum partial charge, 0.3058 versus 0.1664 (delta +0.1394). Even though the mixed amine and high logP are concerns, the much lower PSA and more favorable ionization-aware lipophilicity make this negative neighbor less discouraging than it first appears.
+
+Neighbor 6 is the last negative neighbor and gives the strongest BBB-supportive counterexample. The query has one tertiary mixed amine while the neighbor has none, which is the unfavorable feature carried across the set. But the query has far lower topological polar surface area, 29.54 versus 63.95 (delta -34.41), and a much higher neutral fraction, 0.9977 versus 0.0156 (delta +0.9821), both of which are strongly aligned with BBB penetration because low polarity and a mostly neutral state favor passive entry. The query’s QED drug-likeness is slightly higher, 0.4748 versus 0.4199, while its strongest basic pKa is much lower, 4.7646 versus 9.2007 (delta -4.4361), indicating a far less strongly basic site profile and therefore a much larger neutral fraction at physiological pH. The acidic-site comparison is explicitly absent for both molecules, so there is no acidic-site penalty to distinguish them. Taken together, the lower PSA, much higher neutral fraction, and much lower basicity make the query look substantially more BBB-compatible than this negative neighbor.
+
+Putting all six neighbors together, the evidence is mixed but leans toward BBB crossing. The three positive neighbors all support the label because the query keeps a low PSA of 29.54 Å², very high neutral fraction, and only modest donor burden, even though the tertiary mixed amine and increased flexibility in one case are liabilities. Among the three negative neighbors, the query is penalized by the tertiary mixed amine and, in some comparisons, high logP or higher heteroatom burden, but it also shows a much lower PSA than the BBB-negative references, a much higher neutral fraction, and in the last neighbor a much lower strongest basic pKa. Overall, the low polarity and high neutral fraction are the most consistent signals, so the combined neighbor evidence supports option (B): crosses the BBB.</pre></section><section class="block"><div class="block-title">Content</div><pre>Answer: (B)</pre></section></article>
+    </section>
+  </main>
+</body>
+</html>

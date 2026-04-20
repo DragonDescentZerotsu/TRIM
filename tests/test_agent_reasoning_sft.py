@@ -9,10 +9,13 @@ from trim.reasoning.agent_sft import (
     GET_MOL_PROPERTIES_CALL_ID,
     GET_MOL_PROPERTIES_TOOL_NAME,
     LOCAL_TOOL_BRIDGE,
+    SFT_MODE_GLOBAL_ONLY,
+    SFT_MODE_LOCAL_ONLY,
     build_agent_reasoning_sft_datasets,
     build_agent_reasoning_sft_for_task,
     build_agent_reasoning_sft_record,
     build_global_tool_bridge,
+    build_local_only_tool_bridge,
 )
 
 
@@ -54,6 +57,18 @@ def _write_rewrite_result(
         "parsed_output": {"reasoning": reasoning},
     }
     (sample_dir / "result.json").write_text(json.dumps(payload), encoding="utf-8")
+
+
+def _write_filter_records(
+    root: Path,
+    *,
+    split: str,
+    task: str,
+    records: list[dict[str, object]],
+) -> None:
+    task_dir = root / split / task
+    task_dir.mkdir(parents=True, exist_ok=True)
+    (task_dir / "kept_records.json").write_text(json.dumps(records), encoding="utf-8")
 
 
 def test_build_agent_reasoning_sft_record_assembles_expected_six_message_transcript(tmp_path: Path, monkeypatch):
@@ -163,6 +178,123 @@ def test_build_agent_reasoning_sft_record_assembles_expected_six_message_transcr
     assert "tool_calls" not in messages[5]
     assert messages[5]["thinking"] == "Local polished reasoning\n\nHybrid polished reasoning"
     assert messages[5]["content"] == "Answer: (B)"
+
+
+def test_build_agent_reasoning_sft_record_assembles_global_only_transcript(tmp_path: Path, monkeypatch):
+    rewrite_root = tmp_path / "rewrite_outputs"
+    task = "BBB_Martins"
+    split = "train"
+    sample_index = 0
+    _write_rewrite_result(
+        rewrite_root,
+        provider="openrouter",
+        model_slug="openai__gpt-5.4-mini",
+        mode="global",
+        split=split,
+        task=task,
+        sample_index=sample_index,
+        reasoning="Global polished reasoning",
+    )
+
+    class _CountingToolRunner(_FakeToolRunner):
+        def __init__(self):
+            self.calls: list[str] = []
+
+        def get_mol_properties_and_fg(self, smiles: str) -> str:
+            self.calls.append(f"global::{smiles}")
+            return super().get_mol_properties_and_fg(smiles)
+
+        def compare_similar_mols(self, smiles: str) -> str:
+            self.calls.append(f"local::{smiles}")
+            return super().compare_similar_mols(smiles)
+
+    tool_runner = _CountingToolRunner()
+    monkeypatch.setattr("trim.reasoning.agent_sft.render_task_user_message", lambda **kwargs: "prompt")
+    monkeypatch.setattr("trim.reasoning.agent_sft.load_task_label_semantics", lambda task_name: None)
+
+    record = build_agent_reasoning_sft_record(
+        task=task,
+        split=split,
+        sft_mode=SFT_MODE_GLOBAL_ONLY,
+        sample_index=sample_index,
+        smiles="CCO",
+        gt_label=1,
+        tool_runner=tool_runner,
+        rewrite_output_root=rewrite_root,
+        provider="openrouter",
+        model="openai/gpt-5.4-mini",
+    )
+
+    assert record["sft_mode"] == SFT_MODE_GLOBAL_ONLY
+    assert record["source_paths"].keys() == {"global_result_json"}
+    assert tool_runner.calls == ["global::CCO"]
+    messages = record["messages"]
+    assert [message["role"] for message in messages] == ["user", "assistant", "tool", "assistant"]
+    assert messages[1]["thinking"] == build_global_tool_bridge(task)
+    assert messages[1]["tool_calls"][0]["function"]["name"] == GET_MOL_PROPERTIES_TOOL_NAME
+    assert messages[2]["name"] == GET_MOL_PROPERTIES_TOOL_NAME
+    assert messages[3]["thinking"] == "Global polished reasoning"
+    assert messages[3]["content"] == "Answer: (B)"
+
+
+def test_build_agent_reasoning_sft_record_assembles_local_only_transcript(tmp_path: Path, monkeypatch):
+    rewrite_root = tmp_path / "rewrite_outputs"
+    task = "BBB_Martins"
+    split = "train"
+    sample_index = 0
+    _write_rewrite_result(
+        rewrite_root,
+        provider="openrouter",
+        model_slug="openai__gpt-5.4-mini",
+        mode="local",
+        split=split,
+        task=task,
+        sample_index=sample_index,
+        reasoning="Local polished reasoning",
+    )
+
+    class _CountingToolRunner(_FakeToolRunner):
+        def __init__(self):
+            self.calls: list[str] = []
+
+        def get_mol_properties_and_fg(self, smiles: str) -> str:
+            self.calls.append(f"global::{smiles}")
+            return super().get_mol_properties_and_fg(smiles)
+
+        def compare_similar_mols(self, smiles: str) -> str:
+            self.calls.append(f"local::{smiles}")
+            return super().compare_similar_mols(smiles)
+
+    tool_runner = _CountingToolRunner()
+    monkeypatch.setattr("trim.reasoning.agent_sft.render_task_user_message", lambda **kwargs: "prompt")
+    monkeypatch.setattr("trim.reasoning.agent_sft.load_task_label_semantics", lambda task_name: None)
+
+    record = build_agent_reasoning_sft_record(
+        task=task,
+        split=split,
+        sft_mode=SFT_MODE_LOCAL_ONLY,
+        sample_index=sample_index,
+        smiles="CCO",
+        gt_label=0,
+        tool_runner=tool_runner,
+        rewrite_output_root=rewrite_root,
+        provider="openrouter",
+        model="openai/gpt-5.4-mini",
+    )
+
+    assert record["sft_mode"] == SFT_MODE_LOCAL_ONLY
+    assert record["source_paths"].keys() == {"local_result_json"}
+    assert tool_runner.calls == ["local::CCO"]
+    messages = record["messages"]
+    assert [message["role"] for message in messages] == ["user", "assistant", "tool", "assistant"]
+    assert messages[1]["thinking"] == build_local_only_tool_bridge(task)
+    assert messages[1]["thinking"].startswith(
+        "We need to predict BBB crossing status (does not cross the BBB or crosses the BBB)"
+    )
+    assert messages[1]["tool_calls"][0]["function"]["name"] == COMPARE_SIMILAR_MOLS_TOOL_NAME
+    assert messages[2]["name"] == COMPARE_SIMILAR_MOLS_TOOL_NAME
+    assert messages[3]["thinking"] == "Local polished reasoning"
+    assert messages[3]["content"] == "Answer: (A)"
 
 
 def test_build_agent_reasoning_sft_record_falls_back_to_binary_a_b_mapping(tmp_path: Path, monkeypatch):
@@ -338,6 +470,118 @@ def test_build_agent_reasoning_sft_datasets_writes_per_task_jsonl_in_sample_orde
     assert [row["sample_index"] for row in ames_rows] == [1]
     assert [row["smiles"] for row in ames_rows] == ["AMES_1"]
     assert summary["summary_path"] == str(manifest_path.resolve())
+
+
+def test_build_agent_reasoning_sft_datasets_selects_correct_teacher_samples_for_ablation_modes(
+    tmp_path: Path, monkeypatch
+):
+    rewrite_root = tmp_path / "rewrite_outputs"
+    filter_root = tmp_path / "rewrite_filters"
+    output_root = tmp_path / "sft"
+    provider = "openrouter"
+    model = "openai/gpt-5.4-mini"
+    model_slug = "openai__gpt-5.4-mini"
+    task = "BBB_Martins"
+
+    for sample_index in (0, 1, 2):
+        for mode in ("global", "local"):
+            _write_rewrite_result(
+                rewrite_root,
+                provider=provider,
+                model_slug=model_slug,
+                mode=mode,
+                split="train",
+                task=task,
+                sample_index=sample_index,
+                reasoning=f"{mode} reasoning {sample_index}",
+            )
+    _write_filter_records(
+        filter_root,
+        split="train",
+        task=task,
+        records=[
+            {
+                "sample_id": "train_sample_0",
+                "sample_index": 0,
+                "task": task,
+                "split": "train",
+                "smiles": "BBB_0",
+                "gt_label": 1,
+                "global_prediction_correct": True,
+                "local_prediction_correct": True,
+                "teacher_case": "both_correct",
+            },
+            {
+                "sample_id": "train_sample_1",
+                "sample_index": 1,
+                "task": task,
+                "split": "train",
+                "smiles": "BBB_1",
+                "gt_label": 0,
+                "global_prediction_correct": False,
+                "local_prediction_correct": True,
+                "teacher_case": "local_only_correct",
+            },
+            {
+                "sample_id": "train_sample_2",
+                "sample_index": 2,
+                "task": task,
+                "split": "train",
+                "smiles": "BBB_2",
+                "gt_label": 1,
+                "global_prediction_correct": True,
+                "local_prediction_correct": False,
+                "teacher_case": "global_only_correct",
+            },
+        ],
+    )
+
+    monkeypatch.setattr(
+        "trim.reasoning.agent_sft.load_tdc_split",
+        lambda task_name, split, data_root=None: _FakeSplit(smiles=["BBB_0", "BBB_1", "BBB_2"], labels=[1, 0, 1]),
+    )
+    monkeypatch.setattr("trim.reasoning.agent_sft.render_task_user_message", lambda **kwargs: f"prompt::{kwargs['smiles']}")
+    monkeypatch.setattr("trim.reasoning.agent_sft.build_task_tool_runner", lambda **kwargs: _FakeToolRunner())
+    monkeypatch.setattr("trim.reasoning.agent_sft.load_task_label_semantics", lambda task_name: None)
+
+    global_summary = build_agent_reasoning_sft_datasets(
+        tasks=[task],
+        split="train",
+        sft_mode=SFT_MODE_GLOBAL_ONLY,
+        rewrite_output_root=rewrite_root,
+        rewrite_filter_root=filter_root,
+        provider=provider,
+        model=model,
+        output_root=output_root,
+    )
+    local_summary = build_agent_reasoning_sft_datasets(
+        tasks=[task],
+        split="train",
+        sft_mode=SFT_MODE_LOCAL_ONLY,
+        rewrite_output_root=rewrite_root,
+        rewrite_filter_root=filter_root,
+        provider=provider,
+        model=model,
+        output_root=output_root,
+    )
+
+    global_path = output_root / provider / model_slug / SFT_MODE_GLOBAL_ONLY / "train" / f"{task}.jsonl"
+    local_path = output_root / provider / model_slug / SFT_MODE_LOCAL_ONLY / "train" / f"{task}.jsonl"
+    global_rows = [json.loads(line) for line in global_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    local_rows = [json.loads(line) for line in local_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+    assert global_summary["sft_mode"] == SFT_MODE_GLOBAL_ONLY
+    assert local_summary["sft_mode"] == SFT_MODE_LOCAL_ONLY
+    assert [row["sample_index"] for row in global_rows] == [0, 2]
+    assert [row["messages"][1]["tool_calls"][0]["function"]["name"] for row in global_rows] == [
+        GET_MOL_PROPERTIES_TOOL_NAME,
+        GET_MOL_PROPERTIES_TOOL_NAME,
+    ]
+    assert [row["sample_index"] for row in local_rows] == [0, 1]
+    assert [row["messages"][1]["tool_calls"][0]["function"]["name"] for row in local_rows] == [
+        COMPARE_SIMILAR_MOLS_TOOL_NAME,
+        COMPARE_SIMILAR_MOLS_TOOL_NAME,
+    ]
 
 
 def test_build_agent_reasoning_sft_datasets_resumes_from_existing_jsonl_prefix(tmp_path: Path, monkeypatch):

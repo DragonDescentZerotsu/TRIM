@@ -17,6 +17,8 @@ from trim.reasoning.agent_sft import (
     DEFAULT_AGENT_REASONING_SFT_OUTPUT_ROOT,
     DEFAULT_REWRITE_MODEL,
     DEFAULT_REWRITE_PROVIDER,
+    SFT_MODE_FULL,
+    SFT_MODES,
 )
 from trim.reasoning.rewrite.pipeline import model_slug
 from trim.utils.io import ensure_directory, load_json, save_json
@@ -43,6 +45,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model", default=DEFAULT_REWRITE_MODEL)
     parser.add_argument("--split", default="train")
     parser.add_argument(
+        "--sft-mode",
+        choices=SFT_MODES,
+        default=SFT_MODE_FULL,
+        help=(
+            "Source SFT mode to export. 'full' uses the original provider/model/split layout; "
+            "'global_only' and 'local_only' use provider/model/<mode>/split and write separate HF dataset roots."
+        ),
+    )
+    parser.add_argument(
         "--output-root",
         default=DEFAULT_HF_PUBLIC_OUTPUT_ROOT,
         help="Base output root for sanitized HF-public exports.",
@@ -62,12 +73,29 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _source_split_dir(*, source_root: str | Path, provider: str, model: str, split: str) -> Path:
-    return resolve_project_path(source_root) / provider / model_slug(model) / split
+def _source_split_dir(
+    *,
+    source_root: str | Path,
+    provider: str,
+    model: str,
+    split: str,
+    sft_mode: str,
+) -> Path:
+    source_dir = resolve_project_path(source_root) / provider / model_slug(model)
+    if sft_mode != SFT_MODE_FULL:
+        source_dir = source_dir / sft_mode
+    return source_dir / split
 
 
-def _dataset_root(*, output_root: str | Path, provider: str, model: str) -> Path:
-    return ensure_directory(resolve_project_path(output_root) / provider / model_slug(model))
+def _hf_dataset_slug(*, model: str, sft_mode: str) -> str:
+    slug = model_slug(model)
+    if sft_mode == SFT_MODE_FULL:
+        return slug
+    return f"{slug}-{sft_mode.replace('_', '-')}"
+
+
+def _dataset_root(*, output_root: str | Path, provider: str, model: str, sft_mode: str) -> Path:
+    return ensure_directory(resolve_project_path(output_root) / provider / _hf_dataset_slug(model=model, sft_mode=sft_mode))
 
 
 def _read_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -111,6 +139,7 @@ def _build_public_manifest(
     dataset_root: Path,
     provider: str,
     model: str,
+    sft_mode: str,
     drop_source_paths: bool,
 ) -> dict[str, Any]:
     tasks = [
@@ -126,6 +155,7 @@ def _build_public_manifest(
         "schema_version": HF_PUBLIC_MANIFEST_SCHEMA_VERSION,
         "provider": provider,
         "model": model,
+        "sft_mode": sft_mode,
         "split": split,
         "num_tasks": len(tasks),
         "num_records": sum(num_records for _, num_records, _ in exported_files),
@@ -134,7 +164,11 @@ def _build_public_manifest(
             "drop_source_paths": drop_source_paths,
         },
         "source": {
-            "layout": f"{provider}/{model_slug(model)}/{split}",
+            "layout": (
+                f"{provider}/{model_slug(model)}/{split}"
+                if sft_mode == SFT_MODE_FULL
+                else f"{provider}/{model_slug(model)}/{sft_mode}/{split}"
+            ),
         },
     }
     if source_manifest is not None:
@@ -194,6 +228,7 @@ def _build_readme(*, dataset_root: Path, exported_splits: list[str], manifest_pa
             "",
             f"- Provider: `{manifest_payload.get('provider', '')}`",
             f"- Model: `{manifest_payload.get('model', '')}`",
+            f"- SFT mode: `{manifest_payload.get('sft_mode', 'full')}`",
             f"- Splits present: `{', '.join(exported_splits)}`",
             f"- Records in this export manifest: `{manifest_payload.get('num_records', 0)}`",
             f"- Tasks in this split: `{task_names}`",
@@ -203,6 +238,7 @@ def _build_readme(*, dataset_root: Path, exported_splits: list[str], manifest_pa
             "Each JSONL line is one training example with these top-level fields:",
             "",
             "- `schema_version`",
+            "- `sft_mode`",
             "- `task`",
             "- `split`",
             "- `sample_index`",
@@ -242,17 +278,21 @@ def export_hf_public_dataset(
     split: str,
     output_root: str | Path,
     drop_source_paths: bool,
+    sft_mode: str = SFT_MODE_FULL,
 ) -> dict[str, Any]:
+    if sft_mode not in SFT_MODES:
+        raise ValueError(f"Unsupported SFT mode {sft_mode!r}; expected one of {SFT_MODES}")
     source_split_dir = _source_split_dir(
         source_root=source_root,
         provider=provider,
         model=model,
         split=split,
+        sft_mode=sft_mode,
     )
     if not source_split_dir.exists():
         raise FileNotFoundError(f"Source split directory does not exist: {source_split_dir}")
 
-    dataset_root = _dataset_root(output_root=output_root, provider=provider, model=model)
+    dataset_root = _dataset_root(output_root=output_root, provider=provider, model=model, sft_mode=sft_mode)
     split_output_dir = ensure_directory(dataset_root / split)
     metadata_dir = ensure_directory(dataset_root / "metadata")
 
@@ -277,6 +317,7 @@ def export_hf_public_dataset(
         dataset_root=dataset_root,
         provider=provider,
         model=model,
+        sft_mode=sft_mode,
         drop_source_paths=drop_source_paths,
     )
     manifest_path = save_json(metadata_dir / "manifest.json", public_manifest)
@@ -296,6 +337,7 @@ def export_hf_public_dataset(
         "manifest_path": str(manifest_path.resolve()),
         "readme_path": str(readme_path.resolve()),
         "split": split,
+        "sft_mode": sft_mode,
         "provider": provider,
         "model": model,
         "num_tasks": public_manifest["num_tasks"],
@@ -319,6 +361,7 @@ def main() -> int:
         provider=args.provider,
         model=args.model,
         split=args.split,
+        sft_mode=args.sft_mode,
         output_root=args.output_root,
         drop_source_paths=args.drop_source_paths,
     )

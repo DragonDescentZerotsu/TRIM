@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BBB_Martins global_only Trace</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f1ea;
+      --panel: #fffdf8;
+      --border: #d9d0c3;
+      --text: #1f1a14;
+      --muted: #6f6559;
+      --user: #d7eadf;
+      --assistant: #e8ddc8;
+      --tool: #d9e6f5;
+      --shadow: 0 12px 30px rgba(80, 58, 35, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at top left, rgba(188, 166, 137, 0.24), transparent 28%),
+        linear-gradient(180deg, #f8f4ee 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+
+    .page {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+
+    .hero {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+      line-height: 1.1;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .meta-item {
+      background: rgba(255, 250, 242, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      min-width: 0;
+    }
+
+    .meta-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .meta-value {
+      font-size: 15px;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .source-paths {
+      margin-top: 16px;
+      background: rgba(255, 250, 242, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 16px;
+    }
+
+    .message {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .message-user {
+      border-left: 8px solid var(--user);
+    }
+
+    .message-assistant {
+      border-left: 8px solid var(--assistant);
+    }
+
+    .message-tool {
+      border-left: 8px solid var(--tool);
+    }
+
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .role-user {
+      background: var(--user);
+    }
+
+    .role-assistant {
+      background: var(--assistant);
+    }
+
+    .role-tool {
+      background: var(--tool);
+    }
+
+    .message-index {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .meta-line {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .block {
+      margin-top: 12px;
+    }
+
+    .block-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .tool-call {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: rgba(245, 242, 234, 0.7);
+      margin-top: 10px;
+    }
+
+    .tool-call-name {
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.5;
+      font-size: 14px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>BBB_Martins global_only Trace</h1>
+      <p class="subtitle">A single-record viewer for sample 0 from the train split in /data1/tianang/Projects/TRIM/data/sft/agent_reasoning_messages/openrouter/openai__gpt-5.4-mini/global_only/train/BBB_Martins.jsonl.</p>
+      <div class="meta-grid"><div class="meta-item"><div class="meta-label">SFT mode</div><div class="meta-value">global_only</div></div><div class="meta-item"><div class="meta-label">Task</div><div class="meta-value">BBB_Martins</div></div><div class="meta-item"><div class="meta-label">Split</div><div class="meta-value">train</div></div><div class="meta-item"><div class="meta-label">Sample index</div><div class="meta-value">0</div></div><div class="meta-item"><div class="meta-label">Sample id</div><div class="meta-value">train_sample_0</div></div><div class="meta-item"><div class="meta-label">Ground-truth label</div><div class="meta-value">1</div></div><div class="meta-item"><div class="meta-label">Final answer</div><div class="meta-value">B</div></div><div class="meta-item"><div class="meta-label">SMILES</div><div class="meta-value">CC(C)(C)OC(=O)CCCc1ccc(N(CCCl)CCCl)cc1</div></div></div>
+      <details class="source-paths" open><summary>Source Paths</summary><pre>{
+  &quot;global_result_json&quot;: &quot;/data1/tianang/Projects/TRIM/outputs/reasoning_rewrite_outputs/openrouter/openai__gpt-5.4-mini/global/train/BBB_Martins/sample_00000/result.json&quot;
+}</pre></details>
+    </section>
+    <section class="timeline">
+      <article class="message message-user"><div class="message-header"><span class="role-badge role-user">User</span><span class="message-index">Message 1</span></div><section class="block"><div class="block-title">Content</div><pre>Instructions: Answer the following question about drug properties.
+Context: As a membrane separating circulating blood and brain extracellular fluid, the blood-brain barrier (BBB) is the protection layer that blocks most foreign drugs. Thus the ability of a drug to penetrate the barrier to deliver to the site of action forms a crucial challenge in development of drugs for central nervous system.
+Question: Given a drug SMILES string, predict whether it
+(A) does not cross the BBB (B) crosses the BBB
+Drug SMILES: CC(C)(C)OC(=O)CCCc1ccc(N(CCCl)CCCl)cc1
+Please think step by step and then put ONLY your final choice ((A) or (B)) after &quot;Answer:&quot;</pre></section></article><article class="message message-assistant"><div class="message-header"><span class="role-badge role-assistant">Assistant</span><span class="message-index">Message 2</span></div><section class="block"><div class="block-title">Thinking</div><pre>We need to predict BBB crossing status (does not cross the BBB or crosses the BBB) for the given SMILES. We can use the tool get_mol_properties_and_fg to get actual properties and functional groups, then base our prediction on this information. Let&#x27;s call it.</pre></section><section class="block"><div class="block-title">Tool Calls</div><div class="tool-call"><div class="tool-call-name">Call 1: get_mol_properties_and_fg</div><pre>{
+  &quot;smiles&quot;: &quot;CC(C)(C)OC(=O)CCCc1ccc(N(CCCl)CCCl)cc1&quot;
+}</pre></div></section></article><article class="message message-tool"><div class="message-header"><span class="role-badge role-tool">Tool</span><span class="message-index">Message 3</span></div><div class="meta-line">Tool name: <code>get_mol_properties_and_fg</code> | Tool call id: <code>call_get_mol_properties_and_fg</code></div><section class="block"><div class="block-title">Content</div><pre>neutral fraction: 0.9977
+estimated logD: 4.634
+strongest acidic pKa: not applicable (no acidic site)
+strongest basic pKa: 4.7646
+number of acidic sites: 0
+number of basic sites: 1
+number of ionizable sites: 1
+exact molecular weight: 359.1419
+fraction of sp3 carbons: 0.6111
+heavy-atom count: 23
+heavy-atom molecular weight: 333.109
+Labute surface area: 149.4521
+maximum absolute partial charge: 0.4599
+maximum partial charge: 0.3058
+minimum absolute partial charge: 0.3058
+minimum partial charge: -0.4599
+estimated logP: 4.635
+molecular weight: 360.325
+NH/OH group count: 0
+nitrogen/oxygen atom count: 3
+aliphatic carbocycle count: 0
+aliphatic heterocycle count: 0
+aliphatic ring count: 0
+aromatic carbocycle count: 1
+aromatic heterocycle count: 0
+aromatic ring count: 1
+hydrogen-bond acceptor count: 3
+hydrogen-bond donor count: 0
+heteroatom count: 5
+rotatable-bond count: 9
+saturated carbocycle count: 0
+saturated heterocycle count: 0
+saturated ring count: 0
+ring count: 1
+topological polar surface area: 29.54
+QED drug-likeness: 0.4748
+
+functional groups:
+alkyl chloride: 2
+benzene: 1
+carboxylic ester: 1
+tertiary mixed amine: 1</pre></section></article><article class="message message-assistant"><div class="message-header"><span class="role-badge role-assistant">Assistant</span><span class="message-index">Message 4</span></div><section class="block"><div class="block-title">Thinking</div><pre>The molecule shows several features that are compatible with BBB penetration, but also a few liabilities that temper the overall picture. The topological polar surface area is 29.54 Å², which is very low and strongly favorable for passive brain entry. The neutral fraction is 0.9977, indicating that the molecule is overwhelmingly neutral at physiological conditions, again supporting BBB crossing. Consistent with that, there are no acidic sites, so there is no obvious acidic functionality that would be expected to remain ionized and hinder permeability. The NH/OH group count is 0, which means there are no hydrogen-bond donors to penalize membrane passage, and the estimated logP is 4.635, a fairly lipophilic value that can support BBB permeation. The minimum absolute partial charge is 0.3058 and the minimum partial charge is -0.4599, suggesting some charge localization, but not enough here to outweigh the strong neutrality and low polar surface area. The presence of a tertiary mixed amine, count 1, is a cautionary point because tertiary amines can still be partially ionized and can reduce CNS penetration depending on context, which helps explain why not every descriptor is fully favorable. The molecule also has alkyl chloride count 2, which adds hydrophobic character but is not by itself decisive. QED drug-likeness is 0.4748, a middling value that does not strongly reinforce CNS-like behavior, but it is not so poor as to override the favorable polarity and ionization profile. Overall, the very low TPSA, near-complete neutral fraction, lack of acidic functionality, zero NH/OH donors, and moderately high logP outweigh the weaker liabilities, so the molecule is more consistent with crossing the BBB.</pre></section><section class="block"><div class="block-title">Content</div><pre>Answer: (B)</pre></section></article>
+    </section>
+  </main>
+</body>
+</html>

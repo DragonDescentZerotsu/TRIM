@@ -278,12 +278,30 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
         - 当前 task 外层和 sample 内层都带 `tqdm` 进度条
       - `scripts/build_agent_reasoning_sft_messages.py`
         - 按 task 批量导出最终 agent SFT `messages` 数据
+        - 已支持 `--sft-mode full|global_only|local_only`
+          - `full` 保持原来的 `global -> local -> hybrid` transcript
+          - `global_only` 只保留 `global_prediction_correct == true` 且已有 global rewrite 的样本，只调用 `get_mol_properties_and_fg`
+          - `local_only` 只保留 `local_prediction_correct == true` 且已有 local rewrite 的样本，只调用 `compare_similar_mols`
         - 已支持 `--max-concurrency`，当前表示每个 task 内用于组装 sample 的 worker 进程数
         - 已支持 `--overwrite`；默认行为是不覆盖已有 JSONL，而是自动续跑
         - 若修改了过渡语、prompt 拼接或输出格式，重建已有 SFT JSONL 时必须显式加 `--overwrite`
+      - `scripts/render_agent_message_html.py`
+        - 把 agent reasoning SFT JSONL 中的一条 trace 渲染成可读 HTML，便于检查 `messages`、`thinking`、tool call、tool result 和最终 `Answer`
+        - 支持 `--sample-index` 指定要可视化的 `sample_index`；不指定时默认渲染 JSONL 里的第一条非空记录
+        - 适用于 `full`、`global_only`、`local_only` 三种 SFT trace
+        - 示例输出目录：`outputs/visualizations/agent_reasoning_messages/`
+      - `scripts/export_agent_reasoning_sft_hf_public.py`
+        - 把 agent reasoning SFT JSONL 导出成 Hugging Face 可直接发布的目录布局，默认会从 records 中移除本地 `source_paths`
+        - 已支持 `--sft-mode full|global_only|local_only`
+        - `global_only` / `local_only` 会分别导出到独立 dataset root，例如：
+          - `data/sft/agent_reasoning_messages/hf_public/openrouter/openai__gpt-5.4-mini-global-only`
+          - `data/sft/agent_reasoning_messages/hf_public/openrouter/openai__gpt-5.4-mini-local-only`
       - 正式输出目录：
         - `data/sft/agent_reasoning_messages/<provider>/<model_slug>/<split>/<task>.jsonl`
         - 同目录 manifest：`data/sft/agent_reasoning_messages/<provider>/<model_slug>/<split>/manifest.json`
+        - ablation 输出会多一层 mode，例如：
+          - `data/sft/agent_reasoning_messages/<provider>/<model_slug>/global_only/<split>/<task>.jsonl`
+          - `data/sft/agent_reasoning_messages/<provider>/<model_slug>/local_only/<split>/<task>.jsonl`
       - preview 输出目录：
         - `data/sft/agent_reasoning_messages/previews/<provider>/<model_slug>/<split>/<task>/sample_xxxxx.json`
       - 当前已保存一条真实 preview：

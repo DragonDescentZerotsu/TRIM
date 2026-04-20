@@ -16,9 +16,12 @@ from trim.reasoning.agent_sft import (
     DEFAULT_AGENT_REASONING_SFT_OUTPUT_ROOT,
     DEFAULT_AGENT_TOOL_FEATURE_SET_NAME,
     DEFAULT_AGENT_TOOL_MANIFEST_ROOT,
+    DEFAULT_REWRITE_FILTER_ROOT,
     DEFAULT_REWRITE_MODEL,
     DEFAULT_REWRITE_OUTPUT_ROOT,
     DEFAULT_REWRITE_PROVIDER,
+    SFT_MODE_FULL,
+    SFT_MODES,
     DEFAULT_TOOL_CACHE_ROOT,
     build_agent_reasoning_sft_datasets,
 )
@@ -31,6 +34,15 @@ def parse_args() -> argparse.Namespace:
         description="Build per-task agent reasoning SFT datasets in OpenAI messages format."
     )
     parser.add_argument("--split", default="train")
+    parser.add_argument(
+        "--sft-mode",
+        choices=SFT_MODES,
+        default=SFT_MODE_FULL,
+        help=(
+            "Transcript assembly mode. 'full' keeps the current global+local+hybrid format; "
+            "'global_only' and 'local_only' build ablation datasets from samples where that teacher is correct."
+        ),
+    )
     parser.add_argument("--task", action="append", default=None, help="Optional task name. Repeat for multiple tasks.")
     parser.add_argument(
         "--manifest-index",
@@ -41,6 +53,11 @@ def parse_args() -> argparse.Namespace:
         "--rewrite-output-root",
         default=str(DEFAULT_REWRITE_OUTPUT_ROOT),
         help="Root directory containing saved global/local/hybrid rewrite outputs.",
+    )
+    parser.add_argument(
+        "--rewrite-filter-root",
+        default=str(DEFAULT_REWRITE_FILTER_ROOT),
+        help="Root directory containing kept_records.json files with global/local correctness flags.",
     )
     parser.add_argument("--provider", default=DEFAULT_REWRITE_PROVIDER)
     parser.add_argument("--model", default=DEFAULT_REWRITE_MODEL)
@@ -69,8 +86,10 @@ def main() -> int:
     summary = build_agent_reasoning_sft_datasets(
         tasks=args.task,
         split=args.split,
+        sft_mode=args.sft_mode,
         manifest_index_path=args.manifest_index,
         rewrite_output_root=args.rewrite_output_root,
+        rewrite_filter_root=args.rewrite_filter_root,
         provider=args.provider,
         model=args.model,
         dataset_root=args.dataset_root,

@@ -24,18 +24,24 @@ DEFAULT_OUTPUT = (
     / "outputs"
     / "visualizations"
     / "agent_reasoning_messages"
-    / "AMES_first_record.html"
+    / "AMES_trace.html"
 )
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Render the first record from an agent reasoning messages JSONL file into a simple HTML page."
+        description="Render one record from an agent reasoning messages JSONL file into a simple HTML page."
     )
     parser.add_argument(
         "--input",
         default=str(DEFAULT_INPUT),
         help="Path to the source JSONL file.",
+    )
+    parser.add_argument(
+        "--sample-index",
+        type=int,
+        default=None,
+        help="Optional sample_index to render. Defaults to the first non-empty JSONL record.",
     )
     parser.add_argument(
         "--output",
@@ -45,7 +51,10 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def load_first_record(path: Path) -> dict[str, Any]:
+def load_record(path: Path, *, sample_index: int | None = None) -> dict[str, Any]:
+    if sample_index is not None and sample_index < 0:
+        raise ValueError(f"sample_index must be non-negative, got {sample_index}")
+
     with path.open("r", encoding="utf-8") as handle:
         for line_number, line in enumerate(handle, start=1):
             stripped = line.strip()
@@ -54,7 +63,18 @@ def load_first_record(path: Path) -> dict[str, Any]:
             payload = json.loads(stripped)
             if not isinstance(payload, dict):
                 raise ValueError(f"Expected a JSON object on line {line_number} of {path}")
+            if sample_index is not None:
+                try:
+                    record_sample_index = int(payload["sample_index"])
+                except (KeyError, TypeError, ValueError) as exc:
+                    raise ValueError(
+                        f"Record on line {line_number} of {path} does not contain an integer sample_index"
+                    ) from exc
+                if record_sample_index != sample_index:
+                    continue
             return payload
+    if sample_index is not None:
+        raise ValueError(f"No JSON object record with sample_index={sample_index} found in {path}")
     raise ValueError(f"No JSON object records found in {path}")
 
 
@@ -144,8 +164,13 @@ def render_html(record: dict[str, Any], source_path: Path) -> str:
     if not isinstance(messages, list):
         raise ValueError(f"Record from {source_path} does not contain a messages list")
 
-    title = "AMES First Message Record"
+    task = record.get("task") or source_path.stem
+    split = record.get("split") or "unknown split"
+    sample_index = record.get("sample_index")
+    sft_mode = record.get("sft_mode") or "full"
+    title = f"{task} {sft_mode} Trace"
     meta_items = [
+        ("SFT mode", sft_mode),
         ("Task", record.get("task")),
         ("Split", record.get("split")),
         ("Sample index", record.get("sample_index")),
@@ -386,7 +411,7 @@ def render_html(record: dict[str, Any], source_path: Path) -> str:
   <main class="page">
     <section class="hero">
       <h1>{escape_text(title)}</h1>
-      <p class="subtitle">A single-record viewer for the first non-empty line in {escape_text(source_path.as_posix())}.</p>
+      <p class="subtitle">A single-record viewer for sample {escape_text(sample_index)} from the {escape_text(split)} split in {escape_text(source_path.as_posix())}.</p>
       <div class="meta-grid">{meta_html}</div>
       {source_paths_html}
     </section>
@@ -404,7 +429,7 @@ def main() -> None:
     input_path = Path(args.input).expanduser().resolve()
     output_path = Path(args.output).expanduser().resolve()
 
-    record = load_first_record(input_path)
+    record = load_record(input_path, sample_index=args.sample_index)
     html_text = render_html(record, input_path)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
