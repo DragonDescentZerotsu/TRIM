@@ -102,6 +102,28 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
   - 已实现 per-neighbor `local_per_neighbor_decision_evidence`、`local_per_neighbor_middle_draft`
   - 已实现 `local_summary_middle_draft`
   - 已完成 16 个任务的 middle draft 结构回归检查，并导出 sample-0 preview 文件
+  - 已完成 local pair-EBM per-neighbor feature-term 截断依据实验，结论用于决定每个 neighbor 的 `local_per_neighbor_middle_draft` 写多少条 feature evidence：
+    - 新增分析脚本：`scripts/analyze_local_pair_term_coverage.py`
+      - 读取已有 pairwise EBM bundle 与训练/验证时保存的 `pos/neg_{split}_pair_predictions.csv`
+      - 对 `model.eval_terms(pair_matrix)` 的 feature-term contribution 按 `abs(contribution)` 排序
+      - 统计 top-k feature terms 覆盖 `sum(abs(contribution))` 的比例；不把 EBM intercept 算作 feature evidence
+    - 已跑完 16 任务 full train / valid 统计：
+      - train 输出：`outputs/metrics/local_pair_term_coverage_core_pka_no_fr_counts_train/`
+      - valid 输出：`outputs/metrics/local_pair_term_coverage_core_pka_no_fr_counts_valid/`
+      - 每个目录下主要文件：
+        - `pair_term_coverage_summary.csv`
+        - `pair_term_coverage_rows.csv`
+        - `top_feature_frequency.csv`
+        - `summary.json`
+    - 关键结果：
+      - train 共 `119040` 个 neighbor-pair，valid 共 `16912` 个 neighbor-pair
+      - top-6 feature terms 只覆盖 median absolute contribution mass 约 `45%`
+      - top-8 约 `52%`，top-10 约 `58%`，top-15 约 `68%`，top-20 约 `74-75%`
+      - 若真要覆盖约 `75%` 的 contribution mass，中位数需要约 `21` 个 feature terms，文本会过长
+    - 后续默认决策：
+      - 每个 neighbor 的 feature evidence 默认使用 `top_term_k_per_neighbor=8`
+      - 这不是“覆盖绝大多数 score”的设定，而是 reasoning 文本长度与 evidence 覆盖之间的折中
+      - 注意：已有 `outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts` 中旧导出仍可能是 top-6；改默认后需要重跑 evidence / rewrite 相关产物才能反映 top-8
   - 已经**抛弃 task-specific union 压缩步骤**；原因是当前默认 `core-pKa + no-fr` dense feature 池只有 `36` 个，而大多数任务的 local manifest 已几乎覆盖全部 36 个 dense features，继续做 union 裁剪收益很小
   - 相关脚本包括：
     - `scripts/build_agent_tool_manifests.py`
