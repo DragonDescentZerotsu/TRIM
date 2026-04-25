@@ -21,7 +21,7 @@ from trim.reasoning.rewrite.pipeline import (
     run_rewrite_batch,
 )
 from trim.utils.io import save_json
-from trim.utils.paths import resolve_project_path
+from trim.utils.paths import resolve_project_path, serialize_project_path
 
 
 DEFAULT_GLOBAL_ROOT = "outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan"
@@ -32,7 +32,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Render rewrite prompts, send them to an LLM, and save parsed JSON outputs."
     )
-    parser.add_argument("--provider", required=True, choices=["openrouter", "vllm"])
+    parser.add_argument("--provider", required=True, choices=["openrouter", "openai", "vllm"])
     parser.add_argument("--model", required=True, help="Model name exposed by the selected provider")
     parser.add_argument(
         "--mode",
@@ -120,8 +120,8 @@ def main() -> int:
         "max_retries": int(args.max_retries),
         "retry_delay_s": float(args.retry_delay_s),
         "tasks": tasks,
-        "output_root": str(resolve_project_path(args.output_root)),
-        "candidate_root": str(resolve_project_path(args.candidate_root)),
+        "output_root": serialize_project_path(resolve_project_path(args.output_root)),
+        "candidate_root": serialize_project_path(resolve_project_path(args.candidate_root)),
         "summaries": summaries,
     }
     summary_dir = resolve_project_path(args.output_root) / llm_config.provider

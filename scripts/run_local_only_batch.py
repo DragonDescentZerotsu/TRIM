@@ -18,6 +18,7 @@ if str(SRC_ROOT) not in sys.path:
 
 from trim.data.datasets import list_tasks
 from trim.utils.io import load_json, save_json
+from trim.utils.paths import serialize_project_path
 
 try:
     from tqdm.auto import tqdm
@@ -178,12 +179,12 @@ def run_task_pipeline(task: str, splits: list[str], args: argparse.Namespace) ->
             {
                 "task": task,
                 "split": split,
-                "metrics_path": str(metrics_path.resolve()),
+                "metrics_path": serialize_project_path(metrics_path),
                 "metrics": metrics_payload["metrics"]["local_only"],
                 "logs": {
-                    "train_pair_pos": str((log_root / "train_pair_pos.log").resolve()),
-                    "train_pair_neg": str((log_root / "train_pair_neg.log").resolve()),
-                    f"run_local_only_{split}": str((log_root / f"run_local_only_{split}.log").resolve()),
+                    "train_pair_pos": serialize_project_path(log_root / "train_pair_pos.log"),
+                    "train_pair_neg": serialize_project_path(log_root / "train_pair_neg.log"),
+                    f"run_local_only_{split}": serialize_project_path(log_root / f"run_local_only_{split}.log"),
                 },
             }
         )
@@ -266,7 +267,7 @@ def main() -> int:
             "python_executable": args.python_executable,
             "skip_training": args.skip_training,
         },
-        "summary_csv": str(summary_csv_path.resolve()),
+        "summary_csv": serialize_project_path(summary_csv_path),
         "split_macro_f1_means": split_means,
         "results": results,
     }

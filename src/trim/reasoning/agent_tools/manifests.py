@@ -12,6 +12,7 @@ from trim.utils.paths import (
     OUTPUTS_ROOT,
     PROJECT_ROOT,
     resolve_project_path,
+    serialize_project_path,
 )
 
 
@@ -19,19 +20,13 @@ AGENT_TOOL_SCHEMA_VERSION = "trim_agent_tools_v1_simple"
 DEFAULT_AGENT_TOOL_MANIFEST_ROOT = OUTPUTS_ROOT / "reasoning_agent_tools" / "manifests"
 DEFAULT_AGENT_TOOL_FEATURE_SET_NAME = "fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts"
 DEFAULT_GLOBAL_TOP_K = 10
-DEFAULT_LOCAL_TOP_TERM_K = 6
+DEFAULT_LOCAL_TOP_TERM_K = 8
 DEFAULT_LOCAL_TOP_K_POS = 3
 DEFAULT_LOCAL_TOP_K_NEG = 3
 
 
 def _serialize_project_path(path_like: str | Path) -> str:
-    path = Path(path_like).expanduser()
-    if not path.is_absolute():
-        return str(path)
-    try:
-        return str(path.relative_to(PROJECT_ROOT))
-    except ValueError:
-        return str(path)
+    return serialize_project_path(path_like)
 
 
 def _resolve_saved_project_path(path_like: str | Path) -> str:

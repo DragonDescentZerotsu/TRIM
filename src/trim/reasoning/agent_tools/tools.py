@@ -284,7 +284,10 @@ class TaskReasoningAgentTools:
         self.tool_cache_root = resolve_project_path(tool_cache_root)
         self.enable_tool_cache = bool(enable_tool_cache)
 
-        bundle_paths = dict(manifest["bundle_paths"])
+        bundle_paths = {
+            str(name): resolve_project_path(path)
+            for name, path in dict(manifest["bundle_paths"]).items()
+        }
         self.global_bundle = load_pickle(bundle_paths["global_bundle_path"])
         self.pos_bundle = load_pickle(bundle_paths["pos_bundle_path"])
         self.neg_bundle = load_pickle(bundle_paths["neg_bundle_path"])

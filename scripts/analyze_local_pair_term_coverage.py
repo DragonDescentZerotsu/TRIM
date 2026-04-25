@@ -19,7 +19,7 @@ if str(SRC_ROOT) not in sys.path:
 from trim.features.table_loader import build_feature_source_bundle
 from trim.features.pair_features import build_pair_matrix, coerce_numeric_feature_frame
 from trim.utils.io import load_json, load_pickle, save_json
-from trim.utils.paths import resolve_project_path
+from trim.utils.paths import resolve_project_path, serialize_project_path
 
 try:
     from tqdm.auto import tqdm
@@ -407,14 +407,14 @@ def main() -> int:
     feature_all.to_csv(feature_path, index=False)
     manifest_payload = {
         "schema_version": "trim_local_pair_term_coverage_v1",
-        "manifest_index": str(manifest_index_path.resolve()),
+        "manifest_index": serialize_project_path(manifest_index_path),
         "splits": splits,
         "tasks": [str(row["task"]) for row in task_rows],
         "k_values": k_values,
         "thresholds": thresholds,
-        "coverage_rows_csv": str(coverage_path.resolve()),
-        "summary_csv": str(summary_path.resolve()),
-        "top_feature_frequency_csv": str(feature_path.resolve()),
+        "coverage_rows_csv": serialize_project_path(coverage_path),
+        "summary_csv": serialize_project_path(summary_path),
+        "top_feature_frequency_csv": serialize_project_path(feature_path),
         "num_pairs": int(len(coverage_all)),
         "num_summary_rows": int(len(summary_df)),
     }

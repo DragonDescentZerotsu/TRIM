@@ -50,6 +50,15 @@ def parse_args() -> argparse.Namespace:
         default=6,
         help="Expected number of per-neighbor local drafts to keep in each candidate",
     )
+    parser.add_argument(
+        "--teacher-filter",
+        default="any_correct",
+        choices=["any_correct", "local_correct", "global_correct", "none"],
+        help=(
+            "Which teacher-correctness condition to use before writing candidates. "
+            "Default preserves the legacy global/local/hybrid behavior."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -64,6 +73,7 @@ def main() -> int:
         sample_indices=args.sample_indices,
         max_samples=args.max_samples,
         expected_neighbor_count=args.expected_neighbor_count,
+        teacher_filter=args.teacher_filter,
     )
     print(json.dumps(manifest, indent=2, ensure_ascii=False))
     return 0

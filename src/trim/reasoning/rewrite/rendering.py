@@ -16,6 +16,8 @@ def _load_template(mode: str, template_root: str | Path | None = None) -> str:
     mapping = {
         "global": "rewrite_global_reasoning.md",
         "local": "rewrite_local_reasoning.md",
+        "local_neighbor": "rewrite_local_neighbor_reasoning.md",
+        "local_summary": "rewrite_local_summary_reasoning.md",
         "hybrid": "rewrite_hybrid_reasoning.md",
     }
     if mode not in mapping:
@@ -42,6 +44,53 @@ def _format_label_semantics(payload: Any) -> str:
         if option is not None and text is not None:
             return f"option ({option}): {text}"
     return str(payload)
+
+
+def _find_local_neighbor(payload: dict[str, Any], *, neighbor_index: int) -> dict[str, Any]:
+    neighbors = list(payload["neighbors"])
+    for neighbor in neighbors:
+        if int(neighbor["neighbor_index"]) == int(neighbor_index):
+            return dict(neighbor)
+    raise IndexError(f"Neighbor index {neighbor_index} not found in local per-neighbor rewrite input")
+
+
+def _local_neighbors_by_index(payload: dict[str, Any]) -> dict[int, dict[str, Any]]:
+    return {int(neighbor["neighbor_index"]): dict(neighbor) for neighbor in payload["neighbors"]}
+
+
+def _prediction_semantics_from_output(parsed_output: dict[str, Any]) -> str:
+    prediction = parsed_output.get("neighbor_prediction")
+    if not isinstance(prediction, dict):
+        raise ValueError("Neighbor rewrite output is missing neighbor_prediction object")
+    option = prediction.get("option")
+    text = prediction.get("text")
+    if option is None or text is None:
+        raise ValueError("Neighbor rewrite output prediction must contain option and text")
+    return f"option ({option}): {text}"
+
+
+def _prediction_option_from_output(parsed_output: dict[str, Any]) -> str:
+    prediction = parsed_output.get("neighbor_prediction")
+    if not isinstance(prediction, dict):
+        raise ValueError("Neighbor rewrite output is missing neighbor_prediction object")
+    option = prediction.get("option")
+    if option not in {"A", "B"}:
+        raise ValueError(f"Neighbor rewrite output prediction has invalid option: {option!r}")
+    return str(option)
+
+
+def _format_neighbor_vote_count(votes_by_option: dict[str, list[int]]) -> str:
+    def _format_indices(indices: list[int]) -> str:
+        if not indices:
+            return "none"
+        return ", ".join(f"Neighbor {index}" for index in indices)
+
+    a_indices = votes_by_option.get("A", [])
+    b_indices = votes_by_option.get("B", [])
+    return (
+        f"option (A): {len(a_indices)} neighbor(s) ({_format_indices(a_indices)}); "
+        f"option (B): {len(b_indices)} neighbor(s) ({_format_indices(b_indices)})"
+    )
 
 
 def _flatten_local_neighbors(payload: dict[str, Any]) -> list[dict[str, Any]]:
@@ -103,6 +152,8 @@ def render_rewrite_prompt(
     candidate_payload: dict[str, Any],
     mode: str,
     template_root: str | Path | None = None,
+    neighbor_index: int | None = None,
+    local_neighbor_outputs: dict[int, dict[str, Any]] | None = None,
     global_reasoning: str | None = None,
     local_reasoning: str | None = None,
     hybrid_reasoning: str | None = None,
@@ -143,6 +194,67 @@ def render_rewrite_prompt(
             template_text,
             replacements,
         )
+
+    if mode == "local_neighbor":
+        if neighbor_index is None:
+            raise ValueError("local_neighbor rewrite prompt requires neighbor_index")
+        payload = candidate_payload["local_per_neighbor_rewrite_input"]
+        neighbor = _find_local_neighbor(payload, neighbor_index=int(neighbor_index))
+        resolved_neighbor_index = int(neighbor["neighbor_index"])
+        return _replace_slots(
+            template_text,
+            {
+                "TASK_PLAYBOOK": str(payload["task_playbook"]),
+                "TASK_DESCRIPTION": str(payload["task_description"]),
+                "POSITIVE_LABEL_SEMANTICS": str(payload["positive_label_semantics"]),
+                "NEGATIVE_LABEL_SEMANTICS": str(payload["negative_label_semantics"]),
+                "NEIGHBOR_INDEX": str(resolved_neighbor_index),
+                "NEIGHBOR_INDEX_JSON": str(resolved_neighbor_index),
+                "NEIGHBOR_LABEL_SEMANTICS": str(neighbor["neighbor_label_semantics"]),
+                "NEIGHBOR_SIMILARITY": _format_similarity(neighbor["neighbor_similarity"]),
+                "NEIGHBOR_MIDDLE_DRAFT": str(neighbor["middle_draft"]),
+                "NEIGHBOR_PREDICTION_SEMANTICS": str(neighbor["pair_teacher"]["pair_prediction_semantics"]),
+                "NEIGHBOR_EVIDENCE_STRENGTH": str(
+                    neighbor["evidence_strength"]["teacher_aligned_evidence_strength"]
+                ),
+            },
+        )
+
+    if mode == "local_summary":
+        if local_neighbor_outputs is None:
+            raise ValueError("local_summary rewrite prompt requires local_neighbor_outputs")
+        payload = candidate_payload["local_per_neighbor_rewrite_input"]
+        local_payload = candidate_payload["local_rewrite_input"]
+        neighbors_by_index = _local_neighbors_by_index(payload)
+        replacements = {
+            "POSITIVE_LABEL_SEMANTICS": str(payload["positive_label_semantics"]),
+            "NEGATIVE_LABEL_SEMANTICS": str(payload["negative_label_semantics"]),
+            "LOCAL_TEACHER_PREDICTION_SEMANTICS": str(local_payload["local_prediction_semantics"]),
+        }
+        votes_by_option: dict[str, list[int]] = {"A": [], "B": []}
+        for index in range(1, 7):
+            if index not in neighbors_by_index:
+                raise ValueError(f"local_summary missing candidate neighbor {index}")
+            if index not in local_neighbor_outputs:
+                raise ValueError(f"local_summary missing neighbor rewrite output {index}")
+            neighbor = neighbors_by_index[index]
+            output_payload = local_neighbor_outputs[index]
+            parsed_output = output_payload.get("parsed_output", output_payload)
+            if not isinstance(parsed_output, dict):
+                raise ValueError(f"Neighbor {index} output must be a JSON object")
+            reasoning = str(parsed_output.get("reasoning", "") or "").strip()
+            if not reasoning:
+                raise ValueError(f"Neighbor {index} output is missing reasoning")
+            votes_by_option[_prediction_option_from_output(parsed_output)].append(index)
+            replacements[f"NEIGHBOR_{index}_LABEL_SEMANTICS"] = str(neighbor["neighbor_label_semantics"])
+            replacements[f"NEIGHBOR_{index}_SIMILARITY"] = _format_similarity(neighbor["neighbor_similarity"])
+            replacements[f"NEIGHBOR_{index}_PREDICTION_SEMANTICS"] = _prediction_semantics_from_output(
+                parsed_output
+            )
+            replacements[f"NEIGHBOR_{index}_EVIDENCE_STRENGTH"] = str(parsed_output["evidence_strength"])
+            replacements[f"NEIGHBOR_{index}_REASONING"] = reasoning
+        replacements["NEIGHBOR_PREDICTION_VOTE_COUNT"] = _format_neighbor_vote_count(votes_by_option)
+        return _replace_slots(template_text, replacements)
 
     if mode == "hybrid":
         if not global_reasoning or not local_reasoning:

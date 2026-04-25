@@ -37,12 +37,42 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.24253818658190965,
+        "pair_score_class1_probability": 0.24253818658190965,
         "pair_prediction": 0,
+        "pair_prediction_probability": 0.7574618134180904,
+        "teacher_confidence_margin": 0.2574618134180904,
+        "teacher_confidence": "medium",
         "pair_prediction_semantics": {
           "option": "A",
           "text": "is not a substrate to the enzyme CYP3A4",
           "label": 0
         },
+        "feature_logit": -1.1865429863295363,
+        "feature_probability": 0.23387778996304623,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.2661222100369538,
+        "feature_evidence_strength": "medium",
+        "total_abs_feature_contribution": 3.1041399049173464,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "medium",
+        "displayed_feature_logit": -0.8341453209142728,
+        "displayed_feature_probability": 0.30276927797572106,
+        "displayed_feature_prediction": 0,
+        "displayed_feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "displayed_feature_confidence_margin": 0.19723072202427894,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_feature_contribution": 1.2990784212082156,
+        "displayed_abs_contribution_coverage": 0.41849866984098,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "rdkit_pka__pka__fraction_neutral",
@@ -169,96 +199,34 @@
             "supports_option": "A",
             "supports_text": "is not a substrate to the enzyme CYP3A4",
             "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 430.357, while the query's heavy-atom molecular weight is value 282.237. The query-minus-neighbor delta is -148.12. This pairwise contribution is -0.1063, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
-          }
-        ]
-      },
-      {
-        "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
-        "query_smiles": "O[C@@](CCN1CCCCC1)(c1ccccc1)[C@@H]1C[C@@H]2C=C[C@H]1C2",
-        "query_label": 0,
-        "neighbor_smiles": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
-        "neighbor_label": 1,
-        "neighbor_similarity": 0.22468495181616013,
-        "neighbor_scaffold": "O=C(CCCN1CCC(c2ccccc2)CC1)c1ccccc1",
-        "neighbor_role": "positive_neighbor",
-        "pair_model_type": "positive_neighbor_model",
-        "pair_score": 0.32760516559735137,
-        "pair_prediction": 0,
-        "pair_prediction_semantics": {
-          "option": "A",
-          "text": "is not a substrate to the enzyme CYP3A4",
-          "label": 0
-        },
-        "top_pair_terms": [
-          {
-            "feature_name": "rdkit_pka__pka__fraction_neutral",
-            "display_name": "neutral fraction",
-            "description": "estimated fraction of the molecule that is neutral at the configured pH",
-            "source_family": "pka",
-            "raw_name": "fraction_neutral",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 0.1546,
-            "query_value": 0.0069,
-            "delta_value": -0.1477,
-            "base_value_text": "value 0.1546",
-            "query_value_text": "value 0.0069",
-            "delta_value_text": "-0.1477",
-            "contribution": -0.4791100701738193,
-            "contribution_abs": 0.4791100701738193,
-            "contribution_rank": 1,
-            "supports_label": 0,
-            "supports_option": "A",
-            "supports_text": "is not a substrate to the enzyme CYP3A4",
-            "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.1546, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is -0.1477. This pairwise contribution is -0.4791, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
           },
           {
-            "feature_name": "rdkit_pka__pka__most_acidic_pka",
-            "display_name": "strongest acidic pKa",
-            "description": "pKa of the strongest acidic site",
-            "source_family": "pka",
-            "raw_name": "most_acidic_pka",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 13.8395,
-            "query_value": 13.9056,
-            "delta_value": 0.06610000000000049,
-            "base_value_text": "value 13.8395",
-            "query_value_text": "value 13.9056",
-            "delta_value_text": "+0.0661",
-            "contribution": -0.2609437709238219,
-            "contribution_abs": 0.2609437709238219,
-            "contribution_rank": 2,
-            "supports_label": 0,
-            "supports_option": "A",
-            "supports_text": "is not a substrate to the enzyme CYP3A4",
-            "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8395, while the query's strongest acidic pKa is value 13.9056. The query-minus-neighbor delta is +0.0661. This pairwise contribution is -0.2609, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
-          },
-          {
-            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
-            "display_name": "fraction of sp3 carbons",
-            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "feature_name": "rdkit_pka__rdkit__MolWt",
+            "display_name": "molecular weight",
+            "description": "molecular weight",
             "source_family": "rdkit",
-            "raw_name": "FractionCSP3",
+            "raw_name": "MolWt",
             "nlp_readiness": "natural_language_ready",
-            "base_value": 0.3809523809523809,
-            "query_value": 0.6190476190476191,
-            "delta_value": 0.2380952380952382,
-            "base_value_text": "value 0.381",
-            "query_value_text": "value 0.619",
-            "delta_value_text": "+0.2381",
-            "contribution": 0.13724516284817403,
-            "contribution_abs": 0.13724516284817403,
-            "contribution_rank": 3,
-            "supports_label": 1,
-            "supports_option": "B",
-            "supports_text": "is a substrate to the enzyme CYP3A4",
-            "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.381, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.2381. This pairwise contribution is 0.1372, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+            "base_value": 469.6690000000001,
+            "query_value": 311.46900000000005,
+            "delta_value": -158.20000000000005,
+            "base_value_text": "value 469.669",
+            "query_value_text": "value 311.469",
+            "delta_value_text": "-158.2",
+            "contribution": -0.08836308714815959,
+            "contribution_abs": 0.08836308714815959,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a substrate to the enzyme CYP3A4",
+            "text_hint": "For molecular weight, the neighbor's molecular weight is value 469.669, while the query's molecular weight is value 311.469. The query-minus-neighbor delta is -158.2. This pairwise contribution is -0.0884, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
           },
           {
-            "feature_name": "fg_top_level__Aryl bromide",
-            "display_name": "Aryl bromide",
-            "description": "top-level functional-group indicator or count for Aryl bromide",
+            "feature_name": "fg_top_level__ketone",
+            "display_name": "ketone",
+            "description": "top-level functional-group indicator or count for ketone",
             "source_family": "fg_top_level",
-            "raw_name": "Aryl bromide",
+            "raw_name": "ketone",
             "nlp_readiness": "natural_language_ready",
             "base_value": 1.0,
             "query_value": 0.0,
@@ -266,55 +234,13 @@
             "base_value_text": "present (1)",
             "query_value_text": "absent (0)",
             "delta_value_text": "-1",
-            "contribution": 0.12826554712518284,
-            "contribution_abs": 0.12826554712518284,
-            "contribution_rank": 4,
-            "supports_label": 1,
-            "supports_option": "B",
-            "supports_text": "is a substrate to the enzyme CYP3A4",
-            "text_hint": "The neighbor has Aryl bromide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1283, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
-          },
-          {
-            "feature_name": "rdkit_pka__pka__logd_estimate",
-            "display_name": "estimated logD",
-            "description": "estimated logD at the configured pH",
-            "source_family": "pka",
-            "raw_name": "logd_estimate",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 3.7238,
-            "query_value": 1.8032,
-            "delta_value": -1.9206000000000003,
-            "base_value_text": "value 3.7238",
-            "query_value_text": "value 1.8032",
-            "delta_value_text": "-1.9206",
-            "contribution": 0.12307672751175996,
-            "contribution_abs": 0.12307672751175996,
-            "contribution_rank": 5,
-            "supports_label": 1,
-            "supports_option": "B",
-            "supports_text": "is a substrate to the enzyme CYP3A4",
-            "text_hint": "For estimated logD, the neighbor's estimated logD is value 3.7238, while the query's estimated logD is value 1.8032. The query-minus-neighbor delta is -1.9206. This pairwise contribution is 0.1231, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
-          },
-          {
-            "feature_name": "rdkit_pka__rdkit__MolLogP",
-            "display_name": "estimated logP",
-            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
-            "source_family": "rdkit",
-            "raw_name": "MolLogP",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 4.534700000000004,
-            "query_value": 3.9624000000000033,
-            "delta_value": -0.5723000000000011,
-            "base_value_text": "value 4.5347",
-            "query_value_text": "value 3.9624",
-            "delta_value_text": "-0.5723",
-            "contribution": 0.0992465100648117,
-            "contribution_abs": 0.0992465100648117,
-            "contribution_rank": 6,
-            "supports_label": 1,
-            "supports_option": "B",
-            "supports_text": "is a substrate to the enzyme CYP3A4",
-            "text_hint": "For estimated logP, the neighbor's estimated logP is value 4.5347, while the query's estimated logP is value 3.9624. The query-minus-neighbor delta is -0.5723. This pairwise contribution is 0.0992, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+            "contribution": -0.0855476239514786,
+            "contribution_abs": 0.0855476239514786,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a substrate to the enzyme CYP3A4",
+            "text_hint": "The neighbor has ketone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.0855, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
           }
         ]
       },
@@ -329,12 +255,42 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.32314949767091694,
+        "pair_score_class1_probability": 0.32314949767091694,
         "pair_prediction": 0,
+        "pair_prediction_probability": 0.6768505023290831,
+        "teacher_confidence_margin": 0.17685050232908306,
+        "teacher_confidence": "medium",
         "pair_prediction_semantics": {
           "option": "A",
           "text": "is not a substrate to the enzyme CYP3A4",
           "label": 0
         },
+        "feature_logit": -0.7870643975246974,
+        "feature_probability": 0.31279934749539956,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.18720065250460044,
+        "feature_evidence_strength": "medium",
+        "total_abs_feature_contribution": 2.917173359171357,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "medium",
+        "displayed_feature_logit": -0.4798440927333404,
+        "displayed_feature_probability": 0.38228894113723166,
+        "displayed_feature_prediction": 0,
+        "displayed_feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "displayed_feature_confidence_margin": 0.11771105886276834,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_feature_contribution": 1.3496591333959316,
+        "displayed_abs_contribution_coverage": 0.46265989957460446,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "rdkit_pka__pka__fraction_neutral",
@@ -461,6 +417,266 @@
             "supports_option": "A",
             "supports_text": "is not a substrate to the enzyme CYP3A4",
             "text_hint": "For maximum partial charge, the neighbor's maximum partial charge is value 0.1624, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.0682. This pairwise contribution is -0.0931, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "display_name": "topological polar surface area",
+            "description": "topological polar surface area of the molecule",
+            "source_family": "rdkit",
+            "raw_name": "TPSA",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 40.540000000000006,
+            "query_value": 23.47,
+            "delta_value": -17.070000000000007,
+            "base_value_text": "value 40.54",
+            "query_value_text": "value 23.47",
+            "delta_value_text": "-17.07",
+            "contribution": 0.08965773694557416,
+            "contribution_abs": 0.08965773694557416,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a substrate to the enzyme CYP3A4",
+            "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 40.54, while the query's topological polar surface area is value 23.47. The query-minus-neighbor delta is -17.07. This pairwise contribution is 0.0897, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "fg_top_level__ketone",
+            "display_name": "ketone",
+            "description": "top-level functional-group indicator or count for ketone",
+            "source_family": "fg_top_level",
+            "raw_name": "ketone",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "contribution": -0.0855476239514786,
+            "contribution_abs": 0.0855476239514786,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a substrate to the enzyme CYP3A4",
+            "text_hint": "The neighbor has ketone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.0855, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
+        "query_smiles": "O[C@@](CCN1CCCCC1)(c1ccccc1)[C@@H]1C[C@@H]2C=C[C@H]1C2",
+        "query_label": 0,
+        "neighbor_smiles": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
+        "neighbor_label": 1,
+        "neighbor_similarity": 0.22468495181616013,
+        "neighbor_scaffold": "O=C(CCCN1CCC(c2ccccc2)CC1)c1ccccc1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.32760516559735137,
+        "pair_score_class1_probability": 0.32760516559735137,
+        "pair_prediction": 0,
+        "pair_prediction_probability": 0.6723948344026487,
+        "teacher_confidence_margin": 0.1723948344026487,
+        "teacher_confidence": "medium",
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "feature_logit": -0.7667656292878549,
+        "feature_probability": 0.31717918053594824,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.18282081946405176,
+        "feature_evidence_strength": "medium",
+        "total_abs_feature_contribution": 3.0917537063301093,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "medium",
+        "displayed_feature_logit": -0.43577904043051263,
+        "displayed_feature_probability": 0.3927471977340152,
+        "displayed_feature_prediction": 0,
+        "displayed_feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "displayed_feature_confidence_margin": 0.10725280226598483,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_feature_contribution": 1.4114469355303696,
+        "displayed_abs_contribution_coverage": 0.45651984912011234,
+        "displayed_teacher_agreement": true,
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "display_name": "neutral fraction",
+            "description": "estimated fraction of the molecule that is neutral at the configured pH",
+            "source_family": "pka",
+            "raw_name": "fraction_neutral",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.1546,
+            "query_value": 0.0069,
+            "delta_value": -0.1477,
+            "base_value_text": "value 0.1546",
+            "query_value_text": "value 0.0069",
+            "delta_value_text": "-0.1477",
+            "contribution": -0.4791100701738193,
+            "contribution_abs": 0.4791100701738193,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a substrate to the enzyme CYP3A4",
+            "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.1546, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is -0.1477. This pairwise contribution is -0.4791, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "display_name": "strongest acidic pKa",
+            "description": "pKa of the strongest acidic site",
+            "source_family": "pka",
+            "raw_name": "most_acidic_pka",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 13.8395,
+            "query_value": 13.9056,
+            "delta_value": 0.06610000000000049,
+            "base_value_text": "value 13.8395",
+            "query_value_text": "value 13.9056",
+            "delta_value_text": "+0.0661",
+            "contribution": -0.2609437709238219,
+            "contribution_abs": 0.2609437709238219,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a substrate to the enzyme CYP3A4",
+            "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8395, while the query's strongest acidic pKa is value 13.9056. The query-minus-neighbor delta is +0.0661. This pairwise contribution is -0.2609, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.3809523809523809,
+            "query_value": 0.6190476190476191,
+            "delta_value": 0.2380952380952382,
+            "base_value_text": "value 0.381",
+            "query_value_text": "value 0.619",
+            "delta_value_text": "+0.2381",
+            "contribution": 0.13724516284817403,
+            "contribution_abs": 0.13724516284817403,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a substrate to the enzyme CYP3A4",
+            "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.381, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.2381. This pairwise contribution is 0.1372, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "fg_top_level__Aryl bromide",
+            "display_name": "Aryl bromide",
+            "description": "top-level functional-group indicator or count for Aryl bromide",
+            "source_family": "fg_top_level",
+            "raw_name": "Aryl bromide",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "contribution": 0.12826554712518284,
+            "contribution_abs": 0.12826554712518284,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a substrate to the enzyme CYP3A4",
+            "text_hint": "The neighbor has Aryl bromide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1283, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 3.7238,
+            "query_value": 1.8032,
+            "delta_value": -1.9206000000000003,
+            "base_value_text": "value 3.7238",
+            "query_value_text": "value 1.8032",
+            "delta_value_text": "-1.9206",
+            "contribution": 0.12307672751175996,
+            "contribution_abs": 0.12307672751175996,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a substrate to the enzyme CYP3A4",
+            "text_hint": "For estimated logD, the neighbor's estimated logD is value 3.7238, while the query's estimated logD is value 1.8032. The query-minus-neighbor delta is -1.9206. This pairwise contribution is 0.1231, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 4.534700000000004,
+            "query_value": 3.9624000000000033,
+            "delta_value": -0.5723000000000011,
+            "base_value_text": "value 4.5347",
+            "query_value_text": "value 3.9624",
+            "delta_value_text": "-0.5723",
+            "contribution": 0.0992465100648117,
+            "contribution_abs": 0.0992465100648117,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a substrate to the enzyme CYP3A4",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 4.5347, while the query's estimated logP is value 3.9624. The query-minus-neighbor delta is -0.5723. This pairwise contribution is 0.0992, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "display_name": "maximum partial charge",
+            "description": "most positive atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.1624247525177971,
+            "query_value": 0.0942086378346395,
+            "delta_value": -0.0682161146831576,
+            "base_value_text": "value 0.1624",
+            "query_value_text": "value 0.0942",
+            "delta_value_text": "-0.0682",
+            "contribution": -0.09308640914113687,
+            "contribution_abs": 0.09308640914113687,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a substrate to the enzyme CYP3A4",
+            "text_hint": "For maximum partial charge, the neighbor's maximum partial charge is value 0.1624, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.0682. This pairwise contribution is -0.0931, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "display_name": "heavy-atom molecular weight",
+            "description": "molecular weight contributed by heavy atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomMolWt",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 397.1380000000002,
+            "query_value": 282.237,
+            "delta_value": -114.90100000000018,
+            "base_value_text": "value 397.138",
+            "query_value_text": "value 282.237",
+            "delta_value_text": "-114.901",
+            "contribution": -0.09047273774166306,
+            "contribution_abs": 0.09047273774166306,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a substrate to the enzyme CYP3A4",
+            "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 397.138, while the query's heavy-atom molecular weight is value 282.237. The query-minus-neighbor delta is -114.901. This pairwise contribution is -0.0905, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
           }
         ]
       }
@@ -477,12 +693,42 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.4951163833068304,
+        "pair_score_class1_probability": 0.4951163833068304,
         "pair_prediction": 0,
+        "pair_prediction_probability": 0.5048836166931696,
+        "teacher_confidence_margin": 0.004883616693169612,
+        "teacher_confidence": "low",
         "pair_prediction_semantics": {
           "option": "A",
           "text": "is not a substrate to the enzyme CYP3A4",
           "label": 0
         },
+        "feature_logit": -0.07500854418840315,
+        "feature_probability": 0.481256651075708,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.018743348924292025,
+        "feature_evidence_strength": "low",
+        "total_abs_feature_contribution": 1.701511349644919,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": 0.13029952861362454,
+        "displayed_feature_probability": 0.5325288723272142,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is a substrate to the enzyme CYP3A4",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.03252887232721424,
+        "displayed_feature_evidence_strength": "low",
+        "displayed_abs_feature_contribution": 0.5311407556141464,
+        "displayed_abs_contribution_coverage": 0.31215822082232236,
+        "displayed_teacher_agreement": false,
         "top_pair_terms": [
           {
             "feature_name": "rdkit_pka__rdkit__FractionCSP3",
@@ -609,6 +855,48 @@
             "supports_option": "A",
             "supports_text": "is not a substrate to the enzyme CYP3A4",
             "text_hint": "For aromatic ring count, the neighbor's aromatic ring count is value 2, while the query's aromatic ring count is value 1. The query-minus-neighbor delta is -1. This pairwise contribution is -0.0441, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__LabuteASA",
+            "display_name": "Labute surface area",
+            "description": "Labute approximate surface area",
+            "source_family": "rdkit",
+            "raw_name": "LabuteASA",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 120.01641479421548,
+            "query_value": 139.75250576507355,
+            "delta_value": 19.736090970858072,
+            "base_value_text": "value 120.0164",
+            "query_value_text": "value 139.7525",
+            "delta_value_text": "+19.7361",
+            "contribution": 0.04229920673892308,
+            "contribution_abs": 0.04229920673892308,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a substrate to the enzyme CYP3A4",
+            "text_hint": "For Labute surface area, the neighbor's Labute surface area is value 120.0164, while the query's Labute surface area is value 139.7525. The query-minus-neighbor delta is +19.7361. This pairwise contribution is 0.0423, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.8959237386149929,
+            "query_value": 0.8320193452810374,
+            "delta_value": -0.06390439333395548,
+            "base_value_text": "value 0.8959",
+            "query_value_text": "value 0.832",
+            "delta_value_text": "-0.0639",
+            "contribution": -0.04159846745744603,
+            "contribution_abs": 0.04159846745744603,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not a substrate to the enzyme CYP3A4",
+            "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.8959, while the query's QED drug-likeness is value 0.832. The query-minus-neighbor delta is -0.0639. This pairwise contribution is -0.0416, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
           }
         ]
       },
@@ -623,12 +911,42 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.42506249272264585,
+        "pair_score_class1_probability": 0.42506249272264585,
         "pair_prediction": 0,
+        "pair_prediction_probability": 0.5749375072773542,
+        "teacher_confidence_margin": 0.07493750727735415,
+        "teacher_confidence": "low",
         "pair_prediction_semantics": {
           "option": "A",
           "text": "is not a substrate to the enzyme CYP3A4",
           "label": 0
         },
+        "feature_logit": -0.35749860827145474,
+        "feature_probability": 0.4115652169201501,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.08843478307984992,
+        "feature_evidence_strength": "low",
+        "total_abs_feature_contribution": 2.178930747054679,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": 0.17043550909456326,
+        "displayed_feature_probability": 0.5425060331856085,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is a substrate to the enzyme CYP3A4",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.04250603318560853,
+        "displayed_feature_evidence_strength": "low",
+        "displayed_abs_feature_contribution": 0.8089607607063131,
+        "displayed_abs_contribution_coverage": 0.3712650169353972,
+        "displayed_teacher_agreement": false,
         "top_pair_terms": [
           {
             "feature_name": "fg_top_level__trifluoromethyl",
@@ -755,6 +1073,48 @@
             "supports_option": "A",
             "supports_text": "is not a substrate to the enzyme CYP3A4",
             "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 2. The query-minus-neighbor delta is +2. This pairwise contribution is -0.0601, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "fg_top_level__tertiary hydroxyl",
+            "display_name": "tertiary hydroxyl",
+            "description": "top-level functional-group indicator or count for tertiary hydroxyl",
+            "source_family": "fg_top_level",
+            "raw_name": "tertiary hydroxyl",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 1.0,
+            "delta_value": 0.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0",
+            "contribution": 0.053538864679202304,
+            "contribution_abs": 0.053538864679202304,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a substrate to the enzyme CYP3A4",
+            "text_hint": "Both the neighbor and the query have tertiary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is 0.0535, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.5509263977096905,
+            "query_value": 0.8320193452810374,
+            "delta_value": 0.28109294757134684,
+            "base_value_text": "value 0.5509",
+            "query_value_text": "value 0.832",
+            "delta_value_text": "+0.2811",
+            "contribution": 0.052174813068873845,
+            "contribution_abs": 0.052174813068873845,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a substrate to the enzyme CYP3A4",
+            "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.5509, while the query's QED drug-likeness is value 0.832. The query-minus-neighbor delta is +0.2811. This pairwise contribution is 0.0522, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
           }
         ]
       },
@@ -769,12 +1129,42 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.5431505564001395,
+        "pair_score_class1_probability": 0.5431505564001395,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.5431505564001395,
+        "teacher_confidence_margin": 0.04315055640013954,
+        "teacher_confidence": "low",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is a substrate to the enzyme CYP3A4",
           "label": 1
         },
+        "feature_logit": 0.11755920154424102,
+        "feature_probability": 0.5293559994390816,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is a substrate to the enzyme CYP3A4",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.029355999439081626,
+        "feature_evidence_strength": "low",
+        "total_abs_feature_contribution": 1.8195675587030538,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": 0.2974457303925059,
+        "displayed_feature_probability": 0.5738179859631558,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is a substrate to the enzyme CYP3A4",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.07381798596315581,
+        "displayed_feature_evidence_strength": "low",
+        "displayed_abs_feature_contribution": 0.5524526175412943,
+        "displayed_abs_contribution_coverage": 0.3036175353307958,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "rdkit_pka__rdkit__MolLogP",
@@ -901,6 +1291,48 @@
             "supports_option": "A",
             "supports_text": "is not a substrate to the enzyme CYP3A4",
             "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 2. The query-minus-neighbor delta is +2. This pairwise contribution is -0.0601, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "fg_top_level__tertiary hydroxyl",
+            "display_name": "tertiary hydroxyl",
+            "description": "top-level functional-group indicator or count for tertiary hydroxyl",
+            "source_family": "fg_top_level",
+            "raw_name": "tertiary hydroxyl",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 0.05551702347458947,
+            "contribution_abs": 0.05551702347458947,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a substrate to the enzyme CYP3A4",
+            "text_hint": "The neighbor does not have tertiary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.0555, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.7227145221154114,
+            "query_value": 0.8320193452810374,
+            "delta_value": 0.10930482316562595,
+            "base_value_text": "value 0.7227",
+            "query_value_text": "value 0.832",
+            "delta_value_text": "+0.1093",
+            "contribution": 0.04989175593955793,
+            "contribution_abs": 0.04989175593955793,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is a substrate to the enzyme CYP3A4",
+            "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.7227, while the query's QED drug-likeness is value 0.832. The query-minus-neighbor delta is +0.1093. This pairwise contribution is 0.0499, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
           }
         ]
       }
@@ -916,27 +1348,41 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.24253818658190965,
+        "pair_score_class1_probability": 0.24253818658190965,
         "pair_prediction": 0,
+        "pair_prediction_probability": 0.7574618134180904,
+        "teacher_confidence_margin": 0.2574618134180904,
+        "teacher_confidence": "medium",
         "pair_prediction_semantics": {
           "option": "A",
           "text": "is not a substrate to the enzyme CYP3A4",
           "label": 0
         },
-        "middle_draft": "First, For neutral fraction, the neighbor's neutral fraction is value 0.1208, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is -0.1139. This pairwise contribution is -0.4797, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Next, For maximum partial charge, the neighbor's maximum partial charge is value 0.1624, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.0682. This pairwise contribution is -0.1971, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Then, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.4062, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.2128. This pairwise contribution is 0.1237, which pushes toward option (B): is a substrate to the enzyme CYP3A4. After that, For Labute surface area, the neighbor's Labute surface area is value 210.6839, while the query's Labute surface area is value 139.7525. The query-minus-neighbor delta is -70.9313. This pairwise contribution is -0.1097, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Finally, The neighbor does not have tertiary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1088, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Step 6, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 430.357, while the query's heavy-atom molecular weight is value 282.237. The query-minus-neighbor delta is -148.12. This pairwise contribution is -0.1063, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Taken together, this positive-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP3A4 with pair score 0.2425."
-      },
-      {
-        "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
-        "neighbor_smiles": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
-        "neighbor_role": "positive_neighbor",
-        "pair_model_type": "positive_neighbor_model",
-        "pair_score": 0.32760516559735137,
-        "pair_prediction": 0,
-        "pair_prediction_semantics": {
+        "feature_logit": -1.1865429863295363,
+        "feature_probability": 0.23387778996304623,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
           "option": "A",
           "text": "is not a substrate to the enzyme CYP3A4",
           "label": 0
         },
-        "middle_draft": "First, For neutral fraction, the neighbor's neutral fraction is value 0.1546, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is -0.1477. This pairwise contribution is -0.4791, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Next, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8395, while the query's strongest acidic pKa is value 13.9056. The query-minus-neighbor delta is +0.0661. This pairwise contribution is -0.2609, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Then, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.381, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.2381. This pairwise contribution is 0.1372, which pushes toward option (B): is a substrate to the enzyme CYP3A4. After that, The neighbor has Aryl bromide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1283, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Finally, For estimated logD, the neighbor's estimated logD is value 3.7238, while the query's estimated logD is value 1.8032. The query-minus-neighbor delta is -1.9206. This pairwise contribution is 0.1231, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Step 6, For estimated logP, the neighbor's estimated logP is value 4.5347, while the query's estimated logP is value 3.9624. The query-minus-neighbor delta is -0.5723. This pairwise contribution is 0.0992, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Taken together, this positive-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP3A4 with pair score 0.3276."
+        "feature_confidence_margin": 0.2661222100369538,
+        "feature_evidence_strength": "medium",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "medium",
+        "displayed_feature_logit": -0.8341453209142728,
+        "displayed_feature_probability": 0.30276927797572106,
+        "displayed_feature_prediction": 0,
+        "displayed_feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "displayed_feature_confidence_margin": 0.19723072202427894,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_contribution_coverage": 0.41849866984098,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "For neutral fraction, the neighbor's neutral fraction is value 0.1208, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is -0.1139. This pairwise contribution is -0.4797, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Another relevant signal comes from a different feature. For maximum partial charge, the neighbor's maximum partial charge is value 0.1624, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.0682. This pairwise contribution is -0.1971, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. A related feature-level signal also matters. For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.4062, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.2128. This pairwise contribution is 0.1237, which pushes toward option (B): is a substrate to the enzyme CYP3A4. The evidence also includes another descriptor contrast. For Labute surface area, the neighbor's Labute surface area is value 210.6839, while the query's Labute surface area is value 139.7525. The query-minus-neighbor delta is -70.9313. This pairwise contribution is -0.1097, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. In addition, another feature provides context. The neighbor does not have tertiary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1088, which pushes toward option (B): is a substrate to the enzyme CYP3A4. A further feature-level signal points to another part of the profile. For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 430.357, while the query's heavy-atom molecular weight is value 282.237. The query-minus-neighbor delta is -148.12. This pairwise contribution is -0.1063, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. The same profile includes another relevant descriptor. For molecular weight, the neighbor's molecular weight is value 469.669, while the query's molecular weight is value 311.469. The query-minus-neighbor delta is -158.2. This pairwise contribution is -0.0884, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. One more feature-level signal is worth accounting for. The neighbor has ketone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.0855, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP3A4, the pairwise feature evidence moderately supports option (A): is not a substrate to the enzyme CYP3A4. This neighbor provides medium-strength evidence for option (A): is not a substrate to the enzyme CYP3A4."
       },
       {
         "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
@@ -944,13 +1390,83 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.32314949767091694,
+        "pair_score_class1_probability": 0.32314949767091694,
         "pair_prediction": 0,
+        "pair_prediction_probability": 0.6768505023290831,
+        "teacher_confidence_margin": 0.17685050232908306,
+        "teacher_confidence": "medium",
         "pair_prediction_semantics": {
           "option": "A",
           "text": "is not a substrate to the enzyme CYP3A4",
           "label": 0
         },
-        "middle_draft": "First, For neutral fraction, the neighbor's neutral fraction is value 0.155, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is -0.1481. This pairwise contribution is -0.4791, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Next, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8369, while the query's strongest acidic pKa is value 13.9056. The query-minus-neighbor delta is +0.0687. This pairwise contribution is -0.257, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Then, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.381, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.2381. This pairwise contribution is 0.1372, which pushes toward option (B): is a substrate to the enzyme CYP3A4. After that, For estimated logP, the neighbor's estimated logP is value 4.4256, while the query's estimated logP is value 3.9624. The query-minus-neighbor delta is -0.4632. This pairwise contribution is 0.1054, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Finally, For estimated logD, the neighbor's estimated logD is value 3.616, while the query's estimated logD is value 1.8032. The query-minus-neighbor delta is -1.8128. This pairwise contribution is 0.1026, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Step 6, For maximum partial charge, the neighbor's maximum partial charge is value 0.1624, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.0682. This pairwise contribution is -0.0931, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Taken together, this positive-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP3A4 with pair score 0.3231."
+        "feature_logit": -0.7870643975246974,
+        "feature_probability": 0.31279934749539956,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.18720065250460044,
+        "feature_evidence_strength": "medium",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "medium",
+        "displayed_feature_logit": -0.4798440927333404,
+        "displayed_feature_probability": 0.38228894113723166,
+        "displayed_feature_prediction": 0,
+        "displayed_feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "displayed_feature_confidence_margin": 0.11771105886276834,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_contribution_coverage": 0.46265989957460446,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "For neutral fraction, the neighbor's neutral fraction is value 0.155, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is -0.1481. This pairwise contribution is -0.4791, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Another relevant signal comes from a different feature. For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8369, while the query's strongest acidic pKa is value 13.9056. The query-minus-neighbor delta is +0.0687. This pairwise contribution is -0.257, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. A related feature-level signal also matters. For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.381, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.2381. This pairwise contribution is 0.1372, which pushes toward option (B): is a substrate to the enzyme CYP3A4. The evidence also includes another descriptor contrast. For estimated logP, the neighbor's estimated logP is value 4.4256, while the query's estimated logP is value 3.9624. The query-minus-neighbor delta is -0.4632. This pairwise contribution is 0.1054, which pushes toward option (B): is a substrate to the enzyme CYP3A4. In addition, another feature provides context. For estimated logD, the neighbor's estimated logD is value 3.616, while the query's estimated logD is value 1.8032. The query-minus-neighbor delta is -1.8128. This pairwise contribution is 0.1026, which pushes toward option (B): is a substrate to the enzyme CYP3A4. A further feature-level signal points to another part of the profile. For maximum partial charge, the neighbor's maximum partial charge is value 0.1624, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.0682. This pairwise contribution is -0.0931, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. The same profile includes another relevant descriptor. For topological polar surface area, the neighbor's topological polar surface area is value 40.54, while the query's topological polar surface area is value 23.47. The query-minus-neighbor delta is -17.07. This pairwise contribution is 0.0897, which pushes toward option (B): is a substrate to the enzyme CYP3A4. One more feature-level signal is worth accounting for. The neighbor has ketone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.0855, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP3A4, the pairwise feature evidence moderately supports option (A): is not a substrate to the enzyme CYP3A4. This neighbor provides medium-strength evidence for option (A): is not a substrate to the enzyme CYP3A4."
+      },
+      {
+        "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
+        "neighbor_smiles": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.32760516559735137,
+        "pair_score_class1_probability": 0.32760516559735137,
+        "pair_prediction": 0,
+        "pair_prediction_probability": 0.6723948344026487,
+        "teacher_confidence_margin": 0.1723948344026487,
+        "teacher_confidence": "medium",
+        "pair_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "feature_logit": -0.7667656292878549,
+        "feature_probability": 0.31717918053594824,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.18282081946405176,
+        "feature_evidence_strength": "medium",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "medium",
+        "displayed_feature_logit": -0.43577904043051263,
+        "displayed_feature_probability": 0.3927471977340152,
+        "displayed_feature_prediction": 0,
+        "displayed_feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "displayed_feature_confidence_margin": 0.10725280226598483,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_contribution_coverage": 0.45651984912011234,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "For neutral fraction, the neighbor's neutral fraction is value 0.1546, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is -0.1477. This pairwise contribution is -0.4791, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Another relevant signal comes from a different feature. For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8395, while the query's strongest acidic pKa is value 13.9056. The query-minus-neighbor delta is +0.0661. This pairwise contribution is -0.2609, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. A related feature-level signal also matters. For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.381, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.2381. This pairwise contribution is 0.1372, which pushes toward option (B): is a substrate to the enzyme CYP3A4. The evidence also includes another descriptor contrast. The neighbor has Aryl bromide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1283, which pushes toward option (B): is a substrate to the enzyme CYP3A4. In addition, another feature provides context. For estimated logD, the neighbor's estimated logD is value 3.7238, while the query's estimated logD is value 1.8032. The query-minus-neighbor delta is -1.9206. This pairwise contribution is 0.1231, which pushes toward option (B): is a substrate to the enzyme CYP3A4. A further feature-level signal points to another part of the profile. For estimated logP, the neighbor's estimated logP is value 4.5347, while the query's estimated logP is value 3.9624. The query-minus-neighbor delta is -0.5723. This pairwise contribution is 0.0992, which pushes toward option (B): is a substrate to the enzyme CYP3A4. The same profile includes another relevant descriptor. For maximum partial charge, the neighbor's maximum partial charge is value 0.1624, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.0682. This pairwise contribution is -0.0931, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. One more feature-level signal is worth accounting for. For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 397.138, while the query's heavy-atom molecular weight is value 282.237. The query-minus-neighbor delta is -114.901. This pairwise contribution is -0.0905, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP3A4, the pairwise feature evidence moderately supports option (A): is not a substrate to the enzyme CYP3A4. This neighbor provides medium-strength evidence for option (A): is not a substrate to the enzyme CYP3A4."
       }
     ],
     "negative_neighbors": [
@@ -960,13 +1476,41 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.4951163833068304,
+        "pair_score_class1_probability": 0.4951163833068304,
         "pair_prediction": 0,
+        "pair_prediction_probability": 0.5048836166931696,
+        "teacher_confidence_margin": 0.004883616693169612,
+        "teacher_confidence": "low",
         "pair_prediction_semantics": {
           "option": "A",
           "text": "is not a substrate to the enzyme CYP3A4",
           "label": 0
         },
-        "middle_draft": "First, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.3333, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.2857. This pairwise contribution is 0.1699, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Next, For maximum partial charge, the neighbor's maximum partial charge is value 0.1175, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.0233. This pairwise contribution is 0.065, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Then, For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 2. The query-minus-neighbor delta is +2. This pairwise contribution is -0.0601, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. After that, For neutral fraction, the neighbor's neutral fraction is value 0.001, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is +0.0059. This pairwise contribution is -0.0546, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Finally, Both the neighbor and the query have tertiary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is 0.0535, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Step 6, For aromatic ring count, the neighbor's aromatic ring count is value 2, while the query's aromatic ring count is value 1. The query-minus-neighbor delta is -1. This pairwise contribution is -0.0441, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Taken together, this negative-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP3A4 with pair score 0.4951."
+        "feature_logit": -0.07500854418840315,
+        "feature_probability": 0.481256651075708,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.018743348924292025,
+        "feature_evidence_strength": "low",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": 0.13029952861362454,
+        "displayed_feature_probability": 0.5325288723272142,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is a substrate to the enzyme CYP3A4",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.03252887232721424,
+        "displayed_feature_evidence_strength": "low",
+        "displayed_abs_contribution_coverage": 0.31215822082232236,
+        "displayed_teacher_agreement": false,
+        "middle_draft": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.3333, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.2857. This pairwise contribution is 0.1699, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Another relevant signal comes from a different feature. For maximum partial charge, the neighbor's maximum partial charge is value 0.1175, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.0233. This pairwise contribution is 0.065, which pushes toward option (B): is a substrate to the enzyme CYP3A4. A related feature-level signal also matters. For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 2. The query-minus-neighbor delta is +2. This pairwise contribution is -0.0601, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. The evidence also includes another descriptor contrast. For neutral fraction, the neighbor's neutral fraction is value 0.001, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is +0.0059. This pairwise contribution is -0.0546, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. In addition, another feature provides context. Both the neighbor and the query have tertiary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is 0.0535, which pushes toward option (B): is a substrate to the enzyme CYP3A4. A further feature-level signal points to another part of the profile. For aromatic ring count, the neighbor's aromatic ring count is value 2, while the query's aromatic ring count is value 1. The query-minus-neighbor delta is -1. This pairwise contribution is -0.0441, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. The same profile includes another relevant descriptor. For Labute surface area, the neighbor's Labute surface area is value 120.0164, while the query's Labute surface area is value 139.7525. The query-minus-neighbor delta is +19.7361. This pairwise contribution is 0.0423, which pushes toward option (B): is a substrate to the enzyme CYP3A4. One more feature-level signal is worth accounting for. For QED drug-likeness, the neighbor's QED drug-likeness is value 0.8959, while the query's QED drug-likeness is value 0.832. The query-minus-neighbor delta is -0.0639. This pairwise contribution is -0.0416, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP3A4, these feature comparisons are mixed. This neighbor should be treated as low-strength evidence for option (A): is not a substrate to the enzyme CYP3A4."
       },
       {
         "neighbor_id": "O=C(CCCN1CCC(O)(c2cccc(C(F)(F)F)c2)CC1)c1ccc(F)cc1",
@@ -974,13 +1518,41 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.42506249272264585,
+        "pair_score_class1_probability": 0.42506249272264585,
         "pair_prediction": 0,
+        "pair_prediction_probability": 0.5749375072773542,
+        "teacher_confidence_margin": 0.07493750727735415,
+        "teacher_confidence": "low",
         "pair_prediction_semantics": {
           "option": "A",
           "text": "is not a substrate to the enzyme CYP3A4",
           "label": 0
         },
-        "middle_draft": "First, The neighbor has trifluoromethyl, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1947, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Next, For neutral fraction, the neighbor's neutral fraction is value 0.1821, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is -0.1752. This pairwise contribution is -0.1938, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Then, For estimated logP, the neighbor's estimated logP is value 4.791, while the query's estimated logP is value 3.9624. The query-minus-neighbor delta is -0.8286. This pairwise contribution is 0.0983, which pushes toward option (B): is a substrate to the enzyme CYP3A4. After that, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.4091, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.21. This pairwise contribution is 0.091, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Finally, For maximum partial charge, the neighbor's maximum partial charge is value 0.4159, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.3217. This pairwise contribution is -0.0654, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Step 6, For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 2. The query-minus-neighbor delta is +2. This pairwise contribution is -0.0601, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Taken together, this negative-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP3A4 with pair score 0.4251."
+        "feature_logit": -0.35749860827145474,
+        "feature_probability": 0.4115652169201501,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not a substrate to the enzyme CYP3A4",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.08843478307984992,
+        "feature_evidence_strength": "low",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": 0.17043550909456326,
+        "displayed_feature_probability": 0.5425060331856085,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is a substrate to the enzyme CYP3A4",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.04250603318560853,
+        "displayed_feature_evidence_strength": "low",
+        "displayed_abs_contribution_coverage": 0.3712650169353972,
+        "displayed_teacher_agreement": false,
+        "middle_draft": "The neighbor has trifluoromethyl, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1947, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Another relevant signal comes from a different feature. For neutral fraction, the neighbor's neutral fraction is value 0.1821, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is -0.1752. This pairwise contribution is -0.1938, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. A related feature-level signal also matters. For estimated logP, the neighbor's estimated logP is value 4.791, while the query's estimated logP is value 3.9624. The query-minus-neighbor delta is -0.8286. This pairwise contribution is 0.0983, which pushes toward option (B): is a substrate to the enzyme CYP3A4. The evidence also includes another descriptor contrast. For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.4091, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.21. This pairwise contribution is 0.091, which pushes toward option (B): is a substrate to the enzyme CYP3A4. In addition, another feature provides context. For maximum partial charge, the neighbor's maximum partial charge is value 0.4159, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.3217. This pairwise contribution is -0.0654, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. A further feature-level signal points to another part of the profile. For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 2. The query-minus-neighbor delta is +2. This pairwise contribution is -0.0601, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. The same profile includes another relevant descriptor. Both the neighbor and the query have tertiary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is 0.0535, which pushes toward option (B): is a substrate to the enzyme CYP3A4. One more feature-level signal is worth accounting for. For QED drug-likeness, the neighbor's QED drug-likeness is value 0.5509, while the query's QED drug-likeness is value 0.832. The query-minus-neighbor delta is +0.2811. This pairwise contribution is 0.0522, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP3A4, these feature comparisons are mixed. This neighbor should be treated as low-strength evidence for option (A): is not a substrate to the enzyme CYP3A4."
       },
       {
         "neighbor_id": "CN1CCC[C@@H]1CCO[C@](C)(c1ccccc1)c1ccc(Cl)cc1",
@@ -988,13 +1560,41 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.5431505564001395,
+        "pair_score_class1_probability": 0.5431505564001395,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.5431505564001395,
+        "teacher_confidence_margin": 0.04315055640013954,
+        "teacher_confidence": "low",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is a substrate to the enzyme CYP3A4",
           "label": 1
         },
-        "middle_draft": "First, For estimated logP, the neighbor's estimated logP is value 5.1044, while the query's estimated logP is value 3.9624. The query-minus-neighbor delta is -1.142. This pairwise contribution is 0.0955, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Next, The neighbor has pyrrolidine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.0833, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Then, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.4286, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.1905. This pairwise contribution is 0.076, which pushes toward option (B): is a substrate to the enzyme CYP3A4. After that, For neutral fraction, the neighbor's neutral fraction is value 0.0012, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is +0.0057. This pairwise contribution is -0.0674, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Finally, For maximum partial charge, the neighbor's maximum partial charge is value 0.1153, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.0211. This pairwise contribution is 0.0648, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Step 6, For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 2. The query-minus-neighbor delta is +2. This pairwise contribution is -0.0601, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. Taken together, this negative-neighbor comparison pushes toward option (B): is a substrate to the enzyme CYP3A4 with pair score 0.5432."
+        "feature_logit": 0.11755920154424102,
+        "feature_probability": 0.5293559994390816,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is a substrate to the enzyme CYP3A4",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.029355999439081626,
+        "feature_evidence_strength": "low",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": 0.2974457303925059,
+        "displayed_feature_probability": 0.5738179859631558,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is a substrate to the enzyme CYP3A4",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.07381798596315581,
+        "displayed_feature_evidence_strength": "low",
+        "displayed_abs_contribution_coverage": 0.3036175353307958,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "For estimated logP, the neighbor's estimated logP is value 5.1044, while the query's estimated logP is value 3.9624. The query-minus-neighbor delta is -1.142. This pairwise contribution is 0.0955, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Another relevant signal comes from a different feature. The neighbor has pyrrolidine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.0833, which pushes toward option (B): is a substrate to the enzyme CYP3A4. A related feature-level signal also matters. For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.4286, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.1905. This pairwise contribution is 0.076, which pushes toward option (B): is a substrate to the enzyme CYP3A4. The evidence also includes another descriptor contrast. For neutral fraction, the neighbor's neutral fraction is value 0.0012, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is +0.0057. This pairwise contribution is -0.0674, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. In addition, another feature provides context. For maximum partial charge, the neighbor's maximum partial charge is value 0.1153, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.0211. This pairwise contribution is 0.0648, which pushes toward option (B): is a substrate to the enzyme CYP3A4. A further feature-level signal points to another part of the profile. For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 2. The query-minus-neighbor delta is +2. This pairwise contribution is -0.0601, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. The same profile includes another relevant descriptor. The neighbor does not have tertiary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.0555, which pushes toward option (B): is a substrate to the enzyme CYP3A4. One more feature-level signal is worth accounting for. For QED drug-likeness, the neighbor's QED drug-likeness is value 0.7227, while the query's QED drug-likeness is value 0.832. The query-minus-neighbor delta is +0.1093. This pairwise contribution is 0.0499, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP3A4, the pairwise feature evidence weakly supports option (B): is a substrate to the enzyme CYP3A4. This neighbor provides low-strength evidence for option (B): is a substrate to the enzyme CYP3A4."
       }
     ]
   },
@@ -1002,8 +1602,8 @@
     "positive_neighbors": {
       "group_name": "positive_neighbors",
       "num_neighbors": 3,
-      "num_shared_features": 6,
-      "num_single_neighbor_features": 4,
+      "num_shared_features": 8,
+      "num_single_neighbor_features": 5,
       "shared_evidence": [
         {
           "feature_name": "rdkit_pka__pka__fraction_neutral",
@@ -1019,8 +1619,8 @@
           ],
           "neighbor_ids": [
             "CC(C)(C)c1ccc(C(=O)CCCN2CCC(OC(c3ccccc3)c3ccccc3)CC2)cc1",
-            "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
-            "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1"
+            "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
+            "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1"
           ],
           "neighbor_similarities": [
             0.24797979797979797,
@@ -1061,25 +1661,6 @@
             },
             {
               "neighbor_rank": 2,
-              "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
-              "neighbor_similarity": 0.22468495181616013,
-              "pair_score": 0.32760516559735137,
-              "pair_prediction": 0,
-              "pair_prediction_semantics": {
-                "option": "A",
-                "text": "is not a substrate to the enzyme CYP3A4",
-                "label": 0
-              },
-              "contribution": -0.4791100701738193,
-              "contribution_abs": 0.4791100701738193,
-              "contribution_rank": 1,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "is not a substrate to the enzyme CYP3A4",
-              "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.1546, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is -0.1477. This pairwise contribution is -0.4791, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
-            },
-            {
-              "neighbor_rank": 3,
               "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
               "neighbor_similarity": 0.22468495181616013,
               "pair_score": 0.32314949767091694,
@@ -1096,6 +1677,25 @@
               "supports_option": "A",
               "supports_text": "is not a substrate to the enzyme CYP3A4",
               "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.155, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is -0.1481. This pairwise contribution is -0.4791, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
+              "neighbor_similarity": 0.22468495181616013,
+              "pair_score": 0.32760516559735137,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": -0.4791100701738193,
+              "contribution_abs": 0.4791100701738193,
+              "contribution_rank": 1,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a substrate to the enzyme CYP3A4",
+              "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.1546, while the query's neutral fraction is value 0.0069. The query-minus-neighbor delta is -0.1477. This pairwise contribution is -0.4791, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
             }
           ]
         },
@@ -1113,8 +1713,8 @@
           ],
           "neighbor_ids": [
             "CC(C)(C)c1ccc(C(=O)CCCN2CCC(OC(c3ccccc3)c3ccccc3)CC2)cc1",
-            "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
-            "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1"
+            "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
+            "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1"
           ],
           "neighbor_similarities": [
             0.24797979797979797,
@@ -1155,25 +1755,6 @@
             },
             {
               "neighbor_rank": 2,
-              "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
-              "neighbor_similarity": 0.22468495181616013,
-              "pair_score": 0.32760516559735137,
-              "pair_prediction": 0,
-              "pair_prediction_semantics": {
-                "option": "A",
-                "text": "is not a substrate to the enzyme CYP3A4",
-                "label": 0
-              },
-              "contribution": 0.13724516284817403,
-              "contribution_abs": 0.13724516284817403,
-              "contribution_rank": 3,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "is a substrate to the enzyme CYP3A4",
-              "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.381, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.2381. This pairwise contribution is 0.1372, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
-            },
-            {
-              "neighbor_rank": 3,
               "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
               "neighbor_similarity": 0.22468495181616013,
               "pair_score": 0.32314949767091694,
@@ -1190,43 +1771,9 @@
               "supports_option": "B",
               "supports_text": "is a substrate to the enzyme CYP3A4",
               "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.381, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.2381. This pairwise contribution is 0.1372, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
-            }
-          ]
-        },
-        {
-          "feature_name": "rdkit_pka__pka__most_acidic_pka",
-          "display_name": "strongest acidic pKa",
-          "description": "pKa of the strongest acidic site",
-          "source_family": "pka",
-          "raw_name": "most_acidic_pka",
-          "occurrence_count": 2,
-          "neighbor_ranks": [
-            2,
-            3
-          ],
-          "neighbor_ids": [
-            "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
-            "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1"
-          ],
-          "neighbor_similarities": [
-            0.22468495181616013,
-            0.22468495181616013
-          ],
-          "support_weight_by_label": {
-            "0": 0.11637585855214622,
-            "1": 0.0
-          },
-          "support_mode": "single",
-          "dominant_support": {
-            "option": "A",
-            "text": "is not a substrate to the enzyme CYP3A4",
-            "label": 0
-          },
-          "total_abs_contribution": 0.5179512807220232,
-          "total_weighted_evidence": 0.11637585855214622,
-          "term_instances": [
+            },
             {
-              "neighbor_rank": 2,
+              "neighbor_rank": 3,
               "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
               "neighbor_similarity": 0.22468495181616013,
               "pair_score": 0.32760516559735137,
@@ -1236,32 +1783,13 @@
                 "text": "is not a substrate to the enzyme CYP3A4",
                 "label": 0
               },
-              "contribution": -0.2609437709238219,
-              "contribution_abs": 0.2609437709238219,
-              "contribution_rank": 2,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "is not a substrate to the enzyme CYP3A4",
-              "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8395, while the query's strongest acidic pKa is value 13.9056. The query-minus-neighbor delta is +0.0661. This pairwise contribution is -0.2609, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
-            },
-            {
-              "neighbor_rank": 3,
-              "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
-              "neighbor_similarity": 0.22468495181616013,
-              "pair_score": 0.32314949767091694,
-              "pair_prediction": 0,
-              "pair_prediction_semantics": {
-                "option": "A",
-                "text": "is not a substrate to the enzyme CYP3A4",
-                "label": 0
-              },
-              "contribution": -0.25700750979820125,
-              "contribution_abs": 0.25700750979820125,
-              "contribution_rank": 2,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "is not a substrate to the enzyme CYP3A4",
-              "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8369, while the query's strongest acidic pKa is value 13.9056. The query-minus-neighbor delta is +0.0687. This pairwise contribution is -0.257, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+              "contribution": 0.13724516284817403,
+              "contribution_abs": 0.13724516284817403,
+              "contribution_rank": 3,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a substrate to the enzyme CYP3A4",
+              "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.381, while the query's fraction of sp3 carbons is value 0.619. The query-minus-neighbor delta is +0.2381. This pairwise contribution is 0.1372, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
             }
           ]
         },
@@ -1271,21 +1799,24 @@
           "description": "most positive atomic partial charge",
           "source_family": "rdkit",
           "raw_name": "MaxPartialCharge",
-          "occurrence_count": 2,
+          "occurrence_count": 3,
           "neighbor_ranks": [
             1,
+            2,
             3
           ],
           "neighbor_ids": [
             "CC(C)(C)c1ccc(C(=O)CCCN2CCC(OC(c3ccccc3)c3ccccc3)CC2)cc1",
-            "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1"
+            "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
+            "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1"
           ],
           "neighbor_similarities": [
             0.24797979797979797,
+            0.22468495181616013,
             0.22468495181616013
           ],
           "support_weight_by_label": {
-            "0": 0.06978515331120458,
+            "0": 0.09070026866382028,
             "1": 0.0
           },
           "support_mode": "single",
@@ -1294,8 +1825,8 @@
             "text": "is not a substrate to the enzyme CYP3A4",
             "label": 0
           },
-          "total_abs_contribution": 0.29015906730408186,
-          "total_weighted_evidence": 0.06978515331120458,
+          "total_abs_contribution": 0.3832454764452187,
+          "total_weighted_evidence": 0.09070026866382028,
           "term_instances": [
             {
               "neighbor_rank": 1,
@@ -1317,7 +1848,7 @@
               "text_hint": "For maximum partial charge, the neighbor's maximum partial charge is value 0.1624, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.0682. This pairwise contribution is -0.1971, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
             },
             {
-              "neighbor_rank": 3,
+              "neighbor_rank": 2,
               "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
               "neighbor_similarity": 0.22468495181616013,
               "pair_score": 0.32314949767091694,
@@ -1334,6 +1865,97 @@
               "supports_option": "A",
               "supports_text": "is not a substrate to the enzyme CYP3A4",
               "text_hint": "For maximum partial charge, the neighbor's maximum partial charge is value 0.1624, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.0682. This pairwise contribution is -0.0931, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
+              "neighbor_similarity": 0.22468495181616013,
+              "pair_score": 0.32760516559735137,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": -0.09308640914113687,
+              "contribution_abs": 0.09308640914113687,
+              "contribution_rank": 7,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a substrate to the enzyme CYP3A4",
+              "text_hint": "For maximum partial charge, the neighbor's maximum partial charge is value 0.1624, while the query's maximum partial charge is value 0.0942. The query-minus-neighbor delta is -0.0682. This pairwise contribution is -0.0931, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__pka__most_acidic_pka",
+          "display_name": "strongest acidic pKa",
+          "description": "pKa of the strongest acidic site",
+          "source_family": "pka",
+          "raw_name": "most_acidic_pka",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
+            "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1"
+          ],
+          "neighbor_similarities": [
+            0.22468495181616013,
+            0.22468495181616013
+          ],
+          "support_weight_by_label": {
+            "0": 0.11637585855214622,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP3A4",
+            "label": 0
+          },
+          "total_abs_contribution": 0.5179512807220232,
+          "total_weighted_evidence": 0.11637585855214622,
+          "term_instances": [
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
+              "neighbor_similarity": 0.22468495181616013,
+              "pair_score": 0.32314949767091694,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": -0.25700750979820125,
+              "contribution_abs": 0.25700750979820125,
+              "contribution_rank": 2,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a substrate to the enzyme CYP3A4",
+              "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8369, while the query's strongest acidic pKa is value 13.9056. The query-minus-neighbor delta is +0.0687. This pairwise contribution is -0.257, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
+              "neighbor_similarity": 0.22468495181616013,
+              "pair_score": 0.32760516559735137,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": -0.2609437709238219,
+              "contribution_abs": 0.2609437709238219,
+              "contribution_rank": 2,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a substrate to the enzyme CYP3A4",
+              "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8395, while the query's strongest acidic pKa is value 13.9056. The query-minus-neighbor delta is +0.0661. This pairwise contribution is -0.2609, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
             }
           ]
         },
@@ -1349,8 +1971,8 @@
             3
           ],
           "neighbor_ids": [
-            "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
-            "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1"
+            "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
+            "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1"
           ],
           "neighbor_similarities": [
             0.22468495181616013,
@@ -1371,25 +1993,6 @@
           "term_instances": [
             {
               "neighbor_rank": 2,
-              "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
-              "neighbor_similarity": 0.22468495181616013,
-              "pair_score": 0.32760516559735137,
-              "pair_prediction": 0,
-              "pair_prediction_semantics": {
-                "option": "A",
-                "text": "is not a substrate to the enzyme CYP3A4",
-                "label": 0
-              },
-              "contribution": 0.12307672751175996,
-              "contribution_abs": 0.12307672751175996,
-              "contribution_rank": 5,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "is a substrate to the enzyme CYP3A4",
-              "text_hint": "For estimated logD, the neighbor's estimated logD is value 3.7238, while the query's estimated logD is value 1.8032. The query-minus-neighbor delta is -1.9206. This pairwise contribution is 0.1231, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
-            },
-            {
-              "neighbor_rank": 3,
               "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
               "neighbor_similarity": 0.22468495181616013,
               "pair_score": 0.32314949767091694,
@@ -1406,6 +2009,97 @@
               "supports_option": "B",
               "supports_text": "is a substrate to the enzyme CYP3A4",
               "text_hint": "For estimated logD, the neighbor's estimated logD is value 3.616, while the query's estimated logD is value 1.8032. The query-minus-neighbor delta is -1.8128. This pairwise contribution is 0.1026, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
+              "neighbor_similarity": 0.22468495181616013,
+              "pair_score": 0.32760516559735137,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": 0.12307672751175996,
+              "contribution_abs": 0.12307672751175996,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a substrate to the enzyme CYP3A4",
+              "text_hint": "For estimated logD, the neighbor's estimated logD is value 3.7238, while the query's estimated logD is value 1.8032. The query-minus-neighbor delta is -1.9206. This pairwise contribution is 0.1231, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+          "display_name": "heavy-atom molecular weight",
+          "description": "molecular weight contributed by heavy atoms",
+          "source_family": "rdkit",
+          "raw_name": "HeavyAtomMolWt",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            3
+          ],
+          "neighbor_ids": [
+            "CC(C)(C)c1ccc(C(=O)CCCN2CCC(OC(c3ccccc3)c3ccccc3)CC2)cc1",
+            "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1"
+          ],
+          "neighbor_similarities": [
+            0.24797979797979797,
+            0.22468495181616013
+          ],
+          "support_weight_by_label": {
+            "0": 0.0466857048970047,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP3A4",
+            "label": 0
+          },
+          "total_abs_contribution": 0.19676301780306676,
+          "total_weighted_evidence": 0.0466857048970047,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CC(C)(C)c1ccc(C(=O)CCCN2CCC(OC(c3ccccc3)c3ccccc3)CC2)cc1",
+              "neighbor_similarity": 0.24797979797979797,
+              "pair_score": 0.24253818658190965,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": -0.1062902800614037,
+              "contribution_abs": 0.1062902800614037,
+              "contribution_rank": 6,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a substrate to the enzyme CYP3A4",
+              "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 430.357, while the query's heavy-atom molecular weight is value 282.237. The query-minus-neighbor delta is -148.12. This pairwise contribution is -0.1063, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
+              "neighbor_similarity": 0.22468495181616013,
+              "pair_score": 0.32760516559735137,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": -0.09047273774166306,
+              "contribution_abs": 0.09047273774166306,
+              "contribution_rank": 8,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a substrate to the enzyme CYP3A4",
+              "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 397.138, while the query's heavy-atom molecular weight is value 282.237. The query-minus-neighbor delta is -114.901. This pairwise contribution is -0.0905, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
             }
           ]
         },
@@ -1421,8 +2115,8 @@
             3
           ],
           "neighbor_ids": [
-            "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
-            "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1"
+            "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
+            "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1"
           ],
           "neighbor_similarities": [
             0.22468495181616013,
@@ -1443,25 +2137,6 @@
           "term_instances": [
             {
               "neighbor_rank": 2,
-              "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
-              "neighbor_similarity": 0.22468495181616013,
-              "pair_score": 0.32760516559735137,
-              "pair_prediction": 0,
-              "pair_prediction_semantics": {
-                "option": "A",
-                "text": "is not a substrate to the enzyme CYP3A4",
-                "label": 0
-              },
-              "contribution": 0.0992465100648117,
-              "contribution_abs": 0.0992465100648117,
-              "contribution_rank": 6,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "is a substrate to the enzyme CYP3A4",
-              "text_hint": "For estimated logP, the neighbor's estimated logP is value 4.5347, while the query's estimated logP is value 3.9624. The query-minus-neighbor delta is -0.5723. This pairwise contribution is 0.0992, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
-            },
-            {
-              "neighbor_rank": 3,
               "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
               "neighbor_similarity": 0.22468495181616013,
               "pair_score": 0.32314949767091694,
@@ -1478,6 +2153,97 @@
               "supports_option": "B",
               "supports_text": "is a substrate to the enzyme CYP3A4",
               "text_hint": "For estimated logP, the neighbor's estimated logP is value 4.4256, while the query's estimated logP is value 3.9624. The query-minus-neighbor delta is -0.4632. This pairwise contribution is 0.1054, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
+              "neighbor_similarity": 0.22468495181616013,
+              "pair_score": 0.32760516559735137,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": 0.0992465100648117,
+              "contribution_abs": 0.0992465100648117,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a substrate to the enzyme CYP3A4",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 4.5347, while the query's estimated logP is value 3.9624. The query-minus-neighbor delta is -0.5723. This pairwise contribution is 0.0992, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+            }
+          ]
+        },
+        {
+          "feature_name": "fg_top_level__ketone",
+          "display_name": "ketone",
+          "description": "top-level functional-group indicator or count for ketone",
+          "source_family": "fg_top_level",
+          "raw_name": "ketone",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            2
+          ],
+          "neighbor_ids": [
+            "CC(C)(C)c1ccc(C(=O)CCCN2CCC(OC(c3ccccc3)c3ccccc3)CC2)cc1",
+            "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1"
+          ],
+          "neighbor_similarities": [
+            0.24797979797979797,
+            0.22468495181616013
+          ],
+          "support_weight_by_label": {
+            "0": 0.04043534627066434,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP3A4",
+            "label": 0
+          },
+          "total_abs_contribution": 0.1710952479029572,
+          "total_weighted_evidence": 0.04043534627066434,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CC(C)(C)c1ccc(C(=O)CCCN2CCC(OC(c3ccccc3)c3ccccc3)CC2)cc1",
+              "neighbor_similarity": 0.24797979797979797,
+              "pair_score": 0.24253818658190965,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": -0.0855476239514786,
+              "contribution_abs": 0.0855476239514786,
+              "contribution_rank": 8,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a substrate to the enzyme CYP3A4",
+              "text_hint": "The neighbor has ketone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.0855, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
+              "neighbor_similarity": 0.22468495181616013,
+              "pair_score": 0.32314949767091694,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": -0.0855476239514786,
+              "contribution_abs": 0.0855476239514786,
+              "contribution_rank": 8,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a substrate to the enzyme CYP3A4",
+              "text_hint": "The neighbor has ketone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.0855, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
             }
           ]
         }
@@ -1618,11 +2384,11 @@
           "text_hint": "The neighbor does not have tertiary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1088, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
         },
         {
-          "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
-          "display_name": "heavy-atom molecular weight",
-          "description": "molecular weight contributed by heavy atoms",
+          "feature_name": "rdkit_pka__rdkit__MolWt",
+          "display_name": "molecular weight",
+          "description": "molecular weight",
           "source_family": "rdkit",
-          "raw_name": "HeavyAtomMolWt",
+          "raw_name": "MolWt",
           "occurrence_count": 1,
           "neighbor_ranks": [
             1
@@ -1634,7 +2400,7 @@
             0.24797979797979797
           ],
           "support_weight_by_label": {
-            "0": 0.02635784217684304,
+            "0": 0.021912260499871897,
             "1": 0.0
           },
           "support_mode": "single",
@@ -1643,8 +2409,8 @@
             "text": "is not a substrate to the enzyme CYP3A4",
             "label": 0
           },
-          "total_abs_contribution": 0.1062902800614037,
-          "total_weighted_evidence": 0.02635784217684304,
+          "total_abs_contribution": 0.08836308714815959,
+          "total_weighted_evidence": 0.021912260499871897,
           "term_instances": [
             {
               "neighbor_rank": 1,
@@ -1657,13 +2423,13 @@
                 "text": "is not a substrate to the enzyme CYP3A4",
                 "label": 0
               },
-              "contribution": -0.1062902800614037,
-              "contribution_abs": 0.1062902800614037,
-              "contribution_rank": 6,
+              "contribution": -0.08836308714815959,
+              "contribution_abs": 0.08836308714815959,
+              "contribution_rank": 7,
               "supports_label": 0,
               "supports_option": "A",
               "supports_text": "is not a substrate to the enzyme CYP3A4",
-              "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 430.357, while the query's heavy-atom molecular weight is value 282.237. The query-minus-neighbor delta is -148.12. This pairwise contribution is -0.1063, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+              "text_hint": "For molecular weight, the neighbor's molecular weight is value 469.669, while the query's molecular weight is value 311.469. The query-minus-neighbor delta is -158.2. This pairwise contribution is -0.0884, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
             }
           ],
           "neighbor_rank": 1,
@@ -1676,13 +2442,13 @@
             "text": "is not a substrate to the enzyme CYP3A4",
             "label": 0
           },
-          "contribution": -0.1062902800614037,
-          "contribution_abs": 0.1062902800614037,
-          "contribution_rank": 6,
+          "contribution": -0.08836308714815959,
+          "contribution_abs": 0.08836308714815959,
+          "contribution_rank": 7,
           "supports_label": 0,
           "supports_option": "A",
           "supports_text": "is not a substrate to the enzyme CYP3A4",
-          "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 430.357, while the query's heavy-atom molecular weight is value 282.237. The query-minus-neighbor delta is -148.12. This pairwise contribution is -0.1063, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+          "text_hint": "For molecular weight, the neighbor's molecular weight is value 469.669, while the query's molecular weight is value 311.469. The query-minus-neighbor delta is -158.2. This pairwise contribution is -0.0884, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
         },
         {
           "feature_name": "fg_top_level__Aryl bromide",
@@ -1692,7 +2458,7 @@
           "raw_name": "Aryl bromide",
           "occurrence_count": 1,
           "neighbor_ranks": [
-            2
+            3
           ],
           "neighbor_ids": [
             "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1"
@@ -1714,7 +2480,7 @@
           "total_weighted_evidence": 0.028819338275495123,
           "term_instances": [
             {
-              "neighbor_rank": 2,
+              "neighbor_rank": 3,
               "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
               "neighbor_similarity": 0.22468495181616013,
               "pair_score": 0.32760516559735137,
@@ -1733,7 +2499,7 @@
               "text_hint": "The neighbor has Aryl bromide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1283, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
             }
           ],
-          "neighbor_rank": 2,
+          "neighbor_rank": 3,
           "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Br)cc2)CC1)c1ccc(F)cc1",
           "neighbor_similarity": 0.22468495181616013,
           "pair_score": 0.32760516559735137,
@@ -1750,13 +2516,80 @@
           "supports_option": "B",
           "supports_text": "is a substrate to the enzyme CYP3A4",
           "text_hint": "The neighbor has Aryl bromide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1283, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__TPSA",
+          "display_name": "topological polar surface area",
+          "description": "topological polar surface area of the molecule",
+          "source_family": "rdkit",
+          "raw_name": "TPSA",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            2
+          ],
+          "neighbor_ids": [
+            "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1"
+          ],
+          "neighbor_similarities": [
+            0.22468495181616013
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.02014474430556229
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a substrate to the enzyme CYP3A4",
+            "label": 1
+          },
+          "total_abs_contribution": 0.08965773694557416,
+          "total_weighted_evidence": 0.02014474430556229,
+          "term_instances": [
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
+              "neighbor_similarity": 0.22468495181616013,
+              "pair_score": 0.32314949767091694,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": 0.08965773694557416,
+              "contribution_abs": 0.08965773694557416,
+              "contribution_rank": 7,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a substrate to the enzyme CYP3A4",
+              "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 40.54, while the query's topological polar surface area is value 23.47. The query-minus-neighbor delta is -17.07. This pairwise contribution is 0.0897, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+            }
+          ],
+          "neighbor_rank": 2,
+          "neighbor_id": "O=C(CCCN1CCC(O)(c2ccc(Cl)cc2)CC1)c1ccc(F)cc1",
+          "neighbor_similarity": 0.22468495181616013,
+          "pair_score": 0.32314949767091694,
+          "pair_prediction": 0,
+          "pair_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP3A4",
+            "label": 0
+          },
+          "contribution": 0.08965773694557416,
+          "contribution_abs": 0.08965773694557416,
+          "contribution_rank": 7,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is a substrate to the enzyme CYP3A4",
+          "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 40.54, while the query's topological polar surface area is value 23.47. The query-minus-neighbor delta is -17.07. This pairwise contribution is 0.0897, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
         }
       ]
     },
     "negative_neighbors": {
       "group_name": "negative_neighbors",
       "num_neighbors": 3,
-      "num_shared_features": 5,
+      "num_shared_features": 7,
       "num_single_neighbor_features": 4,
       "shared_evidence": [
         {
@@ -2136,6 +2969,194 @@
           ]
         },
         {
+          "feature_name": "fg_top_level__tertiary hydroxyl",
+          "display_name": "tertiary hydroxyl",
+          "description": "top-level functional-group indicator or count for tertiary hydroxyl",
+          "source_family": "fg_top_level",
+          "raw_name": "tertiary hydroxyl",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "OC(c1ccccc1)(c1ccccc1)C1CCNCC1",
+            "O=C(CCCN1CCC(O)(c2cccc(C(F)(F)F)c2)CC1)c1ccc(F)cc1",
+            "CN1CCC[C@@H]1CCO[C@](C)(c1ccccc1)c1ccc(Cl)cc1"
+          ],
+          "neighbor_similarities": [
+            0.27366189719130896,
+            0.2590633959859828,
+            0.24909698996655522
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.04235063082203022
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a substrate to the enzyme CYP3A4",
+            "label": 1
+          },
+          "total_abs_contribution": 0.16259475283299407,
+          "total_weighted_evidence": 0.04235063082203022,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "OC(c1ccccc1)(c1ccccc1)C1CCNCC1",
+              "neighbor_similarity": 0.27366189719130896,
+              "pair_score": 0.4951163833068304,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": 0.053538864679202304,
+              "contribution_abs": 0.053538864679202304,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a substrate to the enzyme CYP3A4",
+              "text_hint": "Both the neighbor and the query have tertiary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is 0.0535, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "O=C(CCCN1CCC(O)(c2cccc(C(F)(F)F)c2)CC1)c1ccc(F)cc1",
+              "neighbor_similarity": 0.2590633959859828,
+              "pair_score": 0.42506249272264585,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": 0.053538864679202304,
+              "contribution_abs": 0.053538864679202304,
+              "contribution_rank": 7,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a substrate to the enzyme CYP3A4",
+              "text_hint": "Both the neighbor and the query have tertiary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is 0.0535, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CN1CCC[C@@H]1CCO[C@](C)(c1ccccc1)c1ccc(Cl)cc1",
+              "neighbor_similarity": 0.24909698996655522,
+              "pair_score": 0.5431505564001395,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a substrate to the enzyme CYP3A4",
+                "label": 1
+              },
+              "contribution": 0.05551702347458947,
+              "contribution_abs": 0.05551702347458947,
+              "contribution_rank": 7,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a substrate to the enzyme CYP3A4",
+              "text_hint": "The neighbor does not have tertiary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.0555, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__qed",
+          "display_name": "QED drug-likeness",
+          "description": "quantitative estimate of drug-likeness",
+          "source_family": "rdkit",
+          "raw_name": "qed",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "OC(c1ccccc1)(c1ccccc1)C1CCNCC1",
+            "O=C(CCCN1CCC(O)(c2cccc(C(F)(F)F)c2)CC1)c1ccc(F)cc1",
+            "CN1CCC[C@@H]1CCO[C@](C)(c1ccccc1)c1ccc(Cl)cc1"
+          ],
+          "neighbor_similarities": [
+            0.27366189719130896,
+            0.2590633959859828,
+            0.24909698996655522
+          ],
+          "support_weight_by_label": {
+            "0": 0.011383915524655607,
+            "1": 0.025944470487246178
+          },
+          "support_mode": "mostly",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a substrate to the enzyme CYP3A4",
+            "label": 1
+          },
+          "total_abs_contribution": 0.1436650364658778,
+          "total_weighted_evidence": 0.03732838601190179,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "OC(c1ccccc1)(c1ccccc1)C1CCNCC1",
+              "neighbor_similarity": 0.27366189719130896,
+              "pair_score": 0.4951163833068304,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": -0.04159846745744603,
+              "contribution_abs": 0.04159846745744603,
+              "contribution_rank": 8,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not a substrate to the enzyme CYP3A4",
+              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.8959, while the query's QED drug-likeness is value 0.832. The query-minus-neighbor delta is -0.0639. This pairwise contribution is -0.0416, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "O=C(CCCN1CCC(O)(c2cccc(C(F)(F)F)c2)CC1)c1ccc(F)cc1",
+              "neighbor_similarity": 0.2590633959859828,
+              "pair_score": 0.42506249272264585,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": 0.052174813068873845,
+              "contribution_abs": 0.052174813068873845,
+              "contribution_rank": 8,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a substrate to the enzyme CYP3A4",
+              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.5509, while the query's QED drug-likeness is value 0.832. The query-minus-neighbor delta is +0.2811. This pairwise contribution is 0.0522, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CN1CCC[C@@H]1CCO[C@](C)(c1ccccc1)c1ccc(Cl)cc1",
+              "neighbor_similarity": 0.24909698996655522,
+              "pair_score": 0.5431505564001395,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is a substrate to the enzyme CYP3A4",
+                "label": 1
+              },
+              "contribution": 0.04989175593955793,
+              "contribution_abs": 0.04989175593955793,
+              "contribution_rank": 8,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a substrate to the enzyme CYP3A4",
+              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.7227, while the query's QED drug-likeness is value 0.832. The query-minus-neighbor delta is +0.1093. This pairwise contribution is 0.0499, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+            }
+          ]
+        },
+        {
           "feature_name": "rdkit_pka__rdkit__MolLogP",
           "display_name": "estimated logP",
           "description": "RDKit-estimated octanol/water partition coefficient (logP)",
@@ -2210,73 +3231,6 @@
       ],
       "single_neighbor_evidence": [
         {
-          "feature_name": "fg_top_level__tertiary hydroxyl",
-          "display_name": "tertiary hydroxyl",
-          "description": "top-level functional-group indicator or count for tertiary hydroxyl",
-          "source_family": "fg_top_level",
-          "raw_name": "tertiary hydroxyl",
-          "occurrence_count": 1,
-          "neighbor_ranks": [
-            1
-          ],
-          "neighbor_ids": [
-            "OC(c1ccccc1)(c1ccccc1)C1CCNCC1"
-          ],
-          "neighbor_similarities": [
-            0.27366189719130896
-          ],
-          "support_weight_by_label": {
-            "0": 0.0,
-            "1": 0.014651547281579263
-          },
-          "support_mode": "single",
-          "dominant_support": {
-            "option": "B",
-            "text": "is a substrate to the enzyme CYP3A4",
-            "label": 1
-          },
-          "total_abs_contribution": 0.053538864679202304,
-          "total_weighted_evidence": 0.014651547281579263,
-          "term_instances": [
-            {
-              "neighbor_rank": 1,
-              "neighbor_id": "OC(c1ccccc1)(c1ccccc1)C1CCNCC1",
-              "neighbor_similarity": 0.27366189719130896,
-              "pair_score": 0.4951163833068304,
-              "pair_prediction": 0,
-              "pair_prediction_semantics": {
-                "option": "A",
-                "text": "is not a substrate to the enzyme CYP3A4",
-                "label": 0
-              },
-              "contribution": 0.053538864679202304,
-              "contribution_abs": 0.053538864679202304,
-              "contribution_rank": 5,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "is a substrate to the enzyme CYP3A4",
-              "text_hint": "Both the neighbor and the query have tertiary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is 0.0535, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
-            }
-          ],
-          "neighbor_rank": 1,
-          "neighbor_id": "OC(c1ccccc1)(c1ccccc1)C1CCNCC1",
-          "neighbor_similarity": 0.27366189719130896,
-          "pair_score": 0.4951163833068304,
-          "pair_prediction": 0,
-          "pair_prediction_semantics": {
-            "option": "A",
-            "text": "is not a substrate to the enzyme CYP3A4",
-            "label": 0
-          },
-          "contribution": 0.053538864679202304,
-          "contribution_abs": 0.053538864679202304,
-          "contribution_rank": 5,
-          "supports_label": 1,
-          "supports_option": "B",
-          "supports_text": "is a substrate to the enzyme CYP3A4",
-          "text_hint": "Both the neighbor and the query have tertiary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is 0.0535, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
-        },
-        {
           "feature_name": "rdkit_pka__rdkit__NumAromaticRings",
           "display_name": "aromatic ring count",
           "description": "number of aromatic rings",
@@ -2342,6 +3296,73 @@
           "supports_option": "A",
           "supports_text": "is not a substrate to the enzyme CYP3A4",
           "text_hint": "For aromatic ring count, the neighbor's aromatic ring count is value 2, while the query's aromatic ring count is value 1. The query-minus-neighbor delta is -1. This pairwise contribution is -0.0441, which pushes toward option (A): is not a substrate to the enzyme CYP3A4."
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__LabuteASA",
+          "display_name": "Labute surface area",
+          "description": "Labute approximate surface area",
+          "source_family": "rdkit",
+          "raw_name": "LabuteASA",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            1
+          ],
+          "neighbor_ids": [
+            "OC(c1ccccc1)(c1ccccc1)C1CCNCC1"
+          ],
+          "neighbor_similarities": [
+            0.27366189719130896
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.011575681165861091
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is a substrate to the enzyme CYP3A4",
+            "label": 1
+          },
+          "total_abs_contribution": 0.04229920673892308,
+          "total_weighted_evidence": 0.011575681165861091,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "OC(c1ccccc1)(c1ccccc1)C1CCNCC1",
+              "neighbor_similarity": 0.27366189719130896,
+              "pair_score": 0.4951163833068304,
+              "pair_prediction": 0,
+              "pair_prediction_semantics": {
+                "option": "A",
+                "text": "is not a substrate to the enzyme CYP3A4",
+                "label": 0
+              },
+              "contribution": 0.04229920673892308,
+              "contribution_abs": 0.04229920673892308,
+              "contribution_rank": 7,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is a substrate to the enzyme CYP3A4",
+              "text_hint": "For Labute surface area, the neighbor's Labute surface area is value 120.0164, while the query's Labute surface area is value 139.7525. The query-minus-neighbor delta is +19.7361. This pairwise contribution is 0.0423, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
+            }
+          ],
+          "neighbor_rank": 1,
+          "neighbor_id": "OC(c1ccccc1)(c1ccccc1)C1CCNCC1",
+          "neighbor_similarity": 0.27366189719130896,
+          "pair_score": 0.4951163833068304,
+          "pair_prediction": 0,
+          "pair_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP3A4",
+            "label": 0
+          },
+          "contribution": 0.04229920673892308,
+          "contribution_abs": 0.04229920673892308,
+          "contribution_rank": 7,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is a substrate to the enzyme CYP3A4",
+          "text_hint": "For Labute surface area, the neighbor's Labute surface area is value 120.0164, while the query's Labute surface area is value 139.7525. The query-minus-neighbor delta is +19.7361. This pairwise contribution is 0.0423, which pushes toward option (B): is a substrate to the enzyme CYP3A4."
         },
         {
           "feature_name": "fg_top_level__trifluoromethyl",
@@ -2479,6 +3500,6 @@
         }
       ]
     },
-    "middle_draft": "Across the positive neighbors, shared local signals include neutral fraction, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not a substrate to the enzyme CYP3A4, fraction of sp3 carbons, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is a substrate to the enzyme CYP3A4, strongest acidic pKa, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not a substrate to the enzyme CYP3A4, maximum partial charge, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not a substrate to the enzyme CYP3A4, estimated logD, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is a substrate to the enzyme CYP3A4, and estimated logP, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is a substrate to the enzyme CYP3A4. The remaining one-off signals from the positive neighbors are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.248), the comparison shows that for Labute surface area, the neighbor's Labute surface area is value 210.6839, while the query's Labute surface area is value 139.7525. The query-minus-neighbor delta is -70.9313. This pairwise contribution is -0.1097, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. With neighbor 1 (similarity 0.248), the comparison shows that the neighbor does not have tertiary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1088, which pushes toward option (B): is a substrate to the enzyme CYP3A4. With neighbor 1 (similarity 0.248), the comparison shows that for heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 430.357, while the query's heavy-atom molecular weight is value 282.237. The query-minus-neighbor delta is -148.12. This pairwise contribution is -0.1063, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. With neighbor 2 (similarity 0.2247), the comparison shows that the neighbor has Aryl bromide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1283, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Across the negative neighbors, shared local signals include fraction of sp3 carbons, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is a substrate to the enzyme CYP3A4, neutral fraction, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not a substrate to the enzyme CYP3A4, maximum partial charge, which recurs in 3 of 3 neighbor comparisons and mostly pushes toward option (B): is a substrate to the enzyme CYP3A4, aliphatic carbocycle count, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not a substrate to the enzyme CYP3A4, and estimated logP, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is a substrate to the enzyme CYP3A4. The remaining one-off signals from the negative neighbors are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.2737), the comparison shows that both the neighbor and the query have tertiary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is 0.0535, which pushes toward option (B): is a substrate to the enzyme CYP3A4. With neighbor 1 (similarity 0.2737), the comparison shows that for aromatic ring count, the neighbor's aromatic ring count is value 2, while the query's aromatic ring count is value 1. The query-minus-neighbor delta is -1. This pairwise contribution is -0.0441, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. With neighbor 2 (similarity 0.2591), the comparison shows that the neighbor has trifluoromethyl, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1947, which pushes toward option (B): is a substrate to the enzyme CYP3A4. With neighbor 3 (similarity 0.2491), the comparison shows that the neighbor has pyrrolidine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.0833, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Taken together, these local analog comparisons support option (A): is not a substrate to the enzyme CYP3A4 with local score 0.397, positive-neighbor aggregate 0.2959, and negative-neighbor aggregate 0.4872."
+    "middle_draft": "Across the neighbors labeled option (B): is a substrate to the enzyme CYP3A4, shared local signals include neutral fraction, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not a substrate to the enzyme CYP3A4, fraction of sp3 carbons, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is a substrate to the enzyme CYP3A4, maximum partial charge, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not a substrate to the enzyme CYP3A4, strongest acidic pKa, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not a substrate to the enzyme CYP3A4, estimated logD, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is a substrate to the enzyme CYP3A4, heavy-atom molecular weight, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not a substrate to the enzyme CYP3A4, estimated logP, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is a substrate to the enzyme CYP3A4, and ketone, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not a substrate to the enzyme CYP3A4. The remaining one-off signals from the neighbors labeled option (B): is a substrate to the enzyme CYP3A4 are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.248), the comparison shows that for Labute surface area, the neighbor's Labute surface area is value 210.6839, while the query's Labute surface area is value 139.7525. The query-minus-neighbor delta is -70.9313. This pairwise contribution is -0.1097, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. With neighbor 1 (similarity 0.248), the comparison shows that the neighbor does not have tertiary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1088, which pushes toward option (B): is a substrate to the enzyme CYP3A4. With neighbor 1 (similarity 0.248), the comparison shows that for molecular weight, the neighbor's molecular weight is value 469.669, while the query's molecular weight is value 311.469. The query-minus-neighbor delta is -158.2. This pairwise contribution is -0.0884, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. With neighbor 3 (similarity 0.2247), the comparison shows that the neighbor has Aryl bromide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1283, which pushes toward option (B): is a substrate to the enzyme CYP3A4. With neighbor 2 (similarity 0.2247), the comparison shows that for topological polar surface area, the neighbor's topological polar surface area is value 40.54, while the query's topological polar surface area is value 23.47. The query-minus-neighbor delta is -17.07. This pairwise contribution is 0.0897, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Across the neighbors labeled option (A): is not a substrate to the enzyme CYP3A4, shared local signals include fraction of sp3 carbons, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is a substrate to the enzyme CYP3A4, neutral fraction, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not a substrate to the enzyme CYP3A4, maximum partial charge, which recurs in 3 of 3 neighbor comparisons and mostly pushes toward option (B): is a substrate to the enzyme CYP3A4, aliphatic carbocycle count, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not a substrate to the enzyme CYP3A4, tertiary hydroxyl, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is a substrate to the enzyme CYP3A4, QED drug-likeness, which recurs in 3 of 3 neighbor comparisons and mostly pushes toward option (B): is a substrate to the enzyme CYP3A4, and estimated logP, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is a substrate to the enzyme CYP3A4. The remaining one-off signals from the neighbors labeled option (A): is not a substrate to the enzyme CYP3A4 are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.2737), the comparison shows that for aromatic ring count, the neighbor's aromatic ring count is value 2, while the query's aromatic ring count is value 1. The query-minus-neighbor delta is -1. This pairwise contribution is -0.0441, which pushes toward option (A): is not a substrate to the enzyme CYP3A4. With neighbor 1 (similarity 0.2737), the comparison shows that for Labute surface area, the neighbor's Labute surface area is value 120.0164, while the query's Labute surface area is value 139.7525. The query-minus-neighbor delta is +19.7361. This pairwise contribution is 0.0423, which pushes toward option (B): is a substrate to the enzyme CYP3A4. With neighbor 2 (similarity 0.2591), the comparison shows that the neighbor has trifluoromethyl, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1947, which pushes toward option (B): is a substrate to the enzyme CYP3A4. With neighbor 3 (similarity 0.2491), the comparison shows that the neighbor has pyrrolidine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.0833, which pushes toward option (B): is a substrate to the enzyme CYP3A4. Taken together, these local analog comparisons support option (A): is not a substrate to the enzyme CYP3A4 with local prediction probability 0.603, aggregate over neighbors labeled option (B): is a substrate to the enzyme CYP3A4 0.2959, and aggregate over neighbors labeled option (A): is not a substrate to the enzyme CYP3A4 0.4872."
   }
 }

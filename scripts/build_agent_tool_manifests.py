@@ -28,7 +28,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dataset-root", default="data/processed/tdc_no_conflict_labels_salt_removed")
     parser.add_argument("--cache-root", default="data/cache/tdc_mol_fingerprints")
     parser.add_argument("--global-top-k", type=int, default=10)
-    parser.add_argument("--local-top-term-k", type=int, default=6)
+    parser.add_argument("--local-top-term-k", type=int, default=8)
     parser.add_argument("--local-top-k-pos", type=int, default=3)
     parser.add_argument("--local-top-k-neg", type=int, default=3)
     parser.add_argument("--allow-same-scaffold", action="store_true")

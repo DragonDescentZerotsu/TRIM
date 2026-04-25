@@ -36,3 +36,13 @@ def resolve_project_path(path_like: str | Path) -> Path:
         return path
     return (PROJECT_ROOT / path).resolve()
 
+
+def serialize_project_path(path_like: str | Path) -> str:
+    """Serialize repo-local paths relative to PROJECT_ROOT for portable manifests."""
+    path = Path(path_like).expanduser()
+    if not path.is_absolute():
+        return path.as_posix()
+    try:
+        return path.relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return str(path)

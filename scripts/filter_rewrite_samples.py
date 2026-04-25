@@ -14,7 +14,7 @@ if str(SRC_ROOT) not in sys.path:
 
 from trim.reasoning.rewrite import filter_rewrite_samples
 from trim.utils.io import save_json
-from trim.utils.paths import resolve_project_path
+from trim.utils.paths import resolve_project_path, serialize_project_path
 
 
 DEFAULT_GLOBAL_ROOT = "outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan"
@@ -86,14 +86,14 @@ def main() -> int:
                     "kept_record_count": int(manifest["kept_record_count"]),
                     "dropped_record_count": int(manifest["dropped_record_count"]),
                     "teacher_case_counts": dict(manifest["teacher_case_counts"]),
-                    "output_dir": str(output_dir.resolve()),
+                    "output_dir": serialize_project_path(output_dir),
                 }
             )
 
     summary = {
         "schema_version": "trim_reasoning_rewrite_filter_summary_v1",
-        "global_root": str(global_root),
-        "local_root": str(local_root),
+        "global_root": serialize_project_path(global_root),
+        "local_root": serialize_project_path(local_root),
         "splits": splits,
         "tasks": tasks,
         "rows": summary_rows,

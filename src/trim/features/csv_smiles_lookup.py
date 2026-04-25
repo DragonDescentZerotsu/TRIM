@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from trim.utils.paths import PROJECT_ROOT
+from trim.utils.paths import PROJECT_ROOT, serialize_project_path
 
 from .base import FeatureSource
 from .registry import register_feature_source
@@ -84,7 +84,7 @@ class CSVSmilesLookupSource(FeatureSource):
         description = super().describe()
         description.update(
             {
-                "csv_path": str(self.csv_path),
+                "csv_path": serialize_project_path(self.csv_path),
                 "smiles_column": self.smiles_column,
                 "feature_columns": None if self.feature_columns is None else list(self.feature_columns),
                 "drop_columns": sorted(self.drop_columns),
@@ -102,4 +102,3 @@ def build_csv_smiles_lookup_source(spec: dict[str, object]) -> CSVSmilesLookupSo
 
 
 register_feature_source("csv_smiles_lookup", build_csv_smiles_lookup_source)
-

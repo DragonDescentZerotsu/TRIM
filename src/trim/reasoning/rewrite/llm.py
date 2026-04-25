@@ -9,6 +9,7 @@ from urllib import error, request
 
 
 DEFAULT_OPENROUTER_API_BASE = "https://openrouter.ai/api/v1"
+DEFAULT_OPENAI_API_BASE = "https://api.openai.com/v1"
 DEFAULT_VLLM_API_BASE = "http://127.0.0.1:8000/v1"
 DEFAULT_DOTENV_PATH = Path(__file__).resolve().parents[4] / ".env"
 
@@ -65,6 +66,8 @@ def _read_dotenv_with_env_fallback(name: str, *, dotenv_path: str | Path | None 
 def _default_api_base(provider: str) -> str:
     if provider == "openrouter":
         return DEFAULT_OPENROUTER_API_BASE
+    if provider == "openai":
+        return DEFAULT_OPENAI_API_BASE
     if provider == "vllm":
         return DEFAULT_VLLM_API_BASE
     raise ValueError(f"Unsupported LLM provider: {provider}")
@@ -73,6 +76,8 @@ def _default_api_base(provider: str) -> str:
 def _default_api_key(provider: str, *, dotenv_path: str | Path | None = None) -> str | None:
     if provider == "openrouter":
         return _read_dotenv_with_env_fallback("OPENROUTER_API_KEY", dotenv_path=dotenv_path)
+    if provider == "openai":
+        return _read_dotenv_with_env_fallback("OPENAI_API_KEY", dotenv_path=dotenv_path)
     if provider == "vllm":
         return _read_env_with_dotenv("VLLM_API_KEY", dotenv_path=dotenv_path) or _read_env_with_dotenv(
             "OPENAI_API_KEY", dotenv_path=dotenv_path
@@ -99,6 +104,8 @@ def build_llm_request_config(
     )
     if resolved_provider == "openrouter" and not resolved_api_key:
         raise ValueError("OPENROUTER_API_KEY is required for provider=openrouter")
+    if resolved_provider == "openai" and not resolved_api_key:
+        raise ValueError("OPENAI_API_KEY is required for provider=openai")
     return LLMRequestConfig(
         provider=resolved_provider,
         model=str(model),
@@ -172,7 +179,8 @@ def run_chat_completion(*, prompt: str, config: LLMRequestConfig) -> dict[str, A
         "temperature": config.temperature,
     }
     if config.max_tokens is not None:
-        payload["max_tokens"] = config.max_tokens
+        token_key = "max_completion_tokens" if config.provider == "openai" else "max_tokens"
+        payload[token_key] = config.max_tokens
     raw_response = _post_json(
         url=url,
         headers=_completion_headers(config),

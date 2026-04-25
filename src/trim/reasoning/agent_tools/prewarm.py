@@ -17,7 +17,13 @@ from trim.reasoning.agent_tools.manifests import (
 )
 from trim.reasoning.task_user_prompts import DEFAULT_TASK_MANIFEST_INDEX, load_task_names_from_manifest_index
 from trim.utils.io import save_json
-from trim.utils.paths import DEFAULT_PROCESSED_DATA_ROOT, DEFAULT_SIMILARITY_CACHE_ROOT, OUTPUTS_ROOT, resolve_project_path
+from trim.utils.paths import (
+    DEFAULT_PROCESSED_DATA_ROOT,
+    DEFAULT_SIMILARITY_CACHE_ROOT,
+    OUTPUTS_ROOT,
+    resolve_project_path,
+    serialize_project_path,
+)
 
 try:
     from tqdm.auto import tqdm
@@ -410,11 +416,11 @@ def prewarm_agent_tool_cache(
     payload: dict[str, Any] = {
         "schema_version": AGENT_TOOL_PREWARM_SCHEMA_VERSION,
         "feature_set_name": feature_set_name,
-        "manifest_index_path": str(resolve_project_path(manifest_index_path)),
-        "manifest_root": str(resolve_project_path(manifest_root)),
-        "dataset_root": str(resolve_project_path(dataset_root)),
-        "cache_root": str(resolve_project_path(cache_root)),
-        "tool_cache_root": str(resolve_project_path(tool_cache_root)),
+        "manifest_index_path": serialize_project_path(resolve_project_path(manifest_index_path)),
+        "manifest_root": serialize_project_path(resolve_project_path(manifest_root)),
+        "dataset_root": serialize_project_path(resolve_project_path(dataset_root)),
+        "cache_root": serialize_project_path(resolve_project_path(cache_root)),
+        "tool_cache_root": serialize_project_path(resolve_project_path(tool_cache_root)),
         "splits": list(resolved_splits),
         "selected_tools": list(selected_tools),
         "neighbors_per_label_values": list(resolved_neighbors_per_label_values),
@@ -438,5 +444,5 @@ def prewarm_agent_tool_cache(
         )
     )
     save_json(resolved_summary_path, payload)
-    payload["summary_path"] = str(resolved_summary_path.resolve())
+    payload["summary_path"] = serialize_project_path(resolved_summary_path)
     return payload

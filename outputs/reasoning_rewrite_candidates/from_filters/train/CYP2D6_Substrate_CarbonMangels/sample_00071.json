@@ -17,7 +17,7 @@
   "keep_for_rewrite": true,
   "drop_reason": null,
   "teacher_case": "both_correct",
-  "playbook_path": "/data1/tianang/Projects/TRIM/playbooks/CYP2D6_Substrate_CarbonMangels.md",
+  "playbook_path": "playbooks/CYP2D6_Substrate_CarbonMangels.md",
   "global_rewrite_input": {
     "task_playbook": "# CYP2D6 substrate molecular-property playbook for the TDC task CYP2D6_Substrate_CarbonMangels\n\nThis playbook is grounded in (i) the entity[\"organization\",\"Therapeutics Data Commons\",\"drug discovery datasets\"] task context (a curated, multi-source binary substrate label) citeturn14search2turn14search11 and (ii) the closest task-adjacent, substrate-oriented literature that reports **empirical molecular-property distributions** and **operational substrate cutoffs** for CYP2D6 (notably a curated CYP2D6 kinetics database + decision-tree analysis). citeturn33view0turn20view1  \nBecause “substrate vs non-substrate” labels vary across sources and assays, many properties **do not have stable, universally adopted numeric cutoffs**; where this happens, the entry says so explicitly and provides only validated qualitative guidance. citeturn10view0turn33view0\n\n## neutral fraction\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **Lower neutral fraction at physiological pH** (i.e., more cationic character) is *often* associated with CYP2D6 substrate-like chemistry because many substrates contain a **protonated basic nitrogen** at physiological pH. citeturn22search30turn13search24turn27search1\n- Brief note: A practical anchor from acid–base fundamentals is that **pH = pKa implies ~50% protonated/deprotonated** for a site; “mostly protonated” vs “mostly neutral” behavior is driven by how far pH is from pKa. (This is a mechanism-relevant proxy because CYP2D6 recognition is often discussed in terms of a protonated/basic center.) citeturn27search1turn22search30\n- Source: citeturn22search30turn13search24turn27search1\n\n## estimated logD\n- Common threshold(s) or range(s): In a curated CYP2D6 kinetics small-molecule database, **LogD7.4** summary statistics were: **25th–75th percentile ~0.34–2.36**, median **~1.54**, observed range **~−1.76 to 6.38**. citeturn20view1turn20view2\n- Usually associated with: **Higher lipophilicity at pH 7.4 (higher LogD7.4)** was associated with stronger substrate-like behavior in that kinetics dataset (LogD7.4 was one of the few single properties significantly correlated with normalized Km). citeturn20view1turn20view2\n- Brief note: Treat LogD7.4 as a **task-adjacent anchor** because TDC Carbon-Mangels labels come from multiple literature sources, but LogD7.4 repeatedly emerges as a practical discriminator in substrate-related analyses. citeturn14search2turn20view1\n- Source: citeturn20view1turn20view2turn14search2\n\n## strongest acidic pKa\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **Strongly acidic / predominantly anionic** molecules are *less often described as “typical” CYP2D6 substrates* than lipophilic bases (CYP2D6 is commonly described as favoring substrates with a basic center). citeturn22search30turn13search24\n- Brief note: Acidic pKa mainly matters here via **ionization state at physiological pH** (shaping charge + logD), rather than as an independently thresholded CYP2D6 substrate rule. citeturn22search30turn27search1\n- Source: citeturn22search30turn13search24turn27search1\n\n## strongest basic pKa\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **Presence of a basic center that can be protonated at physiological pH** is repeatedly noted as a common CYP2D6 substrate feature; practically, this implies a **basic pKa high enough to yield substantial protonation near pH ~7.4**. citeturn22search30turn13search24turn27search1\n- Brief note: In a CYP2D6 kinetics property-analysis workflow, a “highest computed pKa” descriptor was explicitly included among computed properties because prior reports connect pKa/basicity to CYP2D6 substrate recognition—yet the same work emphasizes that **simple, single-property rules may not generalize across scaffolds**. citeturn33view0turn10view0\n- Source: citeturn22search30turn13search24turn33view0turn10view0\n\n## number of acidic sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More acidic sites can increase **polarity/ionization complexity**, potentially reducing the “typical lipophilic base” profile often associated with CYP2D6 substrates. citeturn22search30turn20view1\n- Brief note: The most consistently stated CYP2D6 substrate “motif” is **basic** rather than **acidic** ionization; acidic-site counting is therefore a secondary, indirect cue. citeturn22search30turn13search24\n- Source: citeturn22search30turn13search24turn20view1\n\n## number of basic sites\n- Common threshold(s) or range(s): qualitative anchor: **≥1 basic (protonatable) nitrogen** is repeatedly described as common among “typical” CYP2D6 substrates (though atypical cases exist). citeturn22search30turn13search24\n- Usually associated with: **Substrate (B)** when at least one basic site is present and protonated at physiological pH; **non-substrate (A)** is more likely when no basic site is present (not a guarantee). citeturn22search30turn13search24\n- Brief note: Several substrate-recognition descriptions emphasize a **positively charged nitrogen** at a characteristic distance from the oxidation site (structure-based rather than purely property-based). citeturn13search24turn22search30\n- Source: citeturn22search30turn13search24\n\n## number of ionizable sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Higher ionizable-site count can increase **charge-state heterogeneity**, shifting logD/PSA and potentially affecting CYP2D6 interaction indirectly. citeturn22search30turn20view1\n- Brief note: The CYP2D6 substrate literature most consistently emphasizes **a basic center** rather than “many ionizable sites”; treat this as a complexity/ionization proxy. citeturn22search30turn13search24\n- Source: citeturn22search30turn20view1turn13search24\n\n## exact molecular weight\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Indirectly, “drug-like” MW ranges (often discussed around **≤500 Da** in general ADMET filtering) are a common proxy context for many small-molecule tasks. citeturn22search12turn33view0\n- Brief note: A CYP2D6 kinetics property-analysis pipeline explicitly computed **molecular weight** as a candidate descriptor, but that work highlighted only a subset of properties as individually significant correlates (and emphasized multi-property interactions). citeturn33view0turn20view1turn10view0\n- Source: citeturn33view0turn20view1turn22search12\n\n## fraction of sp3 carbons\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: unclear direction for CYP2D6 substrate status in threshold form; any effect is likely **scaffold/shape-mediated** rather than a direct rule. citeturn10view0turn22search30\n- Brief note: Substrate-recognition discussions for CYP2D6 focus more on **basic center + aromatic/lipophilic features** than on global Fsp3 cutoffs. citeturn22search30turn10view0\n- Source: citeturn22search30turn10view0\n\n## heavy-atom count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Indirect proxy for size; larger/heavier molecules may trend more lipophilic and ring-rich, which can align with substrate-enriched regions in some CYP2D6 substrate analyses. citeturn20view1turn9view3\n- Brief note: Use alongside molecular weight/ring count rather than as a standalone CYP2D6 rule. citeturn33view0turn9view3\n- Source: citeturn20view1turn33view0turn9view3\n\n## heavy-atom molecular weight\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Indirect size proxy; same caveats as molecular weight. citeturn33view0turn20view1\n- Brief note: No CYP2D6-specific “heavy-atom MW” cutoffs are commonly used in the substrate literature; use only as a supporting feature. citeturn10view0turn22search30\n- Source: citeturn33view0turn22search30turn10view0\n\n## Labute surface area\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Indirectly tracks size/shape; CYP2D6 substrate analyses more commonly report PSA (polar surface area), molar volume, and ring count than Labute surface area thresholds. citeturn33view0turn20view1\n- Brief note: If used, interpret as a **size/shape adjunct**, not a primary CYP2D6 substrate determinant. citeturn10view0turn22search30\n- Source: citeturn33view0turn20view1turn22search30\n\n## maximum absolute partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Molecules capable of presenting a **strongly positive center** (often a protonated nitrogen) are frequently discussed as CYP2D6-substrate-like; partial-charge extrema are only a computational proxy for that motif. citeturn13search24turn22search30\n- Brief note: CYP2D6 literature typically states the requirement in **chemical terms** (protonated basic nitrogen) rather than numeric partial-charge cutoffs. citeturn13search24turn22search30\n- Source: citeturn13search24turn22search30\n\n## maximum partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Higher maximum positive charge can proxy for a **cationic center**, potentially aligning with typical CYP2D6 substrate descriptions. citeturn13search24turn22search30\n- Brief note: Prefer direct ionization descriptors (pKa, neutral fraction, logD7.4) over raw partial-charge extrema when interpreting CYP2D6 substrate likelihood. citeturn20view1turn33view0\n- Source: citeturn13search24turn22search30turn33view0\n\n## minimum absolute partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: unclear; not commonly thresholded for CYP2D6 substrate status. citeturn10view0turn22search30\n- Brief note: If informative at all, it is likely through correlation with heteroatom content/polarity rather than a CYP2D6-specific rule. citeturn20view1turn33view0\n- Source: citeturn20view1turn33view0turn22search30\n\n## minimum partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: unclear; not commonly presented as a CYP2D6-substrate cutoff. citeturn22search30turn10view0\n- Brief note: Interpret together with PSA/HBA/HBD if at all; no standard numeric thresholds were identified. citeturn20view1turn33view0\n- Source: citeturn20view1turn33view0turn22search30\n\n## estimated logP\n- Common threshold(s) or range(s): In a curated CYP2D6 kinetics small-molecule database, LogP summary statistics were: **25th–75th percentile ~1.85–3.97**, median **~2.94**, observed range **~−1.67 to 8.32**. citeturn20view1turn20view2\n- Usually associated with: **Higher LogP** was associated with CYP2D6 substrate status in that analysis; mean LogP was higher for substrates than for nonsubstrates (operationally defined by Km cutoffs in that work). citeturn20view1turn12view0\n- Brief note: This is one of the stronger **task-adjacent quantitative anchors** available, but the same work emphasizes that single-property rules can fail across scaffolds. citeturn10view0turn20view1\n- Source: citeturn20view1turn12view0turn10view0\n\n## molecular weight\n- Common threshold(s) or range(s): Proxy (general drug-likeness): **MW ≤ 500 Da** is widely used in Rule-of-Five-style filtering; not a CYP2D6-specific substrate cutoff. citeturn22search12turn33view0\n- Usually associated with: Indirect; MW contributes to size/shape and can correlate with lipophilicity and ring count, which can appear in CYP2D6 substrate models. citeturn9view3turn33view0\n- Brief note: A CYP2D6 kinetics property-analysis workflow computed MW but reported only certain properties (LogP, LogD7.4, PSA, MV) as individually significant correlates with normalized Km. citeturn33view0turn20view1\n- Source: citeturn22search12turn33view0turn20view1turn9view3\n\n## NH/OH group count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More NH/OH groups often increases H-bonding and PSA, which (in at least one CYP2D6 kinetics analysis) trended **higher in nonsubstrates** via higher PSA. citeturn20view1turn33view0\n- Brief note: CYP2D6 substrate literature usually emphasizes **a protonatable/basic nitrogen plus lipophilic/aromatic features**, not a direct NH/OH count cutoff. citeturn22search30turn10view0\n- Source: citeturn20view1turn33view0turn22search30\n\n## nitrogen/oxygen atom count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Higher N/O count often increases polarity/PSA; lower PSA was associated with substrate status in a CYP2D6 kinetics dataset, making high N/O (and thus high PSA) a potential **non-substrate** correlate in some contexts. citeturn20view1turn22search30\n- Brief note: N-count is also tied to **basic-site presence**, a qualitative CYP2D6 substrate motif. citeturn22search30turn13search24\n- Source: citeturn20view1turn22search30turn13search24\n\n## aliphatic carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Unclear as a standalone; may contribute to lipophilicity/shape.\n- Brief note: CYP2D6 substrate-recognition discussions emphasize **aromatic/lipophilic moieties** more than explicit aliphatic carbocycle counts. citeturn22search30turn9view3\n- Source: citeturn22search30turn9view3\n\n## aliphatic heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Can increase polarity and/or introduce a basic center depending on heteroatoms; direction depends on whether the heterocycle is protonatable.\n- Brief note: Treat as qualitative: protonatable N-heterocycles can support the “basic center” motif; non-basic heterocycles may mainly affect PSA/logD. citeturn22search30turn13search24turn20view1\n- Source: citeturn22search30turn13search24turn20view1\n\n## aliphatic ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Indirect via lipophilicity/shape; no standard CYP2D6 substrate cutoff identified.\n- Brief note: In one CYP2D6 decision-tree analysis, “number of rings” (not ring type) was a consistent feature; ring subclass counts are finer-grained than typical literature rules. citeturn9view3turn33view0\n- Source: citeturn9view3turn33view0\n\n## aromatic carbocycle count\n- Common threshold(s) or range(s): qualitative anchor: **≥1 aromatic ring** is repeatedly referenced as part of “typical” CYP2D6 substrate descriptions. citeturn22search30turn13search24\n- Usually associated with: **Substrate (B)** when combined with a basic/protonated center; absence of aromatic carbocycles can reduce alignment with typical CYP2D6 substrate pharmacophores. citeturn22search30turn13search24\n- Brief note: Literature commonly frames this as a **lipophilic/aromatic moiety at/near the oxidation site**, not a strict aromatic ring count threshold. citeturn22search30turn13search24\n- Source: citeturn22search30turn13search24\n\n## aromatic heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Can contribute to aromaticity and (if containing basic N) to the “basic center” motif; direction depends on protonatability and overall PSA/logD.\n- Brief note: No widely used aromatic-heterocycle-count cutoff was identified for CYP2D6 substrate status; interpret via basic pKa and lipophilicity. citeturn22search30turn20view1\n- Source: citeturn22search30turn20view1\n\n## aromatic ring count\n- Common threshold(s) or range(s): qualitative anchor: **≥1 aromatic ring** commonly appears in “typical CYP2D6 substrate” descriptions. citeturn22search30turn13search24\n- Usually associated with: **Substrate (B)** when paired with a basic/protonated center and sufficient lipophilicity. citeturn22search30turn20view1\n- Brief note: In one data-mining analysis, “number of rings” (counting rings broadly) was a robust decision-tree feature across multiple randomized models. citeturn9view3turn33view0\n- Source: citeturn22search30turn13search24turn9view3turn33view0\n\n## hydrogen-bond acceptor count\n- Common threshold(s) or range(s): Proxy (general drug-likeness): **HBA ≤ 10** is a common Rule-of-Five-style cutoff; not a CYP2D6-specific substrate threshold. citeturn22search12turn33view0\n- Usually associated with: Indirect; more acceptors often increases PSA. Lower PSA associated with substrate status in one CYP2D6 kinetics dataset suggests very high HBA (high PSA) may align more with **non-substrate** *in that context*. citeturn20view1turn33view0\n- Brief note: A CYP2D6 kinetics analysis explicitly computed HBA but reported only LogP, LogD7.4, PSA, and MV as individually significant correlates with normalized Km. citeturn33view0turn20view1\n- Source: citeturn22search12turn33view0turn20view1\n\n## hydrogen-bond donor count\n- Common threshold(s) or range(s): Proxy (general drug-likeness): **HBD ≤ 5** is a common Rule-of-Five-style cutoff; not a CYP2D6-specific substrate threshold. citeturn22search12turn33view0\n- Usually associated with: Indirect; more donors often increases PSA. In one CYP2D6 dataset analysis, lower PSA aligned with substrate status. citeturn20view1turn33view0\n- Brief note: HBD was computed but not highlighted as an individually significant correlate with normalized Km in that CYP2D6 kinetics analysis. citeturn33view0turn20view1\n- Source: citeturn22search12turn33view0turn20view1\n\n## heteroatom count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Higher heteroatom count often increases PSA and decreases lipophilicity; lower PSA and higher lipophilicity aligned with substrate status in one CYP2D6 kinetics analysis. citeturn20view1turn22search30\n- Brief note: Heteroatom count is not typically reported as a standalone CYP2D6 substrate rule; interpret via PSA/HBA/HBD/logD. citeturn33view0turn20view1\n- Source: citeturn20view1turn33view0turn22search30\n\n## rotatable-bond count\n- Common threshold(s) or range(s): Proxy (oral bioavailability): **rotatable bonds ≤ 10** is a commonly used heuristic paired with PSA thresholds; some implementations use **<12**. citeturn34search8turn34search14\n- Usually associated with: Indirect; CYP2D6 substrate recognition is not typically framed as a rotatable-bond cutoff, but flexibility influences shape and may interact with ring count and lipophilicity. citeturn9view3turn10view0\n- Brief note: In a CYP2D6 kinetics analysis, rotatable bonds were computed but not among the few single properties reported as significantly correlated with normalized Km. citeturn33view0turn20view1\n- Source: citeturn34search8turn34search14turn33view0turn20view1\n\n## saturated carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Indirect via lipophilicity/3D shape; not commonly thresholded for CYP2D6 substrate status.\n- Brief note: Where ring features matter for CYP2D6, literature more often discusses **ring count** and **aromatic/lipophilic moieties** rather than saturated-ring subclass cutoffs. citeturn9view3turn22search30\n- Source: citeturn9view3turn22search30\n\n## saturated heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Depends on whether the heterocycle contains a protonatable N (supporting the “basic center” motif) vs being neutral/polar (raising PSA). citeturn22search30turn13search24\n- Brief note: No stable saturated-heterocycle-count cutoffs are commonly used in CYP2D6 substrate classification. citeturn10view0turn22search30\n- Source: citeturn22search30turn13search24turn10view0\n\n## saturated ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Indirect; interpret via overall ring count and lipophilicity.\n- Brief note: Decision-tree models for CYP2D6 substrate status identified “number of rings” as a consistent feature, but did not standardize saturated vs aromatic ring thresholds in a widely adopted way. citeturn9view3turn33view0\n- Source: citeturn9view3turn33view0\n\n## ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: In a CYP2D6 kinetics decision-tree analysis, **number of rings** repeatedly appeared as a consistent feature of substrate-associated patterns (directionally: more ring content aligning with substrate-like space), but without a single universal cutoff. citeturn9view3turn33view0\n- Brief note: Treat ring count as a **model-relevant** but **scaffold-dependent** feature; combine with logP/logD and PSA rather than using a hard rule. citeturn9view3turn20view1\n- Source: citeturn9view3turn33view0turn20view1\n\n## topological polar surface area\n- Common threshold(s) or range(s): Task-adjacent anchor (CYP2D6 kinetics database PSA): **25th–75th percentile ~19.11–50.28 Å²**, median **~35.53 Å²**; substrates had **lower mean PSA** than nonsubstrates under Km-based operational definitions. citeturn20view1turn12view0  \n  Proxy (oral bioavailability): PSA (or TPSA) **≤ 140 Å²** is a widely used general heuristic (not CYP2D6-specific). citeturn34search8turn34search14\n- Usually associated with: **Lower PSA/TPSA** tends to associate with CYP2D6 substrate status in the kinetics dataset analysis (and is consistent with “lipophilic base” substrate descriptions). citeturn20view1turn22search30\n- Brief note: The CYP2D6 kinetics analysis reported PSA as one of the few single properties significantly correlated with normalized Km, making PSA/TPSA among the more actionable polarity descriptors for substrate-adjacent reasoning. citeturn20view1turn33view0\n- Source: citeturn20view1turn12view0turn34search8turn34search14turn22search30turn33view0\n\n## QED drug-likeness\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Higher QED indicates stronger “overall drug-likeness” under the QED construction, but QED is **not a CYP2D6 substrate-specific** thresholding tool. citeturn22search12turn14search2\n- Brief note: QED is an aggregate of multiple underlying descriptors (including MW, logP, HBA, HBD, PSA, rotatable bonds, aromatic rings, and structural alerts) and may correlate indirectly with substrate-like space through those components rather than providing an interpretable CYP2D6 cutoff. citeturn22search12turn33view0\n- Source: citeturn22search12turn33view0turn14search2\n\n## Functional-group notes\n- Group name: Protonatable/basic nitrogen (e.g., tertiary or secondary amine; basic N in heterocycles when protonatable)\n- Usually associated with: Substrate (B)\n- Brief note: CYP2D6 substrates are commonly described as having a **basic center** that can be **protonated at physiological pH**, and classical CYP2D6 oxidation patterns are often described relative to a **positively charged nitrogen** and its geometry to the oxidation site. citeturn22search30turn13search24\n- Source: citeturn22search30turn13search24\n\n- Group name: Aromatic/lipophilic moiety (often an aromatic ring near the oxidation site)\n- Usually associated with: Substrate (B)\n- Brief note: “Typical” CYP2D6 substrates are commonly described as **lipophilic bases** with an **aromatic/lipophilic moiety**; decision-tree substrate models also highlighted ring content and lipophilicity as recurring features of substrate-associated patterns. citeturn22search30turn9view3turn20view1\n- Source: citeturn22search30turn9view3turn20view1",
     "task_description": "task CYP2D6_Substrate_CarbonMangels where option (A) means is not a substrate to the enzyme CYP2D6 and option (B) means is a substrate to the enzyme CYP2D6",
@@ -80,13 +80,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.012352867945284788,
+          "pair_score_class1_probability": 0.012352867945284788,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9876471320547152,
+          "teacher_confidence_margin": 0.4876471320547152,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a substrate to the enzyme CYP2D6",
             "label": 0
           },
-          "middle_draft": "First, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.2837, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For topological polar surface area, the neighbor's topological polar surface area is value 49.33, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -32.26. This pairwise contribution is 0.4155, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Then, For strongest basic pKa, the neighbor's strongest basic pKa is value 4.6, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is -0.3907, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 142.093, while the query's heavy-atom molecular weight is value 72.088. The query-minus-neighbor delta is -70.005. This pairwise contribution is -0.3646, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For molecular weight, the neighbor's molecular weight is value 151.165, while the query's molecular weight is value 78.136. The query-minus-neighbor delta is -73.029. This pairwise contribution is -0.3532, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 6, For Labute surface area, the neighbor's Labute surface area is value 64.6669, while the query's Labute surface area is value 28.4784. The query-minus-neighbor delta is -36.1885. This pairwise contribution is -0.3377, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, this positive-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP2D6 with pair score 0.0124."
+          "feature_logit": -2.6671517857349576,
+          "feature_probability": 0.06493970524871638,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2D6",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.4350602947512836,
+          "feature_evidence_strength": "high",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_logit": -2.344788004868128,
+          "displayed_feature_probability": 0.08748094215356504,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2D6",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.41251905784643494,
+          "displayed_feature_evidence_strength": "high",
+          "displayed_abs_contribution_coverage": 0.5272311650199851,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.2837, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For topological polar surface area, the neighbor's topological polar surface area is value 49.33, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -32.26. This pairwise contribution is 0.4155, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Then, For strongest basic pKa, the neighbor's strongest basic pKa is value 4.6, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is -0.3907, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 142.093, while the query's heavy-atom molecular weight is value 72.088. The query-minus-neighbor delta is -70.005. This pairwise contribution is -0.3646, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For molecular weight, the neighbor's molecular weight is value 151.165, while the query's molecular weight is value 78.136. The query-minus-neighbor delta is -73.029. This pairwise contribution is -0.3532, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 6, For Labute surface area, the neighbor's Labute surface area is value 64.6669, while the query's Labute surface area is value 28.4784. The query-minus-neighbor delta is -36.1885. This pairwise contribution is -0.3377, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 7, For number of acidic sites, the neighbor's number of acidic sites is value 2, while the query's number of acidic sites is absent (0). The query-minus-neighbor delta is -2. This pairwise contribution is -0.2862, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For number of ionizable sites, the neighbor's number of ionizable sites is value 3, while the query's number of ionizable sites is absent (0). The query-minus-neighbor delta is -3. This pairwise contribution is 0.2558, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6."
         },
         {
           "neighbor_id": "CCOc1ccc(NC(C)=O)cc1",
@@ -94,13 +122,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.011086583986438593,
+          "pair_score_class1_probability": 0.011086583986438593,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9889134160135614,
+          "teacher_confidence_margin": 0.4889134160135614,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a substrate to the enzyme CYP2D6",
             "label": 0
           },
-          "middle_draft": "First, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.2837, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For exact molecular weight, the neighbor's exact molecular weight is value 179.0946, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -101.0807. This pairwise contribution is -0.5366, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Then, For strongest basic pKa, the neighbor's strongest basic pKa is value 4.7149, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is -0.3902, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For molecular weight, the neighbor's molecular weight is value 179.219, while the query's molecular weight is value 78.136. The query-minus-neighbor delta is -101.083. This pairwise contribution is -0.2793, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 166.115, while the query's heavy-atom molecular weight is value 72.088. The query-minus-neighbor delta is -94.027. This pairwise contribution is -0.2691, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 6, For estimated logP, the neighbor's estimated logP is value 2.0437, while the query's estimated logP is value -0.0053. The query-minus-neighbor delta is -2.049. This pairwise contribution is 0.2058, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Taken together, this positive-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP2D6 with pair score 0.0111."
+          "feature_logit": -2.7765856173225147,
+          "feature_probability": 0.05860263782327089,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2D6",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.4413973621767291,
+          "feature_evidence_strength": "high",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_logit": -2.939037022206196,
+          "displayed_feature_probability": 0.05025721759539093,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2D6",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.4497427824046091,
+          "displayed_feature_evidence_strength": "high",
+          "displayed_abs_contribution_coverage": 0.548733924546485,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.2837, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For exact molecular weight, the neighbor's exact molecular weight is value 179.0946, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -101.0807. This pairwise contribution is -0.5366, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Then, For strongest basic pKa, the neighbor's strongest basic pKa is value 4.7149, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is -0.3902, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For molecular weight, the neighbor's molecular weight is value 179.219, while the query's molecular weight is value 78.136. The query-minus-neighbor delta is -101.083. This pairwise contribution is -0.2793, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 166.115, while the query's heavy-atom molecular weight is value 72.088. The query-minus-neighbor delta is -94.027. This pairwise contribution is -0.2691, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 6, For estimated logP, the neighbor's estimated logP is value 2.0437, while the query's estimated logP is value -0.0053. The query-minus-neighbor delta is -2.049. This pairwise contribution is 0.2058, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.4939, while the query's minimum partial charge is value -0.2602. The query-minus-neighbor delta is +0.2337. This pairwise contribution is -0.1999, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For Labute surface area, the neighbor's Labute surface area is value 77.7161, while the query's Labute surface area is value 28.4784. The query-minus-neighbor delta is -49.2377. This pairwise contribution is -0.1862, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6."
         },
         {
           "neighbor_id": "C[C@H](CS)C(=O)N1CCC[C@H]1C(=O)O",
@@ -108,13 +164,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.005596414445731713,
+          "pair_score_class1_probability": 0.005596414445731713,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9944035855542683,
+          "teacher_confidence_margin": 0.49440358555426833,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a substrate to the enzyme CYP2D6",
             "label": 0
           },
-          "middle_draft": "First, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.2837, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For maximum partial charge, the neighbor's maximum partial charge is value 0.3259, while the query's maximum partial charge is value 0.0148. The query-minus-neighbor delta is -0.3111. This pairwise contribution is -0.666, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Then, For exact molecular weight, the neighbor's exact molecular weight is value 217.0773, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -139.0633. This pairwise contribution is -0.5051, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For strongest basic pKa, the neighbor has no basic site, while the query has no basic site. The query-minus-neighbor delta is not defined because neither molecule has a basic site. This pairwise contribution is -0.3873, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 57.61, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -40.54. This pairwise contribution is 0.3852, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 202.17, while the query's heavy-atom molecular weight is value 72.088. The query-minus-neighbor delta is -130.082. This pairwise contribution is -0.3686, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, this positive-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP2D6 with pair score 0.0056."
+          "feature_logit": -3.46573159478576,
+          "feature_probability": 0.030303156893228538,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2D6",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.46969684310677146,
+          "feature_evidence_strength": "high",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_logit": -3.368444989999128,
+          "displayed_feature_probability": 0.03329632469490487,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2D6",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.46670367530509516,
+          "displayed_feature_evidence_strength": "high",
+          "displayed_abs_contribution_coverage": 0.5367712055809176,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.2837, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For maximum partial charge, the neighbor's maximum partial charge is value 0.3259, while the query's maximum partial charge is value 0.0148. The query-minus-neighbor delta is -0.3111. This pairwise contribution is -0.666, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Then, For exact molecular weight, the neighbor's exact molecular weight is value 217.0773, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -139.0633. This pairwise contribution is -0.5051, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For strongest basic pKa, the neighbor has no basic site, while the query has no basic site. The query-minus-neighbor delta is not defined because neither molecule has a basic site. This pairwise contribution is -0.3873, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 57.61, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -40.54. This pairwise contribution is 0.3852, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 202.17, while the query's heavy-atom molecular weight is value 72.088. The query-minus-neighbor delta is -130.082. This pairwise contribution is -0.3686, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 7, For number of acidic sites, the neighbor's number of acidic sites is value 2, while the query's number of acidic sites is absent (0). The query-minus-neighbor delta is -2. This pairwise contribution is -0.2862, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For molecular weight, the neighbor's molecular weight is value 217.29, while the query's molecular weight is value 78.136. The query-minus-neighbor delta is -139.154. This pairwise contribution is -0.2567, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6."
         }
       ],
       "negative_neighbors": [
@@ -124,13 +208,41 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.03473471351347173,
+          "pair_score_class1_probability": 0.03473471351347173,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9652652864865283,
+          "teacher_confidence_margin": 0.4652652864865283,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a substrate to the enzyme CYP2D6",
             "label": 0
           },
-          "middle_draft": "First, The neighbor has 2-oxazolidone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.7991, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For maximum partial charge, the neighbor's maximum partial charge is value 0.4169, while the query's maximum partial charge is value 0.0148. The query-minus-neighbor delta is -0.4021. This pairwise contribution is 0.6968, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Then, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6582, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For exact molecular weight, the neighbor's exact molecular weight is value 143.0582, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -65.0443. This pairwise contribution is -0.6307, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 46.61, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -29.54. This pairwise contribution is 0.3576, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For minimum partial charge, the neighbor's minimum partial charge is value -0.4329, while the query's minimum partial charge is value -0.2602. The query-minus-neighbor delta is +0.1728. This pairwise contribution is -0.2492, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, this negative-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP2D6 with pair score 0.0347."
+          "feature_logit": -1.5091281173207514,
+          "feature_probability": 0.18106804206515745,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2D6",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.3189319579348425,
+          "feature_evidence_strength": "high",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_logit": -1.7180396355032788,
+          "displayed_feature_probability": 0.15212384334292697,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2D6",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.34787615665707305,
+          "displayed_feature_evidence_strength": "high",
+          "displayed_abs_contribution_coverage": 0.5522970750991614,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, The neighbor has 2-oxazolidone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.7991, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For maximum partial charge, the neighbor's maximum partial charge is value 0.4169, while the query's maximum partial charge is value 0.0148. The query-minus-neighbor delta is -0.4021. This pairwise contribution is 0.6968, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Then, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6582, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For exact molecular weight, the neighbor's exact molecular weight is value 143.0582, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -65.0443. This pairwise contribution is -0.6307, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 46.61, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -29.54. This pairwise contribution is 0.3576, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For minimum partial charge, the neighbor's minimum partial charge is value -0.4329, while the query's minimum partial charge is value -0.2602. The query-minus-neighbor delta is +0.1728. This pairwise contribution is -0.2492, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 7, For strongest basic pKa, the neighbor has no basic site, while the query has no basic site. The query-minus-neighbor delta is not defined because neither molecule has a basic site. This pairwise contribution is -0.2248, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For estimated logP, the neighbor's estimated logP is value 0.3736, while the query's estimated logP is value -0.0053. The query-minus-neighbor delta is -0.3789. This pairwise contribution is -0.2106, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6."
         },
         {
           "neighbor_id": "CC(=O)Nc1ccccc1",
@@ -138,13 +250,41 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.03250987754434787,
+          "pair_score_class1_probability": 0.03250987754434787,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9674901224556521,
+          "teacher_confidence_margin": 0.46749012245565214,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a substrate to the enzyme CYP2D6",
             "label": 0
           },
-          "middle_draft": "First, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3263, while the query's maximum absolute partial charge is value 0.2602. The query-minus-neighbor delta is -0.0662. This pairwise contribution is -0.9761, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6582, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Then, For exact molecular weight, the neighbor's exact molecular weight is value 135.0684, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -57.0545. This pairwise contribution is -0.6338, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.2207, while the query's minimum absolute partial charge is value 0.0148. The query-minus-neighbor delta is -0.2059. This pairwise contribution is 0.5927, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 29.1, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -12.03. This pairwise contribution is 0.4406, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For Labute surface area, the neighbor's Labute surface area is value 59.8727, while the query's Labute surface area is value 28.4784. The query-minus-neighbor delta is -31.3942. This pairwise contribution is -0.3178, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, this negative-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP2D6 with pair score 0.0325."
+          "feature_logit": -1.5776259697220982,
+          "feature_probability": 0.17113196541896894,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2D6",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.3288680345810311,
+          "feature_evidence_strength": "high",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_logit": -2.052103047086873,
+          "displayed_feature_probability": 0.11384005249216714,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2D6",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.3861599475078329,
+          "displayed_feature_evidence_strength": "high",
+          "displayed_abs_contribution_coverage": 0.5988204502782474,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3263, while the query's maximum absolute partial charge is value 0.2602. The query-minus-neighbor delta is -0.0662. This pairwise contribution is -0.9761, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6582, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Then, For exact molecular weight, the neighbor's exact molecular weight is value 135.0684, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -57.0545. This pairwise contribution is -0.6338, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.2207, while the query's minimum absolute partial charge is value 0.0148. The query-minus-neighbor delta is -0.2059. This pairwise contribution is 0.5927, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 29.1, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -12.03. This pairwise contribution is 0.4406, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For Labute surface area, the neighbor's Labute surface area is value 59.8727, while the query's Labute surface area is value 28.4784. The query-minus-neighbor delta is -31.3942. This pairwise contribution is -0.3178, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.3263, while the query's minimum partial charge is value -0.2602. The query-minus-neighbor delta is +0.0662. This pairwise contribution is -0.2674, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For molecular weight, the neighbor's molecular weight is value 135.166, while the query's molecular weight is value 78.136. The query-minus-neighbor delta is -57.03. This pairwise contribution is -0.2321, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6."
         },
         {
           "neighbor_id": "CC[C@]1(C)CC(=O)NC1=O",
@@ -152,18 +292,1351 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.00870727712491336,
+          "pair_score_class1_probability": 0.00870727712491336,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9912927228750866,
+          "teacher_confidence_margin": 0.49129272287508663,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a substrate to the enzyme CYP2D6",
             "label": 0
           },
-          "middle_draft": "First, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.2959, while the query's maximum absolute partial charge is value 0.2602. The query-minus-neighbor delta is -0.0358. This pairwise contribution is -2.1341, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.7143, while the query's fraction of sp3 carbons is value 1. The query-minus-neighbor delta is +0.2857. This pairwise contribution is 0.7021, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Then, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6582, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For exact molecular weight, the neighbor's exact molecular weight is value 141.079, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -63.065. This pairwise contribution is -0.6307, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.2325, while the query's minimum absolute partial charge is value 0.0148. The query-minus-neighbor delta is -0.2177. This pairwise contribution is 0.5483, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 46.17, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -29.1. This pairwise contribution is 0.3663, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Taken together, this negative-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP2D6 with pair score 0.0087."
+          "feature_logit": -2.9193154666705916,
+          "feature_probability": 0.051206948614510125,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2D6",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.44879305138548986,
+          "feature_evidence_strength": "high",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_logit": -2.4488930856971907,
+          "displayed_feature_probability": 0.07951953337820486,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2D6",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.42048046662179517,
+          "displayed_feature_evidence_strength": "high",
+          "displayed_abs_contribution_coverage": 0.6258109362655386,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.2959, while the query's maximum absolute partial charge is value 0.2602. The query-minus-neighbor delta is -0.0358. This pairwise contribution is -2.1341, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.7143, while the query's fraction of sp3 carbons is value 1. The query-minus-neighbor delta is +0.2857. This pairwise contribution is 0.7021, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Then, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6582, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For exact molecular weight, the neighbor's exact molecular weight is value 141.079, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -63.065. This pairwise contribution is -0.6307, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.2325, while the query's minimum absolute partial charge is value 0.0148. The query-minus-neighbor delta is -0.2177. This pairwise contribution is 0.5483, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 46.17, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -29.1. This pairwise contribution is 0.3663, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.2959, while the query's minimum partial charge is value -0.2602. The query-minus-neighbor delta is +0.0358. This pairwise contribution is -0.3273, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, The neighbor has succinimide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.3153, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6."
         }
       ]
     },
     "local_prediction": 0,
     "local_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+  },
+  "local_per_neighbor_rewrite_input": {
+    "task_playbook": "# CYP2D6 substrate molecular-property playbook for the TDC task CYP2D6_Substrate_CarbonMangels\n\nThis playbook is grounded in (i) the entity[\"organization\",\"Therapeutics Data Commons\",\"drug discovery datasets\"] task context (a curated, multi-source binary substrate label) citeturn14search2turn14search11 and (ii) the closest task-adjacent, substrate-oriented literature that reports **empirical molecular-property distributions** and **operational substrate cutoffs** for CYP2D6 (notably a curated CYP2D6 kinetics database + decision-tree analysis). citeturn33view0turn20view1  \nBecause “substrate vs non-substrate” labels vary across sources and assays, many properties **do not have stable, universally adopted numeric cutoffs**; where this happens, the entry says so explicitly and provides only validated qualitative guidance. citeturn10view0turn33view0\n\n## neutral fraction\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **Lower neutral fraction at physiological pH** (i.e., more cationic character) is *often* associated with CYP2D6 substrate-like chemistry because many substrates contain a **protonated basic nitrogen** at physiological pH. citeturn22search30turn13search24turn27search1\n- Brief note: A practical anchor from acid–base fundamentals is that **pH = pKa implies ~50% protonated/deprotonated** for a site; “mostly protonated” vs “mostly neutral” behavior is driven by how far pH is from pKa. (This is a mechanism-relevant proxy because CYP2D6 recognition is often discussed in terms of a protonated/basic center.) citeturn27search1turn22search30\n- Source: citeturn22search30turn13search24turn27search1\n\n## estimated logD\n- Common threshold(s) or range(s): In a curated CYP2D6 kinetics small-molecule database, **LogD7.4** summary statistics were: **25th–75th percentile ~0.34–2.36**, median **~1.54**, observed range **~−1.76 to 6.38**. citeturn20view1turn20view2\n- Usually associated with: **Higher lipophilicity at pH 7.4 (higher LogD7.4)** was associated with stronger substrate-like behavior in that kinetics dataset (LogD7.4 was one of the few single properties significantly correlated with normalized Km). citeturn20view1turn20view2\n- Brief note: Treat LogD7.4 as a **task-adjacent anchor** because TDC Carbon-Mangels labels come from multiple literature sources, but LogD7.4 repeatedly emerges as a practical discriminator in substrate-related analyses. citeturn14search2turn20view1\n- Source: citeturn20view1turn20view2turn14search2\n\n## strongest acidic pKa\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **Strongly acidic / predominantly anionic** molecules are *less often described as “typical” CYP2D6 substrates* than lipophilic bases (CYP2D6 is commonly described as favoring substrates with a basic center). citeturn22search30turn13search24\n- Brief note: Acidic pKa mainly matters here via **ionization state at physiological pH** (shaping charge + logD), rather than as an independently thresholded CYP2D6 substrate rule. citeturn22search30turn27search1\n- Source: citeturn22search30turn13search24turn27search1\n\n## strongest basic pKa\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **Presence of a basic center that can be protonated at physiological pH** is repeatedly noted as a common CYP2D6 substrate feature; practically, this implies a **basic pKa high enough to yield substantial protonation near pH ~7.4**. citeturn22search30turn13search24turn27search1\n- Brief note: In a CYP2D6 kinetics property-analysis workflow, a “highest computed pKa” descriptor was explicitly included among computed properties because prior reports connect pKa/basicity to CYP2D6 substrate recognition—yet the same work emphasizes that **simple, single-property rules may not generalize across scaffolds**. citeturn33view0turn10view0\n- Source: citeturn22search30turn13search24turn33view0turn10view0\n\n## number of acidic sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More acidic sites can increase **polarity/ionization complexity**, potentially reducing the “typical lipophilic base” profile often associated with CYP2D6 substrates. citeturn22search30turn20view1\n- Brief note: The most consistently stated CYP2D6 substrate “motif” is **basic** rather than **acidic** ionization; acidic-site counting is therefore a secondary, indirect cue. citeturn22search30turn13search24\n- Source: citeturn22search30turn13search24turn20view1\n\n## number of basic sites\n- Common threshold(s) or range(s): qualitative anchor: **≥1 basic (protonatable) nitrogen** is repeatedly described as common among “typical” CYP2D6 substrates (though atypical cases exist). citeturn22search30turn13search24\n- Usually associated with: **Substrate (B)** when at least one basic site is present and protonated at physiological pH; **non-substrate (A)** is more likely when no basic site is present (not a guarantee). citeturn22search30turn13search24\n- Brief note: Several substrate-recognition descriptions emphasize a **positively charged nitrogen** at a characteristic distance from the oxidation site (structure-based rather than purely property-based). citeturn13search24turn22search30\n- Source: citeturn22search30turn13search24\n\n## number of ionizable sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Higher ionizable-site count can increase **charge-state heterogeneity**, shifting logD/PSA and potentially affecting CYP2D6 interaction indirectly. citeturn22search30turn20view1\n- Brief note: The CYP2D6 substrate literature most consistently emphasizes **a basic center** rather than “many ionizable sites”; treat this as a complexity/ionization proxy. citeturn22search30turn13search24\n- Source: citeturn22search30turn20view1turn13search24\n\n## exact molecular weight\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Indirectly, “drug-like” MW ranges (often discussed around **≤500 Da** in general ADMET filtering) are a common proxy context for many small-molecule tasks. citeturn22search12turn33view0\n- Brief note: A CYP2D6 kinetics property-analysis pipeline explicitly computed **molecular weight** as a candidate descriptor, but that work highlighted only a subset of properties as individually significant correlates (and emphasized multi-property interactions). citeturn33view0turn20view1turn10view0\n- Source: citeturn33view0turn20view1turn22search12\n\n## fraction of sp3 carbons\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: unclear direction for CYP2D6 substrate status in threshold form; any effect is likely **scaffold/shape-mediated** rather than a direct rule. citeturn10view0turn22search30\n- Brief note: Substrate-recognition discussions for CYP2D6 focus more on **basic center + aromatic/lipophilic features** than on global Fsp3 cutoffs. citeturn22search30turn10view0\n- Source: citeturn22search30turn10view0\n\n## heavy-atom count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Indirect proxy for size; larger/heavier molecules may trend more lipophilic and ring-rich, which can align with substrate-enriched regions in some CYP2D6 substrate analyses. citeturn20view1turn9view3\n- Brief note: Use alongside molecular weight/ring count rather than as a standalone CYP2D6 rule. citeturn33view0turn9view3\n- Source: citeturn20view1turn33view0turn9view3\n\n## heavy-atom molecular weight\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Indirect size proxy; same caveats as molecular weight. citeturn33view0turn20view1\n- Brief note: No CYP2D6-specific “heavy-atom MW” cutoffs are commonly used in the substrate literature; use only as a supporting feature. citeturn10view0turn22search30\n- Source: citeturn33view0turn22search30turn10view0\n\n## Labute surface area\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Indirectly tracks size/shape; CYP2D6 substrate analyses more commonly report PSA (polar surface area), molar volume, and ring count than Labute surface area thresholds. citeturn33view0turn20view1\n- Brief note: If used, interpret as a **size/shape adjunct**, not a primary CYP2D6 substrate determinant. citeturn10view0turn22search30\n- Source: citeturn33view0turn20view1turn22search30\n\n## maximum absolute partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Molecules capable of presenting a **strongly positive center** (often a protonated nitrogen) are frequently discussed as CYP2D6-substrate-like; partial-charge extrema are only a computational proxy for that motif. citeturn13search24turn22search30\n- Brief note: CYP2D6 literature typically states the requirement in **chemical terms** (protonated basic nitrogen) rather than numeric partial-charge cutoffs. citeturn13search24turn22search30\n- Source: citeturn13search24turn22search30\n\n## maximum partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Higher maximum positive charge can proxy for a **cationic center**, potentially aligning with typical CYP2D6 substrate descriptions. citeturn13search24turn22search30\n- Brief note: Prefer direct ionization descriptors (pKa, neutral fraction, logD7.4) over raw partial-charge extrema when interpreting CYP2D6 substrate likelihood. citeturn20view1turn33view0\n- Source: citeturn13search24turn22search30turn33view0\n\n## minimum absolute partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: unclear; not commonly thresholded for CYP2D6 substrate status. citeturn10view0turn22search30\n- Brief note: If informative at all, it is likely through correlation with heteroatom content/polarity rather than a CYP2D6-specific rule. citeturn20view1turn33view0\n- Source: citeturn20view1turn33view0turn22search30\n\n## minimum partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: unclear; not commonly presented as a CYP2D6-substrate cutoff. citeturn22search30turn10view0\n- Brief note: Interpret together with PSA/HBA/HBD if at all; no standard numeric thresholds were identified. citeturn20view1turn33view0\n- Source: citeturn20view1turn33view0turn22search30\n\n## estimated logP\n- Common threshold(s) or range(s): In a curated CYP2D6 kinetics small-molecule database, LogP summary statistics were: **25th–75th percentile ~1.85–3.97**, median **~2.94**, observed range **~−1.67 to 8.32**. citeturn20view1turn20view2\n- Usually associated with: **Higher LogP** was associated with CYP2D6 substrate status in that analysis; mean LogP was higher for substrates than for nonsubstrates (operationally defined by Km cutoffs in that work). citeturn20view1turn12view0\n- Brief note: This is one of the stronger **task-adjacent quantitative anchors** available, but the same work emphasizes that single-property rules can fail across scaffolds. citeturn10view0turn20view1\n- Source: citeturn20view1turn12view0turn10view0\n\n## molecular weight\n- Common threshold(s) or range(s): Proxy (general drug-likeness): **MW ≤ 500 Da** is widely used in Rule-of-Five-style filtering; not a CYP2D6-specific substrate cutoff. citeturn22search12turn33view0\n- Usually associated with: Indirect; MW contributes to size/shape and can correlate with lipophilicity and ring count, which can appear in CYP2D6 substrate models. citeturn9view3turn33view0\n- Brief note: A CYP2D6 kinetics property-analysis workflow computed MW but reported only certain properties (LogP, LogD7.4, PSA, MV) as individually significant correlates with normalized Km. citeturn33view0turn20view1\n- Source: citeturn22search12turn33view0turn20view1turn9view3\n\n## NH/OH group count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More NH/OH groups often increases H-bonding and PSA, which (in at least one CYP2D6 kinetics analysis) trended **higher in nonsubstrates** via higher PSA. citeturn20view1turn33view0\n- Brief note: CYP2D6 substrate literature usually emphasizes **a protonatable/basic nitrogen plus lipophilic/aromatic features**, not a direct NH/OH count cutoff. citeturn22search30turn10view0\n- Source: citeturn20view1turn33view0turn22search30\n\n## nitrogen/oxygen atom count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Higher N/O count often increases polarity/PSA; lower PSA was associated with substrate status in a CYP2D6 kinetics dataset, making high N/O (and thus high PSA) a potential **non-substrate** correlate in some contexts. citeturn20view1turn22search30\n- Brief note: N-count is also tied to **basic-site presence**, a qualitative CYP2D6 substrate motif. citeturn22search30turn13search24\n- Source: citeturn20view1turn22search30turn13search24\n\n## aliphatic carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Unclear as a standalone; may contribute to lipophilicity/shape.\n- Brief note: CYP2D6 substrate-recognition discussions emphasize **aromatic/lipophilic moieties** more than explicit aliphatic carbocycle counts. citeturn22search30turn9view3\n- Source: citeturn22search30turn9view3\n\n## aliphatic heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Can increase polarity and/or introduce a basic center depending on heteroatoms; direction depends on whether the heterocycle is protonatable.\n- Brief note: Treat as qualitative: protonatable N-heterocycles can support the “basic center” motif; non-basic heterocycles may mainly affect PSA/logD. citeturn22search30turn13search24turn20view1\n- Source: citeturn22search30turn13search24turn20view1\n\n## aliphatic ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Indirect via lipophilicity/shape; no standard CYP2D6 substrate cutoff identified.\n- Brief note: In one CYP2D6 decision-tree analysis, “number of rings” (not ring type) was a consistent feature; ring subclass counts are finer-grained than typical literature rules. citeturn9view3turn33view0\n- Source: citeturn9view3turn33view0\n\n## aromatic carbocycle count\n- Common threshold(s) or range(s): qualitative anchor: **≥1 aromatic ring** is repeatedly referenced as part of “typical” CYP2D6 substrate descriptions. citeturn22search30turn13search24\n- Usually associated with: **Substrate (B)** when combined with a basic/protonated center; absence of aromatic carbocycles can reduce alignment with typical CYP2D6 substrate pharmacophores. citeturn22search30turn13search24\n- Brief note: Literature commonly frames this as a **lipophilic/aromatic moiety at/near the oxidation site**, not a strict aromatic ring count threshold. citeturn22search30turn13search24\n- Source: citeturn22search30turn13search24\n\n## aromatic heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Can contribute to aromaticity and (if containing basic N) to the “basic center” motif; direction depends on protonatability and overall PSA/logD.\n- Brief note: No widely used aromatic-heterocycle-count cutoff was identified for CYP2D6 substrate status; interpret via basic pKa and lipophilicity. citeturn22search30turn20view1\n- Source: citeturn22search30turn20view1\n\n## aromatic ring count\n- Common threshold(s) or range(s): qualitative anchor: **≥1 aromatic ring** commonly appears in “typical CYP2D6 substrate” descriptions. citeturn22search30turn13search24\n- Usually associated with: **Substrate (B)** when paired with a basic/protonated center and sufficient lipophilicity. citeturn22search30turn20view1\n- Brief note: In one data-mining analysis, “number of rings” (counting rings broadly) was a robust decision-tree feature across multiple randomized models. citeturn9view3turn33view0\n- Source: citeturn22search30turn13search24turn9view3turn33view0\n\n## hydrogen-bond acceptor count\n- Common threshold(s) or range(s): Proxy (general drug-likeness): **HBA ≤ 10** is a common Rule-of-Five-style cutoff; not a CYP2D6-specific substrate threshold. citeturn22search12turn33view0\n- Usually associated with: Indirect; more acceptors often increases PSA. Lower PSA associated with substrate status in one CYP2D6 kinetics dataset suggests very high HBA (high PSA) may align more with **non-substrate** *in that context*. citeturn20view1turn33view0\n- Brief note: A CYP2D6 kinetics analysis explicitly computed HBA but reported only LogP, LogD7.4, PSA, and MV as individually significant correlates with normalized Km. citeturn33view0turn20view1\n- Source: citeturn22search12turn33view0turn20view1\n\n## hydrogen-bond donor count\n- Common threshold(s) or range(s): Proxy (general drug-likeness): **HBD ≤ 5** is a common Rule-of-Five-style cutoff; not a CYP2D6-specific substrate threshold. citeturn22search12turn33view0\n- Usually associated with: Indirect; more donors often increases PSA. In one CYP2D6 dataset analysis, lower PSA aligned with substrate status. citeturn20view1turn33view0\n- Brief note: HBD was computed but not highlighted as an individually significant correlate with normalized Km in that CYP2D6 kinetics analysis. citeturn33view0turn20view1\n- Source: citeturn22search12turn33view0turn20view1\n\n## heteroatom count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Higher heteroatom count often increases PSA and decreases lipophilicity; lower PSA and higher lipophilicity aligned with substrate status in one CYP2D6 kinetics analysis. citeturn20view1turn22search30\n- Brief note: Heteroatom count is not typically reported as a standalone CYP2D6 substrate rule; interpret via PSA/HBA/HBD/logD. citeturn33view0turn20view1\n- Source: citeturn20view1turn33view0turn22search30\n\n## rotatable-bond count\n- Common threshold(s) or range(s): Proxy (oral bioavailability): **rotatable bonds ≤ 10** is a commonly used heuristic paired with PSA thresholds; some implementations use **<12**. citeturn34search8turn34search14\n- Usually associated with: Indirect; CYP2D6 substrate recognition is not typically framed as a rotatable-bond cutoff, but flexibility influences shape and may interact with ring count and lipophilicity. citeturn9view3turn10view0\n- Brief note: In a CYP2D6 kinetics analysis, rotatable bonds were computed but not among the few single properties reported as significantly correlated with normalized Km. citeturn33view0turn20view1\n- Source: citeturn34search8turn34search14turn33view0turn20view1\n\n## saturated carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Indirect via lipophilicity/3D shape; not commonly thresholded for CYP2D6 substrate status.\n- Brief note: Where ring features matter for CYP2D6, literature more often discusses **ring count** and **aromatic/lipophilic moieties** rather than saturated-ring subclass cutoffs. citeturn9view3turn22search30\n- Source: citeturn9view3turn22search30\n\n## saturated heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Depends on whether the heterocycle contains a protonatable N (supporting the “basic center” motif) vs being neutral/polar (raising PSA). citeturn22search30turn13search24\n- Brief note: No stable saturated-heterocycle-count cutoffs are commonly used in CYP2D6 substrate classification. citeturn10view0turn22search30\n- Source: citeturn22search30turn13search24turn10view0\n\n## saturated ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Indirect; interpret via overall ring count and lipophilicity.\n- Brief note: Decision-tree models for CYP2D6 substrate status identified “number of rings” as a consistent feature, but did not standardize saturated vs aromatic ring thresholds in a widely adopted way. citeturn9view3turn33view0\n- Source: citeturn9view3turn33view0\n\n## ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: In a CYP2D6 kinetics decision-tree analysis, **number of rings** repeatedly appeared as a consistent feature of substrate-associated patterns (directionally: more ring content aligning with substrate-like space), but without a single universal cutoff. citeturn9view3turn33view0\n- Brief note: Treat ring count as a **model-relevant** but **scaffold-dependent** feature; combine with logP/logD and PSA rather than using a hard rule. citeturn9view3turn20view1\n- Source: citeturn9view3turn33view0turn20view1\n\n## topological polar surface area\n- Common threshold(s) or range(s): Task-adjacent anchor (CYP2D6 kinetics database PSA): **25th–75th percentile ~19.11–50.28 Å²**, median **~35.53 Å²**; substrates had **lower mean PSA** than nonsubstrates under Km-based operational definitions. citeturn20view1turn12view0  \n  Proxy (oral bioavailability): PSA (or TPSA) **≤ 140 Å²** is a widely used general heuristic (not CYP2D6-specific). citeturn34search8turn34search14\n- Usually associated with: **Lower PSA/TPSA** tends to associate with CYP2D6 substrate status in the kinetics dataset analysis (and is consistent with “lipophilic base” substrate descriptions). citeturn20view1turn22search30\n- Brief note: The CYP2D6 kinetics analysis reported PSA as one of the few single properties significantly correlated with normalized Km, making PSA/TPSA among the more actionable polarity descriptors for substrate-adjacent reasoning. citeturn20view1turn33view0\n- Source: citeturn20view1turn12view0turn34search8turn34search14turn22search30turn33view0\n\n## QED drug-likeness\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Higher QED indicates stronger “overall drug-likeness” under the QED construction, but QED is **not a CYP2D6 substrate-specific** thresholding tool. citeturn22search12turn14search2\n- Brief note: QED is an aggregate of multiple underlying descriptors (including MW, logP, HBA, HBD, PSA, rotatable bonds, aromatic rings, and structural alerts) and may correlate indirectly with substrate-like space through those components rather than providing an interpretable CYP2D6 cutoff. citeturn22search12turn33view0\n- Source: citeturn22search12turn33view0turn14search2\n\n## Functional-group notes\n- Group name: Protonatable/basic nitrogen (e.g., tertiary or secondary amine; basic N in heterocycles when protonatable)\n- Usually associated with: Substrate (B)\n- Brief note: CYP2D6 substrates are commonly described as having a **basic center** that can be **protonated at physiological pH**, and classical CYP2D6 oxidation patterns are often described relative to a **positively charged nitrogen** and its geometry to the oxidation site. citeturn22search30turn13search24\n- Source: citeturn22search30turn13search24\n\n- Group name: Aromatic/lipophilic moiety (often an aromatic ring near the oxidation site)\n- Usually associated with: Substrate (B)\n- Brief note: “Typical” CYP2D6 substrates are commonly described as **lipophilic bases** with an **aromatic/lipophilic moiety**; decision-tree substrate models also highlighted ring content and lipophilicity as recurring features of substrate-associated patterns. citeturn22search30turn9view3turn20view1\n- Source: citeturn22search30turn9view3turn20view1",
+    "task_description": "molecule local analog-comparison task CYP2D6_Substrate_CarbonMangels where option (A) means is not a substrate to the enzyme CYP2D6 and option (B) means is a substrate to the enzyme CYP2D6",
+    "positive_label_semantics": "is a substrate to the enzyme CYP2D6",
+    "negative_label_semantics": "is not a substrate to the enzyme CYP2D6",
+    "num_neighbors": 6,
+    "neighbors": [
+      {
+        "neighbor_index": 1,
+        "neighbor_id": "CC(=O)Nc1ccc(O)cc1",
+        "neighbor_smiles": "CC(=O)Nc1ccc(O)cc1",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): is a substrate to the enzyme CYP2D6",
+        "neighbor_similarity": 0.10666666666666667,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.012352867945284788,
+          "pair_score_class1_probability": 0.012352867945284788,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9876471320547152,
+          "pair_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4876471320547152
+        },
+        "evidence_strength": {
+          "feature_probability": 0.06493970524871638,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+          "feature_evidence_strength": "high",
+          "feature_confidence_margin": 0.4350602947512836,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.5272311650199851
+        },
+        "middle_draft": "First, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.2837, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For topological polar surface area, the neighbor's topological polar surface area is value 49.33, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -32.26. This pairwise contribution is 0.4155, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Then, For strongest basic pKa, the neighbor's strongest basic pKa is value 4.6, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is -0.3907, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 142.093, while the query's heavy-atom molecular weight is value 72.088. The query-minus-neighbor delta is -70.005. This pairwise contribution is -0.3646, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For molecular weight, the neighbor's molecular weight is value 151.165, while the query's molecular weight is value 78.136. The query-minus-neighbor delta is -73.029. This pairwise contribution is -0.3532, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 6, For Labute surface area, the neighbor's Labute surface area is value 64.6669, while the query's Labute surface area is value 28.4784. The query-minus-neighbor delta is -36.1885. This pairwise contribution is -0.3377, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 7, For number of acidic sites, the neighbor's number of acidic sites is value 2, while the query's number of acidic sites is absent (0). The query-minus-neighbor delta is -2. This pairwise contribution is -0.2862, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For number of ionizable sites, the neighbor's number of ionizable sites is value 3, while the query's number of ionizable sites is absent (0). The query-minus-neighbor delta is -3. This pairwise contribution is 0.2558, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__thionyl",
+            "display_name": "thionyl",
+            "description": "top-level functional-group indicator or count for thionyl",
+            "source_family": "fg_top_level",
+            "raw_name": "thionyl",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For thionyl, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "display_name": "topological polar surface area",
+            "description": "topological polar surface area of the molecule",
+            "source_family": "rdkit",
+            "raw_name": "TPSA",
+            "neighbor_value": 49.33,
+            "query_value": 17.07,
+            "delta_value": -32.26,
+            "neighbor_value_text": "value 49.33",
+            "query_value_text": "value 17.07",
+            "delta_value_text": "-32.26",
+            "observation_text": "For topological polar surface area, the neighbor value is value 49.33, the query value is value 17.07, and the query-minus-neighbor delta is -32.26."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "display_name": "strongest basic pKa",
+            "description": "pKa of the strongest basic site",
+            "source_family": "pka",
+            "raw_name": "most_basic_pka",
+            "neighbor_value": 4.6,
+            "query_value": null,
+            "delta_value": null,
+            "neighbor_value_text": "value 4.6",
+            "query_value_text": "no basic site",
+            "delta_value_text": "not defined because one molecule has no basic site",
+            "observation_text": "For strongest basic pKa, the neighbor value is value 4.6, the query value is no basic site, and the query-minus-neighbor delta is not defined because one molecule has no basic site."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "display_name": "heavy-atom molecular weight",
+            "description": "molecular weight contributed by heavy atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomMolWt",
+            "neighbor_value": 142.093,
+            "query_value": 72.088,
+            "delta_value": -70.005,
+            "neighbor_value_text": "value 142.093",
+            "query_value_text": "value 72.088",
+            "delta_value_text": "-70.005",
+            "observation_text": "For heavy-atom molecular weight, the neighbor value is value 142.093, the query value is value 72.088, and the query-minus-neighbor delta is -70.005."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolWt",
+            "display_name": "molecular weight",
+            "description": "molecular weight",
+            "source_family": "rdkit",
+            "raw_name": "MolWt",
+            "neighbor_value": 151.165,
+            "query_value": 78.136,
+            "delta_value": -73.029,
+            "neighbor_value_text": "value 151.165",
+            "query_value_text": "value 78.136",
+            "delta_value_text": "-73.029",
+            "observation_text": "For molecular weight, the neighbor value is value 151.165, the query value is value 78.136, and the query-minus-neighbor delta is -73.029."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__LabuteASA",
+            "display_name": "Labute surface area",
+            "description": "Labute approximate surface area",
+            "source_family": "rdkit",
+            "raw_name": "LabuteASA",
+            "neighbor_value": 64.66690538413799,
+            "query_value": 28.47844734580208,
+            "delta_value": -36.18845803833591,
+            "neighbor_value_text": "value 64.6669",
+            "query_value_text": "value 28.4784",
+            "delta_value_text": "-36.1885",
+            "observation_text": "For Labute surface area, the neighbor value is value 64.6669, the query value is value 28.4784, and the query-minus-neighbor delta is -36.1885."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_acidic_sites",
+            "display_name": "number of acidic sites",
+            "description": "number of acidic ionizable sites in the molecule",
+            "source_family": "pka",
+            "raw_name": "num_acidic_sites",
+            "neighbor_value": 2.0,
+            "query_value": 0.0,
+            "delta_value": -2.0,
+            "neighbor_value_text": "value 2",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-2",
+            "observation_text": "For number of acidic sites, the neighbor value is value 2, the query value is absent (0), and the query-minus-neighbor delta is -2."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_ionizable_sites",
+            "display_name": "number of ionizable sites",
+            "description": "total number of acidic and basic ionizable sites",
+            "source_family": "pka",
+            "raw_name": "num_ionizable_sites",
+            "neighbor_value": 3.0,
+            "query_value": 0.0,
+            "delta_value": -3.0,
+            "neighbor_value_text": "value 3",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-3",
+            "observation_text": "For number of ionizable sites, the neighbor value is value 3, the query value is absent (0), and the query-minus-neighbor delta is -3."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__thionyl",
+            "contribution": -1.2836732581028705,
+            "contribution_abs": 1.2836732581028705,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "contribution": 0.41552155874261043,
+            "contribution_abs": 0.41552155874261043,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "contribution": -0.39071715402171114,
+            "contribution_abs": 0.39071715402171114,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "contribution": -0.36455241414060285,
+            "contribution_abs": 0.36455241414060285,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolWt",
+            "contribution": -0.35321660436979246,
+            "contribution_abs": 0.35321660436979246,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__LabuteASA",
+            "contribution": -0.33772771419732706,
+            "contribution_abs": 0.33772771419732706,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_acidic_sites",
+            "contribution": -0.2862100209907428,
+            "contribution_abs": 0.2862100209907428,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_ionizable_sites",
+            "contribution": 0.2557876022123085,
+            "contribution_abs": 0.2557876022123085,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2D6"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.2837, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For topological polar surface area, the neighbor's topological polar surface area is value 49.33, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -32.26. This pairwise contribution is 0.4155, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Then, For strongest basic pKa, the neighbor's strongest basic pKa is value 4.6, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is -0.3907, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 142.093, while the query's heavy-atom molecular weight is value 72.088. The query-minus-neighbor delta is -70.005. This pairwise contribution is -0.3646, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For molecular weight, the neighbor's molecular weight is value 151.165, while the query's molecular weight is value 78.136. The query-minus-neighbor delta is -73.029. This pairwise contribution is -0.3532, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 6, For Labute surface area, the neighbor's Labute surface area is value 64.6669, while the query's Labute surface area is value 28.4784. The query-minus-neighbor delta is -36.1885. This pairwise contribution is -0.3377, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 7, For number of acidic sites, the neighbor's number of acidic sites is value 2, while the query's number of acidic sites is absent (0). The query-minus-neighbor delta is -2. This pairwise contribution is -0.2862, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For number of ionizable sites, the neighbor's number of ionizable sites is value 3, while the query's number of ionizable sites is absent (0). The query-minus-neighbor delta is -3. This pairwise contribution is 0.2558, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6."
+        }
+      },
+      {
+        "neighbor_index": 2,
+        "neighbor_id": "CCOc1ccc(NC(C)=O)cc1",
+        "neighbor_smiles": "CCOc1ccc(NC(C)=O)cc1",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): is a substrate to the enzyme CYP2D6",
+        "neighbor_similarity": 0.09142857142857144,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.011086583986438593,
+          "pair_score_class1_probability": 0.011086583986438593,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9889134160135614,
+          "pair_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4889134160135614
+        },
+        "evidence_strength": {
+          "feature_probability": 0.05860263782327089,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+          "feature_evidence_strength": "high",
+          "feature_confidence_margin": 0.4413973621767291,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.548733924546485
+        },
+        "middle_draft": "First, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.2837, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For exact molecular weight, the neighbor's exact molecular weight is value 179.0946, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -101.0807. This pairwise contribution is -0.5366, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Then, For strongest basic pKa, the neighbor's strongest basic pKa is value 4.7149, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is -0.3902, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For molecular weight, the neighbor's molecular weight is value 179.219, while the query's molecular weight is value 78.136. The query-minus-neighbor delta is -101.083. This pairwise contribution is -0.2793, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 166.115, while the query's heavy-atom molecular weight is value 72.088. The query-minus-neighbor delta is -94.027. This pairwise contribution is -0.2691, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 6, For estimated logP, the neighbor's estimated logP is value 2.0437, while the query's estimated logP is value -0.0053. The query-minus-neighbor delta is -2.049. This pairwise contribution is 0.2058, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.4939, while the query's minimum partial charge is value -0.2602. The query-minus-neighbor delta is +0.2337. This pairwise contribution is -0.1999, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For Labute surface area, the neighbor's Labute surface area is value 77.7161, while the query's Labute surface area is value 28.4784. The query-minus-neighbor delta is -49.2377. This pairwise contribution is -0.1862, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__thionyl",
+            "display_name": "thionyl",
+            "description": "top-level functional-group indicator or count for thionyl",
+            "source_family": "fg_top_level",
+            "raw_name": "thionyl",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For thionyl, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__ExactMolWt",
+            "display_name": "exact molecular weight",
+            "description": "exact isotopic molecular weight",
+            "source_family": "rdkit",
+            "raw_name": "ExactMolWt",
+            "neighbor_value": 179.094628656,
+            "query_value": 78.013935812,
+            "delta_value": -101.080692844,
+            "neighbor_value_text": "value 179.0946",
+            "query_value_text": "value 78.0139",
+            "delta_value_text": "-101.0807",
+            "observation_text": "For exact molecular weight, the neighbor value is value 179.0946, the query value is value 78.0139, and the query-minus-neighbor delta is -101.0807."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "display_name": "strongest basic pKa",
+            "description": "pKa of the strongest basic site",
+            "source_family": "pka",
+            "raw_name": "most_basic_pka",
+            "neighbor_value": 4.7149,
+            "query_value": null,
+            "delta_value": null,
+            "neighbor_value_text": "value 4.7149",
+            "query_value_text": "no basic site",
+            "delta_value_text": "not defined because one molecule has no basic site",
+            "observation_text": "For strongest basic pKa, the neighbor value is value 4.7149, the query value is no basic site, and the query-minus-neighbor delta is not defined because one molecule has no basic site."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolWt",
+            "display_name": "molecular weight",
+            "description": "molecular weight",
+            "source_family": "rdkit",
+            "raw_name": "MolWt",
+            "neighbor_value": 179.219,
+            "query_value": 78.136,
+            "delta_value": -101.083,
+            "neighbor_value_text": "value 179.219",
+            "query_value_text": "value 78.136",
+            "delta_value_text": "-101.083",
+            "observation_text": "For molecular weight, the neighbor value is value 179.219, the query value is value 78.136, and the query-minus-neighbor delta is -101.083."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "display_name": "heavy-atom molecular weight",
+            "description": "molecular weight contributed by heavy atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomMolWt",
+            "neighbor_value": 166.11499999999998,
+            "query_value": 72.088,
+            "delta_value": -94.02699999999999,
+            "neighbor_value_text": "value 166.115",
+            "query_value_text": "value 72.088",
+            "delta_value_text": "-94.027",
+            "observation_text": "For heavy-atom molecular weight, the neighbor value is value 166.115, the query value is value 72.088, and the query-minus-neighbor delta is -94.027."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "neighbor_value": 2.0437,
+            "query_value": -0.0052999999999999,
+            "delta_value": -2.049,
+            "neighbor_value_text": "value 2.0437",
+            "query_value_text": "value -0.0053",
+            "delta_value_text": "-2.049",
+            "observation_text": "For estimated logP, the neighbor value is value 2.0437, the query value is value -0.0053, and the query-minus-neighbor delta is -2.049."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "neighbor_value": -0.4938874337901201,
+            "query_value": -0.2601579626577377,
+            "delta_value": 0.2337294711323824,
+            "neighbor_value_text": "value -0.4939",
+            "query_value_text": "value -0.2602",
+            "delta_value_text": "+0.2337",
+            "observation_text": "For minimum partial charge, the neighbor value is value -0.4939, the query value is value -0.2602, and the query-minus-neighbor delta is +0.2337."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__LabuteASA",
+            "display_name": "Labute surface area",
+            "description": "Labute approximate surface area",
+            "source_family": "rdkit",
+            "raw_name": "LabuteASA",
+            "neighbor_value": 77.71610109024209,
+            "query_value": 28.47844734580208,
+            "delta_value": -49.23765374444001,
+            "neighbor_value_text": "value 77.7161",
+            "query_value_text": "value 28.4784",
+            "delta_value_text": "-49.2377",
+            "observation_text": "For Labute surface area, the neighbor value is value 77.7161, the query value is value 28.4784, and the query-minus-neighbor delta is -49.2377."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__thionyl",
+            "contribution": -1.2836732581028705,
+            "contribution_abs": 1.2836732581028705,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__ExactMolWt",
+            "contribution": -0.5365945323918121,
+            "contribution_abs": 0.5365945323918121,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "contribution": -0.3902005884953258,
+            "contribution_abs": 0.3902005884953258,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolWt",
+            "contribution": -0.2793181044143698,
+            "contribution_abs": 0.2793181044143698,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "contribution": -0.2690570091802077,
+            "contribution_abs": 0.2690570091802077,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "contribution": 0.20583871551912405,
+            "contribution_abs": 0.20583871551912405,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "contribution": -0.19985104458070738,
+            "contribution_abs": 0.19985104458070738,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__LabuteASA",
+            "contribution": -0.1861812005600268,
+            "contribution_abs": 0.1861812005600268,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.2837, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For exact molecular weight, the neighbor's exact molecular weight is value 179.0946, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -101.0807. This pairwise contribution is -0.5366, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Then, For strongest basic pKa, the neighbor's strongest basic pKa is value 4.7149, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is -0.3902, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For molecular weight, the neighbor's molecular weight is value 179.219, while the query's molecular weight is value 78.136. The query-minus-neighbor delta is -101.083. This pairwise contribution is -0.2793, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 166.115, while the query's heavy-atom molecular weight is value 72.088. The query-minus-neighbor delta is -94.027. This pairwise contribution is -0.2691, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 6, For estimated logP, the neighbor's estimated logP is value 2.0437, while the query's estimated logP is value -0.0053. The query-minus-neighbor delta is -2.049. This pairwise contribution is 0.2058, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.4939, while the query's minimum partial charge is value -0.2602. The query-minus-neighbor delta is +0.2337. This pairwise contribution is -0.1999, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For Labute surface area, the neighbor's Labute surface area is value 77.7161, while the query's Labute surface area is value 28.4784. The query-minus-neighbor delta is -49.2377. This pairwise contribution is -0.1862, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6."
+        }
+      },
+      {
+        "neighbor_index": 3,
+        "neighbor_id": "C[C@H](CS)C(=O)N1CCC[C@H]1C(=O)O",
+        "neighbor_smiles": "C[C@H](CS)C(=O)N1CCC[C@H]1C(=O)O",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): is a substrate to the enzyme CYP2D6",
+        "neighbor_similarity": 0.08571428571428572,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.005596414445731713,
+          "pair_score_class1_probability": 0.005596414445731713,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9944035855542683,
+          "pair_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.49440358555426833
+        },
+        "evidence_strength": {
+          "feature_probability": 0.030303156893228538,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+          "feature_evidence_strength": "high",
+          "feature_confidence_margin": 0.46969684310677146,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.5367712055809176
+        },
+        "middle_draft": "First, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.2837, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For maximum partial charge, the neighbor's maximum partial charge is value 0.3259, while the query's maximum partial charge is value 0.0148. The query-minus-neighbor delta is -0.3111. This pairwise contribution is -0.666, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Then, For exact molecular weight, the neighbor's exact molecular weight is value 217.0773, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -139.0633. This pairwise contribution is -0.5051, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For strongest basic pKa, the neighbor has no basic site, while the query has no basic site. The query-minus-neighbor delta is not defined because neither molecule has a basic site. This pairwise contribution is -0.3873, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 57.61, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -40.54. This pairwise contribution is 0.3852, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 202.17, while the query's heavy-atom molecular weight is value 72.088. The query-minus-neighbor delta is -130.082. This pairwise contribution is -0.3686, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 7, For number of acidic sites, the neighbor's number of acidic sites is value 2, while the query's number of acidic sites is absent (0). The query-minus-neighbor delta is -2. This pairwise contribution is -0.2862, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For molecular weight, the neighbor's molecular weight is value 217.29, while the query's molecular weight is value 78.136. The query-minus-neighbor delta is -139.154. This pairwise contribution is -0.2567, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__thionyl",
+            "display_name": "thionyl",
+            "description": "top-level functional-group indicator or count for thionyl",
+            "source_family": "fg_top_level",
+            "raw_name": "thionyl",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For thionyl, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "display_name": "maximum partial charge",
+            "description": "most positive atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxPartialCharge",
+            "neighbor_value": 0.3259145860914331,
+            "query_value": 0.0148042140882218,
+            "delta_value": -0.3111103720032113,
+            "neighbor_value_text": "value 0.3259",
+            "query_value_text": "value 0.0148",
+            "delta_value_text": "-0.3111",
+            "observation_text": "For maximum partial charge, the neighbor value is value 0.3259, the query value is value 0.0148, and the query-minus-neighbor delta is -0.3111."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__ExactMolWt",
+            "display_name": "exact molecular weight",
+            "description": "exact isotopic molecular weight",
+            "source_family": "rdkit",
+            "raw_name": "ExactMolWt",
+            "neighbor_value": 217.07726434,
+            "query_value": 78.013935812,
+            "delta_value": -139.063328528,
+            "neighbor_value_text": "value 217.0773",
+            "query_value_text": "value 78.0139",
+            "delta_value_text": "-139.0633",
+            "observation_text": "For exact molecular weight, the neighbor value is value 217.0773, the query value is value 78.0139, and the query-minus-neighbor delta is -139.0633."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "display_name": "strongest basic pKa",
+            "description": "pKa of the strongest basic site",
+            "source_family": "pka",
+            "raw_name": "most_basic_pka",
+            "neighbor_value": null,
+            "query_value": null,
+            "delta_value": null,
+            "neighbor_value_text": "no basic site",
+            "query_value_text": "no basic site",
+            "delta_value_text": "not defined because neither molecule has a basic site",
+            "observation_text": "For strongest basic pKa, the neighbor value is no basic site, the query value is no basic site, and the query-minus-neighbor delta is not defined because neither molecule has a basic site."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "display_name": "topological polar surface area",
+            "description": "topological polar surface area of the molecule",
+            "source_family": "rdkit",
+            "raw_name": "TPSA",
+            "neighbor_value": 57.61,
+            "query_value": 17.07,
+            "delta_value": -40.54,
+            "neighbor_value_text": "value 57.61",
+            "query_value_text": "value 17.07",
+            "delta_value_text": "-40.54",
+            "observation_text": "For topological polar surface area, the neighbor value is value 57.61, the query value is value 17.07, and the query-minus-neighbor delta is -40.54."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "display_name": "heavy-atom molecular weight",
+            "description": "molecular weight contributed by heavy atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomMolWt",
+            "neighbor_value": 202.17,
+            "query_value": 72.088,
+            "delta_value": -130.082,
+            "neighbor_value_text": "value 202.17",
+            "query_value_text": "value 72.088",
+            "delta_value_text": "-130.082",
+            "observation_text": "For heavy-atom molecular weight, the neighbor value is value 202.17, the query value is value 72.088, and the query-minus-neighbor delta is -130.082."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_acidic_sites",
+            "display_name": "number of acidic sites",
+            "description": "number of acidic ionizable sites in the molecule",
+            "source_family": "pka",
+            "raw_name": "num_acidic_sites",
+            "neighbor_value": 2.0,
+            "query_value": 0.0,
+            "delta_value": -2.0,
+            "neighbor_value_text": "value 2",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-2",
+            "observation_text": "For number of acidic sites, the neighbor value is value 2, the query value is absent (0), and the query-minus-neighbor delta is -2."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolWt",
+            "display_name": "molecular weight",
+            "description": "molecular weight",
+            "source_family": "rdkit",
+            "raw_name": "MolWt",
+            "neighbor_value": 217.29,
+            "query_value": 78.136,
+            "delta_value": -139.154,
+            "neighbor_value_text": "value 217.29",
+            "query_value_text": "value 78.136",
+            "delta_value_text": "-139.154",
+            "observation_text": "For molecular weight, the neighbor value is value 217.29, the query value is value 78.136, and the query-minus-neighbor delta is -139.154."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__thionyl",
+            "contribution": -1.2836732581028705,
+            "contribution_abs": 1.2836732581028705,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "contribution": -0.6659509368852856,
+            "contribution_abs": 0.6659509368852856,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__ExactMolWt",
+            "contribution": -0.5051298537422653,
+            "contribution_abs": 0.5051298537422653,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "contribution": -0.3873437455577045,
+            "contribution_abs": 0.3873437455577045,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "contribution": 0.3851705176481858,
+            "contribution_abs": 0.3851705176481858,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "contribution": -0.36855911961606797,
+            "contribution_abs": 0.36855911961606797,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_acidic_sites",
+            "contribution": -0.2862100209907428,
+            "contribution_abs": 0.2862100209907428,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolWt",
+            "contribution": -0.2567485727523768,
+            "contribution_abs": 0.2567485727523768,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -1.2837, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For maximum partial charge, the neighbor's maximum partial charge is value 0.3259, while the query's maximum partial charge is value 0.0148. The query-minus-neighbor delta is -0.3111. This pairwise contribution is -0.666, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Then, For exact molecular weight, the neighbor's exact molecular weight is value 217.0773, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -139.0633. This pairwise contribution is -0.5051, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For strongest basic pKa, the neighbor has no basic site, while the query has no basic site. The query-minus-neighbor delta is not defined because neither molecule has a basic site. This pairwise contribution is -0.3873, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 57.61, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -40.54. This pairwise contribution is 0.3852, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 202.17, while the query's heavy-atom molecular weight is value 72.088. The query-minus-neighbor delta is -130.082. This pairwise contribution is -0.3686, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 7, For number of acidic sites, the neighbor's number of acidic sites is value 2, while the query's number of acidic sites is absent (0). The query-minus-neighbor delta is -2. This pairwise contribution is -0.2862, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For molecular weight, the neighbor's molecular weight is value 217.29, while the query's molecular weight is value 78.136. The query-minus-neighbor delta is -139.154. This pairwise contribution is -0.2567, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6."
+        }
+      },
+      {
+        "neighbor_index": 4,
+        "neighbor_id": "CN1C(=O)OC(C)(C)C1=O",
+        "neighbor_smiles": "CN1C(=O)OC(C)(C)C1=O",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+        "neighbor_similarity": 0.1409937888198758,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.03473471351347173,
+          "pair_score_class1_probability": 0.03473471351347173,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9652652864865283,
+          "pair_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4652652864865283
+        },
+        "evidence_strength": {
+          "feature_probability": 0.18106804206515745,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+          "feature_evidence_strength": "high",
+          "feature_confidence_margin": 0.3189319579348425,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.5522970750991614
+        },
+        "middle_draft": "First, The neighbor has 2-oxazolidone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.7991, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For maximum partial charge, the neighbor's maximum partial charge is value 0.4169, while the query's maximum partial charge is value 0.0148. The query-minus-neighbor delta is -0.4021. This pairwise contribution is 0.6968, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Then, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6582, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For exact molecular weight, the neighbor's exact molecular weight is value 143.0582, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -65.0443. This pairwise contribution is -0.6307, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 46.61, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -29.54. This pairwise contribution is 0.3576, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For minimum partial charge, the neighbor's minimum partial charge is value -0.4329, while the query's minimum partial charge is value -0.2602. The query-minus-neighbor delta is +0.1728. This pairwise contribution is -0.2492, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 7, For strongest basic pKa, the neighbor has no basic site, while the query has no basic site. The query-minus-neighbor delta is not defined because neither molecule has a basic site. This pairwise contribution is -0.2248, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For estimated logP, the neighbor's estimated logP is value 0.3736, while the query's estimated logP is value -0.0053. The query-minus-neighbor delta is -0.3789. This pairwise contribution is -0.2106, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__2-oxazolidone",
+            "display_name": "2-oxazolidone",
+            "description": "top-level functional-group indicator or count for 2-oxazolidone",
+            "source_family": "fg_top_level",
+            "raw_name": "2-oxazolidone",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For 2-oxazolidone, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "display_name": "maximum partial charge",
+            "description": "most positive atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxPartialCharge",
+            "neighbor_value": 0.4169203234230215,
+            "query_value": 0.0148042140882218,
+            "delta_value": -0.4021161093347997,
+            "neighbor_value_text": "value 0.4169",
+            "query_value_text": "value 0.0148",
+            "delta_value_text": "-0.4021",
+            "observation_text": "For maximum partial charge, the neighbor value is value 0.4169, the query value is value 0.0148, and the query-minus-neighbor delta is -0.4021."
+          },
+          {
+            "feature_name": "fg_top_level__thionyl",
+            "display_name": "thionyl",
+            "description": "top-level functional-group indicator or count for thionyl",
+            "source_family": "fg_top_level",
+            "raw_name": "thionyl",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For thionyl, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__ExactMolWt",
+            "display_name": "exact molecular weight",
+            "description": "exact isotopic molecular weight",
+            "source_family": "rdkit",
+            "raw_name": "ExactMolWt",
+            "neighbor_value": 143.058243148,
+            "query_value": 78.013935812,
+            "delta_value": -65.044307336,
+            "neighbor_value_text": "value 143.0582",
+            "query_value_text": "value 78.0139",
+            "delta_value_text": "-65.0443",
+            "observation_text": "For exact molecular weight, the neighbor value is value 143.0582, the query value is value 78.0139, and the query-minus-neighbor delta is -65.0443."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "display_name": "topological polar surface area",
+            "description": "topological polar surface area of the molecule",
+            "source_family": "rdkit",
+            "raw_name": "TPSA",
+            "neighbor_value": 46.61,
+            "query_value": 17.07,
+            "delta_value": -29.54,
+            "neighbor_value_text": "value 46.61",
+            "query_value_text": "value 17.07",
+            "delta_value_text": "-29.54",
+            "observation_text": "For topological polar surface area, the neighbor value is value 46.61, the query value is value 17.07, and the query-minus-neighbor delta is -29.54."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "neighbor_value": -0.4329374645648966,
+            "query_value": -0.2601579626577377,
+            "delta_value": 0.1727795019071589,
+            "neighbor_value_text": "value -0.4329",
+            "query_value_text": "value -0.2602",
+            "delta_value_text": "+0.1728",
+            "observation_text": "For minimum partial charge, the neighbor value is value -0.4329, the query value is value -0.2602, and the query-minus-neighbor delta is +0.1728."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "display_name": "strongest basic pKa",
+            "description": "pKa of the strongest basic site",
+            "source_family": "pka",
+            "raw_name": "most_basic_pka",
+            "neighbor_value": null,
+            "query_value": null,
+            "delta_value": null,
+            "neighbor_value_text": "no basic site",
+            "query_value_text": "no basic site",
+            "delta_value_text": "not defined because neither molecule has a basic site",
+            "observation_text": "For strongest basic pKa, the neighbor value is no basic site, the query value is no basic site, and the query-minus-neighbor delta is not defined because neither molecule has a basic site."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "neighbor_value": 0.3735999999999999,
+            "query_value": -0.0052999999999999,
+            "delta_value": -0.3788999999999998,
+            "neighbor_value_text": "value 0.3736",
+            "query_value_text": "value -0.0053",
+            "delta_value_text": "-0.3789",
+            "observation_text": "For estimated logP, the neighbor value is value 0.3736, the query value is value -0.0053, and the query-minus-neighbor delta is -0.3789."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__2-oxazolidone",
+            "contribution": -0.7990687035082851,
+            "contribution_abs": 0.7990687035082851,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "contribution": 0.6968050830446002,
+            "contribution_abs": 0.6968050830446002,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "fg_top_level__thionyl",
+            "contribution": -0.6581865664779323,
+            "contribution_abs": 0.6581865664779323,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__ExactMolWt",
+            "contribution": -0.6306544295391652,
+            "contribution_abs": 0.6306544295391652,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "contribution": 0.3576409004817233,
+            "contribution_abs": 0.3576409004817233,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "contribution": -0.24918589559993334,
+            "contribution_abs": 0.24918589559993334,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "contribution": -0.22478239809135372,
+            "contribution_abs": 0.22478239809135372,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "contribution": -0.21060762581293271,
+            "contribution_abs": 0.21060762581293271,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor has 2-oxazolidone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.7991, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For maximum partial charge, the neighbor's maximum partial charge is value 0.4169, while the query's maximum partial charge is value 0.0148. The query-minus-neighbor delta is -0.4021. This pairwise contribution is 0.6968, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Then, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6582, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For exact molecular weight, the neighbor's exact molecular weight is value 143.0582, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -65.0443. This pairwise contribution is -0.6307, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 46.61, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -29.54. This pairwise contribution is 0.3576, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For minimum partial charge, the neighbor's minimum partial charge is value -0.4329, while the query's minimum partial charge is value -0.2602. The query-minus-neighbor delta is +0.1728. This pairwise contribution is -0.2492, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 7, For strongest basic pKa, the neighbor has no basic site, while the query has no basic site. The query-minus-neighbor delta is not defined because neither molecule has a basic site. This pairwise contribution is -0.2248, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For estimated logP, the neighbor's estimated logP is value 0.3736, while the query's estimated logP is value -0.0053. The query-minus-neighbor delta is -0.3789. This pairwise contribution is -0.2106, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6."
+        }
+      },
+      {
+        "neighbor_index": 5,
+        "neighbor_id": "CC(=O)Nc1ccccc1",
+        "neighbor_smiles": "CC(=O)Nc1ccccc1",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+        "neighbor_similarity": 0.11956521739130435,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.03250987754434787,
+          "pair_score_class1_probability": 0.03250987754434787,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9674901224556521,
+          "pair_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.46749012245565214
+        },
+        "evidence_strength": {
+          "feature_probability": 0.17113196541896894,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+          "feature_evidence_strength": "high",
+          "feature_confidence_margin": 0.3288680345810311,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.5988204502782474
+        },
+        "middle_draft": "First, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3263, while the query's maximum absolute partial charge is value 0.2602. The query-minus-neighbor delta is -0.0662. This pairwise contribution is -0.9761, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6582, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Then, For exact molecular weight, the neighbor's exact molecular weight is value 135.0684, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -57.0545. This pairwise contribution is -0.6338, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.2207, while the query's minimum absolute partial charge is value 0.0148. The query-minus-neighbor delta is -0.2059. This pairwise contribution is 0.5927, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 29.1, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -12.03. This pairwise contribution is 0.4406, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For Labute surface area, the neighbor's Labute surface area is value 59.8727, while the query's Labute surface area is value 28.4784. The query-minus-neighbor delta is -31.3942. This pairwise contribution is -0.3178, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.3263, while the query's minimum partial charge is value -0.2602. The query-minus-neighbor delta is +0.0662. This pairwise contribution is -0.2674, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For molecular weight, the neighbor's molecular weight is value 135.166, while the query's molecular weight is value 78.136. The query-minus-neighbor delta is -57.03. This pairwise contribution is -0.2321, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "display_name": "maximum absolute partial charge",
+            "description": "largest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxAbsPartialCharge",
+            "neighbor_value": 0.3263390909376533,
+            "query_value": 0.2601579626577377,
+            "delta_value": -0.06618112827991557,
+            "neighbor_value_text": "value 0.3263",
+            "query_value_text": "value 0.2602",
+            "delta_value_text": "-0.0662",
+            "observation_text": "For maximum absolute partial charge, the neighbor value is value 0.3263, the query value is value 0.2602, and the query-minus-neighbor delta is -0.0662."
+          },
+          {
+            "feature_name": "fg_top_level__thionyl",
+            "display_name": "thionyl",
+            "description": "top-level functional-group indicator or count for thionyl",
+            "source_family": "fg_top_level",
+            "raw_name": "thionyl",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For thionyl, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__ExactMolWt",
+            "display_name": "exact molecular weight",
+            "description": "exact isotopic molecular weight",
+            "source_family": "rdkit",
+            "raw_name": "ExactMolWt",
+            "neighbor_value": 135.068413908,
+            "query_value": 78.013935812,
+            "delta_value": -57.054478096,
+            "neighbor_value_text": "value 135.0684",
+            "query_value_text": "value 78.0139",
+            "delta_value_text": "-57.0545",
+            "observation_text": "For exact molecular weight, the neighbor value is value 135.0684, the query value is value 78.0139, and the query-minus-neighbor delta is -57.0545."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "neighbor_value": 0.2207474034590285,
+            "query_value": 0.0148042140882218,
+            "delta_value": -0.2059431893708067,
+            "neighbor_value_text": "value 0.2207",
+            "query_value_text": "value 0.0148",
+            "delta_value_text": "-0.2059",
+            "observation_text": "For minimum absolute partial charge, the neighbor value is value 0.2207, the query value is value 0.0148, and the query-minus-neighbor delta is -0.2059."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "display_name": "topological polar surface area",
+            "description": "topological polar surface area of the molecule",
+            "source_family": "rdkit",
+            "raw_name": "TPSA",
+            "neighbor_value": 29.1,
+            "query_value": 17.07,
+            "delta_value": -12.030000000000001,
+            "neighbor_value_text": "value 29.1",
+            "query_value_text": "value 17.07",
+            "delta_value_text": "-12.03",
+            "observation_text": "For topological polar surface area, the neighbor value is value 29.1, the query value is value 17.07, and the query-minus-neighbor delta is -12.03."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__LabuteASA",
+            "display_name": "Labute surface area",
+            "description": "Labute approximate surface area",
+            "source_family": "rdkit",
+            "raw_name": "LabuteASA",
+            "neighbor_value": 59.87267163194198,
+            "query_value": 28.47844734580208,
+            "delta_value": -31.394224286139895,
+            "neighbor_value_text": "value 59.8727",
+            "query_value_text": "value 28.4784",
+            "delta_value_text": "-31.3942",
+            "observation_text": "For Labute surface area, the neighbor value is value 59.8727, the query value is value 28.4784, and the query-minus-neighbor delta is -31.3942."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "neighbor_value": -0.3263390909376533,
+            "query_value": -0.2601579626577377,
+            "delta_value": 0.06618112827991557,
+            "neighbor_value_text": "value -0.3263",
+            "query_value_text": "value -0.2602",
+            "delta_value_text": "+0.0662",
+            "observation_text": "For minimum partial charge, the neighbor value is value -0.3263, the query value is value -0.2602, and the query-minus-neighbor delta is +0.0662."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolWt",
+            "display_name": "molecular weight",
+            "description": "molecular weight",
+            "source_family": "rdkit",
+            "raw_name": "MolWt",
+            "neighbor_value": 135.16599999999997,
+            "query_value": 78.136,
+            "delta_value": -57.02999999999997,
+            "neighbor_value_text": "value 135.166",
+            "query_value_text": "value 78.136",
+            "delta_value_text": "-57.03",
+            "observation_text": "For molecular weight, the neighbor value is value 135.166, the query value is value 78.136, and the query-minus-neighbor delta is -57.03."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "contribution": -0.9761488679845458,
+            "contribution_abs": 0.9761488679845458,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "fg_top_level__thionyl",
+            "contribution": -0.6581865664779323,
+            "contribution_abs": 0.6581865664779323,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__ExactMolWt",
+            "contribution": -0.6338412318028726,
+            "contribution_abs": 0.6338412318028726,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "contribution": 0.5927215026810936,
+            "contribution_abs": 0.5927215026810936,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "contribution": 0.4406339440441667,
+            "contribution_abs": 0.4406339440441667,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__LabuteASA",
+            "contribution": -0.31777532605737846,
+            "contribution_abs": 0.31777532605737846,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "contribution": -0.2673950107592162,
+            "contribution_abs": 0.2673950107592162,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolWt",
+            "contribution": -0.2321114907301878,
+            "contribution_abs": 0.2321114907301878,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3263, while the query's maximum absolute partial charge is value 0.2602. The query-minus-neighbor delta is -0.0662. This pairwise contribution is -0.9761, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6582, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Then, For exact molecular weight, the neighbor's exact molecular weight is value 135.0684, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -57.0545. This pairwise contribution is -0.6338, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.2207, while the query's minimum absolute partial charge is value 0.0148. The query-minus-neighbor delta is -0.2059. This pairwise contribution is 0.5927, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 29.1, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -12.03. This pairwise contribution is 0.4406, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For Labute surface area, the neighbor's Labute surface area is value 59.8727, while the query's Labute surface area is value 28.4784. The query-minus-neighbor delta is -31.3942. This pairwise contribution is -0.3178, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.3263, while the query's minimum partial charge is value -0.2602. The query-minus-neighbor delta is +0.0662. This pairwise contribution is -0.2674, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, For molecular weight, the neighbor's molecular weight is value 135.166, while the query's molecular weight is value 78.136. The query-minus-neighbor delta is -57.03. This pairwise contribution is -0.2321, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6."
+        }
+      },
+      {
+        "neighbor_index": 6,
+        "neighbor_id": "CC[C@]1(C)CC(=O)NC1=O",
+        "neighbor_smiles": "CC[C@]1(C)CC(=O)NC1=O",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+        "neighbor_similarity": 0.11733333333333335,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.00870727712491336,
+          "pair_score_class1_probability": 0.00870727712491336,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9912927228750866,
+          "pair_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.49129272287508663
+        },
+        "evidence_strength": {
+          "feature_probability": 0.051206948614510125,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2D6",
+          "feature_evidence_strength": "high",
+          "feature_confidence_margin": 0.44879305138548986,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.6258109362655386
+        },
+        "middle_draft": "First, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.2959, while the query's maximum absolute partial charge is value 0.2602. The query-minus-neighbor delta is -0.0358. This pairwise contribution is -2.1341, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.7143, while the query's fraction of sp3 carbons is value 1. The query-minus-neighbor delta is +0.2857. This pairwise contribution is 0.7021, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Then, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6582, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For exact molecular weight, the neighbor's exact molecular weight is value 141.079, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -63.065. This pairwise contribution is -0.6307, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.2325, while the query's minimum absolute partial charge is value 0.0148. The query-minus-neighbor delta is -0.2177. This pairwise contribution is 0.5483, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 46.17, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -29.1. This pairwise contribution is 0.3663, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.2959, while the query's minimum partial charge is value -0.2602. The query-minus-neighbor delta is +0.0358. This pairwise contribution is -0.3273, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, The neighbor has succinimide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.3153, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "display_name": "maximum absolute partial charge",
+            "description": "largest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxAbsPartialCharge",
+            "neighbor_value": 0.2959410688794002,
+            "query_value": 0.2601579626577377,
+            "delta_value": -0.035783106221662475,
+            "neighbor_value_text": "value 0.2959",
+            "query_value_text": "value 0.2602",
+            "delta_value_text": "-0.0358",
+            "observation_text": "For maximum absolute partial charge, the neighbor value is value 0.2959, the query value is value 0.2602, and the query-minus-neighbor delta is -0.0358."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "neighbor_value": 0.7142857142857143,
+            "query_value": 1.0,
+            "delta_value": 0.2857142857142857,
+            "neighbor_value_text": "value 0.7143",
+            "query_value_text": "value 1",
+            "delta_value_text": "+0.2857",
+            "observation_text": "For fraction of sp3 carbons, the neighbor value is value 0.7143, the query value is value 1, and the query-minus-neighbor delta is +0.2857."
+          },
+          {
+            "feature_name": "fg_top_level__thionyl",
+            "display_name": "thionyl",
+            "description": "top-level functional-group indicator or count for thionyl",
+            "source_family": "fg_top_level",
+            "raw_name": "thionyl",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For thionyl, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__ExactMolWt",
+            "display_name": "exact molecular weight",
+            "description": "exact isotopic molecular weight",
+            "source_family": "rdkit",
+            "raw_name": "ExactMolWt",
+            "neighbor_value": 141.078978592,
+            "query_value": 78.013935812,
+            "delta_value": -63.06504278,
+            "neighbor_value_text": "value 141.079",
+            "query_value_text": "value 78.0139",
+            "delta_value_text": "-63.065",
+            "observation_text": "For exact molecular weight, the neighbor value is value 141.079, the query value is value 78.0139, and the query-minus-neighbor delta is -63.065."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "neighbor_value": 0.2324947621390698,
+            "query_value": 0.0148042140882218,
+            "delta_value": -0.217690548050848,
+            "neighbor_value_text": "value 0.2325",
+            "query_value_text": "value 0.0148",
+            "delta_value_text": "-0.2177",
+            "observation_text": "For minimum absolute partial charge, the neighbor value is value 0.2325, the query value is value 0.0148, and the query-minus-neighbor delta is -0.2177."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "display_name": "topological polar surface area",
+            "description": "topological polar surface area of the molecule",
+            "source_family": "rdkit",
+            "raw_name": "TPSA",
+            "neighbor_value": 46.17,
+            "query_value": 17.07,
+            "delta_value": -29.1,
+            "neighbor_value_text": "value 46.17",
+            "query_value_text": "value 17.07",
+            "delta_value_text": "-29.1",
+            "observation_text": "For topological polar surface area, the neighbor value is value 46.17, the query value is value 17.07, and the query-minus-neighbor delta is -29.1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "neighbor_value": -0.2959410688794002,
+            "query_value": -0.2601579626577377,
+            "delta_value": 0.035783106221662475,
+            "neighbor_value_text": "value -0.2959",
+            "query_value_text": "value -0.2602",
+            "delta_value_text": "+0.0358",
+            "observation_text": "For minimum partial charge, the neighbor value is value -0.2959, the query value is value -0.2602, and the query-minus-neighbor delta is +0.0358."
+          },
+          {
+            "feature_name": "fg_top_level__succinimide",
+            "display_name": "succinimide",
+            "description": "top-level functional-group indicator or count for succinimide",
+            "source_family": "fg_top_level",
+            "raw_name": "succinimide",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For succinimide, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "contribution": -2.1340579389579544,
+            "contribution_abs": 2.1340579389579544,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "contribution": 0.7020863921729733,
+            "contribution_abs": 0.7020863921729733,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "fg_top_level__thionyl",
+            "contribution": -0.6581865664779323,
+            "contribution_abs": 0.6581865664779323,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__ExactMolWt",
+            "contribution": -0.6306544295391652,
+            "contribution_abs": 0.6306544295391652,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "contribution": 0.5482551580570294,
+            "contribution_abs": 0.5482551580570294,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "contribution": 0.36625845947441116,
+            "contribution_abs": 0.36625845947441116,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "contribution": -0.327342369610603,
+            "contribution_abs": 0.327342369610603,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          },
+          {
+            "feature_name": "fg_top_level__succinimide",
+            "contribution": -0.3152517908159498,
+            "contribution_abs": 0.3152517908159498,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2D6"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.2959, while the query's maximum absolute partial charge is value 0.2602. The query-minus-neighbor delta is -0.0358. This pairwise contribution is -2.1341, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Next, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.7143, while the query's fraction of sp3 carbons is value 1. The query-minus-neighbor delta is +0.2857. This pairwise contribution is 0.7021, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Then, The neighbor does not have thionyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.6582, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. After that, For exact molecular weight, the neighbor's exact molecular weight is value 141.079, while the query's exact molecular weight is value 78.0139. The query-minus-neighbor delta is -63.065. This pairwise contribution is -0.6307, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Finally, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.2325, while the query's minimum absolute partial charge is value 0.0148. The query-minus-neighbor delta is -0.2177. This pairwise contribution is 0.5483, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 46.17, while the query's topological polar surface area is value 17.07. The query-minus-neighbor delta is -29.1. This pairwise contribution is 0.3663, which pushes toward option (B): is a substrate to the enzyme CYP2D6. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.2959, while the query's minimum partial charge is value -0.2602. The query-minus-neighbor delta is +0.0358. This pairwise contribution is -0.3273, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Step 8, The neighbor has succinimide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.3153, which pushes toward option (A): is not a substrate to the enzyme CYP2D6. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2D6, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2D6. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2D6."
+        }
+      }
+    ]
   },
   "hybrid_rewrite_input": {
     "gt_label": 0,
@@ -174,7 +1647,7 @@
     }
   },
   "source_artifacts": {
-    "global_evidence_path": "/data1/tianang/Projects/TRIM/outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan/CYP2D6_Substrate_CarbonMangels/train/sample_00071.json",
-    "local_evidence_path": "/data1/tianang/Projects/TRIM/outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts/CYP2D6_Substrate_CarbonMangels/train/sample_00071.json"
+    "global_evidence_path": "outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan/CYP2D6_Substrate_CarbonMangels/train/sample_00071.json",
+    "local_evidence_path": "outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts/CYP2D6_Substrate_CarbonMangels/train/sample_00071.json"
   }
 }

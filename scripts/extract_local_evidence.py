@@ -29,7 +29,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--cache-root", default="data/cache/tdc_mol_fingerprints")
     parser.add_argument("--top-k-pos", type=int, default=3, help="Number of positive neighbors to keep per sample")
     parser.add_argument("--top-k-neg", type=int, default=3, help="Number of negative neighbors to keep per sample")
-    parser.add_argument("--top-term-k", type=int, default=6, help="Number of pair terms to keep per neighbor")
+    parser.add_argument("--top-term-k", type=int, default=8, help="Number of pair terms to keep per neighbor")
     parser.add_argument("--sample-index", type=int, action="append", default=None, help="Optional sample index to export")
     parser.add_argument("--max-samples", type=int, default=None, help="Optional cap on exported samples")
     parser.add_argument("--prompt-root", default=None, help="Optional prompt root used to recover task label semantics")

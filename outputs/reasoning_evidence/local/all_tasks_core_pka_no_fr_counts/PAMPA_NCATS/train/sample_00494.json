@@ -19,8 +19,8 @@
     "label": 1
   },
   "local_prediction_correct": true,
-  "local_score": 0.9418460211032188,
-  "s_pos": 0.9378344226530347,
+  "local_score": 0.9418460211032185,
+  "s_pos": 0.9378344226530345,
   "s_neg": 0.9466602520989397,
   "keep_for_reasoning": true,
   "drop_reason": null,
@@ -37,12 +37,42 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.9763345502541525,
+        "pair_score_class1_probability": 0.9763345502541525,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9763345502541525,
+        "teacher_confidence_margin": 0.4763345502541525,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is permeable to cell membranes in a PAMPA assay",
           "label": 1
         },
+        "feature_logit": 1.0237163309048403,
+        "feature_probability": 0.7356958632632006,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.23569586326320058,
+        "feature_evidence_strength": "medium",
+        "total_abs_feature_contribution": 4.3088460914773545,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "medium",
+        "displayed_feature_logit": 1.1423234997039733,
+        "displayed_feature_probability": 0.7581059808954068,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.2581059808954068,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_feature_contribution": 1.8775176102762385,
+        "displayed_abs_contribution_coverage": 0.43573559380314336,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "fg_top_level__acetal",
@@ -169,33 +199,34 @@
             "supports_option": "A",
             "supports_text": "is not permeable to cell membranes in a PAMPA assay",
             "text_hint": "The neighbor has isothiourea, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1787, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
-          }
-        ]
-      },
-      {
-        "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
-        "query_smiles": "Cc1ccccc1C(=O)N1CCc2cc(-c3ccnc(NC(=O)Cc4ccccc4)n3)ccc21",
-        "query_label": 1,
-        "neighbor_smiles": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
-        "neighbor_label": 1,
-        "neighbor_similarity": 0.5478696741854637,
-        "neighbor_scaffold": "O=C(Cc1ccc2c(c1)OCO2)Nc1nc(-c2ccc3c(c2)CCN3C(=O)c2ccccc2)cs1",
-        "neighbor_role": "positive_neighbor",
-        "pair_model_type": "positive_neighbor_model",
-        "pair_score": 0.9470002589839093,
-        "pair_prediction": 1,
-        "pair_prediction_semantics": {
-          "option": "B",
-          "text": "is permeable to cell membranes in a PAMPA assay",
-          "label": 1
-        },
-        "top_pair_terms": [
+          },
           {
-            "feature_name": "fg_top_level__acetal",
-            "display_name": "acetal",
-            "description": "top-level functional-group indicator or count for acetal",
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "display_name": "strongest acidic pKa",
+            "description": "pKa of the strongest acidic site",
+            "source_family": "pka",
+            "raw_name": "most_acidic_pka",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 9.0703,
+            "query_value": 11.9985,
+            "delta_value": 2.9282000000000004,
+            "base_value_text": "value 9.0703",
+            "query_value_text": "value 11.9985",
+            "delta_value_text": "+2.9282",
+            "contribution": 0.16079857632920821,
+            "contribution_abs": 0.16079857632920821,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is permeable to cell membranes in a PAMPA assay",
+            "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 9.0703, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +2.9282. This pairwise contribution is 0.1608, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "fg_top_level__thiazole",
+            "display_name": "thiazole",
+            "description": "top-level functional-group indicator or count for thiazole",
             "source_family": "fg_top_level",
-            "raw_name": "acetal",
+            "raw_name": "thiazole",
             "nlp_readiness": "natural_language_ready",
             "base_value": 1.0,
             "query_value": 0.0,
@@ -203,118 +234,13 @@
             "base_value_text": "present (1)",
             "query_value_text": "absent (0)",
             "delta_value_text": "-1",
-            "contribution": 0.39552495974941737,
-            "contribution_abs": 0.39552495974941737,
-            "contribution_rank": 1,
+            "contribution": 0.1574597261019383,
+            "contribution_abs": 0.1574597261019383,
+            "contribution_rank": 8,
             "supports_label": 1,
             "supports_option": "B",
             "supports_text": "is permeable to cell membranes in a PAMPA assay",
-            "text_hint": "The neighbor has acetal, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.3955, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
-          },
-          {
-            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
-            "display_name": "heavy-atom molecular weight",
-            "description": "molecular weight contributed by heavy atoms",
-            "source_family": "rdkit",
-            "raw_name": "HeavyAtomMolWt",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 486.4030000000004,
-            "query_value": 424.3340000000002,
-            "delta_value": -62.069000000000244,
-            "base_value_text": "value 486.403",
-            "query_value_text": "value 424.334",
-            "delta_value_text": "-62.069",
-            "contribution": -0.35389196115238813,
-            "contribution_abs": 0.35389196115238813,
-            "contribution_rank": 2,
-            "supports_label": 0,
-            "supports_option": "A",
-            "supports_text": "is not permeable to cell membranes in a PAMPA assay",
-            "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 486.403, while the query's heavy-atom molecular weight is value 424.334. The query-minus-neighbor delta is -62.069. This pairwise contribution is -0.3539, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
-          },
-          {
-            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
-            "display_name": "fraction of sp3 carbons",
-            "description": "fraction of carbon atoms that are sp3 hybridized",
-            "source_family": "rdkit",
-            "raw_name": "FractionCSP3",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 0.2068965517241379,
-            "query_value": 0.1428571428571428,
-            "delta_value": -0.0640394088669951,
-            "base_value_text": "value 0.2069",
-            "query_value_text": "value 0.1429",
-            "delta_value_text": "-0.064",
-            "contribution": -0.34738352222825064,
-            "contribution_abs": 0.34738352222825064,
-            "contribution_rank": 3,
-            "supports_label": 0,
-            "supports_option": "A",
-            "supports_text": "is not permeable to cell membranes in a PAMPA assay",
-            "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2069, while the query's fraction of sp3 carbons is value 0.1429. The query-minus-neighbor delta is -0.064. This pairwise contribution is -0.3474, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
-          },
-          {
-            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
-            "display_name": "maximum absolute partial charge",
-            "description": "largest absolute atomic partial charge",
-            "source_family": "rdkit",
-            "raw_name": "MaxAbsPartialCharge",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 0.4535954912875566,
-            "query_value": 0.3077494269385507,
-            "delta_value": -0.14584606434900593,
-            "base_value_text": "value 0.4536",
-            "query_value_text": "value 0.3077",
-            "delta_value_text": "-0.1458",
-            "contribution": 0.29322393496402843,
-            "contribution_abs": 0.29322393496402843,
-            "contribution_rank": 4,
-            "supports_label": 1,
-            "supports_option": "B",
-            "supports_text": "is permeable to cell membranes in a PAMPA assay",
-            "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4536, while the query's maximum absolute partial charge is value 0.3077. The query-minus-neighbor delta is -0.1458. This pairwise contribution is 0.2932, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
-          },
-          {
-            "feature_name": "rdkit_pka__pka__fraction_neutral",
-            "display_name": "neutral fraction",
-            "description": "estimated fraction of the molecule that is neutral at the configured pH",
-            "source_family": "pka",
-            "raw_name": "fraction_neutral",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 0.9793,
-            "query_value": 0.9984,
-            "delta_value": 0.019100000000000006,
-            "base_value_text": "value 0.9793",
-            "query_value_text": "value 0.9984",
-            "delta_value_text": "+0.0191",
-            "contribution": 0.2698383584488491,
-            "contribution_abs": 0.2698383584488491,
-            "contribution_rank": 5,
-            "supports_label": 1,
-            "supports_option": "B",
-            "supports_text": "is permeable to cell membranes in a PAMPA assay",
-            "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.9793, while the query's neutral fraction is value 0.9984. The query-minus-neighbor delta is +0.0191. This pairwise contribution is 0.2698, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
-          },
-          {
-            "feature_name": "rdkit_pka__pka__logd_estimate",
-            "display_name": "estimated logD",
-            "description": "estimated logD at the configured pH",
-            "source_family": "pka",
-            "raw_name": "logd_estimate",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 5.5306,
-            "query_value": 4.8354,
-            "delta_value": -0.6951999999999998,
-            "base_value_text": "value 5.5306",
-            "query_value_text": "value 4.8354",
-            "delta_value_text": "-0.6952",
-            "contribution": 0.19388403071944152,
-            "contribution_abs": 0.19388403071944152,
-            "contribution_rank": 6,
-            "supports_label": 1,
-            "supports_option": "B",
-            "supports_text": "is permeable to cell membranes in a PAMPA assay",
-            "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.5306, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.6952. This pairwise contribution is 0.1939, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+            "text_hint": "The neighbor has thiazole, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1575, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
           }
         ]
       },
@@ -329,12 +255,42 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.8872642502375603,
+        "pair_score_class1_probability": 0.8872642502375603,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.8872642502375603,
+        "teacher_confidence_margin": 0.3872642502375603,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is permeable to cell membranes in a PAMPA assay",
           "label": 1
         },
+        "feature_logit": -0.6329765357630593,
+        "feature_probability": 0.3468359240587207,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not permeable to cell membranes in a PAMPA assay",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.1531640759412793,
+        "feature_evidence_strength": "medium",
+        "total_abs_feature_contribution": 4.326922555923544,
+        "teacher_feature_agreement": false,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": -0.4077196991712608,
+        "displayed_feature_probability": 0.399459020342805,
+        "displayed_feature_prediction": 0,
+        "displayed_feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not permeable to cell membranes in a PAMPA assay",
+          "label": 0
+        },
+        "displayed_feature_confidence_margin": 0.100540979657195,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_feature_contribution": 1.83952962666027,
+        "displayed_abs_contribution_coverage": 0.42513578712934424,
+        "displayed_teacher_agreement": false,
         "top_pair_terms": [
           {
             "feature_name": "rdkit_pka__rdkit__FractionCSP3",
@@ -461,6 +417,266 @@
             "supports_option": "B",
             "supports_text": "is permeable to cell membranes in a PAMPA assay",
             "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 8.9416, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +3.0569. This pairwise contribution is 0.1586, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "fg_top_level__thiazole",
+            "display_name": "thiazole",
+            "description": "top-level functional-group indicator or count for thiazole",
+            "source_family": "fg_top_level",
+            "raw_name": "thiazole",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "contribution": 0.1574597261019383,
+            "contribution_abs": 0.1574597261019383,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is permeable to cell membranes in a PAMPA assay",
+            "text_hint": "The neighbor has thiazole, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1575, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 5.5699,
+            "query_value": 4.8354,
+            "delta_value": -0.7344999999999997,
+            "base_value_text": "value 5.5699",
+            "query_value_text": "value 4.8354",
+            "delta_value_text": "-0.7345",
+            "contribution": 0.14259183855494215,
+            "contribution_abs": 0.14259183855494215,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is permeable to cell membranes in a PAMPA assay",
+            "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.5699, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.7345. This pairwise contribution is 0.1426, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
+        "query_smiles": "Cc1ccccc1C(=O)N1CCc2cc(-c3ccnc(NC(=O)Cc4ccccc4)n3)ccc21",
+        "query_label": 1,
+        "neighbor_smiles": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
+        "neighbor_label": 1,
+        "neighbor_similarity": 0.5478696741854637,
+        "neighbor_scaffold": "O=C(Cc1ccc2c(c1)OCO2)Nc1nc(-c2ccc3c(c2)CCN3C(=O)c2ccccc2)cs1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.9470002589839093,
+        "pair_score_class1_probability": 0.9470002589839093,
+        "pair_prediction": 1,
+        "pair_prediction_probability": 0.9470002589839093,
+        "teacher_confidence_margin": 0.44700025898390927,
+        "teacher_confidence": "high",
+        "pair_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "feature_logit": 0.18693953380120423,
+        "feature_probability": 0.5465992561132588,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.04659925611325877,
+        "feature_evidence_strength": "low",
+        "total_abs_feature_contribution": 4.819298394980049,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": 0.08359874521496505,
+        "displayed_feature_probability": 0.5208875229137877,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.020887522913787704,
+        "displayed_feature_evidence_strength": "low",
+        "displayed_abs_feature_contribution": 2.221343822548508,
+        "displayed_abs_contribution_coverage": 0.4609268072843005,
+        "displayed_teacher_agreement": true,
+        "top_pair_terms": [
+          {
+            "feature_name": "fg_top_level__acetal",
+            "display_name": "acetal",
+            "description": "top-level functional-group indicator or count for acetal",
+            "source_family": "fg_top_level",
+            "raw_name": "acetal",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "contribution": 0.39552495974941737,
+            "contribution_abs": 0.39552495974941737,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is permeable to cell membranes in a PAMPA assay",
+            "text_hint": "The neighbor has acetal, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.3955, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "display_name": "heavy-atom molecular weight",
+            "description": "molecular weight contributed by heavy atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomMolWt",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 486.4030000000004,
+            "query_value": 424.3340000000002,
+            "delta_value": -62.069000000000244,
+            "base_value_text": "value 486.403",
+            "query_value_text": "value 424.334",
+            "delta_value_text": "-62.069",
+            "contribution": -0.35389196115238813,
+            "contribution_abs": 0.35389196115238813,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+            "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 486.403, while the query's heavy-atom molecular weight is value 424.334. The query-minus-neighbor delta is -62.069. This pairwise contribution is -0.3539, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.2068965517241379,
+            "query_value": 0.1428571428571428,
+            "delta_value": -0.0640394088669951,
+            "base_value_text": "value 0.2069",
+            "query_value_text": "value 0.1429",
+            "delta_value_text": "-0.064",
+            "contribution": -0.34738352222825064,
+            "contribution_abs": 0.34738352222825064,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+            "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2069, while the query's fraction of sp3 carbons is value 0.1429. The query-minus-neighbor delta is -0.064. This pairwise contribution is -0.3474, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "display_name": "maximum absolute partial charge",
+            "description": "largest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxAbsPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.4535954912875566,
+            "query_value": 0.3077494269385507,
+            "delta_value": -0.14584606434900593,
+            "base_value_text": "value 0.4536",
+            "query_value_text": "value 0.3077",
+            "delta_value_text": "-0.1458",
+            "contribution": 0.29322393496402843,
+            "contribution_abs": 0.29322393496402843,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is permeable to cell membranes in a PAMPA assay",
+            "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4536, while the query's maximum absolute partial charge is value 0.3077. The query-minus-neighbor delta is -0.1458. This pairwise contribution is 0.2932, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "display_name": "neutral fraction",
+            "description": "estimated fraction of the molecule that is neutral at the configured pH",
+            "source_family": "pka",
+            "raw_name": "fraction_neutral",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.9793,
+            "query_value": 0.9984,
+            "delta_value": 0.019100000000000006,
+            "base_value_text": "value 0.9793",
+            "query_value_text": "value 0.9984",
+            "delta_value_text": "+0.0191",
+            "contribution": 0.2698383584488491,
+            "contribution_abs": 0.2698383584488491,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is permeable to cell membranes in a PAMPA assay",
+            "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.9793, while the query's neutral fraction is value 0.9984. The query-minus-neighbor delta is +0.0191. This pairwise contribution is 0.2698, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 5.5306,
+            "query_value": 4.8354,
+            "delta_value": -0.6951999999999998,
+            "base_value_text": "value 5.5306",
+            "query_value_text": "value 4.8354",
+            "delta_value_text": "-0.6952",
+            "contribution": 0.19388403071944152,
+            "contribution_abs": 0.19388403071944152,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is permeable to cell membranes in a PAMPA assay",
+            "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.5306, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.6952. This pairwise contribution is 0.1939, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__RingCount",
+            "display_name": "ring count",
+            "description": "total number of rings",
+            "source_family": "rdkit",
+            "raw_name": "RingCount",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 6.0,
+            "query_value": 5.0,
+            "delta_value": -1.0,
+            "base_value_text": "value 6",
+            "query_value_text": "value 5",
+            "delta_value_text": "-1",
+            "contribution": -0.18890247201517119,
+            "contribution_abs": 0.18890247201517119,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+            "text_hint": "For ring count, the neighbor's ring count is value 6, while the query's ring count is value 5. The query-minus-neighbor delta is -1. This pairwise contribution is -0.1889, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "fg_top_level__isothiourea",
+            "display_name": "isothiourea",
+            "description": "top-level functional-group indicator or count for isothiourea",
+            "source_family": "fg_top_level",
+            "raw_name": "isothiourea",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "contribution": -0.17869458327096144,
+            "contribution_abs": 0.17869458327096144,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+            "text_hint": "The neighbor has isothiourea, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1787, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
           }
         ]
       }
@@ -477,12 +693,42 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.9659703036944381,
+        "pair_score_class1_probability": 0.9659703036944381,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9659703036944381,
+        "teacher_confidence_margin": 0.46597030369443815,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is permeable to cell membranes in a PAMPA assay",
           "label": 1
         },
+        "feature_logit": 0.740736098660959,
+        "feature_probability": 0.677156799772555,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.17715679977255505,
+        "feature_evidence_strength": "medium",
+        "total_abs_feature_contribution": 4.925499362290969,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "medium",
+        "displayed_feature_logit": 1.0206481706764658,
+        "displayed_feature_probability": 0.7350988360263011,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.2350988360263011,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_feature_contribution": 2.577917944656015,
+        "displayed_abs_contribution_coverage": 0.5233820482025122,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
@@ -609,6 +855,48 @@
             "supports_option": "B",
             "supports_text": "is permeable to cell membranes in a PAMPA assay",
             "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.274, while the query's QED drug-likeness is value 0.4743. The query-minus-neighbor delta is +0.2003. This pairwise contribution is 0.1973, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "display_name": "topological polar surface area",
+            "description": "topological polar surface area of the molecule",
+            "source_family": "rdkit",
+            "raw_name": "TPSA",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 62.3,
+            "query_value": 75.19,
+            "delta_value": 12.89,
+            "base_value_text": "value 62.3",
+            "query_value_text": "value 75.19",
+            "delta_value_text": "+12.89",
+            "contribution": 0.1893042179329526,
+            "contribution_abs": 0.1893042179329526,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is permeable to cell membranes in a PAMPA assay",
+            "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 62.3, while the query's topological polar surface area is value 75.19. The query-minus-neighbor delta is +12.89. This pairwise contribution is 0.1893, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "display_name": "strongest acidic pKa",
+            "description": "pKa of the strongest acidic site",
+            "source_family": "pka",
+            "raw_name": "most_acidic_pka",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 9.014,
+            "query_value": 11.9985,
+            "delta_value": 2.9845000000000006,
+            "base_value_text": "value 9.014",
+            "query_value_text": "value 11.9985",
+            "delta_value_text": "+2.9845",
+            "contribution": -0.1765224970317214,
+            "contribution_abs": 0.1765224970317214,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+            "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 9.014, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +2.9845. This pairwise contribution is -0.1765, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
           }
         ]
       },
@@ -623,12 +911,42 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.9472818725649713,
+        "pair_score_class1_probability": 0.9472818725649713,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9472818725649713,
+        "teacher_confidence_margin": 0.4472818725649713,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is permeable to cell membranes in a PAMPA assay",
           "label": 1
         },
+        "feature_logit": 0.2834738968967475,
+        "feature_probability": 0.5703976894779711,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.07039768947797109,
+        "feature_evidence_strength": "low",
+        "total_abs_feature_contribution": 3.827218489557158,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": 0.550670021306939,
+        "displayed_feature_probability": 0.6342910270997015,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.13429102709970153,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_feature_contribution": 1.6286155702562681,
+        "displayed_abs_contribution_coverage": 0.42553503927201003,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "fg_top_level__indoline",
@@ -755,6 +1073,48 @@
             "supports_option": "B",
             "supports_text": "is permeable to cell membranes in a PAMPA assay",
             "text_hint": "The neighbor does not have pyrimidine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1573, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.2607606658536494,
+            "query_value": 0.2580545218897501,
+            "delta_value": -0.002706143963899288,
+            "base_value_text": "value 0.2608",
+            "query_value_text": "value 0.2581",
+            "delta_value_text": "-0.0027",
+            "contribution": 0.1552668603345921,
+            "contribution_abs": 0.1552668603345921,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is permeable to cell membranes in a PAMPA assay",
+            "text_hint": "For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.2608, while the query's minimum absolute partial charge is value 0.2581. The query-minus-neighbor delta is -0.0027. This pairwise contribution is 0.1553, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "fg_top_level__Aryl fluoride",
+            "display_name": "Aryl fluoride",
+            "description": "top-level functional-group indicator or count for Aryl fluoride",
+            "source_family": "fg_top_level",
+            "raw_name": "Aryl fluoride",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "contribution": 0.15228172668729234,
+            "contribution_abs": 0.15228172668729234,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is permeable to cell membranes in a PAMPA assay",
+            "text_hint": "The neighbor has Aryl fluoride, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1523, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
           }
         ]
       },
@@ -769,12 +1129,42 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.9134711598318076,
+        "pair_score_class1_probability": 0.9134711598318076,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9134711598318076,
+        "teacher_confidence_margin": 0.4134711598318076,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is permeable to cell membranes in a PAMPA assay",
           "label": 1
         },
+        "feature_logit": -0.24838939586684597,
+        "feature_probability": 0.43821996330207474,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not permeable to cell membranes in a PAMPA assay",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.061780036697925256,
+        "feature_evidence_strength": "low",
+        "total_abs_feature_contribution": 4.129603756593962,
+        "teacher_feature_agreement": false,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": 0.44164370234380534,
+        "displayed_feature_probability": 0.6086506223416644,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.10865062234166445,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_feature_contribution": 1.74277143939495,
+        "displayed_abs_contribution_coverage": 0.42201904640661286,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "fg_top_level__tertiary amide",
@@ -901,6 +1291,48 @@
             "supports_option": "A",
             "supports_text": "is not permeable to cell membranes in a PAMPA assay",
             "text_hint": "The neighbor has acetal, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1707, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "fg_top_level__pyrimidine",
+            "display_name": "pyrimidine",
+            "description": "top-level functional-group indicator or count for pyrimidine",
+            "source_family": "fg_top_level",
+            "raw_name": "pyrimidine",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 0.15726284068820945,
+            "contribution_abs": 0.15726284068820945,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is permeable to cell membranes in a PAMPA assay",
+            "text_hint": "The neighbor does not have pyrimidine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1573, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__LabuteASA",
+            "display_name": "Labute surface area",
+            "description": "Labute approximate surface area",
+            "source_family": "rdkit",
+            "raw_name": "LabuteASA",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 172.64684368956983,
+            "query_value": 197.85854328633133,
+            "delta_value": 25.21169959676149,
+            "base_value_text": "value 172.6468",
+            "query_value_text": "value 197.8585",
+            "delta_value_text": "+25.2117",
+            "contribution": -0.13092262940701505,
+            "contribution_abs": 0.13092262940701505,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+            "text_hint": "For Labute surface area, the neighbor's Labute surface area is value 172.6468, while the query's Labute surface area is value 197.8585. The query-minus-neighbor delta is +25.2117. This pairwise contribution is -0.1309, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
           }
         ]
       }
@@ -916,27 +1348,41 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.9763345502541525,
+        "pair_score_class1_probability": 0.9763345502541525,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9763345502541525,
+        "teacher_confidence_margin": 0.4763345502541525,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is permeable to cell membranes in a PAMPA assay",
           "label": 1
         },
-        "middle_draft": "First, The neighbor has acetal, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.3955, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Next, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4536, while the query's maximum absolute partial charge is value 0.3077. The query-minus-neighbor delta is -0.1458. This pairwise contribution is 0.2932, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Then, For neutral fraction, the neighbor's neutral fraction is value 0.9791, while the query's neutral fraction is value 0.9984. The query-minus-neighbor delta is +0.0193. This pairwise contribution is 0.2698, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. After that, For estimated logD, the neighbor's estimated logD is value 5.2221, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.3867. This pairwise contribution is 0.2331, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Finally, For ring count, the neighbor's ring count is value 6, while the query's ring count is value 5. The query-minus-neighbor delta is -1. This pairwise contribution is -0.1889, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Step 6, The neighbor has isothiourea, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1787, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Taken together, this positive-neighbor comparison pushes toward option (B): is permeable to cell membranes in a PAMPA assay with pair score 0.9763."
-      },
-      {
-        "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
-        "neighbor_smiles": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
-        "neighbor_role": "positive_neighbor",
-        "pair_model_type": "positive_neighbor_model",
-        "pair_score": 0.9470002589839093,
-        "pair_prediction": 1,
-        "pair_prediction_semantics": {
+        "feature_logit": 1.0237163309048403,
+        "feature_probability": 0.7356958632632006,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
           "option": "B",
           "text": "is permeable to cell membranes in a PAMPA assay",
           "label": 1
         },
-        "middle_draft": "First, The neighbor has acetal, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.3955, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Next, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 486.403, while the query's heavy-atom molecular weight is value 424.334. The query-minus-neighbor delta is -62.069. This pairwise contribution is -0.3539, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Then, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2069, while the query's fraction of sp3 carbons is value 0.1429. The query-minus-neighbor delta is -0.064. This pairwise contribution is -0.3474, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. After that, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4536, while the query's maximum absolute partial charge is value 0.3077. The query-minus-neighbor delta is -0.1458. This pairwise contribution is 0.2932, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Finally, For neutral fraction, the neighbor's neutral fraction is value 0.9793, while the query's neutral fraction is value 0.9984. The query-minus-neighbor delta is +0.0191. This pairwise contribution is 0.2698, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Step 6, For estimated logD, the neighbor's estimated logD is value 5.5306, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.6952. This pairwise contribution is 0.1939, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Taken together, this positive-neighbor comparison pushes toward option (B): is permeable to cell membranes in a PAMPA assay with pair score 0.947."
+        "feature_confidence_margin": 0.23569586326320058,
+        "feature_evidence_strength": "medium",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "medium",
+        "displayed_feature_logit": 1.1423234997039733,
+        "displayed_feature_probability": 0.7581059808954068,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.2581059808954068,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_contribution_coverage": 0.43573559380314336,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "The neighbor has acetal, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.3955, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Another relevant signal comes from a different feature. For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4536, while the query's maximum absolute partial charge is value 0.3077. The query-minus-neighbor delta is -0.1458. This pairwise contribution is 0.2932, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. A related feature-level signal also matters. For neutral fraction, the neighbor's neutral fraction is value 0.9791, while the query's neutral fraction is value 0.9984. The query-minus-neighbor delta is +0.0193. This pairwise contribution is 0.2698, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. The evidence also includes another descriptor contrast. For estimated logD, the neighbor's estimated logD is value 5.2221, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.3867. This pairwise contribution is 0.2331, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. In addition, another feature provides context. For ring count, the neighbor's ring count is value 6, while the query's ring count is value 5. The query-minus-neighbor delta is -1. This pairwise contribution is -0.1889, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. A further feature-level signal points to another part of the profile. The neighbor has isothiourea, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1787, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. The same profile includes another relevant descriptor. For strongest acidic pKa, the neighbor's strongest acidic pKa is value 9.0703, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +2.9282. This pairwise contribution is 0.1608, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. One more feature-level signal is worth accounting for. The neighbor has thiazole, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1575, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Taken together, relative to a neighbor labeled option (B): is permeable to cell membranes in a PAMPA assay, the pairwise feature evidence moderately supports option (B): is permeable to cell membranes in a PAMPA assay. This neighbor provides medium-strength evidence for option (B): is permeable to cell membranes in a PAMPA assay."
       },
       {
         "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
@@ -944,13 +1390,83 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.8872642502375603,
+        "pair_score_class1_probability": 0.8872642502375603,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.8872642502375603,
+        "teacher_confidence_margin": 0.3872642502375603,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is permeable to cell membranes in a PAMPA assay",
           "label": 1
         },
-        "middle_draft": "First, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2333, while the query's fraction of sp3 carbons is value 0.1429. The query-minus-neighbor delta is -0.0905. This pairwise contribution is -0.4015, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Next, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 498.414, while the query's heavy-atom molecular weight is value 424.334. The query-minus-neighbor delta is -74.08. This pairwise contribution is -0.3545, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Then, For neutral fraction, the neighbor's neutral fraction is value 0.972, while the query's neutral fraction is value 0.9984. The query-minus-neighbor delta is +0.0264. This pairwise contribution is 0.2573, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. After that, For ring count, the neighbor's ring count is value 6, while the query's ring count is value 5. The query-minus-neighbor delta is -1. This pairwise contribution is -0.1889, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Finally, The neighbor has isothiourea, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1787, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Step 6, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 8.9416, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +3.0569. This pairwise contribution is 0.1586, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Taken together, this positive-neighbor comparison pushes toward option (B): is permeable to cell membranes in a PAMPA assay with pair score 0.8873."
+        "feature_logit": -0.6329765357630593,
+        "feature_probability": 0.3468359240587207,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not permeable to cell membranes in a PAMPA assay",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.1531640759412793,
+        "feature_evidence_strength": "medium",
+        "teacher_feature_agreement": false,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": -0.4077196991712608,
+        "displayed_feature_probability": 0.399459020342805,
+        "displayed_feature_prediction": 0,
+        "displayed_feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not permeable to cell membranes in a PAMPA assay",
+          "label": 0
+        },
+        "displayed_feature_confidence_margin": 0.100540979657195,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_contribution_coverage": 0.42513578712934424,
+        "displayed_teacher_agreement": false,
+        "middle_draft": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2333, while the query's fraction of sp3 carbons is value 0.1429. The query-minus-neighbor delta is -0.0905. This pairwise contribution is -0.4015, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Another relevant signal comes from a different feature. For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 498.414, while the query's heavy-atom molecular weight is value 424.334. The query-minus-neighbor delta is -74.08. This pairwise contribution is -0.3545, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. A related feature-level signal also matters. For neutral fraction, the neighbor's neutral fraction is value 0.972, while the query's neutral fraction is value 0.9984. The query-minus-neighbor delta is +0.0264. This pairwise contribution is 0.2573, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. The evidence also includes another descriptor contrast. For ring count, the neighbor's ring count is value 6, while the query's ring count is value 5. The query-minus-neighbor delta is -1. This pairwise contribution is -0.1889, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. In addition, another feature provides context. The neighbor has isothiourea, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1787, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. A further feature-level signal points to another part of the profile. For strongest acidic pKa, the neighbor's strongest acidic pKa is value 8.9416, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +3.0569. This pairwise contribution is 0.1586, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. The same profile includes another relevant descriptor. The neighbor has thiazole, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1575, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. One more feature-level signal is worth accounting for. For estimated logD, the neighbor's estimated logD is value 5.5699, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.7345. This pairwise contribution is 0.1426, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Taken together, relative to a neighbor labeled option (B): is permeable to cell membranes in a PAMPA assay, these feature comparisons do not align cleanly with option (B): is permeable to cell membranes in a PAMPA assay. This neighbor should be treated only as low-strength evidence for option (B): is permeable to cell membranes in a PAMPA assay."
+      },
+      {
+        "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
+        "neighbor_smiles": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.9470002589839093,
+        "pair_score_class1_probability": 0.9470002589839093,
+        "pair_prediction": 1,
+        "pair_prediction_probability": 0.9470002589839093,
+        "teacher_confidence_margin": 0.44700025898390927,
+        "teacher_confidence": "high",
+        "pair_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "feature_logit": 0.18693953380120423,
+        "feature_probability": 0.5465992561132588,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.04659925611325877,
+        "feature_evidence_strength": "low",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": 0.08359874521496505,
+        "displayed_feature_probability": 0.5208875229137877,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.020887522913787704,
+        "displayed_feature_evidence_strength": "low",
+        "displayed_abs_contribution_coverage": 0.4609268072843005,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "The neighbor has acetal, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.3955, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Another relevant signal comes from a different feature. For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 486.403, while the query's heavy-atom molecular weight is value 424.334. The query-minus-neighbor delta is -62.069. This pairwise contribution is -0.3539, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. A related feature-level signal also matters. For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2069, while the query's fraction of sp3 carbons is value 0.1429. The query-minus-neighbor delta is -0.064. This pairwise contribution is -0.3474, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. The evidence also includes another descriptor contrast. For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4536, while the query's maximum absolute partial charge is value 0.3077. The query-minus-neighbor delta is -0.1458. This pairwise contribution is 0.2932, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. In addition, another feature provides context. For neutral fraction, the neighbor's neutral fraction is value 0.9793, while the query's neutral fraction is value 0.9984. The query-minus-neighbor delta is +0.0191. This pairwise contribution is 0.2698, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. A further feature-level signal points to another part of the profile. For estimated logD, the neighbor's estimated logD is value 5.5306, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.6952. This pairwise contribution is 0.1939, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. The same profile includes another relevant descriptor. For ring count, the neighbor's ring count is value 6, while the query's ring count is value 5. The query-minus-neighbor delta is -1. This pairwise contribution is -0.1889, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. One more feature-level signal is worth accounting for. The neighbor has isothiourea, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1787, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Taken together, relative to a neighbor labeled option (B): is permeable to cell membranes in a PAMPA assay, the pairwise feature evidence weakly supports option (B): is permeable to cell membranes in a PAMPA assay. This neighbor provides low-strength evidence for option (B): is permeable to cell membranes in a PAMPA assay."
       }
     ],
     "negative_neighbors": [
@@ -960,13 +1476,41 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.9659703036944381,
+        "pair_score_class1_probability": 0.9659703036944381,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9659703036944381,
+        "teacher_confidence_margin": 0.46597030369443815,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is permeable to cell membranes in a PAMPA assay",
           "label": 1
         },
-        "middle_draft": "First, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3077, while the query's maximum absolute partial charge is value 0.3077. The query-minus-neighbor delta is +0. This pairwise contribution is 0.8321, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Next, For minimum partial charge, the neighbor's minimum partial charge is value -0.3077, while the query's minimum partial charge is value -0.3077. The query-minus-neighbor delta is -0. This pairwise contribution is -0.3397, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Then, Both the neighbor and the query have indoline (query-minus-neighbor delta +0). This pairwise contribution is 0.3177, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. After that, For estimated logP, the neighbor's estimated logP is value 6.9642, while the query's estimated logP is value 4.8361. The query-minus-neighbor delta is -2.1281. This pairwise contribution is 0.2629, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Finally, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.1562, while the query's fraction of sp3 carbons is value 0.1429. The query-minus-neighbor delta is -0.0134. This pairwise contribution is -0.2624, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Step 6, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.274, while the query's QED drug-likeness is value 0.4743. The query-minus-neighbor delta is +0.2003. This pairwise contribution is 0.1973, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Taken together, this negative-neighbor comparison pushes toward option (B): is permeable to cell membranes in a PAMPA assay with pair score 0.966."
+        "feature_logit": 0.740736098660959,
+        "feature_probability": 0.677156799772555,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.17715679977255505,
+        "feature_evidence_strength": "medium",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "medium",
+        "displayed_feature_logit": 1.0206481706764658,
+        "displayed_feature_probability": 0.7350988360263011,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.2350988360263011,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_contribution_coverage": 0.5233820482025122,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3077, while the query's maximum absolute partial charge is value 0.3077. The query-minus-neighbor delta is +0. This pairwise contribution is 0.8321, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Another relevant signal comes from a different feature. For minimum partial charge, the neighbor's minimum partial charge is value -0.3077, while the query's minimum partial charge is value -0.3077. The query-minus-neighbor delta is -0. This pairwise contribution is -0.3397, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. A related feature-level signal also matters. Both the neighbor and the query have indoline (query-minus-neighbor delta +0). This pairwise contribution is 0.3177, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. The evidence also includes another descriptor contrast. For estimated logP, the neighbor's estimated logP is value 6.9642, while the query's estimated logP is value 4.8361. The query-minus-neighbor delta is -2.1281. This pairwise contribution is 0.2629, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. In addition, another feature provides context. For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.1562, while the query's fraction of sp3 carbons is value 0.1429. The query-minus-neighbor delta is -0.0134. This pairwise contribution is -0.2624, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. A further feature-level signal points to another part of the profile. For QED drug-likeness, the neighbor's QED drug-likeness is value 0.274, while the query's QED drug-likeness is value 0.4743. The query-minus-neighbor delta is +0.2003. This pairwise contribution is 0.1973, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. The same profile includes another relevant descriptor. For topological polar surface area, the neighbor's topological polar surface area is value 62.3, while the query's topological polar surface area is value 75.19. The query-minus-neighbor delta is +12.89. This pairwise contribution is 0.1893, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. One more feature-level signal is worth accounting for. For strongest acidic pKa, the neighbor's strongest acidic pKa is value 9.014, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +2.9845. This pairwise contribution is -0.1765, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Taken together, relative to a neighbor labeled option (A): is not permeable to cell membranes in a PAMPA assay, the pairwise feature evidence moderately supports option (B): is permeable to cell membranes in a PAMPA assay. This neighbor provides medium-strength evidence for option (B): is permeable to cell membranes in a PAMPA assay."
       },
       {
         "neighbor_id": "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C(=O)c1ccccc1F",
@@ -974,13 +1518,41 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.9472818725649713,
+        "pair_score_class1_probability": 0.9472818725649713,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9472818725649713,
+        "teacher_confidence_margin": 0.4472818725649713,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is permeable to cell membranes in a PAMPA assay",
           "label": 1
         },
-        "middle_draft": "First, Both the neighbor and the query have indoline (query-minus-neighbor delta +0). This pairwise contribution is 0.3177, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Next, For estimated logD, the neighbor's estimated logD is value 5.3613, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.5259. This pairwise contribution is 0.3072, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Then, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.1786, while the query's fraction of sp3 carbons is value 0.1429. The query-minus-neighbor delta is -0.0357. This pairwise contribution is -0.1956, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. After that, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 9.0731, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +2.9254. This pairwise contribution is -0.1727, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Finally, The neighbor has acetal, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1707, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Step 6, The neighbor does not have pyrimidine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1573, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Taken together, this negative-neighbor comparison pushes toward option (B): is permeable to cell membranes in a PAMPA assay with pair score 0.9473."
+        "feature_logit": 0.2834738968967475,
+        "feature_probability": 0.5703976894779711,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.07039768947797109,
+        "feature_evidence_strength": "low",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": 0.550670021306939,
+        "displayed_feature_probability": 0.6342910270997015,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.13429102709970153,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_contribution_coverage": 0.42553503927201003,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "Both the neighbor and the query have indoline (query-minus-neighbor delta +0). This pairwise contribution is 0.3177, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Another relevant signal comes from a different feature. For estimated logD, the neighbor's estimated logD is value 5.3613, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.5259. This pairwise contribution is 0.3072, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. A related feature-level signal also matters. For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.1786, while the query's fraction of sp3 carbons is value 0.1429. The query-minus-neighbor delta is -0.0357. This pairwise contribution is -0.1956, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. The evidence also includes another descriptor contrast. For strongest acidic pKa, the neighbor's strongest acidic pKa is value 9.0731, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +2.9254. This pairwise contribution is -0.1727, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. In addition, another feature provides context. The neighbor has acetal, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1707, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. A further feature-level signal points to another part of the profile. The neighbor does not have pyrimidine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1573, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. The same profile includes another relevant descriptor. For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.2608, while the query's minimum absolute partial charge is value 0.2581. The query-minus-neighbor delta is -0.0027. This pairwise contribution is 0.1553, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. One more feature-level signal is worth accounting for. The neighbor has Aryl fluoride, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1523, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Taken together, relative to a neighbor labeled option (A): is not permeable to cell membranes in a PAMPA assay, the pairwise feature evidence weakly supports option (B): is permeable to cell membranes in a PAMPA assay. This neighbor provides low-strength evidence for option (B): is permeable to cell membranes in a PAMPA assay."
       },
       {
         "neighbor_id": "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C",
@@ -988,13 +1560,41 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.9134711598318076,
+        "pair_score_class1_probability": 0.9134711598318076,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9134711598318076,
+        "teacher_confidence_margin": 0.4134711598318076,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is permeable to cell membranes in a PAMPA assay",
           "label": 1
         },
-        "middle_draft": "First, The neighbor does not have tertiary amide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4335, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Next, Both the neighbor and the query have indoline (query-minus-neighbor delta +0). This pairwise contribution is 0.3177, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Then, For topological polar surface area, the neighbor's topological polar surface area is value 63.69, while the query's topological polar surface area is value 75.19. The query-minus-neighbor delta is +11.5. This pairwise contribution is 0.1837, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. After that, The neighbor has 1 copies of benzene, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -0.1763, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Finally, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 9.0802, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +2.9183. This pairwise contribution is -0.1727, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Step 6, The neighbor has acetal, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1707, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Taken together, this negative-neighbor comparison pushes toward option (B): is permeable to cell membranes in a PAMPA assay with pair score 0.9135."
+        "feature_logit": -0.24838939586684597,
+        "feature_probability": 0.43821996330207474,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "is not permeable to cell membranes in a PAMPA assay",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.061780036697925256,
+        "feature_evidence_strength": "low",
+        "teacher_feature_agreement": false,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": 0.44164370234380534,
+        "displayed_feature_probability": 0.6086506223416644,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is permeable to cell membranes in a PAMPA assay",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.10865062234166445,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_contribution_coverage": 0.42201904640661286,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "The neighbor does not have tertiary amide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4335, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Another relevant signal comes from a different feature. Both the neighbor and the query have indoline (query-minus-neighbor delta +0). This pairwise contribution is 0.3177, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. A related feature-level signal also matters. For topological polar surface area, the neighbor's topological polar surface area is value 63.69, while the query's topological polar surface area is value 75.19. The query-minus-neighbor delta is +11.5. This pairwise contribution is 0.1837, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. The evidence also includes another descriptor contrast. The neighbor has 1 copies of benzene, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -0.1763, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. In addition, another feature provides context. For strongest acidic pKa, the neighbor's strongest acidic pKa is value 9.0802, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +2.9183. This pairwise contribution is -0.1727, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. A further feature-level signal points to another part of the profile. The neighbor has acetal, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1707, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. The same profile includes another relevant descriptor. The neighbor does not have pyrimidine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1573, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. One more feature-level signal is worth accounting for. For Labute surface area, the neighbor's Labute surface area is value 172.6468, while the query's Labute surface area is value 197.8585. The query-minus-neighbor delta is +25.2117. This pairwise contribution is -0.1309, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Taken together, relative to a neighbor labeled option (A): is not permeable to cell membranes in a PAMPA assay, these feature comparisons do not align cleanly with option (B): is permeable to cell membranes in a PAMPA assay. This neighbor should be treated only as low-strength evidence for option (B): is permeable to cell membranes in a PAMPA assay."
       }
     ]
   },
@@ -1002,8 +1602,8 @@
     "positive_neighbors": {
       "group_name": "positive_neighbors",
       "num_neighbors": 3,
-      "num_shared_features": 8,
-      "num_single_neighbor_features": 1,
+      "num_shared_features": 10,
+      "num_single_neighbor_features": 0,
       "shared_evidence": [
         {
           "feature_name": "rdkit_pka__pka__fraction_neutral",
@@ -1019,8 +1619,8 @@
           ],
           "neighbor_ids": [
             "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
-            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
-            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21"
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21"
           ],
           "neighbor_similarities": [
             0.5891975308641976,
@@ -1061,25 +1661,6 @@
             },
             {
               "neighbor_rank": 2,
-              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
-              "neighbor_similarity": 0.5478696741854637,
-              "pair_score": 0.9470002589839093,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "is permeable to cell membranes in a PAMPA assay",
-                "label": 1
-              },
-              "contribution": 0.2698383584488491,
-              "contribution_abs": 0.2698383584488491,
-              "contribution_rank": 5,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "is permeable to cell membranes in a PAMPA assay",
-              "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.9793, while the query's neutral fraction is value 0.9984. The query-minus-neighbor delta is +0.0191. This pairwise contribution is 0.2698, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
-            },
-            {
-              "neighbor_rank": 3,
               "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
               "neighbor_similarity": 0.5478696741854637,
               "pair_score": 0.8872642502375603,
@@ -1096,6 +1677,307 @@
               "supports_option": "B",
               "supports_text": "is permeable to cell membranes in a PAMPA assay",
               "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.972, while the query's neutral fraction is value 0.9984. The query-minus-neighbor delta is +0.0264. This pairwise contribution is 0.2573, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
+              "neighbor_similarity": 0.5478696741854637,
+              "pair_score": 0.9470002589839093,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": 0.2698383584488491,
+              "contribution_abs": 0.2698383584488491,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.9793, while the query's neutral fraction is value 0.9984. The query-minus-neighbor delta is +0.0191. This pairwise contribution is 0.2698, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__pka__logd_estimate",
+          "display_name": "estimated logD",
+          "description": "estimated logD at the configured pH",
+          "source_family": "pka",
+          "raw_name": "logd_estimate",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21"
+          ],
+          "neighbor_similarities": [
+            0.5891975308641976,
+            0.5478696741854637,
+            0.5478696741854637
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.3216721390213163
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is permeable to cell membranes in a PAMPA assay",
+            "label": 1
+          },
+          "total_abs_contribution": 0.5695508686710481,
+          "total_weighted_evidence": 0.3216721390213163,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
+              "neighbor_similarity": 0.5891975308641976,
+              "pair_score": 0.9763345502541525,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": 0.23307499939666448,
+              "contribution_abs": 0.23307499939666448,
+              "contribution_rank": 4,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.2221, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.3867. This pairwise contribution is 0.2331, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
+              "neighbor_similarity": 0.5478696741854637,
+              "pair_score": 0.8872642502375603,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": 0.14259183855494215,
+              "contribution_abs": 0.14259183855494215,
+              "contribution_rank": 8,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.5699, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.7345. This pairwise contribution is 0.1426, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
+              "neighbor_similarity": 0.5478696741854637,
+              "pair_score": 0.9470002589839093,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": 0.19388403071944152,
+              "contribution_abs": 0.19388403071944152,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.5306, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.6952. This pairwise contribution is 0.1939, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__RingCount",
+          "display_name": "ring count",
+          "description": "total number of rings",
+          "source_family": "rdkit",
+          "raw_name": "RingCount",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21"
+          ],
+          "neighbor_similarities": [
+            0.5891975308641976,
+            0.5478696741854637,
+            0.5478696741854637
+          ],
+          "support_weight_by_label": {
+            "0": 0.3182887416770431,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not permeable to cell membranes in a PAMPA assay",
+            "label": 0
+          },
+          "total_abs_contribution": 0.5667074160455136,
+          "total_weighted_evidence": 0.3182887416770431,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
+              "neighbor_similarity": 0.5891975308641976,
+              "pair_score": 0.9763345502541525,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": -0.18890247201517119,
+              "contribution_abs": 0.18890247201517119,
+              "contribution_rank": 5,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For ring count, the neighbor's ring count is value 6, while the query's ring count is value 5. The query-minus-neighbor delta is -1. This pairwise contribution is -0.1889, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
+              "neighbor_similarity": 0.5478696741854637,
+              "pair_score": 0.8872642502375603,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": -0.18890247201517119,
+              "contribution_abs": 0.18890247201517119,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For ring count, the neighbor's ring count is value 6, while the query's ring count is value 5. The query-minus-neighbor delta is -1. This pairwise contribution is -0.1889, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
+              "neighbor_similarity": 0.5478696741854637,
+              "pair_score": 0.9470002589839093,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": -0.18890247201517119,
+              "contribution_abs": 0.18890247201517119,
+              "contribution_rank": 7,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For ring count, the neighbor's ring count is value 6, while the query's ring count is value 5. The query-minus-neighbor delta is -1. This pairwise contribution is -0.1889, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+            }
+          ]
+        },
+        {
+          "feature_name": "fg_top_level__isothiourea",
+          "display_name": "isothiourea",
+          "description": "top-level functional-group indicator or count for isothiourea",
+          "source_family": "fg_top_level",
+          "raw_name": "isothiourea",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21"
+          ],
+          "neighbor_similarities": [
+            0.5891975308641976,
+            0.5478696741854637,
+            0.5478696741854637
+          ],
+          "support_weight_by_label": {
+            "0": 0.30108909347279494,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not permeable to cell membranes in a PAMPA assay",
+            "label": 0
+          },
+          "total_abs_contribution": 0.5360837498128843,
+          "total_weighted_evidence": 0.30108909347279494,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
+              "neighbor_similarity": 0.5891975308641976,
+              "pair_score": 0.9763345502541525,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": -0.17869458327096144,
+              "contribution_abs": 0.17869458327096144,
+              "contribution_rank": 6,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+              "text_hint": "The neighbor has isothiourea, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1787, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
+              "neighbor_similarity": 0.5478696741854637,
+              "pair_score": 0.8872642502375603,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": -0.17869458327096144,
+              "contribution_abs": 0.17869458327096144,
+              "contribution_rank": 5,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+              "text_hint": "The neighbor has isothiourea, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1787, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
+              "neighbor_similarity": 0.5478696741854637,
+              "pair_score": 0.9470002589839093,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": -0.17869458327096144,
+              "contribution_abs": 0.17869458327096144,
+              "contribution_rank": 8,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+              "text_hint": "The neighbor has isothiourea, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1787, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
             }
           ]
         },
@@ -1108,7 +1990,7 @@
           "occurrence_count": 2,
           "neighbor_ranks": [
             1,
-            2
+            3
           ],
           "neighbor_ids": [
             "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
@@ -1151,7 +2033,7 @@
               "text_hint": "The neighbor has acetal, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.3955, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
             },
             {
-              "neighbor_rank": 2,
+              "neighbor_rank": 3,
               "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
               "neighbor_similarity": 0.5478696741854637,
               "pair_score": 0.9470002589839093,
@@ -1183,8 +2065,8 @@
             3
           ],
           "neighbor_ids": [
-            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
-            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21"
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21"
           ],
           "neighbor_similarities": [
             0.5478696741854637,
@@ -1205,25 +2087,6 @@
           "term_instances": [
             {
               "neighbor_rank": 2,
-              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
-              "neighbor_similarity": 0.5478696741854637,
-              "pair_score": 0.9470002589839093,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "is permeable to cell membranes in a PAMPA assay",
-                "label": 1
-              },
-              "contribution": -0.34738352222825064,
-              "contribution_abs": 0.34738352222825064,
-              "contribution_rank": 3,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
-              "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2069, while the query's fraction of sp3 carbons is value 0.1429. The query-minus-neighbor delta is -0.064. This pairwise contribution is -0.3474, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
-            },
-            {
-              "neighbor_rank": 3,
               "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
               "neighbor_similarity": 0.5478696741854637,
               "pair_score": 0.8872642502375603,
@@ -1240,6 +2103,25 @@
               "supports_option": "A",
               "supports_text": "is not permeable to cell membranes in a PAMPA assay",
               "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2333, while the query's fraction of sp3 carbons is value 0.1429. The query-minus-neighbor delta is -0.0905. This pairwise contribution is -0.4015, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
+              "neighbor_similarity": 0.5478696741854637,
+              "pair_score": 0.9470002589839093,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": -0.34738352222825064,
+              "contribution_abs": 0.34738352222825064,
+              "contribution_rank": 3,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2069, while the query's fraction of sp3 carbons is value 0.1429. The query-minus-neighbor delta is -0.064. This pairwise contribution is -0.3474, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
             }
           ]
         },
@@ -1255,8 +2137,8 @@
             3
           ],
           "neighbor_ids": [
-            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
-            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21"
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21"
           ],
           "neighbor_similarities": [
             0.5478696741854637,
@@ -1277,25 +2159,6 @@
           "term_instances": [
             {
               "neighbor_rank": 2,
-              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
-              "neighbor_similarity": 0.5478696741854637,
-              "pair_score": 0.9470002589839093,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "is permeable to cell membranes in a PAMPA assay",
-                "label": 1
-              },
-              "contribution": -0.35389196115238813,
-              "contribution_abs": 0.35389196115238813,
-              "contribution_rank": 2,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
-              "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 486.403, while the query's heavy-atom molecular weight is value 424.334. The query-minus-neighbor delta is -62.069. This pairwise contribution is -0.3539, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
-            },
-            {
-              "neighbor_rank": 3,
               "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
               "neighbor_similarity": 0.5478696741854637,
               "pair_score": 0.8872642502375603,
@@ -1312,6 +2175,25 @@
               "supports_option": "A",
               "supports_text": "is not permeable to cell membranes in a PAMPA assay",
               "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 498.414, while the query's heavy-atom molecular weight is value 424.334. The query-minus-neighbor delta is -74.08. This pairwise contribution is -0.3545, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
+              "neighbor_similarity": 0.5478696741854637,
+              "pair_score": 0.9470002589839093,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": -0.35389196115238813,
+              "contribution_abs": 0.35389196115238813,
+              "contribution_rank": 2,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 486.403, while the query's heavy-atom molecular weight is value 424.334. The query-minus-neighbor delta is -62.069. This pairwise contribution is -0.3539, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
             }
           ]
         },
@@ -1324,7 +2206,7 @@
           "occurrence_count": 2,
           "neighbor_ranks": [
             1,
-            2
+            3
           ],
           "neighbor_ids": [
             "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
@@ -1367,7 +2249,7 @@
               "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4536, while the query's maximum absolute partial charge is value 0.3077. The query-minus-neighbor delta is -0.1458. This pairwise contribution is 0.2932, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
             },
             {
-              "neighbor_rank": 2,
+              "neighbor_rank": 3,
               "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
               "neighbor_similarity": 0.5478696741854637,
               "pair_score": 0.9470002589839093,
@@ -1388,11 +2270,11 @@
           ]
         },
         {
-          "feature_name": "rdkit_pka__pka__logd_estimate",
-          "display_name": "estimated logD",
-          "description": "estimated logD at the configured pH",
+          "feature_name": "rdkit_pka__pka__most_acidic_pka",
+          "display_name": "strongest acidic pKa",
+          "description": "pKa of the strongest acidic site",
           "source_family": "pka",
-          "raw_name": "logd_estimate",
+          "raw_name": "most_acidic_pka",
           "occurrence_count": 2,
           "neighbor_ranks": [
             1,
@@ -1400,7 +2282,7 @@
           ],
           "neighbor_ids": [
             "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
-            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21"
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21"
           ],
           "neighbor_similarities": [
             0.5891975308641976,
@@ -1408,7 +2290,7 @@
           ],
           "support_weight_by_label": {
             "0": 0.0,
-            "1": 0.2435503948907139
+            "1": 0.1816127924524453
           },
           "support_mode": "single",
           "dominant_support": {
@@ -1416,8 +2298,8 @@
             "text": "is permeable to cell membranes in a PAMPA assay",
             "label": 1
           },
-          "total_abs_contribution": 0.42695903011610603,
-          "total_weighted_evidence": 0.2435503948907139,
+          "total_abs_contribution": 0.3193594027555863,
+          "total_weighted_evidence": 0.1816127924524453,
           "term_instances": [
             {
               "neighbor_rank": 1,
@@ -1430,212 +2312,16 @@
                 "text": "is permeable to cell membranes in a PAMPA assay",
                 "label": 1
               },
-              "contribution": 0.23307499939666448,
-              "contribution_abs": 0.23307499939666448,
-              "contribution_rank": 4,
+              "contribution": 0.16079857632920821,
+              "contribution_abs": 0.16079857632920821,
+              "contribution_rank": 7,
               "supports_label": 1,
               "supports_option": "B",
               "supports_text": "is permeable to cell membranes in a PAMPA assay",
-              "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.2221, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.3867. This pairwise contribution is 0.2331, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+              "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 9.0703, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +2.9282. This pairwise contribution is 0.1608, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
             },
             {
               "neighbor_rank": 2,
-              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCO5)sc3C)ccc21",
-              "neighbor_similarity": 0.5478696741854637,
-              "pair_score": 0.9470002589839093,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "is permeable to cell membranes in a PAMPA assay",
-                "label": 1
-              },
-              "contribution": 0.19388403071944152,
-              "contribution_abs": 0.19388403071944152,
-              "contribution_rank": 6,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "is permeable to cell membranes in a PAMPA assay",
-              "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.5306, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.6952. This pairwise contribution is 0.1939, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
-            }
-          ]
-        },
-        {
-          "feature_name": "rdkit_pka__rdkit__RingCount",
-          "display_name": "ring count",
-          "description": "total number of rings",
-          "source_family": "rdkit",
-          "raw_name": "RingCount",
-          "occurrence_count": 2,
-          "neighbor_ranks": [
-            1,
-            3
-          ],
-          "neighbor_ids": [
-            "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
-            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21"
-          ],
-          "neighbor_similarities": [
-            0.5891975308641976,
-            0.5478696741854637
-          ],
-          "support_weight_by_label": {
-            "0": 0.21479480588126257,
-            "1": 0.0
-          },
-          "support_mode": "single",
-          "dominant_support": {
-            "option": "A",
-            "text": "is not permeable to cell membranes in a PAMPA assay",
-            "label": 0
-          },
-          "total_abs_contribution": 0.37780494403034237,
-          "total_weighted_evidence": 0.21479480588126257,
-          "term_instances": [
-            {
-              "neighbor_rank": 1,
-              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
-              "neighbor_similarity": 0.5891975308641976,
-              "pair_score": 0.9763345502541525,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "is permeable to cell membranes in a PAMPA assay",
-                "label": 1
-              },
-              "contribution": -0.18890247201517119,
-              "contribution_abs": 0.18890247201517119,
-              "contribution_rank": 5,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
-              "text_hint": "For ring count, the neighbor's ring count is value 6, while the query's ring count is value 5. The query-minus-neighbor delta is -1. This pairwise contribution is -0.1889, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
-            },
-            {
-              "neighbor_rank": 3,
-              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
-              "neighbor_similarity": 0.5478696741854637,
-              "pair_score": 0.8872642502375603,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "is permeable to cell membranes in a PAMPA assay",
-                "label": 1
-              },
-              "contribution": -0.18890247201517119,
-              "contribution_abs": 0.18890247201517119,
-              "contribution_rank": 4,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
-              "text_hint": "For ring count, the neighbor's ring count is value 6, while the query's ring count is value 5. The query-minus-neighbor delta is -1. This pairwise contribution is -0.1889, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
-            }
-          ]
-        },
-        {
-          "feature_name": "fg_top_level__isothiourea",
-          "display_name": "isothiourea",
-          "description": "top-level functional-group indicator or count for isothiourea",
-          "source_family": "fg_top_level",
-          "raw_name": "isothiourea",
-          "occurrence_count": 2,
-          "neighbor_ranks": [
-            1,
-            3
-          ],
-          "neighbor_ids": [
-            "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
-            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21"
-          ],
-          "neighbor_similarities": [
-            0.5891975308641976,
-            0.5478696741854637
-          ],
-          "support_weight_by_label": {
-            "0": 0.2031877503574261,
-            "1": 0.0
-          },
-          "support_mode": "single",
-          "dominant_support": {
-            "option": "A",
-            "text": "is not permeable to cell membranes in a PAMPA assay",
-            "label": 0
-          },
-          "total_abs_contribution": 0.3573891665419229,
-          "total_weighted_evidence": 0.2031877503574261,
-          "term_instances": [
-            {
-              "neighbor_rank": 1,
-              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
-              "neighbor_similarity": 0.5891975308641976,
-              "pair_score": 0.9763345502541525,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "is permeable to cell membranes in a PAMPA assay",
-                "label": 1
-              },
-              "contribution": -0.17869458327096144,
-              "contribution_abs": 0.17869458327096144,
-              "contribution_rank": 6,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
-              "text_hint": "The neighbor has isothiourea, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1787, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
-            },
-            {
-              "neighbor_rank": 3,
-              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
-              "neighbor_similarity": 0.5478696741854637,
-              "pair_score": 0.8872642502375603,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "is permeable to cell membranes in a PAMPA assay",
-                "label": 1
-              },
-              "contribution": -0.17869458327096144,
-              "contribution_abs": 0.17869458327096144,
-              "contribution_rank": 5,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
-              "text_hint": "The neighbor has isothiourea, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1787, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
-            }
-          ]
-        }
-      ],
-      "single_neighbor_evidence": [
-        {
-          "feature_name": "rdkit_pka__pka__most_acidic_pka",
-          "display_name": "strongest acidic pKa",
-          "description": "pKa of the strongest acidic site",
-          "source_family": "pka",
-          "raw_name": "most_acidic_pka",
-          "occurrence_count": 1,
-          "neighbor_ranks": [
-            3
-          ],
-          "neighbor_ids": [
-            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21"
-          ],
-          "neighbor_similarities": [
-            0.5478696741854637
-          ],
-          "support_weight_by_label": {
-            "0": 0.0,
-            "1": 0.08687066831279762
-          },
-          "support_mode": "single",
-          "dominant_support": {
-            "option": "B",
-            "text": "is permeable to cell membranes in a PAMPA assay",
-            "label": 1
-          },
-          "total_abs_contribution": 0.15856082642637806,
-          "total_weighted_evidence": 0.08687066831279762,
-          "term_instances": [
-            {
-              "neighbor_rank": 3,
               "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
               "neighbor_similarity": 0.5478696741854637,
               "pair_score": 0.8872642502375603,
@@ -1653,32 +2339,88 @@
               "supports_text": "is permeable to cell membranes in a PAMPA assay",
               "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 8.9416, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +3.0569. This pairwise contribution is 0.1586, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
             }
+          ]
+        },
+        {
+          "feature_name": "fg_top_level__thiazole",
+          "display_name": "thiazole",
+          "description": "top-level functional-group indicator or count for thiazole",
+          "source_family": "fg_top_level",
+          "raw_name": "thiazole",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            1,
+            2
           ],
-          "neighbor_rank": 3,
-          "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
-          "neighbor_similarity": 0.5478696741854637,
-          "pair_score": 0.8872642502375603,
-          "pair_prediction": 1,
-          "pair_prediction_semantics": {
+          "neighbor_ids": [
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21"
+          ],
+          "neighbor_similarities": [
+            0.5891975308641976,
+            0.5478696741854637
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.1790422906666162
+          },
+          "support_mode": "single",
+          "dominant_support": {
             "option": "B",
             "text": "is permeable to cell membranes in a PAMPA assay",
             "label": 1
           },
-          "contribution": 0.15856082642637806,
-          "contribution_abs": 0.15856082642637806,
-          "contribution_rank": 6,
-          "supports_label": 1,
-          "supports_option": "B",
-          "supports_text": "is permeable to cell membranes in a PAMPA assay",
-          "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 8.9416, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +3.0569. This pairwise contribution is 0.1586, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          "total_abs_contribution": 0.3149194522038766,
+          "total_weighted_evidence": 0.1790422906666162,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3csc(NC(=O)Cc4ccc5c(c4)OCO5)n3)ccc21",
+              "neighbor_similarity": 0.5891975308641976,
+              "pair_score": 0.9763345502541525,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": 0.1574597261019383,
+              "contribution_abs": 0.1574597261019383,
+              "contribution_rank": 8,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is permeable to cell membranes in a PAMPA assay",
+              "text_hint": "The neighbor has thiazole, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1575, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5c(c4)OCCO5)sc3C)ccc21",
+              "neighbor_similarity": 0.5478696741854637,
+              "pair_score": 0.8872642502375603,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": 0.1574597261019383,
+              "contribution_abs": 0.1574597261019383,
+              "contribution_rank": 7,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is permeable to cell membranes in a PAMPA assay",
+              "text_hint": "The neighbor has thiazole, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1575, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+            }
+          ]
         }
-      ]
+      ],
+      "single_neighbor_evidence": []
     },
     "negative_neighbors": {
       "group_name": "negative_neighbors",
       "num_neighbors": 3,
-      "num_shared_features": 4,
-      "num_single_neighbor_features": 9,
+      "num_shared_features": 6,
+      "num_single_neighbor_features": 10,
       "shared_evidence": [
         {
           "feature_name": "fg_top_level__indoline",
@@ -1775,6 +2517,100 @@
           ]
         },
         {
+          "feature_name": "rdkit_pka__pka__most_acidic_pka",
+          "display_name": "strongest acidic pKa",
+          "description": "pKa of the strongest acidic site",
+          "source_family": "pka",
+          "raw_name": "most_acidic_pka",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5ccccc5c4)sc3C)ccc21",
+            "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C(=O)c1ccccc1F",
+            "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C"
+          ],
+          "neighbor_similarities": [
+            0.5874643874643874,
+            0.466031746031746,
+            0.3505266853932585
+          ],
+          "support_weight_by_label": {
+            "0": 0.24470613327713636,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not permeable to cell membranes in a PAMPA assay",
+            "label": 0
+          },
+          "total_abs_contribution": 0.5218877452691035,
+          "total_weighted_evidence": 0.24470613327713636,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5ccccc5c4)sc3C)ccc21",
+              "neighbor_similarity": 0.5874643874643874,
+              "pair_score": 0.9659703036944381,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": -0.1765224970317214,
+              "contribution_abs": 0.1765224970317214,
+              "contribution_rank": 8,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 9.014, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +2.9845. This pairwise contribution is -0.1765, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C(=O)c1ccccc1F",
+              "neighbor_similarity": 0.466031746031746,
+              "pair_score": 0.9472818725649713,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": -0.17268262411869104,
+              "contribution_abs": 0.17268262411869104,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 9.0731, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +2.9254. This pairwise contribution is -0.1727, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C",
+              "neighbor_similarity": 0.3505266853932585,
+              "pair_score": 0.9134711598318076,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": -0.17268262411869104,
+              "contribution_abs": 0.17268262411869104,
+              "contribution_rank": 5,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 9.0802, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +2.9183. This pairwise contribution is -0.1727, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+            }
+          ]
+        },
+        {
           "feature_name": "rdkit_pka__rdkit__FractionCSP3",
           "display_name": "fraction of sp3 carbons",
           "description": "fraction of carbon atoms that are sp3 hybridized",
@@ -1847,55 +2683,55 @@
           ]
         },
         {
-          "feature_name": "rdkit_pka__pka__most_acidic_pka",
-          "display_name": "strongest acidic pKa",
-          "description": "pKa of the strongest acidic site",
-          "source_family": "pka",
-          "raw_name": "most_acidic_pka",
+          "feature_name": "rdkit_pka__rdkit__TPSA",
+          "display_name": "topological polar surface area",
+          "description": "topological polar surface area of the molecule",
+          "source_family": "rdkit",
+          "raw_name": "TPSA",
           "occurrence_count": 2,
           "neighbor_ranks": [
-            2,
+            1,
             3
           ],
           "neighbor_ids": [
-            "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C(=O)c1ccccc1F",
+            "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5ccccc5c4)sc3C)ccc21",
             "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C"
           ],
           "neighbor_similarities": [
-            0.466031746031746,
+            0.5874643874643874,
             0.3505266853932585
           ],
           "support_weight_by_label": {
-            "0": 0.141005452684712,
-            "1": 0.0
+            "0": 0.0,
+            "1": 0.1756168675245996
           },
           "support_mode": "single",
           "dominant_support": {
-            "option": "A",
-            "text": "is not permeable to cell membranes in a PAMPA assay",
-            "label": 0
+            "option": "B",
+            "text": "is permeable to cell membranes in a PAMPA assay",
+            "label": 1
           },
-          "total_abs_contribution": 0.34536524823738207,
-          "total_weighted_evidence": 0.141005452684712,
+          "total_abs_contribution": 0.3730488050816701,
+          "total_weighted_evidence": 0.1756168675245996,
           "term_instances": [
             {
-              "neighbor_rank": 2,
-              "neighbor_id": "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C(=O)c1ccccc1F",
-              "neighbor_similarity": 0.466031746031746,
-              "pair_score": 0.9472818725649713,
+              "neighbor_rank": 1,
+              "neighbor_id": "Cc1ccccc1C(=O)N1CCc2cc(-c3nc(NC(=O)Cc4ccc5ccccc5c4)sc3C)ccc21",
+              "neighbor_similarity": 0.5874643874643874,
+              "pair_score": 0.9659703036944381,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
                 "text": "is permeable to cell membranes in a PAMPA assay",
                 "label": 1
               },
-              "contribution": -0.17268262411869104,
-              "contribution_abs": 0.17268262411869104,
-              "contribution_rank": 4,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
-              "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 9.0731, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +2.9254. This pairwise contribution is -0.1727, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+              "contribution": 0.1893042179329526,
+              "contribution_abs": 0.1893042179329526,
+              "contribution_rank": 7,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 62.3, while the query's topological polar surface area is value 75.19. The query-minus-neighbor delta is +12.89. This pairwise contribution is 0.1893, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
             },
             {
               "neighbor_rank": 3,
@@ -1908,13 +2744,13 @@
                 "text": "is permeable to cell membranes in a PAMPA assay",
                 "label": 1
               },
-              "contribution": -0.17268262411869104,
-              "contribution_abs": 0.17268262411869104,
-              "contribution_rank": 5,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
-              "text_hint": "For strongest acidic pKa, the neighbor's strongest acidic pKa is value 9.0802, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +2.9183. This pairwise contribution is -0.1727, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+              "contribution": 0.1837445871487175,
+              "contribution_abs": 0.1837445871487175,
+              "contribution_rank": 3,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 63.69, while the query's topological polar surface area is value 75.19. The query-minus-neighbor delta is +11.5. This pairwise contribution is 0.1837, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
             }
           ]
         },
@@ -1987,6 +2823,78 @@
               "supports_option": "A",
               "supports_text": "is not permeable to cell membranes in a PAMPA assay",
               "text_hint": "The neighbor has acetal, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1707, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+            }
+          ]
+        },
+        {
+          "feature_name": "fg_top_level__pyrimidine",
+          "display_name": "pyrimidine",
+          "description": "top-level functional-group indicator or count for pyrimidine",
+          "source_family": "fg_top_level",
+          "raw_name": "pyrimidine",
+          "occurrence_count": 2,
+          "neighbor_ranks": [
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C(=O)c1ccccc1F",
+            "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C"
+          ],
+          "neighbor_similarities": [
+            0.466031746031746,
+            0.3505266853932585
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.12841429851380468
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is permeable to cell membranes in a PAMPA assay",
+            "label": 1
+          },
+          "total_abs_contribution": 0.3145256813764189,
+          "total_weighted_evidence": 0.12841429851380468,
+          "term_instances": [
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C(=O)c1ccccc1F",
+              "neighbor_similarity": 0.466031746031746,
+              "pair_score": 0.9472818725649713,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": 0.15726284068820945,
+              "contribution_abs": 0.15726284068820945,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is permeable to cell membranes in a PAMPA assay",
+              "text_hint": "The neighbor does not have pyrimidine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1573, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C",
+              "neighbor_similarity": 0.3505266853932585,
+              "pair_score": 0.9134711598318076,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": 0.15726284068820945,
+              "contribution_abs": 0.15726284068820945,
+              "contribution_rank": 7,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is permeable to cell membranes in a PAMPA assay",
+              "text_hint": "The neighbor does not have pyrimidine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1573, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
             }
           ]
         }
@@ -2328,11 +3236,11 @@
           "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.3613, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.5259. This pairwise contribution is 0.3072, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
         },
         {
-          "feature_name": "fg_top_level__pyrimidine",
-          "display_name": "pyrimidine",
-          "description": "top-level functional-group indicator or count for pyrimidine",
-          "source_family": "fg_top_level",
-          "raw_name": "pyrimidine",
+          "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+          "display_name": "minimum absolute partial charge",
+          "description": "smallest absolute atomic partial charge",
+          "source_family": "rdkit",
+          "raw_name": "MinAbsPartialCharge",
           "occurrence_count": 1,
           "neighbor_ranks": [
             2
@@ -2345,7 +3253,7 @@
           ],
           "support_weight_by_label": {
             "0": 0.0,
-            "1": 0.07328947623183855
+            "1": 0.07235928602259721
           },
           "support_mode": "single",
           "dominant_support": {
@@ -2353,8 +3261,8 @@
             "text": "is permeable to cell membranes in a PAMPA assay",
             "label": 1
           },
-          "total_abs_contribution": 0.15726284068820945,
-          "total_weighted_evidence": 0.07328947623183855,
+          "total_abs_contribution": 0.1552668603345921,
+          "total_weighted_evidence": 0.07235928602259721,
           "term_instances": [
             {
               "neighbor_rank": 2,
@@ -2367,13 +3275,13 @@
                 "text": "is permeable to cell membranes in a PAMPA assay",
                 "label": 1
               },
-              "contribution": 0.15726284068820945,
-              "contribution_abs": 0.15726284068820945,
-              "contribution_rank": 6,
+              "contribution": 0.1552668603345921,
+              "contribution_abs": 0.1552668603345921,
+              "contribution_rank": 7,
               "supports_label": 1,
               "supports_option": "B",
               "supports_text": "is permeable to cell membranes in a PAMPA assay",
-              "text_hint": "The neighbor does not have pyrimidine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1573, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+              "text_hint": "For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.2608, while the query's minimum absolute partial charge is value 0.2581. The query-minus-neighbor delta is -0.0027. This pairwise contribution is 0.1553, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
             }
           ],
           "neighbor_rank": 2,
@@ -2386,13 +3294,80 @@
             "text": "is permeable to cell membranes in a PAMPA assay",
             "label": 1
           },
-          "contribution": 0.15726284068820945,
-          "contribution_abs": 0.15726284068820945,
-          "contribution_rank": 6,
+          "contribution": 0.1552668603345921,
+          "contribution_abs": 0.1552668603345921,
+          "contribution_rank": 7,
           "supports_label": 1,
           "supports_option": "B",
           "supports_text": "is permeable to cell membranes in a PAMPA assay",
-          "text_hint": "The neighbor does not have pyrimidine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1573, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+          "text_hint": "For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.2608, while the query's minimum absolute partial charge is value 0.2581. The query-minus-neighbor delta is -0.0027. This pairwise contribution is 0.1553, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+        },
+        {
+          "feature_name": "fg_top_level__Aryl fluoride",
+          "display_name": "Aryl fluoride",
+          "description": "top-level functional-group indicator or count for Aryl fluoride",
+          "source_family": "fg_top_level",
+          "raw_name": "Aryl fluoride",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            2
+          ],
+          "neighbor_ids": [
+            "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C(=O)c1ccccc1F"
+          ],
+          "neighbor_similarities": [
+            0.466031746031746
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.07096811897680798
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is permeable to cell membranes in a PAMPA assay",
+            "label": 1
+          },
+          "total_abs_contribution": 0.15228172668729234,
+          "total_weighted_evidence": 0.07096811897680798,
+          "term_instances": [
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C(=O)c1ccccc1F",
+              "neighbor_similarity": 0.466031746031746,
+              "pair_score": 0.9472818725649713,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": 0.15228172668729234,
+              "contribution_abs": 0.15228172668729234,
+              "contribution_rank": 8,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is permeable to cell membranes in a PAMPA assay",
+              "text_hint": "The neighbor has Aryl fluoride, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1523, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
+            }
+          ],
+          "neighbor_rank": 2,
+          "neighbor_id": "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C(=O)c1ccccc1F",
+          "neighbor_similarity": 0.466031746031746,
+          "pair_score": 0.9472818725649713,
+          "pair_prediction": 1,
+          "pair_prediction_semantics": {
+            "option": "B",
+            "text": "is permeable to cell membranes in a PAMPA assay",
+            "label": 1
+          },
+          "contribution": 0.15228172668729234,
+          "contribution_abs": 0.15228172668729234,
+          "contribution_rank": 8,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "is permeable to cell membranes in a PAMPA assay",
+          "text_hint": "The neighbor has Aryl fluoride, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1523, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
         },
         {
           "feature_name": "fg_top_level__tertiary amide",
@@ -2462,73 +3437,6 @@
           "text_hint": "The neighbor does not have tertiary amide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4335, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
         },
         {
-          "feature_name": "rdkit_pka__rdkit__TPSA",
-          "display_name": "topological polar surface area",
-          "description": "topological polar surface area of the molecule",
-          "source_family": "rdkit",
-          "raw_name": "TPSA",
-          "occurrence_count": 1,
-          "neighbor_ranks": [
-            3
-          ],
-          "neighbor_ids": [
-            "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C"
-          ],
-          "neighbor_similarities": [
-            0.3505266853932585
-          ],
-          "support_weight_by_label": {
-            "0": 0.0,
-            "1": 0.06440738109219267
-          },
-          "support_mode": "single",
-          "dominant_support": {
-            "option": "B",
-            "text": "is permeable to cell membranes in a PAMPA assay",
-            "label": 1
-          },
-          "total_abs_contribution": 0.1837445871487175,
-          "total_weighted_evidence": 0.06440738109219267,
-          "term_instances": [
-            {
-              "neighbor_rank": 3,
-              "neighbor_id": "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C",
-              "neighbor_similarity": 0.3505266853932585,
-              "pair_score": 0.9134711598318076,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "is permeable to cell membranes in a PAMPA assay",
-                "label": 1
-              },
-              "contribution": 0.1837445871487175,
-              "contribution_abs": 0.1837445871487175,
-              "contribution_rank": 3,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "is permeable to cell membranes in a PAMPA assay",
-              "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 63.69, while the query's topological polar surface area is value 75.19. The query-minus-neighbor delta is +11.5. This pairwise contribution is 0.1837, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
-            }
-          ],
-          "neighbor_rank": 3,
-          "neighbor_id": "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C",
-          "neighbor_similarity": 0.3505266853932585,
-          "pair_score": 0.9134711598318076,
-          "pair_prediction": 1,
-          "pair_prediction_semantics": {
-            "option": "B",
-            "text": "is permeable to cell membranes in a PAMPA assay",
-            "label": 1
-          },
-          "contribution": 0.1837445871487175,
-          "contribution_abs": 0.1837445871487175,
-          "contribution_rank": 3,
-          "supports_label": 1,
-          "supports_option": "B",
-          "supports_text": "is permeable to cell membranes in a PAMPA assay",
-          "text_hint": "For topological polar surface area, the neighbor's topological polar surface area is value 63.69, while the query's topological polar surface area is value 75.19. The query-minus-neighbor delta is +11.5. This pairwise contribution is 0.1837, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay."
-        },
-        {
           "feature_name": "fg_top_level__benzene",
           "display_name": "benzene",
           "description": "top-level functional-group indicator or count for benzene",
@@ -2594,9 +3502,76 @@
           "supports_option": "A",
           "supports_text": "is not permeable to cell membranes in a PAMPA assay",
           "text_hint": "The neighbor has 1 copies of benzene, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -0.1763, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__LabuteASA",
+          "display_name": "Labute surface area",
+          "description": "Labute approximate surface area",
+          "source_family": "rdkit",
+          "raw_name": "LabuteASA",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            3
+          ],
+          "neighbor_ids": [
+            "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C"
+          ],
+          "neighbor_similarities": [
+            0.3505266853932585
+          ],
+          "support_weight_by_label": {
+            "0": 0.045891875329010935,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "is not permeable to cell membranes in a PAMPA assay",
+            "label": 0
+          },
+          "total_abs_contribution": 0.13092262940701505,
+          "total_weighted_evidence": 0.045891875329010935,
+          "term_instances": [
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C",
+              "neighbor_similarity": 0.3505266853932585,
+              "pair_score": 0.9134711598318076,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is permeable to cell membranes in a PAMPA assay",
+                "label": 1
+              },
+              "contribution": -0.13092262940701505,
+              "contribution_abs": 0.13092262940701505,
+              "contribution_rank": 8,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+              "text_hint": "For Labute surface area, the neighbor's Labute surface area is value 172.6468, while the query's Labute surface area is value 197.8585. The query-minus-neighbor delta is +25.2117. This pairwise contribution is -0.1309, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
+            }
+          ],
+          "neighbor_rank": 3,
+          "neighbor_id": "Cc1sc(NC(=O)Cc2ccc3c(c2)OCO3)nc1-c1ccc2c(c1)CCN2C",
+          "neighbor_similarity": 0.3505266853932585,
+          "pair_score": 0.9134711598318076,
+          "pair_prediction": 1,
+          "pair_prediction_semantics": {
+            "option": "B",
+            "text": "is permeable to cell membranes in a PAMPA assay",
+            "label": 1
+          },
+          "contribution": -0.13092262940701505,
+          "contribution_abs": 0.13092262940701505,
+          "contribution_rank": 8,
+          "supports_label": 0,
+          "supports_option": "A",
+          "supports_text": "is not permeable to cell membranes in a PAMPA assay",
+          "text_hint": "For Labute surface area, the neighbor's Labute surface area is value 172.6468, while the query's Labute surface area is value 197.8585. The query-minus-neighbor delta is +25.2117. This pairwise contribution is -0.1309, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay."
         }
       ]
     },
-    "middle_draft": "Across the positive neighbors, shared local signals include neutral fraction, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is permeable to cell membranes in a PAMPA assay, acetal, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is permeable to cell membranes in a PAMPA assay, fraction of sp3 carbons, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not permeable to cell membranes in a PAMPA assay, heavy-atom molecular weight, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not permeable to cell membranes in a PAMPA assay, maximum absolute partial charge, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is permeable to cell membranes in a PAMPA assay, estimated logD, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is permeable to cell membranes in a PAMPA assay, ring count, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not permeable to cell membranes in a PAMPA assay, and isothiourea, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. The remaining one-off signals from the positive neighbors are all kept explicitly for downstream rewriting. With neighbor 3 (similarity 0.5479), the comparison shows that for strongest acidic pKa, the neighbor's strongest acidic pKa is value 8.9416, while the query's strongest acidic pKa is value 11.9985. The query-minus-neighbor delta is +3.0569. This pairwise contribution is 0.1586, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Across the negative neighbors, shared local signals include indoline, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is permeable to cell membranes in a PAMPA assay, fraction of sp3 carbons, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not permeable to cell membranes in a PAMPA assay, strongest acidic pKa, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not permeable to cell membranes in a PAMPA assay, and acetal, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. The remaining one-off signals from the negative neighbors are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.5875), the comparison shows that for maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3077, while the query's maximum absolute partial charge is value 0.3077. The query-minus-neighbor delta is +0. This pairwise contribution is 0.8321, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. With neighbor 1 (similarity 0.5875), the comparison shows that for minimum partial charge, the neighbor's minimum partial charge is value -0.3077, while the query's minimum partial charge is value -0.3077. The query-minus-neighbor delta is -0. This pairwise contribution is -0.3397, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. With neighbor 1 (similarity 0.5875), the comparison shows that for estimated logP, the neighbor's estimated logP is value 6.9642, while the query's estimated logP is value 4.8361. The query-minus-neighbor delta is -2.1281. This pairwise contribution is 0.2629, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. With neighbor 1 (similarity 0.5875), the comparison shows that for QED drug-likeness, the neighbor's QED drug-likeness is value 0.274, while the query's QED drug-likeness is value 0.4743. The query-minus-neighbor delta is +0.2003. This pairwise contribution is 0.1973, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. With neighbor 2 (similarity 0.466), the comparison shows that for estimated logD, the neighbor's estimated logD is value 5.3613, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.5259. This pairwise contribution is 0.3072, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. With neighbor 2 (similarity 0.466), the comparison shows that the neighbor does not have pyrimidine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.1573, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. With neighbor 3 (similarity 0.3505), the comparison shows that the neighbor does not have tertiary amide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4335, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. With neighbor 3 (similarity 0.3505), the comparison shows that for topological polar surface area, the neighbor's topological polar surface area is value 63.69, while the query's topological polar surface area is value 75.19. The query-minus-neighbor delta is +11.5. This pairwise contribution is 0.1837, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. With neighbor 3 (similarity 0.3505), the comparison shows that the neighbor has 1 copies of benzene, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -0.1763, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Taken together, these local analog comparisons support option (B): is permeable to cell membranes in a PAMPA assay with local score 0.9418, positive-neighbor aggregate 0.9378, and negative-neighbor aggregate 0.9467."
+    "middle_draft": "Across the neighbors labeled option (B): is permeable to cell membranes in a PAMPA assay, shared local signals include neutral fraction, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is permeable to cell membranes in a PAMPA assay, estimated logD, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is permeable to cell membranes in a PAMPA assay, ring count, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not permeable to cell membranes in a PAMPA assay, isothiourea, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not permeable to cell membranes in a PAMPA assay, acetal, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is permeable to cell membranes in a PAMPA assay, fraction of sp3 carbons, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not permeable to cell membranes in a PAMPA assay, heavy-atom molecular weight, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not permeable to cell membranes in a PAMPA assay, maximum absolute partial charge, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is permeable to cell membranes in a PAMPA assay, strongest acidic pKa, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is permeable to cell membranes in a PAMPA assay, and thiazole, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is permeable to cell membranes in a PAMPA assay. Across the neighbors labeled option (A): is not permeable to cell membranes in a PAMPA assay, shared local signals include indoline, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is permeable to cell membranes in a PAMPA assay, strongest acidic pKa, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not permeable to cell membranes in a PAMPA assay, fraction of sp3 carbons, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not permeable to cell membranes in a PAMPA assay, topological polar surface area, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is permeable to cell membranes in a PAMPA assay, acetal, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not permeable to cell membranes in a PAMPA assay, and pyrimidine, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is permeable to cell membranes in a PAMPA assay. The remaining one-off signals from the neighbors labeled option (A): is not permeable to cell membranes in a PAMPA assay are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.5875), the comparison shows that for maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3077, while the query's maximum absolute partial charge is value 0.3077. The query-minus-neighbor delta is +0. This pairwise contribution is 0.8321, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. With neighbor 1 (similarity 0.5875), the comparison shows that for minimum partial charge, the neighbor's minimum partial charge is value -0.3077, while the query's minimum partial charge is value -0.3077. The query-minus-neighbor delta is -0. This pairwise contribution is -0.3397, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. With neighbor 1 (similarity 0.5875), the comparison shows that for estimated logP, the neighbor's estimated logP is value 6.9642, while the query's estimated logP is value 4.8361. The query-minus-neighbor delta is -2.1281. This pairwise contribution is 0.2629, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. With neighbor 1 (similarity 0.5875), the comparison shows that for QED drug-likeness, the neighbor's QED drug-likeness is value 0.274, while the query's QED drug-likeness is value 0.4743. The query-minus-neighbor delta is +0.2003. This pairwise contribution is 0.1973, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. With neighbor 2 (similarity 0.466), the comparison shows that for estimated logD, the neighbor's estimated logD is value 5.3613, while the query's estimated logD is value 4.8354. The query-minus-neighbor delta is -0.5259. This pairwise contribution is 0.3072, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. With neighbor 2 (similarity 0.466), the comparison shows that for minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.2608, while the query's minimum absolute partial charge is value 0.2581. The query-minus-neighbor delta is -0.0027. This pairwise contribution is 0.1553, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. With neighbor 2 (similarity 0.466), the comparison shows that the neighbor has Aryl fluoride, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1523, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. With neighbor 3 (similarity 0.3505), the comparison shows that the neighbor does not have tertiary amide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.4335, which pushes toward option (B): is permeable to cell membranes in a PAMPA assay. With neighbor 3 (similarity 0.3505), the comparison shows that the neighbor has 1 copies of benzene, while the query has 2 (query-minus-neighbor delta +1). This pairwise contribution is -0.1763, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. With neighbor 3 (similarity 0.3505), the comparison shows that for Labute surface area, the neighbor's Labute surface area is value 172.6468, while the query's Labute surface area is value 197.8585. The query-minus-neighbor delta is +25.2117. This pairwise contribution is -0.1309, which pushes toward option (A): is not permeable to cell membranes in a PAMPA assay. Taken together, these local analog comparisons support option (B): is permeable to cell membranes in a PAMPA assay with local prediction probability 0.9418, aggregate over neighbors labeled option (B): is permeable to cell membranes in a PAMPA assay 0.9378, and aggregate over neighbors labeled option (A): is not permeable to cell membranes in a PAMPA assay 0.9467."
   }
 }

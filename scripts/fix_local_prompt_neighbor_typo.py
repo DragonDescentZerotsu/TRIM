@@ -3,7 +3,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
+
+THIS_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = THIS_DIR.parent
+SRC_ROOT = PROJECT_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
+from trim.utils.paths import serialize_project_path
 
 
 DEFAULT_ROOTS = [
@@ -52,7 +61,7 @@ def main() -> int:
             if count == 0:
                 continue
             total_replacements += count
-            changed_files.append(str(path.resolve()))
+            changed_files.append(serialize_project_path(path))
             if args.dry_run:
                 continue
             path.write_text(text.replace("Nrighbor", "Neighbor"), encoding="utf-8")
@@ -60,7 +69,7 @@ def main() -> int:
     print(
         json.dumps(
             {
-                "roots": [str(root.resolve()) for root in roots],
+                "roots": [serialize_project_path(root) for root in roots],
                 "dry_run": bool(args.dry_run),
                 "num_changed_files": len(changed_files),
                 "total_replacements": total_replacements,

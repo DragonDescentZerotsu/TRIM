@@ -18,6 +18,7 @@ if str(SRC_ROOT) not in sys.path:
 
 from trim.data.datasets import list_tasks
 from trim.utils.io import load_json, save_json
+from trim.utils.paths import serialize_project_path
 
 try:
     from tqdm.auto import tqdm
@@ -189,13 +190,13 @@ def run_task_pipeline(task: str, args: argparse.Namespace) -> dict[str, object]:
     metrics_payload = load_json(hybrid_metrics_path)
     return {
         "task": task,
-        "metrics_path": str(hybrid_metrics_path.resolve()),
+        "metrics_path": serialize_project_path(hybrid_metrics_path),
         "metrics": metrics_payload["metrics"],
         "logs": {
-            "train_pair_pos": str((log_root / "train_pair_pos.log").resolve()),
-            "train_pair_neg": str((log_root / "train_pair_neg.log").resolve()),
-            "run_local_only": str((log_root / "run_local_only.log").resolve()),
-            "run_hybrid": str((log_root / "run_hybrid.log").resolve()),
+            "train_pair_pos": serialize_project_path(log_root / "train_pair_pos.log"),
+            "train_pair_neg": serialize_project_path(log_root / "train_pair_neg.log"),
+            "run_local_only": serialize_project_path(log_root / "run_local_only.log"),
+            "run_hybrid": serialize_project_path(log_root / "run_hybrid.log"),
         },
     }
 
@@ -276,7 +277,7 @@ def main() -> int:
             "max_parallel_tasks": args.max_parallel_tasks,
             "python_executable": args.python_executable,
         },
-        "summary_csv": str(summary_csv_path.resolve()),
+        "summary_csv": serialize_project_path(summary_csv_path),
         "results": results,
     }
     save_json(summary_json_path, payload)

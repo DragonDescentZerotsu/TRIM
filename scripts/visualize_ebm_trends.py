@@ -18,6 +18,7 @@ from trim.evaluation.ebm_visualization import (
     export_pair_heatmaps,
 )
 from trim.utils.io import load_pickle
+from trim.utils.paths import resolve_project_path, serialize_project_path
 
 
 def parse_args() -> argparse.Namespace:
@@ -41,8 +42,11 @@ def main() -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     payload: dict[str, object] = {}
-    global_bundle = load_pickle(args.global_bundle_path) if args.global_bundle_path else None
-    pair_bundles = [load_pickle(path) for path in args.pair_bundle_paths] if args.pair_bundle_paths else []
+    global_bundle = load_pickle(resolve_project_path(args.global_bundle_path)) if args.global_bundle_path else None
+    pair_bundles = [
+        load_pickle(resolve_project_path(path))
+        for path in args.pair_bundle_paths
+    ] if args.pair_bundle_paths else []
 
     if args.global_bundle_path:
         payload["global"] = export_global_curves(
@@ -65,7 +69,7 @@ def main() -> int:
                 selected_feature_prefixes=args.feature_prefixes,
                 plots_per_figure=args.pair_plots_per_figure,
             )
-            pair_payload["bundle_path"] = str(Path(pair_bundle_path).resolve())
+            pair_payload["bundle_path"] = serialize_project_path(Path(pair_bundle_path))
             pair_payload["model_type"] = str(bundle["model_type"])
             payload["pairwise"].append(pair_payload)
 

@@ -17,7 +17,7 @@
   "keep_for_rewrite": true,
   "drop_reason": null,
   "teacher_case": "both_correct",
-  "playbook_path": "/data1/tianang/Projects/TRIM/playbooks/Bioavailability_Ma.md",
+  "playbook_path": "playbooks/Bioavailability_Ma.md",
   "global_rewrite_input": {
     "task_playbook": "# Bioavailability ≥20% Playbook for Bioavailability_Ma\n\nThe Bioavailability_Ma task is a binary label on oral bioavailability, where **(A)** indicates oral bioavailability **< 20%** and **(B)** indicates oral bioavailability **≥ 20%**. The **≥20% cutoff** aligns with a commonly used “acceptable oral bioavailability” threshold used in classic oral bioavailability analyses (notably in rat data), and similar property heuristics are often reused as practical anchors even when the underlying dataset is human-focused. citeturn46search0turn12search2turn14view2\n\nMost **practical cutoffs in medicinal chemistry are stated for oral absorption / permeability / developability** (close proxies for oral bioavailability, since bioavailability also includes first-pass metabolism and transporter effects). That means many properties below have **robust “rule-of-thumb” thresholds** (e.g., MW, TPSA, HBD/HBA, rotatable bonds, lipophilicity), while others are **mostly ML features without stable community cutoffs**. citeturn14view0turn16view2turn18view0turn53view0turn49view2\n\n## Ionization and charge state anchors\n\n\\## neutral fraction: estimated fraction of the molecule that is neutral at the configured pH  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **higher oral bioavailability** when there is a **non-negligible neutral population** at intestinal/physiologic pH (supports passive permeability); extremely low neutral fraction often implies **lower passive absorption** (with notable exceptions via transporters or ion-pairing)  \n- Brief note: Many practical rules treat **ionization indirectly** via logD (pH-dependent) or combined metrics that explicitly include neutral fraction. citeturn26view0  \n- Source: pH-dependent logD and explicit neutral-fraction use in oral drug-likeness metrics. citeturn26view0  \n\n\\## strongest acidic pKa: pKa of the strongest acidic site  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **lower oral bioavailability** when the strongest acidic site drives the compound to be **predominantly anionic at intestinal/physiologic pH** (passive permeability risk); potential **higher bioavailability** when acidity is balanced so the compound retains some neutral fraction at relevant pH  \n- Brief note: Practical interpretation nearly always applies **Henderson–Hasselbalch** logic (ionization governed by pH vs pKa), but published “single-number pKa cutoffs” for oral bioavailability are not stable across chemotypes. citeturn23search0turn25search11turn26view0  \n- Source: pH–pKa governs ionization (50% ionized at pH = pKa); oral drug rules emphasize property balance rather than a single pKa cutoff. citeturn25search11turn49view2turn26view0  \n\n\\## strongest basic pKa: pKa of the strongest basic site  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **lower oral bioavailability** when very high basicity implies **predominantly cationic** species at intestinal/physiologic pH (passive permeability risk), though ionized bases can still be orally successful depending on solubility and transporter effects  \n- Brief note: Medicinal chemistry practice typically manages base strength via **logD@pH** and polarity/size constraints rather than a universal “pKa must be <X” rule for oral bioavailability. citeturn26view0turn53view0  \n- Source: oral bioavailability is multi-factorial; widely used heuristics focus on lipophilicity, PSA, MW, HBD/HBA, rotatable bonds rather than a universal basic pKa cutoff. citeturn14view0turn53view0turn49view2  \n\n\\## number of acidic sites: number of acidic ionizable sites in the molecule  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **lower oral bioavailability** when multiple acidic sites increase the probability of **multi-anionic character** at intestinal pH (permeability risk); can also increase solubility (sometimes offsetting permeability)  \n- Brief note: Community rules typically constrain **net polarity** (TPSA, HBD/HBA) and **lipophilicity at pH** rather than the raw count of acidic sites. citeturn14view0turn16view2turn18view0  \n- Source: common oral bioavailability heuristics and absorption models center on lipophilicity/polarity/flexibility rather than explicit acidic-site counts. citeturn14view0turn16view2turn18view0  \n\n\\## number of basic sites: number of basic ionizable sites in the molecule  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **lower oral bioavailability** when multiple basic sites increase **polycationic** character (passive permeability risk) and may increase efflux liability; can increase aqueous solubility  \n- Brief note: Practical guidance tends to appear as **logD@pH windows** and polarity constraints, which implicitly penalize highly ionized multi-basic molecules. citeturn26view0turn53view0  \n- Source: lipophilicity-at-pH and property balance frameworks used for oral candidates. citeturn26view0turn53view0  \n\n\\## number of ionizable sites: total number of acidic and basic ionizable sites  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **lower oral bioavailability** as ionizable-site count increases (greater chance of high polarity / multiple charge states), unless compensated by scaffold/lipophilicity and/or transporter-mediated uptake  \n- Brief note: In practice, this is treated as a **driver variable** that manifests through TPSA/HBD/HBA/logD rather than a directly thresholded property. citeturn14view0turn16view2turn26view0  \n- Source: dominant oral rules emphasize TPSA, HBD/HBA, MW, logP/logD, rotatable bonds. citeturn14view0turn16view2turn18view0turn53view0  \n\n## Lipophilicity and partitioning anchors\n\n\\## estimated logD: estimated logD at the configured pH  \n- Common threshold(s) or range(s):  \n  - **logD (physiological pH) ≈ 1–3** often cited as an “optimal” region for oral drug-like space citeturn1search0turn26view0  \n  - **logD at pH 6.5 in −2 to 3** reported (retrospectively) as associated with increased bioavailability in one analysis citeturn26view0  \n  - **Golden Triangle (MW, logD7.4)**: an “optimal region” bounded approximately by **elogD ~ −2 to 5** with **MW ~200–500** (as a joint rule for permeability + metabolic stability) citeturn53view0  \n- Usually associated with: **lower oral bioavailability** at very low logD (insufficient membrane affinity) or very high logD (solubility and/or clearance liabilities); **higher oral bioavailability** in the middle “sweet spot” (context-dependent) citeturn26view0turn53view0  \n- Brief note: The literature is **not fully consistent** because the best logD depends on **MW, ionization, and whether failure mode is solubility vs permeability vs first-pass**. Weight-dependent logD lower limits for high permeability have been proposed (higher MW needing higher logD). citeturn26view0turn53view0  \n- Source: lipophilicity windows and Golden Triangle depiction; weight-dependent logD discussion. citeturn1search0turn26view0turn53view0  \n\n\\## estimated logP: RDKit-estimated octanol/water partition coefficient (logP)  \n- Common threshold(s) or range(s):  \n  - **Rule of Five**: poor absorption/permeation more likely when **logP > 5** citeturn18view0  \n  - **Ghose filter (drug-likeness)**: qualifying range **logP −0.4 to 5.6** citeturn2search2  \n- Usually associated with: **lower oral bioavailability** when logP is very high (solubility/clearance liabilities) or very low (insufficient membrane partitioning), though bioavailability outcomes are strongly context- and formulation-dependent citeturn18view0turn26view0  \n- Brief note: logP is **intrinsic** lipophilicity (neutral form), while permeability for ionizable drugs is often better reflected by **logD at relevant pH**. citeturn26view0  \n- Source: Ro5 and Ghose property ranges; emphasis on logD for ionizable drugs. citeturn18view0turn2search2turn26view0  \n\n## Size, flexibility, and scaffold complexity anchors\n\n\\## exact molecular weight: exact isotopic molecular weight  \n- Common threshold(s) or range(s):  \n  - **Rule of Five**: poor absorption/permeation more likely when **MW > 500** citeturn18view0  \n  - **Ghose filter**: **MW 160–480** as a drug-likeness qualifying range citeturn2search2  \n  - **Golden Triangle (joint rule)** depicts an “optimal” region with **MW roughly 200–500** (paired with logD7.4) citeturn53view0  \n- Usually associated with: **lower oral bioavailability** at higher MW (more likely solubility/permeability challenges and clearance liabilities), but many oral drugs do exceed 500 Da (beyond-Ro5 space) citeturn53view0turn26view0  \n- Brief note: A key caution from classic analyses is that an MW cutoff (e.g., 500) may **not cleanly separate** good vs poor oral bioavailability on its own (property balance dominates). citeturn14view0turn53view0  \n- Source: Ro5 MW=500; Ghose MW range; Veber discussion of MW cutoff limitations; Golden Triangle. citeturn18view0turn2search2turn14view0turn53view0  \n\n\\## molecular weight: molecular weight  \n- Common threshold(s) or range(s): same commonly used anchors as “exact molecular weight” (MW > 500 risk in Ro5; 160–480 in Ghose; Golden Triangle joint region around 200–500) citeturn18view0turn2search2turn53view0  \n- Usually associated with: **higher oral bioavailability** when MW is controlled (especially in the Ro5-like space), and **lower oral bioavailability** risk rises with MW unless compensated by other properties and/or formulation/transport mechanisms citeturn26view0turn53view0  \n- Brief note: Treat MW as a **global risk amplifier**, not a strict pass/fail, because first-pass and other mechanisms can dominate oral bioavailability. citeturn53view0turn49view2  \n- Source: Ro5 + multi-parameter decision framing. citeturn18view0turn53view0turn49view2  \n\n\\## heavy-atom count: number of non-hydrogen atoms  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **similar directionality as MW** (higher heavy-atom count usually implies higher size/polar surface burden and higher oral bioavailability risk), but not used as a primary medicinal chemistry cutoff for oral bioavailability  \n- Brief note: Practical filters are typically expressed directly in **MW/logP/logD/TPSA/HBD/HBA/rotatable bonds**, which are more interpretable and historically standardized. citeturn18view0turn14view0turn16view2turn53view0  \n- Source: canonical oral bioavailability heuristics do not threshold heavy-atom count explicitly. citeturn18view0turn14view0turn16view2turn53view0  \n\n\\## heavy-atom molecular weight: molecular weight contributed by heavy atoms  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: broadly tracks MW (higher values often raise oral bioavailability risk), but not a standard decision cutoff in medicinal chemistry  \n- Brief note: Use as a **size proxy** when MW is not otherwise available; community thresholds are typically stated on total MW. citeturn18view0turn53view0  \n- Source: standard oral drug heuristics use MW rather than heavy-atom MW. citeturn18view0turn53view0  \n\n\\## fraction of sp3 carbons: fraction of carbon atoms that are sp3 hybridized  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **higher oral developability / progression probability** (and often better solubility) when fraction sp3 is higher, as a proxy for increased 3D character; association is not a strict oral bioavailability cutoff citeturn35view0turn31view0  \n- Brief note: Reported dataset-level trend: average Fsp3 ~**0.36** for discovery compounds increasing toward ~**0.47** for approved drugs (an empirical “directional anchor,” not a pass/fail rule). citeturn35view0turn31view0  \n- Source: literature summaries tying Fsp3 to development success and solubility. citeturn35view0turn31view0  \n\n\\## rotatable-bond count: number of rotatable bonds  \n- Common threshold(s) or range(s):  \n  - **≤ 10 rotatable bonds** is the classic “good oral bioavailability probability” rule-of-thumb in Veber-style analysis citeturn14view0turn53view0  \n  - Veber analysis also showed practical stratification bins: **≤7**, **8–10**, **>10** (used when examining %F ≥ 20% groups) citeturn14view2  \n- Usually associated with: **higher oral bioavailability** with fewer rotatable bonds (less flexibility; typically better permeability and sometimes better solubility), and **lower oral bioavailability** as flexibility increases citeturn14view0turn14view2  \n- Brief note: This is among the more task-proximal heuristics because it was developed in the context of oral bioavailability datasets and is widely used as an early triage rule. citeturn14view0turn53view0  \n- Source: Veber-style oral bioavailability analysis and secondary summary. citeturn14view0turn14view2turn53view0  \n\n\\## ring count: total number of rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: highly context-dependent; ring count impacts rigidity, lipophilicity, and polarity distribution, so directionality depends on whether rings are aromatic vs saturated and on substituents  \n- Brief note: In oral bioavailability practice, ring-count guidance is **most stable for aromatic rings** (see aromatic ring count), not total rings. citeturn33search27turn33search1  \n- Source: aromatic ring count, rather than total ring count, has published developability cutoffs and oral-drug distributions. citeturn33search27turn33search1  \n\n\\## aromatic ring count: number of aromatic rings  \n- Common threshold(s) or range(s):  \n  - **> 3 aromatic rings** correlates with poorer developability and increased attrition risk (often used as a practical “liability” threshold) citeturn33search1turn35view0  \n  - In a recent analysis of FDA oral drugs (2000–2022): mean aromatic ring count ~**2**, median **3**, “drop-off above 3,” with ~90th percentile at **4** (distributional anchor) citeturn33search27  \n- Usually associated with: **lower oral bioavailability / developability** risk increases with higher aromatic ring count (e.g., solubility decreases even within fixed lipophilicity ranges in reported analyses), while fewer aromatics often improves compound quality citeturn33search1turn33search4turn33search27  \n- Brief note: This is closer to an “oral developability” heuristic than a pure absorption rule, but it is repeatedly used in oral-candidate triage because aromaticity affects solubility, binding, and off-target liabilities that can impact exposure. citeturn33search4turn35view0turn33search27  \n- Source: aromatic ring liability threshold + oral-drug property distributions. citeturn33search1turn33search27turn35view0  \n\n\\## aromatic carbocycle count: number of aromatic carbocyclic rings  \n- Common threshold(s) or range(s): **no stable literature threshold found** (stable cutoffs are usually stated for **total aromatic ring count**, not the carbocycle subset) citeturn33search1turn33search27  \n- Usually associated with: higher carbocyclic aromatic content often increases lipophilicity and can worsen solubility, potentially decreasing oral bioavailability if solubility/permeability become limiting  \n- Brief note: Use the **aromatic ring count >3** heuristic as the closest stable proxy. citeturn33search1turn33search27  \n- Source: aromatic ring count heuristics used in oral candidate context. citeturn33search1turn33search27  \n\n\\## aromatic heterocycle count: number of aromatic heterocyclic rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: context-dependent; aromatic heterocycles can reduce lipophilicity vs carboaromatics and add polarity/HBA sites, so the net effect depends on overall H-bonding and TPSA  \n- Brief note: Published thresholds are more stable for **total aromatic ring count** than for this subset. citeturn33search1turn33search27  \n- Source: aromatic ring count heuristics and distributions for oral drugs. citeturn33search1turn33search27  \n\n\\## aliphatic ring count: number of aliphatic rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: mixed effects—aliphatic rings increase 3D shape/rigidity (sometimes helpful), but also add size and hydrophobic surface (sometimes harmful)  \n- Brief note: Consider aliphatic rings mainly through their effects on **Fsp3, MW, logP/logD, TPSA, rotatable bonds**. citeturn35view0turn14view0turn53view0  \n- Source: developability rules emphasize overall property balance and aromatic liability rather than aliphatic-ring cutoffs. citeturn14view0turn35view0turn53view0  \n\n\\## aliphatic carbocycle count: number of aliphatic carbocyclic rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: context-dependent; can raise hydrophobicity while increasing rigidity/3D character  \n- Brief note: No widely used oral bioavailability cutoff exists for this ring subtype; treat as a contributor to logP/logD and Fsp3. citeturn35view0turn18view0  \n- Source: oral heuristics prioritize lipophilicity/polarity/flexibility endpoints rather than ring-subtype counts. citeturn18view0turn14view0turn35view0  \n\n\\## aliphatic heterocycle count: number of aliphatic heterocyclic rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: often increases polarity/HBA (potentially helping solubility but risking permeability if TPSA becomes high)  \n- Brief note: Not commonly thresholded directly; evaluate via HBA/HBD/TPSA/logD. citeturn14view0turn18view0turn16view2  \n- Source: established oral filters focus on HBA/HBD/TPSA/logD, not heterocycle counts. citeturn14view0turn18view0turn16view2  \n\n\\## saturated ring count: number of saturated rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: can correlate with higher Fsp3 and 3D character (sometimes favorable), but adds size/hydrophobicity  \n- Brief note: The stable “ring” heuristic in oral space is aromatic ring count; saturated ring count is mainly interpreted via Fsp3 and lipophilicity. citeturn35view0turn33search27  \n- Source: Fsp3/development-success summaries and aromatic ring heuristics. citeturn35view0turn33search27  \n\n\\## saturated carbocycle count: number of saturated carbocyclic rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: context-dependent; can enhance 3D character but increase hydrophobic burden  \n- Brief note: No standard oral bioavailability cutoffs for this subtype; treat as a contributor variable (MW/logP/logD/Fsp3). citeturn35view0turn18view0  \n- Source: oral rules-of-thumb are not expressed in saturated-carbocycle counts. citeturn18view0turn35view0  \n\n\\## saturated heterocycle count: number of saturated heterocyclic rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: can increase polarity and solubility but may increase TPSA/HBA enough to reduce permeability if not balanced  \n- Brief note: Evaluate via HBA/HBD/TPSA/logD rather than a saturated-heterocycle cutoff. citeturn14view0turn16view2turn26view0  \n- Source: dominant oral heuristics for polarity and permeability. citeturn14view0turn16view2turn26view0  \n\n\\## Labute surface area: Labute approximate surface area  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: larger surface area often correlates with higher MW and potentially higher polarity burden; directionality depends on whether surface area is hydrophobic vs polar  \n- Brief note: Unlike TPSA, Labute ASA is not a widely published pass/fail oral bioavailability heuristic; it is more common as a **model feature**. citeturn14view0turn16view2turn49view2  \n- Source: established oral heuristics use TPSA rather than total (Labute) surface area. citeturn14view0turn16view2turn49view2  \n\n## Polarity and hydrogen-bonding anchors\n\n\\## topological polar surface area: topological polar surface area of the molecule  \n- Common threshold(s) or range(s):  \n  - **TPSA/PSA ≤ 140 Å²** (with rotatable bonds ≤10) associated with higher probability of “good” oral bioavailability in Veber-style analysis citeturn14view0turn53view0  \n  - In the Egan PSA–AlogP98 absorption model: **PSA upper limit ~131.6 Å²** (95% ellipse) and **~148.1 Å²** (99% ellipse) citeturn16view2  \n- Usually associated with: **lower oral bioavailability** as TPSA rises above these regions (permeability/absorption risk), with exceptions for actively transported compounds citeturn14view0turn16view2  \n- Brief note: TPSA thresholds are among the most widely used because they map to membrane permeability constraints; choosing **131 vs 140 vs 148 Å²** reflects different modeling traditions and safety margins. citeturn14view0turn16view2  \n- Source: Veber-style oral bioavailability rule; Egan absorption model ellipses. citeturn14view0turn16view2turn53view0  \n\n\\## hydrogen-bond donor count: number of hydrogen-bond donors  \n- Common threshold(s) or range(s):  \n  - **HBD ≤ 5** (Rule of Five) citeturn18view0turn53view0  \n  - Alternative Veber-style criterion uses **HBD + HBA ≤ 12** (as a proxy for total H-bonding/polarity) citeturn14view0turn37view2  \n- Usually associated with: **higher oral bioavailability** when HBD is modest; **lower oral bioavailability** risk increases as HBD rises (higher polarity reduces passive permeability) citeturn18view0turn14view0  \n- Brief note: HBD is highly actionable (remove NH/OH donors, reduce amide count, etc.) and is a core component of most oral property filters. citeturn18view0turn14view0  \n- Source: Rule of Five + Veber-style total H-bonding constraint. citeturn18view0turn14view0turn37view2  \n\n\\## hydrogen-bond acceptor count: number of hydrogen-bond acceptors  \n- Common threshold(s) or range(s):  \n  - **HBA ≤ 10** (Rule of Five) citeturn18view0turn53view0  \n  - Alternative Veber-style criterion: **HBD + HBA ≤ 12** citeturn14view0turn37view2  \n- Usually associated with: **higher oral bioavailability** when HBA is controlled; very high HBA increases polarity/PSA and can reduce passive absorption citeturn18view0turn14view0  \n- Brief note: HBA count is also used as a practical proxy for “too many heteroatoms,” but HBA is more standardized than raw heteroatom count. citeturn18view0turn14view0  \n- Source: Rule of Five + Veber-style total H-bonding rule. citeturn18view0turn14view0turn37view2  \n\n\\## NH/OH group count: number of NH or OH groups  \n- Common threshold(s) or range(s): commonly treated as a near-proxy for HBD; practical anchor **≈ HBD ≤ 5** citeturn18view0turn53view0  \n- Usually associated with: **higher oral bioavailability** when NH/OH count is modest; higher counts can increase polarity and metabolic conjugation risk (context-dependent) citeturn18view0turn14view0  \n- Brief note: In most oral-property heuristics, NH/OH groups matter because they drive HBD and TPSA, which are directly thresholded. citeturn18view0turn14view0turn16view2  \n- Source: Rule of Five donor constraint (NH/OH as donors) and PSA-based absorption heuristics. citeturn18view0turn14view0turn16view2  \n\n\\## nitrogen/oxygen atom count: number of nitrogen and oxygen atoms  \n- Common threshold(s) or range(s): **no stable standalone threshold found**  \n- Usually associated with: higher N/O count generally increases polarity and can reduce passive permeability (lower oral bioavailability) unless balanced by lipophilicity/3D shape and/or transporters  \n- Brief note: A **combined** rule has been proposed using **MW/NO > 50** as a cutoff to differentiate higher- vs lower-absorbed drug classes in one analysis—useful as a proxy when N/O is available. citeturn26view0  \n- Source: N/O used as polarity proxy and in a combined MW/NO cutoff. citeturn26view0  \n\n\\## heteroatom count: number of heteroatoms, such as N, O, or S  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: higher heteroatom count often increases PSA/HBA and can reduce passive absorption (lower oral bioavailability risk rises), but effects are mediated by ionization and scaffold context  \n- Brief note: Medicinal chemistry community tends to operationalize heteroatom burden via **HBA/HBD and TPSA thresholds**, not raw heteroatom count. citeturn18view0turn14view0turn16view2  \n- Source: established oral heuristics are framed in HBA/HBD/TPSA rather than heteroatom count. citeturn18view0turn14view0turn16view2  \n\n\\## maximum absolute partial charge: largest absolute atomic partial charge  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: extreme partial charges can indicate strong polarity and potential permeability issues (lower oral bioavailability), but no community cutoff is used for oral bioavailability triage  \n- Brief note: Partial-charge extrema are primarily used as **ML features**; classic oral property rules do not specify cutoffs on charge descriptors. citeturn18view0turn14view0turn16view2turn49view2  \n- Source: canonical oral bioavailability heuristics (Ro5, Veber, Egan) do not include partial-charge thresholds. citeturn18view0turn14view0turn16view2turn49view2  \n\n\\## maximum partial charge: most positive atomic partial charge  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: more extreme positive charge localization can correlate with strong basic centers and higher polarity; directionality depends on ionization state and counterbalancing properties  \n- Brief note: Not commonly thresholded; use pKa/logD/HBD/HBA/TPSA instead. citeturn14view0turn18view0turn16view2  \n- Source: standard oral bioavailability filters do not include atomic partial-charge cutoffs. citeturn14view0turn18view0turn16view2  \n\n\\## minimum absolute partial charge: smallest absolute atomic partial charge  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: not directly interpreted in medicinal chemistry oral bioavailability triage  \n- Brief note: ML descriptor; lacks stable interpretive rule for oral bioavailability. citeturn49view2turn14view0  \n- Source: absence from standard oral bioavailability rules-of-thumb. citeturn49view2turn14view0turn18view0  \n\n\\## minimum partial charge: most negative atomic partial charge  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: extreme negative charge localization can correlate with strong acids/anion-stabilizing motifs and elevated PSA; might reduce passive permeability  \n- Brief note: Atomic-charge cutoffs are not standard; interpret via pKa/logD and PSA/H-bonding instead. citeturn26view0turn16view2turn14view0  \n- Source: canonical absorption/bioavailability heuristics emphasize PSA/HBD/HBA/logD rather than atomic partial charges. citeturn26view0turn16view2turn14view0  \n\n## Composite metrics and qualitative structural notes\n\n\\## QED drug-likeness: quantitative estimate of drug-likeness  \n- Common threshold(s) or range(s): **no single stable cutoff**, but common anchors include:  \n  - QED is scaled **0 to 1** (continuous ranking), not a strict pass/fail filter citeturn37view0turn37view2  \n  - Reported mean QED around **0.67** for “attractive” compounds in one benchmark context citeturn37view2  \n  - Reported median QED for drugs around **0.65**, with **~0.67** sometimes cited as an “attractive/promising” anchor citeturn35view0turn37view2  \n- Usually associated with: **higher oral bioavailability likelihood** (as a composite proxy) when QED is higher, because QED aggregates MW, logP, HBD/HBA, TPSA, rotatable bonds, aromatic rings, and alerts (all linked to oral drug space) citeturn35view0turn37view2  \n- Brief note: Use QED as a **summary score** when you want “overall drug-likeness pressure,” but do not treat it as a mechanistic determinant of oral bioavailability; interrogate the underlying components for actionable optimization. citeturn37view2turn49view2  \n- Source: QED definition and benchmarking vs Ro5/Veber/Ghose; reported QED distribution anchors. citeturn37view2turn35view0  \n\n## Functional-group notes\n\n- Group name: **phenolic hydroxyls** (phenols, catechols, polyphenols)  \n  - Usually associated with: **lower oral bioavailability** when extensive **phase II conjugation (glucuronidation/sulfation)** rapidly clears the parent (low exposure), unless protected (e.g., prodrugs, steric shielding)  \n  - Brief note: Phenolic motifs are repeatedly highlighted as prone to extensive conjugation, which can translate into poor apparent bioavailability of the active parent. citeturn44search7turn44search23  \n  - Source: reviews describing extensive sulfation/glucuronidation of phenolics and resulting poor bioavailability. citeturn44search7turn44search23  \n\n- Group name: **phosphonic acids / phosphonates** (highly anionic at physiological pH)  \n  - Usually associated with: **lower oral bioavailability** due to **very low membrane permeability** driven by high negative charge; oral success often requires **prodrug strategies**  \n  - Brief note: This is one of the clearer “functional-group → oral BA liability” patterns because the strong anionic character is hard to balance with passive permeability. citeturn45search10turn45search17turn45search6  \n  - Source: phosphonate/phosphonic acid reviews and examples noting low membrane permeability and low oral bioavailability. citeturn45search10turn45search17turn45search6  \n\n- Group name: **guanidinium / guanidine-containing motifs** (strong bases; often largely protonated)  \n  - Usually associated with: **lower oral bioavailability** via **poor passive permeability**; successful strategies often leverage **prodrugs** and/or **transporter targeting**  \n  - Brief note: The need for transporter/prodrug approaches is repeatedly emphasized for highly polar guanidino analogs to improve intestinal permeability. citeturn44search2turn44search14turn44search6  \n  - Source: guanidino/guanidine oral absorption limitation and transporter/prodrug strategies. citeturn44search2turn44search14turn44search6",
     "task_description": "task Bioavailability_Ma where option (A) means has oral bioavailability < 20% and option (B) means has oral bioavailability ≥ 20%",
@@ -80,13 +80,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.9269168285903951,
+          "pair_score_class1_probability": 0.9269168285903951,
           "pair_prediction": 1,
+          "pair_prediction_probability": 0.9269168285903951,
+          "teacher_confidence_margin": 0.42691682859039515,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "B",
             "text": "has oral bioavailability ≥ 20%",
             "label": 1
           },
-          "middle_draft": "First, The neighbor has oxoarene, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.5464, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.464, which pushes toward option (A): has oral bioavailability < 20%. Then, For number of basic sites, the neighbor's number of basic sites is value 3, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +2. This pairwise contribution is 0.4066, which pushes toward option (B): has oral bioavailability ≥ 20%. After that, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 7.9014, while the query's strongest acidic pKa is value 13.0873. The query-minus-neighbor delta is +5.1859. This pairwise contribution is 0.4049, which pushes toward option (B): has oral bioavailability ≥ 20%. Finally, For number of acidic sites, the neighbor's number of acidic sites is value 2, while the query's number of acidic sites is value 4. The query-minus-neighbor delta is +2. This pairwise contribution is -0.3629, which pushes toward option (A): has oral bioavailability < 20%. Step 6, Both the neighbor and the query have tetrahydrofuran (query-minus-neighbor delta +0). This pairwise contribution is -0.3158, which pushes toward option (A): has oral bioavailability < 20%. Taken together, this positive-neighbor comparison pushes toward option (B): has oral bioavailability ≥ 20% with pair score 0.9269."
+          "feature_logit": 0.515841469089148,
+          "feature_probability": 0.6261748496764429,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": {
+            "option": "B",
+            "text": "has oral bioavailability ≥ 20%",
+            "label": 1
+          },
+          "feature_confidence_margin": 0.12617484967644288,
+          "feature_evidence_strength": "medium",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "medium",
+          "displayed_feature_logit": 0.26007210523213,
+          "displayed_feature_probability": 0.564654016783585,
+          "displayed_feature_prediction": 1,
+          "displayed_feature_prediction_semantics": {
+            "option": "B",
+            "text": "has oral bioavailability ≥ 20%",
+            "label": 1
+          },
+          "displayed_feature_confidence_margin": 0.06465401678358496,
+          "displayed_feature_evidence_strength": "low",
+          "displayed_abs_contribution_coverage": 0.5179021433585655,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, The neighbor has oxoarene, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.5464, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.464, which pushes toward option (A): has oral bioavailability < 20%. Then, For number of basic sites, the neighbor's number of basic sites is value 3, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +2. This pairwise contribution is 0.4066, which pushes toward option (B): has oral bioavailability ≥ 20%. After that, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 7.9014, while the query's strongest acidic pKa is value 13.0873. The query-minus-neighbor delta is +5.1859. This pairwise contribution is 0.4049, which pushes toward option (B): has oral bioavailability ≥ 20%. Finally, For number of acidic sites, the neighbor's number of acidic sites is value 2, while the query's number of acidic sites is value 4. The query-minus-neighbor delta is +2. This pairwise contribution is -0.3629, which pushes toward option (A): has oral bioavailability < 20%. Step 6, Both the neighbor and the query have tetrahydrofuran (query-minus-neighbor delta +0). This pairwise contribution is -0.3158, which pushes toward option (A): has oral bioavailability < 20%. Step 7, The neighbor has purine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.236, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 8, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.5, while the query's fraction of sp3 carbons is value 0.5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.1911, which pushes toward option (A): has oral bioavailability < 20%. Taken together, relative to a neighbor labeled option (B): has oral bioavailability ≥ 20%, the pairwise feature evidence moderately supports option (B): has oral bioavailability ≥ 20%. This neighbor provides medium-strength evidence for option (B): has oral bioavailability ≥ 20%."
         },
         {
           "neighbor_id": "Nc1ccn([C@H]2CC[C@@H](CO)O2)c(=O)n1",
@@ -94,13 +122,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.8383364216902695,
+          "pair_score_class1_probability": 0.8383364216902695,
           "pair_prediction": 1,
+          "pair_prediction_probability": 0.8383364216902695,
+          "teacher_confidence_margin": 0.33833642169026945,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "B",
             "text": "has oral bioavailability ≥ 20%",
             "label": 1
           },
-          "middle_draft": "First, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.464, which pushes toward option (A): has oral bioavailability < 20%. Next, For number of basic sites, the neighbor's number of basic sites is value 3, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +2. This pairwise contribution is 0.4066, which pushes toward option (B): has oral bioavailability ≥ 20%. Then, Both the neighbor and the query have tetrahydrofuran (query-minus-neighbor delta +0). This pairwise contribution is -0.3158, which pushes toward option (A): has oral bioavailability < 20%. After that, For neutral fraction, the neighbor's neutral fraction is value 0.9978, while the query's neutral fraction is value 0.9996. The query-minus-neighbor delta is +0.0018. This pairwise contribution is -0.248, which pushes toward option (A): has oral bioavailability < 20%. Finally, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.6875, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is -0.0394. This pairwise contribution is 0.238, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 6, Both the neighbor and the query have primary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is -0.1854, which pushes toward option (A): has oral bioavailability < 20%. Taken together, this positive-neighbor comparison pushes toward option (B): has oral bioavailability ≥ 20% with pair score 0.8383."
+          "feature_logit": -0.3785222654922896,
+          "feature_probability": 0.4064833580439016,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "has oral bioavailability < 20%",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.09351664195609838,
+          "feature_evidence_strength": "low",
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": -0.5545362442141346,
+          "displayed_feature_probability": 0.36481260745518074,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "has oral bioavailability < 20%",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.13518739254481926,
+          "displayed_feature_evidence_strength": "medium",
+          "displayed_abs_contribution_coverage": 0.48877878059132607,
+          "displayed_teacher_agreement": false,
+          "middle_draft": "First, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.464, which pushes toward option (A): has oral bioavailability < 20%. Next, For number of basic sites, the neighbor's number of basic sites is value 3, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +2. This pairwise contribution is 0.4066, which pushes toward option (B): has oral bioavailability ≥ 20%. Then, Both the neighbor and the query have tetrahydrofuran (query-minus-neighbor delta +0). This pairwise contribution is -0.3158, which pushes toward option (A): has oral bioavailability < 20%. After that, For neutral fraction, the neighbor's neutral fraction is value 0.9978, while the query's neutral fraction is value 0.9996. The query-minus-neighbor delta is +0.0018. This pairwise contribution is -0.248, which pushes toward option (A): has oral bioavailability < 20%. Finally, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.6875, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is -0.0394. This pairwise contribution is 0.238, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 6, Both the neighbor and the query have primary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is -0.1854, which pushes toward option (A): has oral bioavailability < 20%. Step 7, The neighbor has cytosine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1725, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 8, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.5556, while the query's fraction of sp3 carbons is value 0.5. The query-minus-neighbor delta is -0.0556. This pairwise contribution is -0.1585, which pushes toward option (A): has oral bioavailability < 20%. Taken together, relative to a neighbor labeled option (B): has oral bioavailability ≥ 20%, these feature comparisons do not align cleanly with option (B): has oral bioavailability ≥ 20%. This neighbor should be treated only as low-strength evidence for option (B): has oral bioavailability ≥ 20%."
         },
         {
           "neighbor_id": "NC(=O)c1ncn([C@@H]2O[C@H](CO)[C@@H](O)[C@H]2O)n1",
@@ -108,13 +164,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.8646288524403097,
+          "pair_score_class1_probability": 0.8646288524403097,
           "pair_prediction": 1,
+          "pair_prediction_probability": 0.8646288524403097,
+          "teacher_confidence_margin": 0.36462885244030974,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "B",
             "text": "has oral bioavailability ≥ 20%",
             "label": 1
           },
-          "middle_draft": "First, For estimated logP, the neighbor's estimated logP is value -3.0115, while the query's estimated logP is value -0.2974. The query-minus-neighbor delta is +2.7141. This pairwise contribution is 0.6911, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4428, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.2053. This pairwise contribution is 0.6439, which pushes toward option (B): has oral bioavailability ≥ 20%. Then, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.464, which pushes toward option (A): has oral bioavailability < 20%. After that, Both the neighbor and the query have tetrahydrofuran (query-minus-neighbor delta +0). This pairwise contribution is -0.3158, which pushes toward option (A): has oral bioavailability < 20%. Finally, Both the neighbor and the query have primary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is -0.1854, which pushes toward option (A): has oral bioavailability < 20%. Step 6, The neighbor has primary amide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1842, which pushes toward option (A): has oral bioavailability < 20%. Taken together, this positive-neighbor comparison pushes toward option (B): has oral bioavailability ≥ 20% with pair score 0.8646."
+          "feature_logit": -0.1701441492672983,
+          "feature_probability": 0.45756628124816395,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "has oral bioavailability < 20%",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.04243371875183605,
+          "feature_evidence_strength": "low",
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": 0.18987493239372308,
+          "displayed_feature_probability": 0.5473266315526529,
+          "displayed_feature_prediction": 1,
+          "displayed_feature_prediction_semantics": {
+            "option": "B",
+            "text": "has oral bioavailability ≥ 20%",
+            "label": 1
+          },
+          "displayed_feature_confidence_margin": 0.04732663155265293,
+          "displayed_feature_evidence_strength": "low",
+          "displayed_abs_contribution_coverage": 0.547875637662752,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, For estimated logP, the neighbor's estimated logP is value -3.0115, while the query's estimated logP is value -0.2974. The query-minus-neighbor delta is +2.7141. This pairwise contribution is 0.6911, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4428, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.2053. This pairwise contribution is 0.6439, which pushes toward option (B): has oral bioavailability ≥ 20%. Then, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.464, which pushes toward option (A): has oral bioavailability < 20%. After that, Both the neighbor and the query have tetrahydrofuran (query-minus-neighbor delta +0). This pairwise contribution is -0.3158, which pushes toward option (A): has oral bioavailability < 20%. Finally, Both the neighbor and the query have primary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is -0.1854, which pushes toward option (A): has oral bioavailability < 20%. Step 6, The neighbor has primary amide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1842, which pushes toward option (A): has oral bioavailability < 20%. Step 7, For number of basic sites, the neighbor's number of basic sites is value 2, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +3. This pairwise contribution is 0.1681, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 8, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.625, while the query's fraction of sp3 carbons is value 0.5. The query-minus-neighbor delta is -0.125. This pairwise contribution is -0.1639, which pushes toward option (A): has oral bioavailability < 20%. Taken together, relative to a neighbor labeled option (B): has oral bioavailability ≥ 20%, these feature comparisons do not align cleanly with option (B): has oral bioavailability ≥ 20%. This neighbor should be treated only as low-strength evidence for option (B): has oral bioavailability ≥ 20%."
         }
       ],
       "negative_neighbors": [
@@ -124,13 +208,41 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.7509338316065872,
+          "pair_score_class1_probability": 0.7509338316065872,
           "pair_prediction": 1,
+          "pair_prediction_probability": 0.7509338316065872,
+          "teacher_confidence_margin": 0.2509338316065872,
+          "teacher_confidence": "medium",
           "pair_prediction_semantics": {
             "option": "B",
             "text": "has oral bioavailability ≥ 20%",
             "label": 1
           },
-          "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4489, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.1992. This pairwise contribution is 0.5966, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, The neighbor does not have adenine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.4563, which pushes toward option (A): has oral bioavailability < 20%. Then, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.0565, while the query's strongest acidic pKa is value 13.0873. The query-minus-neighbor delta is +0.0308. This pairwise contribution is 0.3739, which pushes toward option (B): has oral bioavailability ≥ 20%. After that, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.3247, which pushes toward option (A): has oral bioavailability < 20%. Finally, The neighbor has cytosine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1842, which pushes toward option (A): has oral bioavailability < 20%. Step 6, For number of basic sites, the neighbor's number of basic sites is value 3, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +2. This pairwise contribution is 0.1028, which pushes toward option (B): has oral bioavailability ≥ 20%. Taken together, this negative-neighbor comparison pushes toward option (B): has oral bioavailability ≥ 20% with pair score 0.7509."
+          "feature_logit": -0.7905001143750976,
+          "feature_probability": 0.31206129525164344,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "has oral bioavailability < 20%",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.18793870474835656,
+          "feature_evidence_strength": "medium",
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": 0.11298578094365995,
+          "displayed_feature_probability": 0.5282164345384502,
+          "displayed_feature_prediction": 1,
+          "displayed_feature_prediction_semantics": {
+            "option": "B",
+            "text": "has oral bioavailability ≥ 20%",
+            "label": 1
+          },
+          "displayed_feature_confidence_margin": 0.02821643453845024,
+          "displayed_feature_evidence_strength": "low",
+          "displayed_abs_contribution_coverage": 0.5250619816850365,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4489, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.1992. This pairwise contribution is 0.5966, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, The neighbor does not have adenine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.4563, which pushes toward option (A): has oral bioavailability < 20%. Then, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.0565, while the query's strongest acidic pKa is value 13.0873. The query-minus-neighbor delta is +0.0308. This pairwise contribution is 0.3739, which pushes toward option (B): has oral bioavailability ≥ 20%. After that, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.3247, which pushes toward option (A): has oral bioavailability < 20%. Finally, The neighbor has cytosine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1842, which pushes toward option (A): has oral bioavailability < 20%. Step 6, For number of basic sites, the neighbor's number of basic sites is value 3, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +2. This pairwise contribution is 0.1028, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 7, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3512, while the query's minimum absolute partial charge is value 0.226. The query-minus-neighbor delta is -0.1253. This pairwise contribution is 0.0791, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 8, Neither the neighbor nor the query has primary aromatic amine (query-minus-neighbor delta +0). This pairwise contribution is -0.0742, which pushes toward option (A): has oral bioavailability < 20%. Taken together, relative to a neighbor labeled option (A): has oral bioavailability < 20%, these feature comparisons do not align cleanly with option (B): has oral bioavailability ≥ 20%. This neighbor should be treated only as low-strength evidence for option (B): has oral bioavailability ≥ 20%."
         },
         {
           "neighbor_id": "Nc1ncnc2c1ncn2CCOCP(=O)(O)O",
@@ -138,13 +250,41 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.8470697504741465,
+          "pair_score_class1_probability": 0.8470697504741465,
           "pair_prediction": 1,
+          "pair_prediction_probability": 0.8470697504741465,
+          "teacher_confidence_margin": 0.34706975047414645,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "B",
             "text": "has oral bioavailability ≥ 20%",
             "label": 1
           },
-          "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4923, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.1559. This pairwise contribution is 0.7133, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.3247, which pushes toward option (A): has oral bioavailability < 20%. Then, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 2.3553, while the query's strongest acidic pKa is value 13.0873. The query-minus-neighbor delta is +10.732. This pairwise contribution is 0.3218, which pushes toward option (B): has oral bioavailability ≥ 20%. After that, The neighbor does not have tetrahydrofuran, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.2415, which pushes toward option (A): has oral bioavailability < 20%. Finally, The neighbor does not have primary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.2338, which pushes toward option (A): has oral bioavailability < 20%. Step 6, For aromatic heterocycle count, the neighbor's aromatic heterocycle count is value 2, while the query's aromatic heterocycle count is value 2. The query-minus-neighbor delta is +0. This pairwise contribution is 0.1643, which pushes toward option (B): has oral bioavailability ≥ 20%. Taken together, this negative-neighbor comparison pushes toward option (B): has oral bioavailability ≥ 20% with pair score 0.8471."
+          "feature_logit": -0.18229794822949674,
+          "feature_probability": 0.45455130791482434,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "has oral bioavailability < 20%",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.04544869208517566,
+          "feature_evidence_strength": "low",
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": 0.37193102823053514,
+          "displayed_feature_probability": 0.591925500394838,
+          "displayed_feature_prediction": 1,
+          "displayed_feature_prediction_semantics": {
+            "option": "B",
+            "text": "has oral bioavailability ≥ 20%",
+            "label": 1
+          },
+          "displayed_feature_confidence_margin": 0.09192550039483804,
+          "displayed_feature_evidence_strength": "low",
+          "displayed_abs_contribution_coverage": 0.5341637755808551,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4923, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.1559. This pairwise contribution is 0.7133, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.3247, which pushes toward option (A): has oral bioavailability < 20%. Then, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 2.3553, while the query's strongest acidic pKa is value 13.0873. The query-minus-neighbor delta is +10.732. This pairwise contribution is 0.3218, which pushes toward option (B): has oral bioavailability ≥ 20%. After that, The neighbor does not have tetrahydrofuran, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.2415, which pushes toward option (A): has oral bioavailability < 20%. Finally, The neighbor does not have primary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.2338, which pushes toward option (A): has oral bioavailability < 20%. Step 6, For aromatic heterocycle count, the neighbor's aromatic heterocycle count is value 2, while the query's aromatic heterocycle count is value 2. The query-minus-neighbor delta is +0. This pairwise contribution is 0.1643, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 7, The neighbor has dialkyl ether, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1545, which pushes toward option (A): has oral bioavailability < 20%. Step 8, Both the neighbor and the query have adenine (query-minus-neighbor delta +0). This pairwise contribution is 0.1272, which pushes toward option (B): has oral bioavailability ≥ 20%. Taken together, relative to a neighbor labeled option (A): has oral bioavailability < 20%, these feature comparisons do not align cleanly with option (B): has oral bioavailability ≥ 20%. This neighbor should be treated only as low-strength evidence for option (B): has oral bioavailability ≥ 20%."
         },
         {
           "neighbor_id": "O=c1ccn([C@@H]2O[C@H](CO)[C@@H](O)[C@H]2O)c(=O)[nH]1",
@@ -152,18 +292,1351 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.8874607602700535,
+          "pair_score_class1_probability": 0.8874607602700535,
           "pair_prediction": 1,
+          "pair_prediction_probability": 0.8874607602700535,
+          "teacher_confidence_margin": 0.3874607602700535,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "B",
             "text": "has oral bioavailability ≥ 20%",
             "label": 1
           },
-          "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4435, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.2047. This pairwise contribution is 0.5905, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, For strongest basic pKa, the neighbor's strongest basic pKa is value 1.9481, while the query's strongest basic pKa is value 4.0015. The query-minus-neighbor delta is +2.0534. This pairwise contribution is 0.4764, which pushes toward option (B): has oral bioavailability ≥ 20%. Then, The neighbor does not have adenine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.4563, which pushes toward option (A): has oral bioavailability < 20%. After that, The neighbor has uracil, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.4092, which pushes toward option (B): has oral bioavailability ≥ 20%. Finally, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.3247, which pushes toward option (A): has oral bioavailability < 20%. Step 6, For number of basic sites, the neighbor's number of basic sites is present (1), while the query's number of basic sites is value 5. The query-minus-neighbor delta is +4. This pairwise contribution is 0.1632, which pushes toward option (B): has oral bioavailability ≥ 20%. Taken together, this negative-neighbor comparison pushes toward option (B): has oral bioavailability ≥ 20% with pair score 0.8875."
+          "feature_logit": 0.17096329063728272,
+          "feature_probability": 0.5426370220535686,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": {
+            "option": "B",
+            "text": "has oral bioavailability ≥ 20%",
+            "label": 1
+          },
+          "feature_confidence_margin": 0.04263702205356856,
+          "feature_evidence_strength": "low",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": 0.8573568724376212,
+          "displayed_feature_probability": 0.7021081336066132,
+          "displayed_feature_prediction": 1,
+          "displayed_feature_prediction_semantics": {
+            "option": "B",
+            "text": "has oral bioavailability ≥ 20%",
+            "label": 1
+          },
+          "displayed_feature_confidence_margin": 0.20210813360661317,
+          "displayed_feature_evidence_strength": "medium",
+          "displayed_abs_contribution_coverage": 0.5836123008621656,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4435, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.2047. This pairwise contribution is 0.5905, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, For strongest basic pKa, the neighbor's strongest basic pKa is value 1.9481, while the query's strongest basic pKa is value 4.0015. The query-minus-neighbor delta is +2.0534. This pairwise contribution is 0.4764, which pushes toward option (B): has oral bioavailability ≥ 20%. Then, The neighbor does not have adenine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.4563, which pushes toward option (A): has oral bioavailability < 20%. After that, The neighbor has uracil, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.4092, which pushes toward option (B): has oral bioavailability ≥ 20%. Finally, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.3247, which pushes toward option (A): has oral bioavailability < 20%. Step 6, For number of basic sites, the neighbor's number of basic sites is present (1), while the query's number of basic sites is value 5. The query-minus-neighbor delta is +4. This pairwise contribution is 0.1632, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 7, Neither the neighbor nor the query has primary aromatic amine (query-minus-neighbor delta +0). This pairwise contribution is -0.0742, which pushes toward option (A): has oral bioavailability < 20%. Step 8, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.33, while the query's minimum absolute partial charge is value 0.226. The query-minus-neighbor delta is -0.1041. This pairwise contribution is 0.0733, which pushes toward option (B): has oral bioavailability ≥ 20%. Taken together, relative to a neighbor labeled option (A): has oral bioavailability < 20%, the pairwise feature evidence weakly supports option (B): has oral bioavailability ≥ 20%. This neighbor provides low-strength evidence for option (B): has oral bioavailability ≥ 20%."
         }
       ]
     },
     "local_prediction": 1,
     "local_prediction_semantics": "option (B): has oral bioavailability ≥ 20%"
+  },
+  "local_per_neighbor_rewrite_input": {
+    "task_playbook": "# Bioavailability ≥20% Playbook for Bioavailability_Ma\n\nThe Bioavailability_Ma task is a binary label on oral bioavailability, where **(A)** indicates oral bioavailability **< 20%** and **(B)** indicates oral bioavailability **≥ 20%**. The **≥20% cutoff** aligns with a commonly used “acceptable oral bioavailability” threshold used in classic oral bioavailability analyses (notably in rat data), and similar property heuristics are often reused as practical anchors even when the underlying dataset is human-focused. citeturn46search0turn12search2turn14view2\n\nMost **practical cutoffs in medicinal chemistry are stated for oral absorption / permeability / developability** (close proxies for oral bioavailability, since bioavailability also includes first-pass metabolism and transporter effects). That means many properties below have **robust “rule-of-thumb” thresholds** (e.g., MW, TPSA, HBD/HBA, rotatable bonds, lipophilicity), while others are **mostly ML features without stable community cutoffs**. citeturn14view0turn16view2turn18view0turn53view0turn49view2\n\n## Ionization and charge state anchors\n\n\\## neutral fraction: estimated fraction of the molecule that is neutral at the configured pH  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **higher oral bioavailability** when there is a **non-negligible neutral population** at intestinal/physiologic pH (supports passive permeability); extremely low neutral fraction often implies **lower passive absorption** (with notable exceptions via transporters or ion-pairing)  \n- Brief note: Many practical rules treat **ionization indirectly** via logD (pH-dependent) or combined metrics that explicitly include neutral fraction. citeturn26view0  \n- Source: pH-dependent logD and explicit neutral-fraction use in oral drug-likeness metrics. citeturn26view0  \n\n\\## strongest acidic pKa: pKa of the strongest acidic site  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **lower oral bioavailability** when the strongest acidic site drives the compound to be **predominantly anionic at intestinal/physiologic pH** (passive permeability risk); potential **higher bioavailability** when acidity is balanced so the compound retains some neutral fraction at relevant pH  \n- Brief note: Practical interpretation nearly always applies **Henderson–Hasselbalch** logic (ionization governed by pH vs pKa), but published “single-number pKa cutoffs” for oral bioavailability are not stable across chemotypes. citeturn23search0turn25search11turn26view0  \n- Source: pH–pKa governs ionization (50% ionized at pH = pKa); oral drug rules emphasize property balance rather than a single pKa cutoff. citeturn25search11turn49view2turn26view0  \n\n\\## strongest basic pKa: pKa of the strongest basic site  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **lower oral bioavailability** when very high basicity implies **predominantly cationic** species at intestinal/physiologic pH (passive permeability risk), though ionized bases can still be orally successful depending on solubility and transporter effects  \n- Brief note: Medicinal chemistry practice typically manages base strength via **logD@pH** and polarity/size constraints rather than a universal “pKa must be <X” rule for oral bioavailability. citeturn26view0turn53view0  \n- Source: oral bioavailability is multi-factorial; widely used heuristics focus on lipophilicity, PSA, MW, HBD/HBA, rotatable bonds rather than a universal basic pKa cutoff. citeturn14view0turn53view0turn49view2  \n\n\\## number of acidic sites: number of acidic ionizable sites in the molecule  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **lower oral bioavailability** when multiple acidic sites increase the probability of **multi-anionic character** at intestinal pH (permeability risk); can also increase solubility (sometimes offsetting permeability)  \n- Brief note: Community rules typically constrain **net polarity** (TPSA, HBD/HBA) and **lipophilicity at pH** rather than the raw count of acidic sites. citeturn14view0turn16view2turn18view0  \n- Source: common oral bioavailability heuristics and absorption models center on lipophilicity/polarity/flexibility rather than explicit acidic-site counts. citeturn14view0turn16view2turn18view0  \n\n\\## number of basic sites: number of basic ionizable sites in the molecule  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **lower oral bioavailability** when multiple basic sites increase **polycationic** character (passive permeability risk) and may increase efflux liability; can increase aqueous solubility  \n- Brief note: Practical guidance tends to appear as **logD@pH windows** and polarity constraints, which implicitly penalize highly ionized multi-basic molecules. citeturn26view0turn53view0  \n- Source: lipophilicity-at-pH and property balance frameworks used for oral candidates. citeturn26view0turn53view0  \n\n\\## number of ionizable sites: total number of acidic and basic ionizable sites  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **lower oral bioavailability** as ionizable-site count increases (greater chance of high polarity / multiple charge states), unless compensated by scaffold/lipophilicity and/or transporter-mediated uptake  \n- Brief note: In practice, this is treated as a **driver variable** that manifests through TPSA/HBD/HBA/logD rather than a directly thresholded property. citeturn14view0turn16view2turn26view0  \n- Source: dominant oral rules emphasize TPSA, HBD/HBA, MW, logP/logD, rotatable bonds. citeturn14view0turn16view2turn18view0turn53view0  \n\n## Lipophilicity and partitioning anchors\n\n\\## estimated logD: estimated logD at the configured pH  \n- Common threshold(s) or range(s):  \n  - **logD (physiological pH) ≈ 1–3** often cited as an “optimal” region for oral drug-like space citeturn1search0turn26view0  \n  - **logD at pH 6.5 in −2 to 3** reported (retrospectively) as associated with increased bioavailability in one analysis citeturn26view0  \n  - **Golden Triangle (MW, logD7.4)**: an “optimal region” bounded approximately by **elogD ~ −2 to 5** with **MW ~200–500** (as a joint rule for permeability + metabolic stability) citeturn53view0  \n- Usually associated with: **lower oral bioavailability** at very low logD (insufficient membrane affinity) or very high logD (solubility and/or clearance liabilities); **higher oral bioavailability** in the middle “sweet spot” (context-dependent) citeturn26view0turn53view0  \n- Brief note: The literature is **not fully consistent** because the best logD depends on **MW, ionization, and whether failure mode is solubility vs permeability vs first-pass**. Weight-dependent logD lower limits for high permeability have been proposed (higher MW needing higher logD). citeturn26view0turn53view0  \n- Source: lipophilicity windows and Golden Triangle depiction; weight-dependent logD discussion. citeturn1search0turn26view0turn53view0  \n\n\\## estimated logP: RDKit-estimated octanol/water partition coefficient (logP)  \n- Common threshold(s) or range(s):  \n  - **Rule of Five**: poor absorption/permeation more likely when **logP > 5** citeturn18view0  \n  - **Ghose filter (drug-likeness)**: qualifying range **logP −0.4 to 5.6** citeturn2search2  \n- Usually associated with: **lower oral bioavailability** when logP is very high (solubility/clearance liabilities) or very low (insufficient membrane partitioning), though bioavailability outcomes are strongly context- and formulation-dependent citeturn18view0turn26view0  \n- Brief note: logP is **intrinsic** lipophilicity (neutral form), while permeability for ionizable drugs is often better reflected by **logD at relevant pH**. citeturn26view0  \n- Source: Ro5 and Ghose property ranges; emphasis on logD for ionizable drugs. citeturn18view0turn2search2turn26view0  \n\n## Size, flexibility, and scaffold complexity anchors\n\n\\## exact molecular weight: exact isotopic molecular weight  \n- Common threshold(s) or range(s):  \n  - **Rule of Five**: poor absorption/permeation more likely when **MW > 500** citeturn18view0  \n  - **Ghose filter**: **MW 160–480** as a drug-likeness qualifying range citeturn2search2  \n  - **Golden Triangle (joint rule)** depicts an “optimal” region with **MW roughly 200–500** (paired with logD7.4) citeturn53view0  \n- Usually associated with: **lower oral bioavailability** at higher MW (more likely solubility/permeability challenges and clearance liabilities), but many oral drugs do exceed 500 Da (beyond-Ro5 space) citeturn53view0turn26view0  \n- Brief note: A key caution from classic analyses is that an MW cutoff (e.g., 500) may **not cleanly separate** good vs poor oral bioavailability on its own (property balance dominates). citeturn14view0turn53view0  \n- Source: Ro5 MW=500; Ghose MW range; Veber discussion of MW cutoff limitations; Golden Triangle. citeturn18view0turn2search2turn14view0turn53view0  \n\n\\## molecular weight: molecular weight  \n- Common threshold(s) or range(s): same commonly used anchors as “exact molecular weight” (MW > 500 risk in Ro5; 160–480 in Ghose; Golden Triangle joint region around 200–500) citeturn18view0turn2search2turn53view0  \n- Usually associated with: **higher oral bioavailability** when MW is controlled (especially in the Ro5-like space), and **lower oral bioavailability** risk rises with MW unless compensated by other properties and/or formulation/transport mechanisms citeturn26view0turn53view0  \n- Brief note: Treat MW as a **global risk amplifier**, not a strict pass/fail, because first-pass and other mechanisms can dominate oral bioavailability. citeturn53view0turn49view2  \n- Source: Ro5 + multi-parameter decision framing. citeturn18view0turn53view0turn49view2  \n\n\\## heavy-atom count: number of non-hydrogen atoms  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **similar directionality as MW** (higher heavy-atom count usually implies higher size/polar surface burden and higher oral bioavailability risk), but not used as a primary medicinal chemistry cutoff for oral bioavailability  \n- Brief note: Practical filters are typically expressed directly in **MW/logP/logD/TPSA/HBD/HBA/rotatable bonds**, which are more interpretable and historically standardized. citeturn18view0turn14view0turn16view2turn53view0  \n- Source: canonical oral bioavailability heuristics do not threshold heavy-atom count explicitly. citeturn18view0turn14view0turn16view2turn53view0  \n\n\\## heavy-atom molecular weight: molecular weight contributed by heavy atoms  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: broadly tracks MW (higher values often raise oral bioavailability risk), but not a standard decision cutoff in medicinal chemistry  \n- Brief note: Use as a **size proxy** when MW is not otherwise available; community thresholds are typically stated on total MW. citeturn18view0turn53view0  \n- Source: standard oral drug heuristics use MW rather than heavy-atom MW. citeturn18view0turn53view0  \n\n\\## fraction of sp3 carbons: fraction of carbon atoms that are sp3 hybridized  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: **higher oral developability / progression probability** (and often better solubility) when fraction sp3 is higher, as a proxy for increased 3D character; association is not a strict oral bioavailability cutoff citeturn35view0turn31view0  \n- Brief note: Reported dataset-level trend: average Fsp3 ~**0.36** for discovery compounds increasing toward ~**0.47** for approved drugs (an empirical “directional anchor,” not a pass/fail rule). citeturn35view0turn31view0  \n- Source: literature summaries tying Fsp3 to development success and solubility. citeturn35view0turn31view0  \n\n\\## rotatable-bond count: number of rotatable bonds  \n- Common threshold(s) or range(s):  \n  - **≤ 10 rotatable bonds** is the classic “good oral bioavailability probability” rule-of-thumb in Veber-style analysis citeturn14view0turn53view0  \n  - Veber analysis also showed practical stratification bins: **≤7**, **8–10**, **>10** (used when examining %F ≥ 20% groups) citeturn14view2  \n- Usually associated with: **higher oral bioavailability** with fewer rotatable bonds (less flexibility; typically better permeability and sometimes better solubility), and **lower oral bioavailability** as flexibility increases citeturn14view0turn14view2  \n- Brief note: This is among the more task-proximal heuristics because it was developed in the context of oral bioavailability datasets and is widely used as an early triage rule. citeturn14view0turn53view0  \n- Source: Veber-style oral bioavailability analysis and secondary summary. citeturn14view0turn14view2turn53view0  \n\n\\## ring count: total number of rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: highly context-dependent; ring count impacts rigidity, lipophilicity, and polarity distribution, so directionality depends on whether rings are aromatic vs saturated and on substituents  \n- Brief note: In oral bioavailability practice, ring-count guidance is **most stable for aromatic rings** (see aromatic ring count), not total rings. citeturn33search27turn33search1  \n- Source: aromatic ring count, rather than total ring count, has published developability cutoffs and oral-drug distributions. citeturn33search27turn33search1  \n\n\\## aromatic ring count: number of aromatic rings  \n- Common threshold(s) or range(s):  \n  - **> 3 aromatic rings** correlates with poorer developability and increased attrition risk (often used as a practical “liability” threshold) citeturn33search1turn35view0  \n  - In a recent analysis of FDA oral drugs (2000–2022): mean aromatic ring count ~**2**, median **3**, “drop-off above 3,” with ~90th percentile at **4** (distributional anchor) citeturn33search27  \n- Usually associated with: **lower oral bioavailability / developability** risk increases with higher aromatic ring count (e.g., solubility decreases even within fixed lipophilicity ranges in reported analyses), while fewer aromatics often improves compound quality citeturn33search1turn33search4turn33search27  \n- Brief note: This is closer to an “oral developability” heuristic than a pure absorption rule, but it is repeatedly used in oral-candidate triage because aromaticity affects solubility, binding, and off-target liabilities that can impact exposure. citeturn33search4turn35view0turn33search27  \n- Source: aromatic ring liability threshold + oral-drug property distributions. citeturn33search1turn33search27turn35view0  \n\n\\## aromatic carbocycle count: number of aromatic carbocyclic rings  \n- Common threshold(s) or range(s): **no stable literature threshold found** (stable cutoffs are usually stated for **total aromatic ring count**, not the carbocycle subset) citeturn33search1turn33search27  \n- Usually associated with: higher carbocyclic aromatic content often increases lipophilicity and can worsen solubility, potentially decreasing oral bioavailability if solubility/permeability become limiting  \n- Brief note: Use the **aromatic ring count >3** heuristic as the closest stable proxy. citeturn33search1turn33search27  \n- Source: aromatic ring count heuristics used in oral candidate context. citeturn33search1turn33search27  \n\n\\## aromatic heterocycle count: number of aromatic heterocyclic rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: context-dependent; aromatic heterocycles can reduce lipophilicity vs carboaromatics and add polarity/HBA sites, so the net effect depends on overall H-bonding and TPSA  \n- Brief note: Published thresholds are more stable for **total aromatic ring count** than for this subset. citeturn33search1turn33search27  \n- Source: aromatic ring count heuristics and distributions for oral drugs. citeturn33search1turn33search27  \n\n\\## aliphatic ring count: number of aliphatic rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: mixed effects—aliphatic rings increase 3D shape/rigidity (sometimes helpful), but also add size and hydrophobic surface (sometimes harmful)  \n- Brief note: Consider aliphatic rings mainly through their effects on **Fsp3, MW, logP/logD, TPSA, rotatable bonds**. citeturn35view0turn14view0turn53view0  \n- Source: developability rules emphasize overall property balance and aromatic liability rather than aliphatic-ring cutoffs. citeturn14view0turn35view0turn53view0  \n\n\\## aliphatic carbocycle count: number of aliphatic carbocyclic rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: context-dependent; can raise hydrophobicity while increasing rigidity/3D character  \n- Brief note: No widely used oral bioavailability cutoff exists for this ring subtype; treat as a contributor to logP/logD and Fsp3. citeturn35view0turn18view0  \n- Source: oral heuristics prioritize lipophilicity/polarity/flexibility endpoints rather than ring-subtype counts. citeturn18view0turn14view0turn35view0  \n\n\\## aliphatic heterocycle count: number of aliphatic heterocyclic rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: often increases polarity/HBA (potentially helping solubility but risking permeability if TPSA becomes high)  \n- Brief note: Not commonly thresholded directly; evaluate via HBA/HBD/TPSA/logD. citeturn14view0turn18view0turn16view2  \n- Source: established oral filters focus on HBA/HBD/TPSA/logD, not heterocycle counts. citeturn14view0turn18view0turn16view2  \n\n\\## saturated ring count: number of saturated rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: can correlate with higher Fsp3 and 3D character (sometimes favorable), but adds size/hydrophobicity  \n- Brief note: The stable “ring” heuristic in oral space is aromatic ring count; saturated ring count is mainly interpreted via Fsp3 and lipophilicity. citeturn35view0turn33search27  \n- Source: Fsp3/development-success summaries and aromatic ring heuristics. citeturn35view0turn33search27  \n\n\\## saturated carbocycle count: number of saturated carbocyclic rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: context-dependent; can enhance 3D character but increase hydrophobic burden  \n- Brief note: No standard oral bioavailability cutoffs for this subtype; treat as a contributor variable (MW/logP/logD/Fsp3). citeturn35view0turn18view0  \n- Source: oral rules-of-thumb are not expressed in saturated-carbocycle counts. citeturn18view0turn35view0  \n\n\\## saturated heterocycle count: number of saturated heterocyclic rings  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: can increase polarity and solubility but may increase TPSA/HBA enough to reduce permeability if not balanced  \n- Brief note: Evaluate via HBA/HBD/TPSA/logD rather than a saturated-heterocycle cutoff. citeturn14view0turn16view2turn26view0  \n- Source: dominant oral heuristics for polarity and permeability. citeturn14view0turn16view2turn26view0  \n\n\\## Labute surface area: Labute approximate surface area  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: larger surface area often correlates with higher MW and potentially higher polarity burden; directionality depends on whether surface area is hydrophobic vs polar  \n- Brief note: Unlike TPSA, Labute ASA is not a widely published pass/fail oral bioavailability heuristic; it is more common as a **model feature**. citeturn14view0turn16view2turn49view2  \n- Source: established oral heuristics use TPSA rather than total (Labute) surface area. citeturn14view0turn16view2turn49view2  \n\n## Polarity and hydrogen-bonding anchors\n\n\\## topological polar surface area: topological polar surface area of the molecule  \n- Common threshold(s) or range(s):  \n  - **TPSA/PSA ≤ 140 Å²** (with rotatable bonds ≤10) associated with higher probability of “good” oral bioavailability in Veber-style analysis citeturn14view0turn53view0  \n  - In the Egan PSA–AlogP98 absorption model: **PSA upper limit ~131.6 Å²** (95% ellipse) and **~148.1 Å²** (99% ellipse) citeturn16view2  \n- Usually associated with: **lower oral bioavailability** as TPSA rises above these regions (permeability/absorption risk), with exceptions for actively transported compounds citeturn14view0turn16view2  \n- Brief note: TPSA thresholds are among the most widely used because they map to membrane permeability constraints; choosing **131 vs 140 vs 148 Å²** reflects different modeling traditions and safety margins. citeturn14view0turn16view2  \n- Source: Veber-style oral bioavailability rule; Egan absorption model ellipses. citeturn14view0turn16view2turn53view0  \n\n\\## hydrogen-bond donor count: number of hydrogen-bond donors  \n- Common threshold(s) or range(s):  \n  - **HBD ≤ 5** (Rule of Five) citeturn18view0turn53view0  \n  - Alternative Veber-style criterion uses **HBD + HBA ≤ 12** (as a proxy for total H-bonding/polarity) citeturn14view0turn37view2  \n- Usually associated with: **higher oral bioavailability** when HBD is modest; **lower oral bioavailability** risk increases as HBD rises (higher polarity reduces passive permeability) citeturn18view0turn14view0  \n- Brief note: HBD is highly actionable (remove NH/OH donors, reduce amide count, etc.) and is a core component of most oral property filters. citeturn18view0turn14view0  \n- Source: Rule of Five + Veber-style total H-bonding constraint. citeturn18view0turn14view0turn37view2  \n\n\\## hydrogen-bond acceptor count: number of hydrogen-bond acceptors  \n- Common threshold(s) or range(s):  \n  - **HBA ≤ 10** (Rule of Five) citeturn18view0turn53view0  \n  - Alternative Veber-style criterion: **HBD + HBA ≤ 12** citeturn14view0turn37view2  \n- Usually associated with: **higher oral bioavailability** when HBA is controlled; very high HBA increases polarity/PSA and can reduce passive absorption citeturn18view0turn14view0  \n- Brief note: HBA count is also used as a practical proxy for “too many heteroatoms,” but HBA is more standardized than raw heteroatom count. citeturn18view0turn14view0  \n- Source: Rule of Five + Veber-style total H-bonding rule. citeturn18view0turn14view0turn37view2  \n\n\\## NH/OH group count: number of NH or OH groups  \n- Common threshold(s) or range(s): commonly treated as a near-proxy for HBD; practical anchor **≈ HBD ≤ 5** citeturn18view0turn53view0  \n- Usually associated with: **higher oral bioavailability** when NH/OH count is modest; higher counts can increase polarity and metabolic conjugation risk (context-dependent) citeturn18view0turn14view0  \n- Brief note: In most oral-property heuristics, NH/OH groups matter because they drive HBD and TPSA, which are directly thresholded. citeturn18view0turn14view0turn16view2  \n- Source: Rule of Five donor constraint (NH/OH as donors) and PSA-based absorption heuristics. citeturn18view0turn14view0turn16view2  \n\n\\## nitrogen/oxygen atom count: number of nitrogen and oxygen atoms  \n- Common threshold(s) or range(s): **no stable standalone threshold found**  \n- Usually associated with: higher N/O count generally increases polarity and can reduce passive permeability (lower oral bioavailability) unless balanced by lipophilicity/3D shape and/or transporters  \n- Brief note: A **combined** rule has been proposed using **MW/NO > 50** as a cutoff to differentiate higher- vs lower-absorbed drug classes in one analysis—useful as a proxy when N/O is available. citeturn26view0  \n- Source: N/O used as polarity proxy and in a combined MW/NO cutoff. citeturn26view0  \n\n\\## heteroatom count: number of heteroatoms, such as N, O, or S  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: higher heteroatom count often increases PSA/HBA and can reduce passive absorption (lower oral bioavailability risk rises), but effects are mediated by ionization and scaffold context  \n- Brief note: Medicinal chemistry community tends to operationalize heteroatom burden via **HBA/HBD and TPSA thresholds**, not raw heteroatom count. citeturn18view0turn14view0turn16view2  \n- Source: established oral heuristics are framed in HBA/HBD/TPSA rather than heteroatom count. citeturn18view0turn14view0turn16view2  \n\n\\## maximum absolute partial charge: largest absolute atomic partial charge  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: extreme partial charges can indicate strong polarity and potential permeability issues (lower oral bioavailability), but no community cutoff is used for oral bioavailability triage  \n- Brief note: Partial-charge extrema are primarily used as **ML features**; classic oral property rules do not specify cutoffs on charge descriptors. citeturn18view0turn14view0turn16view2turn49view2  \n- Source: canonical oral bioavailability heuristics (Ro5, Veber, Egan) do not include partial-charge thresholds. citeturn18view0turn14view0turn16view2turn49view2  \n\n\\## maximum partial charge: most positive atomic partial charge  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: more extreme positive charge localization can correlate with strong basic centers and higher polarity; directionality depends on ionization state and counterbalancing properties  \n- Brief note: Not commonly thresholded; use pKa/logD/HBD/HBA/TPSA instead. citeturn14view0turn18view0turn16view2  \n- Source: standard oral bioavailability filters do not include atomic partial-charge cutoffs. citeturn14view0turn18view0turn16view2  \n\n\\## minimum absolute partial charge: smallest absolute atomic partial charge  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: not directly interpreted in medicinal chemistry oral bioavailability triage  \n- Brief note: ML descriptor; lacks stable interpretive rule for oral bioavailability. citeturn49view2turn14view0  \n- Source: absence from standard oral bioavailability rules-of-thumb. citeturn49view2turn14view0turn18view0  \n\n\\## minimum partial charge: most negative atomic partial charge  \n- Common threshold(s) or range(s): **no stable literature threshold found**  \n- Usually associated with: extreme negative charge localization can correlate with strong acids/anion-stabilizing motifs and elevated PSA; might reduce passive permeability  \n- Brief note: Atomic-charge cutoffs are not standard; interpret via pKa/logD and PSA/H-bonding instead. citeturn26view0turn16view2turn14view0  \n- Source: canonical absorption/bioavailability heuristics emphasize PSA/HBD/HBA/logD rather than atomic partial charges. citeturn26view0turn16view2turn14view0  \n\n## Composite metrics and qualitative structural notes\n\n\\## QED drug-likeness: quantitative estimate of drug-likeness  \n- Common threshold(s) or range(s): **no single stable cutoff**, but common anchors include:  \n  - QED is scaled **0 to 1** (continuous ranking), not a strict pass/fail filter citeturn37view0turn37view2  \n  - Reported mean QED around **0.67** for “attractive” compounds in one benchmark context citeturn37view2  \n  - Reported median QED for drugs around **0.65**, with **~0.67** sometimes cited as an “attractive/promising” anchor citeturn35view0turn37view2  \n- Usually associated with: **higher oral bioavailability likelihood** (as a composite proxy) when QED is higher, because QED aggregates MW, logP, HBD/HBA, TPSA, rotatable bonds, aromatic rings, and alerts (all linked to oral drug space) citeturn35view0turn37view2  \n- Brief note: Use QED as a **summary score** when you want “overall drug-likeness pressure,” but do not treat it as a mechanistic determinant of oral bioavailability; interrogate the underlying components for actionable optimization. citeturn37view2turn49view2  \n- Source: QED definition and benchmarking vs Ro5/Veber/Ghose; reported QED distribution anchors. citeturn37view2turn35view0  \n\n## Functional-group notes\n\n- Group name: **phenolic hydroxyls** (phenols, catechols, polyphenols)  \n  - Usually associated with: **lower oral bioavailability** when extensive **phase II conjugation (glucuronidation/sulfation)** rapidly clears the parent (low exposure), unless protected (e.g., prodrugs, steric shielding)  \n  - Brief note: Phenolic motifs are repeatedly highlighted as prone to extensive conjugation, which can translate into poor apparent bioavailability of the active parent. citeturn44search7turn44search23  \n  - Source: reviews describing extensive sulfation/glucuronidation of phenolics and resulting poor bioavailability. citeturn44search7turn44search23  \n\n- Group name: **phosphonic acids / phosphonates** (highly anionic at physiological pH)  \n  - Usually associated with: **lower oral bioavailability** due to **very low membrane permeability** driven by high negative charge; oral success often requires **prodrug strategies**  \n  - Brief note: This is one of the clearer “functional-group → oral BA liability” patterns because the strong anionic character is hard to balance with passive permeability. citeturn45search10turn45search17turn45search6  \n  - Source: phosphonate/phosphonic acid reviews and examples noting low membrane permeability and low oral bioavailability. citeturn45search10turn45search17turn45search6  \n\n- Group name: **guanidinium / guanidine-containing motifs** (strong bases; often largely protonated)  \n  - Usually associated with: **lower oral bioavailability** via **poor passive permeability**; successful strategies often leverage **prodrugs** and/or **transporter targeting**  \n  - Brief note: The need for transporter/prodrug approaches is repeatedly emphasized for highly polar guanidino analogs to improve intestinal permeability. citeturn44search2turn44search14turn44search6  \n  - Source: guanidino/guanidine oral absorption limitation and transporter/prodrug strategies. citeturn44search2turn44search14turn44search6",
+    "task_description": "molecule local analog-comparison task Bioavailability_Ma where option (A) means has oral bioavailability < 20% and option (B) means has oral bioavailability ≥ 20%",
+    "positive_label_semantics": "has oral bioavailability ≥ 20%",
+    "negative_label_semantics": "has oral bioavailability < 20%",
+    "num_neighbors": 6,
+    "neighbors": [
+      {
+        "neighbor_index": 1,
+        "neighbor_id": "O=c1nc[nH]c2c1ncn2[C@H]1CC[C@@H](CO)O1",
+        "neighbor_smiles": "O=c1nc[nH]c2c1ncn2[C@H]1CC[C@@H](CO)O1",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): has oral bioavailability ≥ 20%",
+        "neighbor_similarity": 0.30954831332189825,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.9269168285903951,
+          "pair_score_class1_probability": 0.9269168285903951,
+          "pair_prediction": 1,
+          "pair_prediction_probability": 0.9269168285903951,
+          "pair_prediction_semantics": "option (B): has oral bioavailability ≥ 20%",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.42691682859039515
+        },
+        "evidence_strength": {
+          "feature_probability": 0.6261748496764429,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": "option (B): has oral bioavailability ≥ 20%",
+          "feature_evidence_strength": "medium",
+          "feature_confidence_margin": 0.12617484967644288,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "medium",
+          "displayed_feature_prediction": 1,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.5179021433585655
+        },
+        "middle_draft": "First, The neighbor has oxoarene, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.5464, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.464, which pushes toward option (A): has oral bioavailability < 20%. Then, For number of basic sites, the neighbor's number of basic sites is value 3, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +2. This pairwise contribution is 0.4066, which pushes toward option (B): has oral bioavailability ≥ 20%. After that, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 7.9014, while the query's strongest acidic pKa is value 13.0873. The query-minus-neighbor delta is +5.1859. This pairwise contribution is 0.4049, which pushes toward option (B): has oral bioavailability ≥ 20%. Finally, For number of acidic sites, the neighbor's number of acidic sites is value 2, while the query's number of acidic sites is value 4. The query-minus-neighbor delta is +2. This pairwise contribution is -0.3629, which pushes toward option (A): has oral bioavailability < 20%. Step 6, Both the neighbor and the query have tetrahydrofuran (query-minus-neighbor delta +0). This pairwise contribution is -0.3158, which pushes toward option (A): has oral bioavailability < 20%. Step 7, The neighbor has purine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.236, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 8, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.5, while the query's fraction of sp3 carbons is value 0.5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.1911, which pushes toward option (A): has oral bioavailability < 20%. Taken together, relative to a neighbor labeled option (B): has oral bioavailability ≥ 20%, the pairwise feature evidence moderately supports option (B): has oral bioavailability ≥ 20%. This neighbor provides medium-strength evidence for option (B): has oral bioavailability ≥ 20%.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__oxoarene",
+            "display_name": "oxoarene",
+            "description": "top-level functional-group indicator or count for oxoarene",
+            "source_family": "fg_top_level",
+            "raw_name": "oxoarene",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For oxoarene, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "fg_top_level__secondary hydroxyl",
+            "display_name": "secondary hydroxyl",
+            "description": "top-level functional-group indicator or count for secondary hydroxyl",
+            "source_family": "fg_top_level",
+            "raw_name": "secondary hydroxyl",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For secondary hydroxyl, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_basic_sites",
+            "display_name": "number of basic sites",
+            "description": "number of basic ionizable sites in the molecule",
+            "source_family": "pka",
+            "raw_name": "num_basic_sites",
+            "neighbor_value": 3.0,
+            "query_value": 5.0,
+            "delta_value": 2.0,
+            "neighbor_value_text": "value 3",
+            "query_value_text": "value 5",
+            "delta_value_text": "+2",
+            "observation_text": "For number of basic sites, the neighbor value is value 3, the query value is value 5, and the query-minus-neighbor delta is +2."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "display_name": "strongest acidic pKa",
+            "description": "pKa of the strongest acidic site",
+            "source_family": "pka",
+            "raw_name": "most_acidic_pka",
+            "neighbor_value": 7.9014,
+            "query_value": 13.0873,
+            "delta_value": 5.185900000000001,
+            "neighbor_value_text": "value 7.9014",
+            "query_value_text": "value 13.0873",
+            "delta_value_text": "+5.1859",
+            "observation_text": "For strongest acidic pKa, the neighbor value is value 7.9014, the query value is value 13.0873, and the query-minus-neighbor delta is +5.1859."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_acidic_sites",
+            "display_name": "number of acidic sites",
+            "description": "number of acidic ionizable sites in the molecule",
+            "source_family": "pka",
+            "raw_name": "num_acidic_sites",
+            "neighbor_value": 2.0,
+            "query_value": 4.0,
+            "delta_value": 2.0,
+            "neighbor_value_text": "value 2",
+            "query_value_text": "value 4",
+            "delta_value_text": "+2",
+            "observation_text": "For number of acidic sites, the neighbor value is value 2, the query value is value 4, and the query-minus-neighbor delta is +2."
+          },
+          {
+            "feature_name": "fg_top_level__tetrahydrofuran",
+            "display_name": "tetrahydrofuran",
+            "description": "top-level functional-group indicator or count for tetrahydrofuran",
+            "source_family": "fg_top_level",
+            "raw_name": "tetrahydrofuran",
+            "neighbor_value": 1.0,
+            "query_value": 1.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0",
+            "observation_text": "For tetrahydrofuran, the neighbor value is present (1), the query value is present (1), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__purine",
+            "display_name": "purine",
+            "description": "top-level functional-group indicator or count for purine",
+            "source_family": "fg_top_level",
+            "raw_name": "purine",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For purine, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "neighbor_value": 0.5,
+            "query_value": 0.5,
+            "delta_value": 0.0,
+            "neighbor_value_text": "value 0.5",
+            "query_value_text": "value 0.5",
+            "delta_value_text": "+0",
+            "observation_text": "For fraction of sp3 carbons, the neighbor value is value 0.5, the query value is value 0.5, and the query-minus-neighbor delta is +0."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__oxoarene",
+            "contribution": 0.5463876279988511,
+            "contribution_abs": 0.5463876279988511,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "fg_top_level__secondary hydroxyl",
+            "contribution": -0.46397357614146495,
+            "contribution_abs": 0.46397357614146495,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_basic_sites",
+            "contribution": 0.40660370921837574,
+            "contribution_abs": 0.40660370921837574,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "contribution": 0.40493092996239216,
+            "contribution_abs": 0.40493092996239216,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_acidic_sites",
+            "contribution": -0.3629271564898535,
+            "contribution_abs": 0.3629271564898535,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "fg_top_level__tetrahydrofuran",
+            "contribution": -0.3158182623024962,
+            "contribution_abs": 0.3158182623024962,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "fg_top_level__purine",
+            "contribution": 0.23596960958229296,
+            "contribution_abs": 0.23596960958229296,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "contribution": -0.1911007765959673,
+            "contribution_abs": 0.1911007765959673,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor has oxoarene, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.5464, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.464, which pushes toward option (A): has oral bioavailability < 20%. Then, For number of basic sites, the neighbor's number of basic sites is value 3, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +2. This pairwise contribution is 0.4066, which pushes toward option (B): has oral bioavailability ≥ 20%. After that, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 7.9014, while the query's strongest acidic pKa is value 13.0873. The query-minus-neighbor delta is +5.1859. This pairwise contribution is 0.4049, which pushes toward option (B): has oral bioavailability ≥ 20%. Finally, For number of acidic sites, the neighbor's number of acidic sites is value 2, while the query's number of acidic sites is value 4. The query-minus-neighbor delta is +2. This pairwise contribution is -0.3629, which pushes toward option (A): has oral bioavailability < 20%. Step 6, Both the neighbor and the query have tetrahydrofuran (query-minus-neighbor delta +0). This pairwise contribution is -0.3158, which pushes toward option (A): has oral bioavailability < 20%. Step 7, The neighbor has purine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.236, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 8, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.5, while the query's fraction of sp3 carbons is value 0.5. The query-minus-neighbor delta is +0. This pairwise contribution is -0.1911, which pushes toward option (A): has oral bioavailability < 20%. Taken together, relative to a neighbor labeled option (B): has oral bioavailability ≥ 20%, the pairwise feature evidence moderately supports option (B): has oral bioavailability ≥ 20%. This neighbor provides medium-strength evidence for option (B): has oral bioavailability ≥ 20%."
+        }
+      },
+      {
+        "neighbor_index": 2,
+        "neighbor_id": "Nc1ccn([C@H]2CC[C@@H](CO)O2)c(=O)n1",
+        "neighbor_smiles": "Nc1ccn([C@H]2CC[C@@H](CO)O2)c(=O)n1",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): has oral bioavailability ≥ 20%",
+        "neighbor_similarity": 0.29250000000000004,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.8383364216902695,
+          "pair_score_class1_probability": 0.8383364216902695,
+          "pair_prediction": 1,
+          "pair_prediction_probability": 0.8383364216902695,
+          "pair_prediction_semantics": "option (B): has oral bioavailability ≥ 20%",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.33833642169026945
+        },
+        "evidence_strength": {
+          "feature_probability": 0.4064833580439016,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): has oral bioavailability < 20%",
+          "feature_evidence_strength": "low",
+          "feature_confidence_margin": 0.09351664195609838,
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": false,
+          "displayed_abs_contribution_coverage": 0.48877878059132607
+        },
+        "middle_draft": "First, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.464, which pushes toward option (A): has oral bioavailability < 20%. Next, For number of basic sites, the neighbor's number of basic sites is value 3, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +2. This pairwise contribution is 0.4066, which pushes toward option (B): has oral bioavailability ≥ 20%. Then, Both the neighbor and the query have tetrahydrofuran (query-minus-neighbor delta +0). This pairwise contribution is -0.3158, which pushes toward option (A): has oral bioavailability < 20%. After that, For neutral fraction, the neighbor's neutral fraction is value 0.9978, while the query's neutral fraction is value 0.9996. The query-minus-neighbor delta is +0.0018. This pairwise contribution is -0.248, which pushes toward option (A): has oral bioavailability < 20%. Finally, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.6875, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is -0.0394. This pairwise contribution is 0.238, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 6, Both the neighbor and the query have primary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is -0.1854, which pushes toward option (A): has oral bioavailability < 20%. Step 7, The neighbor has cytosine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1725, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 8, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.5556, while the query's fraction of sp3 carbons is value 0.5. The query-minus-neighbor delta is -0.0556. This pairwise contribution is -0.1585, which pushes toward option (A): has oral bioavailability < 20%. Taken together, relative to a neighbor labeled option (B): has oral bioavailability ≥ 20%, these feature comparisons do not align cleanly with option (B): has oral bioavailability ≥ 20%. This neighbor should be treated only as low-strength evidence for option (B): has oral bioavailability ≥ 20%.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__secondary hydroxyl",
+            "display_name": "secondary hydroxyl",
+            "description": "top-level functional-group indicator or count for secondary hydroxyl",
+            "source_family": "fg_top_level",
+            "raw_name": "secondary hydroxyl",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For secondary hydroxyl, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_basic_sites",
+            "display_name": "number of basic sites",
+            "description": "number of basic ionizable sites in the molecule",
+            "source_family": "pka",
+            "raw_name": "num_basic_sites",
+            "neighbor_value": 3.0,
+            "query_value": 5.0,
+            "delta_value": 2.0,
+            "neighbor_value_text": "value 3",
+            "query_value_text": "value 5",
+            "delta_value_text": "+2",
+            "observation_text": "For number of basic sites, the neighbor value is value 3, the query value is value 5, and the query-minus-neighbor delta is +2."
+          },
+          {
+            "feature_name": "fg_top_level__tetrahydrofuran",
+            "display_name": "tetrahydrofuran",
+            "description": "top-level functional-group indicator or count for tetrahydrofuran",
+            "source_family": "fg_top_level",
+            "raw_name": "tetrahydrofuran",
+            "neighbor_value": 1.0,
+            "query_value": 1.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0",
+            "observation_text": "For tetrahydrofuran, the neighbor value is present (1), the query value is present (1), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "display_name": "neutral fraction",
+            "description": "estimated fraction of the molecule that is neutral at the configured pH",
+            "source_family": "pka",
+            "raw_name": "fraction_neutral",
+            "neighbor_value": 0.9978,
+            "query_value": 0.9996,
+            "delta_value": 0.0018000000000000238,
+            "neighbor_value_text": "value 0.9978",
+            "query_value_text": "value 0.9996",
+            "delta_value_text": "+0.0018",
+            "observation_text": "For neutral fraction, the neighbor value is value 0.9978, the query value is value 0.9996, and the query-minus-neighbor delta is +0.0018."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "neighbor_value": 0.6875458801290978,
+            "query_value": 0.6481668237451135,
+            "delta_value": -0.03937905638398431,
+            "neighbor_value_text": "value 0.6875",
+            "query_value_text": "value 0.6482",
+            "delta_value_text": "-0.0394",
+            "observation_text": "For QED drug-likeness, the neighbor value is value 0.6875, the query value is value 0.6482, and the query-minus-neighbor delta is -0.0394."
+          },
+          {
+            "feature_name": "fg_top_level__primary hydroxyl",
+            "display_name": "primary hydroxyl",
+            "description": "top-level functional-group indicator or count for primary hydroxyl",
+            "source_family": "fg_top_level",
+            "raw_name": "primary hydroxyl",
+            "neighbor_value": 1.0,
+            "query_value": 1.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0",
+            "observation_text": "For primary hydroxyl, the neighbor value is present (1), the query value is present (1), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__cytosine",
+            "display_name": "cytosine",
+            "description": "top-level functional-group indicator or count for cytosine",
+            "source_family": "fg_top_level",
+            "raw_name": "cytosine",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For cytosine, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "neighbor_value": 0.5555555555555556,
+            "query_value": 0.5,
+            "delta_value": -0.05555555555555558,
+            "neighbor_value_text": "value 0.5556",
+            "query_value_text": "value 0.5",
+            "delta_value_text": "-0.0556",
+            "observation_text": "For fraction of sp3 carbons, the neighbor value is value 0.5556, the query value is value 0.5, and the query-minus-neighbor delta is -0.0556."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__secondary hydroxyl",
+            "contribution": -0.46397357614146495,
+            "contribution_abs": 0.46397357614146495,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_basic_sites",
+            "contribution": 0.40660370921837574,
+            "contribution_abs": 0.40660370921837574,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "fg_top_level__tetrahydrofuran",
+            "contribution": -0.3158182623024962,
+            "contribution_abs": 0.3158182623024962,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "contribution": -0.24795411965504038,
+            "contribution_abs": 0.24795411965504038,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "contribution": 0.23800636347809254,
+            "contribution_abs": 0.23800636347809254,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "fg_top_level__primary hydroxyl",
+            "contribution": -0.18540453814037455,
+            "contribution_abs": 0.18540453814037455,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "fg_top_level__cytosine",
+            "contribution": 0.17250539875619236,
+            "contribution_abs": 0.17250539875619236,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "contribution": -0.1585012194274191,
+            "contribution_abs": 0.1585012194274191,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.464, which pushes toward option (A): has oral bioavailability < 20%. Next, For number of basic sites, the neighbor's number of basic sites is value 3, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +2. This pairwise contribution is 0.4066, which pushes toward option (B): has oral bioavailability ≥ 20%. Then, Both the neighbor and the query have tetrahydrofuran (query-minus-neighbor delta +0). This pairwise contribution is -0.3158, which pushes toward option (A): has oral bioavailability < 20%. After that, For neutral fraction, the neighbor's neutral fraction is value 0.9978, while the query's neutral fraction is value 0.9996. The query-minus-neighbor delta is +0.0018. This pairwise contribution is -0.248, which pushes toward option (A): has oral bioavailability < 20%. Finally, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.6875, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is -0.0394. This pairwise contribution is 0.238, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 6, Both the neighbor and the query have primary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is -0.1854, which pushes toward option (A): has oral bioavailability < 20%. Step 7, The neighbor has cytosine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.1725, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 8, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.5556, while the query's fraction of sp3 carbons is value 0.5. The query-minus-neighbor delta is -0.0556. This pairwise contribution is -0.1585, which pushes toward option (A): has oral bioavailability < 20%. Taken together, relative to a neighbor labeled option (B): has oral bioavailability ≥ 20%, these feature comparisons do not align cleanly with option (B): has oral bioavailability ≥ 20%. This neighbor should be treated only as low-strength evidence for option (B): has oral bioavailability ≥ 20%."
+        }
+      },
+      {
+        "neighbor_index": 3,
+        "neighbor_id": "NC(=O)c1ncn([C@@H]2O[C@H](CO)[C@@H](O)[C@H]2O)n1",
+        "neighbor_smiles": "NC(=O)c1ncn([C@@H]2O[C@H](CO)[C@@H](O)[C@H]2O)n1",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): has oral bioavailability ≥ 20%",
+        "neighbor_similarity": 0.27175925925925926,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.8646288524403097,
+          "pair_score_class1_probability": 0.8646288524403097,
+          "pair_prediction": 1,
+          "pair_prediction_probability": 0.8646288524403097,
+          "pair_prediction_semantics": "option (B): has oral bioavailability ≥ 20%",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.36462885244030974
+        },
+        "evidence_strength": {
+          "feature_probability": 0.45756628124816395,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): has oral bioavailability < 20%",
+          "feature_evidence_strength": "low",
+          "feature_confidence_margin": 0.04243371875183605,
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 1,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.547875637662752
+        },
+        "middle_draft": "First, For estimated logP, the neighbor's estimated logP is value -3.0115, while the query's estimated logP is value -0.2974. The query-minus-neighbor delta is +2.7141. This pairwise contribution is 0.6911, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4428, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.2053. This pairwise contribution is 0.6439, which pushes toward option (B): has oral bioavailability ≥ 20%. Then, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.464, which pushes toward option (A): has oral bioavailability < 20%. After that, Both the neighbor and the query have tetrahydrofuran (query-minus-neighbor delta +0). This pairwise contribution is -0.3158, which pushes toward option (A): has oral bioavailability < 20%. Finally, Both the neighbor and the query have primary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is -0.1854, which pushes toward option (A): has oral bioavailability < 20%. Step 6, The neighbor has primary amide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1842, which pushes toward option (A): has oral bioavailability < 20%. Step 7, For number of basic sites, the neighbor's number of basic sites is value 2, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +3. This pairwise contribution is 0.1681, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 8, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.625, while the query's fraction of sp3 carbons is value 0.5. The query-minus-neighbor delta is -0.125. This pairwise contribution is -0.1639, which pushes toward option (A): has oral bioavailability < 20%. Taken together, relative to a neighbor labeled option (B): has oral bioavailability ≥ 20%, these feature comparisons do not align cleanly with option (B): has oral bioavailability ≥ 20%. This neighbor should be treated only as low-strength evidence for option (B): has oral bioavailability ≥ 20%.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "neighbor_value": -3.0114999999999994,
+            "query_value": -0.2974000000000004,
+            "delta_value": 2.714099999999999,
+            "neighbor_value_text": "value -3.0115",
+            "query_value_text": "value -0.2974",
+            "delta_value_text": "+2.7141",
+            "observation_text": "For estimated logP, the neighbor value is value -3.0115, the query value is value -0.2974, and the query-minus-neighbor delta is +2.7141."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "neighbor_value": 0.442842031674371,
+            "query_value": 0.6481668237451135,
+            "delta_value": 0.2053247920707425,
+            "neighbor_value_text": "value 0.4428",
+            "query_value_text": "value 0.6482",
+            "delta_value_text": "+0.2053",
+            "observation_text": "For QED drug-likeness, the neighbor value is value 0.4428, the query value is value 0.6482, and the query-minus-neighbor delta is +0.2053."
+          },
+          {
+            "feature_name": "fg_top_level__secondary hydroxyl",
+            "display_name": "secondary hydroxyl",
+            "description": "top-level functional-group indicator or count for secondary hydroxyl",
+            "source_family": "fg_top_level",
+            "raw_name": "secondary hydroxyl",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For secondary hydroxyl, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "fg_top_level__tetrahydrofuran",
+            "display_name": "tetrahydrofuran",
+            "description": "top-level functional-group indicator or count for tetrahydrofuran",
+            "source_family": "fg_top_level",
+            "raw_name": "tetrahydrofuran",
+            "neighbor_value": 1.0,
+            "query_value": 1.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0",
+            "observation_text": "For tetrahydrofuran, the neighbor value is present (1), the query value is present (1), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__primary hydroxyl",
+            "display_name": "primary hydroxyl",
+            "description": "top-level functional-group indicator or count for primary hydroxyl",
+            "source_family": "fg_top_level",
+            "raw_name": "primary hydroxyl",
+            "neighbor_value": 1.0,
+            "query_value": 1.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0",
+            "observation_text": "For primary hydroxyl, the neighbor value is present (1), the query value is present (1), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__primary amide",
+            "display_name": "primary amide",
+            "description": "top-level functional-group indicator or count for primary amide",
+            "source_family": "fg_top_level",
+            "raw_name": "primary amide",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For primary amide, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_basic_sites",
+            "display_name": "number of basic sites",
+            "description": "number of basic ionizable sites in the molecule",
+            "source_family": "pka",
+            "raw_name": "num_basic_sites",
+            "neighbor_value": 2.0,
+            "query_value": 5.0,
+            "delta_value": 3.0,
+            "neighbor_value_text": "value 2",
+            "query_value_text": "value 5",
+            "delta_value_text": "+3",
+            "observation_text": "For number of basic sites, the neighbor value is value 2, the query value is value 5, and the query-minus-neighbor delta is +3."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "neighbor_value": 0.625,
+            "query_value": 0.5,
+            "delta_value": -0.125,
+            "neighbor_value_text": "value 0.625",
+            "query_value_text": "value 0.5",
+            "delta_value_text": "-0.125",
+            "observation_text": "For fraction of sp3 carbons, the neighbor value is value 0.625, the query value is value 0.5, and the query-minus-neighbor delta is -0.125."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "contribution": 0.6911374532693552,
+            "contribution_abs": 0.6911374532693552,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "contribution": 0.6439456690080354,
+            "contribution_abs": 0.6439456690080354,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "fg_top_level__secondary hydroxyl",
+            "contribution": -0.46397357614146495,
+            "contribution_abs": 0.46397357614146495,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "fg_top_level__tetrahydrofuran",
+            "contribution": -0.3158182623024962,
+            "contribution_abs": 0.3158182623024962,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "fg_top_level__primary hydroxyl",
+            "contribution": -0.18540453814037455,
+            "contribution_abs": 0.18540453814037455,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "fg_top_level__primary amide",
+            "contribution": -0.1841892493580294,
+            "contribution_abs": 0.1841892493580294,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_basic_sites",
+            "contribution": 0.16811452816461264,
+            "contribution_abs": 0.16811452816461264,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "contribution": -0.163937092105915,
+            "contribution_abs": 0.163937092105915,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For estimated logP, the neighbor's estimated logP is value -3.0115, while the query's estimated logP is value -0.2974. The query-minus-neighbor delta is +2.7141. This pairwise contribution is 0.6911, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4428, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.2053. This pairwise contribution is 0.6439, which pushes toward option (B): has oral bioavailability ≥ 20%. Then, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.464, which pushes toward option (A): has oral bioavailability < 20%. After that, Both the neighbor and the query have tetrahydrofuran (query-minus-neighbor delta +0). This pairwise contribution is -0.3158, which pushes toward option (A): has oral bioavailability < 20%. Finally, Both the neighbor and the query have primary hydroxyl (query-minus-neighbor delta +0). This pairwise contribution is -0.1854, which pushes toward option (A): has oral bioavailability < 20%. Step 6, The neighbor has primary amide, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1842, which pushes toward option (A): has oral bioavailability < 20%. Step 7, For number of basic sites, the neighbor's number of basic sites is value 2, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +3. This pairwise contribution is 0.1681, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 8, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.625, while the query's fraction of sp3 carbons is value 0.5. The query-minus-neighbor delta is -0.125. This pairwise contribution is -0.1639, which pushes toward option (A): has oral bioavailability < 20%. Taken together, relative to a neighbor labeled option (B): has oral bioavailability ≥ 20%, these feature comparisons do not align cleanly with option (B): has oral bioavailability ≥ 20%. This neighbor should be treated only as low-strength evidence for option (B): has oral bioavailability ≥ 20%."
+        }
+      },
+      {
+        "neighbor_index": 4,
+        "neighbor_id": "Nc1ccn([C@@H]2O[C@H](CO)[C@@H](O)[C@@H]2O)c(=O)n1",
+        "neighbor_smiles": "Nc1ccn([C@@H]2O[C@H](CO)[C@@H](O)[C@@H]2O)c(=O)n1",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): has oral bioavailability < 20%",
+        "neighbor_similarity": 0.3030812324929972,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.7509338316065872,
+          "pair_score_class1_probability": 0.7509338316065872,
+          "pair_prediction": 1,
+          "pair_prediction_probability": 0.7509338316065872,
+          "pair_prediction_semantics": "option (B): has oral bioavailability ≥ 20%",
+          "teacher_confidence": "medium",
+          "teacher_confidence_margin": 0.2509338316065872
+        },
+        "evidence_strength": {
+          "feature_probability": 0.31206129525164344,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): has oral bioavailability < 20%",
+          "feature_evidence_strength": "medium",
+          "feature_confidence_margin": 0.18793870474835656,
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 1,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.5250619816850365
+        },
+        "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4489, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.1992. This pairwise contribution is 0.5966, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, The neighbor does not have adenine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.4563, which pushes toward option (A): has oral bioavailability < 20%. Then, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.0565, while the query's strongest acidic pKa is value 13.0873. The query-minus-neighbor delta is +0.0308. This pairwise contribution is 0.3739, which pushes toward option (B): has oral bioavailability ≥ 20%. After that, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.3247, which pushes toward option (A): has oral bioavailability < 20%. Finally, The neighbor has cytosine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1842, which pushes toward option (A): has oral bioavailability < 20%. Step 6, For number of basic sites, the neighbor's number of basic sites is value 3, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +2. This pairwise contribution is 0.1028, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 7, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3512, while the query's minimum absolute partial charge is value 0.226. The query-minus-neighbor delta is -0.1253. This pairwise contribution is 0.0791, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 8, Neither the neighbor nor the query has primary aromatic amine (query-minus-neighbor delta +0). This pairwise contribution is -0.0742, which pushes toward option (A): has oral bioavailability < 20%. Taken together, relative to a neighbor labeled option (A): has oral bioavailability < 20%, these feature comparisons do not align cleanly with option (B): has oral bioavailability ≥ 20%. This neighbor should be treated only as low-strength evidence for option (B): has oral bioavailability ≥ 20%.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "neighbor_value": 0.4489304892314893,
+            "query_value": 0.6481668237451135,
+            "delta_value": 0.19923633451362416,
+            "neighbor_value_text": "value 0.4489",
+            "query_value_text": "value 0.6482",
+            "delta_value_text": "+0.1992",
+            "observation_text": "For QED drug-likeness, the neighbor value is value 0.4489, the query value is value 0.6482, and the query-minus-neighbor delta is +0.1992."
+          },
+          {
+            "feature_name": "fg_top_level__adenine",
+            "display_name": "adenine",
+            "description": "top-level functional-group indicator or count for adenine",
+            "source_family": "fg_top_level",
+            "raw_name": "adenine",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For adenine, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "display_name": "strongest acidic pKa",
+            "description": "pKa of the strongest acidic site",
+            "source_family": "pka",
+            "raw_name": "most_acidic_pka",
+            "neighbor_value": 13.0565,
+            "query_value": 13.0873,
+            "delta_value": 0.03080000000000105,
+            "neighbor_value_text": "value 13.0565",
+            "query_value_text": "value 13.0873",
+            "delta_value_text": "+0.0308",
+            "observation_text": "For strongest acidic pKa, the neighbor value is value 13.0565, the query value is value 13.0873, and the query-minus-neighbor delta is +0.0308."
+          },
+          {
+            "feature_name": "fg_top_level__secondary hydroxyl",
+            "display_name": "secondary hydroxyl",
+            "description": "top-level functional-group indicator or count for secondary hydroxyl",
+            "source_family": "fg_top_level",
+            "raw_name": "secondary hydroxyl",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For secondary hydroxyl, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "fg_top_level__cytosine",
+            "display_name": "cytosine",
+            "description": "top-level functional-group indicator or count for cytosine",
+            "source_family": "fg_top_level",
+            "raw_name": "cytosine",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For cytosine, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_basic_sites",
+            "display_name": "number of basic sites",
+            "description": "number of basic ionizable sites in the molecule",
+            "source_family": "pka",
+            "raw_name": "num_basic_sites",
+            "neighbor_value": 3.0,
+            "query_value": 5.0,
+            "delta_value": 2.0,
+            "neighbor_value_text": "value 3",
+            "query_value_text": "value 5",
+            "delta_value_text": "+2",
+            "observation_text": "For number of basic sites, the neighbor value is value 3, the query value is value 5, and the query-minus-neighbor delta is +2."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "neighbor_value": 0.3512126938330889,
+            "query_value": 0.225952826973795,
+            "delta_value": -0.12525986685929388,
+            "neighbor_value_text": "value 0.3512",
+            "query_value_text": "value 0.226",
+            "delta_value_text": "-0.1253",
+            "observation_text": "For minimum absolute partial charge, the neighbor value is value 0.3512, the query value is value 0.226, and the query-minus-neighbor delta is -0.1253."
+          },
+          {
+            "feature_name": "fg_top_level__primary aromatic amine",
+            "display_name": "primary aromatic amine",
+            "description": "top-level functional-group indicator or count for primary aromatic amine",
+            "source_family": "fg_top_level",
+            "raw_name": "primary aromatic amine",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For primary aromatic amine, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "contribution": 0.596590087243456,
+            "contribution_abs": 0.596590087243456,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "fg_top_level__adenine",
+            "contribution": -0.45631838582904805,
+            "contribution_abs": 0.45631838582904805,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "contribution": 0.37387530138822084,
+            "contribution_abs": 0.37387530138822084,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "fg_top_level__secondary hydroxyl",
+            "contribution": -0.32474765754947,
+            "contribution_abs": 0.32474765754947,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "fg_top_level__cytosine",
+            "contribution": -0.18415250950841094,
+            "contribution_abs": 0.18415250950841094,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_basic_sites",
+            "contribution": 0.10281552675400989,
+            "contribution_abs": 0.10281552675400989,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "contribution": 0.0791127672670489,
+            "contribution_abs": 0.0791127672670489,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "fg_top_level__primary aromatic amine",
+            "contribution": -0.07418934882214666,
+            "contribution_abs": 0.07418934882214666,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4489, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.1992. This pairwise contribution is 0.5966, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, The neighbor does not have adenine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.4563, which pushes toward option (A): has oral bioavailability < 20%. Then, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.0565, while the query's strongest acidic pKa is value 13.0873. The query-minus-neighbor delta is +0.0308. This pairwise contribution is 0.3739, which pushes toward option (B): has oral bioavailability ≥ 20%. After that, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.3247, which pushes toward option (A): has oral bioavailability < 20%. Finally, The neighbor has cytosine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1842, which pushes toward option (A): has oral bioavailability < 20%. Step 6, For number of basic sites, the neighbor's number of basic sites is value 3, while the query's number of basic sites is value 5. The query-minus-neighbor delta is +2. This pairwise contribution is 0.1028, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 7, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3512, while the query's minimum absolute partial charge is value 0.226. The query-minus-neighbor delta is -0.1253. This pairwise contribution is 0.0791, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 8, Neither the neighbor nor the query has primary aromatic amine (query-minus-neighbor delta +0). This pairwise contribution is -0.0742, which pushes toward option (A): has oral bioavailability < 20%. Taken together, relative to a neighbor labeled option (A): has oral bioavailability < 20%, these feature comparisons do not align cleanly with option (B): has oral bioavailability ≥ 20%. This neighbor should be treated only as low-strength evidence for option (B): has oral bioavailability ≥ 20%."
+        }
+      },
+      {
+        "neighbor_index": 5,
+        "neighbor_id": "Nc1ncnc2c1ncn2CCOCP(=O)(O)O",
+        "neighbor_smiles": "Nc1ncnc2c1ncn2CCOCP(=O)(O)O",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): has oral bioavailability < 20%",
+        "neighbor_similarity": 0.24439511653718093,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.8470697504741465,
+          "pair_score_class1_probability": 0.8470697504741465,
+          "pair_prediction": 1,
+          "pair_prediction_probability": 0.8470697504741465,
+          "pair_prediction_semantics": "option (B): has oral bioavailability ≥ 20%",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.34706975047414645
+        },
+        "evidence_strength": {
+          "feature_probability": 0.45455130791482434,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): has oral bioavailability < 20%",
+          "feature_evidence_strength": "low",
+          "feature_confidence_margin": 0.04544869208517566,
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 1,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.5341637755808551
+        },
+        "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4923, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.1559. This pairwise contribution is 0.7133, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.3247, which pushes toward option (A): has oral bioavailability < 20%. Then, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 2.3553, while the query's strongest acidic pKa is value 13.0873. The query-minus-neighbor delta is +10.732. This pairwise contribution is 0.3218, which pushes toward option (B): has oral bioavailability ≥ 20%. After that, The neighbor does not have tetrahydrofuran, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.2415, which pushes toward option (A): has oral bioavailability < 20%. Finally, The neighbor does not have primary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.2338, which pushes toward option (A): has oral bioavailability < 20%. Step 6, For aromatic heterocycle count, the neighbor's aromatic heterocycle count is value 2, while the query's aromatic heterocycle count is value 2. The query-minus-neighbor delta is +0. This pairwise contribution is 0.1643, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 7, The neighbor has dialkyl ether, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1545, which pushes toward option (A): has oral bioavailability < 20%. Step 8, Both the neighbor and the query have adenine (query-minus-neighbor delta +0). This pairwise contribution is 0.1272, which pushes toward option (B): has oral bioavailability ≥ 20%. Taken together, relative to a neighbor labeled option (A): has oral bioavailability < 20%, these feature comparisons do not align cleanly with option (B): has oral bioavailability ≥ 20%. This neighbor should be treated only as low-strength evidence for option (B): has oral bioavailability ≥ 20%.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "neighbor_value": 0.4922663812517229,
+            "query_value": 0.6481668237451135,
+            "delta_value": 0.15590044249339058,
+            "neighbor_value_text": "value 0.4923",
+            "query_value_text": "value 0.6482",
+            "delta_value_text": "+0.1559",
+            "observation_text": "For QED drug-likeness, the neighbor value is value 0.4923, the query value is value 0.6482, and the query-minus-neighbor delta is +0.1559."
+          },
+          {
+            "feature_name": "fg_top_level__secondary hydroxyl",
+            "display_name": "secondary hydroxyl",
+            "description": "top-level functional-group indicator or count for secondary hydroxyl",
+            "source_family": "fg_top_level",
+            "raw_name": "secondary hydroxyl",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For secondary hydroxyl, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "display_name": "strongest acidic pKa",
+            "description": "pKa of the strongest acidic site",
+            "source_family": "pka",
+            "raw_name": "most_acidic_pka",
+            "neighbor_value": 2.3553,
+            "query_value": 13.0873,
+            "delta_value": 10.732000000000001,
+            "neighbor_value_text": "value 2.3553",
+            "query_value_text": "value 13.0873",
+            "delta_value_text": "+10.732",
+            "observation_text": "For strongest acidic pKa, the neighbor value is value 2.3553, the query value is value 13.0873, and the query-minus-neighbor delta is +10.732."
+          },
+          {
+            "feature_name": "fg_top_level__tetrahydrofuran",
+            "display_name": "tetrahydrofuran",
+            "description": "top-level functional-group indicator or count for tetrahydrofuran",
+            "source_family": "fg_top_level",
+            "raw_name": "tetrahydrofuran",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For tetrahydrofuran, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "fg_top_level__primary hydroxyl",
+            "display_name": "primary hydroxyl",
+            "description": "top-level functional-group indicator or count for primary hydroxyl",
+            "source_family": "fg_top_level",
+            "raw_name": "primary hydroxyl",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For primary hydroxyl, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAromaticHeterocycles",
+            "display_name": "aromatic heterocycle count",
+            "description": "number of aromatic heterocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAromaticHeterocycles",
+            "neighbor_value": 2.0,
+            "query_value": 2.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "value 2",
+            "query_value_text": "value 2",
+            "delta_value_text": "+0",
+            "observation_text": "For aromatic heterocycle count, the neighbor value is value 2, the query value is value 2, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__dialkyl ether",
+            "display_name": "dialkyl ether",
+            "description": "top-level functional-group indicator or count for dialkyl ether",
+            "source_family": "fg_top_level",
+            "raw_name": "dialkyl ether",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For dialkyl ether, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "fg_top_level__adenine",
+            "display_name": "adenine",
+            "description": "top-level functional-group indicator or count for adenine",
+            "source_family": "fg_top_level",
+            "raw_name": "adenine",
+            "neighbor_value": 1.0,
+            "query_value": 1.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0",
+            "observation_text": "For adenine, the neighbor value is present (1), the query value is present (1), and the query-minus-neighbor delta is +0."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "contribution": 0.7132911912340762,
+            "contribution_abs": 0.7132911912340762,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "fg_top_level__secondary hydroxyl",
+            "contribution": -0.32474765754947,
+            "contribution_abs": 0.32474765754947,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "contribution": 0.3217806423501353,
+            "contribution_abs": 0.3217806423501353,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "fg_top_level__tetrahydrofuran",
+            "contribution": -0.24149952200358624,
+            "contribution_abs": 0.24149952200358624,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "fg_top_level__primary hydroxyl",
+            "contribution": -0.23384639077343636,
+            "contribution_abs": 0.23384639077343636,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAromaticHeterocycles",
+            "contribution": 0.1642828878399365,
+            "contribution_abs": 0.1642828878399365,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "fg_top_level__dialkyl ether",
+            "contribution": -0.1545078564775501,
+            "contribution_abs": 0.1545078564775501,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "fg_top_level__adenine",
+            "contribution": 0.12717773361042978,
+            "contribution_abs": 0.12717773361042978,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4923, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.1559. This pairwise contribution is 0.7133, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.3247, which pushes toward option (A): has oral bioavailability < 20%. Then, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 2.3553, while the query's strongest acidic pKa is value 13.0873. The query-minus-neighbor delta is +10.732. This pairwise contribution is 0.3218, which pushes toward option (B): has oral bioavailability ≥ 20%. After that, The neighbor does not have tetrahydrofuran, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.2415, which pushes toward option (A): has oral bioavailability < 20%. Finally, The neighbor does not have primary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.2338, which pushes toward option (A): has oral bioavailability < 20%. Step 6, For aromatic heterocycle count, the neighbor's aromatic heterocycle count is value 2, while the query's aromatic heterocycle count is value 2. The query-minus-neighbor delta is +0. This pairwise contribution is 0.1643, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 7, The neighbor has dialkyl ether, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1545, which pushes toward option (A): has oral bioavailability < 20%. Step 8, Both the neighbor and the query have adenine (query-minus-neighbor delta +0). This pairwise contribution is 0.1272, which pushes toward option (B): has oral bioavailability ≥ 20%. Taken together, relative to a neighbor labeled option (A): has oral bioavailability < 20%, these feature comparisons do not align cleanly with option (B): has oral bioavailability ≥ 20%. This neighbor should be treated only as low-strength evidence for option (B): has oral bioavailability ≥ 20%."
+        }
+      },
+      {
+        "neighbor_index": 6,
+        "neighbor_id": "O=c1ccn([C@@H]2O[C@H](CO)[C@@H](O)[C@H]2O)c(=O)[nH]1",
+        "neighbor_smiles": "O=c1ccn([C@@H]2O[C@H](CO)[C@@H](O)[C@H]2O)c(=O)[nH]1",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): has oral bioavailability < 20%",
+        "neighbor_similarity": 0.23268505079825835,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.8874607602700535,
+          "pair_score_class1_probability": 0.8874607602700535,
+          "pair_prediction": 1,
+          "pair_prediction_probability": 0.8874607602700535,
+          "pair_prediction_semantics": "option (B): has oral bioavailability ≥ 20%",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.3874607602700535
+        },
+        "evidence_strength": {
+          "feature_probability": 0.5426370220535686,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": "option (B): has oral bioavailability ≥ 20%",
+          "feature_evidence_strength": "low",
+          "feature_confidence_margin": 0.04263702205356856,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 1,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.5836123008621656
+        },
+        "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4435, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.2047. This pairwise contribution is 0.5905, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, For strongest basic pKa, the neighbor's strongest basic pKa is value 1.9481, while the query's strongest basic pKa is value 4.0015. The query-minus-neighbor delta is +2.0534. This pairwise contribution is 0.4764, which pushes toward option (B): has oral bioavailability ≥ 20%. Then, The neighbor does not have adenine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.4563, which pushes toward option (A): has oral bioavailability < 20%. After that, The neighbor has uracil, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.4092, which pushes toward option (B): has oral bioavailability ≥ 20%. Finally, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.3247, which pushes toward option (A): has oral bioavailability < 20%. Step 6, For number of basic sites, the neighbor's number of basic sites is present (1), while the query's number of basic sites is value 5. The query-minus-neighbor delta is +4. This pairwise contribution is 0.1632, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 7, Neither the neighbor nor the query has primary aromatic amine (query-minus-neighbor delta +0). This pairwise contribution is -0.0742, which pushes toward option (A): has oral bioavailability < 20%. Step 8, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.33, while the query's minimum absolute partial charge is value 0.226. The query-minus-neighbor delta is -0.1041. This pairwise contribution is 0.0733, which pushes toward option (B): has oral bioavailability ≥ 20%. Taken together, relative to a neighbor labeled option (A): has oral bioavailability < 20%, the pairwise feature evidence weakly supports option (B): has oral bioavailability ≥ 20%. This neighbor provides low-strength evidence for option (B): has oral bioavailability ≥ 20%.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "neighbor_value": 0.4435105912731592,
+            "query_value": 0.6481668237451135,
+            "delta_value": 0.20465623247195425,
+            "neighbor_value_text": "value 0.4435",
+            "query_value_text": "value 0.6482",
+            "delta_value_text": "+0.2047",
+            "observation_text": "For QED drug-likeness, the neighbor value is value 0.4435, the query value is value 0.6482, and the query-minus-neighbor delta is +0.2047."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "display_name": "strongest basic pKa",
+            "description": "pKa of the strongest basic site",
+            "source_family": "pka",
+            "raw_name": "most_basic_pka",
+            "neighbor_value": 1.9481,
+            "query_value": 4.0015,
+            "delta_value": 2.0534,
+            "neighbor_value_text": "value 1.9481",
+            "query_value_text": "value 4.0015",
+            "delta_value_text": "+2.0534",
+            "observation_text": "For strongest basic pKa, the neighbor value is value 1.9481, the query value is value 4.0015, and the query-minus-neighbor delta is +2.0534."
+          },
+          {
+            "feature_name": "fg_top_level__adenine",
+            "display_name": "adenine",
+            "description": "top-level functional-group indicator or count for adenine",
+            "source_family": "fg_top_level",
+            "raw_name": "adenine",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For adenine, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "fg_top_level__uracil",
+            "display_name": "uracil",
+            "description": "top-level functional-group indicator or count for uracil",
+            "source_family": "fg_top_level",
+            "raw_name": "uracil",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For uracil, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "fg_top_level__secondary hydroxyl",
+            "display_name": "secondary hydroxyl",
+            "description": "top-level functional-group indicator or count for secondary hydroxyl",
+            "source_family": "fg_top_level",
+            "raw_name": "secondary hydroxyl",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For secondary hydroxyl, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_basic_sites",
+            "display_name": "number of basic sites",
+            "description": "number of basic ionizable sites in the molecule",
+            "source_family": "pka",
+            "raw_name": "num_basic_sites",
+            "neighbor_value": 1.0,
+            "query_value": 5.0,
+            "delta_value": 4.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "value 5",
+            "delta_value_text": "+4",
+            "observation_text": "For number of basic sites, the neighbor value is present (1), the query value is value 5, and the query-minus-neighbor delta is +4."
+          },
+          {
+            "feature_name": "fg_top_level__primary aromatic amine",
+            "display_name": "primary aromatic amine",
+            "description": "top-level functional-group indicator or count for primary aromatic amine",
+            "source_family": "fg_top_level",
+            "raw_name": "primary aromatic amine",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For primary aromatic amine, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "neighbor_value": 0.3300353855229543,
+            "query_value": 0.225952826973795,
+            "delta_value": -0.10408255854915929,
+            "neighbor_value_text": "value 0.33",
+            "query_value_text": "value 0.226",
+            "delta_value_text": "-0.1041",
+            "observation_text": "For minimum absolute partial charge, the neighbor value is value 0.33, the query value is value 0.226, and the query-minus-neighbor delta is -0.1041."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "contribution": 0.5904530676311103,
+            "contribution_abs": 0.5904530676311103,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "contribution": 0.4764156875874839,
+            "contribution_abs": 0.4764156875874839,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "fg_top_level__adenine",
+            "contribution": -0.45631838582904805,
+            "contribution_abs": 0.45631838582904805,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "fg_top_level__uracil",
+            "contribution": 0.4092258698365562,
+            "contribution_abs": 0.4092258698365562,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "fg_top_level__secondary hydroxyl",
+            "contribution": -0.32474765754947,
+            "contribution_abs": 0.32474765754947,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_basic_sites",
+            "contribution": 0.16316825228150514,
+            "contribution_abs": 0.16316825228150514,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          },
+          {
+            "feature_name": "fg_top_level__primary aromatic amine",
+            "contribution": -0.07418934882214666,
+            "contribution_abs": 0.07418934882214666,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): has oral bioavailability < 20%"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "contribution": 0.07334938730163032,
+            "contribution_abs": 0.07334938730163032,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_semantics": "option (B): has oral bioavailability ≥ 20%"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4435, while the query's QED drug-likeness is value 0.6482. The query-minus-neighbor delta is +0.2047. This pairwise contribution is 0.5905, which pushes toward option (B): has oral bioavailability ≥ 20%. Next, For strongest basic pKa, the neighbor's strongest basic pKa is value 1.9481, while the query's strongest basic pKa is value 4.0015. The query-minus-neighbor delta is +2.0534. This pairwise contribution is 0.4764, which pushes toward option (B): has oral bioavailability ≥ 20%. Then, The neighbor does not have adenine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.4563, which pushes toward option (A): has oral bioavailability < 20%. After that, The neighbor has uracil, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.4092, which pushes toward option (B): has oral bioavailability ≥ 20%. Finally, The neighbor does not have secondary hydroxyl, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.3247, which pushes toward option (A): has oral bioavailability < 20%. Step 6, For number of basic sites, the neighbor's number of basic sites is present (1), while the query's number of basic sites is value 5. The query-minus-neighbor delta is +4. This pairwise contribution is 0.1632, which pushes toward option (B): has oral bioavailability ≥ 20%. Step 7, Neither the neighbor nor the query has primary aromatic amine (query-minus-neighbor delta +0). This pairwise contribution is -0.0742, which pushes toward option (A): has oral bioavailability < 20%. Step 8, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.33, while the query's minimum absolute partial charge is value 0.226. The query-minus-neighbor delta is -0.1041. This pairwise contribution is 0.0733, which pushes toward option (B): has oral bioavailability ≥ 20%. Taken together, relative to a neighbor labeled option (A): has oral bioavailability < 20%, the pairwise feature evidence weakly supports option (B): has oral bioavailability ≥ 20%. This neighbor provides low-strength evidence for option (B): has oral bioavailability ≥ 20%."
+        }
+      }
+    ]
   },
   "hybrid_rewrite_input": {
     "gt_label": 1,
@@ -174,7 +1647,7 @@
     }
   },
   "source_artifacts": {
-    "global_evidence_path": "/data1/tianang/Projects/TRIM/outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan/Bioavailability_Ma/train/sample_00099.json",
-    "local_evidence_path": "/data1/tianang/Projects/TRIM/outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts/Bioavailability_Ma/train/sample_00099.json"
+    "global_evidence_path": "outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan/Bioavailability_Ma/train/sample_00099.json",
+    "local_evidence_path": "outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts/Bioavailability_Ma/train/sample_00099.json"
   }
 }

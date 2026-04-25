@@ -18,6 +18,7 @@ if str(SRC_ROOT) not in sys.path:
 
 from trim.data.datasets import list_tasks
 from trim.utils.io import load_json, save_json
+from trim.utils.paths import serialize_project_path
 
 try:
     from tqdm.auto import tqdm
@@ -168,11 +169,11 @@ def evaluate_task(task: str, args: argparse.Namespace, pair_root_overrides: dict
     metrics_payload = load_json(hybrid_metrics_path)
     return {
         "task": task,
-        "metrics_path": str(hybrid_metrics_path.resolve()),
+        "metrics_path": serialize_project_path(hybrid_metrics_path),
         "metrics": metrics_payload["metrics"],
         "logs": {
-            "run_local_only_test": str((log_root / "run_local_only_test.log").resolve()),
-            "run_hybrid_test": str((log_root / "run_hybrid_test.log").resolve()),
+            "run_local_only_test": serialize_project_path(log_root / "run_local_only_test.log"),
+            "run_hybrid_test": serialize_project_path(log_root / "run_hybrid_test.log"),
         },
     }
 
@@ -252,7 +253,7 @@ def main() -> int:
             "pair_root_default": args.pair_root_default,
             "pair_root_overrides": pair_root_overrides,
         },
-        "summary_csv": str(summary_csv_path.resolve()),
+        "summary_csv": serialize_project_path(summary_csv_path),
         "results": results,
     }
     save_json(summary_json_path, payload)

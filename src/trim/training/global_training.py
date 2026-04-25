@@ -8,6 +8,7 @@ from trim.evaluation.metrics import compute_binary_classification_metrics
 from trim.features.table_loader import load_task_feature_matrices
 from trim.models.global_ebm import build_ebm_params, build_global_ebm
 from trim.utils.io import save_json, save_pickle
+from trim.utils.paths import serialize_project_path
 
 
 def train_global_task(
@@ -104,8 +105,8 @@ def train_global_task(
         "task": task,
         "model_type": "global_ebm",
         "experiment_name": experiment_dir.name,
-        "experiment_dir": str(experiment_dir.resolve()),
-        "dataset_root": str(Path(dataset_root).resolve()),
+        "experiment_dir": serialize_project_path(experiment_dir),
+        "dataset_root": serialize_project_path(Path(dataset_root)),
         "train_split": train_split_name,
         "valid_split": valid_split_name,
         "feature_set_name": feature_bundle["feature_set_name"],
@@ -119,9 +120,9 @@ def train_global_task(
         "drop_any_nan_columns": drop_any_nan_columns,
         "final_model_metrics": {"train": train_metrics, "valid": valid_metrics},
         "artifacts": {
-            "train_predictions_csv": str(train_predictions_csv.resolve()),
-            "valid_predictions_csv": str(valid_predictions_csv.resolve()),
-            "model_bundle_pkl": str(model_bundle_path.resolve()),
+            "train_predictions_csv": serialize_project_path(train_predictions_csv),
+            "valid_predictions_csv": serialize_project_path(valid_predictions_csv),
+            "model_bundle_pkl": serialize_project_path(model_bundle_path),
         },
     }
     save_json(task_output_dir / "train_summary.json", summary)

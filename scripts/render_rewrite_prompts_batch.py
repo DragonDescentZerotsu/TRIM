@@ -23,7 +23,7 @@ from trim.reasoning.rewrite.pipeline import (
 )
 from trim.reasoning.rewrite.rendering import render_rewrite_prompt
 from trim.utils.io import load_json, save_json
-from trim.utils.paths import resolve_project_path
+from trim.utils.paths import resolve_project_path, serialize_project_path
 
 
 DEFAULT_GLOBAL_ROOT = "outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan"
@@ -148,7 +148,7 @@ def main() -> int:
             candidate_root=args.candidate_root,
             max_samples=args.max_samples,
         )
-        candidate_dir = Path(candidate_manifest["artifacts"]["output_dir"])
+        candidate_dir = resolve_project_path(candidate_manifest["artifacts"]["output_dir"])
         for candidate_path in sorted(candidate_dir.glob("sample_*.json")):
             candidate_payload = load_json(candidate_path)
             sample_index = int(candidate_payload["sample_index"])
@@ -168,7 +168,7 @@ def main() -> int:
                             "split": args.split,
                             "sample_index": sample_index,
                             "mode": mode,
-                            "output_path": str(output_path.resolve()),
+                            "output_path": serialize_project_path(output_path),
                             "status": "existing",
                         }
                     )
@@ -221,7 +221,7 @@ def main() -> int:
                         "split": args.split,
                         "sample_index": sample_index,
                         "mode": mode,
-                        "output_path": str(output_path.resolve()),
+                        "output_path": serialize_project_path(output_path),
                         "status": "rendered",
                     }
                 )
@@ -231,9 +231,9 @@ def main() -> int:
         "mode": args.mode,
         "split": args.split,
         "tasks": tasks,
-        "filtered_root": str(resolve_project_path(args.filtered_root)),
-        "candidate_root": str(resolve_project_path(args.candidate_root)),
-        "output_root": str(resolve_project_path(args.output_root)),
+        "filtered_root": serialize_project_path(resolve_project_path(args.filtered_root)),
+        "candidate_root": serialize_project_path(resolve_project_path(args.candidate_root)),
+        "output_root": serialize_project_path(resolve_project_path(args.output_root)),
         "rows": rows,
         "skipped_rows": skipped_rows,
     }

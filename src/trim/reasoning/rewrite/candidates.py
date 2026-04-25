@@ -7,11 +7,12 @@ from trim.reasoning.semantics.task_semantics import load_task_label_semantics
 from trim.reasoning.rewrite.playbooks import load_task_playbook
 from trim.reasoning.rewrite.playbooks import resolve_playbook_root
 from trim.utils.io import ensure_directory, load_json, save_json
-from trim.utils.paths import OUTPUTS_ROOT, resolve_project_path
+from trim.utils.paths import OUTPUTS_ROOT, resolve_project_path, serialize_project_path
 
 
 REWRITE_CANDIDATE_SCHEMA_VERSION = "trim_reasoning_rewrite_v1"
 DEFAULT_REWRITE_CANDIDATE_OUTPUT_ROOT = OUTPUTS_ROOT / "reasoning_rewrite_candidates"
+TEACHER_FILTER_MODES = ("any_correct", "local_correct", "global_correct", "none")
 
 
 def _sample_paths_by_index(directory: str | Path) -> dict[int, Path]:
@@ -42,6 +43,48 @@ def _teacher_case(*, global_correct: bool, local_correct: bool) -> str:
 def _drop_reason(teacher_case: str) -> str | None:
     if teacher_case == "both_wrong":
         return "both_global_and_local_wrong"
+    return None
+
+
+def _validate_teacher_filter(teacher_filter: str) -> str:
+    value = str(teacher_filter)
+    if value not in TEACHER_FILTER_MODES:
+        raise ValueError(f"Unsupported teacher_filter={value!r}; expected one of {TEACHER_FILTER_MODES}")
+    return value
+
+
+def _keep_for_teacher_filter(*, global_correct: bool, local_correct: bool, teacher_filter: str) -> bool:
+    teacher_filter = _validate_teacher_filter(teacher_filter)
+    if teacher_filter == "any_correct":
+        return bool(global_correct or local_correct)
+    if teacher_filter == "local_correct":
+        return bool(local_correct)
+    if teacher_filter == "global_correct":
+        return bool(global_correct)
+    if teacher_filter == "none":
+        return True
+    raise AssertionError(f"Unhandled teacher_filter={teacher_filter!r}")
+
+
+def _drop_reason_for_filter(
+    *,
+    teacher_case: str,
+    global_correct: bool,
+    local_correct: bool,
+    teacher_filter: str,
+) -> str | None:
+    if _keep_for_teacher_filter(
+        global_correct=global_correct,
+        local_correct=local_correct,
+        teacher_filter=teacher_filter,
+    ):
+        return None
+    if teacher_filter == "any_correct":
+        return _drop_reason(teacher_case)
+    if teacher_filter == "local_correct":
+        return "local_prediction_wrong"
+    if teacher_filter == "global_correct":
+        return "global_prediction_wrong"
     return None
 
 
@@ -92,6 +135,163 @@ def _extract_neighbor_similarities(local_payload: dict[str, Any], *, expected_ne
     return rows
 
 
+def _label_semantics_text(label: int, label_semantics: dict[int, dict[str, str]]) -> str:
+    payload = label_semantics[int(label)]
+    return f"option ({payload['option']}): {payload['text']}"
+
+
+def _term_observation_text(term: dict[str, Any]) -> str:
+    display_name = str(term["display_name"])
+    base_value_text = str(term.get("base_value_text", term.get("base_value", "")))
+    query_value_text = str(term.get("query_value_text", term.get("query_value", "")))
+    delta_value_text = str(term.get("delta_value_text", term.get("delta_value", "")))
+    return (
+        f"For {display_name}, the neighbor value is {base_value_text}, the query value is "
+        f"{query_value_text}, and the query-minus-neighbor delta is {delta_value_text}."
+    )
+
+
+def _build_observation_payload(term: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "feature_name": str(term["feature_name"]),
+        "display_name": str(term["display_name"]),
+        "description": str(term.get("description", "")),
+        "source_family": str(term.get("source_family", "")),
+        "raw_name": str(term.get("raw_name", "")),
+        "neighbor_value": term.get("base_value"),
+        "query_value": term.get("query_value"),
+        "delta_value": term.get("delta_value"),
+        "neighbor_value_text": str(term.get("base_value_text", "")),
+        "query_value_text": str(term.get("query_value_text", "")),
+        "delta_value_text": str(term.get("delta_value_text", "")),
+        "observation_text": _term_observation_text(term),
+    }
+
+
+def _build_hidden_signal_payload(
+    term: dict[str, Any],
+    *,
+    label_semantics: dict[int, dict[str, str]],
+) -> dict[str, Any]:
+    supports_label = int(term["supports_label"])
+    return {
+        "feature_name": str(term["feature_name"]),
+        "contribution": float(term["contribution"]),
+        "contribution_abs": float(term["contribution_abs"]),
+        "contribution_rank": int(term["contribution_rank"]),
+        "supports_label": supports_label,
+        "supports_semantics": _label_semantics_text(supports_label, label_semantics),
+    }
+
+
+def _build_neighbor_rewrite_row(
+    *,
+    neighbor_index: int,
+    neighbor_evidence: dict[str, Any],
+    neighbor_middle_draft: dict[str, Any],
+    label_semantics: dict[int, dict[str, str]],
+) -> dict[str, Any]:
+    for field_name in ("neighbor_id", "neighbor_smiles", "neighbor_role"):
+        if neighbor_evidence.get(field_name) != neighbor_middle_draft.get(field_name):
+            raise ValueError(
+                f"Neighbor evidence/middle-draft mismatch for {field_name}: "
+                f"{neighbor_evidence.get(field_name)!r} != {neighbor_middle_draft.get(field_name)!r}"
+            )
+
+    pair_prediction = int(neighbor_evidence["pair_prediction"])
+    neighbor_label = int(neighbor_evidence["neighbor_label"])
+    top_pair_terms = list(neighbor_evidence.get("top_pair_terms", []))
+    middle_draft_text = str(neighbor_middle_draft["middle_draft"])
+    return {
+        "neighbor_index": int(neighbor_index),
+        "neighbor_id": str(neighbor_evidence["neighbor_id"]),
+        "neighbor_smiles": str(neighbor_evidence["neighbor_smiles"]),
+        "neighbor_role": str(neighbor_evidence["neighbor_role"]),
+        "neighbor_label": neighbor_label,
+        "neighbor_label_semantics": _label_semantics_text(neighbor_label, label_semantics),
+        "neighbor_similarity": float(neighbor_evidence["neighbor_similarity"]),
+        "pair_teacher": {
+            "pair_model_type": str(neighbor_evidence["pair_model_type"]),
+            "pair_score": float(neighbor_evidence["pair_score"]),
+            "pair_score_class1_probability": float(neighbor_evidence["pair_score_class1_probability"]),
+            "pair_prediction": pair_prediction,
+            "pair_prediction_probability": float(neighbor_evidence["pair_prediction_probability"]),
+            "pair_prediction_semantics": _label_semantics_text(pair_prediction, label_semantics),
+            "teacher_confidence": str(neighbor_evidence["teacher_confidence"]),
+            "teacher_confidence_margin": float(neighbor_evidence["teacher_confidence_margin"]),
+        },
+        "evidence_strength": {
+            "feature_probability": float(neighbor_evidence["feature_probability"]),
+            "feature_prediction": int(neighbor_evidence["feature_prediction"]),
+            "feature_prediction_semantics": _label_semantics_text(
+                int(neighbor_evidence["feature_prediction"]),
+                label_semantics,
+            ),
+            "feature_evidence_strength": str(neighbor_evidence["feature_evidence_strength"]),
+            "feature_confidence_margin": float(neighbor_evidence["feature_confidence_margin"]),
+            "teacher_feature_agreement": bool(neighbor_evidence["teacher_feature_agreement"]),
+            "teacher_aligned_evidence_strength": str(neighbor_evidence["teacher_aligned_evidence_strength"]),
+            "displayed_feature_prediction": int(neighbor_evidence["displayed_feature_prediction"]),
+            "displayed_teacher_agreement": bool(neighbor_evidence["displayed_teacher_agreement"]),
+            "displayed_abs_contribution_coverage": float(neighbor_evidence["displayed_abs_contribution_coverage"]),
+        },
+        "middle_draft": middle_draft_text,
+        "tool_visible_observations": [_build_observation_payload(term) for term in top_pair_terms],
+        "hidden_teacher_signals": [
+            _build_hidden_signal_payload(term, label_semantics=label_semantics) for term in top_pair_terms
+        ],
+        "middle_draft_reference": {
+            "purpose": "legacy_alias_for_middle_draft",
+            "text": middle_draft_text,
+        },
+    }
+
+
+def _build_per_neighbor_rewrite_input(
+    *,
+    local_payload: dict[str, Any],
+    playbook_text: str,
+    label_semantics: dict[int, dict[str, str]],
+    task_description: str,
+    expected_neighbor_count: int,
+) -> dict[str, Any]:
+    evidence = dict(local_payload["local_per_neighbor_decision_evidence"])
+    middle_drafts = dict(local_payload["local_per_neighbor_middle_draft"])
+
+    rows: list[dict[str, Any]] = []
+    neighbor_index = 1
+    for group_name in ("positive_neighbors", "negative_neighbors"):
+        evidence_rows = list(evidence.get(group_name, []))
+        draft_rows = list(middle_drafts.get(group_name, []))
+        if len(evidence_rows) != len(draft_rows):
+            raise ValueError(
+                f"Mismatch for {group_name}: evidence has {len(evidence_rows)} rows, "
+                f"middle draft has {len(draft_rows)} rows"
+            )
+        for neighbor_evidence, neighbor_middle_draft in zip(evidence_rows, draft_rows, strict=True):
+            rows.append(
+                _build_neighbor_rewrite_row(
+                    neighbor_index=neighbor_index,
+                    neighbor_evidence=dict(neighbor_evidence),
+                    neighbor_middle_draft=dict(neighbor_middle_draft),
+                    label_semantics=label_semantics,
+                )
+            )
+            neighbor_index += 1
+
+    if len(rows) != expected_neighbor_count:
+        raise ValueError(f"Expected {expected_neighbor_count} per-neighbor rewrite inputs, found {len(rows)}")
+
+    return {
+        "task_playbook": playbook_text,
+        "task_description": task_description,
+        "positive_label_semantics": str(label_semantics[1]["text"]),
+        "negative_label_semantics": str(label_semantics[0]["text"]),
+        "num_neighbors": int(len(rows)),
+        "neighbors": rows,
+    }
+
+
 def _build_candidate_record(
     *,
     global_payload: dict[str, Any],
@@ -112,6 +312,13 @@ def _build_candidate_record(
         f"molecule local analog-comparison task {global_payload['task']} "
         f"where option (A) means {label_semantics[0]['text']} and option (B) means {label_semantics[1]['text']}"
     )
+    per_neighbor_rewrite_input = _build_per_neighbor_rewrite_input(
+        local_payload=local_payload,
+        playbook_text=playbook_text,
+        label_semantics=label_semantics,
+        task_description=task_description,
+        expected_neighbor_count=expected_neighbor_count,
+    )
 
     candidate = {
         "schema_version": REWRITE_CANDIDATE_SCHEMA_VERSION,
@@ -128,7 +335,7 @@ def _build_candidate_record(
         "keep_for_rewrite": keep_for_rewrite,
         "drop_reason": _drop_reason(teacher_case),
         "teacher_case": teacher_case,
-        "playbook_path": str(playbook_path),
+        "playbook_path": serialize_project_path(playbook_path),
         "global_rewrite_input": {
             "task_playbook": playbook_text,
             "task_description": (
@@ -153,13 +360,14 @@ def _build_candidate_record(
                 f"{label_semantics[int(local_payload['local_prediction'])]['text']}"
             ),
         },
+        "local_per_neighbor_rewrite_input": per_neighbor_rewrite_input,
         "hybrid_rewrite_input": {
             "gt_label": int(global_payload["gt_label"]),
             "gt_label_semantics": gt_label_semantics,
         },
         "source_artifacts": {
-            "global_evidence_path": str(global_payload["_source_path"]),
-            "local_evidence_path": str(local_payload["_source_path"]),
+            "global_evidence_path": serialize_project_path(global_payload["_source_path"]),
+            "local_evidence_path": serialize_project_path(local_payload["_source_path"]),
         },
     }
     return candidate
@@ -172,7 +380,9 @@ def filter_rewrite_samples(
     output_dir: str | Path | None = None,
     sample_indices: list[int] | None = None,
     max_samples: int | None = None,
+    teacher_filter: str = "any_correct",
 ) -> dict[str, Any]:
+    teacher_filter = _validate_teacher_filter(teacher_filter)
     global_paths = _sample_paths_by_index(global_dir)
     local_paths = _sample_paths_by_index(local_dir)
 
@@ -204,6 +414,11 @@ def filter_rewrite_samples(
         global_correct = bool(global_payload["global_prediction_correct"])
         local_correct = bool(local_payload["local_prediction_correct"])
         teacher_case = _teacher_case(global_correct=global_correct, local_correct=local_correct)
+        keep_for_rewrite = _keep_for_teacher_filter(
+            global_correct=global_correct,
+            local_correct=local_correct,
+            teacher_filter=teacher_filter,
+        )
         record = {
             "sample_id": str(global_payload["sample_id"]),
             "sample_index": int(sample_index),
@@ -214,8 +429,14 @@ def filter_rewrite_samples(
             "global_prediction_correct": global_correct,
             "local_prediction_correct": local_correct,
             "teacher_case": teacher_case,
-            "keep_for_rewrite": teacher_case != "both_wrong",
-            "drop_reason": _drop_reason(teacher_case),
+            "teacher_filter": teacher_filter,
+            "keep_for_rewrite": keep_for_rewrite,
+            "drop_reason": _drop_reason_for_filter(
+                teacher_case=teacher_case,
+                global_correct=global_correct,
+                local_correct=local_correct,
+                teacher_filter=teacher_filter,
+            ),
         }
         task_name = record["task"] if task_name is None else task_name
         split_name = record["split"] if split_name is None else split_name
@@ -233,9 +454,9 @@ def filter_rewrite_samples(
         save_json(kept_path, kept_records)
         save_json(dropped_path, dropped_records)
         artifact_paths = {
-            "output_dir": str(resolved_output_dir.resolve()),
-            "kept_records_path": str(kept_path.resolve()),
-            "dropped_records_path": str(dropped_path.resolve()),
+            "output_dir": serialize_project_path(resolved_output_dir),
+            "kept_records_path": serialize_project_path(kept_path),
+            "dropped_records_path": serialize_project_path(dropped_path),
         }
 
     manifest = {
@@ -243,8 +464,9 @@ def filter_rewrite_samples(
         "candidate_stage": "pre_rewrite_filter_only",
         "task": task_name,
         "split": split_name,
-        "global_dir": str(resolve_project_path(global_dir)),
-        "local_dir": str(resolve_project_path(local_dir)),
+        "global_dir": serialize_project_path(resolve_project_path(global_dir)),
+        "local_dir": serialize_project_path(resolve_project_path(local_dir)),
+        "teacher_filter": teacher_filter,
         "total_record_count": int(len(target_indices)),
         "kept_record_count": int(len(kept_records)),
         "dropped_record_count": int(len(dropped_records)),
@@ -273,7 +495,9 @@ def build_rewrite_candidates(
     sample_indices: list[int] | None = None,
     max_samples: int | None = None,
     expected_neighbor_count: int = 6,
+    teacher_filter: str = "any_correct",
 ) -> dict[str, Any]:
+    teacher_filter = _validate_teacher_filter(teacher_filter)
     global_paths = _sample_paths_by_index(global_dir)
     local_paths = _sample_paths_by_index(local_dir)
 
@@ -300,8 +524,8 @@ def build_rewrite_candidates(
     for sample_index in target_indices:
         global_payload = load_json(global_paths[sample_index])
         local_payload = load_json(local_paths[sample_index])
-        global_payload["_source_path"] = str(global_paths[sample_index])
-        local_payload["_source_path"] = str(local_paths[sample_index])
+        global_payload["_source_path"] = serialize_project_path(global_paths[sample_index])
+        local_payload["_source_path"] = serialize_project_path(local_paths[sample_index])
         _validate_alignment(global_payload, local_payload)
 
         task = str(global_payload["task"])
@@ -319,14 +543,26 @@ def build_rewrite_candidates(
         global_correct = bool(global_payload["global_prediction_correct"])
         local_correct = bool(local_payload["local_prediction_correct"])
         teacher_case = _teacher_case(global_correct=global_correct, local_correct=local_correct)
-        if teacher_case == "both_wrong":
+        if not _keep_for_teacher_filter(
+            global_correct=global_correct,
+            local_correct=local_correct,
+            teacher_filter=teacher_filter,
+        ):
             dropped_records.append(
                 {
                     "sample_id": str(global_payload["sample_id"]),
                     "sample_index": int(sample_index),
                     "smiles": str(global_payload["smiles"]),
+                    "global_prediction_correct": global_correct,
+                    "local_prediction_correct": local_correct,
                     "teacher_case": teacher_case,
-                    "drop_reason": _drop_reason(teacher_case),
+                    "teacher_filter": teacher_filter,
+                    "drop_reason": _drop_reason_for_filter(
+                        teacher_case=teacher_case,
+                        global_correct=global_correct,
+                        local_correct=local_correct,
+                        teacher_filter=teacher_filter,
+                    ),
                 }
             )
             continue
@@ -345,13 +581,19 @@ def build_rewrite_candidates(
     resolved_output_dir: Path | None = None
     if output_dir is not None:
         resolved_output_dir = ensure_directory(resolve_project_path(output_dir))
+        expected_sample_names = {
+            f"sample_{int(record['sample_index']):05d}.json" for record in kept_records
+        }
+        for stale_path in resolved_output_dir.glob("sample_*.json"):
+            if stale_path.name not in expected_sample_names:
+                stale_path.unlink()
         written_files = []
         for record in kept_records:
             sample_path = resolved_output_dir / f"sample_{int(record['sample_index']):05d}.json"
             save_json(sample_path, record)
-            written_files.append(str(sample_path.resolve()))
+            written_files.append(serialize_project_path(sample_path))
         artifact_paths = {
-            "output_dir": str(resolved_output_dir.resolve()),
+            "output_dir": serialize_project_path(resolved_output_dir),
             "sample_files": written_files,
         }
 
@@ -360,9 +602,10 @@ def build_rewrite_candidates(
         "candidate_stage": "pre_rewrite_filtered_inputs",
         "task": task_name,
         "split": split_name,
-        "global_dir": str(resolve_project_path(global_dir)),
-        "local_dir": str(resolve_project_path(local_dir)),
+        "global_dir": serialize_project_path(resolve_project_path(global_dir)),
+        "local_dir": serialize_project_path(resolve_project_path(local_dir)),
         "allow_missing_playbook": bool(allow_missing_playbook),
+        "teacher_filter": teacher_filter,
         "kept_record_count": int(len(kept_records)),
         "dropped_record_count": int(len(dropped_records)),
         "kept_sample_indices": [int(record["sample_index"]) for record in kept_records],

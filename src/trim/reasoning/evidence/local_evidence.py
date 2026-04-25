@@ -11,6 +11,7 @@ from trim.features.table_loader import build_feature_source_bundle
 from trim.models.aggregation import aggregate_local_scores
 from trim.models.retrieval import CachedSimilarityRetriever, NeighborRecord
 from trim.reasoning.evidence.global_evidence import (
+    _build_ranked_evidence_detail_clause,
     _format_number,
     _infer_value_phrase,
     _label_payload,
@@ -25,10 +26,20 @@ from trim.utils.paths import (
     DEFAULT_PROCESSED_DATA_ROOT,
     DEFAULT_SIMILARITY_CACHE_ROOT,
     OUTPUTS_ROOT,
+    serialize_project_path,
 )
 
 
 LOCAL_EVIDENCE_STAGE = "local_evidence_only"
+DEFAULT_TOP_TERM_K_PER_NEIGHBOR = 8
+
+
+def _sigmoid(value: float) -> float:
+    if value >= 0:
+        z = math.exp(-value)
+        return 1.0 / (1.0 + z)
+    z = math.exp(value)
+    return z / (1.0 + z)
 
 
 def _delta_text(value: object) -> str:
@@ -47,6 +58,80 @@ def _pair_model_type(neighbor_label: int) -> str:
 
 def _neighbor_role(neighbor_label: int) -> str:
     return "positive_neighbor" if int(neighbor_label) == 1 else "negative_neighbor"
+
+
+def _pair_prediction_probability(pair_score: float, pair_prediction: int) -> float:
+    score = float(pair_score)
+    if int(pair_prediction) == 1:
+        return score
+    return 1.0 - score
+
+
+def _confidence_level(margin: float) -> str:
+    margin = float(margin)
+    if margin <= 0.1:
+        return "low"
+    if margin <= 0.3:
+        return "medium"
+    return "high"
+
+
+def _strength_adverb(strength: str) -> str:
+    if strength == "high":
+        return "strongly"
+    if strength == "medium":
+        return "moderately"
+    return "weakly"
+
+
+def _semantic_label_reference(label: int, label_semantics: dict[int, dict[str, str]], *, plural: bool = False) -> str:
+    label_payload = _label_payload(int(label), label_semantics)
+    noun = "neighbors" if plural else "a neighbor"
+    return f"{noun} labeled option ({label_payload['option']}): {label_payload['text']}"
+
+
+def _term_sum_payload(term_contributions: np.ndarray, label_semantics: dict[int, dict[str, str]]) -> dict[str, object]:
+    finite_terms = [float(value) for value in term_contributions if not math.isnan(float(value))]
+    feature_logit = float(sum(finite_terms))
+    feature_probability = _sigmoid(feature_logit)
+    feature_prediction = 1 if feature_probability >= 0.5 else 0
+    feature_margin = abs(feature_probability - 0.5)
+    return {
+        "feature_logit": feature_logit,
+        "feature_probability": feature_probability,
+        "feature_prediction": int(feature_prediction),
+        "feature_prediction_semantics": _label_payload(feature_prediction, label_semantics),
+        "feature_confidence_margin": float(feature_margin),
+        "feature_evidence_strength": _confidence_level(feature_margin),
+        "total_abs_feature_contribution": float(sum(abs(value) for value in finite_terms)),
+    }
+
+
+def _displayed_term_sum_payload(
+    top_pair_terms: list[dict[str, object]],
+    total_abs_feature_contribution: float,
+    label_semantics: dict[int, dict[str, str]],
+) -> dict[str, object]:
+    displayed_terms = [float(term["contribution"]) for term in top_pair_terms]
+    displayed_logit = float(sum(displayed_terms))
+    displayed_probability = _sigmoid(displayed_logit)
+    displayed_prediction = 1 if displayed_probability >= 0.5 else 0
+    displayed_margin = abs(displayed_probability - 0.5)
+    displayed_abs_contribution = float(sum(abs(value) for value in displayed_terms))
+    if total_abs_feature_contribution > 0.0:
+        displayed_coverage = displayed_abs_contribution / total_abs_feature_contribution
+    else:
+        displayed_coverage = 0.0
+    return {
+        "displayed_feature_logit": displayed_logit,
+        "displayed_feature_probability": displayed_probability,
+        "displayed_feature_prediction": int(displayed_prediction),
+        "displayed_feature_prediction_semantics": _label_payload(displayed_prediction, label_semantics),
+        "displayed_feature_confidence_margin": float(displayed_margin),
+        "displayed_feature_evidence_strength": _confidence_level(displayed_margin),
+        "displayed_abs_feature_contribution": displayed_abs_contribution,
+        "displayed_abs_contribution_coverage": float(displayed_coverage),
+    }
 
 
 def _render_pair_observed_value(value_text: str) -> str:
@@ -242,6 +327,9 @@ def _build_neighbor_evidence(
 ) -> dict[str, object]:
     pair_model_type = _pair_model_type(neighbor.label)
     pair_prediction = 1 if pair_score >= 0.5 else 0
+    pair_prediction_probability = _pair_prediction_probability(pair_score, pair_prediction)
+    teacher_confidence_margin = abs(pair_prediction_probability - 0.5)
+    term_payload = _term_sum_payload(term_contributions, label_semantics)
     top_pair_terms = _extract_top_pair_terms(
         raw_feature_columns=raw_feature_columns,
         feature_semantics_map=feature_semantics_map,
@@ -250,6 +338,18 @@ def _build_neighbor_evidence(
         term_contributions=term_contributions,
         label_semantics=label_semantics,
         top_term_k=top_term_k,
+    )
+    displayed_payload = _displayed_term_sum_payload(
+        top_pair_terms=top_pair_terms,
+        total_abs_feature_contribution=float(term_payload["total_abs_feature_contribution"]),
+        label_semantics=label_semantics,
+    )
+    teacher_feature_agreement = int(pair_prediction) == int(term_payload["feature_prediction"])
+    displayed_teacher_agreement = int(pair_prediction) == int(displayed_payload["displayed_feature_prediction"])
+    teacher_aligned_evidence_strength = (
+        str(term_payload["feature_evidence_strength"])
+        if teacher_feature_agreement and displayed_teacher_agreement
+        else "low"
     )
     return {
         "neighbor_id": neighbor.smiles,
@@ -262,8 +362,17 @@ def _build_neighbor_evidence(
         "neighbor_role": _neighbor_role(neighbor.label),
         "pair_model_type": pair_model_type,
         "pair_score": float(pair_score),
+        "pair_score_class1_probability": float(pair_score),
         "pair_prediction": int(pair_prediction),
+        "pair_prediction_probability": pair_prediction_probability,
+        "teacher_confidence_margin": float(teacher_confidence_margin),
+        "teacher_confidence": _confidence_level(teacher_confidence_margin),
         "pair_prediction_semantics": _label_payload(pair_prediction, label_semantics),
+        **term_payload,
+        "teacher_feature_agreement": bool(teacher_feature_agreement),
+        "teacher_aligned_evidence_strength": teacher_aligned_evidence_strength,
+        **displayed_payload,
+        "displayed_teacher_agreement": bool(displayed_teacher_agreement),
         "top_pair_terms": top_pair_terms,
     }
 
@@ -273,32 +382,20 @@ def _build_neighbor_middle_draft(
     neighbor_evidence: dict[str, object],
     label_semantics: dict[int, dict[str, str]],
 ) -> dict[str, object]:
-    transition_words = ["First", "Next", "Then", "After that", "Finally"]
     top_pair_terms = list(neighbor_evidence.get("top_pair_terms", []))
     pair_prediction = int(neighbor_evidence["pair_prediction"])
     pair_score = float(neighbor_evidence["pair_score"])
+    pair_prediction_probability = _pair_prediction_probability(pair_score, pair_prediction)
     predicted_label_payload = _label_payload(pair_prediction, label_semantics)
 
-    if top_pair_terms:
-        step_clauses = []
-        for step_index, term in enumerate(top_pair_terms):
-            transition = (
-                transition_words[step_index]
-                if step_index < len(transition_words)
-                else f"Step {step_index + 1}"
-            )
-            step_statement = str(term["text_hint"]).rstrip()
-            if step_statement.endswith("."):
-                step_statement = step_statement[:-1]
-            step_clauses.append(f"{transition}, {step_statement}.")
-        detail_clause = " ".join(step_clauses)
-    else:
-        detail_clause = "No ranked pair-term evidence was available for this neighbor comparison."
+    detail_clause = _build_ranked_evidence_detail_clause(
+        evidence_items=top_pair_terms,
+        no_evidence_text="No ranked pair-term evidence was available for this neighbor comparison.",
+    )
 
-    conclusion_clause = (
-        f"Taken together, this {_neighbor_role(int(neighbor_evidence['neighbor_label'])).replace('_', '-')} comparison "
-        f"pushes toward option ({predicted_label_payload['option']}): {predicted_label_payload['text']} with pair score "
-        f"{_format_number(pair_score)}."
+    conclusion_clause = _build_neighbor_conclusion_clause(
+        neighbor_evidence=neighbor_evidence,
+        label_semantics=label_semantics,
     )
 
     return {
@@ -307,8 +404,30 @@ def _build_neighbor_middle_draft(
         "neighbor_role": neighbor_evidence["neighbor_role"],
         "pair_model_type": neighbor_evidence["pair_model_type"],
         "pair_score": pair_score,
+        "pair_score_class1_probability": pair_score,
         "pair_prediction": pair_prediction,
+        "pair_prediction_probability": pair_prediction_probability,
+        "teacher_confidence_margin": float(neighbor_evidence["teacher_confidence_margin"]),
+        "teacher_confidence": neighbor_evidence["teacher_confidence"],
         "pair_prediction_semantics": predicted_label_payload,
+        "feature_logit": float(neighbor_evidence["feature_logit"]),
+        "feature_probability": float(neighbor_evidence["feature_probability"]),
+        "feature_prediction": int(neighbor_evidence["feature_prediction"]),
+        "feature_prediction_semantics": dict(neighbor_evidence["feature_prediction_semantics"]),
+        "feature_confidence_margin": float(neighbor_evidence["feature_confidence_margin"]),
+        "feature_evidence_strength": neighbor_evidence["feature_evidence_strength"],
+        "teacher_feature_agreement": bool(neighbor_evidence["teacher_feature_agreement"]),
+        "teacher_aligned_evidence_strength": neighbor_evidence["teacher_aligned_evidence_strength"],
+        "displayed_feature_logit": float(neighbor_evidence["displayed_feature_logit"]),
+        "displayed_feature_probability": float(neighbor_evidence["displayed_feature_probability"]),
+        "displayed_feature_prediction": int(neighbor_evidence["displayed_feature_prediction"]),
+        "displayed_feature_prediction_semantics": dict(
+            neighbor_evidence["displayed_feature_prediction_semantics"]
+        ),
+        "displayed_feature_confidence_margin": float(neighbor_evidence["displayed_feature_confidence_margin"]),
+        "displayed_feature_evidence_strength": neighbor_evidence["displayed_feature_evidence_strength"],
+        "displayed_abs_contribution_coverage": float(neighbor_evidence["displayed_abs_contribution_coverage"]),
+        "displayed_teacher_agreement": bool(neighbor_evidence["displayed_teacher_agreement"]),
         "middle_draft": f"{detail_clause} {conclusion_clause}",
     }
 
@@ -320,6 +439,50 @@ def _resolve_raw_feature_columns(model_bundle: dict[str, object]) -> list[str]:
         if all(base_columns):
             return base_columns
     return [str(column) for column in model_bundle["raw_feature_columns"]]
+
+
+def _option_clause(label_payload: dict[str, object]) -> str:
+    return f"option ({label_payload['option']}): {label_payload['text']}"
+
+
+def _build_neighbor_conclusion_clause(
+    *,
+    neighbor_evidence: dict[str, object],
+    label_semantics: dict[int, dict[str, str]],
+) -> str:
+    pair_prediction = int(neighbor_evidence["pair_prediction"])
+    feature_prediction = int(neighbor_evidence["feature_prediction"])
+    displayed_prediction = int(neighbor_evidence["displayed_feature_prediction"])
+
+    pair_payload = _label_payload(pair_prediction, label_semantics)
+    neighbor_label_reference = _semantic_label_reference(
+        int(neighbor_evidence["neighbor_label"]),
+        label_semantics,
+    )
+
+    feature_strength = str(neighbor_evidence["feature_evidence_strength"])
+    teacher_aligned_strength = str(neighbor_evidence["teacher_aligned_evidence_strength"])
+    feature_adverb = _strength_adverb(feature_strength)
+
+    if feature_prediction != pair_prediction:
+        return (
+            f"Taken together, relative to {neighbor_label_reference}, these feature comparisons do not align cleanly "
+            f"with {_option_clause(pair_payload)}. This neighbor should be treated only as "
+            f"{teacher_aligned_strength}-strength evidence for {_option_clause(pair_payload)}."
+        )
+
+    if displayed_prediction != feature_prediction:
+        return (
+            f"Taken together, relative to {neighbor_label_reference}, these feature comparisons are mixed. "
+            f"This neighbor should be treated as "
+            f"{teacher_aligned_strength}-strength evidence for {_option_clause(pair_payload)}."
+        )
+
+    return (
+        f"Taken together, relative to {neighbor_label_reference}, the pairwise feature evidence {feature_adverb} "
+        f"supports {_option_clause(pair_payload)}. This neighbor provides {teacher_aligned_strength}-strength "
+        f"evidence for {_option_clause(pair_payload)}."
+    )
 
 
 def _join_with_and(items: list[str]) -> str:
@@ -582,19 +745,24 @@ def _build_local_summary_middle_draft(
 
     pos_draft = _build_group_summary_middle_draft(
         group_summary=pos_group_summary,
-        group_label="positive neighbors",
+        group_label=_semantic_label_reference(1, label_semantics, plural=True),
     )
     neg_draft = _build_group_summary_middle_draft(
         group_summary=neg_group_summary,
-        group_label="negative neighbors",
+        group_label=_semantic_label_reference(0, label_semantics, plural=True),
     )
 
     predicted_payload = _label_payload(local_prediction, label_semantics)
-    score_clauses = [f"local score {_format_number(local_score)}"]
+    local_prediction_probability = _pair_prediction_probability(local_score, local_prediction)
+    score_clauses = [f"local prediction probability {_format_number(local_prediction_probability)}"]
     if s_pos is not None:
-        score_clauses.append(f"positive-neighbor aggregate {_format_number(s_pos)}")
+        score_clauses.append(
+            f"aggregate over {_semantic_label_reference(1, label_semantics, plural=True)} {_format_number(s_pos)}"
+        )
     if s_neg is not None:
-        score_clauses.append(f"negative-neighbor aggregate {_format_number(s_neg)}")
+        score_clauses.append(
+            f"aggregate over {_semantic_label_reference(0, label_semantics, plural=True)} {_format_number(s_neg)}"
+        )
 
     conclusion_clause = (
         f"Taken together, these local analog comparisons support option ({predicted_payload['option']}): "
@@ -688,7 +856,7 @@ def extract_local_evidence_for_split(
     cache_root: str | Path = DEFAULT_SIMILARITY_CACHE_ROOT,
     top_k_pos: int = 3,
     top_k_neg: int = 3,
-    top_term_k: int = 6,
+    top_term_k: int = DEFAULT_TOP_TERM_K_PER_NEIGHBOR,
     strict_cross_scaffold_pairs: bool = True,
     sample_indices: list[int] | None = None,
     max_samples: int | None = None,
@@ -857,17 +1025,17 @@ def extract_local_evidence_for_split(
         for record in records:
             sample_path = output_path / f"sample_{int(record['sample_index']):05d}.json"
             save_json(sample_path, record)
-        artifact_paths["output_dir"] = str(output_path.resolve())
+        artifact_paths["output_dir"] = serialize_project_path(output_path)
 
     return {
         "schema_version": REASONING_SCHEMA_VERSION,
         "evidence_stage": LOCAL_EVIDENCE_STAGE,
         "task": task,
         "split": split,
-        "pos_bundle_path": str(pos_bundle_path.resolve()),
-        "neg_bundle_path": str(neg_bundle_path.resolve()),
-        "dataset_root": str(Path(dataset_root).resolve()),
-        "cache_root": str(Path(cache_root).resolve()),
+        "pos_bundle_path": serialize_project_path(pos_bundle_path),
+        "neg_bundle_path": serialize_project_path(neg_bundle_path),
+        "dataset_root": serialize_project_path(Path(dataset_root)),
+        "cache_root": serialize_project_path(Path(cache_root)),
         "feature_set_name": str(pos_bundle["feature_set_name"]),
         "num_records": int(len(records)),
         "sample_indices": [int(record["sample_index"]) for record in records],

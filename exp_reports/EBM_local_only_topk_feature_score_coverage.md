@@ -4,7 +4,7 @@
 
 我新增了可复跑脚本：
 
-[scripts/analyze_local_pair_term_coverage.py](/data1/tianang/Projects/TRIM/scripts/analyze_local_pair_term_coverage.py)
+[scripts/analyze_local_pair_term_coverage.py](scripts/analyze_local_pair_term_coverage.py)
 
 并跑了：
 

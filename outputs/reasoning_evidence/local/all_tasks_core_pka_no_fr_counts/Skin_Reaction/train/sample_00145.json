@@ -19,8 +19,8 @@
     "label": 1
   },
   "local_prediction_correct": true,
-  "local_score": 0.9270219040710116,
-  "s_pos": 0.9638519287498969,
+  "local_score": 0.927112785480703,
+  "s_pos": 0.9639842108004749,
   "s_neg": 0.8461737700782972,
   "keep_for_reasoning": true,
   "drop_reason": null,
@@ -37,12 +37,42 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.9023842111082466,
+        "pair_score_class1_probability": 0.9023842111082466,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9023842111082466,
+        "teacher_confidence_margin": 0.4023842111082466,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "causes a skin reaction",
           "label": 1
         },
+        "feature_logit": 0.6562267880640739,
+        "feature_probability": 0.6584122800876744,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.15841228008767438,
+        "feature_evidence_strength": "medium",
+        "total_abs_feature_contribution": 4.517619289585936,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "medium",
+        "displayed_feature_logit": 0.4824934398569139,
+        "displayed_feature_probability": 0.6183364911608419,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.11833649116084188,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_feature_contribution": 2.9392348130267103,
+        "displayed_abs_contribution_coverage": 0.6506158719045373,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
@@ -169,152 +199,48 @@
             "supports_option": "B",
             "supports_text": "causes a skin reaction",
             "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 290.26, while the query's heavy-atom molecular weight is value 247.014. The query-minus-neighbor delta is -43.246. This pairwise contribution is 0.1039, which pushes toward option (B): causes a skin reaction."
-          }
-        ]
-      },
-      {
-        "neighbor_id": "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
-        "query_smiles": "CCCCCCCCCCI",
-        "query_label": 1,
-        "neighbor_smiles": "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
-        "neighbor_label": 1,
-        "neighbor_similarity": 0.23939393939393944,
-        "neighbor_scaffold": "O=C1CN=CO1",
-        "neighbor_role": "positive_neighbor",
-        "pair_model_type": "positive_neighbor_model",
-        "pair_score": 0.9957122886060987,
-        "pair_prediction": 1,
-        "pair_prediction_semantics": {
-          "option": "B",
-          "text": "causes a skin reaction",
-          "label": 1
-        },
-        "top_pair_terms": [
+          },
           {
-            "feature_name": "fg_top_level__imine",
-            "display_name": "imine",
-            "description": "top-level functional-group indicator or count for imine",
-            "source_family": "fg_top_level",
-            "raw_name": "imine",
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "display_name": "maximum partial charge",
+            "description": "most positive atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxPartialCharge",
             "nlp_readiness": "natural_language_ready",
-            "base_value": 1.0,
-            "query_value": 0.0,
-            "delta_value": -1.0,
-            "base_value_text": "present (1)",
-            "query_value_text": "absent (0)",
-            "delta_value_text": "-1",
-            "contribution": 1.2205370927907477,
-            "contribution_abs": 1.2205370927907477,
-            "contribution_rank": 1,
+            "base_value": 0.1039472302289307,
+            "query_value": -0.0004728115271148,
+            "delta_value": -0.1044200417560455,
+            "base_value_text": "value 0.1039",
+            "query_value_text": "value -0.0005",
+            "delta_value_text": "-0.1044",
+            "contribution": 0.10237156395355072,
+            "contribution_abs": 0.10237156395355072,
+            "contribution_rank": 7,
             "supports_label": 1,
             "supports_option": "B",
             "supports_text": "causes a skin reaction",
-            "text_hint": "The neighbor has imine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 1.2205, which pushes toward option (B): causes a skin reaction."
+            "text_hint": "For maximum partial charge, the neighbor's maximum partial charge is value 0.1039, while the query's maximum partial charge is value -0.0005. The query-minus-neighbor delta is -0.1044. This pairwise contribution is 0.1024, which pushes toward option (B): causes a skin reaction."
           },
           {
-            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
-            "display_name": "maximum absolute partial charge",
-            "description": "largest absolute atomic partial charge",
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "display_name": "hydrogen-bond acceptor count",
+            "description": "number of hydrogen-bond acceptors",
             "source_family": "rdkit",
-            "raw_name": "MaxAbsPartialCharge",
+            "raw_name": "NumHAcceptors",
             "nlp_readiness": "natural_language_ready",
-            "base_value": 0.410125885951325,
-            "query_value": 0.0863759171708619,
-            "delta_value": -0.3237499687804631,
-            "base_value_text": "value 0.4101",
-            "query_value_text": "value 0.0864",
-            "delta_value_text": "-0.3237",
-            "contribution": -1.0979830248880063,
-            "contribution_abs": 1.0979830248880063,
-            "contribution_rank": 2,
+            "base_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "base_value_text": "value 0",
+            "query_value_text": "value 0",
+            "delta_value_text": "+0",
+            "contribution": -0.08724433762239094,
+            "contribution_abs": 0.08724433762239094,
+            "contribution_rank": 8,
             "supports_label": 0,
             "supports_option": "A",
             "supports_text": "does not cause a skin reaction",
-            "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4101, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.3237. This pairwise contribution is -1.098, which pushes toward option (A): does not cause a skin reaction."
-          },
-          {
-            "feature_name": "fg_top_level__alkyl iodide",
-            "display_name": "alkyl iodide",
-            "description": "top-level functional-group indicator or count for alkyl iodide",
-            "source_family": "fg_top_level",
-            "raw_name": "alkyl iodide",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 0.0,
-            "query_value": 1.0,
-            "delta_value": 1.0,
-            "base_value_text": "absent (0)",
-            "query_value_text": "present (1)",
-            "delta_value_text": "+1",
-            "contribution": 0.6768074756054809,
-            "contribution_abs": 0.6768074756054809,
-            "contribution_rank": 3,
-            "supports_label": 1,
-            "supports_option": "B",
-            "supports_text": "causes a skin reaction",
-            "text_hint": "The neighbor does not have alkyl iodide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.6768, which pushes toward option (B): causes a skin reaction."
-          },
-          {
-            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
-            "display_name": "minimum absolute partial charge",
-            "description": "smallest absolute atomic partial charge",
-            "source_family": "rdkit",
-            "raw_name": "MinAbsPartialCharge",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 0.3395239307435863,
-            "query_value": 0.0004728115271148,
-            "delta_value": -0.33905111921647146,
-            "base_value_text": "value 0.3395",
-            "query_value_text": "value 0.0005",
-            "delta_value_text": "-0.3391",
-            "contribution": 0.32041049641175295,
-            "contribution_abs": 0.32041049641175295,
-            "contribution_rank": 4,
-            "supports_label": 1,
-            "supports_option": "B",
-            "supports_text": "causes a skin reaction",
-            "text_hint": "For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3395, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.3391. This pairwise contribution is 0.3204, which pushes toward option (B): causes a skin reaction."
-          },
-          {
-            "feature_name": "fg_top_level__lactone",
-            "display_name": "lactone",
-            "description": "top-level functional-group indicator or count for lactone",
-            "source_family": "fg_top_level",
-            "raw_name": "lactone",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 1.0,
-            "query_value": 0.0,
-            "delta_value": -1.0,
-            "base_value_text": "present (1)",
-            "query_value_text": "absent (0)",
-            "delta_value_text": "-1",
-            "contribution": 0.3184337972428196,
-            "contribution_abs": 0.3184337972428196,
-            "contribution_rank": 5,
-            "supports_label": 1,
-            "supports_option": "B",
-            "supports_text": "causes a skin reaction",
-            "text_hint": "The neighbor has lactone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.3184, which pushes toward option (B): causes a skin reaction."
-          },
-          {
-            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
-            "display_name": "aliphatic ring count",
-            "description": "number of aliphatic rings",
-            "source_family": "rdkit",
-            "raw_name": "NumAliphaticRings",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 1.0,
-            "query_value": 0.0,
-            "delta_value": -1.0,
-            "base_value_text": "value 1",
-            "query_value_text": "value 0",
-            "delta_value_text": "-1",
-            "contribution": 0.3066352054923892,
-            "contribution_abs": 0.3066352054923892,
-            "contribution_rank": 6,
-            "supports_label": 1,
-            "supports_option": "B",
-            "supports_text": "causes a skin reaction",
-            "text_hint": "For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3066, which pushes toward option (B): causes a skin reaction."
+            "text_hint": "For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 0, while the query's hydrogen-bond acceptor count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is -0.0872, which pushes toward option (A): does not cause a skin reaction."
           }
         ]
       },
@@ -329,12 +255,42 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.99527144219632,
+        "pair_score_class1_probability": 0.99527144219632,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.99527144219632,
+        "teacher_confidence_margin": 0.49527144219632,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "causes a skin reaction",
           "label": 1
         },
+        "feature_logit": 3.781620910050918,
+        "feature_probability": 0.9777218949777143,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.47772189497771433,
+        "feature_evidence_strength": "high",
+        "total_abs_feature_contribution": 7.03972181556558,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 2.256816367793026,
+        "displayed_feature_probability": 0.9052368814171111,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.4052368814171111,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_feature_contribution": 4.439377670177837,
+        "displayed_abs_contribution_coverage": 0.630618337838563,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "fg_top_level__imine",
@@ -461,6 +417,266 @@
             "supports_option": "B",
             "supports_text": "causes a skin reaction",
             "text_hint": "For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3066, which pushes toward option (B): causes a skin reaction."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.5017786866829369,
+            "query_value": 0.3436429980188283,
+            "delta_value": -0.1581356886641086,
+            "base_value_text": "value 0.5018",
+            "query_value_text": "value 0.3436",
+            "delta_value_text": "-0.1581",
+            "contribution": 0.30074499845012564,
+            "contribution_abs": 0.30074499845012564,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "causes a skin reaction",
+            "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.5018, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.1581. This pairwise contribution is 0.3007, which pushes toward option (B): causes a skin reaction."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 2.6907000000000005,
+            "query_value": 4.5621000000000045,
+            "delta_value": 1.871400000000004,
+            "base_value_text": "value 2.6907",
+            "query_value_text": "value 4.5621",
+            "delta_value_text": "+1.8714",
+            "contribution": 0.20452795299211543,
+            "contribution_abs": 0.20452795299211543,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "causes a skin reaction",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 2.6907, while the query's estimated logP is value 4.5621. The query-minus-neighbor delta is +1.8714. This pairwise contribution is 0.2045, which pushes toward option (B): causes a skin reaction."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "CCCCCCCCCC1=NC(C)(C)C(=O)O1",
+        "query_smiles": "CCCCCCCCCCI",
+        "query_label": 1,
+        "neighbor_smiles": "CCCCCCCCCC1=NC(C)(C)C(=O)O1",
+        "neighbor_label": 1,
+        "neighbor_similarity": 0.23939393939393944,
+        "neighbor_scaffold": "O=C1CN=CO1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.9961130346206555,
+        "pair_score_class1_probability": 0.9961130346206555,
+        "pair_prediction": 1,
+        "pair_prediction_probability": 0.9961130346206555,
+        "teacher_confidence_margin": 0.4961130346206555,
+        "teacher_confidence": "high",
+        "pair_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "feature_logit": 3.9784576504664915,
+        "feature_probability": 0.9816293164534555,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.4816293164534555,
+        "feature_evidence_strength": "high",
+        "total_abs_feature_contribution": 7.212121683132473,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 2.3231743003755163,
+        "displayed_feature_probability": 0.9107782248513083,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.4107782248513083,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_feature_contribution": 4.519140350151528,
+        "displayed_abs_contribution_coverage": 0.6266034530061769,
+        "displayed_teacher_agreement": true,
+        "top_pair_terms": [
+          {
+            "feature_name": "fg_top_level__imine",
+            "display_name": "imine",
+            "description": "top-level functional-group indicator or count for imine",
+            "source_family": "fg_top_level",
+            "raw_name": "imine",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "contribution": 1.2205370927907477,
+            "contribution_abs": 1.2205370927907477,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "causes a skin reaction",
+            "text_hint": "The neighbor has imine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 1.2205, which pushes toward option (B): causes a skin reaction."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "display_name": "maximum absolute partial charge",
+            "description": "largest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxAbsPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.410125885951325,
+            "query_value": 0.0863759171708619,
+            "delta_value": -0.3237499687804631,
+            "base_value_text": "value 0.4101",
+            "query_value_text": "value 0.0864",
+            "delta_value_text": "-0.3237",
+            "contribution": -1.0979830248880063,
+            "contribution_abs": 1.0979830248880063,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "does not cause a skin reaction",
+            "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4101, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.3237. This pairwise contribution is -1.098, which pushes toward option (A): does not cause a skin reaction."
+          },
+          {
+            "feature_name": "fg_top_level__alkyl iodide",
+            "display_name": "alkyl iodide",
+            "description": "top-level functional-group indicator or count for alkyl iodide",
+            "source_family": "fg_top_level",
+            "raw_name": "alkyl iodide",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 0.6768074756054809,
+            "contribution_abs": 0.6768074756054809,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "causes a skin reaction",
+            "text_hint": "The neighbor does not have alkyl iodide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.6768, which pushes toward option (B): causes a skin reaction."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.3395239307435863,
+            "query_value": 0.0004728115271148,
+            "delta_value": -0.33905111921647146,
+            "base_value_text": "value 0.3395",
+            "query_value_text": "value 0.0005",
+            "delta_value_text": "-0.3391",
+            "contribution": 0.32041049641175295,
+            "contribution_abs": 0.32041049641175295,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "causes a skin reaction",
+            "text_hint": "For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3395, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.3391. This pairwise contribution is 0.3204, which pushes toward option (B): causes a skin reaction."
+          },
+          {
+            "feature_name": "fg_top_level__lactone",
+            "display_name": "lactone",
+            "description": "top-level functional-group indicator or count for lactone",
+            "source_family": "fg_top_level",
+            "raw_name": "lactone",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "contribution": 0.3184337972428196,
+            "contribution_abs": 0.3184337972428196,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "causes a skin reaction",
+            "text_hint": "The neighbor has lactone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.3184, which pushes toward option (B): causes a skin reaction."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.4762839170365906,
+            "query_value": 0.3436429980188283,
+            "delta_value": -0.13264091901776232,
+            "base_value_text": "value 0.4763",
+            "query_value_text": "value 0.3436",
+            "delta_value_text": "-0.1326",
+            "contribution": 0.3113097064337928,
+            "contribution_abs": 0.3113097064337928,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "causes a skin reaction",
+            "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4763, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.1326. This pairwise contribution is 0.3113, which pushes toward option (B): causes a skin reaction."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "display_name": "aliphatic ring count",
+            "description": "number of aliphatic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticRings",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "base_value_text": "value 1",
+            "query_value_text": "value 0",
+            "delta_value_text": "-1",
+            "contribution": 0.3066352054923892,
+            "contribution_abs": 0.3066352054923892,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "causes a skin reaction",
+            "text_hint": "For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3066, which pushes toward option (B): causes a skin reaction."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 3.8610000000000033,
+            "query_value": 4.5621000000000045,
+            "delta_value": 0.7011000000000012,
+            "base_value_text": "value 3.861",
+            "query_value_text": "value 4.5621",
+            "delta_value_text": "+0.7011",
+            "contribution": 0.2670235512865391,
+            "contribution_abs": 0.2670235512865391,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "causes a skin reaction",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 3.861, while the query's estimated logP is value 4.5621. The query-minus-neighbor delta is +0.7011. This pairwise contribution is 0.267, which pushes toward option (B): causes a skin reaction."
           }
         ]
       }
@@ -477,12 +693,42 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.8992758163944556,
+        "pair_score_class1_probability": 0.8992758163944556,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.8992758163944556,
+        "teacher_confidence_margin": 0.39927581639445564,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "causes a skin reaction",
           "label": 1
         },
+        "feature_logit": 0.4837810594292604,
+        "feature_probability": 0.618640318504002,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.11864031850400203,
+        "feature_evidence_strength": "medium",
+        "total_abs_feature_contribution": 5.378100667987004,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "medium",
+        "displayed_feature_logit": 0.20434977067084303,
+        "displayed_feature_probability": 0.5509104026152635,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.05091040261526347,
+        "displayed_feature_evidence_strength": "low",
+        "displayed_abs_feature_contribution": 2.9651295833147446,
+        "displayed_abs_contribution_coverage": 0.5513339683216785,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "rdkit_pka__rdkit__qed",
@@ -609,6 +855,48 @@
             "supports_option": "B",
             "supports_text": "causes a skin reaction",
             "text_hint": "For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3376, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.3371. This pairwise contribution is 0.2141, which pushes toward option (B): causes a skin reaction."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "display_name": "maximum absolute partial charge",
+            "description": "largest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxAbsPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.5079661787854334,
+            "query_value": 0.0863759171708619,
+            "delta_value": -0.42159026161457147,
+            "base_value_text": "value 0.508",
+            "query_value_text": "value 0.0864",
+            "delta_value_text": "-0.4216",
+            "contribution": -0.18983253085385252,
+            "contribution_abs": 0.18983253085385252,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "does not cause a skin reaction",
+            "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.508, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.4216. This pairwise contribution is -0.1898, which pushes toward option (A): does not cause a skin reaction."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.3,
+            "query_value": 1.0,
+            "delta_value": 0.7,
+            "base_value_text": "value 0.3",
+            "query_value_text": "value 1",
+            "delta_value_text": "+0.7",
+            "contribution": 0.17651040217843467,
+            "contribution_abs": 0.17651040217843467,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "causes a skin reaction",
+            "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.3, while the query's fraction of sp3 carbons is value 1. The query-minus-neighbor delta is +0.7. This pairwise contribution is 0.1765, which pushes toward option (B): causes a skin reaction."
           }
         ]
       },
@@ -623,12 +911,42 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.8948356419548771,
+        "pair_score_class1_probability": 0.8948356419548771,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.8948356419548771,
+        "teacher_confidence_margin": 0.3948356419548771,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "causes a skin reaction",
           "label": 1
         },
+        "feature_logit": 0.43569281441364366,
+        "feature_probability": 0.6072322374435754,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.10723223744357535,
+        "feature_evidence_strength": "medium",
+        "total_abs_feature_contribution": 8.244254137183349,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": -0.798043423644414,
+        "displayed_feature_probability": 0.3104442050187261,
+        "displayed_feature_prediction": 0,
+        "displayed_feature_prediction_semantics": {
+          "option": "A",
+          "text": "does not cause a skin reaction",
+          "label": 0
+        },
+        "displayed_feature_confidence_margin": 0.1895557949812739,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_feature_contribution": 5.066826886304696,
+        "displayed_abs_contribution_coverage": 0.614588876324448,
+        "displayed_teacher_agreement": false,
         "top_pair_terms": [
           {
             "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
@@ -755,6 +1073,48 @@
             "supports_option": "B",
             "supports_text": "causes a skin reaction",
             "text_hint": "For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 1, while the query's nitrogen/oxygen atom count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3872, which pushes toward option (B): causes a skin reaction."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumRotatableBonds",
+            "display_name": "rotatable-bond count",
+            "description": "number of rotatable bonds",
+            "source_family": "rdkit",
+            "raw_name": "NumRotatableBonds",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 2.0,
+            "query_value": 8.0,
+            "delta_value": 6.0,
+            "base_value_text": "value 2",
+            "query_value_text": "value 8",
+            "delta_value_text": "+6",
+            "contribution": -0.30127283040654246,
+            "contribution_abs": 0.30127283040654246,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "does not cause a skin reaction",
+            "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 2, while the query's rotatable-bond count is value 8. The query-minus-neighbor delta is +6. This pairwise contribution is -0.3013, which pushes toward option (A): does not cause a skin reaction."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0291677915152911,
+            "query_value": 0.0004728115271148,
+            "delta_value": -0.0286949799881763,
+            "base_value_text": "value 0.0292",
+            "query_value_text": "value 0.0005",
+            "delta_value_text": "-0.0287",
+            "contribution": 0.27135587498362856,
+            "contribution_abs": 0.27135587498362856,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "causes a skin reaction",
+            "text_hint": "For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.0292, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.0287. This pairwise contribution is 0.2714, which pushes toward option (B): causes a skin reaction."
           }
         ]
       },
@@ -769,12 +1129,42 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.7357194003017871,
+        "pair_score_class1_probability": 0.7357194003017871,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.7357194003017871,
+        "teacher_confidence_margin": 0.23571940030178706,
+        "teacher_confidence": "medium",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "causes a skin reaction",
           "label": 1
         },
+        "feature_logit": -0.6815854255702756,
+        "feature_probability": 0.3359075439432604,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "does not cause a skin reaction",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.1640924560567396,
+        "feature_evidence_strength": "medium",
+        "total_abs_feature_contribution": 5.273627872805718,
+        "teacher_feature_agreement": false,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": -0.5122034785111064,
+        "displayed_feature_probability": 0.3746771209552482,
+        "displayed_feature_prediction": 0,
+        "displayed_feature_prediction_semantics": {
+          "option": "A",
+          "text": "does not cause a skin reaction",
+          "label": 0
+        },
+        "displayed_feature_confidence_margin": 0.1253228790447518,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_feature_contribution": 3.044763020662974,
+        "displayed_abs_contribution_coverage": 0.5773564411633533,
+        "displayed_teacher_agreement": false,
         "top_pair_terms": [
           {
             "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
@@ -901,6 +1291,48 @@
             "supports_option": "A",
             "supports_text": "does not cause a skin reaction",
             "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 4, while the query's rotatable-bond count is value 8. The query-minus-neighbor delta is +4. This pairwise contribution is -0.3095, which pushes toward option (A): does not cause a skin reaction."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "display_name": "neutral fraction",
+            "description": "estimated fraction of the molecule that is neutral at the configured pH",
+            "source_family": "pka",
+            "raw_name": "fraction_neutral",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": -0.24489001172366895,
+            "contribution_abs": 0.24489001172366895,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "does not cause a skin reaction",
+            "text_hint": "For neutral fraction, the neighbor's neutral fraction is absent (0), while the query's neutral fraction is present (1). The query-minus-neighbor delta is +1. This pairwise contribution is -0.2449, which pushes toward option (A): does not cause a skin reaction."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.90368270026632,
+            "query_value": 0.3436429980188283,
+            "delta_value": -0.5600397022474917,
+            "base_value_text": "value 0.9037",
+            "query_value_text": "value 0.3436",
+            "delta_value_text": "-0.56",
+            "contribution": 0.17903709049988586,
+            "contribution_abs": 0.17903709049988586,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "causes a skin reaction",
+            "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.9037, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.56. This pairwise contribution is 0.179, which pushes toward option (B): causes a skin reaction."
           }
         ]
       }
@@ -916,27 +1348,41 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.9023842111082466,
+        "pair_score_class1_probability": 0.9023842111082466,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9023842111082466,
+        "teacher_confidence_margin": 0.4023842111082466,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "causes a skin reaction",
           "label": 1
         },
-        "middle_draft": "First, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3247, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.2384. This pairwise contribution is -1.1411, which pushes toward option (A): does not cause a skin reaction. Next, The neighbor does not have alkyl iodide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.6768, which pushes toward option (B): causes a skin reaction. Then, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.1039, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.1035. This pairwise contribution is 0.3762, which pushes toward option (B): causes a skin reaction. After that, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2403, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is +0.1033. This pairwise contribution is 0.3174, which pushes toward option (B): causes a skin reaction. Finally, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.7391, while the query's fraction of sp3 carbons is value 1. The query-minus-neighbor delta is +0.2609. This pairwise contribution is 0.1341, which pushes toward option (B): causes a skin reaction. Step 6, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 290.26, while the query's heavy-atom molecular weight is value 247.014. The query-minus-neighbor delta is -43.246. This pairwise contribution is 0.1039, which pushes toward option (B): causes a skin reaction. Taken together, this positive-neighbor comparison pushes toward option (B): causes a skin reaction with pair score 0.9024."
-      },
-      {
-        "neighbor_id": "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
-        "neighbor_smiles": "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
-        "neighbor_role": "positive_neighbor",
-        "pair_model_type": "positive_neighbor_model",
-        "pair_score": 0.9957122886060987,
-        "pair_prediction": 1,
-        "pair_prediction_semantics": {
+        "feature_logit": 0.6562267880640739,
+        "feature_probability": 0.6584122800876744,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
           "option": "B",
           "text": "causes a skin reaction",
           "label": 1
         },
-        "middle_draft": "First, The neighbor has imine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 1.2205, which pushes toward option (B): causes a skin reaction. Next, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4101, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.3237. This pairwise contribution is -1.098, which pushes toward option (A): does not cause a skin reaction. Then, The neighbor does not have alkyl iodide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.6768, which pushes toward option (B): causes a skin reaction. After that, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3395, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.3391. This pairwise contribution is 0.3204, which pushes toward option (B): causes a skin reaction. Finally, The neighbor has lactone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.3184, which pushes toward option (B): causes a skin reaction. Step 6, For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3066, which pushes toward option (B): causes a skin reaction. Taken together, this positive-neighbor comparison pushes toward option (B): causes a skin reaction with pair score 0.9957."
+        "feature_confidence_margin": 0.15841228008767438,
+        "feature_evidence_strength": "medium",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "medium",
+        "displayed_feature_logit": 0.4824934398569139,
+        "displayed_feature_probability": 0.6183364911608419,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.11833649116084188,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_contribution_coverage": 0.6506158719045373,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3247, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.2384. This pairwise contribution is -1.1411, which pushes toward option (A): does not cause a skin reaction. Another relevant signal comes from a different feature. The neighbor does not have alkyl iodide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.6768, which pushes toward option (B): causes a skin reaction. A related feature-level signal also matters. For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.1039, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.1035. This pairwise contribution is 0.3762, which pushes toward option (B): causes a skin reaction. The evidence also includes another descriptor contrast. For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2403, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is +0.1033. This pairwise contribution is 0.3174, which pushes toward option (B): causes a skin reaction. In addition, another feature provides context. For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.7391, while the query's fraction of sp3 carbons is value 1. The query-minus-neighbor delta is +0.2609. This pairwise contribution is 0.1341, which pushes toward option (B): causes a skin reaction. A further feature-level signal points to another part of the profile. For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 290.26, while the query's heavy-atom molecular weight is value 247.014. The query-minus-neighbor delta is -43.246. This pairwise contribution is 0.1039, which pushes toward option (B): causes a skin reaction. The same profile includes another relevant descriptor. For maximum partial charge, the neighbor's maximum partial charge is value 0.1039, while the query's maximum partial charge is value -0.0005. The query-minus-neighbor delta is -0.1044. This pairwise contribution is 0.1024, which pushes toward option (B): causes a skin reaction. One more feature-level signal is worth accounting for. For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 0, while the query's hydrogen-bond acceptor count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is -0.0872, which pushes toward option (A): does not cause a skin reaction. Taken together, relative to a neighbor labeled option (B): causes a skin reaction, the pairwise feature evidence moderately supports option (B): causes a skin reaction. This neighbor provides medium-strength evidence for option (B): causes a skin reaction."
       },
       {
         "neighbor_id": "CCCCCCC1=NC(C)(C)C(=O)O1",
@@ -944,13 +1390,83 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.99527144219632,
+        "pair_score_class1_probability": 0.99527144219632,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.99527144219632,
+        "teacher_confidence_margin": 0.49527144219632,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "causes a skin reaction",
           "label": 1
         },
-        "middle_draft": "First, The neighbor has imine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 1.2205, which pushes toward option (B): causes a skin reaction. Next, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4101, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.3237. This pairwise contribution is -1.0913, which pushes toward option (A): does not cause a skin reaction. Then, The neighbor does not have alkyl iodide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.6768, which pushes toward option (B): causes a skin reaction. After that, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3395, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.3391. This pairwise contribution is 0.3204, which pushes toward option (B): causes a skin reaction. Finally, The neighbor has lactone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.3184, which pushes toward option (B): causes a skin reaction. Step 6, For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3066, which pushes toward option (B): causes a skin reaction. Taken together, this positive-neighbor comparison pushes toward option (B): causes a skin reaction with pair score 0.9953."
+        "feature_logit": 3.781620910050918,
+        "feature_probability": 0.9777218949777143,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.47772189497771433,
+        "feature_evidence_strength": "high",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 2.256816367793026,
+        "displayed_feature_probability": 0.9052368814171111,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.4052368814171111,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_contribution_coverage": 0.630618337838563,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "The neighbor has imine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 1.2205, which pushes toward option (B): causes a skin reaction. Another relevant signal comes from a different feature. For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4101, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.3237. This pairwise contribution is -1.0913, which pushes toward option (A): does not cause a skin reaction. A related feature-level signal also matters. The neighbor does not have alkyl iodide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.6768, which pushes toward option (B): causes a skin reaction. The evidence also includes another descriptor contrast. For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3395, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.3391. This pairwise contribution is 0.3204, which pushes toward option (B): causes a skin reaction. In addition, another feature provides context. The neighbor has lactone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.3184, which pushes toward option (B): causes a skin reaction. A further feature-level signal points to another part of the profile. For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3066, which pushes toward option (B): causes a skin reaction. The same profile includes another relevant descriptor. For QED drug-likeness, the neighbor's QED drug-likeness is value 0.5018, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.1581. This pairwise contribution is 0.3007, which pushes toward option (B): causes a skin reaction. One more feature-level signal is worth accounting for. For estimated logP, the neighbor's estimated logP is value 2.6907, while the query's estimated logP is value 4.5621. The query-minus-neighbor delta is +1.8714. This pairwise contribution is 0.2045, which pushes toward option (B): causes a skin reaction. Taken together, relative to a neighbor labeled option (B): causes a skin reaction, the pairwise feature evidence strongly supports option (B): causes a skin reaction. This neighbor provides high-strength evidence for option (B): causes a skin reaction."
+      },
+      {
+        "neighbor_id": "CCCCCCCCCC1=NC(C)(C)C(=O)O1",
+        "neighbor_smiles": "CCCCCCCCCC1=NC(C)(C)C(=O)O1",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.9961130346206555,
+        "pair_score_class1_probability": 0.9961130346206555,
+        "pair_prediction": 1,
+        "pair_prediction_probability": 0.9961130346206555,
+        "teacher_confidence_margin": 0.4961130346206555,
+        "teacher_confidence": "high",
+        "pair_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "feature_logit": 3.9784576504664915,
+        "feature_probability": 0.9816293164534555,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.4816293164534555,
+        "feature_evidence_strength": "high",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 2.3231743003755163,
+        "displayed_feature_probability": 0.9107782248513083,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.4107782248513083,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_contribution_coverage": 0.6266034530061769,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "The neighbor has imine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 1.2205, which pushes toward option (B): causes a skin reaction. Another relevant signal comes from a different feature. For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4101, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.3237. This pairwise contribution is -1.098, which pushes toward option (A): does not cause a skin reaction. A related feature-level signal also matters. The neighbor does not have alkyl iodide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.6768, which pushes toward option (B): causes a skin reaction. The evidence also includes another descriptor contrast. For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3395, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.3391. This pairwise contribution is 0.3204, which pushes toward option (B): causes a skin reaction. In addition, another feature provides context. The neighbor has lactone, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.3184, which pushes toward option (B): causes a skin reaction. A further feature-level signal points to another part of the profile. For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4763, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.1326. This pairwise contribution is 0.3113, which pushes toward option (B): causes a skin reaction. The same profile includes another relevant descriptor. For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3066, which pushes toward option (B): causes a skin reaction. One more feature-level signal is worth accounting for. For estimated logP, the neighbor's estimated logP is value 3.861, while the query's estimated logP is value 4.5621. The query-minus-neighbor delta is +0.7011. This pairwise contribution is 0.267, which pushes toward option (B): causes a skin reaction. Taken together, relative to a neighbor labeled option (B): causes a skin reaction, the pairwise feature evidence strongly supports option (B): causes a skin reaction. This neighbor provides high-strength evidence for option (B): causes a skin reaction."
       }
     ],
     "negative_neighbors": [
@@ -960,13 +1476,41 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.8992758163944556,
+        "pair_score_class1_probability": 0.8992758163944556,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.8992758163944556,
+        "teacher_confidence_margin": 0.39927581639445564,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "causes a skin reaction",
           "label": 1
         },
-        "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.7231, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.3794. This pairwise contribution is 0.9586, which pushes toward option (B): causes a skin reaction. Next, The neighbor does not have alkyl iodide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.5395, which pushes toward option (A): does not cause a skin reaction. Then, For topological polar surface area, the neighbor's topological polar surface area is value 46.53, while the query's topological polar surface area is value 0. The query-minus-neighbor delta is -46.53. This pairwise contribution is -0.328, which pushes toward option (A): does not cause a skin reaction. After that, For rotatable-bond count, the neighbor's rotatable-bond count is value 3, while the query's rotatable-bond count is value 8. The query-minus-neighbor delta is +5. This pairwise contribution is -0.323, which pushes toward option (A): does not cause a skin reaction. Finally, For exact molecular weight, the neighbor's exact molecular weight is value 180.0786, while the query's exact molecular weight is value 268.0688. The query-minus-neighbor delta is +87.9902. This pairwise contribution is 0.2356, which pushes toward option (B): causes a skin reaction. Step 6, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3376, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.3371. This pairwise contribution is 0.2141, which pushes toward option (B): causes a skin reaction. Taken together, this negative-neighbor comparison pushes toward option (B): causes a skin reaction with pair score 0.8993."
+        "feature_logit": 0.4837810594292604,
+        "feature_probability": 0.618640318504002,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.11864031850400203,
+        "feature_evidence_strength": "medium",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "medium",
+        "displayed_feature_logit": 0.20434977067084303,
+        "displayed_feature_probability": 0.5509104026152635,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.05091040261526347,
+        "displayed_feature_evidence_strength": "low",
+        "displayed_abs_contribution_coverage": 0.5513339683216785,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.7231, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.3794. This pairwise contribution is 0.9586, which pushes toward option (B): causes a skin reaction. Another relevant signal comes from a different feature. The neighbor does not have alkyl iodide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.5395, which pushes toward option (A): does not cause a skin reaction. A related feature-level signal also matters. For topological polar surface area, the neighbor's topological polar surface area is value 46.53, while the query's topological polar surface area is value 0. The query-minus-neighbor delta is -46.53. This pairwise contribution is -0.328, which pushes toward option (A): does not cause a skin reaction. The evidence also includes another descriptor contrast. For rotatable-bond count, the neighbor's rotatable-bond count is value 3, while the query's rotatable-bond count is value 8. The query-minus-neighbor delta is +5. This pairwise contribution is -0.323, which pushes toward option (A): does not cause a skin reaction. In addition, another feature provides context. For exact molecular weight, the neighbor's exact molecular weight is value 180.0786, while the query's exact molecular weight is value 268.0688. The query-minus-neighbor delta is +87.9902. This pairwise contribution is 0.2356, which pushes toward option (B): causes a skin reaction. A further feature-level signal points to another part of the profile. For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3376, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.3371. This pairwise contribution is 0.2141, which pushes toward option (B): causes a skin reaction. The same profile includes another relevant descriptor. For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.508, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.4216. This pairwise contribution is -0.1898, which pushes toward option (A): does not cause a skin reaction. One more feature-level signal is worth accounting for. For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.3, while the query's fraction of sp3 carbons is value 1. The query-minus-neighbor delta is +0.7. This pairwise contribution is 0.1765, which pushes toward option (B): causes a skin reaction. Taken together, relative to a neighbor labeled option (A): does not cause a skin reaction, the pairwise feature evidence moderately supports option (B): causes a skin reaction. This neighbor provides medium-strength evidence for option (B): causes a skin reaction."
       },
       {
         "neighbor_id": "CCC(N)c1ccccc1",
@@ -974,13 +1518,41 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.8948356419548771,
+        "pair_score_class1_probability": 0.8948356419548771,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.8948356419548771,
+        "teacher_confidence_margin": 0.3948356419548771,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "causes a skin reaction",
           "label": 1
         },
-        "middle_draft": "First, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.324, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.2376. This pairwise contribution is -1.0888, which pushes toward option (A): does not cause a skin reaction. Next, For minimum partial charge, the neighbor's minimum partial charge is value -0.324, while the query's minimum partial charge is value -0.0864. The query-minus-neighbor delta is +0.2376. This pairwise contribution is -1.0028, which pushes toward option (A): does not cause a skin reaction. Then, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.6599, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.3162. This pairwise contribution is 0.9783, which pushes toward option (B): causes a skin reaction. After that, The neighbor does not have alkyl iodide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.5395, which pushes toward option (A): does not cause a skin reaction. Finally, For neutral fraction, the neighbor's neutral fraction is value 0.0037, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9963. This pairwise contribution is 0.4975, which pushes toward option (B): causes a skin reaction. Step 6, For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 1, while the query's nitrogen/oxygen atom count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3872, which pushes toward option (B): causes a skin reaction. Taken together, this negative-neighbor comparison pushes toward option (B): causes a skin reaction with pair score 0.8948."
+        "feature_logit": 0.43569281441364366,
+        "feature_probability": 0.6072322374435754,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "causes a skin reaction",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.10723223744357535,
+        "feature_evidence_strength": "medium",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": -0.798043423644414,
+        "displayed_feature_probability": 0.3104442050187261,
+        "displayed_feature_prediction": 0,
+        "displayed_feature_prediction_semantics": {
+          "option": "A",
+          "text": "does not cause a skin reaction",
+          "label": 0
+        },
+        "displayed_feature_confidence_margin": 0.1895557949812739,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_contribution_coverage": 0.614588876324448,
+        "displayed_teacher_agreement": false,
+        "middle_draft": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.324, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.2376. This pairwise contribution is -1.0888, which pushes toward option (A): does not cause a skin reaction. Another relevant signal comes from a different feature. For minimum partial charge, the neighbor's minimum partial charge is value -0.324, while the query's minimum partial charge is value -0.0864. The query-minus-neighbor delta is +0.2376. This pairwise contribution is -1.0028, which pushes toward option (A): does not cause a skin reaction. A related feature-level signal also matters. For QED drug-likeness, the neighbor's QED drug-likeness is value 0.6599, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.3162. This pairwise contribution is 0.9783, which pushes toward option (B): causes a skin reaction. The evidence also includes another descriptor contrast. The neighbor does not have alkyl iodide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.5395, which pushes toward option (A): does not cause a skin reaction. In addition, another feature provides context. For neutral fraction, the neighbor's neutral fraction is value 0.0037, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9963. This pairwise contribution is 0.4975, which pushes toward option (B): causes a skin reaction. A further feature-level signal points to another part of the profile. For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 1, while the query's nitrogen/oxygen atom count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3872, which pushes toward option (B): causes a skin reaction. The same profile includes another relevant descriptor. For rotatable-bond count, the neighbor's rotatable-bond count is value 2, while the query's rotatable-bond count is value 8. The query-minus-neighbor delta is +6. This pairwise contribution is -0.3013, which pushes toward option (A): does not cause a skin reaction. One more feature-level signal is worth accounting for. For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.0292, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.0287. This pairwise contribution is 0.2714, which pushes toward option (B): causes a skin reaction. Taken together, relative to a neighbor labeled option (A): does not cause a skin reaction, these feature comparisons are mixed. This neighbor should be treated as low-strength evidence for option (B): causes a skin reaction."
       },
       {
         "neighbor_id": "CCCOc1ccc(Br)c(C(=O)O)c1",
@@ -988,13 +1560,41 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.7357194003017871,
+        "pair_score_class1_probability": 0.7357194003017871,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.7357194003017871,
+        "teacher_confidence_margin": 0.23571940030178706,
+        "teacher_confidence": "medium",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "causes a skin reaction",
           "label": 1
         },
-        "middle_draft": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.4936, while the query's minimum partial charge is value -0.0864. The query-minus-neighbor delta is +0.4072. This pairwise contribution is 0.5915, which pushes toward option (B): causes a skin reaction. Next, The neighbor does not have alkyl iodide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.5395, which pushes toward option (A): does not cause a skin reaction. Then, For estimated logP, the neighbor's estimated logP is value 2.9361, while the query's estimated logP is value 4.5621. The query-minus-neighbor delta is +1.626. This pairwise contribution is 0.4957, which pushes toward option (B): causes a skin reaction. After that, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4936, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.4072. This pairwise contribution is -0.3566, which pushes toward option (A): does not cause a skin reaction. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 46.53, while the query's topological polar surface area is value 0. The query-minus-neighbor delta is -46.53. This pairwise contribution is -0.328, which pushes toward option (A): does not cause a skin reaction. Step 6, For rotatable-bond count, the neighbor's rotatable-bond count is value 4, while the query's rotatable-bond count is value 8. The query-minus-neighbor delta is +4. This pairwise contribution is -0.3095, which pushes toward option (A): does not cause a skin reaction. Taken together, this negative-neighbor comparison pushes toward option (B): causes a skin reaction with pair score 0.7357."
+        "feature_logit": -0.6815854255702756,
+        "feature_probability": 0.3359075439432604,
+        "feature_prediction": 0,
+        "feature_prediction_semantics": {
+          "option": "A",
+          "text": "does not cause a skin reaction",
+          "label": 0
+        },
+        "feature_confidence_margin": 0.1640924560567396,
+        "feature_evidence_strength": "medium",
+        "teacher_feature_agreement": false,
+        "teacher_aligned_evidence_strength": "low",
+        "displayed_feature_logit": -0.5122034785111064,
+        "displayed_feature_probability": 0.3746771209552482,
+        "displayed_feature_prediction": 0,
+        "displayed_feature_prediction_semantics": {
+          "option": "A",
+          "text": "does not cause a skin reaction",
+          "label": 0
+        },
+        "displayed_feature_confidence_margin": 0.1253228790447518,
+        "displayed_feature_evidence_strength": "medium",
+        "displayed_abs_contribution_coverage": 0.5773564411633533,
+        "displayed_teacher_agreement": false,
+        "middle_draft": "For minimum partial charge, the neighbor's minimum partial charge is value -0.4936, while the query's minimum partial charge is value -0.0864. The query-minus-neighbor delta is +0.4072. This pairwise contribution is 0.5915, which pushes toward option (B): causes a skin reaction. Another relevant signal comes from a different feature. The neighbor does not have alkyl iodide, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.5395, which pushes toward option (A): does not cause a skin reaction. A related feature-level signal also matters. For estimated logP, the neighbor's estimated logP is value 2.9361, while the query's estimated logP is value 4.5621. The query-minus-neighbor delta is +1.626. This pairwise contribution is 0.4957, which pushes toward option (B): causes a skin reaction. The evidence also includes another descriptor contrast. For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4936, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.4072. This pairwise contribution is -0.3566, which pushes toward option (A): does not cause a skin reaction. In addition, another feature provides context. For topological polar surface area, the neighbor's topological polar surface area is value 46.53, while the query's topological polar surface area is value 0. The query-minus-neighbor delta is -46.53. This pairwise contribution is -0.328, which pushes toward option (A): does not cause a skin reaction. A further feature-level signal points to another part of the profile. For rotatable-bond count, the neighbor's rotatable-bond count is value 4, while the query's rotatable-bond count is value 8. The query-minus-neighbor delta is +4. This pairwise contribution is -0.3095, which pushes toward option (A): does not cause a skin reaction. The same profile includes another relevant descriptor. For neutral fraction, the neighbor's neutral fraction is absent (0), while the query's neutral fraction is present (1). The query-minus-neighbor delta is +1. This pairwise contribution is -0.2449, which pushes toward option (A): does not cause a skin reaction. One more feature-level signal is worth accounting for. For QED drug-likeness, the neighbor's QED drug-likeness is value 0.9037, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.56. This pairwise contribution is 0.179, which pushes toward option (B): causes a skin reaction. Taken together, relative to a neighbor labeled option (A): does not cause a skin reaction, these feature comparisons do not align cleanly with option (B): causes a skin reaction. This neighbor should be treated only as low-strength evidence for option (B): causes a skin reaction."
       }
     ]
   },
@@ -1002,8 +1602,8 @@
     "positive_neighbors": {
       "group_name": "positive_neighbors",
       "num_neighbors": 3,
-      "num_shared_features": 6,
-      "num_single_neighbor_features": 3,
+      "num_shared_features": 8,
+      "num_single_neighbor_features": 4,
       "shared_evidence": [
         {
           "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
@@ -1019,8 +1619,8 @@
           ],
           "neighbor_ids": [
             "CCCCCCCCCCCCCC[N+](C)(C)Cc1ccccc1",
-            "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
-            "CCCCCCC1=NC(C)(C)C(=O)O1"
+            "CCCCCCC1=NC(C)(C)C(=O)O1",
+            "CCCCCCCCCC1=NC(C)(C)C(=O)O1"
           ],
           "neighbor_similarities": [
             0.24645161290322581,
@@ -1037,7 +1637,7 @@
             "text": "does not cause a skin reaction",
             "label": 0
           },
-          "total_abs_contribution": 3.3303900250429184,
+          "total_abs_contribution": 3.3303900250429193,
           "total_weighted_evidence": 0.8053288850171263,
           "term_instances": [
             {
@@ -1061,25 +1661,6 @@
             },
             {
               "neighbor_rank": 2,
-              "neighbor_id": "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
-              "neighbor_similarity": 0.23939393939393944,
-              "pair_score": 0.9957122886060987,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "causes a skin reaction",
-                "label": 1
-              },
-              "contribution": -1.0979830248880063,
-              "contribution_abs": 1.0979830248880063,
-              "contribution_rank": 2,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "does not cause a skin reaction",
-              "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4101, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.3237. This pairwise contribution is -1.098, which pushes toward option (A): does not cause a skin reaction."
-            },
-            {
-              "neighbor_rank": 3,
               "neighbor_id": "CCCCCCC1=NC(C)(C)C(=O)O1",
               "neighbor_similarity": 0.23939393939393944,
               "pair_score": 0.99527144219632,
@@ -1096,6 +1677,25 @@
               "supports_option": "A",
               "supports_text": "does not cause a skin reaction",
               "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4101, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.3237. This pairwise contribution is -1.0913, which pushes toward option (A): does not cause a skin reaction."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CCCCCCCCCC1=NC(C)(C)C(=O)O1",
+              "neighbor_similarity": 0.23939393939393944,
+              "pair_score": 0.9961130346206555,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": -1.0979830248880063,
+              "contribution_abs": 1.0979830248880063,
+              "contribution_rank": 2,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "does not cause a skin reaction",
+              "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4101, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.3237. This pairwise contribution is -1.098, which pushes toward option (A): does not cause a skin reaction."
             }
           ]
         },
@@ -1113,8 +1713,8 @@
           ],
           "neighbor_ids": [
             "CCCCCCCCCCCCCC[N+](C)(C)Cc1ccccc1",
-            "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
-            "CCCCCCC1=NC(C)(C)C(=O)O1"
+            "CCCCCCC1=NC(C)(C)C(=O)O1",
+            "CCCCCCCCCC1=NC(C)(C)C(=O)O1"
           ],
           "neighbor_similarities": [
             0.24645161290322581,
@@ -1155,9 +1755,9 @@
             },
             {
               "neighbor_rank": 2,
-              "neighbor_id": "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
+              "neighbor_id": "CCCCCCC1=NC(C)(C)C(=O)O1",
               "neighbor_similarity": 0.23939393939393944,
-              "pair_score": 0.9957122886060987,
+              "pair_score": 0.99527144219632,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
@@ -1174,9 +1774,9 @@
             },
             {
               "neighbor_rank": 3,
-              "neighbor_id": "CCCCCCC1=NC(C)(C)C(=O)O1",
+              "neighbor_id": "CCCCCCCCCC1=NC(C)(C)C(=O)O1",
               "neighbor_similarity": 0.23939393939393944,
-              "pair_score": 0.99527144219632,
+              "pair_score": 0.9961130346206555,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
@@ -1207,8 +1807,8 @@
           ],
           "neighbor_ids": [
             "CCCCCCCCCCCCCC[N+](C)(C)Cc1ccccc1",
-            "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
-            "CCCCCCC1=NC(C)(C)C(=O)O1"
+            "CCCCCCC1=NC(C)(C)C(=O)O1",
+            "CCCCCCCCCC1=NC(C)(C)C(=O)O1"
           ],
           "neighbor_similarities": [
             0.24645161290322581,
@@ -1249,9 +1849,9 @@
             },
             {
               "neighbor_rank": 2,
-              "neighbor_id": "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
+              "neighbor_id": "CCCCCCC1=NC(C)(C)C(=O)O1",
               "neighbor_similarity": 0.23939393939393944,
-              "pair_score": 0.9957122886060987,
+              "pair_score": 0.99527144219632,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
@@ -1268,9 +1868,9 @@
             },
             {
               "neighbor_rank": 3,
-              "neighbor_id": "CCCCCCC1=NC(C)(C)C(=O)O1",
+              "neighbor_id": "CCCCCCCCCC1=NC(C)(C)C(=O)O1",
               "neighbor_similarity": 0.23939393939393944,
-              "pair_score": 0.99527144219632,
+              "pair_score": 0.9961130346206555,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
@@ -1288,6 +1888,100 @@
           ]
         },
         {
+          "feature_name": "rdkit_pka__rdkit__qed",
+          "display_name": "QED drug-likeness",
+          "description": "quantitative estimate of drug-likeness",
+          "source_family": "rdkit",
+          "raw_name": "qed",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CCCCCCCCCCCCCC[N+](C)(C)Cc1ccccc1",
+            "CCCCCCC1=NC(C)(C)C(=O)O1",
+            "CCCCCCCCCC1=NC(C)(C)C(=O)O1"
+          ],
+          "neighbor_similarities": [
+            0.24645161290322581,
+            0.23939393939393944,
+            0.23939393939393944
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.2247518518358315
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "causes a skin reaction",
+            "label": 1
+          },
+          "total_abs_contribution": 0.9294787378919462,
+          "total_weighted_evidence": 0.2247518518358315,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCCCCCCCCCCCCC[N+](C)(C)Cc1ccccc1",
+              "neighbor_similarity": 0.24645161290322581,
+              "pair_score": 0.9023842111082466,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": 0.3174240330080278,
+              "contribution_abs": 0.3174240330080278,
+              "contribution_rank": 4,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "causes a skin reaction",
+              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2403, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is +0.1033. This pairwise contribution is 0.3174, which pushes toward option (B): causes a skin reaction."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCCCCCC1=NC(C)(C)C(=O)O1",
+              "neighbor_similarity": 0.23939393939393944,
+              "pair_score": 0.99527144219632,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": 0.30074499845012564,
+              "contribution_abs": 0.30074499845012564,
+              "contribution_rank": 7,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "causes a skin reaction",
+              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.5018, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.1581. This pairwise contribution is 0.3007, which pushes toward option (B): causes a skin reaction."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CCCCCCCCCC1=NC(C)(C)C(=O)O1",
+              "neighbor_similarity": 0.23939393939393944,
+              "pair_score": 0.9961130346206555,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": 0.3113097064337928,
+              "contribution_abs": 0.3113097064337928,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "causes a skin reaction",
+              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4763, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.1326. This pairwise contribution is 0.3113, which pushes toward option (B): causes a skin reaction."
+            }
+          ]
+        },
+        {
           "feature_name": "fg_top_level__imine",
           "display_name": "imine",
           "description": "top-level functional-group indicator or count for imine",
@@ -1299,8 +1993,8 @@
             3
           ],
           "neighbor_ids": [
-            "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
-            "CCCCCCC1=NC(C)(C)C(=O)O1"
+            "CCCCCCC1=NC(C)(C)C(=O)O1",
+            "CCCCCCCCCC1=NC(C)(C)C(=O)O1"
           ],
           "neighbor_similarities": [
             0.23939393939393944,
@@ -1321,9 +2015,9 @@
           "term_instances": [
             {
               "neighbor_rank": 2,
-              "neighbor_id": "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
+              "neighbor_id": "CCCCCCC1=NC(C)(C)C(=O)O1",
               "neighbor_similarity": 0.23939393939393944,
-              "pair_score": 0.9957122886060987,
+              "pair_score": 0.99527144219632,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
@@ -1340,9 +2034,9 @@
             },
             {
               "neighbor_rank": 3,
-              "neighbor_id": "CCCCCCC1=NC(C)(C)C(=O)O1",
+              "neighbor_id": "CCCCCCCCCC1=NC(C)(C)C(=O)O1",
               "neighbor_similarity": 0.23939393939393944,
-              "pair_score": 0.99527144219632,
+              "pair_score": 0.9961130346206555,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
@@ -1371,8 +2065,8 @@
             3
           ],
           "neighbor_ids": [
-            "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
-            "CCCCCCC1=NC(C)(C)C(=O)O1"
+            "CCCCCCC1=NC(C)(C)C(=O)O1",
+            "CCCCCCCCCC1=NC(C)(C)C(=O)O1"
           ],
           "neighbor_similarities": [
             0.23939393939393944,
@@ -1393,9 +2087,9 @@
           "term_instances": [
             {
               "neighbor_rank": 2,
-              "neighbor_id": "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
+              "neighbor_id": "CCCCCCC1=NC(C)(C)C(=O)O1",
               "neighbor_similarity": 0.23939393939393944,
-              "pair_score": 0.9957122886060987,
+              "pair_score": 0.99527144219632,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
@@ -1412,9 +2106,9 @@
             },
             {
               "neighbor_rank": 3,
-              "neighbor_id": "CCCCCCC1=NC(C)(C)C(=O)O1",
+              "neighbor_id": "CCCCCCCCCC1=NC(C)(C)C(=O)O1",
               "neighbor_similarity": 0.23939393939393944,
-              "pair_score": 0.99527144219632,
+              "pair_score": 0.9961130346206555,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
@@ -1443,8 +2137,8 @@
             3
           ],
           "neighbor_ids": [
-            "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
-            "CCCCCCC1=NC(C)(C)C(=O)O1"
+            "CCCCCCC1=NC(C)(C)C(=O)O1",
+            "CCCCCCCCCC1=NC(C)(C)C(=O)O1"
           ],
           "neighbor_similarities": [
             0.23939393939393944,
@@ -1465,25 +2159,6 @@
           "term_instances": [
             {
               "neighbor_rank": 2,
-              "neighbor_id": "CCCCCCCCCCCC1=NC(C)(C)C(=O)O1",
-              "neighbor_similarity": 0.23939393939393944,
-              "pair_score": 0.9957122886060987,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "causes a skin reaction",
-                "label": 1
-              },
-              "contribution": 0.3066352054923892,
-              "contribution_abs": 0.3066352054923892,
-              "contribution_rank": 6,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "causes a skin reaction",
-              "text_hint": "For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3066, which pushes toward option (B): causes a skin reaction."
-            },
-            {
-              "neighbor_rank": 3,
               "neighbor_id": "CCCCCCC1=NC(C)(C)C(=O)O1",
               "neighbor_similarity": 0.23939393939393944,
               "pair_score": 0.99527144219632,
@@ -1500,30 +2175,50 @@
               "supports_option": "B",
               "supports_text": "causes a skin reaction",
               "text_hint": "For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3066, which pushes toward option (B): causes a skin reaction."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CCCCCCCCCC1=NC(C)(C)C(=O)O1",
+              "neighbor_similarity": 0.23939393939393944,
+              "pair_score": 0.9961130346206555,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": 0.3066352054923892,
+              "contribution_abs": 0.3066352054923892,
+              "contribution_rank": 7,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "causes a skin reaction",
+              "text_hint": "For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3066, which pushes toward option (B): causes a skin reaction."
             }
           ]
-        }
-      ],
-      "single_neighbor_evidence": [
+        },
         {
-          "feature_name": "rdkit_pka__rdkit__qed",
-          "display_name": "QED drug-likeness",
-          "description": "quantitative estimate of drug-likeness",
+          "feature_name": "rdkit_pka__rdkit__MolLogP",
+          "display_name": "estimated logP",
+          "description": "RDKit-estimated octanol/water partition coefficient (logP)",
           "source_family": "rdkit",
-          "raw_name": "qed",
-          "occurrence_count": 1,
+          "raw_name": "MolLogP",
+          "occurrence_count": 2,
           "neighbor_ranks": [
-            1
+            2,
+            3
           ],
           "neighbor_ids": [
-            "CCCCCCCCCCCCCC[N+](C)(C)Cc1ccccc1"
+            "CCCCCCC1=NC(C)(C)C(=O)O1",
+            "CCCCCCCCCC1=NC(C)(C)C(=O)O1"
           ],
           "neighbor_similarities": [
-            0.24645161290322581
+            0.23939393939393944,
+            0.23939393939393944
           ],
           "support_weight_by_label": {
             "0": 0.0,
-            "1": 0.07822966490907524
+            "1": 0.11288657223640519
           },
           "support_mode": "single",
           "dominant_support": {
@@ -1531,47 +2226,51 @@
             "text": "causes a skin reaction",
             "label": 1
           },
-          "total_abs_contribution": 0.3174240330080278,
-          "total_weighted_evidence": 0.07822966490907524,
+          "total_abs_contribution": 0.47155150427865455,
+          "total_weighted_evidence": 0.11288657223640519,
           "term_instances": [
             {
-              "neighbor_rank": 1,
-              "neighbor_id": "CCCCCCCCCCCCCC[N+](C)(C)Cc1ccccc1",
-              "neighbor_similarity": 0.24645161290322581,
-              "pair_score": 0.9023842111082466,
+              "neighbor_rank": 2,
+              "neighbor_id": "CCCCCCC1=NC(C)(C)C(=O)O1",
+              "neighbor_similarity": 0.23939393939393944,
+              "pair_score": 0.99527144219632,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
                 "text": "causes a skin reaction",
                 "label": 1
               },
-              "contribution": 0.3174240330080278,
-              "contribution_abs": 0.3174240330080278,
-              "contribution_rank": 4,
+              "contribution": 0.20452795299211543,
+              "contribution_abs": 0.20452795299211543,
+              "contribution_rank": 8,
               "supports_label": 1,
               "supports_option": "B",
               "supports_text": "causes a skin reaction",
-              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2403, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is +0.1033. This pairwise contribution is 0.3174, which pushes toward option (B): causes a skin reaction."
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 2.6907, while the query's estimated logP is value 4.5621. The query-minus-neighbor delta is +1.8714. This pairwise contribution is 0.2045, which pushes toward option (B): causes a skin reaction."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CCCCCCCCCC1=NC(C)(C)C(=O)O1",
+              "neighbor_similarity": 0.23939393939393944,
+              "pair_score": 0.9961130346206555,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": 0.2670235512865391,
+              "contribution_abs": 0.2670235512865391,
+              "contribution_rank": 8,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "causes a skin reaction",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 3.861, while the query's estimated logP is value 4.5621. The query-minus-neighbor delta is +0.7011. This pairwise contribution is 0.267, which pushes toward option (B): causes a skin reaction."
             }
-          ],
-          "neighbor_rank": 1,
-          "neighbor_id": "CCCCCCCCCCCCCC[N+](C)(C)Cc1ccccc1",
-          "neighbor_similarity": 0.24645161290322581,
-          "pair_score": 0.9023842111082466,
-          "pair_prediction": 1,
-          "pair_prediction_semantics": {
-            "option": "B",
-            "text": "causes a skin reaction",
-            "label": 1
-          },
-          "contribution": 0.3174240330080278,
-          "contribution_abs": 0.3174240330080278,
-          "contribution_rank": 4,
-          "supports_label": 1,
-          "supports_option": "B",
-          "supports_text": "causes a skin reaction",
-          "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2403, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is +0.1033. This pairwise contribution is 0.3174, which pushes toward option (B): causes a skin reaction."
-        },
+          ]
+        }
+      ],
+      "single_neighbor_evidence": [
         {
           "feature_name": "rdkit_pka__rdkit__FractionCSP3",
           "display_name": "fraction of sp3 carbons",
@@ -1705,15 +2404,337 @@
           "supports_option": "B",
           "supports_text": "causes a skin reaction",
           "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 290.26, while the query's heavy-atom molecular weight is value 247.014. The query-minus-neighbor delta is -43.246. This pairwise contribution is 0.1039, which pushes toward option (B): causes a skin reaction."
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+          "display_name": "maximum partial charge",
+          "description": "most positive atomic partial charge",
+          "source_family": "rdkit",
+          "raw_name": "MaxPartialCharge",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            1
+          ],
+          "neighbor_ids": [
+            "CCCCCCCCCCCCCC[N+](C)(C)Cc1ccccc1"
+          ],
+          "neighbor_similarities": [
+            0.24645161290322581
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.025229637051778307
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "causes a skin reaction",
+            "label": 1
+          },
+          "total_abs_contribution": 0.10237156395355072,
+          "total_weighted_evidence": 0.025229637051778307,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCCCCCCCCCCCCC[N+](C)(C)Cc1ccccc1",
+              "neighbor_similarity": 0.24645161290322581,
+              "pair_score": 0.9023842111082466,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": 0.10237156395355072,
+              "contribution_abs": 0.10237156395355072,
+              "contribution_rank": 7,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "causes a skin reaction",
+              "text_hint": "For maximum partial charge, the neighbor's maximum partial charge is value 0.1039, while the query's maximum partial charge is value -0.0005. The query-minus-neighbor delta is -0.1044. This pairwise contribution is 0.1024, which pushes toward option (B): causes a skin reaction."
+            }
+          ],
+          "neighbor_rank": 1,
+          "neighbor_id": "CCCCCCCCCCCCCC[N+](C)(C)Cc1ccccc1",
+          "neighbor_similarity": 0.24645161290322581,
+          "pair_score": 0.9023842111082466,
+          "pair_prediction": 1,
+          "pair_prediction_semantics": {
+            "option": "B",
+            "text": "causes a skin reaction",
+            "label": 1
+          },
+          "contribution": 0.10237156395355072,
+          "contribution_abs": 0.10237156395355072,
+          "contribution_rank": 7,
+          "supports_label": 1,
+          "supports_option": "B",
+          "supports_text": "causes a skin reaction",
+          "text_hint": "For maximum partial charge, the neighbor's maximum partial charge is value 0.1039, while the query's maximum partial charge is value -0.0005. The query-minus-neighbor delta is -0.1044. This pairwise contribution is 0.1024, which pushes toward option (B): causes a skin reaction."
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+          "display_name": "hydrogen-bond acceptor count",
+          "description": "number of hydrogen-bond acceptors",
+          "source_family": "rdkit",
+          "raw_name": "NumHAcceptors",
+          "occurrence_count": 1,
+          "neighbor_ranks": [
+            1
+          ],
+          "neighbor_ids": [
+            "CCCCCCCCCCCCCC[N+](C)(C)Cc1ccccc1"
+          ],
+          "neighbor_similarities": [
+            0.24645161290322581
+          ],
+          "support_weight_by_label": {
+            "0": 0.02150150772371183,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "does not cause a skin reaction",
+            "label": 0
+          },
+          "total_abs_contribution": 0.08724433762239094,
+          "total_weighted_evidence": 0.02150150772371183,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCCCCCCCCCCCCC[N+](C)(C)Cc1ccccc1",
+              "neighbor_similarity": 0.24645161290322581,
+              "pair_score": 0.9023842111082466,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": -0.08724433762239094,
+              "contribution_abs": 0.08724433762239094,
+              "contribution_rank": 8,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "does not cause a skin reaction",
+              "text_hint": "For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 0, while the query's hydrogen-bond acceptor count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is -0.0872, which pushes toward option (A): does not cause a skin reaction."
+            }
+          ],
+          "neighbor_rank": 1,
+          "neighbor_id": "CCCCCCCCCCCCCC[N+](C)(C)Cc1ccccc1",
+          "neighbor_similarity": 0.24645161290322581,
+          "pair_score": 0.9023842111082466,
+          "pair_prediction": 1,
+          "pair_prediction_semantics": {
+            "option": "B",
+            "text": "causes a skin reaction",
+            "label": 1
+          },
+          "contribution": -0.08724433762239094,
+          "contribution_abs": 0.08724433762239094,
+          "contribution_rank": 8,
+          "supports_label": 0,
+          "supports_option": "A",
+          "supports_text": "does not cause a skin reaction",
+          "text_hint": "For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 0, while the query's hydrogen-bond acceptor count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is -0.0872, which pushes toward option (A): does not cause a skin reaction."
         }
       ]
     },
     "negative_neighbors": {
       "group_name": "negative_neighbors",
       "num_neighbors": 3,
-      "num_shared_features": 6,
-      "num_single_neighbor_features": 5,
+      "num_shared_features": 8,
+      "num_single_neighbor_features": 4,
       "shared_evidence": [
+        {
+          "feature_name": "rdkit_pka__rdkit__qed",
+          "display_name": "QED drug-likeness",
+          "description": "quantitative estimate of drug-likeness",
+          "source_family": "rdkit",
+          "raw_name": "qed",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CCCOC(=O)c1ccc(O)cc1",
+            "CCC(N)c1ccccc1",
+            "CCCOc1ccc(Br)c(C(=O)O)c1"
+          ],
+          "neighbor_similarities": [
+            0.11480730223123732,
+            0.11133004926108374,
+            0.10424242424242426
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.23762770298076258
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "causes a skin reaction",
+            "label": 1
+          },
+          "total_abs_contribution": 2.1159021690322035,
+          "total_weighted_evidence": 0.23762770298076258,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCCOC(=O)c1ccc(O)cc1",
+              "neighbor_similarity": 0.11480730223123732,
+              "pair_score": 0.8992758163944556,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": 0.9585606975615618,
+              "contribution_abs": 0.9585606975615618,
+              "contribution_rank": 1,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "causes a skin reaction",
+              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.7231, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.3794. This pairwise contribution is 0.9586, which pushes toward option (B): causes a skin reaction."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCC(N)c1ccccc1",
+              "neighbor_similarity": 0.11133004926108374,
+              "pair_score": 0.8948356419548771,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": 0.978304380970756,
+              "contribution_abs": 0.978304380970756,
+              "contribution_rank": 3,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "causes a skin reaction",
+              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.6599, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.3162. This pairwise contribution is 0.9783, which pushes toward option (B): causes a skin reaction."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CCCOc1ccc(Br)c(C(=O)O)c1",
+              "neighbor_similarity": 0.10424242424242426,
+              "pair_score": 0.7357194003017871,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": 0.17903709049988586,
+              "contribution_abs": 0.17903709049988586,
+              "contribution_rank": 8,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "causes a skin reaction",
+              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.9037, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.56. This pairwise contribution is 0.179, which pushes toward option (B): causes a skin reaction."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+          "display_name": "maximum absolute partial charge",
+          "description": "largest absolute atomic partial charge",
+          "source_family": "rdkit",
+          "raw_name": "MaxAbsPartialCharge",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "CCCOC(=O)c1ccc(O)cc1",
+            "CCC(N)c1ccccc1",
+            "CCCOc1ccc(Br)c(C(=O)O)c1"
+          ],
+          "neighbor_similarities": [
+            0.11480730223123732,
+            0.11133004926108374,
+            0.10424242424242426
+          ],
+          "support_weight_by_label": {
+            "0": 0.18018460871124845,
+            "1": 0.0
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "A",
+            "text": "does not cause a skin reaction",
+            "label": 0
+          },
+          "total_abs_contribution": 1.6352432415275038,
+          "total_weighted_evidence": 0.18018460871124845,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "CCCOC(=O)c1ccc(O)cc1",
+              "neighbor_similarity": 0.11480730223123732,
+              "pair_score": 0.8992758163944556,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": -0.18983253085385252,
+              "contribution_abs": 0.18983253085385252,
+              "contribution_rank": 7,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "does not cause a skin reaction",
+              "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.508, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.4216. This pairwise contribution is -0.1898, which pushes toward option (A): does not cause a skin reaction."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "CCC(N)c1ccccc1",
+              "neighbor_similarity": 0.11133004926108374,
+              "pair_score": 0.8948356419548771,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": -1.0888459027227706,
+              "contribution_abs": 1.0888459027227706,
+              "contribution_rank": 1,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "does not cause a skin reaction",
+              "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.324, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.2376. This pairwise contribution is -1.0888, which pushes toward option (A): does not cause a skin reaction."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CCCOc1ccc(Br)c(C(=O)O)c1",
+              "neighbor_similarity": 0.10424242424242426,
+              "pair_score": 0.7357194003017871,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": -0.3565648079508808,
+              "contribution_abs": 0.3565648079508808,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "does not cause a skin reaction",
+              "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4936, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.4072. This pairwise contribution is -0.3566, which pushes toward option (A): does not cause a skin reaction."
+            }
+          ]
+        },
         {
           "feature_name": "fg_top_level__alkyl iodide",
           "display_name": "alkyl iodide",
@@ -1809,36 +2830,39 @@
           ]
         },
         {
-          "feature_name": "rdkit_pka__rdkit__qed",
-          "display_name": "QED drug-likeness",
-          "description": "quantitative estimate of drug-likeness",
+          "feature_name": "rdkit_pka__rdkit__NumRotatableBonds",
+          "display_name": "rotatable-bond count",
+          "description": "number of rotatable bonds",
           "source_family": "rdkit",
-          "raw_name": "qed",
-          "occurrence_count": 2,
+          "raw_name": "NumRotatableBonds",
+          "occurrence_count": 3,
           "neighbor_ranks": [
             1,
-            2
+            2,
+            3
           ],
           "neighbor_ids": [
             "CCCOC(=O)c1ccc(O)cc1",
-            "CCC(N)c1ccccc1"
+            "CCC(N)c1ccccc1",
+            "CCCOc1ccc(Br)c(C(=O)O)c1"
           ],
           "neighbor_similarities": [
             0.11480730223123732,
-            0.11133004926108374
+            0.11133004926108374,
+            0.10424242424242426
           ],
           "support_weight_by_label": {
-            "0": 0.0,
-            "1": 0.21896444263774417
+            "0": 0.10289090460102597,
+            "1": 0.0
           },
           "support_mode": "single",
           "dominant_support": {
-            "option": "B",
-            "text": "causes a skin reaction",
-            "label": 1
+            "option": "A",
+            "text": "does not cause a skin reaction",
+            "label": 0
           },
-          "total_abs_contribution": 1.9368650785323178,
-          "total_weighted_evidence": 0.21896444263774417,
+          "total_abs_contribution": 0.9338115770788726,
+          "total_weighted_evidence": 0.10289090460102597,
           "term_instances": [
             {
               "neighbor_rank": 1,
@@ -1851,13 +2875,13 @@
                 "text": "causes a skin reaction",
                 "label": 1
               },
-              "contribution": 0.9585606975615618,
-              "contribution_abs": 0.9585606975615618,
-              "contribution_rank": 1,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "causes a skin reaction",
-              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.7231, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.3794. This pairwise contribution is 0.9586, which pushes toward option (B): causes a skin reaction."
+              "contribution": -0.323033846113969,
+              "contribution_abs": 0.323033846113969,
+              "contribution_rank": 4,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "does not cause a skin reaction",
+              "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 3, while the query's rotatable-bond count is value 8. The query-minus-neighbor delta is +5. This pairwise contribution is -0.323, which pushes toward option (A): does not cause a skin reaction."
             },
             {
               "neighbor_rank": 2,
@@ -1870,13 +2894,32 @@
                 "text": "causes a skin reaction",
                 "label": 1
               },
-              "contribution": 0.978304380970756,
-              "contribution_abs": 0.978304380970756,
-              "contribution_rank": 3,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "causes a skin reaction",
-              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.6599, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is -0.3162. This pairwise contribution is 0.9783, which pushes toward option (B): causes a skin reaction."
+              "contribution": -0.30127283040654246,
+              "contribution_abs": 0.30127283040654246,
+              "contribution_rank": 7,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "does not cause a skin reaction",
+              "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 2, while the query's rotatable-bond count is value 8. The query-minus-neighbor delta is +6. This pairwise contribution is -0.3013, which pushes toward option (A): does not cause a skin reaction."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "CCCOc1ccc(Br)c(C(=O)O)c1",
+              "neighbor_similarity": 0.10424242424242426,
+              "pair_score": 0.7357194003017871,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "causes a skin reaction",
+                "label": 1
+              },
+              "contribution": -0.30950490055836116,
+              "contribution_abs": 0.30950490055836116,
+              "contribution_rank": 6,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "does not cause a skin reaction",
+              "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 4, while the query's rotatable-bond count is value 8. The query-minus-neighbor delta is +4. This pairwise contribution is -0.3095, which pushes toward option (A): does not cause a skin reaction."
             }
           ]
         },
@@ -1949,11 +2992,11 @@
           ]
         },
         {
-          "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
-          "display_name": "maximum absolute partial charge",
-          "description": "largest absolute atomic partial charge",
-          "source_family": "rdkit",
-          "raw_name": "MaxAbsPartialCharge",
+          "feature_name": "rdkit_pka__pka__fraction_neutral",
+          "display_name": "neutral fraction",
+          "description": "estimated fraction of the molecule that is neutral at the configured pH",
+          "source_family": "pka",
+          "raw_name": "fraction_neutral",
           "occurrence_count": 2,
           "neighbor_ranks": [
             2,
@@ -1968,17 +3011,17 @@
             0.10424242424242426
           ],
           "support_weight_by_label": {
-            "0": 0.1583904479681895,
-            "1": 0.0
+            "0": 0.02552792849483095,
+            "1": 0.05538895997188238
           },
-          "support_mode": "single",
+          "support_mode": "mostly",
           "dominant_support": {
-            "option": "A",
-            "text": "does not cause a skin reaction",
-            "label": 0
+            "option": "B",
+            "text": "causes a skin reaction",
+            "label": 1
           },
-          "total_abs_contribution": 1.4454107106736513,
-          "total_weighted_evidence": 0.1583904479681895,
+          "total_abs_contribution": 0.7424103158958868,
+          "total_weighted_evidence": 0.08091688846671333,
           "term_instances": [
             {
               "neighbor_rank": 2,
@@ -1991,13 +3034,13 @@
                 "text": "causes a skin reaction",
                 "label": 1
               },
-              "contribution": -1.0888459027227706,
-              "contribution_abs": 1.0888459027227706,
-              "contribution_rank": 1,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "does not cause a skin reaction",
-              "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.324, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.2376. This pairwise contribution is -1.0888, which pushes toward option (A): does not cause a skin reaction."
+              "contribution": 0.4975203041722179,
+              "contribution_abs": 0.4975203041722179,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "causes a skin reaction",
+              "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.0037, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9963. This pairwise contribution is 0.4975, which pushes toward option (B): causes a skin reaction."
             },
             {
               "neighbor_rank": 3,
@@ -2010,13 +3053,13 @@
                 "text": "causes a skin reaction",
                 "label": 1
               },
-              "contribution": -0.3565648079508808,
-              "contribution_abs": 0.3565648079508808,
-              "contribution_rank": 4,
+              "contribution": -0.24489001172366895,
+              "contribution_abs": 0.24489001172366895,
+              "contribution_rank": 7,
               "supports_label": 0,
               "supports_option": "A",
               "supports_text": "does not cause a skin reaction",
-              "text_hint": "For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4936, while the query's maximum absolute partial charge is value 0.0864. The query-minus-neighbor delta is -0.4072. This pairwise contribution is -0.3566, which pushes toward option (A): does not cause a skin reaction."
+              "text_hint": "For neutral fraction, the neighbor's neutral fraction is absent (0), while the query's neutral fraction is present (1). The query-minus-neighbor delta is +1. This pairwise contribution is -0.2449, which pushes toward option (A): does not cause a skin reaction."
             }
           ]
         },
@@ -2093,36 +3136,36 @@
           ]
         },
         {
-          "feature_name": "rdkit_pka__rdkit__NumRotatableBonds",
-          "display_name": "rotatable-bond count",
-          "description": "number of rotatable bonds",
+          "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+          "display_name": "minimum absolute partial charge",
+          "description": "smallest absolute atomic partial charge",
           "source_family": "rdkit",
-          "raw_name": "NumRotatableBonds",
+          "raw_name": "MinAbsPartialCharge",
           "occurrence_count": 2,
           "neighbor_ranks": [
             1,
-            3
+            2
           ],
           "neighbor_ids": [
             "CCCOC(=O)c1ccc(O)cc1",
-            "CCCOc1ccc(Br)c(C(=O)O)c1"
+            "CCC(N)c1ccccc1"
           ],
           "neighbor_similarities": [
             0.11480730223123732,
-            0.10424242424242426
+            0.11133004926108374
           ],
           "support_weight_by_label": {
-            "0": 0.06935018555083947,
-            "1": 0.0
+            "0": 0.0,
+            "1": 0.054788774449904515
           },
           "support_mode": "single",
           "dominant_support": {
-            "option": "A",
-            "text": "does not cause a skin reaction",
-            "label": 0
+            "option": "B",
+            "text": "causes a skin reaction",
+            "label": 1
           },
-          "total_abs_contribution": 0.6325387466723302,
-          "total_weighted_evidence": 0.06935018555083947,
+          "total_abs_contribution": 0.4854425318688138,
+          "total_weighted_evidence": 0.054788774449904515,
           "term_instances": [
             {
               "neighbor_rank": 1,
@@ -2135,32 +3178,32 @@
                 "text": "causes a skin reaction",
                 "label": 1
               },
-              "contribution": -0.323033846113969,
-              "contribution_abs": 0.323033846113969,
-              "contribution_rank": 4,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "does not cause a skin reaction",
-              "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 3, while the query's rotatable-bond count is value 8. The query-minus-neighbor delta is +5. This pairwise contribution is -0.323, which pushes toward option (A): does not cause a skin reaction."
+              "contribution": 0.21408665688518524,
+              "contribution_abs": 0.21408665688518524,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "causes a skin reaction",
+              "text_hint": "For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3376, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.3371. This pairwise contribution is 0.2141, which pushes toward option (B): causes a skin reaction."
             },
             {
-              "neighbor_rank": 3,
-              "neighbor_id": "CCCOc1ccc(Br)c(C(=O)O)c1",
-              "neighbor_similarity": 0.10424242424242426,
-              "pair_score": 0.7357194003017871,
+              "neighbor_rank": 2,
+              "neighbor_id": "CCC(N)c1ccccc1",
+              "neighbor_similarity": 0.11133004926108374,
+              "pair_score": 0.8948356419548771,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
                 "text": "causes a skin reaction",
                 "label": 1
               },
-              "contribution": -0.30950490055836116,
-              "contribution_abs": 0.30950490055836116,
-              "contribution_rank": 6,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "does not cause a skin reaction",
-              "text_hint": "For rotatable-bond count, the neighbor's rotatable-bond count is value 4, while the query's rotatable-bond count is value 8. The query-minus-neighbor delta is +4. This pairwise contribution is -0.3095, which pushes toward option (A): does not cause a skin reaction."
+              "contribution": 0.27135587498362856,
+              "contribution_abs": 0.27135587498362856,
+              "contribution_rank": 8,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "causes a skin reaction",
+              "text_hint": "For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.0292, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.0287. This pairwise contribution is 0.2714, which pushes toward option (B): causes a skin reaction."
             }
           ]
         }
@@ -2234,11 +3277,11 @@
           "text_hint": "For exact molecular weight, the neighbor's exact molecular weight is value 180.0786, while the query's exact molecular weight is value 268.0688. The query-minus-neighbor delta is +87.9902. This pairwise contribution is 0.2356, which pushes toward option (B): causes a skin reaction."
         },
         {
-          "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
-          "display_name": "minimum absolute partial charge",
-          "description": "smallest absolute atomic partial charge",
+          "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+          "display_name": "fraction of sp3 carbons",
+          "description": "fraction of carbon atoms that are sp3 hybridized",
           "source_family": "rdkit",
-          "raw_name": "MinAbsPartialCharge",
+          "raw_name": "FractionCSP3",
           "occurrence_count": 1,
           "neighbor_ranks": [
             1
@@ -2251,7 +3294,7 @@
           ],
           "support_weight_by_label": {
             "0": 0.0,
-            "1": 0.024578711520692666
+            "1": 0.020264683089856798
           },
           "support_mode": "single",
           "dominant_support": {
@@ -2259,8 +3302,8 @@
             "text": "causes a skin reaction",
             "label": 1
           },
-          "total_abs_contribution": 0.21408665688518524,
-          "total_weighted_evidence": 0.024578711520692666,
+          "total_abs_contribution": 0.17651040217843467,
+          "total_weighted_evidence": 0.020264683089856798,
           "term_instances": [
             {
               "neighbor_rank": 1,
@@ -2273,13 +3316,13 @@
                 "text": "causes a skin reaction",
                 "label": 1
               },
-              "contribution": 0.21408665688518524,
-              "contribution_abs": 0.21408665688518524,
-              "contribution_rank": 6,
+              "contribution": 0.17651040217843467,
+              "contribution_abs": 0.17651040217843467,
+              "contribution_rank": 8,
               "supports_label": 1,
               "supports_option": "B",
               "supports_text": "causes a skin reaction",
-              "text_hint": "For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3376, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.3371. This pairwise contribution is 0.2141, which pushes toward option (B): causes a skin reaction."
+              "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.3, while the query's fraction of sp3 carbons is value 1. The query-minus-neighbor delta is +0.7. This pairwise contribution is 0.1765, which pushes toward option (B): causes a skin reaction."
             }
           ],
           "neighbor_rank": 1,
@@ -2292,80 +3335,13 @@
             "text": "causes a skin reaction",
             "label": 1
           },
-          "contribution": 0.21408665688518524,
-          "contribution_abs": 0.21408665688518524,
-          "contribution_rank": 6,
+          "contribution": 0.17651040217843467,
+          "contribution_abs": 0.17651040217843467,
+          "contribution_rank": 8,
           "supports_label": 1,
           "supports_option": "B",
           "supports_text": "causes a skin reaction",
-          "text_hint": "For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3376, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.3371. This pairwise contribution is 0.2141, which pushes toward option (B): causes a skin reaction."
-        },
-        {
-          "feature_name": "rdkit_pka__pka__fraction_neutral",
-          "display_name": "neutral fraction",
-          "description": "estimated fraction of the molecule that is neutral at the configured pH",
-          "source_family": "pka",
-          "raw_name": "fraction_neutral",
-          "occurrence_count": 1,
-          "neighbor_ranks": [
-            2
-          ],
-          "neighbor_ids": [
-            "CCC(N)c1ccccc1"
-          ],
-          "neighbor_similarities": [
-            0.11133004926108374
-          ],
-          "support_weight_by_label": {
-            "0": 0.0,
-            "1": 0.05538895997188238
-          },
-          "support_mode": "single",
-          "dominant_support": {
-            "option": "B",
-            "text": "causes a skin reaction",
-            "label": 1
-          },
-          "total_abs_contribution": 0.4975203041722179,
-          "total_weighted_evidence": 0.05538895997188238,
-          "term_instances": [
-            {
-              "neighbor_rank": 2,
-              "neighbor_id": "CCC(N)c1ccccc1",
-              "neighbor_similarity": 0.11133004926108374,
-              "pair_score": 0.8948356419548771,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "causes a skin reaction",
-                "label": 1
-              },
-              "contribution": 0.4975203041722179,
-              "contribution_abs": 0.4975203041722179,
-              "contribution_rank": 5,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "causes a skin reaction",
-              "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.0037, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9963. This pairwise contribution is 0.4975, which pushes toward option (B): causes a skin reaction."
-            }
-          ],
-          "neighbor_rank": 2,
-          "neighbor_id": "CCC(N)c1ccccc1",
-          "neighbor_similarity": 0.11133004926108374,
-          "pair_score": 0.8948356419548771,
-          "pair_prediction": 1,
-          "pair_prediction_semantics": {
-            "option": "B",
-            "text": "causes a skin reaction",
-            "label": 1
-          },
-          "contribution": 0.4975203041722179,
-          "contribution_abs": 0.4975203041722179,
-          "contribution_rank": 5,
-          "supports_label": 1,
-          "supports_option": "B",
-          "supports_text": "causes a skin reaction",
-          "text_hint": "For neutral fraction, the neighbor's neutral fraction is value 0.0037, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9963. This pairwise contribution is 0.4975, which pushes toward option (B): causes a skin reaction."
+          "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.3, while the query's fraction of sp3 carbons is value 1. The query-minus-neighbor delta is +0.7. This pairwise contribution is 0.1765, which pushes toward option (B): causes a skin reaction."
         },
         {
           "feature_name": "rdkit_pka__rdkit__NOCount",
@@ -2503,6 +3479,6 @@
         }
       ]
     },
-    "middle_draft": "Across the positive neighbors, shared local signals include maximum absolute partial charge, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): does not cause a skin reaction, alkyl iodide, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction, minimum absolute partial charge, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction, imine, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction, lactone, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction, and aliphatic ring count, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction. The remaining one-off signals from the positive neighbors are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.2465), the comparison shows that for QED drug-likeness, the neighbor's QED drug-likeness is value 0.2403, while the query's QED drug-likeness is value 0.3436. The query-minus-neighbor delta is +0.1033. This pairwise contribution is 0.3174, which pushes toward option (B): causes a skin reaction. With neighbor 1 (similarity 0.2465), the comparison shows that for fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.7391, while the query's fraction of sp3 carbons is value 1. The query-minus-neighbor delta is +0.2609. This pairwise contribution is 0.1341, which pushes toward option (B): causes a skin reaction. With neighbor 1 (similarity 0.2465), the comparison shows that for heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 290.26, while the query's heavy-atom molecular weight is value 247.014. The query-minus-neighbor delta is -43.246. This pairwise contribution is 0.1039, which pushes toward option (B): causes a skin reaction. Across the negative neighbors, shared local signals include alkyl iodide, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): does not cause a skin reaction, QED drug-likeness, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction, minimum partial charge, which recurs in 2 of 3 neighbor comparisons, but with mixed direction, maximum absolute partial charge, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): does not cause a skin reaction, topological polar surface area, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): does not cause a skin reaction, and rotatable-bond count, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): does not cause a skin reaction. The remaining one-off signals from the negative neighbors are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.1148), the comparison shows that for exact molecular weight, the neighbor's exact molecular weight is value 180.0786, while the query's exact molecular weight is value 268.0688. The query-minus-neighbor delta is +87.9902. This pairwise contribution is 0.2356, which pushes toward option (B): causes a skin reaction. With neighbor 1 (similarity 0.1148), the comparison shows that for minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3376, while the query's minimum absolute partial charge is value 0.0005. The query-minus-neighbor delta is -0.3371. This pairwise contribution is 0.2141, which pushes toward option (B): causes a skin reaction. With neighbor 2 (similarity 0.1113), the comparison shows that for neutral fraction, the neighbor's neutral fraction is value 0.0037, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9963. This pairwise contribution is 0.4975, which pushes toward option (B): causes a skin reaction. With neighbor 2 (similarity 0.1113), the comparison shows that for nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 1, while the query's nitrogen/oxygen atom count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3872, which pushes toward option (B): causes a skin reaction. With neighbor 3 (similarity 0.1042), the comparison shows that for estimated logP, the neighbor's estimated logP is value 2.9361, while the query's estimated logP is value 4.5621. The query-minus-neighbor delta is +1.626. This pairwise contribution is 0.4957, which pushes toward option (B): causes a skin reaction. Taken together, these local analog comparisons support option (B): causes a skin reaction with local score 0.927, positive-neighbor aggregate 0.9639, and negative-neighbor aggregate 0.8462."
+    "middle_draft": "Across the neighbors labeled option (B): causes a skin reaction, shared local signals include maximum absolute partial charge, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): does not cause a skin reaction, alkyl iodide, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction, minimum absolute partial charge, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction, QED drug-likeness, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction, imine, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction, lactone, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction, aliphatic ring count, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction, and estimated logP, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction. The remaining one-off signals from the neighbors labeled option (B): causes a skin reaction are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.2465), the comparison shows that for fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.7391, while the query's fraction of sp3 carbons is value 1. The query-minus-neighbor delta is +0.2609. This pairwise contribution is 0.1341, which pushes toward option (B): causes a skin reaction. With neighbor 1 (similarity 0.2465), the comparison shows that for heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 290.26, while the query's heavy-atom molecular weight is value 247.014. The query-minus-neighbor delta is -43.246. This pairwise contribution is 0.1039, which pushes toward option (B): causes a skin reaction. With neighbor 1 (similarity 0.2465), the comparison shows that for maximum partial charge, the neighbor's maximum partial charge is value 0.1039, while the query's maximum partial charge is value -0.0005. The query-minus-neighbor delta is -0.1044. This pairwise contribution is 0.1024, which pushes toward option (B): causes a skin reaction. With neighbor 1 (similarity 0.2465), the comparison shows that for hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 0, while the query's hydrogen-bond acceptor count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is -0.0872, which pushes toward option (A): does not cause a skin reaction. Across the neighbors labeled option (A): does not cause a skin reaction, shared local signals include QED drug-likeness, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction, maximum absolute partial charge, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): does not cause a skin reaction, alkyl iodide, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): does not cause a skin reaction, rotatable-bond count, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): does not cause a skin reaction, minimum partial charge, which recurs in 2 of 3 neighbor comparisons, but with mixed direction, neutral fraction, which recurs in 2 of 3 neighbor comparisons and mostly pushes toward option (B): causes a skin reaction, topological polar surface area, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): does not cause a skin reaction, and minimum absolute partial charge, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): causes a skin reaction. The remaining one-off signals from the neighbors labeled option (A): does not cause a skin reaction are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.1148), the comparison shows that for exact molecular weight, the neighbor's exact molecular weight is value 180.0786, while the query's exact molecular weight is value 268.0688. The query-minus-neighbor delta is +87.9902. This pairwise contribution is 0.2356, which pushes toward option (B): causes a skin reaction. With neighbor 1 (similarity 0.1148), the comparison shows that for fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.3, while the query's fraction of sp3 carbons is value 1. The query-minus-neighbor delta is +0.7. This pairwise contribution is 0.1765, which pushes toward option (B): causes a skin reaction. With neighbor 2 (similarity 0.1113), the comparison shows that for nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 1, while the query's nitrogen/oxygen atom count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3872, which pushes toward option (B): causes a skin reaction. With neighbor 3 (similarity 0.1042), the comparison shows that for estimated logP, the neighbor's estimated logP is value 2.9361, while the query's estimated logP is value 4.5621. The query-minus-neighbor delta is +1.626. This pairwise contribution is 0.4957, which pushes toward option (B): causes a skin reaction. Taken together, these local analog comparisons support option (B): causes a skin reaction with local prediction probability 0.9271, aggregate over neighbors labeled option (B): causes a skin reaction 0.964, and aggregate over neighbors labeled option (A): does not cause a skin reaction 0.8462."
   }
 }

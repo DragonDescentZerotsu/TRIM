@@ -16,11 +16,13 @@ from trim.reasoning.agent_sft import (
     DEFAULT_AGENT_REASONING_SFT_OUTPUT_ROOT,
     DEFAULT_AGENT_TOOL_FEATURE_SET_NAME,
     DEFAULT_AGENT_TOOL_MANIFEST_ROOT,
+    DEFAULT_NEIGHBOR_LEVEL_REWRITE_OUTPUT_ROOT,
     DEFAULT_REWRITE_FILTER_ROOT,
     DEFAULT_REWRITE_MODEL,
     DEFAULT_REWRITE_OUTPUT_ROOT,
     DEFAULT_REWRITE_PROVIDER,
     SFT_MODE_FULL,
+    SFT_MODE_LOCAL_NEIGHBOR_ONLY,
     SFT_MODES,
     DEFAULT_TOOL_CACHE_ROOT,
     build_agent_reasoning_sft_datasets,
@@ -40,7 +42,8 @@ def parse_args() -> argparse.Namespace:
         default=SFT_MODE_FULL,
         help=(
             "Transcript assembly mode. 'full' keeps the current global+local+hybrid format; "
-            "'global_only' and 'local_only' build ablation datasets from samples where that teacher is correct."
+            "'global_only' and 'local_only' build ablation datasets from samples where that teacher is correct; "
+            "'local_neighbor_only' builds local-only transcripts from six per-neighbor rewrites plus a summary rewrite."
         ),
     )
     parser.add_argument("--task", action="append", default=None, help="Optional task name. Repeat for multiple tasks.")
@@ -83,12 +86,18 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    rewrite_output_root = args.rewrite_output_root
+    if (
+        args.sft_mode == SFT_MODE_LOCAL_NEIGHBOR_ONLY
+        and str(args.rewrite_output_root) == str(DEFAULT_REWRITE_OUTPUT_ROOT)
+    ):
+        rewrite_output_root = str(DEFAULT_NEIGHBOR_LEVEL_REWRITE_OUTPUT_ROOT)
     summary = build_agent_reasoning_sft_datasets(
         tasks=args.task,
         split=args.split,
         sft_mode=args.sft_mode,
         manifest_index_path=args.manifest_index,
-        rewrite_output_root=args.rewrite_output_root,
+        rewrite_output_root=rewrite_output_root,
         rewrite_filter_root=args.rewrite_filter_root,
         provider=args.provider,
         model=args.model,

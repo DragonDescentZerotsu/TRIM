@@ -17,7 +17,7 @@
   "keep_for_rewrite": true,
   "drop_reason": null,
   "teacher_case": "both_correct",
-  "playbook_path": "/data1/tianang/Projects/TRIM/playbooks/CYP2C9_Substrate_CarbonMangels.md",
+  "playbook_path": "playbooks/CYP2C9_Substrate_CarbonMangels.md",
   "global_rewrite_input": {
     "task_playbook": "# CYP2C9_Substrate_CarbonMangels Practical Guide to Molecular Property Assessment\n\n## neutral fraction\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **B (substrate)** is more commonly observed when a compound exists to some extent as an **anion/negatively charged species** under physiological conditions; **A (non-substrate)** is more common in the \"fully neutral + low-affinity\" chemical space, but this is not absolute\n- Brief note: This task comes from the PyTDC binary classification dataset for \"whether a compound is a CYP2C9 substrate.\" Mechanistic and structural studies emphasize that CYP2C9 shows selectivity for ligands that are **negatively charged or can form anions at physiological pH** (related to electrostatic/salt-bridge interactions with Arg108 in the active site), but it can also metabolize **neutral and highly hydrophobic** compounds, so \"neutral fraction\" is difficult to summarize with a single threshold. \n- Source: Miners & Birkett (many CYP2C9 substrates are weak acids; pKa range), Dickmann et al. (many substrates are negatively charged at physiological pH; Arg108 is linked to selectivity for anionic substrates), Zhou et al. review (neutral highly hydrophobic compounds can also be metabolized), PyTDC dataset description. \n\n## estimated logD\n- Common threshold(s) or range(s): common **nearby-domain anchors (ADMET/permeability/global properties)**: Egan/permeability filters often use **0 ≤ logD ≤ 3** (together with MW ≤ 500); the \"Golden Triangle\" often uses **−2 ≤ logD ≤ 5** (together with 200 ≤ MW ≤ 500) as a broader reference for developable chemical space (both are proxies). \n- Usually associated with: **B** tends toward a moderate logD that allows entry into a hydrophobic active pocket (though higher values are also possible); **A** may be more common in the very low-logD region (highly hydrophilic, difficult to enter a hydrophobic pocket), though this depends on the dataset and chemical space\n- Brief note: For **CYP2C9 substrate/non-substrate** classification itself, public reviews emphasize an **acidic anion anchor + hydrophobic/aromatic interactions** rather than providing a unified logD threshold; therefore, the numeric values above are better used as neighborhood rules for **chemical space and developability/permeability**. \n- Source: Kralj et al. summary of common filter thresholds (including Egan and logD conditions), ADMETlab/\"Golden Triangle\" threshold summaries; Zhou et al. review on the ability to metabolize neutral highly hydrophobic substrates. \n\n## strongest acidic pKa\n- Common threshold(s) or range(s): **known drug substrates of CYP2C9 are often weak acids**, with reported acidic pKa values/distributions ranging from **3.8–8.1** (one of the anchors most closely tied to the \"substrate chemistry\" of this task). Some broad heuristic summaries describe CYP2C9 substrates as \"tending to be acidic (for example, pKa ≤ 5),\" but this is likely narrower in coverage and should be regarded as a coarse proxy. \n- Usually associated with: **B** is more common when there is an acidic site that can generate a substantial anionic fraction at physiological pH (favoring electrostatic/salt-bridge interaction with Arg108); **A** is more common when no acid site capable of forming an anion is present (though neutral highly hydrophobic exceptions exist)\n- Brief note: Structural and mutagenesis studies support the idea that an **anionic group ↔ Arg108** interaction is an important source of CYP2C9 selectivity; thus, in this task, \"strongest acidic pKa\" is often closer to mechanism than pure hydrophobicity. \n- Source: Miners & Birkett (weakly acidic substrates and pKa range), Dickmann et al. (negatively charged substrates and Arg108 selectivity), Tai et al. (crystallographic support for anionic group–Arg108 charge pairing), ScienceDirect topic page as a coarse heuristic proxy. \n\n## strongest basic pKa\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **B** does not require \"high basicity\"; most classic substrates are weak acids, but CYP2C9 can also catalyze some **basic drugs** (such as substrates undergoing certain N-demethylation reactions)\n- Brief note: \"Strongest basic pKa\" alone is difficult to use as a monotonic discriminator of substrate status; its role is more often reflected through the **neutral fraction/charge distribution** and whether the molecule can **enter the hydrophobic pocket and adopt the correct binding pose**. \n- Source: Daly review (most substrates are weak acids, but basic substrates and reaction-type differences also exist), Zhou review (substrate diversity). \n\n## number of acidic sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **B** is more common when at least one acidic site can generate an anion (the \"weak-acid substrate\" narrative); multiple acidic sites are not required\n- Brief note: The key mechanistic anchor for CYP2C9 is that **one anionic/negatively charged group can pair with Arg108**; therefore, the \"number of acidic sites\" is a coarser descriptor than \"whether there is at least one suitable acidic site and what its pKa is.\" \n- Source: Miners & Birkett (weakly acidic substrates are common), Tai et al. (anionic group–Arg108), Dickmann et al. (negatively charged substrates and Arg108). \n\n## number of basic sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; **B** can include a small number of basic substrates, but the overall narrative still favors \"weakly acidic substrates are the majority\"\n- Brief note: \"Number of basic sites\" more often influences total charge/neutral fraction and logD (in a pH-dependent manner), rather than defining a unified threshold for CYP2C9 substrate status. \n- Source: Daly review, Zhou review. \n\n## number of ionizable sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; in this task it behaves more like a coarse feature for \"ionization complexity/polymorphism\"\n- Brief note: CYP2C9 substrate status is more often linked to **whether there is a group that is anionic at physiological pH + hydrophobic/aromatic binding**, whereas the total number of ionizable sites itself lacks a standard threshold. \n- Source: Tai et al. (acidic/charge-pairing mechanism), Zhou review (substrate diversity). \n\n## exact molecular weight\n- Common threshold(s) or range(s): commonly used (proxy) thresholds: Lipinski RO5 **MW < 500**; GSK/\"4/400\"-type empirical region **MW < 400** (more oriented toward better developability/lower ADMET risk); Ghose filter common range **180–480**; \"Golden Triangle\" commonly **200–500** (combined with logD conditions). \n- Usually associated with: both **B** and **A** may fall within these ranges; extremely small or extremely large values tend to first affect **entry/binding/transportability** rather than CYP2C9 specificity\n- Brief note: For CYP2C9 substrate status, the literature emphasizes **charge and key interactions** more strongly, but MW is still a basic constraint that determines whether a molecule can **enter the CYP active cavity and form an effective binding pose** (so using general thresholds as chemical-space gatekeepers is more realistic). \n- Source: admetSAR summary of RO5/GSK/Pfizer/Golden Triangle rules; Gleeson (\"more ideal region\" of MW<400 & cLogP<4); common summaries of Lipinski/Ghose; Kralj summary of common filters. \n\n## fraction of sp3 carbons\n- Common threshold(s) or range(s): as an anchor for \"complexity/3D character\" (proxy), some studies use **0.3** and **0.6** as segmentation thresholds in Fsp3-based categorization (not CYP2C9-specific substrate thresholds). \n- Usually associated with: classic CYP2C9 substrates (such as NSAIDs) often contain aromatic rings and relatively low Fsp3, but this is only a family resemblance, not a hard rule\n- Brief note: CYP2C9 binding often involves aromatic/hydrophobic interactions and an anionic anchor; therefore, Fsp3 is better viewed as a proxy for **shape/planarity** rather than an independent determinant. \n- Source: Lovering (definition of Fsp3 and the \"escape from flatland\" concept), Spacial Score-related work (examples of Fsp3 segmentation thresholds), Nair et al. (examples of aromatic π–π interactions and Arg108 anionic interactions). \n\n## heavy-atom count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: general developability filters related to molecular size sometimes use anchors such as \"total atom count 20–70\" (Ghose, including hydrogens); heavy-atom count depends on definition and is difficult to transfer directly\n- Brief note: In the CYP2C9 substrate task, heavy-atom count is more of a proxy for **size/volume/surface area**; the literature less often gives clearly transferable thresholds using heavy-atom count. \n- Source: summaries of Lipinski extensions/Ghose filter, Kralj summary of common medicinal-chemistry filters. \n\n## heavy-atom molecular weight\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: highly collinear with MW; therefore the general MW threshold space is usually reused as a proxy\n- Brief note: This descriptor is often used in machine-learning models to capture the \"non-hydrogen atomic mass contribution\"; there is little tradition of independent hand-crafted thresholds for CYP2C9 substrate status. \n- Source: common medicinal-chemistry filters (MW/logP/TPSA, etc.) as neighborhood proxies. \n\n## Labute surface area\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: related to molecular size/shape; indirectly affects entry into the CYP active cavity and surface complementarity upon binding\n- Brief note: In both literature and practice, descriptors such as **MW, (t)PSA, logP/logD, flexibility (rotatable bonds)** are more commonly used than \"absolute surface-area thresholds\"; for CYP2C9, the emphasis is on the anionic anchor and aromatic/hydrophobic interactions. \n- Source: Tai et al. (anion–Arg108 mechanism), Veber (PSA/rotatable-bond thresholds as substitutes for \"shape/polarity\"), Kralj (filter summary). \n\n## maximum absolute partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **B** is more common when a stable anion/strong negative center is present (such as a carboxylate oxygen) that can form charge pairing with Arg108 of CYP2C9, though the specific \"charge value\" is highly dependent on the charge model\n- Brief note: \"Maximum absolute partial charge\" is a method-dependent QSAR electronic descriptor; CYP2C9-related literature more often uses qualitative mechanistic language such as \"whether the compound is anionic\" or \"whether it has a group capable of charge pairing.\" \n- Source: Tai et al. (anionic group–Arg108), Dickmann et al. (negatively charged substrates and Arg108 selectivity). \n\n## maximum partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; more often reflects the presence or absence of a strong positive center (such as a protonated amine) at a given pH\n- Brief note: The substrate-preference narrative for CYP2C9 focuses much more on **anionic pairing** than on **strong cationic pairing** (the latter is more typical of the classic mechanistic framework for CYP2D6). \n- Source: Tai et al. (acidic/anionic preference mechanism of 2C9), broad isoform distinction summaries (coarse-grained summary that 2C9 tends to prefer acidic compounds while 2D6 tends to prefer basic compounds). \n\n## minimum absolute partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: mostly a proxy for whether the charge distribution is polarized; it does not directly correspond to a transferable hand-crafted threshold\n- Brief note: For CYP2C9, the key is whether there is a site that can form an anion and interact with Arg108, rather than the \"minimum absolute charge\" itself. \n- Source: mechanistic evidence from Dickmann et al. and Tai et al. regarding Arg108/anionic substrates. \n\n## minimum partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **B** is more common when a strong negative center is present (such as carboxylate O), but the specific negative value depends on the charge calculation method\n- Brief note: In practice, a more transferable approach is to use **\"whether there is an acidic functional group capable of anion formation + its pKa\"** instead of a \"partial-charge threshold.\" \n- Source: Miners & Birkett (weakly acidic substrates), Tai et al. (anion–Arg108), Dickmann et al. (selectivity for negatively charged substrates). \n\n## estimated logP\n- Common threshold(s) or range(s): general (proxy) thresholds: Lipinski RO5 **logP ≤ 5**; Ghose common range **−0.4 ≤ logP ≤ 5.6**; GSK/\"4/400\" empirical region **logP ≤ 4**; Pfizer \"3/75\" often uses **logP > 3** as one of the conditions for in vivo toxicity-risk screening (together with TPSA < 75). \n- Usually associated with: **B** often requires some degree of hydrophobicity to enter the CYP active cavity, but CYP2C9 also includes classic substrates that are **acidic and relatively polar**; **A** may be more common in extremely low-logP, highly hydrophilic space\n- Brief note: The CYP2C9 literature notes that **neutral highly hydrophobic substrates can also be metabolized**, indicating that logP should not be misused as a single-threshold discriminator; it is more reliable when interpreted jointly with **acidic/anionic sites (pKa)**. \n- Source: admetSAR rule summary (RO5/GSK/Pfizer), Lipinski extension/Ghose interval summaries; Zhou and Tai/Dickmann on substrate diversity and evidence for the anionic mechanism. \n\n## molecular weight\n- Common threshold(s) or range(s): same as \"exact molecular weight\": RO5 **<500**; more conservative development-oriented regions commonly use **<400**; Ghose **180–480**; Golden Triangle **200–500** (all are proxies). \n- Usually associated with: both **B** and **A** are possible; extreme MW values more often first affect pharmacokinetics/exposure and the ability to enter the active cavity\n- Brief note: In this task, MW is mainly a chemical-space constraint variable; what is closer to CYP2C9 mechanism is usually **whether the compound is a weak acid/can form an anion + aromatic/hydrophobic interactions**. \n- Source: admetSAR (RO5/GSK/Golden Triangle), Gleeson (4/400), Miners/Tai (weak acids and Arg108 mechanism), Nair et al. (examples of aromatic/π–π and Arg108 interactions). \n\n## NH/OH group count\n- Common threshold(s) or range(s): common proxy: in RO5, hydrogen-bond donors (roughly equivalent to NH/OH count) **HBD ≤ 5**; more lead-like filters sometimes use lower thresholds (for example, HBD ≤ 5 or smaller), but there is no single standard. \n- Usually associated with: no stable one-way association; increasing NH/OH usually raises polarity, lowers permeability, and affects logD\n- Brief note: For CYP2C9 substrate status, NH/OH is more likely to influence entry into the hydrophobic pocket indirectly by changing overall polarity and ionization state; there is no unified NH/OH threshold directly tied to substrate status. \n- Source: admetSAR summary of RO5 thresholds; Kralj summary of filter thresholds; Zhou review on substrate diversity. \n\n## nitrogen/oxygen atom count\n- Common threshold(s) or range(s): common proxy: RO5 **HBA ≤ 10** is often approximated as an upper bound where the \"N/O atom count (or its effective count) is not too high\"; different implementations generally use HBA (more reasonable) rather than simple N+O count. \n- Usually associated with: increasing N/O usually raises polarity and HBA, which may weaken hydrophobic binding; however, for **weakly acidic substrates**, a small number of key O atoms (such as in a carboxylate) are mechanistically important\n- Brief note: It is generally better to rely on **hydrogen-bond acceptor count** and **topological polar surface area** to represent \"polarity/acceptor capability,\" rather than treating N/O atom count as a transferable threshold. \n- Source: admetSAR (RO5), Veber (PSA threshold), Kralj (common threshold organization for HBA/HBD/PSA in filters), Tai (mechanistic role of anionic groups). \n\n## aliphatic carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; more reflective of **ring-system scaffold type/3D character**, and may influence CYP2C9 indirectly through shape and hydrophobic contact\n- Brief note: Filters and reviews more often use **total ring count / aromatic ring count / rotatable bonds / PSA** as coarser constraints. \n- Source: Kralj (thresholds for ring/aromatic ring in common filters), Ritchie (too many aromatic rings and developability risk). \n\n## aliphatic heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; may exert indirect effects by introducing acceptors/donors or changing pKa/logD\n- Brief note: The CYP2C9 **weak-acid/anionic anchor** is closer to the mechanistic core; aliphatic heterocycles are more often a **structural-domain** feature. \n- Source: Miners (weakly acidic substrates are common), Tai (anion–Arg108 mechanism). \n\n## aliphatic ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; covaries with total ring count, Fsp3, and logP/logD\n- Brief note: If a \"ring-count\" anchor is needed, practice often cites total-ring thresholds from lead-like/filter rules (for example, rings ≤4 or ≤6), but these are developability proxies, not CYP2C9-specific rules. \n- Source: Kralj summary of common filters (including examples of ring thresholds). \n\n## aromatic carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: classic CYP2C9 substrate classes (such as NSAIDs) often contain aromatic carbocycles involved in hydrophobic/π interactions, but this does not mean \"more is always better\"\n- Brief note: From a **developability** perspective, too many aromatic rings (especially >3) are associated with risk; by contrast, CYP2C9 mechanistic literature emphasizes **aromatic/hydrophobic interactions + an anionic anchor** rather than a simple aromatic-ring-count threshold. \n- Source: Ritchie (>3 aromatic rings and developability risk), Nair et al. (examples of aromatic π–π and Arg108 anionic interactions), Tai (anionic mechanism). \n\n## aromatic heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; aromatic heterocycles may contribute both π interactions and HBA, and may also serve as part of bioisosteres for acidic groups, though this requires structure-specific judgment\n- Brief note: The key mechanistic anchor for CYP2C9 still lies closer to the **anionizable site** rather than simply **whether an aromatic heterocycle is present**. \n- Source: Miners (weakly acidic substrates are common), Tai (anion–Arg108), Zhou (substrate diversity). \n\n## aromatic ring count\n- Common threshold(s) or range(s): general developability anchor: **>3 aromatic rings** is associated with **poorer developability/higher attrition risk**, and is a commonly cited empirical threshold (a proxy, not CYP2C9-specific). \n- Usually associated with: **B** often contains 1–3 aromatic rings, consistent with hydrophobic/π interactions; **A** is not guaranteed by fewer or more aromatic rings, though >3 often brings other ADMET risks\n- Brief note: For CYP2C9, **whether there is a suitable anionic anchor (acidic site and pKa)** is usually closer to mechanism than **the number of aromatic rings**; aromatic-ring count is better used as a tool for developability/chemical-space screening. \n- Source: Ritchie (aromatic-ring threshold and developability), Dickmann/Tai (mechanistic evidence for anion–Arg108), Ward et al. summary view that \">3 aromatic rings is undesirable.\" \n\n## hydrogen-bond acceptor count\n- Common threshold(s) or range(s): common proxy: RO5 **HBA ≤ 10**; some lead-like rules use tighter HBA ceilings (for example, ≤8), depending on the rule set. \n- Usually associated with: increasing HBA generally increases polarity and TPSA; there is no monotonic threshold for CYP2C9 substrate status, but key acceptors (such as carboxylate oxygens) are important in the **anionic anchor** mechanism\n- Brief note: In practice, it is advisable to interpret HBA together with **TPSA/logD/pKa**; stable literature support is lacking for using HBA threshold alone to judge CYP2C9 substrate status. \n- Source: admetSAR (RO5), Kralj (common filters and HBA thresholds), Tai/Miners (weakly acidic substrates and anionic mechanism). \n\n## hydrogen-bond donor count\n- Common threshold(s) or range(s): common proxy: RO5 **HBD ≤ 5**; some lead-like rules tighten this further (such as ≤3 or ≤4), but there is no single standard. \n- Usually associated with: increasing HBD generally raises polarity and lowers permeability; there is no unified single threshold for CYP2C9 substrate status\n- Brief note: Classic CYP2C9 substrates (such as NSAIDs) can bind strongly even when HBD is not high; therefore, HBD is better treated as a general developability/permeability proxy. \n- Source: admetSAR (RO5), Kralj (filter summary), Zhou (substrate diversity). \n\n## heteroatom count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: covaries with polarity/TPSA/HBA/HBD; there is no unified threshold for CYP2C9 substrate status\n- Brief note: More transferable thresholds usually lie in combined rules involving **TPSA, HBA/HBD, logP/logD, MW**, rather than total heteroatom count. \n- Source: the filter-threshold frameworks of Veber and Kralj. \n\n## rotatable-bond count\n- Common threshold(s) or range(s): classic oral-bioavailability proxy: Veber rule **rotatable bonds ≤ 10**. \n- Usually associated with: excessively high flexibility often lowers permeability and increases entropic penalty; it is not a CYP2C9-specific threshold, but it does affect **whether an effective binding conformation can be formed**\n- Brief note: Like other CYP enzymes, CYP2C9 requires the substrate to adopt an appropriate conformation near the heme; thus, rotatable bonds is a neighborhood feature for **accessibility of a bindable conformation**, but it does not replace the **acidic/anionic anchor** mechanism. \n- Source: Veber (≤10 threshold), Tai (2C9 mechanism emphasizing anion–Arg108). \n\n## saturated carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; more often influences 3D character and hydrophobic bulk\n- Brief note: If ring-related thresholds are needed, general developability thresholds for total ring count or aromatic ring count are usually used instead. \n- Source: Kralj (filter summary), Ritchie (aromatic-ring threshold). \n\n## saturated heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; may exert indirect effects through pKa/logD/acceptor distribution\n- Brief note: The more stable mechanistic handle for CYP2C9 is **charge pairing between a weakly acidic/anionic group and Arg108**. \n- Source: Arg108 mechanistic evidence from Tai and Dickmann. \n\n## saturated ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; covaries with Fsp3, logP, and shape\n- Brief note: Transferable thresholds usually come from lead-like/library-design rules such as **total ring count ≤4/≤6** (proxies), rather than CYP2C9-substrate-specific thresholds. \n- Source: Kralj (filter summary, including examples of ring thresholds). \n\n## ring count\n- Common threshold(s) or range(s): common proxies (library design/lead-like): Oprea lead-like rules often use **number of rings ≤ 4**; looser ring-count thresholds (such as ≤6) also appear in other filters, depending on the rule set. \n- Usually associated with: both **B** and **A** are possible; higher ring counts often bring changes in solubility, viscosity, metabolism, and interaction risk, but this is not CYP2C9-specific\n- Brief note: CYP2C9 substrates are closer to the mechanism of **an anionic anchor + aromatic/hydrophobic interactions**; ring count is more suitable as a proxy for **scaffold complexity/rigidity**. \n- Source: Kralj (threshold summary for Oprea lead-like and other filters), Tai (anionic mechanism), Nair (examples of aromatic/π–π and Arg108 interactions). \n\n## topological polar surface area\n- Common threshold(s) or range(s): classic proxy: Veber rule **TPSA ≤ 140 Å²**; Pfizer \"3/75\" commonly uses **TPSA < 75 Å²** as one of the conditions (together with logP > 3) when assessing in vivo toxicity risk. \n- Usually associated with: excessively high TPSA often lowers permeability and may reduce the chance of entering a hydrophobic active pocket; however, **weakly acidic anionic** CYP2C9 substrates may themselves still have some TPSA\n- Brief note: TPSA is one of the most commonly used and transferable thresholds for **polarity/exposed surface area**, but it describes overall PK developability and permeability rather than CYP2C9-specific substrate status; in this task it is best interpreted together with **pKa/neutral fraction/logD**. \n- Source: Veber (TPSA≤140 and rotatable bonds≤10), admetSAR (summary of the Pfizer 3/75 rule), Miners/Tai (weakly acidic CYP2C9 substrates and anionic mechanism). \n\n## QED drug-likeness\n- Common threshold(s) or range(s): QED ranges from **0–1** (closer to 1 means more \"drug-like\"); the literature more often uses it for **ranking/relative comparison** rather than as a uniform hard threshold. \n- Usually associated with: both **B** and **A** are possible; QED is more of an **overall drug-likeness/developability composite metric** than a CYP2C9-substrate-specific property\n- Brief note: QED combines multiple basic properties (MW, logP, TPSA, HBD/HBA, aromatic rings, rotatable bonds, structural alerts, etc.), so in this task it often serves as a proxy for **chemical-space quality**; however, it cannot replace the CYP2C9 mechanistic anchor of **weak acid/anionic group–Arg108**. \n- Source: Bickerton et al. proposed QED and its 0–1 range; RDKit QED documentation describing its components; Miners/Tai on the task-relevant background of the CYP2C9 anionic mechanism. \n\n## Functional-group notes\n- Group name: Carboxylic acid / carboxylate\n- Usually associated with: **B (substrate)** is more common, especially in classic CYP2C9 substrate families such as NSAIDs; the anionic form enhances recognition by forming charge pairing/salt-bridge interactions with Arg108 in the active site\n- Brief note: Multiple mechanistic studies indicate that CYP2C9 substrates are often weak acids; Arg108 plays a selective role in the binding and metabolism of anionic substrates, making this one of the most transferable **functional-group-level** rules. \n- Source: Miners & Birkett (weakly acidic substrates are common; pKa range), Dickmann et al. (negatively charged substrates and Arg108 selectivity), Tai et al. (anionic group–Arg108 charge pairing/crystallographic basis). \n\n- Group name: Aromatic ring systems enabling π–π / hydrophobic contacts\n- Usually associated with: **B (substrate)** is common, consistent with fitting into a hydrophobic active pocket and enabling π–π stacking/hydrophobic positioning with key aromatic residues\n- Brief note: The literature reports that in CYP2C9 systems, aromatic interactions (for example, with residues such as Phe114) can contribute to substrate recognition and positioning; however, \"the more aromatic rings the better\" is not true, and from a developability perspective, **>3 aromatic rings** is often treated as a risk anchor. \n- Source: Nair et al. (examples of aromatic-ring π–π + Arg108 interactions), Melet et al. reports on aromatic-substrate recognition (abstract-level evidence), Ritchie et al. (>3 aromatic rings and developability risk). \n\n- Group name: Basic tertiary amines subject to N-demethylation\n- Usually associated with: **B (substrate)**, as an exception/supplement to the broader pattern that weakly acidic substrates are the majority\n- Brief note: Reviews note that, in addition to many weakly acidic substrates, CYP2C9 can also catalyze N-demethylation and related reactions for some basic drugs; therefore, the presence of a basic amine/high pKa does not automatically exclude substrate status, but there is no transferable single functional-group threshold. \n- Source: Daly review (weak acids dominate but reaction types for basic drugs are also included), Zhou review (substrate diversity and neutral highly hydrophobic exceptions).",
     "task_description": "task CYP2C9_Substrate_CarbonMangels where option (A) means is not a substrate to the enzyme CYP2C9 and option (B) means is a substrate to the enzyme CYP2C9",
@@ -80,13 +80,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.03428194346101892,
+          "pair_score_class1_probability": 0.03428194346101892,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9657180565389811,
+          "teacher_confidence_margin": 0.46571805653898113,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a substrate to the enzyme CYP2C9",
             "label": 0
           },
-          "middle_draft": "First, The neighbor has 0 copies of enamine, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -1.2209, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.4964, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, The neighbor has 0 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -0.441, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2498, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Finally, For neutral fraction, the neighbor's neutral fraction is value 0.0011, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9989. This pairwise contribution is -0.1836, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 6, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.1579, while the query's fraction of sp3 carbons is value 0.3333. The query-minus-neighbor delta is +0.1754. This pairwise contribution is 0.1507, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Taken together, this positive-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP2C9 with pair score 0.0343."
+          "feature_logit": -0.9973645933616949,
+          "feature_probability": 0.269459889176269,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2C9",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.230540110823731,
+          "feature_evidence_strength": "medium",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "medium",
+          "displayed_feature_logit": -1.9537239303859641,
+          "displayed_feature_probability": 0.12414786888985031,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2C9",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.3758521311101497,
+          "displayed_feature_evidence_strength": "high",
+          "displayed_abs_contribution_coverage": 0.599187232045218,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, The neighbor has 0 copies of enamine, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -1.2209, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.4964, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, The neighbor has 0 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -0.441, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2498, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Finally, For neutral fraction, the neighbor's neutral fraction is value 0.0011, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9989. This pairwise contribution is -0.1836, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 6, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.1579, while the query's fraction of sp3 carbons is value 0.3333. The query-minus-neighbor delta is +0.1754. This pairwise contribution is 0.1507, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.5066, while the query's minimum partial charge is value -0.4656. The query-minus-neighbor delta is +0.041. This pairwise contribution is -0.1089, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, For estimated logD, the neighbor's estimated logD is value 0.5503, while the query's estimated logD is value 2.5657. The query-minus-neighbor delta is +2.0154. This pairwise contribution is 0.0965, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2C9, the pairwise feature evidence moderately supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides medium-strength evidence for option (A): is not a substrate to the enzyme CYP2C9."
         },
         {
           "neighbor_id": "CCN(CC)CC(=O)Nc1c(C)cccc1C",
@@ -94,13 +122,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.04435876958278343,
+          "pair_score_class1_probability": 0.04435876958278343,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9556412304172166,
+          "teacher_confidence_margin": 0.4556412304172166,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a substrate to the enzyme CYP2C9",
             "label": 0
           },
-          "middle_draft": "First, The neighbor has 0 copies of enamine, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -1.2209, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 0 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -0.441, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, For strongest basic pKa, the neighbor's strongest basic pKa is value 7.5993, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is 0.409, which pushes toward option (B): is a substrate to the enzyme CYP2C9. After that, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2498, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Finally, For minimum partial charge, the neighbor's minimum partial charge is value -0.3245, while the query's minimum partial charge is value -0.4656. The query-minus-neighbor delta is -0.1411. This pairwise contribution is 0.1335, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8722, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.1239, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, this positive-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP2C9 with pair score 0.0444."
+          "feature_logit": -0.7291835901542014,
+          "feature_probability": 0.32537390850020653,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2C9",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.17462609149979347,
+          "feature_evidence_strength": "medium",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "medium",
+          "displayed_feature_logit": -1.2082226617220269,
+          "displayed_feature_probability": 0.2300156815531517,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2C9",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.26998431844684834,
+          "displayed_feature_evidence_strength": "medium",
+          "displayed_abs_contribution_coverage": 0.5704191000668369,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, The neighbor has 0 copies of enamine, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -1.2209, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 0 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -0.441, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, For strongest basic pKa, the neighbor's strongest basic pKa is value 7.5993, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is 0.409, which pushes toward option (B): is a substrate to the enzyme CYP2C9. After that, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2498, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Finally, For minimum partial charge, the neighbor's minimum partial charge is value -0.3245, while the query's minimum partial charge is value -0.4656. The query-minus-neighbor delta is -0.1411. This pairwise contribution is 0.1335, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8722, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.1239, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 7, The neighbor does not have nitro, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.1102, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, For Labute surface area, the neighbor's Labute surface area is value 103.8222, while the query's Labute surface area is value 150.1786. The query-minus-neighbor delta is +46.3565. This pairwise contribution is -0.1046, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2C9, the pairwise feature evidence moderately supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides medium-strength evidence for option (A): is not a substrate to the enzyme CYP2C9."
         },
         {
           "neighbor_id": "CCOc1ccc(NC(C)=O)cc1",
@@ -108,13 +164,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.011569459521401433,
+          "pair_score_class1_probability": 0.011569459521401433,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9884305404785986,
+          "teacher_confidence_margin": 0.4884305404785986,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a substrate to the enzyme CYP2C9",
             "label": 0
           },
-          "middle_draft": "First, The neighbor has 0 copies of enamine, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -1.2209, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, For neutral fraction, the neighbor's neutral fraction is value 0.9979, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.0021. This pairwise contribution is -0.7177, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, The neighbor has 0 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -0.441, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2498, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Finally, For Labute surface area, the neighbor's Labute surface area is value 77.7161, while the query's Labute surface area is value 150.1786. The query-minus-neighbor delta is +72.4625. This pairwise contribution is -0.1867, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 6, For molecular weight, the neighbor's molecular weight is value 179.219, while the query's molecular weight is value 360.366. The query-minus-neighbor delta is +181.147. This pairwise contribution is -0.123, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, this positive-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP2C9 with pair score 0.0116."
+          "feature_logit": -2.106861000761426,
+          "feature_probability": 0.10843175456094899,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2C9",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.391568245439051,
+          "feature_evidence_strength": "high",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_logit": -2.660990958764028,
+          "displayed_feature_probability": 0.06531481053040451,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2C9",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.4346851894695955,
+          "displayed_feature_evidence_strength": "high",
+          "displayed_abs_contribution_coverage": 0.5854125657476443,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, The neighbor has 0 copies of enamine, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -1.2209, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, For neutral fraction, the neighbor's neutral fraction is value 0.9979, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.0021. This pairwise contribution is -0.7177, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, The neighbor has 0 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -0.441, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2498, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Finally, For Labute surface area, the neighbor's Labute surface area is value 77.7161, while the query's Labute surface area is value 150.1786. The query-minus-neighbor delta is +72.4625. This pairwise contribution is -0.1867, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 6, For molecular weight, the neighbor's molecular weight is value 179.219, while the query's molecular weight is value 360.366. The query-minus-neighbor delta is +181.147. This pairwise contribution is -0.123, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 7, For exact molecular weight, the neighbor's exact molecular weight is value 179.0946, while the query's exact molecular weight is value 360.1321. The query-minus-neighbor delta is +181.0375. This pairwise contribution is -0.1114, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, The neighbor does not have nitro, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.1102, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2C9, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2C9."
         }
       ],
       "negative_neighbors": [
@@ -124,13 +208,41 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.006944839563436637,
+          "pair_score_class1_probability": 0.006944839563436637,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9930551604365634,
+          "teacher_confidence_margin": 0.4930551604365634,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a substrate to the enzyme CYP2C9",
             "label": 0
           },
-          "middle_draft": "First, The neighbor has 2 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -1.2689, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 2 copies of enamine, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -0.997, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.363, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 424.283, while the query's heavy-atom molecular weight is value 340.206. The query-minus-neighbor delta is -84.077. This pairwise contribution is -0.3503, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Finally, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2872, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2, while the query's fraction of sp3 carbons is value 0.3333. The query-minus-neighbor delta is +0.1333. This pairwise contribution is 0.2333, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Taken together, this negative-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP2C9 with pair score 0.0069."
+          "feature_logit": -2.2830602703758482,
+          "feature_probability": 0.09253565298697781,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2C9",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.4074643470130222,
+          "feature_evidence_strength": "high",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_logit": -2.866263315336765,
+          "displayed_feature_probability": 0.0538467087088542,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2C9",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.4461532912911458,
+          "displayed_feature_evidence_strength": "high",
+          "displayed_abs_contribution_coverage": 0.5896043304765113,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, The neighbor has 2 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -1.2689, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 2 copies of enamine, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -0.997, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.363, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 424.283, while the query's heavy-atom molecular weight is value 340.206. The query-minus-neighbor delta is -84.077. This pairwise contribution is -0.3503, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Finally, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2872, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2, while the query's fraction of sp3 carbons is value 0.3333. The query-minus-neighbor delta is +0.1333. This pairwise contribution is 0.2333, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 7, For number of ionizable sites, the neighbor's number of ionizable sites is absent (0), while the query's number of ionizable sites is absent (0). The query-minus-neighbor delta is +0. This pairwise contribution is -0.2133, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3366, while the query's minimum absolute partial charge is value 0.3362. The query-minus-neighbor delta is -0.0003. This pairwise contribution is -0.1942, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2C9, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2C9."
         },
         {
           "neighbor_id": "COC(=O)C1=C(C)NC(C)=C(C(=O)OCCN(C)Cc2ccccc2)[C@H]1c1cccc([N+](=O)[O-])c1",
@@ -138,13 +250,41 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.009649192499229832,
+          "pair_score_class1_probability": 0.009649192499229832,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9903508075007702,
+          "teacher_confidence_margin": 0.4903508075007702,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a substrate to the enzyme CYP2C9",
             "label": 0
           },
-          "middle_draft": "First, The neighbor has 2 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -1.2689, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 2 copies of enamine, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -0.997, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 450.301, while the query's heavy-atom molecular weight is value 340.206. The query-minus-neighbor delta is -110.095. This pairwise contribution is -0.5194, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.363, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Finally, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2872, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For neutral fraction, the neighbor's neutral fraction is value 0.6271, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.3729. This pairwise contribution is -0.2152, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, this negative-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP2C9 with pair score 0.0096."
+          "feature_logit": -1.9514579318730623,
+          "feature_probability": 0.12439447255790663,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2C9",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.37560552744209336,
+          "feature_evidence_strength": "high",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_logit": -3.029578377925004,
+          "displayed_feature_probability": 0.04610736705089345,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2C9",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.45389263294910653,
+          "displayed_feature_evidence_strength": "high",
+          "displayed_abs_contribution_coverage": 0.574191944783225,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, The neighbor has 2 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -1.2689, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 2 copies of enamine, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -0.997, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 450.301, while the query's heavy-atom molecular weight is value 340.206. The query-minus-neighbor delta is -110.095. This pairwise contribution is -0.5194, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.363, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Finally, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2872, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For neutral fraction, the neighbor's neutral fraction is value 0.6271, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.3729. This pairwise contribution is -0.2152, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 7, For number of basic sites, the neighbor's number of basic sites is present (1), while the query's number of basic sites is absent (0). The query-minus-neighbor delta is -1. This pairwise contribution is 0.2142, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 8, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3363, while the query's minimum absolute partial charge is value 0.3362. The query-minus-neighbor delta is -0.0001. This pairwise contribution is -0.1674, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2C9, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2C9."
         },
         {
           "neighbor_id": "COCCOC(=O)C1=C(C)NC(C)=C(C(=O)OC/C=C/c2ccccc2)[C@H]1c1cccc([N+](=O)[O-])c1",
@@ -152,18 +292,1351 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.007641916676942996,
+          "pair_score_class1_probability": 0.007641916676942996,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.992358083323057,
+          "teacher_confidence_margin": 0.49235808332305697,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a substrate to the enzyme CYP2C9",
             "label": 0
           },
-          "middle_draft": "First, The neighbor has 2 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -1.2689, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 2 copies of enamine, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -0.997, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 464.304, while the query's heavy-atom molecular weight is value 340.206. The query-minus-neighbor delta is -124.098. This pairwise contribution is -0.5224, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.363, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Finally, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2593, while the query's fraction of sp3 carbons is value 0.3333. The query-minus-neighbor delta is +0.0741. This pairwise contribution is 0.2219, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For number of ionizable sites, the neighbor's number of ionizable sites is absent (0), while the query's number of ionizable sites is absent (0). The query-minus-neighbor delta is +0. This pairwise contribution is -0.2133, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, this negative-neighbor comparison pushes toward option (A): is not a substrate to the enzyme CYP2C9 with pair score 0.0076."
+          "feature_logit": -2.1867085010964127,
+          "feature_probability": 0.10095043604587589,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2C9",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.3990495639541241,
+          "feature_evidence_strength": "high",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_logit": -3.151520970810973,
+          "displayed_feature_probability": 0.04103138952757001,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a substrate to the enzyme CYP2C9",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.45896861047243,
+          "displayed_feature_evidence_strength": "high",
+          "displayed_abs_contribution_coverage": 0.566399008887267,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, The neighbor has 2 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -1.2689, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 2 copies of enamine, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -0.997, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 464.304, while the query's heavy-atom molecular weight is value 340.206. The query-minus-neighbor delta is -124.098. This pairwise contribution is -0.5224, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.363, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Finally, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2593, while the query's fraction of sp3 carbons is value 0.3333. The query-minus-neighbor delta is +0.0741. This pairwise contribution is 0.2219, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For number of ionizable sites, the neighbor's number of ionizable sites is absent (0), while the query's number of ionizable sites is absent (0). The query-minus-neighbor delta is +0. This pairwise contribution is -0.2133, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 7, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3366, while the query's minimum absolute partial charge is value 0.3362. The query-minus-neighbor delta is -0.0003. This pairwise contribution is -0.1942, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2261, while the query's QED drug-likeness is value 0.4882. The query-minus-neighbor delta is +0.2621. This pairwise contribution is 0.1854, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2C9, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2C9."
         }
       ]
     },
     "local_prediction": 0,
     "local_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+  },
+  "local_per_neighbor_rewrite_input": {
+    "task_playbook": "# CYP2C9_Substrate_CarbonMangels Practical Guide to Molecular Property Assessment\n\n## neutral fraction\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **B (substrate)** is more commonly observed when a compound exists to some extent as an **anion/negatively charged species** under physiological conditions; **A (non-substrate)** is more common in the \"fully neutral + low-affinity\" chemical space, but this is not absolute\n- Brief note: This task comes from the PyTDC binary classification dataset for \"whether a compound is a CYP2C9 substrate.\" Mechanistic and structural studies emphasize that CYP2C9 shows selectivity for ligands that are **negatively charged or can form anions at physiological pH** (related to electrostatic/salt-bridge interactions with Arg108 in the active site), but it can also metabolize **neutral and highly hydrophobic** compounds, so \"neutral fraction\" is difficult to summarize with a single threshold. \n- Source: Miners & Birkett (many CYP2C9 substrates are weak acids; pKa range), Dickmann et al. (many substrates are negatively charged at physiological pH; Arg108 is linked to selectivity for anionic substrates), Zhou et al. review (neutral highly hydrophobic compounds can also be metabolized), PyTDC dataset description. \n\n## estimated logD\n- Common threshold(s) or range(s): common **nearby-domain anchors (ADMET/permeability/global properties)**: Egan/permeability filters often use **0 ≤ logD ≤ 3** (together with MW ≤ 500); the \"Golden Triangle\" often uses **−2 ≤ logD ≤ 5** (together with 200 ≤ MW ≤ 500) as a broader reference for developable chemical space (both are proxies). \n- Usually associated with: **B** tends toward a moderate logD that allows entry into a hydrophobic active pocket (though higher values are also possible); **A** may be more common in the very low-logD region (highly hydrophilic, difficult to enter a hydrophobic pocket), though this depends on the dataset and chemical space\n- Brief note: For **CYP2C9 substrate/non-substrate** classification itself, public reviews emphasize an **acidic anion anchor + hydrophobic/aromatic interactions** rather than providing a unified logD threshold; therefore, the numeric values above are better used as neighborhood rules for **chemical space and developability/permeability**. \n- Source: Kralj et al. summary of common filter thresholds (including Egan and logD conditions), ADMETlab/\"Golden Triangle\" threshold summaries; Zhou et al. review on the ability to metabolize neutral highly hydrophobic substrates. \n\n## strongest acidic pKa\n- Common threshold(s) or range(s): **known drug substrates of CYP2C9 are often weak acids**, with reported acidic pKa values/distributions ranging from **3.8–8.1** (one of the anchors most closely tied to the \"substrate chemistry\" of this task). Some broad heuristic summaries describe CYP2C9 substrates as \"tending to be acidic (for example, pKa ≤ 5),\" but this is likely narrower in coverage and should be regarded as a coarse proxy. \n- Usually associated with: **B** is more common when there is an acidic site that can generate a substantial anionic fraction at physiological pH (favoring electrostatic/salt-bridge interaction with Arg108); **A** is more common when no acid site capable of forming an anion is present (though neutral highly hydrophobic exceptions exist)\n- Brief note: Structural and mutagenesis studies support the idea that an **anionic group ↔ Arg108** interaction is an important source of CYP2C9 selectivity; thus, in this task, \"strongest acidic pKa\" is often closer to mechanism than pure hydrophobicity. \n- Source: Miners & Birkett (weakly acidic substrates and pKa range), Dickmann et al. (negatively charged substrates and Arg108 selectivity), Tai et al. (crystallographic support for anionic group–Arg108 charge pairing), ScienceDirect topic page as a coarse heuristic proxy. \n\n## strongest basic pKa\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **B** does not require \"high basicity\"; most classic substrates are weak acids, but CYP2C9 can also catalyze some **basic drugs** (such as substrates undergoing certain N-demethylation reactions)\n- Brief note: \"Strongest basic pKa\" alone is difficult to use as a monotonic discriminator of substrate status; its role is more often reflected through the **neutral fraction/charge distribution** and whether the molecule can **enter the hydrophobic pocket and adopt the correct binding pose**. \n- Source: Daly review (most substrates are weak acids, but basic substrates and reaction-type differences also exist), Zhou review (substrate diversity). \n\n## number of acidic sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **B** is more common when at least one acidic site can generate an anion (the \"weak-acid substrate\" narrative); multiple acidic sites are not required\n- Brief note: The key mechanistic anchor for CYP2C9 is that **one anionic/negatively charged group can pair with Arg108**; therefore, the \"number of acidic sites\" is a coarser descriptor than \"whether there is at least one suitable acidic site and what its pKa is.\" \n- Source: Miners & Birkett (weakly acidic substrates are common), Tai et al. (anionic group–Arg108), Dickmann et al. (negatively charged substrates and Arg108). \n\n## number of basic sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; **B** can include a small number of basic substrates, but the overall narrative still favors \"weakly acidic substrates are the majority\"\n- Brief note: \"Number of basic sites\" more often influences total charge/neutral fraction and logD (in a pH-dependent manner), rather than defining a unified threshold for CYP2C9 substrate status. \n- Source: Daly review, Zhou review. \n\n## number of ionizable sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; in this task it behaves more like a coarse feature for \"ionization complexity/polymorphism\"\n- Brief note: CYP2C9 substrate status is more often linked to **whether there is a group that is anionic at physiological pH + hydrophobic/aromatic binding**, whereas the total number of ionizable sites itself lacks a standard threshold. \n- Source: Tai et al. (acidic/charge-pairing mechanism), Zhou review (substrate diversity). \n\n## exact molecular weight\n- Common threshold(s) or range(s): commonly used (proxy) thresholds: Lipinski RO5 **MW < 500**; GSK/\"4/400\"-type empirical region **MW < 400** (more oriented toward better developability/lower ADMET risk); Ghose filter common range **180–480**; \"Golden Triangle\" commonly **200–500** (combined with logD conditions). \n- Usually associated with: both **B** and **A** may fall within these ranges; extremely small or extremely large values tend to first affect **entry/binding/transportability** rather than CYP2C9 specificity\n- Brief note: For CYP2C9 substrate status, the literature emphasizes **charge and key interactions** more strongly, but MW is still a basic constraint that determines whether a molecule can **enter the CYP active cavity and form an effective binding pose** (so using general thresholds as chemical-space gatekeepers is more realistic). \n- Source: admetSAR summary of RO5/GSK/Pfizer/Golden Triangle rules; Gleeson (\"more ideal region\" of MW<400 & cLogP<4); common summaries of Lipinski/Ghose; Kralj summary of common filters. \n\n## fraction of sp3 carbons\n- Common threshold(s) or range(s): as an anchor for \"complexity/3D character\" (proxy), some studies use **0.3** and **0.6** as segmentation thresholds in Fsp3-based categorization (not CYP2C9-specific substrate thresholds). \n- Usually associated with: classic CYP2C9 substrates (such as NSAIDs) often contain aromatic rings and relatively low Fsp3, but this is only a family resemblance, not a hard rule\n- Brief note: CYP2C9 binding often involves aromatic/hydrophobic interactions and an anionic anchor; therefore, Fsp3 is better viewed as a proxy for **shape/planarity** rather than an independent determinant. \n- Source: Lovering (definition of Fsp3 and the \"escape from flatland\" concept), Spacial Score-related work (examples of Fsp3 segmentation thresholds), Nair et al. (examples of aromatic π–π interactions and Arg108 anionic interactions). \n\n## heavy-atom count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: general developability filters related to molecular size sometimes use anchors such as \"total atom count 20–70\" (Ghose, including hydrogens); heavy-atom count depends on definition and is difficult to transfer directly\n- Brief note: In the CYP2C9 substrate task, heavy-atom count is more of a proxy for **size/volume/surface area**; the literature less often gives clearly transferable thresholds using heavy-atom count. \n- Source: summaries of Lipinski extensions/Ghose filter, Kralj summary of common medicinal-chemistry filters. \n\n## heavy-atom molecular weight\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: highly collinear with MW; therefore the general MW threshold space is usually reused as a proxy\n- Brief note: This descriptor is often used in machine-learning models to capture the \"non-hydrogen atomic mass contribution\"; there is little tradition of independent hand-crafted thresholds for CYP2C9 substrate status. \n- Source: common medicinal-chemistry filters (MW/logP/TPSA, etc.) as neighborhood proxies. \n\n## Labute surface area\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: related to molecular size/shape; indirectly affects entry into the CYP active cavity and surface complementarity upon binding\n- Brief note: In both literature and practice, descriptors such as **MW, (t)PSA, logP/logD, flexibility (rotatable bonds)** are more commonly used than \"absolute surface-area thresholds\"; for CYP2C9, the emphasis is on the anionic anchor and aromatic/hydrophobic interactions. \n- Source: Tai et al. (anion–Arg108 mechanism), Veber (PSA/rotatable-bond thresholds as substitutes for \"shape/polarity\"), Kralj (filter summary). \n\n## maximum absolute partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **B** is more common when a stable anion/strong negative center is present (such as a carboxylate oxygen) that can form charge pairing with Arg108 of CYP2C9, though the specific \"charge value\" is highly dependent on the charge model\n- Brief note: \"Maximum absolute partial charge\" is a method-dependent QSAR electronic descriptor; CYP2C9-related literature more often uses qualitative mechanistic language such as \"whether the compound is anionic\" or \"whether it has a group capable of charge pairing.\" \n- Source: Tai et al. (anionic group–Arg108), Dickmann et al. (negatively charged substrates and Arg108 selectivity). \n\n## maximum partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; more often reflects the presence or absence of a strong positive center (such as a protonated amine) at a given pH\n- Brief note: The substrate-preference narrative for CYP2C9 focuses much more on **anionic pairing** than on **strong cationic pairing** (the latter is more typical of the classic mechanistic framework for CYP2D6). \n- Source: Tai et al. (acidic/anionic preference mechanism of 2C9), broad isoform distinction summaries (coarse-grained summary that 2C9 tends to prefer acidic compounds while 2D6 tends to prefer basic compounds). \n\n## minimum absolute partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: mostly a proxy for whether the charge distribution is polarized; it does not directly correspond to a transferable hand-crafted threshold\n- Brief note: For CYP2C9, the key is whether there is a site that can form an anion and interact with Arg108, rather than the \"minimum absolute charge\" itself. \n- Source: mechanistic evidence from Dickmann et al. and Tai et al. regarding Arg108/anionic substrates. \n\n## minimum partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: **B** is more common when a strong negative center is present (such as carboxylate O), but the specific negative value depends on the charge calculation method\n- Brief note: In practice, a more transferable approach is to use **\"whether there is an acidic functional group capable of anion formation + its pKa\"** instead of a \"partial-charge threshold.\" \n- Source: Miners & Birkett (weakly acidic substrates), Tai et al. (anion–Arg108), Dickmann et al. (selectivity for negatively charged substrates). \n\n## estimated logP\n- Common threshold(s) or range(s): general (proxy) thresholds: Lipinski RO5 **logP ≤ 5**; Ghose common range **−0.4 ≤ logP ≤ 5.6**; GSK/\"4/400\" empirical region **logP ≤ 4**; Pfizer \"3/75\" often uses **logP > 3** as one of the conditions for in vivo toxicity-risk screening (together with TPSA < 75). \n- Usually associated with: **B** often requires some degree of hydrophobicity to enter the CYP active cavity, but CYP2C9 also includes classic substrates that are **acidic and relatively polar**; **A** may be more common in extremely low-logP, highly hydrophilic space\n- Brief note: The CYP2C9 literature notes that **neutral highly hydrophobic substrates can also be metabolized**, indicating that logP should not be misused as a single-threshold discriminator; it is more reliable when interpreted jointly with **acidic/anionic sites (pKa)**. \n- Source: admetSAR rule summary (RO5/GSK/Pfizer), Lipinski extension/Ghose interval summaries; Zhou and Tai/Dickmann on substrate diversity and evidence for the anionic mechanism. \n\n## molecular weight\n- Common threshold(s) or range(s): same as \"exact molecular weight\": RO5 **<500**; more conservative development-oriented regions commonly use **<400**; Ghose **180–480**; Golden Triangle **200–500** (all are proxies). \n- Usually associated with: both **B** and **A** are possible; extreme MW values more often first affect pharmacokinetics/exposure and the ability to enter the active cavity\n- Brief note: In this task, MW is mainly a chemical-space constraint variable; what is closer to CYP2C9 mechanism is usually **whether the compound is a weak acid/can form an anion + aromatic/hydrophobic interactions**. \n- Source: admetSAR (RO5/GSK/Golden Triangle), Gleeson (4/400), Miners/Tai (weak acids and Arg108 mechanism), Nair et al. (examples of aromatic/π–π and Arg108 interactions). \n\n## NH/OH group count\n- Common threshold(s) or range(s): common proxy: in RO5, hydrogen-bond donors (roughly equivalent to NH/OH count) **HBD ≤ 5**; more lead-like filters sometimes use lower thresholds (for example, HBD ≤ 5 or smaller), but there is no single standard. \n- Usually associated with: no stable one-way association; increasing NH/OH usually raises polarity, lowers permeability, and affects logD\n- Brief note: For CYP2C9 substrate status, NH/OH is more likely to influence entry into the hydrophobic pocket indirectly by changing overall polarity and ionization state; there is no unified NH/OH threshold directly tied to substrate status. \n- Source: admetSAR summary of RO5 thresholds; Kralj summary of filter thresholds; Zhou review on substrate diversity. \n\n## nitrogen/oxygen atom count\n- Common threshold(s) or range(s): common proxy: RO5 **HBA ≤ 10** is often approximated as an upper bound where the \"N/O atom count (or its effective count) is not too high\"; different implementations generally use HBA (more reasonable) rather than simple N+O count. \n- Usually associated with: increasing N/O usually raises polarity and HBA, which may weaken hydrophobic binding; however, for **weakly acidic substrates**, a small number of key O atoms (such as in a carboxylate) are mechanistically important\n- Brief note: It is generally better to rely on **hydrogen-bond acceptor count** and **topological polar surface area** to represent \"polarity/acceptor capability,\" rather than treating N/O atom count as a transferable threshold. \n- Source: admetSAR (RO5), Veber (PSA threshold), Kralj (common threshold organization for HBA/HBD/PSA in filters), Tai (mechanistic role of anionic groups). \n\n## aliphatic carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; more reflective of **ring-system scaffold type/3D character**, and may influence CYP2C9 indirectly through shape and hydrophobic contact\n- Brief note: Filters and reviews more often use **total ring count / aromatic ring count / rotatable bonds / PSA** as coarser constraints. \n- Source: Kralj (thresholds for ring/aromatic ring in common filters), Ritchie (too many aromatic rings and developability risk). \n\n## aliphatic heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; may exert indirect effects by introducing acceptors/donors or changing pKa/logD\n- Brief note: The CYP2C9 **weak-acid/anionic anchor** is closer to the mechanistic core; aliphatic heterocycles are more often a **structural-domain** feature. \n- Source: Miners (weakly acidic substrates are common), Tai (anion–Arg108 mechanism). \n\n## aliphatic ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; covaries with total ring count, Fsp3, and logP/logD\n- Brief note: If a \"ring-count\" anchor is needed, practice often cites total-ring thresholds from lead-like/filter rules (for example, rings ≤4 or ≤6), but these are developability proxies, not CYP2C9-specific rules. \n- Source: Kralj summary of common filters (including examples of ring thresholds). \n\n## aromatic carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: classic CYP2C9 substrate classes (such as NSAIDs) often contain aromatic carbocycles involved in hydrophobic/π interactions, but this does not mean \"more is always better\"\n- Brief note: From a **developability** perspective, too many aromatic rings (especially >3) are associated with risk; by contrast, CYP2C9 mechanistic literature emphasizes **aromatic/hydrophobic interactions + an anionic anchor** rather than a simple aromatic-ring-count threshold. \n- Source: Ritchie (>3 aromatic rings and developability risk), Nair et al. (examples of aromatic π–π and Arg108 anionic interactions), Tai (anionic mechanism). \n\n## aromatic heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; aromatic heterocycles may contribute both π interactions and HBA, and may also serve as part of bioisosteres for acidic groups, though this requires structure-specific judgment\n- Brief note: The key mechanistic anchor for CYP2C9 still lies closer to the **anionizable site** rather than simply **whether an aromatic heterocycle is present**. \n- Source: Miners (weakly acidic substrates are common), Tai (anion–Arg108), Zhou (substrate diversity). \n\n## aromatic ring count\n- Common threshold(s) or range(s): general developability anchor: **>3 aromatic rings** is associated with **poorer developability/higher attrition risk**, and is a commonly cited empirical threshold (a proxy, not CYP2C9-specific). \n- Usually associated with: **B** often contains 1–3 aromatic rings, consistent with hydrophobic/π interactions; **A** is not guaranteed by fewer or more aromatic rings, though >3 often brings other ADMET risks\n- Brief note: For CYP2C9, **whether there is a suitable anionic anchor (acidic site and pKa)** is usually closer to mechanism than **the number of aromatic rings**; aromatic-ring count is better used as a tool for developability/chemical-space screening. \n- Source: Ritchie (aromatic-ring threshold and developability), Dickmann/Tai (mechanistic evidence for anion–Arg108), Ward et al. summary view that \">3 aromatic rings is undesirable.\" \n\n## hydrogen-bond acceptor count\n- Common threshold(s) or range(s): common proxy: RO5 **HBA ≤ 10**; some lead-like rules use tighter HBA ceilings (for example, ≤8), depending on the rule set. \n- Usually associated with: increasing HBA generally increases polarity and TPSA; there is no monotonic threshold for CYP2C9 substrate status, but key acceptors (such as carboxylate oxygens) are important in the **anionic anchor** mechanism\n- Brief note: In practice, it is advisable to interpret HBA together with **TPSA/logD/pKa**; stable literature support is lacking for using HBA threshold alone to judge CYP2C9 substrate status. \n- Source: admetSAR (RO5), Kralj (common filters and HBA thresholds), Tai/Miners (weakly acidic substrates and anionic mechanism). \n\n## hydrogen-bond donor count\n- Common threshold(s) or range(s): common proxy: RO5 **HBD ≤ 5**; some lead-like rules tighten this further (such as ≤3 or ≤4), but there is no single standard. \n- Usually associated with: increasing HBD generally raises polarity and lowers permeability; there is no unified single threshold for CYP2C9 substrate status\n- Brief note: Classic CYP2C9 substrates (such as NSAIDs) can bind strongly even when HBD is not high; therefore, HBD is better treated as a general developability/permeability proxy. \n- Source: admetSAR (RO5), Kralj (filter summary), Zhou (substrate diversity). \n\n## heteroatom count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: covaries with polarity/TPSA/HBA/HBD; there is no unified threshold for CYP2C9 substrate status\n- Brief note: More transferable thresholds usually lie in combined rules involving **TPSA, HBA/HBD, logP/logD, MW**, rather than total heteroatom count. \n- Source: the filter-threshold frameworks of Veber and Kralj. \n\n## rotatable-bond count\n- Common threshold(s) or range(s): classic oral-bioavailability proxy: Veber rule **rotatable bonds ≤ 10**. \n- Usually associated with: excessively high flexibility often lowers permeability and increases entropic penalty; it is not a CYP2C9-specific threshold, but it does affect **whether an effective binding conformation can be formed**\n- Brief note: Like other CYP enzymes, CYP2C9 requires the substrate to adopt an appropriate conformation near the heme; thus, rotatable bonds is a neighborhood feature for **accessibility of a bindable conformation**, but it does not replace the **acidic/anionic anchor** mechanism. \n- Source: Veber (≤10 threshold), Tai (2C9 mechanism emphasizing anion–Arg108). \n\n## saturated carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; more often influences 3D character and hydrophobic bulk\n- Brief note: If ring-related thresholds are needed, general developability thresholds for total ring count or aromatic ring count are usually used instead. \n- Source: Kralj (filter summary), Ritchie (aromatic-ring threshold). \n\n## saturated heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; may exert indirect effects through pKa/logD/acceptor distribution\n- Brief note: The more stable mechanistic handle for CYP2C9 is **charge pairing between a weakly acidic/anionic group and Arg108**. \n- Source: Arg108 mechanistic evidence from Tai and Dickmann. \n\n## saturated ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: no stable one-way association; covaries with Fsp3, logP, and shape\n- Brief note: Transferable thresholds usually come from lead-like/library-design rules such as **total ring count ≤4/≤6** (proxies), rather than CYP2C9-substrate-specific thresholds. \n- Source: Kralj (filter summary, including examples of ring thresholds). \n\n## ring count\n- Common threshold(s) or range(s): common proxies (library design/lead-like): Oprea lead-like rules often use **number of rings ≤ 4**; looser ring-count thresholds (such as ≤6) also appear in other filters, depending on the rule set. \n- Usually associated with: both **B** and **A** are possible; higher ring counts often bring changes in solubility, viscosity, metabolism, and interaction risk, but this is not CYP2C9-specific\n- Brief note: CYP2C9 substrates are closer to the mechanism of **an anionic anchor + aromatic/hydrophobic interactions**; ring count is more suitable as a proxy for **scaffold complexity/rigidity**. \n- Source: Kralj (threshold summary for Oprea lead-like and other filters), Tai (anionic mechanism), Nair (examples of aromatic/π–π and Arg108 interactions). \n\n## topological polar surface area\n- Common threshold(s) or range(s): classic proxy: Veber rule **TPSA ≤ 140 Å²**; Pfizer \"3/75\" commonly uses **TPSA < 75 Å²** as one of the conditions (together with logP > 3) when assessing in vivo toxicity risk. \n- Usually associated with: excessively high TPSA often lowers permeability and may reduce the chance of entering a hydrophobic active pocket; however, **weakly acidic anionic** CYP2C9 substrates may themselves still have some TPSA\n- Brief note: TPSA is one of the most commonly used and transferable thresholds for **polarity/exposed surface area**, but it describes overall PK developability and permeability rather than CYP2C9-specific substrate status; in this task it is best interpreted together with **pKa/neutral fraction/logD**. \n- Source: Veber (TPSA≤140 and rotatable bonds≤10), admetSAR (summary of the Pfizer 3/75 rule), Miners/Tai (weakly acidic CYP2C9 substrates and anionic mechanism). \n\n## QED drug-likeness\n- Common threshold(s) or range(s): QED ranges from **0–1** (closer to 1 means more \"drug-like\"); the literature more often uses it for **ranking/relative comparison** rather than as a uniform hard threshold. \n- Usually associated with: both **B** and **A** are possible; QED is more of an **overall drug-likeness/developability composite metric** than a CYP2C9-substrate-specific property\n- Brief note: QED combines multiple basic properties (MW, logP, TPSA, HBD/HBA, aromatic rings, rotatable bonds, structural alerts, etc.), so in this task it often serves as a proxy for **chemical-space quality**; however, it cannot replace the CYP2C9 mechanistic anchor of **weak acid/anionic group–Arg108**. \n- Source: Bickerton et al. proposed QED and its 0–1 range; RDKit QED documentation describing its components; Miners/Tai on the task-relevant background of the CYP2C9 anionic mechanism. \n\n## Functional-group notes\n- Group name: Carboxylic acid / carboxylate\n- Usually associated with: **B (substrate)** is more common, especially in classic CYP2C9 substrate families such as NSAIDs; the anionic form enhances recognition by forming charge pairing/salt-bridge interactions with Arg108 in the active site\n- Brief note: Multiple mechanistic studies indicate that CYP2C9 substrates are often weak acids; Arg108 plays a selective role in the binding and metabolism of anionic substrates, making this one of the most transferable **functional-group-level** rules. \n- Source: Miners & Birkett (weakly acidic substrates are common; pKa range), Dickmann et al. (negatively charged substrates and Arg108 selectivity), Tai et al. (anionic group–Arg108 charge pairing/crystallographic basis). \n\n- Group name: Aromatic ring systems enabling π–π / hydrophobic contacts\n- Usually associated with: **B (substrate)** is common, consistent with fitting into a hydrophobic active pocket and enabling π–π stacking/hydrophobic positioning with key aromatic residues\n- Brief note: The literature reports that in CYP2C9 systems, aromatic interactions (for example, with residues such as Phe114) can contribute to substrate recognition and positioning; however, \"the more aromatic rings the better\" is not true, and from a developability perspective, **>3 aromatic rings** is often treated as a risk anchor. \n- Source: Nair et al. (examples of aromatic-ring π–π + Arg108 interactions), Melet et al. reports on aromatic-substrate recognition (abstract-level evidence), Ritchie et al. (>3 aromatic rings and developability risk). \n\n- Group name: Basic tertiary amines subject to N-demethylation\n- Usually associated with: **B (substrate)**, as an exception/supplement to the broader pattern that weakly acidic substrates are the majority\n- Brief note: Reviews note that, in addition to many weakly acidic substrates, CYP2C9 can also catalyze N-demethylation and related reactions for some basic drugs; therefore, the presence of a basic amine/high pKa does not automatically exclude substrate status, but there is no transferable single functional-group threshold. \n- Source: Daly review (weak acids dominate but reaction types for basic drugs are also included), Zhou review (substrate diversity and neutral highly hydrophobic exceptions).",
+    "task_description": "molecule local analog-comparison task CYP2C9_Substrate_CarbonMangels where option (A) means is not a substrate to the enzyme CYP2C9 and option (B) means is a substrate to the enzyme CYP2C9",
+    "positive_label_semantics": "is a substrate to the enzyme CYP2C9",
+    "negative_label_semantics": "is not a substrate to the enzyme CYP2C9",
+    "num_neighbors": 6,
+    "neighbors": [
+      {
+        "neighbor_index": 1,
+        "neighbor_id": "CC(=O)C[C@@H](c1ccc([N+](=O)[O-])cc1)c1c(O)c2ccccc2oc1=O",
+        "neighbor_smiles": "CC(=O)C[C@@H](c1ccc([N+](=O)[O-])cc1)c1c(O)c2ccccc2oc1=O",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): is a substrate to the enzyme CYP2C9",
+        "neighbor_similarity": 0.22733333333333336,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.03428194346101892,
+          "pair_score_class1_probability": 0.03428194346101892,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9657180565389811,
+          "pair_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.46571805653898113
+        },
+        "evidence_strength": {
+          "feature_probability": 0.269459889176269,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+          "feature_evidence_strength": "medium",
+          "feature_confidence_margin": 0.230540110823731,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "medium",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.599187232045218
+        },
+        "middle_draft": "First, The neighbor has 0 copies of enamine, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -1.2209, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.4964, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, The neighbor has 0 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -0.441, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2498, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Finally, For neutral fraction, the neighbor's neutral fraction is value 0.0011, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9989. This pairwise contribution is -0.1836, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 6, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.1579, while the query's fraction of sp3 carbons is value 0.3333. The query-minus-neighbor delta is +0.1754. This pairwise contribution is 0.1507, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.5066, while the query's minimum partial charge is value -0.4656. The query-minus-neighbor delta is +0.041. This pairwise contribution is -0.1089, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, For estimated logD, the neighbor's estimated logD is value 0.5503, while the query's estimated logD is value 2.5657. The query-minus-neighbor delta is +2.0154. This pairwise contribution is 0.0965, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2C9, the pairwise feature evidence moderately supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides medium-strength evidence for option (A): is not a substrate to the enzyme CYP2C9.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__enamine",
+            "display_name": "enamine",
+            "description": "top-level functional-group indicator or count for enamine",
+            "source_family": "fg_top_level",
+            "raw_name": "enamine",
+            "neighbor_value": 0.0,
+            "query_value": 2.0,
+            "delta_value": 2.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "count 2",
+            "delta_value_text": "+2",
+            "observation_text": "For enamine, the neighbor value is absent (0), the query value is count 2, and the query-minus-neighbor delta is +2."
+          },
+          {
+            "feature_name": "fg_top_level__nitro",
+            "display_name": "nitro",
+            "description": "top-level functional-group indicator or count for nitro",
+            "source_family": "fg_top_level",
+            "raw_name": "nitro",
+            "neighbor_value": 1.0,
+            "query_value": 1.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0",
+            "observation_text": "For nitro, the neighbor value is present (1), the query value is present (1), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "display_name": "carboxylic ester",
+            "description": "top-level functional-group indicator or count for carboxylic ester",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic ester",
+            "neighbor_value": 0.0,
+            "query_value": 2.0,
+            "delta_value": 2.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "count 2",
+            "delta_value_text": "+2",
+            "observation_text": "For carboxylic ester, the neighbor value is absent (0), the query value is count 2, and the query-minus-neighbor delta is +2."
+          },
+          {
+            "feature_name": "fg_top_level__dialkyl ether",
+            "display_name": "dialkyl ether",
+            "description": "top-level functional-group indicator or count for dialkyl ether",
+            "source_family": "fg_top_level",
+            "raw_name": "dialkyl ether",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For dialkyl ether, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "display_name": "neutral fraction",
+            "description": "estimated fraction of the molecule that is neutral at the configured pH",
+            "source_family": "pka",
+            "raw_name": "fraction_neutral",
+            "neighbor_value": 0.0011,
+            "query_value": 1.0,
+            "delta_value": 0.9989,
+            "neighbor_value_text": "value 0.0011",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0.9989",
+            "observation_text": "For neutral fraction, the neighbor value is value 0.0011, the query value is present (1), and the query-minus-neighbor delta is +0.9989."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "neighbor_value": 0.1578947368421052,
+            "query_value": 0.3333333333333333,
+            "delta_value": 0.17543859649122812,
+            "neighbor_value_text": "value 0.1579",
+            "query_value_text": "value 0.3333",
+            "delta_value_text": "+0.1754",
+            "observation_text": "For fraction of sp3 carbons, the neighbor value is value 0.1579, the query value is value 0.3333, and the query-minus-neighbor delta is +0.1754."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "neighbor_value": -0.5065917727989816,
+            "query_value": -0.4655800563752146,
+            "delta_value": 0.041011716423767,
+            "neighbor_value_text": "value -0.5066",
+            "query_value_text": "value -0.4656",
+            "delta_value_text": "+0.041",
+            "observation_text": "For minimum partial charge, the neighbor value is value -0.5066, the query value is value -0.4656, and the query-minus-neighbor delta is +0.041."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "neighbor_value": 0.5503,
+            "query_value": 2.5657,
+            "delta_value": 2.0154,
+            "neighbor_value_text": "value 0.5503",
+            "query_value_text": "value 2.5657",
+            "delta_value_text": "+2.0154",
+            "observation_text": "For estimated logD, the neighbor value is value 0.5503, the query value is value 2.5657, and the query-minus-neighbor delta is +2.0154."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__enamine",
+            "contribution": -1.2208776990110182,
+            "contribution_abs": 1.2208776990110182,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__nitro",
+            "contribution": -0.49639043981208747,
+            "contribution_abs": 0.49639043981208747,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "contribution": -0.4410393886815224,
+            "contribution_abs": 0.4410393886815224,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__dialkyl ether",
+            "contribution": 0.24983716873651038,
+            "contribution_abs": 0.24983716873651038,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "contribution": -0.1835538262875007,
+            "contribution_abs": 0.1835538262875007,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "contribution": 0.15070193510157712,
+            "contribution_abs": 0.15070193510157712,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "contribution": -0.10892051521031791,
+            "contribution_abs": 0.10892051521031791,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "contribution": 0.09651883477839503,
+            "contribution_abs": 0.09651883477839503,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2C9"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor has 0 copies of enamine, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -1.2209, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.4964, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, The neighbor has 0 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -0.441, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2498, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Finally, For neutral fraction, the neighbor's neutral fraction is value 0.0011, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.9989. This pairwise contribution is -0.1836, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 6, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.1579, while the query's fraction of sp3 carbons is value 0.3333. The query-minus-neighbor delta is +0.1754. This pairwise contribution is 0.1507, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.5066, while the query's minimum partial charge is value -0.4656. The query-minus-neighbor delta is +0.041. This pairwise contribution is -0.1089, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, For estimated logD, the neighbor's estimated logD is value 0.5503, while the query's estimated logD is value 2.5657. The query-minus-neighbor delta is +2.0154. This pairwise contribution is 0.0965, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2C9, the pairwise feature evidence moderately supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides medium-strength evidence for option (A): is not a substrate to the enzyme CYP2C9."
+        }
+      },
+      {
+        "neighbor_index": 2,
+        "neighbor_id": "CCN(CC)CC(=O)Nc1c(C)cccc1C",
+        "neighbor_smiles": "CCN(CC)CC(=O)Nc1c(C)cccc1C",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): is a substrate to the enzyme CYP2C9",
+        "neighbor_similarity": 0.20649180327868852,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.04435876958278343,
+          "pair_score_class1_probability": 0.04435876958278343,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9556412304172166,
+          "pair_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4556412304172166
+        },
+        "evidence_strength": {
+          "feature_probability": 0.32537390850020653,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+          "feature_evidence_strength": "medium",
+          "feature_confidence_margin": 0.17462609149979347,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "medium",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.5704191000668369
+        },
+        "middle_draft": "First, The neighbor has 0 copies of enamine, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -1.2209, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 0 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -0.441, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, For strongest basic pKa, the neighbor's strongest basic pKa is value 7.5993, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is 0.409, which pushes toward option (B): is a substrate to the enzyme CYP2C9. After that, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2498, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Finally, For minimum partial charge, the neighbor's minimum partial charge is value -0.3245, while the query's minimum partial charge is value -0.4656. The query-minus-neighbor delta is -0.1411. This pairwise contribution is 0.1335, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8722, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.1239, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 7, The neighbor does not have nitro, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.1102, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, For Labute surface area, the neighbor's Labute surface area is value 103.8222, while the query's Labute surface area is value 150.1786. The query-minus-neighbor delta is +46.3565. This pairwise contribution is -0.1046, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2C9, the pairwise feature evidence moderately supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides medium-strength evidence for option (A): is not a substrate to the enzyme CYP2C9.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__enamine",
+            "display_name": "enamine",
+            "description": "top-level functional-group indicator or count for enamine",
+            "source_family": "fg_top_level",
+            "raw_name": "enamine",
+            "neighbor_value": 0.0,
+            "query_value": 2.0,
+            "delta_value": 2.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "count 2",
+            "delta_value_text": "+2",
+            "observation_text": "For enamine, the neighbor value is absent (0), the query value is count 2, and the query-minus-neighbor delta is +2."
+          },
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "display_name": "carboxylic ester",
+            "description": "top-level functional-group indicator or count for carboxylic ester",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic ester",
+            "neighbor_value": 0.0,
+            "query_value": 2.0,
+            "delta_value": 2.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "count 2",
+            "delta_value_text": "+2",
+            "observation_text": "For carboxylic ester, the neighbor value is absent (0), the query value is count 2, and the query-minus-neighbor delta is +2."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "display_name": "strongest basic pKa",
+            "description": "pKa of the strongest basic site",
+            "source_family": "pka",
+            "raw_name": "most_basic_pka",
+            "neighbor_value": 7.5993,
+            "query_value": null,
+            "delta_value": null,
+            "neighbor_value_text": "value 7.5993",
+            "query_value_text": "no basic site",
+            "delta_value_text": "not defined because one molecule has no basic site",
+            "observation_text": "For strongest basic pKa, the neighbor value is value 7.5993, the query value is no basic site, and the query-minus-neighbor delta is not defined because one molecule has no basic site."
+          },
+          {
+            "feature_name": "fg_top_level__dialkyl ether",
+            "display_name": "dialkyl ether",
+            "description": "top-level functional-group indicator or count for dialkyl ether",
+            "source_family": "fg_top_level",
+            "raw_name": "dialkyl ether",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For dialkyl ether, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "neighbor_value": -0.324484604945174,
+            "query_value": -0.4655800563752146,
+            "delta_value": -0.1410954514300406,
+            "neighbor_value_text": "value -0.3245",
+            "query_value_text": "value -0.4656",
+            "delta_value_text": "-0.1411",
+            "observation_text": "For minimum partial charge, the neighbor value is value -0.3245, the query value is value -0.4656, and the query-minus-neighbor delta is -0.1411."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "display_name": "strongest acidic pKa",
+            "description": "pKa of the strongest acidic site",
+            "source_family": "pka",
+            "raw_name": "most_acidic_pka",
+            "neighbor_value": 13.8722,
+            "query_value": null,
+            "delta_value": null,
+            "neighbor_value_text": "value 13.8722",
+            "query_value_text": "no acidic site",
+            "delta_value_text": "not defined because one molecule has no acidic site",
+            "observation_text": "For strongest acidic pKa, the neighbor value is value 13.8722, the query value is no acidic site, and the query-minus-neighbor delta is not defined because one molecule has no acidic site."
+          },
+          {
+            "feature_name": "fg_top_level__nitro",
+            "display_name": "nitro",
+            "description": "top-level functional-group indicator or count for nitro",
+            "source_family": "fg_top_level",
+            "raw_name": "nitro",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For nitro, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__LabuteASA",
+            "display_name": "Labute surface area",
+            "description": "Labute approximate surface area",
+            "source_family": "rdkit",
+            "raw_name": "LabuteASA",
+            "neighbor_value": 103.82215798852502,
+            "query_value": 150.17864383956768,
+            "delta_value": 46.35648585104266,
+            "neighbor_value_text": "value 103.8222",
+            "query_value_text": "value 150.1786",
+            "delta_value_text": "+46.3565",
+            "observation_text": "For Labute surface area, the neighbor value is value 103.8222, the query value is value 150.1786, and the query-minus-neighbor delta is +46.3565."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__enamine",
+            "contribution": -1.2208776990110182,
+            "contribution_abs": 1.2208776990110182,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "contribution": -0.4410393886815224,
+            "contribution_abs": 0.4410393886815224,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "contribution": 0.4090089301564487,
+            "contribution_abs": 0.4090089301564487,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__dialkyl ether",
+            "contribution": 0.24983716873651038,
+            "contribution_abs": 0.24983716873651038,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "contribution": 0.13350250321649335,
+            "contribution_abs": 0.13350250321649335,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "contribution": -0.12385623548142582,
+            "contribution_abs": 0.12385623548142582,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__nitro",
+            "contribution": -0.11018020069082404,
+            "contribution_abs": 0.11018020069082404,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__LabuteASA",
+            "contribution": -0.10461773996668881,
+            "contribution_abs": 0.10461773996668881,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor has 0 copies of enamine, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -1.2209, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 0 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -0.441, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, For strongest basic pKa, the neighbor's strongest basic pKa is value 7.5993, while the query has no basic site. The query-minus-neighbor delta is not defined because one molecule has no basic site. This pairwise contribution is 0.409, which pushes toward option (B): is a substrate to the enzyme CYP2C9. After that, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2498, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Finally, For minimum partial charge, the neighbor's minimum partial charge is value -0.3245, while the query's minimum partial charge is value -0.4656. The query-minus-neighbor delta is -0.1411. This pairwise contribution is 0.1335, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8722, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.1239, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 7, The neighbor does not have nitro, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.1102, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, For Labute surface area, the neighbor's Labute surface area is value 103.8222, while the query's Labute surface area is value 150.1786. The query-minus-neighbor delta is +46.3565. This pairwise contribution is -0.1046, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2C9, the pairwise feature evidence moderately supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides medium-strength evidence for option (A): is not a substrate to the enzyme CYP2C9."
+        }
+      },
+      {
+        "neighbor_index": 3,
+        "neighbor_id": "CCOc1ccc(NC(C)=O)cc1",
+        "neighbor_smiles": "CCOc1ccc(NC(C)=O)cc1",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): is a substrate to the enzyme CYP2C9",
+        "neighbor_similarity": 0.19128329297820826,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.011569459521401433,
+          "pair_score_class1_probability": 0.011569459521401433,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9884305404785986,
+          "pair_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4884305404785986
+        },
+        "evidence_strength": {
+          "feature_probability": 0.10843175456094899,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+          "feature_evidence_strength": "high",
+          "feature_confidence_margin": 0.391568245439051,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.5854125657476443
+        },
+        "middle_draft": "First, The neighbor has 0 copies of enamine, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -1.2209, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, For neutral fraction, the neighbor's neutral fraction is value 0.9979, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.0021. This pairwise contribution is -0.7177, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, The neighbor has 0 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -0.441, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2498, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Finally, For Labute surface area, the neighbor's Labute surface area is value 77.7161, while the query's Labute surface area is value 150.1786. The query-minus-neighbor delta is +72.4625. This pairwise contribution is -0.1867, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 6, For molecular weight, the neighbor's molecular weight is value 179.219, while the query's molecular weight is value 360.366. The query-minus-neighbor delta is +181.147. This pairwise contribution is -0.123, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 7, For exact molecular weight, the neighbor's exact molecular weight is value 179.0946, while the query's exact molecular weight is value 360.1321. The query-minus-neighbor delta is +181.0375. This pairwise contribution is -0.1114, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, The neighbor does not have nitro, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.1102, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2C9, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2C9.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__enamine",
+            "display_name": "enamine",
+            "description": "top-level functional-group indicator or count for enamine",
+            "source_family": "fg_top_level",
+            "raw_name": "enamine",
+            "neighbor_value": 0.0,
+            "query_value": 2.0,
+            "delta_value": 2.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "count 2",
+            "delta_value_text": "+2",
+            "observation_text": "For enamine, the neighbor value is absent (0), the query value is count 2, and the query-minus-neighbor delta is +2."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "display_name": "neutral fraction",
+            "description": "estimated fraction of the molecule that is neutral at the configured pH",
+            "source_family": "pka",
+            "raw_name": "fraction_neutral",
+            "neighbor_value": 0.9979,
+            "query_value": 1.0,
+            "delta_value": 0.0020999999999999908,
+            "neighbor_value_text": "value 0.9979",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0.0021",
+            "observation_text": "For neutral fraction, the neighbor value is value 0.9979, the query value is present (1), and the query-minus-neighbor delta is +0.0021."
+          },
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "display_name": "carboxylic ester",
+            "description": "top-level functional-group indicator or count for carboxylic ester",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic ester",
+            "neighbor_value": 0.0,
+            "query_value": 2.0,
+            "delta_value": 2.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "count 2",
+            "delta_value_text": "+2",
+            "observation_text": "For carboxylic ester, the neighbor value is absent (0), the query value is count 2, and the query-minus-neighbor delta is +2."
+          },
+          {
+            "feature_name": "fg_top_level__dialkyl ether",
+            "display_name": "dialkyl ether",
+            "description": "top-level functional-group indicator or count for dialkyl ether",
+            "source_family": "fg_top_level",
+            "raw_name": "dialkyl ether",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For dialkyl ether, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__LabuteASA",
+            "display_name": "Labute surface area",
+            "description": "Labute approximate surface area",
+            "source_family": "rdkit",
+            "raw_name": "LabuteASA",
+            "neighbor_value": 77.71610109024209,
+            "query_value": 150.17864383956768,
+            "delta_value": 72.46254274932559,
+            "neighbor_value_text": "value 77.7161",
+            "query_value_text": "value 150.1786",
+            "delta_value_text": "+72.4625",
+            "observation_text": "For Labute surface area, the neighbor value is value 77.7161, the query value is value 150.1786, and the query-minus-neighbor delta is +72.4625."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolWt",
+            "display_name": "molecular weight",
+            "description": "molecular weight",
+            "source_family": "rdkit",
+            "raw_name": "MolWt",
+            "neighbor_value": 179.219,
+            "query_value": 360.366,
+            "delta_value": 181.147,
+            "neighbor_value_text": "value 179.219",
+            "query_value_text": "value 360.366",
+            "delta_value_text": "+181.147",
+            "observation_text": "For molecular weight, the neighbor value is value 179.219, the query value is value 360.366, and the query-minus-neighbor delta is +181.147."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__ExactMolWt",
+            "display_name": "exact molecular weight",
+            "description": "exact isotopic molecular weight",
+            "source_family": "rdkit",
+            "raw_name": "ExactMolWt",
+            "neighbor_value": 179.094628656,
+            "query_value": 360.13213635999995,
+            "delta_value": 181.03750770399995,
+            "neighbor_value_text": "value 179.0946",
+            "query_value_text": "value 360.1321",
+            "delta_value_text": "+181.0375",
+            "observation_text": "For exact molecular weight, the neighbor value is value 179.0946, the query value is value 360.1321, and the query-minus-neighbor delta is +181.0375."
+          },
+          {
+            "feature_name": "fg_top_level__nitro",
+            "display_name": "nitro",
+            "description": "top-level functional-group indicator or count for nitro",
+            "source_family": "fg_top_level",
+            "raw_name": "nitro",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For nitro, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__enamine",
+            "contribution": -1.2208776990110182,
+            "contribution_abs": 1.2208776990110182,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "contribution": -0.7176808878988455,
+            "contribution_abs": 0.7176808878988455,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "contribution": -0.4410393886815224,
+            "contribution_abs": 0.4410393886815224,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__dialkyl ether",
+            "contribution": 0.24983716873651038,
+            "contribution_abs": 0.24983716873651038,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__LabuteASA",
+            "contribution": -0.18667424481538714,
+            "contribution_abs": 0.18667424481538714,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolWt",
+            "contribution": -0.12298231715841866,
+            "contribution_abs": 0.12298231715841866,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__ExactMolWt",
+            "contribution": -0.11139338924452263,
+            "contribution_abs": 0.11139338924452263,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__nitro",
+            "contribution": -0.11018020069082404,
+            "contribution_abs": 0.11018020069082404,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor has 0 copies of enamine, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -1.2209, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, For neutral fraction, the neighbor's neutral fraction is value 0.9979, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.0021. This pairwise contribution is -0.7177, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, The neighbor has 0 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +2). This pairwise contribution is -0.441, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2498, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Finally, For Labute surface area, the neighbor's Labute surface area is value 77.7161, while the query's Labute surface area is value 150.1786. The query-minus-neighbor delta is +72.4625. This pairwise contribution is -0.1867, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 6, For molecular weight, the neighbor's molecular weight is value 179.219, while the query's molecular weight is value 360.366. The query-minus-neighbor delta is +181.147. This pairwise contribution is -0.123, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 7, For exact molecular weight, the neighbor's exact molecular weight is value 179.0946, while the query's exact molecular weight is value 360.1321. The query-minus-neighbor delta is +181.0375. This pairwise contribution is -0.1114, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, The neighbor does not have nitro, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.1102, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (B): is a substrate to the enzyme CYP2C9, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2C9."
+        }
+      },
+      {
+        "neighbor_index": 4,
+        "neighbor_id": "COC(=O)C1=C(C)NC(C)=C(C(=O)OC/C=C/c2ccccc2)[C@H]1c1cccc([N+](=O)[O-])c1",
+        "neighbor_smiles": "COC(=O)C1=C(C)NC(C)=C(C(=O)OC/C=C/c2ccccc2)[C@H]1c1cccc([N+](=O)[O-])c1",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+        "neighbor_similarity": 0.7602053915275995,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.006944839563436637,
+          "pair_score_class1_probability": 0.006944839563436637,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9930551604365634,
+          "pair_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4930551604365634
+        },
+        "evidence_strength": {
+          "feature_probability": 0.09253565298697781,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+          "feature_evidence_strength": "high",
+          "feature_confidence_margin": 0.4074643470130222,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.5896043304765113
+        },
+        "middle_draft": "First, The neighbor has 2 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -1.2689, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 2 copies of enamine, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -0.997, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.363, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 424.283, while the query's heavy-atom molecular weight is value 340.206. The query-minus-neighbor delta is -84.077. This pairwise contribution is -0.3503, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Finally, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2872, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2, while the query's fraction of sp3 carbons is value 0.3333. The query-minus-neighbor delta is +0.1333. This pairwise contribution is 0.2333, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 7, For number of ionizable sites, the neighbor's number of ionizable sites is absent (0), while the query's number of ionizable sites is absent (0). The query-minus-neighbor delta is +0. This pairwise contribution is -0.2133, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3366, while the query's minimum absolute partial charge is value 0.3362. The query-minus-neighbor delta is -0.0003. This pairwise contribution is -0.1942, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2C9, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2C9.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "display_name": "carboxylic ester",
+            "description": "top-level functional-group indicator or count for carboxylic ester",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic ester",
+            "neighbor_value": 2.0,
+            "query_value": 2.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "count 2",
+            "query_value_text": "count 2",
+            "delta_value_text": "+0",
+            "observation_text": "For carboxylic ester, the neighbor value is count 2, the query value is count 2, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__enamine",
+            "display_name": "enamine",
+            "description": "top-level functional-group indicator or count for enamine",
+            "source_family": "fg_top_level",
+            "raw_name": "enamine",
+            "neighbor_value": 2.0,
+            "query_value": 2.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "count 2",
+            "query_value_text": "count 2",
+            "delta_value_text": "+0",
+            "observation_text": "For enamine, the neighbor value is count 2, the query value is count 2, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__nitro",
+            "display_name": "nitro",
+            "description": "top-level functional-group indicator or count for nitro",
+            "source_family": "fg_top_level",
+            "raw_name": "nitro",
+            "neighbor_value": 1.0,
+            "query_value": 1.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0",
+            "observation_text": "For nitro, the neighbor value is present (1), the query value is present (1), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "display_name": "heavy-atom molecular weight",
+            "description": "molecular weight contributed by heavy atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomMolWt",
+            "neighbor_value": 424.2830000000002,
+            "query_value": 340.2060000000001,
+            "delta_value": -84.07700000000011,
+            "neighbor_value_text": "value 424.283",
+            "query_value_text": "value 340.206",
+            "delta_value_text": "-84.077",
+            "observation_text": "For heavy-atom molecular weight, the neighbor value is value 424.283, the query value is value 340.206, and the query-minus-neighbor delta is -84.077."
+          },
+          {
+            "feature_name": "fg_top_level__dialkyl ether",
+            "display_name": "dialkyl ether",
+            "description": "top-level functional-group indicator or count for dialkyl ether",
+            "source_family": "fg_top_level",
+            "raw_name": "dialkyl ether",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For dialkyl ether, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "neighbor_value": 0.2,
+            "query_value": 0.3333333333333333,
+            "delta_value": 0.1333333333333333,
+            "neighbor_value_text": "value 0.2",
+            "query_value_text": "value 0.3333",
+            "delta_value_text": "+0.1333",
+            "observation_text": "For fraction of sp3 carbons, the neighbor value is value 0.2, the query value is value 0.3333, and the query-minus-neighbor delta is +0.1333."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_ionizable_sites",
+            "display_name": "number of ionizable sites",
+            "description": "total number of acidic and basic ionizable sites",
+            "source_family": "pka",
+            "raw_name": "num_ionizable_sites",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For number of ionizable sites, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "neighbor_value": 0.3365666368651203,
+            "query_value": 0.3362394029534943,
+            "delta_value": -0.00032723391162597926,
+            "neighbor_value_text": "value 0.3366",
+            "query_value_text": "value 0.3362",
+            "delta_value_text": "-0.0003",
+            "observation_text": "For minimum absolute partial charge, the neighbor value is value 0.3366, the query value is value 0.3362, and the query-minus-neighbor delta is -0.0003."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "contribution": -1.2689412255664205,
+            "contribution_abs": 1.2689412255664205,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__enamine",
+            "contribution": -0.9969988020014425,
+            "contribution_abs": 0.9969988020014425,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__nitro",
+            "contribution": -0.36297894789219026,
+            "contribution_abs": 0.36297894789219026,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "contribution": -0.35031947678599507,
+            "contribution_abs": 0.35031947678599507,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__dialkyl ether",
+            "contribution": 0.28719812487687235,
+            "contribution_abs": 0.28719812487687235,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "contribution": 0.2332557453538758,
+            "contribution_abs": 0.2332557453538758,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_ionizable_sites",
+            "contribution": -0.21332220178778932,
+            "contribution_abs": 0.21332220178778932,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "contribution": -0.1941565315336757,
+            "contribution_abs": 0.1941565315336757,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor has 2 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -1.2689, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 2 copies of enamine, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -0.997, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.363, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 424.283, while the query's heavy-atom molecular weight is value 340.206. The query-minus-neighbor delta is -84.077. This pairwise contribution is -0.3503, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Finally, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2872, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2, while the query's fraction of sp3 carbons is value 0.3333. The query-minus-neighbor delta is +0.1333. This pairwise contribution is 0.2333, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 7, For number of ionizable sites, the neighbor's number of ionizable sites is absent (0), while the query's number of ionizable sites is absent (0). The query-minus-neighbor delta is +0. This pairwise contribution is -0.2133, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3366, while the query's minimum absolute partial charge is value 0.3362. The query-minus-neighbor delta is -0.0003. This pairwise contribution is -0.1942, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2C9, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2C9."
+        }
+      },
+      {
+        "neighbor_index": 5,
+        "neighbor_id": "COC(=O)C1=C(C)NC(C)=C(C(=O)OCCN(C)Cc2ccccc2)[C@H]1c1cccc([N+](=O)[O-])c1",
+        "neighbor_smiles": "COC(=O)C1=C(C)NC(C)=C(C(=O)OCCN(C)Cc2ccccc2)[C@H]1c1cccc([N+](=O)[O-])c1",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+        "neighbor_similarity": 0.7029935851746258,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.009649192499229832,
+          "pair_score_class1_probability": 0.009649192499229832,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9903508075007702,
+          "pair_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4903508075007702
+        },
+        "evidence_strength": {
+          "feature_probability": 0.12439447255790663,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+          "feature_evidence_strength": "high",
+          "feature_confidence_margin": 0.37560552744209336,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.574191944783225
+        },
+        "middle_draft": "First, The neighbor has 2 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -1.2689, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 2 copies of enamine, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -0.997, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 450.301, while the query's heavy-atom molecular weight is value 340.206. The query-minus-neighbor delta is -110.095. This pairwise contribution is -0.5194, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.363, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Finally, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2872, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For neutral fraction, the neighbor's neutral fraction is value 0.6271, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.3729. This pairwise contribution is -0.2152, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 7, For number of basic sites, the neighbor's number of basic sites is present (1), while the query's number of basic sites is absent (0). The query-minus-neighbor delta is -1. This pairwise contribution is 0.2142, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 8, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3363, while the query's minimum absolute partial charge is value 0.3362. The query-minus-neighbor delta is -0.0001. This pairwise contribution is -0.1674, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2C9, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2C9.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "display_name": "carboxylic ester",
+            "description": "top-level functional-group indicator or count for carboxylic ester",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic ester",
+            "neighbor_value": 2.0,
+            "query_value": 2.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "count 2",
+            "query_value_text": "count 2",
+            "delta_value_text": "+0",
+            "observation_text": "For carboxylic ester, the neighbor value is count 2, the query value is count 2, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__enamine",
+            "display_name": "enamine",
+            "description": "top-level functional-group indicator or count for enamine",
+            "source_family": "fg_top_level",
+            "raw_name": "enamine",
+            "neighbor_value": 2.0,
+            "query_value": 2.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "count 2",
+            "query_value_text": "count 2",
+            "delta_value_text": "+0",
+            "observation_text": "For enamine, the neighbor value is count 2, the query value is count 2, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "display_name": "heavy-atom molecular weight",
+            "description": "molecular weight contributed by heavy atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomMolWt",
+            "neighbor_value": 450.30100000000033,
+            "query_value": 340.2060000000001,
+            "delta_value": -110.09500000000025,
+            "neighbor_value_text": "value 450.301",
+            "query_value_text": "value 340.206",
+            "delta_value_text": "-110.095",
+            "observation_text": "For heavy-atom molecular weight, the neighbor value is value 450.301, the query value is value 340.206, and the query-minus-neighbor delta is -110.095."
+          },
+          {
+            "feature_name": "fg_top_level__nitro",
+            "display_name": "nitro",
+            "description": "top-level functional-group indicator or count for nitro",
+            "source_family": "fg_top_level",
+            "raw_name": "nitro",
+            "neighbor_value": 1.0,
+            "query_value": 1.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0",
+            "observation_text": "For nitro, the neighbor value is present (1), the query value is present (1), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__dialkyl ether",
+            "display_name": "dialkyl ether",
+            "description": "top-level functional-group indicator or count for dialkyl ether",
+            "source_family": "fg_top_level",
+            "raw_name": "dialkyl ether",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For dialkyl ether, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "display_name": "neutral fraction",
+            "description": "estimated fraction of the molecule that is neutral at the configured pH",
+            "source_family": "pka",
+            "raw_name": "fraction_neutral",
+            "neighbor_value": 0.6271,
+            "query_value": 1.0,
+            "delta_value": 0.3729,
+            "neighbor_value_text": "value 0.6271",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0.3729",
+            "observation_text": "For neutral fraction, the neighbor value is value 0.6271, the query value is present (1), and the query-minus-neighbor delta is +0.3729."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_basic_sites",
+            "display_name": "number of basic sites",
+            "description": "number of basic ionizable sites in the molecule",
+            "source_family": "pka",
+            "raw_name": "num_basic_sites",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For number of basic sites, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "neighbor_value": 0.3362968776036888,
+            "query_value": 0.3362394029534943,
+            "delta_value": -5.7474650194511145e-05,
+            "neighbor_value_text": "value 0.3363",
+            "query_value_text": "value 0.3362",
+            "delta_value_text": "-0.0001",
+            "observation_text": "For minimum absolute partial charge, the neighbor value is value 0.3363, the query value is value 0.3362, and the query-minus-neighbor delta is -0.0001."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "contribution": -1.2689412255664205,
+            "contribution_abs": 1.2689412255664205,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__enamine",
+            "contribution": -0.9969988020014425,
+            "contribution_abs": 0.9969988020014425,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "contribution": -0.5193808757316164,
+            "contribution_abs": 0.5193808757316164,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__nitro",
+            "contribution": -0.36297894789219026,
+            "contribution_abs": 0.36297894789219026,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__dialkyl ether",
+            "contribution": 0.28719812487687235,
+            "contribution_abs": 0.28719812487687235,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "contribution": -0.21523912800299078,
+            "contribution_abs": 0.21523912800299078,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_basic_sites",
+            "contribution": 0.21415042665807169,
+            "contribution_abs": 0.21415042665807169,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "contribution": -0.16738795026528783,
+            "contribution_abs": 0.16738795026528783,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor has 2 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -1.2689, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 2 copies of enamine, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -0.997, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 450.301, while the query's heavy-atom molecular weight is value 340.206. The query-minus-neighbor delta is -110.095. This pairwise contribution is -0.5194, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.363, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Finally, Neither the neighbor nor the query has dialkyl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.2872, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For neutral fraction, the neighbor's neutral fraction is value 0.6271, while the query's neutral fraction is present (1). The query-minus-neighbor delta is +0.3729. This pairwise contribution is -0.2152, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 7, For number of basic sites, the neighbor's number of basic sites is present (1), while the query's number of basic sites is absent (0). The query-minus-neighbor delta is -1. This pairwise contribution is 0.2142, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 8, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3363, while the query's minimum absolute partial charge is value 0.3362. The query-minus-neighbor delta is -0.0001. This pairwise contribution is -0.1674, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2C9, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2C9."
+        }
+      },
+      {
+        "neighbor_index": 6,
+        "neighbor_id": "COCCOC(=O)C1=C(C)NC(C)=C(C(=O)OC/C=C/c2ccccc2)[C@H]1c1cccc([N+](=O)[O-])c1",
+        "neighbor_smiles": "COCCOC(=O)C1=C(C)NC(C)=C(C(=O)OC/C=C/c2ccccc2)[C@H]1c1cccc([N+](=O)[O-])c1",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+        "neighbor_similarity": 0.6613653413353339,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.007641916676942996,
+          "pair_score_class1_probability": 0.007641916676942996,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.992358083323057,
+          "pair_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.49235808332305697
+        },
+        "evidence_strength": {
+          "feature_probability": 0.10095043604587589,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): is not a substrate to the enzyme CYP2C9",
+          "feature_evidence_strength": "high",
+          "feature_confidence_margin": 0.3990495639541241,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "high",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.566399008887267
+        },
+        "middle_draft": "First, The neighbor has 2 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -1.2689, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 2 copies of enamine, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -0.997, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 464.304, while the query's heavy-atom molecular weight is value 340.206. The query-minus-neighbor delta is -124.098. This pairwise contribution is -0.5224, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.363, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Finally, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2593, while the query's fraction of sp3 carbons is value 0.3333. The query-minus-neighbor delta is +0.0741. This pairwise contribution is 0.2219, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For number of ionizable sites, the neighbor's number of ionizable sites is absent (0), while the query's number of ionizable sites is absent (0). The query-minus-neighbor delta is +0. This pairwise contribution is -0.2133, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 7, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3366, while the query's minimum absolute partial charge is value 0.3362. The query-minus-neighbor delta is -0.0003. This pairwise contribution is -0.1942, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2261, while the query's QED drug-likeness is value 0.4882. The query-minus-neighbor delta is +0.2621. This pairwise contribution is 0.1854, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2C9, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2C9.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "display_name": "carboxylic ester",
+            "description": "top-level functional-group indicator or count for carboxylic ester",
+            "source_family": "fg_top_level",
+            "raw_name": "carboxylic ester",
+            "neighbor_value": 2.0,
+            "query_value": 2.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "count 2",
+            "query_value_text": "count 2",
+            "delta_value_text": "+0",
+            "observation_text": "For carboxylic ester, the neighbor value is count 2, the query value is count 2, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__enamine",
+            "display_name": "enamine",
+            "description": "top-level functional-group indicator or count for enamine",
+            "source_family": "fg_top_level",
+            "raw_name": "enamine",
+            "neighbor_value": 2.0,
+            "query_value": 2.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "count 2",
+            "query_value_text": "count 2",
+            "delta_value_text": "+0",
+            "observation_text": "For enamine, the neighbor value is count 2, the query value is count 2, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "display_name": "heavy-atom molecular weight",
+            "description": "molecular weight contributed by heavy atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomMolWt",
+            "neighbor_value": 464.3040000000003,
+            "query_value": 340.2060000000001,
+            "delta_value": -124.09800000000024,
+            "neighbor_value_text": "value 464.304",
+            "query_value_text": "value 340.206",
+            "delta_value_text": "-124.098",
+            "observation_text": "For heavy-atom molecular weight, the neighbor value is value 464.304, the query value is value 340.206, and the query-minus-neighbor delta is -124.098."
+          },
+          {
+            "feature_name": "fg_top_level__nitro",
+            "display_name": "nitro",
+            "description": "top-level functional-group indicator or count for nitro",
+            "source_family": "fg_top_level",
+            "raw_name": "nitro",
+            "neighbor_value": 1.0,
+            "query_value": 1.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0",
+            "observation_text": "For nitro, the neighbor value is present (1), the query value is present (1), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "neighbor_value": 0.2592592592592592,
+            "query_value": 0.3333333333333333,
+            "delta_value": 0.07407407407407413,
+            "neighbor_value_text": "value 0.2593",
+            "query_value_text": "value 0.3333",
+            "delta_value_text": "+0.0741",
+            "observation_text": "For fraction of sp3 carbons, the neighbor value is value 0.2593, the query value is value 0.3333, and the query-minus-neighbor delta is +0.0741."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_ionizable_sites",
+            "display_name": "number of ionizable sites",
+            "description": "total number of acidic and basic ionizable sites",
+            "source_family": "pka",
+            "raw_name": "num_ionizable_sites",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For number of ionizable sites, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "neighbor_value": 0.3365666368719149,
+            "query_value": 0.3362394029534943,
+            "delta_value": -0.0003272339184205997,
+            "neighbor_value_text": "value 0.3366",
+            "query_value_text": "value 0.3362",
+            "delta_value_text": "-0.0003",
+            "observation_text": "For minimum absolute partial charge, the neighbor value is value 0.3366, the query value is value 0.3362, and the query-minus-neighbor delta is -0.0003."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "neighbor_value": 0.2261188375310288,
+            "query_value": 0.4882471812012686,
+            "delta_value": 0.2621283436702398,
+            "neighbor_value_text": "value 0.2261",
+            "query_value_text": "value 0.4882",
+            "delta_value_text": "+0.2621",
+            "observation_text": "For QED drug-likeness, the neighbor value is value 0.2261, the query value is value 0.4882, and the query-minus-neighbor delta is +0.2621."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__carboxylic ester",
+            "contribution": -1.2689412255664205,
+            "contribution_abs": 1.2689412255664205,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__enamine",
+            "contribution": -0.9969988020014425,
+            "contribution_abs": 0.9969988020014425,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "contribution": -0.5224387824916761,
+            "contribution_abs": 0.5224387824916761,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "fg_top_level__nitro",
+            "contribution": -0.36297894789219026,
+            "contribution_abs": 0.36297894789219026,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "contribution": 0.22193245545508963,
+            "contribution_abs": 0.22193245545508963,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_ionizable_sites",
+            "contribution": -0.21332220178778932,
+            "contribution_abs": 0.21332220178778932,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "contribution": -0.1941565315336757,
+            "contribution_abs": 0.1941565315336757,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a substrate to the enzyme CYP2C9"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "contribution": 0.1853830650071316,
+            "contribution_abs": 0.1853830650071316,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a substrate to the enzyme CYP2C9"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor has 2 copies of carboxylic ester, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -1.2689, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Next, The neighbor has 2 copies of enamine, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is -0.997, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Then, For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 464.304, while the query's heavy-atom molecular weight is value 340.206. The query-minus-neighbor delta is -124.098. This pairwise contribution is -0.5224, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. After that, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is -0.363, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Finally, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.2593, while the query's fraction of sp3 carbons is value 0.3333. The query-minus-neighbor delta is +0.0741. This pairwise contribution is 0.2219, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Step 6, For number of ionizable sites, the neighbor's number of ionizable sites is absent (0), while the query's number of ionizable sites is absent (0). The query-minus-neighbor delta is +0. This pairwise contribution is -0.2133, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 7, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3366, while the query's minimum absolute partial charge is value 0.3362. The query-minus-neighbor delta is -0.0003. This pairwise contribution is -0.1942, which pushes toward option (A): is not a substrate to the enzyme CYP2C9. Step 8, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2261, while the query's QED drug-likeness is value 0.4882. The query-minus-neighbor delta is +0.2621. This pairwise contribution is 0.1854, which pushes toward option (B): is a substrate to the enzyme CYP2C9. Taken together, relative to a neighbor labeled option (A): is not a substrate to the enzyme CYP2C9, the pairwise feature evidence strongly supports option (A): is not a substrate to the enzyme CYP2C9. This neighbor provides high-strength evidence for option (A): is not a substrate to the enzyme CYP2C9."
+        }
+      }
+    ]
   },
   "hybrid_rewrite_input": {
     "gt_label": 0,
@@ -174,7 +1647,7 @@
     }
   },
   "source_artifacts": {
-    "global_evidence_path": "/data1/tianang/Projects/TRIM/outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan/CYP2C9_Substrate_CarbonMangels/train/sample_00245.json",
-    "local_evidence_path": "/data1/tianang/Projects/TRIM/outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts/CYP2C9_Substrate_CarbonMangels/train/sample_00245.json"
+    "global_evidence_path": "outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan/CYP2C9_Substrate_CarbonMangels/train/sample_00245.json",
+    "local_evidence_path": "outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts/CYP2C9_Substrate_CarbonMangels/train/sample_00245.json"
   }
 }

@@ -12,6 +12,7 @@ from trim.models.aggregation import aggregate_local_scores
 from trim.models.fusion import fuse_scores, select_best_lambda
 from trim.models.retrieval import CachedSimilarityRetriever
 from trim.utils.io import load_pickle, save_json
+from trim.utils.paths import serialize_project_path
 
 try:
     from tqdm.auto import tqdm
@@ -215,8 +216,8 @@ def save_local_evaluation(
         "split": split,
         "metrics": metrics_payload,
         "artifacts": {
-            "predictions_csv": str(predictions_path.resolve()),
-            "metrics_json": str(metrics_path.resolve()),
+            "predictions_csv": serialize_project_path(predictions_path),
+            "metrics_json": serialize_project_path(metrics_path),
         },
     }
     save_json(metrics_path, payload)

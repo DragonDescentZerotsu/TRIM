@@ -17,7 +17,7 @@
   "keep_for_rewrite": true,
   "drop_reason": null,
   "teacher_case": "both_correct",
-  "playbook_path": "/data1/tianang/Projects/TRIM/playbooks/ClinTox.md",
+  "playbook_path": "playbooks/ClinTox.md",
   "global_rewrite_input": {
     "task_playbook": "# ClinTox molecular-property playbook\n\nClinTox (as used in common benchmarks and mirrored in multiple ML datasets) is a **clinical-toxicity–relevant classification** built from a qualitative comparison of drugs **approved by the** entity[\"organization\",\"U.S. Food and Drug Administration\",\"federal agency, us\"] and drugs that **failed / were terminated in clinical trials for toxicity-related reasons**. citeturn19view0 In this playbook, “A” corresponds to **not toxic** and “B” corresponds to **toxic**, with the important caveat that most molecular-property cutoffs come from **drug-likeness / ADMET / safety-risk proxy literature**, not from ClinTox-specific mechanistic rules. citeturn19view0turn36view0turn30view0\n\n## Ionization and charge\n\n\\## neutral fraction\n- Common threshold(s) or range(s): **no stable literature threshold found** (neutral fraction is typically interpreted indirectly via pKa + pH and its impact on logD/permeability/ion trapping). citeturn11search22turn31view0turn30view0  \n- Usually associated with: **Lower neutral fraction for lipophilic bases** can align with lysosomal trapping/“cationic amphiphilic” behavior (often a safety red flag); **higher neutral fraction** can align with higher passive permeability and sometimes broader tissue exposure. citeturn11search22turn5search17turn30view0  \n- Brief note: For ClinTox-adjacent practice, neutral fraction is mainly actionable when it reflects **basicity + lipophilicity** combinations known to increase certain liabilities (e.g., phospholipidosis, hERG risk via high logD for basic compounds). citeturn11search22turn31view0turn30view0  \n- Source: Lysosomal trapping and CAD-style heuristics in medicinal chemistry/toxicology practice. citeturn11search22turn5search17turn31view0  \n\n\\## strongest acidic pKa\n- Common threshold(s) or range(s): **no stable literature threshold found** for ClinTox-like toxicity classification.  \n- Usually associated with: **Lower acidic pKa (stronger acids)** → more anionic fraction at physiological pH, often reduced passive permeability and lower intracellular accumulation (context-dependent). citeturn49view0turn44view0  \n- Brief note: In practice, acidic pKa is mainly used to anticipate **ionization state and logD7.4**, which then ties into absorption and exposure (an indirect contributor to clinical safety outcomes). citeturn44view0turn30view0  \n- Source: ADME absorption/permeability framing and property filters emphasizing lipophilicity/PSA rather than acidic pKa cutoffs. citeturn48view0turn44view0turn30view0  \n\n\\## strongest basic pKa\n- Common threshold(s) or range(s): **pKa > ~6 with logP > ~1** is commonly cited as enabling lysosomal accumulation (ion trapping); **pKa > 7.4 with logP > 3** is widely used to define cationic amphiphilic drugs (CADs) in multiple analyses. citeturn11search22turn5search17  \n- Usually associated with: **B (toxic) risk proxy increases** for **lipophilic bases** (lysosomotropism/CAD-like profiles), a known pattern behind phospholipidosis and other nonspecific cellular liabilities. citeturn11search22turn5search17turn30view0  \n- Brief note: Basicity alone is not determinative; the *combination* with lipophilicity (logP/logD) is the practical “anchor” used in safety triage. citeturn11search22turn31view0turn30view0  \n- Source: Lysosomal trapping and CAD definitions used in systems/toxicology analyses. citeturn11search22turn5search17  \n\n\\## number of acidic sites\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: More acidic sites often increases the chance of being **multiply charged** across pH ranges, generally reducing passive permeability (context-dependent). citeturn44view0turn49view0  \n- Brief note: In clinical-toxicity proxy work, “ionizable-site counts” matter chiefly through downstream effects on **logD, PSA, and permeability**, not as standalone toxicity thresholds. citeturn30view0turn44view0  \n- Source: Property-filter literature emphasizes permeability/PSA/lipophilicity over explicit ionizable-site-count cutoffs. citeturn49view0turn21view0turn30view0  \n\n\\## number of basic sites\n- Common threshold(s) or range(s): **no stable literature threshold found** (counts are usually interpreted through net basicity/lysosomotropism rather than a fixed cutoff).  \n- Usually associated with: Multiple basic centers can increase **cationic character** and, when paired with lipophilicity, can push toward lysosomal trapping/CAD-like risk. citeturn11search22turn5search17  \n- Brief note: Practical screening focuses more on **most basic pKa** and **logP/logD** than on basic-site count alone. citeturn31view0turn11search22  \n- Source: CAD/lysosomotropism heuristics in drug safety context. citeturn11search22turn5search17  \n\n\\## number of ionizable sites\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Higher counts → broader charge-state distribution and often **higher polarity / lower permeability**, which can affect exposure and dose needs. citeturn49view0turn44view0  \n- Brief note: For ClinTox-like outcomes, this is best treated as a *supporting* variable that helps interpret logD and permeability-related rules. citeturn30view0turn31view0  \n- Source: Oral absorption / permeability heuristic frameworks. citeturn49view0turn48view0turn21view0  \n\n\\## maximum absolute partial charge\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Larger absolute partial charges often correlate with **stronger polarity / H-bonding / ionic character**, which is typically handled via TPSA/HBD/HBA/logD rather than charge cutoffs. citeturn44view0turn49view0  \n- Brief note: Partial-charge extrema are widely used as continuous ML/QSAR features, but practical medicinal-chemistry toxicity rules rarely specify hard cutoffs for them. citeturn19view0turn36view0  \n- Source: General ADME/tox filtering emphasizes interpretable aggregates (TPSA, HBD/HBA, logP/logD). citeturn49view0turn44view0  \n\n\\## maximum partial charge\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: More positive maxima can occur in strongly basic/ionized motifs; practical risk rules are typically expressed via **pKa + logD/logP**, not charge maxima. citeturn11search22turn31view0  \n- Brief note: Consider as supportive to ionization interpretation, not as an anchored cutoff.  \n- Source: CAD/lysosomotropism and hERG-lipophilicity discussions focus on pKa/logD. citeturn11search22turn31view0turn5search17  \n\n\\## minimum absolute partial charge\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Typically not used directly; interpret through overall polarity and H-bonding descriptors instead. citeturn44view0turn49view0  \n- Brief note: Rarely appears as a human-interpretable threshold in safety triage.  \n- Source: Property-filter literature focuses on PSA/logP/logD/HBD/HBA. citeturn49view0turn44view0  \n\n\\## minimum partial charge\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: More negative minima can reflect strong acceptors/acidic atoms; practical thresholds are expressed via **HBA/TPSA** and permeability models. citeturn44view0turn49view0  \n- Brief note: Use mainly as a model feature, not a human cutoff.  \n- Source: Oral absorption/property-filter frameworks. citeturn44view0turn48view0  \n\n## Lipophilicity and distribution\n\n\\## estimated logD\n- Common threshold(s) or range(s): **logD7.4 ~ 2 ± 1** is cited as a practical “center” for satisfying ADMET balance; **hERG risk anchors** have been estimated at ~**logD 3.3 (neutral)** for ~30% risk and as low as ~**logD 1.4 (basic)** for similar risk. citeturn30view0turn31view0  \n- Usually associated with: **A (not toxic) proxy** when logD7.4 sits in a moderate zone (often ~1–3); **B (toxic) proxy** when markedly high for neutral compounds, or even moderate-high for basic compounds (hERG/accumulation concerns). citeturn31view0turn30view0  \n- Brief note: logD is often more relevant than logP for ionizable molecules at physiological pH and is frequently used in early safety/permeability balancing. citeturn31view0turn49view0  \n- Source: ADMET optimization guidance and hERG–lipophilicity risk quantification. citeturn30view0turn31view0  \n\n\\## estimated logP\n- Common threshold(s) or range(s): **Rule-of-five anchor**: logP (cLogP) **> 5** is associated with poorer absorption/permeability likelihood; **toxicity-risk proxy**: **cLogP > 3** combined with **PSA < 75 Å²** was reported to give markedly higher odds of adverse findings in preclinical tox; **DILI proxy**: logP **≥ 3** is part of the commonly cited “Rule-of-2” when paired with high daily dose (external factor). citeturn20view0turn30view0turn26search4turn26search12  \n- Usually associated with: **B (toxic) proxy** at higher lipophilicity (promiscuity, accumulation, clearance issues), especially when polarity is also low. citeturn30view0turn36view0turn26search12  \n- Brief note: logP is a neutral-species property; for ionizable drugs, many screening stacks prefer logD7.4 for practical risk conversations. citeturn31view0turn49view0  \n- Source: Rule-of-five (absorption proxy), Pfizer-origin safety-property analyses summarized in an open review, and DILI rule-of-two follow-on analysis. citeturn20view0turn30view0turn26search12turn26search4  \n\n## Molecular size and surface area\n\n\\## exact molecular weight\n- Common threshold(s) or range(s): **Rule-of-five anchor**: MW **> 500** suggests higher probability of poor absorption/permeability; **Ghose-style drug-like range** often quoted as **160–480** (library-design proxy). citeturn20view0turn49view0  \n- Usually associated with: **B (toxic) proxy** at very high MW via developability/PK stress (solubility/permeability), which can indirectly increase clinical safety risk (dose/exposure complexities). citeturn49view0turn36view0  \n- Brief note: ClinTox is about clinical toxicity outcomes; MW thresholds here are best treated as **attrition-risk proxies**, not toxicity mechanisms. citeturn19view0turn36view0  \n- Source: Rule-of-five and classic drug-like filters. citeturn20view0turn49view0  \n\n\\## molecular weight\n- Common threshold(s) or range(s): MW **≤ 500** (rule-of-five) remains the most widely used general anchor; Ghose-style **160–480** is a common “drug-like library” range. citeturn20view0turn49view0  \n- Usually associated with: **A (not toxic) proxy** when MW stays in traditional oral-drug space (all else equal); **B (toxic) proxy** when large size combines with high lipophilicity/low polarity (exposure and off-target/liability risk). citeturn30view0turn20view0  \n- Brief note: MW interacts strongly with other descriptors (logD/logP, TPSA, rotatable bonds), so single-number cutoffs should be used as coarse triage only. citeturn21view0turn30view0turn44view0  \n- Source: Rule-of-five and absorption/permeability modeling literature. citeturn20view0turn21view0turn49view0  \n\n\\## heavy-atom count\n- Common threshold(s) or range(s): **no stable literature threshold found** specific to “heavy atoms”; the closest widely cited proxy is the **Ghose ‘number of atoms’ range 20–70** (often used in library filtering). citeturn49view0  \n- Usually associated with: Higher atom counts roughly track with higher MW/size; interpret via those established cutoffs rather than a separate heavy-atom rule. citeturn20view0turn49view0  \n- Brief note: Many filters are expressed as MW rather than heavy-atom count because MW is more standard in medicinal chemistry decision-making. citeturn20view0turn21view0  \n- Source: Ghose-style atom-count ranges summarized in classic absorption/drug-like filter discussions. citeturn49view0turn48view0  \n\n\\## heavy-atom molecular weight\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Tracks overall MW; interpret using MW-based anchors (e.g., 500 rule-of-five) unless you have a specific modeling reason to separate heavy-atom contribution. citeturn20view0turn21view0  \n- Brief note: Heavy-atom MW is uncommon as a standalone medicinal-chemistry heuristic for safety triage.  \n- Source: Widely used practical filters emphasize MW, logP/logD, TPSA, HBD/HBA. citeturn20view0turn44view0turn31view0  \n\n\\## Labute surface area\n- Common threshold(s) or range(s): **no stable literature threshold found** (as a named “Labute surface area” cutoff in safety/attrition practice).  \n- Usually associated with: Broadly correlates with size and permeability; interpret using PSA/TPSA and MW/logD anchors instead. citeturn44view0turn21view0  \n- Brief note: Surface-area concepts are most often operationalized via **PSA/TPSA** thresholds (e.g., 60/90/140 Å² anchors) rather than Labute SA. citeturn44view0turn48view0  \n- Source: PSA/TPSA-based empirical cutoffs dominate practical design rules. citeturn44view0turn21view0turn48view0  \n\n## Polarity and hydrogen bonding\n\n\\## topological polar surface area\n- Common threshold(s) or range(s): Commonly used anchors include **TPSA/PSA ≤ 140 Å²** (oral permeability/bioavailability proxy), **PSA ≤ 60 Å²** for very high absorption in one classic analysis, and **~90 Å²** as an often-cited upper boundary for brain penetration; the Egan ellipse gave an upper PSA limit of **131.6 Å²** (95% ellipse) with an interacting lipophilicity boundary. citeturn44view0turn48view0turn21view0  \n- Usually associated with: **A (not toxic) proxy** when PSA/TPSA is not extreme (supporting reasonable ADME); **B (toxic) proxy** indirectly when very high PSA/TPSA drives poor permeability/absorption that can stress dose/exposure margins. citeturn44view0turn36view0  \n- Brief note: For ClinTox-style endpoints, TPSA is best treated as an **exposure/PK proxy** rather than a toxicity mechanism. citeturn19view0turn44view0  \n- Source: Palm/Veber-style PSA cutoffs and Egan multivariate absorption model. citeturn44view0turn21view0turn48view0  \n\n\\## hydrogen-bond acceptor count\n- Common threshold(s) or range(s): **HBA > 10** is the classic rule-of-five “risk” side; Veber-style heuristics also use total H-bonding capacity as a permeability proxy. citeturn20view0turn21view0  \n- Usually associated with: **A (not toxic) proxy** when HBA stays in traditional oral-drug space; **B (toxic) proxy** indirectly when very high HBA contributes to high PSA and reduced permeability/absorption. citeturn21view0turn44view0  \n- Brief note: Use alongside TPSA and logD; HBA is rarely used alone for toxicity calls. citeturn44view0turn31view0  \n- Source: Rule-of-five and oral bioavailability analysis. citeturn20view0turn21view0  \n\n\\## hydrogen-bond donor count\n- Common threshold(s) or range(s): **HBD > 5** is the rule-of-five “risk” boundary; Veber-style filters emphasize H-bonding burden via PSA or HBD+HBA totals. citeturn20view0turn21view0turn44view0  \n- Usually associated with: **A (not toxic) proxy** when donor count is moderate; **B (toxic) proxy** indirectly when high HBD contributes to high polarity and poor permeability. citeturn21view0turn44view0  \n- Brief note: High HBD can sometimes reduce nonspecific permeability-driven liabilities—but can also force higher doses if absorption suffers; context matters. citeturn44view0turn36view0  \n- Source: Rule-of-five and Veber oral bioavailability criteria. citeturn20view0turn21view0  \n\n\\## NH/OH group count\n- Common threshold(s) or range(s): Practically treated as a close proxy for HBD; **> 5 NH/OH donors** aligns with the rule-of-five “risk” side. citeturn20view0  \n- Usually associated with: Same interpretation as HBD in most drug-likeness/tox triage stacks. citeturn20view0turn21view0  \n- Brief note: Count-based heuristics ignore intramolecular H-bonding and conformation; PSA/logD often remains more predictive for permeability. citeturn30view0turn44view0  \n- Source: Rule-of-five donor definition. citeturn20view0  \n\n\\## nitrogen/oxygen atom count\n- Common threshold(s) or range(s): **no stable literature threshold found** as “N+O count”; the closest commonly used anchor is **HBA ≤ 10** in rule-of-five, often operationalized from heteroatoms (especially N and O). citeturn20view0  \n- Usually associated with: Higher N/O count usually increases HBA/TPSA and lowers permeability; interpret via those established thresholds rather than raw N/O count. citeturn44view0turn21view0  \n- Brief note: Use N/O count as a quick sanity check when HBA/TPSA are not directly available.  \n- Source: Rule-of-five acceptor framing and PSA/TPSA cutoffs. citeturn20view0turn44view0  \n\n\\## heteroatom count\n- Common threshold(s) or range(s): **no stable literature threshold found** (as a standalone heteroatom-count cutoff for clinical toxicity).  \n- Usually associated with: Higher heteroatom counts often increase polarity/H-bonding and may reduce permeability; interpret via TPSA/HBA/HBD instead. citeturn44view0turn49view0  \n- Brief note: Some library filters use atom-count style ranges (e.g., 20–70 total atoms), but this is broader than heteroatom counts. citeturn49view0  \n- Source: Drug-like filter families rely on MW/logP/TPSA/HBD/HBA more than heteroatom count alone. citeturn49view0turn20view0turn21view0  \n\n## Rings, aromaticity, and flexibility\n\n\\## fraction of sp3 carbons\n- Common threshold(s) or range(s): **no stable literature threshold found** (published guidance is primarily directional: “increase saturation / 3D character”). citeturn41search6  \n- Usually associated with: Higher Fsp3 (more saturation/3D) is reported to correlate with improved progression/success in retrospective analyses; as a proxy, this can align with reduced promiscuity-driven liabilities. citeturn41search6turn36view0  \n- Brief note: Use as a *design direction* rather than a hard filter for ClinTox. citeturn41search6turn19view0  \n- Source: “Escape from flatland” concept and clinical-success correlations. citeturn41search6  \n\n\\## rotatable-bond count\n- Common threshold(s) or range(s): **≤ 10 rotatable bonds** is a widely used oral bioavailability proxy criterion; CNS-focused summaries often cite **~5 or fewer** as typical for many CNS drugs. citeturn21view0turn5search18  \n- Usually associated with: **A (not toxic) proxy** when flexibility is moderate (supports predictable ADME); **B (toxic) proxy** indirectly when high flexibility accompanies high MW/polarity and worsens permeability or metabolic risk. citeturn21view0turn30view0turn36view0  \n- Brief note: RotB is best used with TPSA (Veber-style) and MW/logD balancing frameworks. citeturn21view0turn44view0turn30view0  \n- Source: Veber oral bioavailability criteria and CNS property summaries. citeturn21view0turn5search18  \n\n\\## aliphatic carbocycle count\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Generally less problematic than adding additional aromatic rings; effects are context-dependent and mediated by lipophilicity/shape. citeturn12search1turn12search16  \n- Brief note: Ring-type–specific guidance is more qualitative than numeric; aromatic ring count has the clearest hard-ish anchor. citeturn12search16turn12search1  \n- Source: Ring-type developability discussions. citeturn12search1  \n\n\\## aliphatic heterocycle count\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Often treated as potentially beneficial vs adding carboaromatic rings (context-dependent). citeturn12search1  \n- Brief note: Practical cutoffs usually focus on *total aromatic rings* rather than aliphatic heterocycle counts. citeturn12search16  \n- Source: Ring-type developability analyses. citeturn12search1  \n\n\\## aliphatic ring count\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Interpret mainly via its influence on lipophilicity and 3D shape; no widely used numeric cutoff. citeturn12search1turn30view0  \n- Brief note: Use with MW/logD and aromatic-ring-count guidance rather than alone. citeturn12search16turn30view0  \n- Source: Developability ring-type discussions and lipophilicity-risk context. citeturn12search1turn30view0  \n\n\\## aromatic carbocycle count\n- Common threshold(s) or range(s): **no stable standalone threshold found**; practical guidance is usually expressed in terms of **total aromatic ring count**. citeturn12search16  \n- Usually associated with: More carboaromatic rings are described as particularly detrimental for developability vs other ring types in comparative analyses. citeturn12search1  \n- Brief note: If you need a practical rule, use total aromatic ring count (see “aromatic ring count”). citeturn12search16  \n- Source: Ring-count developability analysis. citeturn12search1turn12search16  \n\n\\## aromatic heterocycle count\n- Common threshold(s) or range(s): **no stable standalone threshold found**; consider within total aromatic ring count. citeturn12search16  \n- Usually associated with: Heteroaromatics are generally less detrimental than carboaromatics but still trend negative as aromatic ring burden increases. citeturn12search1turn12search16  \n- Brief note: Heteroaromatics can raise TPSA/HBA, partially offsetting pure lipophilicity—but may introduce metabolic alerts depending on motif. citeturn44view0turn38search1  \n- Source: Ring-type developability analysis and structural-alert context for heteroaromatics. citeturn12search1turn38search1  \n\n\\## aromatic ring count\n- Common threshold(s) or range(s): **> 3 aromatic rings** is explicitly reported to correlate with poorer developability and higher attrition risk (a common medicinal-chemistry mnemonic). citeturn12search16  \n- Usually associated with: **B (toxic) proxy** insofar as high aromatic ring count tracks with worse solubility, higher lipophilicity, CYP/hERG liabilities, and broader attrition. citeturn12search16turn30view0turn31view0  \n- Brief note: This is one of the few “count” descriptors with a widely repeated practical anchor; treat it as a coarse screen, not a mechanistic toxicity rule. citeturn12search16turn19view0  \n- Source: Aromatic ring count developability review and follow-on analyses. citeturn12search16turn12search1  \n\n\\## saturated carbocycle count\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Often less detrimental than aromatic rings for developability; depends on how it shifts logP/logD and shape. citeturn12search1turn30view0  \n- Brief note: Consider alongside fraction sp3 and aromatic ring count. citeturn41search6turn12search16  \n- Source: Ring-type developability discussion. citeturn12search1  \n\n\\## saturated heterocycle count\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Qualitatively, heteroaliphatic rings were reported as beneficial in many cases in ring-type analyses (context-dependent). citeturn12search1  \n- Brief note: No hard cutoff; interpret via logD, TPSA, and aromatic ring burden. citeturn30view0turn44view0turn12search16  \n- Source: Ring-type developability analysis. citeturn12search1  \n\n\\## saturated ring count\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Often a proxy for “less aromatic/less flat,” which can be favorable, but no stable numeric rule is used. citeturn41search6turn12search16  \n- Brief note: Use the aromatic ring count >3 anchor as the practical ring-count screen. citeturn12search16  \n- Source: Flatland/aromatic-ring developability literature. citeturn41search6turn12search16  \n\n\\## ring count\n- Common threshold(s) or range(s): **no stable literature threshold found** for total rings in ClinTox-like contexts; some screening heuristics exist in library filtering but are not ClinTox-specific. citeturn15view0  \n- Usually associated with: Interpret ring count through **aromatic ring count**, ring fusion, and resulting lipophilicity/shape rather than a single total-ring cutoff. citeturn12search16turn12search1turn30view0  \n- Brief note: If you need a rapid human rule, aromatic ring count provides a stronger signal than total ring count. citeturn12search16  \n- Source: Library filtering discussions and aromatic ring count developability work. citeturn15view0turn12search16  \n\n## Composite drug-likeness\n\n\\## QED drug-likeness\n- Common threshold(s) or range(s): QED is defined on **0–1** as a **ranking** measure (not inherently a hard cutoff); in practical computational filtering workflows, cutoffs like **QED ≥ 0.6** are sometimes used as a “more drug-like” gate (task- and workflow-dependent). citeturn17search6turn17search15  \n- Usually associated with: **A (not toxic) proxy** when QED is moderate-to-high (captures balanced property profiles similar to many oral drugs); **B (toxic) proxy** when very low QED reflects multiple property extremes tied to attrition risk. citeturn17search6turn36view0  \n- Brief note: Because ClinTox compares approved vs toxicity-failed clinical-trial drugs, QED is best used as a **broad “compound quality” proxy**, not a toxicity mechanism. citeturn19view0turn17search6  \n- Source: Original QED formulation and examples of QED cutoffs in practice. citeturn17search6turn17search15  \n\n## Functional-group notes\n\n- Group name: **Aryl amines / anilines / anilides**\n- Usually associated with: Often treated as a **structural alert** class in idiosyncratic toxicity/reactive-metabolite discussions (risk is conditional, not absolute). citeturn8search5turn36view0  \n- Brief note: Aryl amines can undergo bioactivation to reactive intermediates; presence alone is not determinative, but it is repeatedly flagged in drug-safety retrospectives. citeturn8search5turn36view0  \n- Source: Structural alert / reactive metabolite perspective reviews. citeturn8search5turn36view0  \n\n- Group name: **Nitro (especially nitroaromatics)**\n- Usually associated with: Frequently categorized as a **structural alert** due to well-known toxicity concerns (context-dependent; some approved drugs contain nitro). citeturn7search2turn38search1  \n- Brief note: Nitro groups are widely discussed as having toxicity liabilities and are commonly flagged during early design unless strongly justified. citeturn7search2turn38search1  \n- Source: Nitro-group drug review and structural-alert literature. citeturn7search2turn38search1  \n\n- Group name: **Thiophenes and furans (bioactivation-prone heteroaromatics)**\n- Usually associated with: Treated as **structural alerts** in the context of potential metabolic bioactivation to reactive metabolites (risk depends on substitution, metabolism, dose). citeturn38search1turn36view0  \n- Brief note: These motifs are often handled with “design-around” tactics or additional RM screening rather than immediate exclusion. citeturn38search1turn36view0  \n- Source: Review focused on furans/thiophenes as alerts and broader structural-alert guidance. citeturn38search1turn36view0  \n\n- Group name: **α,β-Unsaturated carbonyls (Michael acceptors)**\n- Usually associated with: Potential **covalent reactivity** with biological nucleophiles; often flagged as higher hazard potential depending on reactivity and exposure. citeturn38search3turn36view0  \n- Brief note: Medicinal chemistry practice distinguishes “tuned” covalent warheads from promiscuous electrophiles; nevertheless, Michael acceptors are a recurring structural-alert class. citeturn38search3turn36view0  \n- Source: Michael acceptor reactivity perspective and structural-alert/toxicity reviews. citeturn38search3turn36view0  \n\n- Group name: **Carboxylic acids with acyl glucuronide risk**\n- Usually associated with: Potential idiosyncratic toxicity risk via **reactive acyl glucuronide metabolites** (not universal; risk depends on stability/reactivity and clinical context). citeturn8search3turn36view0  \n- Brief note: Carboxylic acids are common and often safe, but acyl glucuronide reactivity is a well-discussed safety consideration in specific series. citeturn8search3turn36view0  \n- Source: Acyl glucuronide safety review. citeturn8search3  \n\n- Group name: **Cationic amphiphilic motif (lipophilic scaffold + basic amine, often tertiary)**\n- Usually associated with: Lysosomotropism / phospholipidosis-style liabilities; commonly proxied by **pKa > ~6** plus **logP > ~1** and, in stricter CAD definitions, **logP > 3 and pKa > 7.4**. citeturn11search22turn5search17turn30view0  \n- Brief note: This is a “pattern” rather than a single functional group; it becomes especially salient when logD is high for basic compounds (hERG and other nonspecific risks). citeturn31view0turn11search22  \n- Source: Lysosomal trapping and CAD definitions used in published analyses. citeturn11search22turn5search17",
     "task_description": "task ClinTox where option (A) means is not toxic and option (B) means is toxic",
@@ -80,13 +80,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.004441127502839784,
+          "pair_score_class1_probability": 0.004441127502839784,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9955588724971602,
+          "teacher_confidence_margin": 0.49555887249716024,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not toxic",
             "label": 0
           },
-          "middle_draft": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.4775, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is +0.0122. This pairwise contribution is 1.0731, which pushes toward option (B): is toxic. Next, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. Then, For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 4, while the query's nitrogen/oxygen atom count is value 3. The query-minus-neighbor delta is -1. This pairwise contribution is -0.5701, which pushes toward option (A): is not toxic. After that, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.1111, while the query's fraction of sp3 carbons is value 0.5333. The query-minus-neighbor delta is +0.4222. This pairwise contribution is -0.4665, which pushes toward option (A): is not toxic. Finally, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.4554, which pushes toward option (A): is not toxic. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 63.6, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -32.86. This pairwise contribution is -0.3765, which pushes toward option (A): is not toxic. Taken together, this positive-neighbor comparison pushes toward option (A): is not toxic with pair score 0.0044."
+          "feature_logit": 0.2947025210629353,
+          "feature_probability": 0.5731469961857102,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "feature_confidence_margin": 0.07314699618571019,
+          "feature_evidence_strength": "low",
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": 0.40525404248301716,
+          "displayed_feature_probability": 0.5999493431809614,
+          "displayed_feature_prediction": 1,
+          "displayed_feature_prediction_semantics": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "displayed_feature_confidence_margin": 0.09994934318096138,
+          "displayed_feature_evidence_strength": "low",
+          "displayed_abs_contribution_coverage": 0.6126938113731505,
+          "displayed_teacher_agreement": false,
+          "middle_draft": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.4775, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is +0.0122. This pairwise contribution is 1.0731, which pushes toward option (B): is toxic. Next, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. Then, For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 4, while the query's nitrogen/oxygen atom count is value 3. The query-minus-neighbor delta is -1. This pairwise contribution is -0.5701, which pushes toward option (A): is not toxic. After that, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.1111, while the query's fraction of sp3 carbons is value 0.5333. The query-minus-neighbor delta is +0.4222. This pairwise contribution is -0.4665, which pushes toward option (A): is not toxic. Finally, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.4554, which pushes toward option (A): is not toxic. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 63.6, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -32.86. This pairwise contribution is -0.3765, which pushes toward option (A): is not toxic. Step 7, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.339, while the query's minimum absolute partial charge is value 0.3165. The query-minus-neighbor delta is -0.0225. This pairwise contribution is 0.2599, which pushes toward option (B): is toxic. Step 8, For estimated logD, the neighbor's estimated logD is value -2.7012, while the query's estimated logD is value 0.1875. The query-minus-neighbor delta is +2.8887. This pairwise contribution is 0.2432, which pushes toward option (B): is toxic. Taken together, relative to a neighbor labeled option (B): is toxic, these feature comparisons do not align cleanly with option (A): is not toxic. This neighbor should be treated only as low-strength evidence for option (A): is not toxic."
         },
         {
           "neighbor_id": "CCN(CC)CC(=O)Nc1c(C)cccc1C",
@@ -94,13 +122,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.004989026382692545,
+          "pair_score_class1_probability": 0.004989026382692545,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9950109736173075,
+          "teacher_confidence_margin": 0.4950109736173075,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not toxic",
             "label": 0
           },
-          "middle_draft": "First, For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 3, while the query's nitrogen/oxygen atom count is value 3. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7004, which pushes toward option (A): is not toxic. Next, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. Then, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8722, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.6869, which pushes toward option (A): is not toxic. After that, For minimum partial charge, the neighbor's minimum partial charge is value -0.3245, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is -0.1408. This pairwise contribution is 0.5989, which pushes toward option (B): is toxic. Finally, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 2, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3268, which pushes toward option (B): is toxic. Step 6, For number of ionizable sites, the neighbor's number of ionizable sites is value 3, while the query's number of ionizable sites is present (1). The query-minus-neighbor delta is -2. This pairwise contribution is -0.1782, which pushes toward option (A): is not toxic. Taken together, this positive-neighbor comparison pushes toward option (A): is not toxic with pair score 0.005."
+          "feature_logit": 0.41158550633070473,
+          "feature_probability": 0.6014679925210363,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "feature_confidence_margin": 0.10146799252103633,
+          "feature_evidence_strength": "medium",
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": 0.07673353248069872,
+          "displayed_feature_probability": 0.5191739759564932,
+          "displayed_feature_prediction": 1,
+          "displayed_feature_prediction_semantics": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "displayed_feature_confidence_margin": 0.019173975956493172,
+          "displayed_feature_evidence_strength": "low",
+          "displayed_abs_contribution_coverage": 0.5909133108881832,
+          "displayed_teacher_agreement": false,
+          "middle_draft": "First, For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 3, while the query's nitrogen/oxygen atom count is value 3. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7004, which pushes toward option (A): is not toxic. Next, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. Then, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8722, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.6869, which pushes toward option (A): is not toxic. After that, For minimum partial charge, the neighbor's minimum partial charge is value -0.3245, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is -0.1408. This pairwise contribution is 0.5989, which pushes toward option (B): is toxic. Finally, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 2, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3268, which pushes toward option (B): is toxic. Step 6, For number of ionizable sites, the neighbor's number of ionizable sites is value 3, while the query's number of ionizable sites is present (1). The query-minus-neighbor delta is -2. This pairwise contribution is -0.1782, which pushes toward option (A): is not toxic. Step 7, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.849, while the query's QED drug-likeness is value 0.8021. The query-minus-neighbor delta is -0.0469. This pairwise contribution is 0.1774, which pushes toward option (B): is toxic. Step 8, For estimated logP, the neighbor's estimated logP is value 2.5837, while the query's estimated logP is value 0.796. The query-minus-neighbor delta is -1.7877. This pairwise contribution is -0.1583, which pushes toward option (A): is not toxic. Taken together, relative to a neighbor labeled option (B): is toxic, these feature comparisons do not align cleanly with option (A): is not toxic. This neighbor should be treated only as low-strength evidence for option (A): is not toxic."
         },
         {
           "neighbor_id": "COc1cccc([C@@]2(O)CCCC[C@@H]2CN(C)C)c1",
@@ -108,13 +164,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.002530195332894667,
+          "pair_score_class1_probability": 0.002530195332894667,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9974698046671053,
+          "teacher_confidence_margin": 0.49746980466710533,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not toxic",
             "label": 0
           },
-          "middle_draft": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.4968, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is +0.0314. This pairwise contribution is 0.9675, which pushes toward option (B): is toxic. Next, For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 3, while the query's nitrogen/oxygen atom count is value 3. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7004, which pushes toward option (A): is not toxic. Then, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. After that, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.977, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.6909, which pushes toward option (A): is not toxic. Finally, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.4554, which pushes toward option (A): is not toxic. Step 6, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.625, while the query's fraction of sp3 carbons is value 0.5333. The query-minus-neighbor delta is -0.0917. This pairwise contribution is 0.1699, which pushes toward option (B): is toxic. Taken together, this positive-neighbor comparison pushes toward option (A): is not toxic with pair score 0.0025."
+          "feature_logit": -0.269826875706352,
+          "feature_probability": 0.43294959728981397,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not toxic",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.06705040271018603,
+          "feature_evidence_strength": "low",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": -0.3168399801482756,
+          "displayed_feature_probability": 0.42144606135497054,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not toxic",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.07855393864502946,
+          "displayed_feature_evidence_strength": "low",
+          "displayed_abs_contribution_coverage": 0.6202282329142386,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.4968, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is +0.0314. This pairwise contribution is 0.9675, which pushes toward option (B): is toxic. Next, For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 3, while the query's nitrogen/oxygen atom count is value 3. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7004, which pushes toward option (A): is not toxic. Then, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. After that, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.977, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.6909, which pushes toward option (A): is not toxic. Finally, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.4554, which pushes toward option (A): is not toxic. Step 6, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.625, while the query's fraction of sp3 carbons is value 0.5333. The query-minus-neighbor delta is -0.0917. This pairwise contribution is 0.1699, which pushes toward option (B): is toxic. Step 7, For estimated logP, the neighbor's estimated logP is value 2.6346, while the query's estimated logP is value 0.796. The query-minus-neighbor delta is -1.8386. This pairwise contribution is -0.1567, which pushes toward option (A): is not toxic. Step 8, The neighbor has tertiary hydroxyl, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1483, which pushes toward option (A): is not toxic. Taken together, relative to a neighbor labeled option (B): is toxic, the pairwise feature evidence weakly supports option (A): is not toxic. This neighbor provides low-strength evidence for option (A): is not toxic."
         }
       ],
       "negative_neighbors": [
@@ -124,13 +208,41 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.009411228953967588,
+          "pair_score_class1_probability": 0.009411228953967588,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9905887710460324,
+          "teacher_confidence_margin": 0.4905887710460324,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not toxic",
             "label": 0
           },
-          "middle_draft": "First, The neighbor has ammonium, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.8041, which pushes toward option (B): is toxic. Next, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 1, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5413, which pushes toward option (B): is toxic. Then, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3573, while the query's maximum absolute partial charge is value 0.4653. The query-minus-neighbor delta is +0.108. This pairwise contribution is 0.535, which pushes toward option (B): is toxic. After that, For strongest basic pKa, the neighbor's strongest basic pKa is value 10.4558, while the query's strongest basic pKa is value 7.8857. The query-minus-neighbor delta is -2.5701. This pairwise contribution is -0.4722, which pushes toward option (A): is not toxic. Finally, For neutral fraction, the neighbor's neutral fraction is value 0.0009, while the query's neutral fraction is value 0.2463. The query-minus-neighbor delta is +0.2454. This pairwise contribution is -0.3836, which pushes toward option (A): is not toxic. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 47.95, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -17.21. This pairwise contribution is -0.2916, which pushes toward option (A): is not toxic. Taken together, this negative-neighbor comparison pushes toward option (A): is not toxic with pair score 0.0094."
+          "feature_logit": 0.9932704191414584,
+          "feature_probability": 0.7297334071832372,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "feature_confidence_margin": 0.2297334071832372,
+          "feature_evidence_strength": "medium",
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": 0.3195674661709509,
+          "displayed_feature_probability": 0.5792188367248902,
+          "displayed_feature_prediction": 1,
+          "displayed_feature_prediction_semantics": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "displayed_feature_confidence_margin": 0.07921883672489016,
+          "displayed_feature_evidence_strength": "low",
+          "displayed_abs_contribution_coverage": 0.5770522465652551,
+          "displayed_teacher_agreement": false,
+          "middle_draft": "First, The neighbor has ammonium, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.8041, which pushes toward option (B): is toxic. Next, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 1, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5413, which pushes toward option (B): is toxic. Then, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3573, while the query's maximum absolute partial charge is value 0.4653. The query-minus-neighbor delta is +0.108. This pairwise contribution is 0.535, which pushes toward option (B): is toxic. After that, For strongest basic pKa, the neighbor's strongest basic pKa is value 10.4558, while the query's strongest basic pKa is value 7.8857. The query-minus-neighbor delta is -2.5701. This pairwise contribution is -0.4722, which pushes toward option (A): is not toxic. Finally, For neutral fraction, the neighbor's neutral fraction is value 0.0009, while the query's neutral fraction is value 0.2463. The query-minus-neighbor delta is +0.2454. This pairwise contribution is -0.3836, which pushes toward option (A): is not toxic. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 47.95, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -17.21. This pairwise contribution is -0.2916, which pushes toward option (A): is not toxic. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.3573, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is -0.108. This pairwise contribution is -0.277, which pushes toward option (A): is not toxic. Step 8, For strongest acidic pKa, the neighbor has no acidic site, while the query has no acidic site. The query-minus-neighbor delta is not defined because neither molecule has an acidic site. This pairwise contribution is -0.1365, which pushes toward option (A): is not toxic. Taken together, relative to a neighbor labeled option (A): is not toxic, these feature comparisons do not align cleanly with option (A): is not toxic. This neighbor should be treated only as low-strength evidence for option (A): is not toxic."
         },
         {
           "neighbor_id": "CCC(=O)N(c1ccccc1)C1(COC)CC[NH+](CCc2cccs2)CC1",
@@ -138,13 +250,41 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.002923240354380941,
+          "pair_score_class1_probability": 0.002923240354380941,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.997076759645619,
+          "teacher_confidence_margin": 0.49707675964561904,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not toxic",
             "label": 0
           },
-          "middle_draft": "First, For heteroatom count, the neighbor's heteroatom count is value 5, while the query's heteroatom count is value 3. The query-minus-neighbor delta is -2. This pairwise contribution is -0.7288, which pushes toward option (A): is not toxic. Next, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.5916, which pushes toward option (A): is not toxic. Then, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3822, while the query's maximum absolute partial charge is value 0.4653. The query-minus-neighbor delta is +0.0831. This pairwise contribution is 0.5234, which pushes toward option (B): is toxic. After that, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.4557, which pushes toward option (B): is toxic. Finally, For minimum partial charge, the neighbor's minimum partial charge is value -0.3822, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is -0.0831. This pairwise contribution is -0.3292, which pushes toward option (A): is not toxic. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 33.98, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -3.24. This pairwise contribution is -0.2625, which pushes toward option (A): is not toxic. Taken together, this negative-neighbor comparison pushes toward option (A): is not toxic with pair score 0.0029."
+          "feature_logit": -0.18246868839735858,
+          "feature_probability": 0.4545089758795475,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not toxic",
+            "label": 0
+          },
+          "feature_confidence_margin": 0.04549102412045247,
+          "feature_evidence_strength": "low",
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": -1.3390413808047037,
+          "displayed_feature_probability": 0.20766774733732163,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not toxic",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.29233225266267837,
+          "displayed_feature_evidence_strength": "medium",
+          "displayed_abs_contribution_coverage": 0.5558464860284065,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, For heteroatom count, the neighbor's heteroatom count is value 5, while the query's heteroatom count is value 3. The query-minus-neighbor delta is -2. This pairwise contribution is -0.7288, which pushes toward option (A): is not toxic. Next, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.5916, which pushes toward option (A): is not toxic. Then, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3822, while the query's maximum absolute partial charge is value 0.4653. The query-minus-neighbor delta is +0.0831. This pairwise contribution is 0.5234, which pushes toward option (B): is toxic. After that, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.4557, which pushes toward option (B): is toxic. Finally, For minimum partial charge, the neighbor's minimum partial charge is value -0.3822, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is -0.0831. This pairwise contribution is -0.3292, which pushes toward option (A): is not toxic. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 33.98, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -3.24. This pairwise contribution is -0.2625, which pushes toward option (A): is not toxic. Step 7, Both the neighbor and the query have piperidine (query-minus-neighbor delta +0). This pairwise contribution is -0.2112, which pushes toward option (A): is not toxic. Step 8, For estimated logP, the neighbor's estimated logP is value 2.7977, while the query's estimated logP is value 0.796. The query-minus-neighbor delta is -2.0017. This pairwise contribution is -0.1948, which pushes toward option (A): is not toxic. Taken together, relative to a neighbor labeled option (A): is not toxic, the pairwise feature evidence weakly supports option (A): is not toxic. This neighbor provides low-strength evidence for option (A): is not toxic."
         },
         {
           "neighbor_id": "C[NH+](C)CCOC(=O)C(c1ccccc1)C1(O)CCCC1",
@@ -152,18 +292,1351 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.005858337441834632,
+          "pair_score_class1_probability": 0.005858337441834632,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9941416625581654,
+          "teacher_confidence_margin": 0.4941416625581654,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not toxic",
             "label": 0
           },
-          "middle_draft": "First, The neighbor has ammonium, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.8041, which pushes toward option (B): is toxic. Next, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.5916, which pushes toward option (A): is not toxic. Then, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4591, while the query's maximum absolute partial charge is value 0.4653. The query-minus-neighbor delta is +0.0062. This pairwise contribution is 0.3211, which pushes toward option (B): is toxic. After that, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3161, while the query's minimum absolute partial charge is value 0.3165. The query-minus-neighbor delta is +0.0004. This pairwise contribution is 0.271, which pushes toward option (B): is toxic. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 50.97, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -20.23. This pairwise contribution is -0.2518, which pushes toward option (A): is not toxic. Step 6, The neighbor has tertiary hydroxyl, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.2226, which pushes toward option (A): is not toxic. Taken together, this negative-neighbor comparison pushes toward option (A): is not toxic with pair score 0.0059."
+          "feature_logit": 0.5156524939783743,
+          "feature_probability": 0.6261306133453939,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "feature_confidence_margin": 0.12613061334539388,
+          "feature_evidence_strength": "medium",
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": 0.3222180914165465,
+          "displayed_feature_probability": 0.5798647227077001,
+          "displayed_feature_prediction": 1,
+          "displayed_feature_prediction_semantics": {
+            "option": "B",
+            "text": "is toxic",
+            "label": 1
+          },
+          "displayed_feature_confidence_margin": 0.07986472270770006,
+          "displayed_feature_evidence_strength": "low",
+          "displayed_abs_contribution_coverage": 0.5286213335041241,
+          "displayed_teacher_agreement": false,
+          "middle_draft": "First, The neighbor has ammonium, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.8041, which pushes toward option (B): is toxic. Next, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.5916, which pushes toward option (A): is not toxic. Then, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4591, while the query's maximum absolute partial charge is value 0.4653. The query-minus-neighbor delta is +0.0062. This pairwise contribution is 0.3211, which pushes toward option (B): is toxic. After that, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3161, while the query's minimum absolute partial charge is value 0.3165. The query-minus-neighbor delta is +0.0004. This pairwise contribution is 0.271, which pushes toward option (B): is toxic. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 50.97, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -20.23. This pairwise contribution is -0.2518, which pushes toward option (A): is not toxic. Step 6, The neighbor has tertiary hydroxyl, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.2226, which pushes toward option (A): is not toxic. Step 7, For number of ionizable sites, the neighbor's number of ionizable sites is value 2, while the query's number of ionizable sites is present (1). The query-minus-neighbor delta is -1. This pairwise contribution is -0.1758, which pushes toward option (A): is not toxic. Step 8, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.7614, while the query's QED drug-likeness is value 0.8021. The query-minus-neighbor delta is +0.0407. This pairwise contribution is 0.1679, which pushes toward option (B): is toxic. Taken together, relative to a neighbor labeled option (A): is not toxic, these feature comparisons do not align cleanly with option (A): is not toxic. This neighbor should be treated only as low-strength evidence for option (A): is not toxic."
         }
       ]
     },
     "local_prediction": 0,
     "local_prediction_semantics": "option (A): is not toxic"
+  },
+  "local_per_neighbor_rewrite_input": {
+    "task_playbook": "# ClinTox molecular-property playbook\n\nClinTox (as used in common benchmarks and mirrored in multiple ML datasets) is a **clinical-toxicity–relevant classification** built from a qualitative comparison of drugs **approved by the** entity[\"organization\",\"U.S. Food and Drug Administration\",\"federal agency, us\"] and drugs that **failed / were terminated in clinical trials for toxicity-related reasons**. citeturn19view0 In this playbook, “A” corresponds to **not toxic** and “B” corresponds to **toxic**, with the important caveat that most molecular-property cutoffs come from **drug-likeness / ADMET / safety-risk proxy literature**, not from ClinTox-specific mechanistic rules. citeturn19view0turn36view0turn30view0\n\n## Ionization and charge\n\n\\## neutral fraction\n- Common threshold(s) or range(s): **no stable literature threshold found** (neutral fraction is typically interpreted indirectly via pKa + pH and its impact on logD/permeability/ion trapping). citeturn11search22turn31view0turn30view0  \n- Usually associated with: **Lower neutral fraction for lipophilic bases** can align with lysosomal trapping/“cationic amphiphilic” behavior (often a safety red flag); **higher neutral fraction** can align with higher passive permeability and sometimes broader tissue exposure. citeturn11search22turn5search17turn30view0  \n- Brief note: For ClinTox-adjacent practice, neutral fraction is mainly actionable when it reflects **basicity + lipophilicity** combinations known to increase certain liabilities (e.g., phospholipidosis, hERG risk via high logD for basic compounds). citeturn11search22turn31view0turn30view0  \n- Source: Lysosomal trapping and CAD-style heuristics in medicinal chemistry/toxicology practice. citeturn11search22turn5search17turn31view0  \n\n\\## strongest acidic pKa\n- Common threshold(s) or range(s): **no stable literature threshold found** for ClinTox-like toxicity classification.  \n- Usually associated with: **Lower acidic pKa (stronger acids)** → more anionic fraction at physiological pH, often reduced passive permeability and lower intracellular accumulation (context-dependent). citeturn49view0turn44view0  \n- Brief note: In practice, acidic pKa is mainly used to anticipate **ionization state and logD7.4**, which then ties into absorption and exposure (an indirect contributor to clinical safety outcomes). citeturn44view0turn30view0  \n- Source: ADME absorption/permeability framing and property filters emphasizing lipophilicity/PSA rather than acidic pKa cutoffs. citeturn48view0turn44view0turn30view0  \n\n\\## strongest basic pKa\n- Common threshold(s) or range(s): **pKa > ~6 with logP > ~1** is commonly cited as enabling lysosomal accumulation (ion trapping); **pKa > 7.4 with logP > 3** is widely used to define cationic amphiphilic drugs (CADs) in multiple analyses. citeturn11search22turn5search17  \n- Usually associated with: **B (toxic) risk proxy increases** for **lipophilic bases** (lysosomotropism/CAD-like profiles), a known pattern behind phospholipidosis and other nonspecific cellular liabilities. citeturn11search22turn5search17turn30view0  \n- Brief note: Basicity alone is not determinative; the *combination* with lipophilicity (logP/logD) is the practical “anchor” used in safety triage. citeturn11search22turn31view0turn30view0  \n- Source: Lysosomal trapping and CAD definitions used in systems/toxicology analyses. citeturn11search22turn5search17  \n\n\\## number of acidic sites\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: More acidic sites often increases the chance of being **multiply charged** across pH ranges, generally reducing passive permeability (context-dependent). citeturn44view0turn49view0  \n- Brief note: In clinical-toxicity proxy work, “ionizable-site counts” matter chiefly through downstream effects on **logD, PSA, and permeability**, not as standalone toxicity thresholds. citeturn30view0turn44view0  \n- Source: Property-filter literature emphasizes permeability/PSA/lipophilicity over explicit ionizable-site-count cutoffs. citeturn49view0turn21view0turn30view0  \n\n\\## number of basic sites\n- Common threshold(s) or range(s): **no stable literature threshold found** (counts are usually interpreted through net basicity/lysosomotropism rather than a fixed cutoff).  \n- Usually associated with: Multiple basic centers can increase **cationic character** and, when paired with lipophilicity, can push toward lysosomal trapping/CAD-like risk. citeturn11search22turn5search17  \n- Brief note: Practical screening focuses more on **most basic pKa** and **logP/logD** than on basic-site count alone. citeturn31view0turn11search22  \n- Source: CAD/lysosomotropism heuristics in drug safety context. citeturn11search22turn5search17  \n\n\\## number of ionizable sites\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Higher counts → broader charge-state distribution and often **higher polarity / lower permeability**, which can affect exposure and dose needs. citeturn49view0turn44view0  \n- Brief note: For ClinTox-like outcomes, this is best treated as a *supporting* variable that helps interpret logD and permeability-related rules. citeturn30view0turn31view0  \n- Source: Oral absorption / permeability heuristic frameworks. citeturn49view0turn48view0turn21view0  \n\n\\## maximum absolute partial charge\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Larger absolute partial charges often correlate with **stronger polarity / H-bonding / ionic character**, which is typically handled via TPSA/HBD/HBA/logD rather than charge cutoffs. citeturn44view0turn49view0  \n- Brief note: Partial-charge extrema are widely used as continuous ML/QSAR features, but practical medicinal-chemistry toxicity rules rarely specify hard cutoffs for them. citeturn19view0turn36view0  \n- Source: General ADME/tox filtering emphasizes interpretable aggregates (TPSA, HBD/HBA, logP/logD). citeturn49view0turn44view0  \n\n\\## maximum partial charge\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: More positive maxima can occur in strongly basic/ionized motifs; practical risk rules are typically expressed via **pKa + logD/logP**, not charge maxima. citeturn11search22turn31view0  \n- Brief note: Consider as supportive to ionization interpretation, not as an anchored cutoff.  \n- Source: CAD/lysosomotropism and hERG-lipophilicity discussions focus on pKa/logD. citeturn11search22turn31view0turn5search17  \n\n\\## minimum absolute partial charge\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Typically not used directly; interpret through overall polarity and H-bonding descriptors instead. citeturn44view0turn49view0  \n- Brief note: Rarely appears as a human-interpretable threshold in safety triage.  \n- Source: Property-filter literature focuses on PSA/logP/logD/HBD/HBA. citeturn49view0turn44view0  \n\n\\## minimum partial charge\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: More negative minima can reflect strong acceptors/acidic atoms; practical thresholds are expressed via **HBA/TPSA** and permeability models. citeturn44view0turn49view0  \n- Brief note: Use mainly as a model feature, not a human cutoff.  \n- Source: Oral absorption/property-filter frameworks. citeturn44view0turn48view0  \n\n## Lipophilicity and distribution\n\n\\## estimated logD\n- Common threshold(s) or range(s): **logD7.4 ~ 2 ± 1** is cited as a practical “center” for satisfying ADMET balance; **hERG risk anchors** have been estimated at ~**logD 3.3 (neutral)** for ~30% risk and as low as ~**logD 1.4 (basic)** for similar risk. citeturn30view0turn31view0  \n- Usually associated with: **A (not toxic) proxy** when logD7.4 sits in a moderate zone (often ~1–3); **B (toxic) proxy** when markedly high for neutral compounds, or even moderate-high for basic compounds (hERG/accumulation concerns). citeturn31view0turn30view0  \n- Brief note: logD is often more relevant than logP for ionizable molecules at physiological pH and is frequently used in early safety/permeability balancing. citeturn31view0turn49view0  \n- Source: ADMET optimization guidance and hERG–lipophilicity risk quantification. citeturn30view0turn31view0  \n\n\\## estimated logP\n- Common threshold(s) or range(s): **Rule-of-five anchor**: logP (cLogP) **> 5** is associated with poorer absorption/permeability likelihood; **toxicity-risk proxy**: **cLogP > 3** combined with **PSA < 75 Å²** was reported to give markedly higher odds of adverse findings in preclinical tox; **DILI proxy**: logP **≥ 3** is part of the commonly cited “Rule-of-2” when paired with high daily dose (external factor). citeturn20view0turn30view0turn26search4turn26search12  \n- Usually associated with: **B (toxic) proxy** at higher lipophilicity (promiscuity, accumulation, clearance issues), especially when polarity is also low. citeturn30view0turn36view0turn26search12  \n- Brief note: logP is a neutral-species property; for ionizable drugs, many screening stacks prefer logD7.4 for practical risk conversations. citeturn31view0turn49view0  \n- Source: Rule-of-five (absorption proxy), Pfizer-origin safety-property analyses summarized in an open review, and DILI rule-of-two follow-on analysis. citeturn20view0turn30view0turn26search12turn26search4  \n\n## Molecular size and surface area\n\n\\## exact molecular weight\n- Common threshold(s) or range(s): **Rule-of-five anchor**: MW **> 500** suggests higher probability of poor absorption/permeability; **Ghose-style drug-like range** often quoted as **160–480** (library-design proxy). citeturn20view0turn49view0  \n- Usually associated with: **B (toxic) proxy** at very high MW via developability/PK stress (solubility/permeability), which can indirectly increase clinical safety risk (dose/exposure complexities). citeturn49view0turn36view0  \n- Brief note: ClinTox is about clinical toxicity outcomes; MW thresholds here are best treated as **attrition-risk proxies**, not toxicity mechanisms. citeturn19view0turn36view0  \n- Source: Rule-of-five and classic drug-like filters. citeturn20view0turn49view0  \n\n\\## molecular weight\n- Common threshold(s) or range(s): MW **≤ 500** (rule-of-five) remains the most widely used general anchor; Ghose-style **160–480** is a common “drug-like library” range. citeturn20view0turn49view0  \n- Usually associated with: **A (not toxic) proxy** when MW stays in traditional oral-drug space (all else equal); **B (toxic) proxy** when large size combines with high lipophilicity/low polarity (exposure and off-target/liability risk). citeturn30view0turn20view0  \n- Brief note: MW interacts strongly with other descriptors (logD/logP, TPSA, rotatable bonds), so single-number cutoffs should be used as coarse triage only. citeturn21view0turn30view0turn44view0  \n- Source: Rule-of-five and absorption/permeability modeling literature. citeturn20view0turn21view0turn49view0  \n\n\\## heavy-atom count\n- Common threshold(s) or range(s): **no stable literature threshold found** specific to “heavy atoms”; the closest widely cited proxy is the **Ghose ‘number of atoms’ range 20–70** (often used in library filtering). citeturn49view0  \n- Usually associated with: Higher atom counts roughly track with higher MW/size; interpret via those established cutoffs rather than a separate heavy-atom rule. citeturn20view0turn49view0  \n- Brief note: Many filters are expressed as MW rather than heavy-atom count because MW is more standard in medicinal chemistry decision-making. citeturn20view0turn21view0  \n- Source: Ghose-style atom-count ranges summarized in classic absorption/drug-like filter discussions. citeturn49view0turn48view0  \n\n\\## heavy-atom molecular weight\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Tracks overall MW; interpret using MW-based anchors (e.g., 500 rule-of-five) unless you have a specific modeling reason to separate heavy-atom contribution. citeturn20view0turn21view0  \n- Brief note: Heavy-atom MW is uncommon as a standalone medicinal-chemistry heuristic for safety triage.  \n- Source: Widely used practical filters emphasize MW, logP/logD, TPSA, HBD/HBA. citeturn20view0turn44view0turn31view0  \n\n\\## Labute surface area\n- Common threshold(s) or range(s): **no stable literature threshold found** (as a named “Labute surface area” cutoff in safety/attrition practice).  \n- Usually associated with: Broadly correlates with size and permeability; interpret using PSA/TPSA and MW/logD anchors instead. citeturn44view0turn21view0  \n- Brief note: Surface-area concepts are most often operationalized via **PSA/TPSA** thresholds (e.g., 60/90/140 Å² anchors) rather than Labute SA. citeturn44view0turn48view0  \n- Source: PSA/TPSA-based empirical cutoffs dominate practical design rules. citeturn44view0turn21view0turn48view0  \n\n## Polarity and hydrogen bonding\n\n\\## topological polar surface area\n- Common threshold(s) or range(s): Commonly used anchors include **TPSA/PSA ≤ 140 Å²** (oral permeability/bioavailability proxy), **PSA ≤ 60 Å²** for very high absorption in one classic analysis, and **~90 Å²** as an often-cited upper boundary for brain penetration; the Egan ellipse gave an upper PSA limit of **131.6 Å²** (95% ellipse) with an interacting lipophilicity boundary. citeturn44view0turn48view0turn21view0  \n- Usually associated with: **A (not toxic) proxy** when PSA/TPSA is not extreme (supporting reasonable ADME); **B (toxic) proxy** indirectly when very high PSA/TPSA drives poor permeability/absorption that can stress dose/exposure margins. citeturn44view0turn36view0  \n- Brief note: For ClinTox-style endpoints, TPSA is best treated as an **exposure/PK proxy** rather than a toxicity mechanism. citeturn19view0turn44view0  \n- Source: Palm/Veber-style PSA cutoffs and Egan multivariate absorption model. citeturn44view0turn21view0turn48view0  \n\n\\## hydrogen-bond acceptor count\n- Common threshold(s) or range(s): **HBA > 10** is the classic rule-of-five “risk” side; Veber-style heuristics also use total H-bonding capacity as a permeability proxy. citeturn20view0turn21view0  \n- Usually associated with: **A (not toxic) proxy** when HBA stays in traditional oral-drug space; **B (toxic) proxy** indirectly when very high HBA contributes to high PSA and reduced permeability/absorption. citeturn21view0turn44view0  \n- Brief note: Use alongside TPSA and logD; HBA is rarely used alone for toxicity calls. citeturn44view0turn31view0  \n- Source: Rule-of-five and oral bioavailability analysis. citeturn20view0turn21view0  \n\n\\## hydrogen-bond donor count\n- Common threshold(s) or range(s): **HBD > 5** is the rule-of-five “risk” boundary; Veber-style filters emphasize H-bonding burden via PSA or HBD+HBA totals. citeturn20view0turn21view0turn44view0  \n- Usually associated with: **A (not toxic) proxy** when donor count is moderate; **B (toxic) proxy** indirectly when high HBD contributes to high polarity and poor permeability. citeturn21view0turn44view0  \n- Brief note: High HBD can sometimes reduce nonspecific permeability-driven liabilities—but can also force higher doses if absorption suffers; context matters. citeturn44view0turn36view0  \n- Source: Rule-of-five and Veber oral bioavailability criteria. citeturn20view0turn21view0  \n\n\\## NH/OH group count\n- Common threshold(s) or range(s): Practically treated as a close proxy for HBD; **> 5 NH/OH donors** aligns with the rule-of-five “risk” side. citeturn20view0  \n- Usually associated with: Same interpretation as HBD in most drug-likeness/tox triage stacks. citeturn20view0turn21view0  \n- Brief note: Count-based heuristics ignore intramolecular H-bonding and conformation; PSA/logD often remains more predictive for permeability. citeturn30view0turn44view0  \n- Source: Rule-of-five donor definition. citeturn20view0  \n\n\\## nitrogen/oxygen atom count\n- Common threshold(s) or range(s): **no stable literature threshold found** as “N+O count”; the closest commonly used anchor is **HBA ≤ 10** in rule-of-five, often operationalized from heteroatoms (especially N and O). citeturn20view0  \n- Usually associated with: Higher N/O count usually increases HBA/TPSA and lowers permeability; interpret via those established thresholds rather than raw N/O count. citeturn44view0turn21view0  \n- Brief note: Use N/O count as a quick sanity check when HBA/TPSA are not directly available.  \n- Source: Rule-of-five acceptor framing and PSA/TPSA cutoffs. citeturn20view0turn44view0  \n\n\\## heteroatom count\n- Common threshold(s) or range(s): **no stable literature threshold found** (as a standalone heteroatom-count cutoff for clinical toxicity).  \n- Usually associated with: Higher heteroatom counts often increase polarity/H-bonding and may reduce permeability; interpret via TPSA/HBA/HBD instead. citeturn44view0turn49view0  \n- Brief note: Some library filters use atom-count style ranges (e.g., 20–70 total atoms), but this is broader than heteroatom counts. citeturn49view0  \n- Source: Drug-like filter families rely on MW/logP/TPSA/HBD/HBA more than heteroatom count alone. citeturn49view0turn20view0turn21view0  \n\n## Rings, aromaticity, and flexibility\n\n\\## fraction of sp3 carbons\n- Common threshold(s) or range(s): **no stable literature threshold found** (published guidance is primarily directional: “increase saturation / 3D character”). citeturn41search6  \n- Usually associated with: Higher Fsp3 (more saturation/3D) is reported to correlate with improved progression/success in retrospective analyses; as a proxy, this can align with reduced promiscuity-driven liabilities. citeturn41search6turn36view0  \n- Brief note: Use as a *design direction* rather than a hard filter for ClinTox. citeturn41search6turn19view0  \n- Source: “Escape from flatland” concept and clinical-success correlations. citeturn41search6  \n\n\\## rotatable-bond count\n- Common threshold(s) or range(s): **≤ 10 rotatable bonds** is a widely used oral bioavailability proxy criterion; CNS-focused summaries often cite **~5 or fewer** as typical for many CNS drugs. citeturn21view0turn5search18  \n- Usually associated with: **A (not toxic) proxy** when flexibility is moderate (supports predictable ADME); **B (toxic) proxy** indirectly when high flexibility accompanies high MW/polarity and worsens permeability or metabolic risk. citeturn21view0turn30view0turn36view0  \n- Brief note: RotB is best used with TPSA (Veber-style) and MW/logD balancing frameworks. citeturn21view0turn44view0turn30view0  \n- Source: Veber oral bioavailability criteria and CNS property summaries. citeturn21view0turn5search18  \n\n\\## aliphatic carbocycle count\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Generally less problematic than adding additional aromatic rings; effects are context-dependent and mediated by lipophilicity/shape. citeturn12search1turn12search16  \n- Brief note: Ring-type–specific guidance is more qualitative than numeric; aromatic ring count has the clearest hard-ish anchor. citeturn12search16turn12search1  \n- Source: Ring-type developability discussions. citeturn12search1  \n\n\\## aliphatic heterocycle count\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Often treated as potentially beneficial vs adding carboaromatic rings (context-dependent). citeturn12search1  \n- Brief note: Practical cutoffs usually focus on *total aromatic rings* rather than aliphatic heterocycle counts. citeturn12search16  \n- Source: Ring-type developability analyses. citeturn12search1  \n\n\\## aliphatic ring count\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Interpret mainly via its influence on lipophilicity and 3D shape; no widely used numeric cutoff. citeturn12search1turn30view0  \n- Brief note: Use with MW/logD and aromatic-ring-count guidance rather than alone. citeturn12search16turn30view0  \n- Source: Developability ring-type discussions and lipophilicity-risk context. citeturn12search1turn30view0  \n\n\\## aromatic carbocycle count\n- Common threshold(s) or range(s): **no stable standalone threshold found**; practical guidance is usually expressed in terms of **total aromatic ring count**. citeturn12search16  \n- Usually associated with: More carboaromatic rings are described as particularly detrimental for developability vs other ring types in comparative analyses. citeturn12search1  \n- Brief note: If you need a practical rule, use total aromatic ring count (see “aromatic ring count”). citeturn12search16  \n- Source: Ring-count developability analysis. citeturn12search1turn12search16  \n\n\\## aromatic heterocycle count\n- Common threshold(s) or range(s): **no stable standalone threshold found**; consider within total aromatic ring count. citeturn12search16  \n- Usually associated with: Heteroaromatics are generally less detrimental than carboaromatics but still trend negative as aromatic ring burden increases. citeturn12search1turn12search16  \n- Brief note: Heteroaromatics can raise TPSA/HBA, partially offsetting pure lipophilicity—but may introduce metabolic alerts depending on motif. citeturn44view0turn38search1  \n- Source: Ring-type developability analysis and structural-alert context for heteroaromatics. citeturn12search1turn38search1  \n\n\\## aromatic ring count\n- Common threshold(s) or range(s): **> 3 aromatic rings** is explicitly reported to correlate with poorer developability and higher attrition risk (a common medicinal-chemistry mnemonic). citeturn12search16  \n- Usually associated with: **B (toxic) proxy** insofar as high aromatic ring count tracks with worse solubility, higher lipophilicity, CYP/hERG liabilities, and broader attrition. citeturn12search16turn30view0turn31view0  \n- Brief note: This is one of the few “count” descriptors with a widely repeated practical anchor; treat it as a coarse screen, not a mechanistic toxicity rule. citeturn12search16turn19view0  \n- Source: Aromatic ring count developability review and follow-on analyses. citeturn12search16turn12search1  \n\n\\## saturated carbocycle count\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Often less detrimental than aromatic rings for developability; depends on how it shifts logP/logD and shape. citeturn12search1turn30view0  \n- Brief note: Consider alongside fraction sp3 and aromatic ring count. citeturn41search6turn12search16  \n- Source: Ring-type developability discussion. citeturn12search1  \n\n\\## saturated heterocycle count\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Qualitatively, heteroaliphatic rings were reported as beneficial in many cases in ring-type analyses (context-dependent). citeturn12search1  \n- Brief note: No hard cutoff; interpret via logD, TPSA, and aromatic ring burden. citeturn30view0turn44view0turn12search16  \n- Source: Ring-type developability analysis. citeturn12search1  \n\n\\## saturated ring count\n- Common threshold(s) or range(s): **no stable literature threshold found**.  \n- Usually associated with: Often a proxy for “less aromatic/less flat,” which can be favorable, but no stable numeric rule is used. citeturn41search6turn12search16  \n- Brief note: Use the aromatic ring count >3 anchor as the practical ring-count screen. citeturn12search16  \n- Source: Flatland/aromatic-ring developability literature. citeturn41search6turn12search16  \n\n\\## ring count\n- Common threshold(s) or range(s): **no stable literature threshold found** for total rings in ClinTox-like contexts; some screening heuristics exist in library filtering but are not ClinTox-specific. citeturn15view0  \n- Usually associated with: Interpret ring count through **aromatic ring count**, ring fusion, and resulting lipophilicity/shape rather than a single total-ring cutoff. citeturn12search16turn12search1turn30view0  \n- Brief note: If you need a rapid human rule, aromatic ring count provides a stronger signal than total ring count. citeturn12search16  \n- Source: Library filtering discussions and aromatic ring count developability work. citeturn15view0turn12search16  \n\n## Composite drug-likeness\n\n\\## QED drug-likeness\n- Common threshold(s) or range(s): QED is defined on **0–1** as a **ranking** measure (not inherently a hard cutoff); in practical computational filtering workflows, cutoffs like **QED ≥ 0.6** are sometimes used as a “more drug-like” gate (task- and workflow-dependent). citeturn17search6turn17search15  \n- Usually associated with: **A (not toxic) proxy** when QED is moderate-to-high (captures balanced property profiles similar to many oral drugs); **B (toxic) proxy** when very low QED reflects multiple property extremes tied to attrition risk. citeturn17search6turn36view0  \n- Brief note: Because ClinTox compares approved vs toxicity-failed clinical-trial drugs, QED is best used as a **broad “compound quality” proxy**, not a toxicity mechanism. citeturn19view0turn17search6  \n- Source: Original QED formulation and examples of QED cutoffs in practice. citeturn17search6turn17search15  \n\n## Functional-group notes\n\n- Group name: **Aryl amines / anilines / anilides**\n- Usually associated with: Often treated as a **structural alert** class in idiosyncratic toxicity/reactive-metabolite discussions (risk is conditional, not absolute). citeturn8search5turn36view0  \n- Brief note: Aryl amines can undergo bioactivation to reactive intermediates; presence alone is not determinative, but it is repeatedly flagged in drug-safety retrospectives. citeturn8search5turn36view0  \n- Source: Structural alert / reactive metabolite perspective reviews. citeturn8search5turn36view0  \n\n- Group name: **Nitro (especially nitroaromatics)**\n- Usually associated with: Frequently categorized as a **structural alert** due to well-known toxicity concerns (context-dependent; some approved drugs contain nitro). citeturn7search2turn38search1  \n- Brief note: Nitro groups are widely discussed as having toxicity liabilities and are commonly flagged during early design unless strongly justified. citeturn7search2turn38search1  \n- Source: Nitro-group drug review and structural-alert literature. citeturn7search2turn38search1  \n\n- Group name: **Thiophenes and furans (bioactivation-prone heteroaromatics)**\n- Usually associated with: Treated as **structural alerts** in the context of potential metabolic bioactivation to reactive metabolites (risk depends on substitution, metabolism, dose). citeturn38search1turn36view0  \n- Brief note: These motifs are often handled with “design-around” tactics or additional RM screening rather than immediate exclusion. citeturn38search1turn36view0  \n- Source: Review focused on furans/thiophenes as alerts and broader structural-alert guidance. citeturn38search1turn36view0  \n\n- Group name: **α,β-Unsaturated carbonyls (Michael acceptors)**\n- Usually associated with: Potential **covalent reactivity** with biological nucleophiles; often flagged as higher hazard potential depending on reactivity and exposure. citeturn38search3turn36view0  \n- Brief note: Medicinal chemistry practice distinguishes “tuned” covalent warheads from promiscuous electrophiles; nevertheless, Michael acceptors are a recurring structural-alert class. citeturn38search3turn36view0  \n- Source: Michael acceptor reactivity perspective and structural-alert/toxicity reviews. citeturn38search3turn36view0  \n\n- Group name: **Carboxylic acids with acyl glucuronide risk**\n- Usually associated with: Potential idiosyncratic toxicity risk via **reactive acyl glucuronide metabolites** (not universal; risk depends on stability/reactivity and clinical context). citeturn8search3turn36view0  \n- Brief note: Carboxylic acids are common and often safe, but acyl glucuronide reactivity is a well-discussed safety consideration in specific series. citeturn8search3turn36view0  \n- Source: Acyl glucuronide safety review. citeturn8search3  \n\n- Group name: **Cationic amphiphilic motif (lipophilic scaffold + basic amine, often tertiary)**\n- Usually associated with: Lysosomotropism / phospholipidosis-style liabilities; commonly proxied by **pKa > ~6** plus **logP > ~1** and, in stricter CAD definitions, **logP > 3 and pKa > 7.4**. citeturn11search22turn5search17turn30view0  \n- Brief note: This is a “pattern” rather than a single functional group; it becomes especially salient when logD is high for basic compounds (hERG and other nonspecific risks). citeturn31view0turn11search22  \n- Source: Lysosomal trapping and CAD definitions used in published analyses. citeturn11search22turn5search17",
+    "task_description": "molecule local analog-comparison task ClinTox where option (A) means is not toxic and option (B) means is toxic",
+    "positive_label_semantics": "is toxic",
+    "negative_label_semantics": "is not toxic",
+    "num_neighbors": 6,
+    "neighbors": [
+      {
+        "neighbor_index": 1,
+        "neighbor_id": "CC(=O)Oc1ccccc1C(=O)O",
+        "neighbor_smiles": "CC(=O)Oc1ccccc1C(=O)O",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): is toxic",
+        "neighbor_similarity": 0.24972129319955408,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.004441127502839784,
+          "pair_score_class1_probability": 0.004441127502839784,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9955588724971602,
+          "pair_prediction_semantics": "option (A): is not toxic",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.49555887249716024
+        },
+        "evidence_strength": {
+          "feature_probability": 0.5731469961857102,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": "option (B): is toxic",
+          "feature_evidence_strength": "low",
+          "feature_confidence_margin": 0.07314699618571019,
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 1,
+          "displayed_teacher_agreement": false,
+          "displayed_abs_contribution_coverage": 0.6126938113731505
+        },
+        "middle_draft": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.4775, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is +0.0122. This pairwise contribution is 1.0731, which pushes toward option (B): is toxic. Next, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. Then, For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 4, while the query's nitrogen/oxygen atom count is value 3. The query-minus-neighbor delta is -1. This pairwise contribution is -0.5701, which pushes toward option (A): is not toxic. After that, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.1111, while the query's fraction of sp3 carbons is value 0.5333. The query-minus-neighbor delta is +0.4222. This pairwise contribution is -0.4665, which pushes toward option (A): is not toxic. Finally, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.4554, which pushes toward option (A): is not toxic. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 63.6, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -32.86. This pairwise contribution is -0.3765, which pushes toward option (A): is not toxic. Step 7, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.339, while the query's minimum absolute partial charge is value 0.3165. The query-minus-neighbor delta is -0.0225. This pairwise contribution is 0.2599, which pushes toward option (B): is toxic. Step 8, For estimated logD, the neighbor's estimated logD is value -2.7012, while the query's estimated logD is value 0.1875. The query-minus-neighbor delta is +2.8887. This pairwise contribution is 0.2432, which pushes toward option (B): is toxic. Taken together, relative to a neighbor labeled option (B): is toxic, these feature comparisons do not align cleanly with option (A): is not toxic. This neighbor should be treated only as low-strength evidence for option (A): is not toxic.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "neighbor_value": -0.4775395271554559,
+            "query_value": -0.4653090703123256,
+            "delta_value": 0.012230456843130288,
+            "neighbor_value_text": "value -0.4775",
+            "query_value_text": "value -0.4653",
+            "delta_value_text": "+0.0122",
+            "observation_text": "For minimum partial charge, the neighbor value is value -0.4775, the query value is value -0.4653, and the query-minus-neighbor delta is +0.0122."
+          },
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "display_name": "ammonium",
+            "description": "top-level functional-group indicator or count for ammonium",
+            "source_family": "fg_top_level",
+            "raw_name": "ammonium",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For ammonium, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NOCount",
+            "display_name": "nitrogen/oxygen atom count",
+            "description": "number of nitrogen and oxygen atoms",
+            "source_family": "rdkit",
+            "raw_name": "NOCount",
+            "neighbor_value": 4.0,
+            "query_value": 3.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "value 4",
+            "query_value_text": "value 3",
+            "delta_value_text": "-1",
+            "observation_text": "For nitrogen/oxygen atom count, the neighbor value is value 4, the query value is value 3, and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "neighbor_value": 0.1111111111111111,
+            "query_value": 0.5333333333333333,
+            "delta_value": 0.4222222222222222,
+            "neighbor_value_text": "value 0.1111",
+            "query_value_text": "value 0.5333",
+            "delta_value_text": "+0.4222",
+            "observation_text": "For fraction of sp3 carbons, the neighbor value is value 0.1111, the query value is value 0.5333, and the query-minus-neighbor delta is +0.4222."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "display_name": "hydrogen-bond acceptor count",
+            "description": "number of hydrogen-bond acceptors",
+            "source_family": "rdkit",
+            "raw_name": "NumHAcceptors",
+            "neighbor_value": 3.0,
+            "query_value": 2.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "value 3",
+            "query_value_text": "value 2",
+            "delta_value_text": "-1",
+            "observation_text": "For hydrogen-bond acceptor count, the neighbor value is value 3, the query value is value 2, and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "display_name": "topological polar surface area",
+            "description": "topological polar surface area of the molecule",
+            "source_family": "rdkit",
+            "raw_name": "TPSA",
+            "neighbor_value": 63.60000000000001,
+            "query_value": 30.74,
+            "delta_value": -32.860000000000014,
+            "neighbor_value_text": "value 63.6",
+            "query_value_text": "value 30.74",
+            "delta_value_text": "-32.86",
+            "observation_text": "For topological polar surface area, the neighbor value is value 63.6, the query value is value 30.74, and the query-minus-neighbor delta is -32.86."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "neighbor_value": 0.3390037868773102,
+            "query_value": 0.3165113487331536,
+            "delta_value": -0.02249243814415658,
+            "neighbor_value_text": "value 0.339",
+            "query_value_text": "value 0.3165",
+            "delta_value_text": "-0.0225",
+            "observation_text": "For minimum absolute partial charge, the neighbor value is value 0.339, the query value is value 0.3165, and the query-minus-neighbor delta is -0.0225."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "neighbor_value": -2.7012,
+            "query_value": 0.1875,
+            "delta_value": 2.8887,
+            "neighbor_value_text": "value -2.7012",
+            "query_value_text": "value 0.1875",
+            "delta_value_text": "+2.8887",
+            "observation_text": "For estimated logD, the neighbor value is value -2.7012, the query value is value 0.1875, and the query-minus-neighbor delta is +2.8887."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "contribution": 1.0731180197245749,
+            "contribution_abs": 1.0731180197245749,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "contribution": 0.6974427447966625,
+            "contribution_abs": 0.6974427447966625,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NOCount",
+            "contribution": -0.5700732744940222,
+            "contribution_abs": 0.5700732744940222,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "contribution": -0.466486655308951,
+            "contribution_abs": 0.466486655308951,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "contribution": -0.4553660535302622,
+            "contribution_abs": 0.4553660535302622,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "contribution": -0.3765333125656085,
+            "contribution_abs": 0.3765333125656085,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "contribution": 0.2599080605575081,
+            "contribution_abs": 0.2599080605575081,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "contribution": 0.2432445133031157,
+            "contribution_abs": 0.2432445133031157,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.4775, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is +0.0122. This pairwise contribution is 1.0731, which pushes toward option (B): is toxic. Next, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. Then, For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 4, while the query's nitrogen/oxygen atom count is value 3. The query-minus-neighbor delta is -1. This pairwise contribution is -0.5701, which pushes toward option (A): is not toxic. After that, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.1111, while the query's fraction of sp3 carbons is value 0.5333. The query-minus-neighbor delta is +0.4222. This pairwise contribution is -0.4665, which pushes toward option (A): is not toxic. Finally, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.4554, which pushes toward option (A): is not toxic. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 63.6, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -32.86. This pairwise contribution is -0.3765, which pushes toward option (A): is not toxic. Step 7, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.339, while the query's minimum absolute partial charge is value 0.3165. The query-minus-neighbor delta is -0.0225. This pairwise contribution is 0.2599, which pushes toward option (B): is toxic. Step 8, For estimated logD, the neighbor's estimated logD is value -2.7012, while the query's estimated logD is value 0.1875. The query-minus-neighbor delta is +2.8887. This pairwise contribution is 0.2432, which pushes toward option (B): is toxic. Taken together, relative to a neighbor labeled option (B): is toxic, these feature comparisons do not align cleanly with option (A): is not toxic. This neighbor should be treated only as low-strength evidence for option (A): is not toxic."
+        }
+      },
+      {
+        "neighbor_index": 2,
+        "neighbor_id": "CCN(CC)CC(=O)Nc1c(C)cccc1C",
+        "neighbor_smiles": "CCN(CC)CC(=O)Nc1c(C)cccc1C",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): is toxic",
+        "neighbor_similarity": 0.2343891402714932,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.004989026382692545,
+          "pair_score_class1_probability": 0.004989026382692545,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9950109736173075,
+          "pair_prediction_semantics": "option (A): is not toxic",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4950109736173075
+        },
+        "evidence_strength": {
+          "feature_probability": 0.6014679925210363,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": "option (B): is toxic",
+          "feature_evidence_strength": "medium",
+          "feature_confidence_margin": 0.10146799252103633,
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 1,
+          "displayed_teacher_agreement": false,
+          "displayed_abs_contribution_coverage": 0.5909133108881832
+        },
+        "middle_draft": "First, For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 3, while the query's nitrogen/oxygen atom count is value 3. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7004, which pushes toward option (A): is not toxic. Next, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. Then, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8722, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.6869, which pushes toward option (A): is not toxic. After that, For minimum partial charge, the neighbor's minimum partial charge is value -0.3245, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is -0.1408. This pairwise contribution is 0.5989, which pushes toward option (B): is toxic. Finally, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 2, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3268, which pushes toward option (B): is toxic. Step 6, For number of ionizable sites, the neighbor's number of ionizable sites is value 3, while the query's number of ionizable sites is present (1). The query-minus-neighbor delta is -2. This pairwise contribution is -0.1782, which pushes toward option (A): is not toxic. Step 7, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.849, while the query's QED drug-likeness is value 0.8021. The query-minus-neighbor delta is -0.0469. This pairwise contribution is 0.1774, which pushes toward option (B): is toxic. Step 8, For estimated logP, the neighbor's estimated logP is value 2.5837, while the query's estimated logP is value 0.796. The query-minus-neighbor delta is -1.7877. This pairwise contribution is -0.1583, which pushes toward option (A): is not toxic. Taken together, relative to a neighbor labeled option (B): is toxic, these feature comparisons do not align cleanly with option (A): is not toxic. This neighbor should be treated only as low-strength evidence for option (A): is not toxic.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__NOCount",
+            "display_name": "nitrogen/oxygen atom count",
+            "description": "number of nitrogen and oxygen atoms",
+            "source_family": "rdkit",
+            "raw_name": "NOCount",
+            "neighbor_value": 3.0,
+            "query_value": 3.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "value 3",
+            "query_value_text": "value 3",
+            "delta_value_text": "+0",
+            "observation_text": "For nitrogen/oxygen atom count, the neighbor value is value 3, the query value is value 3, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "display_name": "ammonium",
+            "description": "top-level functional-group indicator or count for ammonium",
+            "source_family": "fg_top_level",
+            "raw_name": "ammonium",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For ammonium, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "display_name": "strongest acidic pKa",
+            "description": "pKa of the strongest acidic site",
+            "source_family": "pka",
+            "raw_name": "most_acidic_pka",
+            "neighbor_value": 13.8722,
+            "query_value": null,
+            "delta_value": null,
+            "neighbor_value_text": "value 13.8722",
+            "query_value_text": "no acidic site",
+            "delta_value_text": "not defined because one molecule has no acidic site",
+            "observation_text": "For strongest acidic pKa, the neighbor value is value 13.8722, the query value is no acidic site, and the query-minus-neighbor delta is not defined because one molecule has no acidic site."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "neighbor_value": -0.324484604945174,
+            "query_value": -0.4653090703123256,
+            "delta_value": -0.1408244653671516,
+            "neighbor_value_text": "value -0.3245",
+            "query_value_text": "value -0.4653",
+            "delta_value_text": "-0.1408",
+            "observation_text": "For minimum partial charge, the neighbor value is value -0.3245, the query value is value -0.4653, and the query-minus-neighbor delta is -0.1408."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "display_name": "hydrogen-bond acceptor count",
+            "description": "number of hydrogen-bond acceptors",
+            "source_family": "rdkit",
+            "raw_name": "NumHAcceptors",
+            "neighbor_value": 2.0,
+            "query_value": 2.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "value 2",
+            "query_value_text": "value 2",
+            "delta_value_text": "+0",
+            "observation_text": "For hydrogen-bond acceptor count, the neighbor value is value 2, the query value is value 2, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_ionizable_sites",
+            "display_name": "number of ionizable sites",
+            "description": "total number of acidic and basic ionizable sites",
+            "source_family": "pka",
+            "raw_name": "num_ionizable_sites",
+            "neighbor_value": 3.0,
+            "query_value": 1.0,
+            "delta_value": -2.0,
+            "neighbor_value_text": "value 3",
+            "query_value_text": "present (1)",
+            "delta_value_text": "-2",
+            "observation_text": "For number of ionizable sites, the neighbor value is value 3, the query value is present (1), and the query-minus-neighbor delta is -2."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "neighbor_value": 0.8489671904749567,
+            "query_value": 0.8020506518442636,
+            "delta_value": -0.046916538630693116,
+            "neighbor_value_text": "value 0.849",
+            "query_value_text": "value 0.8021",
+            "delta_value_text": "-0.0469",
+            "observation_text": "For QED drug-likeness, the neighbor value is value 0.849, the query value is value 0.8021, and the query-minus-neighbor delta is -0.0469."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "neighbor_value": 2.5837400000000006,
+            "query_value": 0.796,
+            "delta_value": -1.7877400000000006,
+            "neighbor_value_text": "value 2.5837",
+            "query_value_text": "value 0.796",
+            "delta_value_text": "-1.7877",
+            "observation_text": "For estimated logP, the neighbor value is value 2.5837, the query value is value 0.796, and the query-minus-neighbor delta is -1.7877."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__NOCount",
+            "contribution": -0.7003518224478252,
+            "contribution_abs": 0.7003518224478252,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "contribution": 0.6974427447966625,
+            "contribution_abs": 0.6974427447966625,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "contribution": -0.6869348700988203,
+            "contribution_abs": 0.6869348700988203,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "contribution": 0.5988609665406982,
+            "contribution_abs": 0.5988609665406982,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "contribution": 0.3268423737298589,
+            "contribution_abs": 0.3268423737298589,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_ionizable_sites",
+            "contribution": -0.17815861010434556,
+            "contribution_abs": 0.17815861010434556,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "contribution": 0.17738245388174406,
+            "contribution_abs": 0.17738245388174406,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "contribution": -0.15834970381727387,
+            "contribution_abs": 0.15834970381727387,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 3, while the query's nitrogen/oxygen atom count is value 3. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7004, which pushes toward option (A): is not toxic. Next, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. Then, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.8722, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.6869, which pushes toward option (A): is not toxic. After that, For minimum partial charge, the neighbor's minimum partial charge is value -0.3245, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is -0.1408. This pairwise contribution is 0.5989, which pushes toward option (B): is toxic. Finally, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 2, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3268, which pushes toward option (B): is toxic. Step 6, For number of ionizable sites, the neighbor's number of ionizable sites is value 3, while the query's number of ionizable sites is present (1). The query-minus-neighbor delta is -2. This pairwise contribution is -0.1782, which pushes toward option (A): is not toxic. Step 7, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.849, while the query's QED drug-likeness is value 0.8021. The query-minus-neighbor delta is -0.0469. This pairwise contribution is 0.1774, which pushes toward option (B): is toxic. Step 8, For estimated logP, the neighbor's estimated logP is value 2.5837, while the query's estimated logP is value 0.796. The query-minus-neighbor delta is -1.7877. This pairwise contribution is -0.1583, which pushes toward option (A): is not toxic. Taken together, relative to a neighbor labeled option (B): is toxic, these feature comparisons do not align cleanly with option (A): is not toxic. This neighbor should be treated only as low-strength evidence for option (A): is not toxic."
+        }
+      },
+      {
+        "neighbor_index": 3,
+        "neighbor_id": "COc1cccc([C@@]2(O)CCCC[C@@H]2CN(C)C)c1",
+        "neighbor_smiles": "COc1cccc([C@@]2(O)CCCC[C@@H]2CN(C)C)c1",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): is toxic",
+        "neighbor_similarity": 0.22190442971747473,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.002530195332894667,
+          "pair_score_class1_probability": 0.002530195332894667,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9974698046671053,
+          "pair_prediction_semantics": "option (A): is not toxic",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.49746980466710533
+        },
+        "evidence_strength": {
+          "feature_probability": 0.43294959728981397,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): is not toxic",
+          "feature_evidence_strength": "low",
+          "feature_confidence_margin": 0.06705040271018603,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.6202282329142386
+        },
+        "middle_draft": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.4968, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is +0.0314. This pairwise contribution is 0.9675, which pushes toward option (B): is toxic. Next, For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 3, while the query's nitrogen/oxygen atom count is value 3. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7004, which pushes toward option (A): is not toxic. Then, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. After that, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.977, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.6909, which pushes toward option (A): is not toxic. Finally, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.4554, which pushes toward option (A): is not toxic. Step 6, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.625, while the query's fraction of sp3 carbons is value 0.5333. The query-minus-neighbor delta is -0.0917. This pairwise contribution is 0.1699, which pushes toward option (B): is toxic. Step 7, For estimated logP, the neighbor's estimated logP is value 2.6346, while the query's estimated logP is value 0.796. The query-minus-neighbor delta is -1.8386. This pairwise contribution is -0.1567, which pushes toward option (A): is not toxic. Step 8, The neighbor has tertiary hydroxyl, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1483, which pushes toward option (A): is not toxic. Taken together, relative to a neighbor labeled option (B): is toxic, the pairwise feature evidence weakly supports option (A): is not toxic. This neighbor provides low-strength evidence for option (A): is not toxic.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "neighbor_value": -0.4967560353290218,
+            "query_value": -0.4653090703123256,
+            "delta_value": 0.03144696501669619,
+            "neighbor_value_text": "value -0.4968",
+            "query_value_text": "value -0.4653",
+            "delta_value_text": "+0.0314",
+            "observation_text": "For minimum partial charge, the neighbor value is value -0.4968, the query value is value -0.4653, and the query-minus-neighbor delta is +0.0314."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NOCount",
+            "display_name": "nitrogen/oxygen atom count",
+            "description": "number of nitrogen and oxygen atoms",
+            "source_family": "rdkit",
+            "raw_name": "NOCount",
+            "neighbor_value": 3.0,
+            "query_value": 3.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "value 3",
+            "query_value_text": "value 3",
+            "delta_value_text": "+0",
+            "observation_text": "For nitrogen/oxygen atom count, the neighbor value is value 3, the query value is value 3, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "display_name": "ammonium",
+            "description": "top-level functional-group indicator or count for ammonium",
+            "source_family": "fg_top_level",
+            "raw_name": "ammonium",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For ammonium, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "display_name": "strongest acidic pKa",
+            "description": "pKa of the strongest acidic site",
+            "source_family": "pka",
+            "raw_name": "most_acidic_pka",
+            "neighbor_value": 13.977,
+            "query_value": null,
+            "delta_value": null,
+            "neighbor_value_text": "value 13.977",
+            "query_value_text": "no acidic site",
+            "delta_value_text": "not defined because one molecule has no acidic site",
+            "observation_text": "For strongest acidic pKa, the neighbor value is value 13.977, the query value is no acidic site, and the query-minus-neighbor delta is not defined because one molecule has no acidic site."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "display_name": "hydrogen-bond acceptor count",
+            "description": "number of hydrogen-bond acceptors",
+            "source_family": "rdkit",
+            "raw_name": "NumHAcceptors",
+            "neighbor_value": 3.0,
+            "query_value": 2.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "value 3",
+            "query_value_text": "value 2",
+            "delta_value_text": "-1",
+            "observation_text": "For hydrogen-bond acceptor count, the neighbor value is value 3, the query value is value 2, and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "neighbor_value": 0.625,
+            "query_value": 0.5333333333333333,
+            "delta_value": -0.09166666666666667,
+            "neighbor_value_text": "value 0.625",
+            "query_value_text": "value 0.5333",
+            "delta_value_text": "-0.0917",
+            "observation_text": "For fraction of sp3 carbons, the neighbor value is value 0.625, the query value is value 0.5333, and the query-minus-neighbor delta is -0.0917."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "neighbor_value": 2.6346000000000007,
+            "query_value": 0.796,
+            "delta_value": -1.8386000000000007,
+            "neighbor_value_text": "value 2.6346",
+            "query_value_text": "value 0.796",
+            "delta_value_text": "-1.8386",
+            "observation_text": "For estimated logP, the neighbor value is value 2.6346, the query value is value 0.796, and the query-minus-neighbor delta is -1.8386."
+          },
+          {
+            "feature_name": "fg_top_level__tertiary hydroxyl",
+            "display_name": "tertiary hydroxyl",
+            "description": "top-level functional-group indicator or count for tertiary hydroxyl",
+            "source_family": "fg_top_level",
+            "raw_name": "tertiary hydroxyl",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For tertiary hydroxyl, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "contribution": 0.9674803173129221,
+            "contribution_abs": 0.9674803173129221,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NOCount",
+            "contribution": -0.7003518224478252,
+            "contribution_abs": 0.7003518224478252,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "contribution": 0.6974427447966625,
+            "contribution_abs": 0.6974427447966625,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "contribution": -0.6909051477196878,
+            "contribution_abs": 0.6909051477196878,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "contribution": -0.4553660535302622,
+            "contribution_abs": 0.4553660535302622,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "contribution": 0.169868453648555,
+            "contribution_abs": 0.169868453648555,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "contribution": -0.15666014607664797,
+            "contribution_abs": 0.15666014607664797,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "fg_top_level__tertiary hydroxyl",
+            "contribution": -0.14834832613199186,
+            "contribution_abs": 0.14834832613199186,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.4968, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is +0.0314. This pairwise contribution is 0.9675, which pushes toward option (B): is toxic. Next, For nitrogen/oxygen atom count, the neighbor's nitrogen/oxygen atom count is value 3, while the query's nitrogen/oxygen atom count is value 3. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7004, which pushes toward option (A): is not toxic. Then, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.6974, which pushes toward option (B): is toxic. After that, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.977, while the query has no acidic site. The query-minus-neighbor delta is not defined because one molecule has no acidic site. This pairwise contribution is -0.6909, which pushes toward option (A): is not toxic. Finally, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.4554, which pushes toward option (A): is not toxic. Step 6, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.625, while the query's fraction of sp3 carbons is value 0.5333. The query-minus-neighbor delta is -0.0917. This pairwise contribution is 0.1699, which pushes toward option (B): is toxic. Step 7, For estimated logP, the neighbor's estimated logP is value 2.6346, while the query's estimated logP is value 0.796. The query-minus-neighbor delta is -1.8386. This pairwise contribution is -0.1567, which pushes toward option (A): is not toxic. Step 8, The neighbor has tertiary hydroxyl, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.1483, which pushes toward option (A): is not toxic. Taken together, relative to a neighbor labeled option (B): is toxic, the pairwise feature evidence weakly supports option (A): is not toxic. This neighbor provides low-strength evidence for option (A): is not toxic."
+        }
+      },
+      {
+        "neighbor_index": 4,
+        "neighbor_id": "CCN(CC)C(=O)[C@]1(c2ccccc2)C[C@@H]1C[NH3+]",
+        "neighbor_smiles": "CCN(CC)C(=O)[C@]1(c2ccccc2)C[C@@H]1C[NH3+]",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): is not toxic",
+        "neighbor_similarity": 0.3438914027149321,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.009411228953967588,
+          "pair_score_class1_probability": 0.009411228953967588,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9905887710460324,
+          "pair_prediction_semantics": "option (A): is not toxic",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4905887710460324
+        },
+        "evidence_strength": {
+          "feature_probability": 0.7297334071832372,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": "option (B): is toxic",
+          "feature_evidence_strength": "medium",
+          "feature_confidence_margin": 0.2297334071832372,
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 1,
+          "displayed_teacher_agreement": false,
+          "displayed_abs_contribution_coverage": 0.5770522465652551
+        },
+        "middle_draft": "First, The neighbor has ammonium, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.8041, which pushes toward option (B): is toxic. Next, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 1, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5413, which pushes toward option (B): is toxic. Then, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3573, while the query's maximum absolute partial charge is value 0.4653. The query-minus-neighbor delta is +0.108. This pairwise contribution is 0.535, which pushes toward option (B): is toxic. After that, For strongest basic pKa, the neighbor's strongest basic pKa is value 10.4558, while the query's strongest basic pKa is value 7.8857. The query-minus-neighbor delta is -2.5701. This pairwise contribution is -0.4722, which pushes toward option (A): is not toxic. Finally, For neutral fraction, the neighbor's neutral fraction is value 0.0009, while the query's neutral fraction is value 0.2463. The query-minus-neighbor delta is +0.2454. This pairwise contribution is -0.3836, which pushes toward option (A): is not toxic. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 47.95, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -17.21. This pairwise contribution is -0.2916, which pushes toward option (A): is not toxic. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.3573, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is -0.108. This pairwise contribution is -0.277, which pushes toward option (A): is not toxic. Step 8, For strongest acidic pKa, the neighbor has no acidic site, while the query has no acidic site. The query-minus-neighbor delta is not defined because neither molecule has an acidic site. This pairwise contribution is -0.1365, which pushes toward option (A): is not toxic. Taken together, relative to a neighbor labeled option (A): is not toxic, these feature comparisons do not align cleanly with option (A): is not toxic. This neighbor should be treated only as low-strength evidence for option (A): is not toxic.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "display_name": "ammonium",
+            "description": "top-level functional-group indicator or count for ammonium",
+            "source_family": "fg_top_level",
+            "raw_name": "ammonium",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For ammonium, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "display_name": "hydrogen-bond acceptor count",
+            "description": "number of hydrogen-bond acceptors",
+            "source_family": "rdkit",
+            "raw_name": "NumHAcceptors",
+            "neighbor_value": 1.0,
+            "query_value": 2.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "value 1",
+            "query_value_text": "value 2",
+            "delta_value_text": "+1",
+            "observation_text": "For hydrogen-bond acceptor count, the neighbor value is value 1, the query value is value 2, and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "display_name": "maximum absolute partial charge",
+            "description": "largest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxAbsPartialCharge",
+            "neighbor_value": 0.3572897555634969,
+            "query_value": 0.4653090703123256,
+            "delta_value": 0.1080193147488287,
+            "neighbor_value_text": "value 0.3573",
+            "query_value_text": "value 0.4653",
+            "delta_value_text": "+0.108",
+            "observation_text": "For maximum absolute partial charge, the neighbor value is value 0.3573, the query value is value 0.4653, and the query-minus-neighbor delta is +0.108."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "display_name": "strongest basic pKa",
+            "description": "pKa of the strongest basic site",
+            "source_family": "pka",
+            "raw_name": "most_basic_pka",
+            "neighbor_value": 10.4558,
+            "query_value": 7.8857,
+            "delta_value": -2.5701,
+            "neighbor_value_text": "value 10.4558",
+            "query_value_text": "value 7.8857",
+            "delta_value_text": "-2.5701",
+            "observation_text": "For strongest basic pKa, the neighbor value is value 10.4558, the query value is value 7.8857, and the query-minus-neighbor delta is -2.5701."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "display_name": "neutral fraction",
+            "description": "estimated fraction of the molecule that is neutral at the configured pH",
+            "source_family": "pka",
+            "raw_name": "fraction_neutral",
+            "neighbor_value": 0.0009,
+            "query_value": 0.2463,
+            "delta_value": 0.24539999999999998,
+            "neighbor_value_text": "value 0.0009",
+            "query_value_text": "value 0.2463",
+            "delta_value_text": "+0.2454",
+            "observation_text": "For neutral fraction, the neighbor value is value 0.0009, the query value is value 0.2463, and the query-minus-neighbor delta is +0.2454."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "display_name": "topological polar surface area",
+            "description": "topological polar surface area of the molecule",
+            "source_family": "rdkit",
+            "raw_name": "TPSA",
+            "neighbor_value": 47.95,
+            "query_value": 30.74,
+            "delta_value": -17.210000000000004,
+            "neighbor_value_text": "value 47.95",
+            "query_value_text": "value 30.74",
+            "delta_value_text": "-17.21",
+            "observation_text": "For topological polar surface area, the neighbor value is value 47.95, the query value is value 30.74, and the query-minus-neighbor delta is -17.21."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "neighbor_value": -0.3572897555634969,
+            "query_value": -0.4653090703123256,
+            "delta_value": -0.1080193147488287,
+            "neighbor_value_text": "value -0.3573",
+            "query_value_text": "value -0.4653",
+            "delta_value_text": "-0.108",
+            "observation_text": "For minimum partial charge, the neighbor value is value -0.3573, the query value is value -0.4653, and the query-minus-neighbor delta is -0.108."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "display_name": "strongest acidic pKa",
+            "description": "pKa of the strongest acidic site",
+            "source_family": "pka",
+            "raw_name": "most_acidic_pka",
+            "neighbor_value": null,
+            "query_value": null,
+            "delta_value": null,
+            "neighbor_value_text": "no acidic site",
+            "query_value_text": "no acidic site",
+            "delta_value_text": "not defined because neither molecule has an acidic site",
+            "observation_text": "For strongest acidic pKa, the neighbor value is no acidic site, the query value is no acidic site, and the query-minus-neighbor delta is not defined because neither molecule has an acidic site."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "contribution": 0.8040974696637933,
+            "contribution_abs": 0.8040974696637933,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "contribution": 0.5412938580144439,
+            "contribution_abs": 0.5412938580144439,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "contribution": 0.5350149580617046,
+            "contribution_abs": 0.5350149580617046,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "contribution": -0.47219032493279367,
+            "contribution_abs": 0.47219032493279367,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "contribution": -0.38357958475565546,
+            "contribution_abs": 0.38357958475565546,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "contribution": -0.2915927193810485,
+            "contribution_abs": 0.2915927193810485,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "contribution": -0.276976719985336,
+            "contribution_abs": 0.276976719985336,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "contribution": -0.13649947051415717,
+            "contribution_abs": 0.13649947051415717,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor has ammonium, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.8041, which pushes toward option (B): is toxic. Next, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 1, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5413, which pushes toward option (B): is toxic. Then, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3573, while the query's maximum absolute partial charge is value 0.4653. The query-minus-neighbor delta is +0.108. This pairwise contribution is 0.535, which pushes toward option (B): is toxic. After that, For strongest basic pKa, the neighbor's strongest basic pKa is value 10.4558, while the query's strongest basic pKa is value 7.8857. The query-minus-neighbor delta is -2.5701. This pairwise contribution is -0.4722, which pushes toward option (A): is not toxic. Finally, For neutral fraction, the neighbor's neutral fraction is value 0.0009, while the query's neutral fraction is value 0.2463. The query-minus-neighbor delta is +0.2454. This pairwise contribution is -0.3836, which pushes toward option (A): is not toxic. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 47.95, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -17.21. This pairwise contribution is -0.2916, which pushes toward option (A): is not toxic. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.3573, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is -0.108. This pairwise contribution is -0.277, which pushes toward option (A): is not toxic. Step 8, For strongest acidic pKa, the neighbor has no acidic site, while the query has no acidic site. The query-minus-neighbor delta is not defined because neither molecule has an acidic site. This pairwise contribution is -0.1365, which pushes toward option (A): is not toxic. Taken together, relative to a neighbor labeled option (A): is not toxic, these feature comparisons do not align cleanly with option (A): is not toxic. This neighbor should be treated only as low-strength evidence for option (A): is not toxic."
+        }
+      },
+      {
+        "neighbor_index": 5,
+        "neighbor_id": "CCC(=O)N(c1ccccc1)C1(COC)CC[NH+](CCc2cccs2)CC1",
+        "neighbor_smiles": "CCC(=O)N(c1ccccc1)C1(COC)CC[NH+](CCc2cccs2)CC1",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): is not toxic",
+        "neighbor_similarity": 0.32246153846153847,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.002923240354380941,
+          "pair_score_class1_probability": 0.002923240354380941,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.997076759645619,
+          "pair_prediction_semantics": "option (A): is not toxic",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.49707675964561904
+        },
+        "evidence_strength": {
+          "feature_probability": 0.4545089758795475,
+          "feature_prediction": 0,
+          "feature_prediction_semantics": "option (A): is not toxic",
+          "feature_evidence_strength": "low",
+          "feature_confidence_margin": 0.04549102412045247,
+          "teacher_feature_agreement": true,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.5558464860284065
+        },
+        "middle_draft": "First, For heteroatom count, the neighbor's heteroatom count is value 5, while the query's heteroatom count is value 3. The query-minus-neighbor delta is -2. This pairwise contribution is -0.7288, which pushes toward option (A): is not toxic. Next, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.5916, which pushes toward option (A): is not toxic. Then, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3822, while the query's maximum absolute partial charge is value 0.4653. The query-minus-neighbor delta is +0.0831. This pairwise contribution is 0.5234, which pushes toward option (B): is toxic. After that, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.4557, which pushes toward option (B): is toxic. Finally, For minimum partial charge, the neighbor's minimum partial charge is value -0.3822, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is -0.0831. This pairwise contribution is -0.3292, which pushes toward option (A): is not toxic. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 33.98, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -3.24. This pairwise contribution is -0.2625, which pushes toward option (A): is not toxic. Step 7, Both the neighbor and the query have piperidine (query-minus-neighbor delta +0). This pairwise contribution is -0.2112, which pushes toward option (A): is not toxic. Step 8, For estimated logP, the neighbor's estimated logP is value 2.7977, while the query's estimated logP is value 0.796. The query-minus-neighbor delta is -2.0017. This pairwise contribution is -0.1948, which pushes toward option (A): is not toxic. Taken together, relative to a neighbor labeled option (A): is not toxic, the pairwise feature evidence weakly supports option (A): is not toxic. This neighbor provides low-strength evidence for option (A): is not toxic.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHeteroatoms",
+            "display_name": "heteroatom count",
+            "description": "number of heteroatoms, such as N, O, or S",
+            "source_family": "rdkit",
+            "raw_name": "NumHeteroatoms",
+            "neighbor_value": 5.0,
+            "query_value": 3.0,
+            "delta_value": -2.0,
+            "neighbor_value_text": "value 5",
+            "query_value_text": "value 3",
+            "delta_value_text": "-2",
+            "observation_text": "For heteroatom count, the neighbor value is value 5, the query value is value 3, and the query-minus-neighbor delta is -2."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "display_name": "hydrogen-bond acceptor count",
+            "description": "number of hydrogen-bond acceptors",
+            "source_family": "rdkit",
+            "raw_name": "NumHAcceptors",
+            "neighbor_value": 3.0,
+            "query_value": 2.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "value 3",
+            "query_value_text": "value 2",
+            "delta_value_text": "-1",
+            "observation_text": "For hydrogen-bond acceptor count, the neighbor value is value 3, the query value is value 2, and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "display_name": "maximum absolute partial charge",
+            "description": "largest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxAbsPartialCharge",
+            "neighbor_value": 0.3822275487171383,
+            "query_value": 0.4653090703123256,
+            "delta_value": 0.08308152159518728,
+            "neighbor_value_text": "value 0.3822",
+            "query_value_text": "value 0.4653",
+            "delta_value_text": "+0.0831",
+            "observation_text": "For maximum absolute partial charge, the neighbor value is value 0.3822, the query value is value 0.4653, and the query-minus-neighbor delta is +0.0831."
+          },
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "display_name": "ammonium",
+            "description": "top-level functional-group indicator or count for ammonium",
+            "source_family": "fg_top_level",
+            "raw_name": "ammonium",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For ammonium, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "neighbor_value": -0.3822275487171383,
+            "query_value": -0.4653090703123256,
+            "delta_value": -0.08308152159518728,
+            "neighbor_value_text": "value -0.3822",
+            "query_value_text": "value -0.4653",
+            "delta_value_text": "-0.0831",
+            "observation_text": "For minimum partial charge, the neighbor value is value -0.3822, the query value is value -0.4653, and the query-minus-neighbor delta is -0.0831."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "display_name": "topological polar surface area",
+            "description": "topological polar surface area of the molecule",
+            "source_family": "rdkit",
+            "raw_name": "TPSA",
+            "neighbor_value": 33.980000000000004,
+            "query_value": 30.74,
+            "delta_value": -3.2400000000000055,
+            "neighbor_value_text": "value 33.98",
+            "query_value_text": "value 30.74",
+            "delta_value_text": "-3.24",
+            "observation_text": "For topological polar surface area, the neighbor value is value 33.98, the query value is value 30.74, and the query-minus-neighbor delta is -3.24."
+          },
+          {
+            "feature_name": "fg_top_level__piperidine",
+            "display_name": "piperidine",
+            "description": "top-level functional-group indicator or count for piperidine",
+            "source_family": "fg_top_level",
+            "raw_name": "piperidine",
+            "neighbor_value": 1.0,
+            "query_value": 1.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0",
+            "observation_text": "For piperidine, the neighbor value is present (1), the query value is present (1), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "neighbor_value": 2.7977000000000007,
+            "query_value": 0.796,
+            "delta_value": -2.0017000000000005,
+            "neighbor_value_text": "value 2.7977",
+            "query_value_text": "value 0.796",
+            "delta_value_text": "-2.0017",
+            "observation_text": "For estimated logP, the neighbor value is value 2.7977, the query value is value 0.796, and the query-minus-neighbor delta is -2.0017."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHeteroatoms",
+            "contribution": -0.7288486090978321,
+            "contribution_abs": 0.7288486090978321,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "contribution": -0.5916292608495282,
+            "contribution_abs": 0.5916292608495282,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "contribution": 0.5234308113102641,
+            "contribution_abs": 0.5234308113102641,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "contribution": 0.4556753295196149,
+            "contribution_abs": 0.4556753295196149,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "contribution": -0.3292261172755257,
+            "contribution_abs": 0.3292261172755257,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "contribution": -0.2624697467585403,
+            "contribution_abs": 0.2624697467585403,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "fg_top_level__piperidine",
+            "contribution": -0.21117848039636247,
+            "contribution_abs": 0.21117848039636247,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "contribution": -0.19479530725679411,
+            "contribution_abs": 0.19479530725679411,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For heteroatom count, the neighbor's heteroatom count is value 5, while the query's heteroatom count is value 3. The query-minus-neighbor delta is -2. This pairwise contribution is -0.7288, which pushes toward option (A): is not toxic. Next, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.5916, which pushes toward option (A): is not toxic. Then, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.3822, while the query's maximum absolute partial charge is value 0.4653. The query-minus-neighbor delta is +0.0831. This pairwise contribution is 0.5234, which pushes toward option (B): is toxic. After that, Neither the neighbor nor the query has ammonium (query-minus-neighbor delta +0). This pairwise contribution is 0.4557, which pushes toward option (B): is toxic. Finally, For minimum partial charge, the neighbor's minimum partial charge is value -0.3822, while the query's minimum partial charge is value -0.4653. The query-minus-neighbor delta is -0.0831. This pairwise contribution is -0.3292, which pushes toward option (A): is not toxic. Step 6, For topological polar surface area, the neighbor's topological polar surface area is value 33.98, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -3.24. This pairwise contribution is -0.2625, which pushes toward option (A): is not toxic. Step 7, Both the neighbor and the query have piperidine (query-minus-neighbor delta +0). This pairwise contribution is -0.2112, which pushes toward option (A): is not toxic. Step 8, For estimated logP, the neighbor's estimated logP is value 2.7977, while the query's estimated logP is value 0.796. The query-minus-neighbor delta is -2.0017. This pairwise contribution is -0.1948, which pushes toward option (A): is not toxic. Taken together, relative to a neighbor labeled option (A): is not toxic, the pairwise feature evidence weakly supports option (A): is not toxic. This neighbor provides low-strength evidence for option (A): is not toxic."
+        }
+      },
+      {
+        "neighbor_index": 6,
+        "neighbor_id": "C[NH+](C)CCOC(=O)C(c1ccccc1)C1(O)CCCC1",
+        "neighbor_smiles": "C[NH+](C)CCOC(=O)C(c1ccccc1)C1(O)CCCC1",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): is not toxic",
+        "neighbor_similarity": 0.3180451127819549,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.005858337441834632,
+          "pair_score_class1_probability": 0.005858337441834632,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9941416625581654,
+          "pair_prediction_semantics": "option (A): is not toxic",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4941416625581654
+        },
+        "evidence_strength": {
+          "feature_probability": 0.6261306133453939,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": "option (B): is toxic",
+          "feature_evidence_strength": "medium",
+          "feature_confidence_margin": 0.12613061334539388,
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 1,
+          "displayed_teacher_agreement": false,
+          "displayed_abs_contribution_coverage": 0.5286213335041241
+        },
+        "middle_draft": "First, The neighbor has ammonium, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.8041, which pushes toward option (B): is toxic. Next, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.5916, which pushes toward option (A): is not toxic. Then, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4591, while the query's maximum absolute partial charge is value 0.4653. The query-minus-neighbor delta is +0.0062. This pairwise contribution is 0.3211, which pushes toward option (B): is toxic. After that, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3161, while the query's minimum absolute partial charge is value 0.3165. The query-minus-neighbor delta is +0.0004. This pairwise contribution is 0.271, which pushes toward option (B): is toxic. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 50.97, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -20.23. This pairwise contribution is -0.2518, which pushes toward option (A): is not toxic. Step 6, The neighbor has tertiary hydroxyl, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.2226, which pushes toward option (A): is not toxic. Step 7, For number of ionizable sites, the neighbor's number of ionizable sites is value 2, while the query's number of ionizable sites is present (1). The query-minus-neighbor delta is -1. This pairwise contribution is -0.1758, which pushes toward option (A): is not toxic. Step 8, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.7614, while the query's QED drug-likeness is value 0.8021. The query-minus-neighbor delta is +0.0407. This pairwise contribution is 0.1679, which pushes toward option (B): is toxic. Taken together, relative to a neighbor labeled option (A): is not toxic, these feature comparisons do not align cleanly with option (A): is not toxic. This neighbor should be treated only as low-strength evidence for option (A): is not toxic.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "display_name": "ammonium",
+            "description": "top-level functional-group indicator or count for ammonium",
+            "source_family": "fg_top_level",
+            "raw_name": "ammonium",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For ammonium, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "display_name": "hydrogen-bond acceptor count",
+            "description": "number of hydrogen-bond acceptors",
+            "source_family": "rdkit",
+            "raw_name": "NumHAcceptors",
+            "neighbor_value": 3.0,
+            "query_value": 2.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "value 3",
+            "query_value_text": "value 2",
+            "delta_value_text": "-1",
+            "observation_text": "For hydrogen-bond acceptor count, the neighbor value is value 3, the query value is value 2, and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "display_name": "maximum absolute partial charge",
+            "description": "largest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxAbsPartialCharge",
+            "neighbor_value": 0.4591426977072404,
+            "query_value": 0.4653090703123256,
+            "delta_value": 0.00616637260508518,
+            "neighbor_value_text": "value 0.4591",
+            "query_value_text": "value 0.4653",
+            "delta_value_text": "+0.0062",
+            "observation_text": "For maximum absolute partial charge, the neighbor value is value 0.4591, the query value is value 0.4653, and the query-minus-neighbor delta is +0.0062."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "neighbor_value": 0.3160882987292897,
+            "query_value": 0.3165113487331536,
+            "delta_value": 0.0004230500038639451,
+            "neighbor_value_text": "value 0.3161",
+            "query_value_text": "value 0.3165",
+            "delta_value_text": "+0.0004",
+            "observation_text": "For minimum absolute partial charge, the neighbor value is value 0.3161, the query value is value 0.3165, and the query-minus-neighbor delta is +0.0004."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "display_name": "topological polar surface area",
+            "description": "topological polar surface area of the molecule",
+            "source_family": "rdkit",
+            "raw_name": "TPSA",
+            "neighbor_value": 50.97,
+            "query_value": 30.74,
+            "delta_value": -20.23,
+            "neighbor_value_text": "value 50.97",
+            "query_value_text": "value 30.74",
+            "delta_value_text": "-20.23",
+            "observation_text": "For topological polar surface area, the neighbor value is value 50.97, the query value is value 30.74, and the query-minus-neighbor delta is -20.23."
+          },
+          {
+            "feature_name": "fg_top_level__tertiary hydroxyl",
+            "display_name": "tertiary hydroxyl",
+            "description": "top-level functional-group indicator or count for tertiary hydroxyl",
+            "source_family": "fg_top_level",
+            "raw_name": "tertiary hydroxyl",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For tertiary hydroxyl, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_ionizable_sites",
+            "display_name": "number of ionizable sites",
+            "description": "total number of acidic and basic ionizable sites",
+            "source_family": "pka",
+            "raw_name": "num_ionizable_sites",
+            "neighbor_value": 2.0,
+            "query_value": 1.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "value 2",
+            "query_value_text": "present (1)",
+            "delta_value_text": "-1",
+            "observation_text": "For number of ionizable sites, the neighbor value is value 2, the query value is present (1), and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "neighbor_value": 0.7613555424581541,
+            "query_value": 0.8020506518442636,
+            "delta_value": 0.04069510938610954,
+            "neighbor_value_text": "value 0.7614",
+            "query_value_text": "value 0.8021",
+            "delta_value_text": "+0.0407",
+            "observation_text": "For QED drug-likeness, the neighbor value is value 0.7614, the query value is value 0.8021, and the query-minus-neighbor delta is +0.0407."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__ammonium",
+            "contribution": 0.8040974696637933,
+            "contribution_abs": 0.8040974696637933,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHAcceptors",
+            "contribution": -0.5916292608495282,
+            "contribution_abs": 0.5916292608495282,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxAbsPartialCharge",
+            "contribution": 0.3210662393202788,
+            "contribution_abs": 0.3210662393202788,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "contribution": 0.2710454458125051,
+            "contribution_abs": 0.2710454458125051,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__TPSA",
+            "contribution": -0.2518407304995465,
+            "contribution_abs": 0.2518407304995465,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "fg_top_level__tertiary hydroxyl",
+            "contribution": -0.22259709446343937,
+            "contribution_abs": 0.22259709446343937,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_ionizable_sites",
+            "contribution": -0.1758028472086913,
+            "contribution_abs": 0.1758028472086913,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not toxic"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "contribution": 0.16787886964117466,
+            "contribution_abs": 0.16787886964117466,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is toxic"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor has ammonium, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.8041, which pushes toward option (B): is toxic. Next, For hydrogen-bond acceptor count, the neighbor's hydrogen-bond acceptor count is value 3, while the query's hydrogen-bond acceptor count is value 2. The query-minus-neighbor delta is -1. This pairwise contribution is -0.5916, which pushes toward option (A): is not toxic. Then, For maximum absolute partial charge, the neighbor's maximum absolute partial charge is value 0.4591, while the query's maximum absolute partial charge is value 0.4653. The query-minus-neighbor delta is +0.0062. This pairwise contribution is 0.3211, which pushes toward option (B): is toxic. After that, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3161, while the query's minimum absolute partial charge is value 0.3165. The query-minus-neighbor delta is +0.0004. This pairwise contribution is 0.271, which pushes toward option (B): is toxic. Finally, For topological polar surface area, the neighbor's topological polar surface area is value 50.97, while the query's topological polar surface area is value 30.74. The query-minus-neighbor delta is -20.23. This pairwise contribution is -0.2518, which pushes toward option (A): is not toxic. Step 6, The neighbor has tertiary hydroxyl, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.2226, which pushes toward option (A): is not toxic. Step 7, For number of ionizable sites, the neighbor's number of ionizable sites is value 2, while the query's number of ionizable sites is present (1). The query-minus-neighbor delta is -1. This pairwise contribution is -0.1758, which pushes toward option (A): is not toxic. Step 8, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.7614, while the query's QED drug-likeness is value 0.8021. The query-minus-neighbor delta is +0.0407. This pairwise contribution is 0.1679, which pushes toward option (B): is toxic. Taken together, relative to a neighbor labeled option (A): is not toxic, these feature comparisons do not align cleanly with option (A): is not toxic. This neighbor should be treated only as low-strength evidence for option (A): is not toxic."
+        }
+      }
+    ]
   },
   "hybrid_rewrite_input": {
     "gt_label": 0,
@@ -174,7 +1647,7 @@
     }
   },
   "source_artifacts": {
-    "global_evidence_path": "/data1/tianang/Projects/TRIM/outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan/ClinTox/train/sample_00735.json",
-    "local_evidence_path": "/data1/tianang/Projects/TRIM/outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts/ClinTox/train/sample_00735.json"
+    "global_evidence_path": "outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan/ClinTox/train/sample_00735.json",
+    "local_evidence_path": "outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts/ClinTox/train/sample_00735.json"
   }
 }

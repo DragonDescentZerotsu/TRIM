@@ -17,6 +17,7 @@ from trim.features.pair_features import (
 from trim.models.pair_ebm import build_pair_ebm, build_pair_ebm_params
 from trim.models.retrieval import CachedSimilarityRetriever
 from trim.utils.io import save_json, save_pickle
+from trim.utils.paths import serialize_project_path
 
 try:
     from tqdm.auto import tqdm
@@ -223,9 +224,9 @@ def train_pair_task(
             "fit": round(fit_seconds, 4),
         },
         "artifacts": {
-            "bundle_pkl": str(bundle_path.resolve()),
-            "train_pair_predictions_csv": str(train_pred_path.resolve()),
-            "valid_pair_predictions_csv": str(valid_pred_path.resolve()),
+            "bundle_pkl": serialize_project_path(bundle_path),
+            "train_pair_predictions_csv": serialize_project_path(train_pred_path),
+            "valid_pair_predictions_csv": serialize_project_path(valid_pred_path),
         },
     }
     save_json(output_dir / f"{pair_name}_train_summary.json", summary)

@@ -20,7 +20,7 @@
   },
   "local_prediction_correct": false,
   "local_score": 0.9716969024556363,
-  "s_pos": 0.9640801962630458,
+  "s_pos": 0.9640801962630456,
   "s_neg": 0.9864823963348942,
   "keep_for_reasoning": true,
   "drop_reason": null,
@@ -37,12 +37,42 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.984505628526441,
+        "pair_score_class1_probability": 0.984505628526441,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.984505628526441,
+        "teacher_confidence_margin": 0.48450562852644097,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is mutagenic",
           "label": 1
         },
+        "feature_logit": 3.9758083895895777,
+        "feature_probability": 0.9815814807896528,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.4815814807896528,
+        "feature_evidence_strength": "high",
+        "total_abs_feature_contribution": 8.178265911900931,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 2.841834372647926,
+        "displayed_feature_probability": 0.9448950530359556,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.44489505303595556,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_feature_contribution": 4.257612363776482,
+        "displayed_abs_contribution_coverage": 0.5206008718279564,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "rdkit_pka__rdkit__RingCount",
@@ -169,152 +199,48 @@
             "supports_option": "B",
             "supports_text": "is mutagenic",
             "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.4516, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3232, which pushes toward option (B): is mutagenic."
-          }
-        ]
-      },
-      {
-        "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
-        "query_smiles": "O=[N+]([O-])c1c2c(c3ccc4cccc5ccc1c3c45)C=CCC2",
-        "query_label": 0,
-        "neighbor_smiles": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
-        "neighbor_label": 1,
-        "neighbor_similarity": 0.516289592760181,
-        "neighbor_scaffold": "C1=Cc2cc3ccc4cccc5ccc(c2CC1)c3c45",
-        "neighbor_role": "positive_neighbor",
-        "pair_model_type": "positive_neighbor_model",
-        "pair_score": 0.9600266619525235,
-        "pair_prediction": 1,
-        "pair_prediction_semantics": {
-          "option": "B",
-          "text": "is mutagenic",
-          "label": 1
-        },
-        "top_pair_terms": [
+          },
           {
-            "feature_name": "rdkit_pka__rdkit__RingCount",
-            "display_name": "ring count",
-            "description": "total number of rings",
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
             "source_family": "rdkit",
-            "raw_name": "RingCount",
+            "raw_name": "MinPartialCharge",
             "nlp_readiness": "natural_language_ready",
-            "base_value": 5.0,
-            "query_value": 5.0,
-            "delta_value": 0.0,
-            "base_value_text": "value 5",
-            "query_value_text": "value 5",
-            "delta_value_text": "+0",
-            "contribution": 0.9026113141068864,
-            "contribution_abs": 0.9026113141068864,
-            "contribution_rank": 1,
+            "base_value": -0.2582712299601685,
+            "query_value": -0.2582811844901148,
+            "delta_value": -9.95452994628776e-06,
+            "base_value_text": "value -0.2583",
+            "query_value_text": "value -0.2583",
+            "delta_value_text": "-0",
+            "contribution": 0.3127190511577874,
+            "contribution_abs": 0.3127190511577874,
+            "contribution_rank": 7,
             "supports_label": 1,
             "supports_option": "B",
             "supports_text": "is mutagenic",
-            "text_hint": "For ring count, the neighbor's ring count is value 5, while the query's ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is 0.9026, which pushes toward option (B): is mutagenic."
+            "text_hint": "For minimum partial charge, the neighbor's minimum partial charge is value -0.2583, while the query's minimum partial charge is value -0.2583. The query-minus-neighbor delta is -0. This pairwise contribution is 0.3127, which pushes toward option (B): is mutagenic."
           },
           {
-            "feature_name": "rdkit_pka__rdkit__qed",
-            "display_name": "QED drug-likeness",
-            "description": "quantitative estimate of drug-likeness",
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "display_name": "heavy-atom molecular weight",
+            "description": "molecular weight contributed by heavy atoms",
             "source_family": "rdkit",
-            "raw_name": "qed",
+            "raw_name": "HeavyAtomMolWt",
             "nlp_readiness": "natural_language_ready",
-            "base_value": 0.266245608034635,
-            "query_value": 0.266245608034635,
+            "base_value": 286.225,
+            "query_value": 286.225,
             "delta_value": 0.0,
-            "base_value_text": "value 0.2662",
-            "query_value_text": "value 0.2662",
+            "base_value_text": "value 286.225",
+            "query_value_text": "value 286.225",
             "delta_value_text": "+0",
-            "contribution": 0.7219255646727012,
-            "contribution_abs": 0.7219255646727012,
-            "contribution_rank": 2,
+            "contribution": 0.2753892815364378,
+            "contribution_abs": 0.2753892815364378,
+            "contribution_rank": 8,
             "supports_label": 1,
             "supports_option": "B",
             "supports_text": "is mutagenic",
-            "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2662, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is +0. This pairwise contribution is 0.7219, which pushes toward option (B): is mutagenic."
-          },
-          {
-            "feature_name": "rdkit_pka__rdkit__LabuteASA",
-            "display_name": "Labute surface area",
-            "description": "Labute approximate surface area",
-            "source_family": "rdkit",
-            "raw_name": "LabuteASA",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 131.8727315892109,
-            "query_value": 131.8727315892109,
-            "delta_value": 0.0,
-            "base_value_text": "value 131.8727",
-            "query_value_text": "value 131.8727",
-            "delta_value_text": "+0",
-            "contribution": -0.7078889955642781,
-            "contribution_abs": 0.7078889955642781,
-            "contribution_rank": 3,
-            "supports_label": 0,
-            "supports_option": "A",
-            "supports_text": "is not mutagenic",
-            "text_hint": "For Labute surface area, the neighbor's Labute surface area is value 131.8727, while the query's Labute surface area is value 131.8727. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7079, which pushes toward option (A): is not mutagenic."
-          },
-          {
-            "feature_name": "fg_top_level__benzene",
-            "display_name": "benzene",
-            "description": "top-level functional-group indicator or count for benzene",
-            "source_family": "fg_top_level",
-            "raw_name": "benzene",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 4.0,
-            "query_value": 4.0,
-            "delta_value": 0.0,
-            "base_value_text": "count 4",
-            "query_value_text": "count 4",
-            "delta_value_text": "+0",
-            "contribution": 0.6895073570298892,
-            "contribution_abs": 0.6895073570298892,
-            "contribution_rank": 4,
-            "supports_label": 1,
-            "supports_option": "B",
-            "supports_text": "is mutagenic",
-            "text_hint": "The neighbor has 4 copies of benzene, while the query has 4 (query-minus-neighbor delta +0). This pairwise contribution is 0.6895, which pushes toward option (B): is mutagenic."
-          },
-          {
-            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
-            "display_name": "maximum partial charge",
-            "description": "most positive atomic partial charge",
-            "source_family": "rdkit",
-            "raw_name": "MaxPartialCharge",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 0.2767532688831201,
-            "query_value": 0.2805187559465614,
-            "delta_value": 0.0037654870634413196,
-            "base_value_text": "value 0.2768",
-            "query_value_text": "value 0.2805",
-            "delta_value_text": "+0.0038",
-            "contribution": -0.4561575818342649,
-            "contribution_abs": 0.4561575818342649,
-            "contribution_rank": 5,
-            "supports_label": 0,
-            "supports_option": "A",
-            "supports_text": "is not mutagenic",
-            "text_hint": "For maximum partial charge, the neighbor's maximum partial charge is value 0.2768, while the query's maximum partial charge is value 0.2805. The query-minus-neighbor delta is +0.0038. This pairwise contribution is -0.4562, which pushes toward option (A): is not mutagenic."
-          },
-          {
-            "feature_name": "fg_top_level__nitro",
-            "display_name": "nitro",
-            "description": "top-level functional-group indicator or count for nitro",
-            "source_family": "fg_top_level",
-            "raw_name": "nitro",
-            "nlp_readiness": "natural_language_ready",
-            "base_value": 1.0,
-            "query_value": 1.0,
-            "delta_value": 0.0,
-            "base_value_text": "present (1)",
-            "query_value_text": "present (1)",
-            "delta_value_text": "+0",
-            "contribution": 0.3244082632122705,
-            "contribution_abs": 0.3244082632122705,
-            "contribution_rank": 6,
-            "supports_label": 1,
-            "supports_option": "B",
-            "supports_text": "is mutagenic",
-            "text_hint": "Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is 0.3244, which pushes toward option (B): is mutagenic."
+            "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 286.225, while the query's heavy-atom molecular weight is value 286.225. The query-minus-neighbor delta is +0. This pairwise contribution is 0.2754, which pushes toward option (B): is mutagenic."
           }
         ]
       },
@@ -329,12 +255,42 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.9356212070822685,
+        "pair_score_class1_probability": 0.9356212070822685,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9356212070822685,
+        "teacher_confidence_margin": 0.4356212070822685,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is mutagenic",
           "label": 1
         },
+        "feature_logit": 2.500572026544098,
+        "feature_probability": 0.924181911437362,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.42418191143736195,
+        "feature_evidence_strength": "high",
+        "total_abs_feature_contribution": 8.404331795992361,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 1.9841773839842118,
+        "displayed_feature_probability": 0.8791257696834959,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.3791257696834959,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_feature_contribution": 4.312270538781298,
+        "displayed_abs_contribution_coverage": 0.5131009393081817,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "rdkit_pka__rdkit__RingCount",
@@ -461,6 +417,266 @@
             "supports_option": "B",
             "supports_text": "is mutagenic",
             "text_hint": "Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is 0.3244, which pushes toward option (B): is mutagenic."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 5.4516,
+            "query_value": 5.4516,
+            "delta_value": 0.0,
+            "base_value_text": "value 5.4516",
+            "query_value_text": "value 5.4516",
+            "delta_value_text": "+0",
+            "contribution": 0.3231625364962315,
+            "contribution_abs": 0.3231625364962315,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is mutagenic",
+            "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.4516, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3232, which pushes toward option (B): is mutagenic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "display_name": "heavy-atom molecular weight",
+            "description": "molecular weight contributed by heavy atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomMolWt",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 286.225,
+            "query_value": 286.225,
+            "delta_value": 0.0,
+            "base_value_text": "value 286.225",
+            "query_value_text": "value 286.225",
+            "delta_value_text": "+0",
+            "contribution": 0.2753892815364378,
+            "contribution_abs": 0.2753892815364378,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is mutagenic",
+            "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 286.225, while the query's heavy-atom molecular weight is value 286.225. The query-minus-neighbor delta is +0. This pairwise contribution is 0.2754, which pushes toward option (B): is mutagenic."
+          }
+        ]
+      },
+      {
+        "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
+        "query_smiles": "O=[N+]([O-])c1c2c(c3ccc4cccc5ccc1c3c45)C=CCC2",
+        "query_label": 0,
+        "neighbor_smiles": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
+        "neighbor_label": 1,
+        "neighbor_similarity": 0.516289592760181,
+        "neighbor_scaffold": "C1=Cc2cc3ccc4cccc5ccc(c2CC1)c3c45",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.9600266619525235,
+        "pair_score_class1_probability": 0.9600266619525235,
+        "pair_prediction": 1,
+        "pair_prediction_probability": 0.9600266619525235,
+        "teacher_confidence_margin": 0.4600266619525235,
+        "teacher_confidence": "high",
+        "pair_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "feature_logit": 3.002893975508748,
+        "feature_probability": 0.9527046958668378,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.4527046958668378,
+        "feature_evidence_strength": "high",
+        "total_abs_feature_contribution": 8.52414519726189,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 2.0729577396558736,
+        "displayed_feature_probability": 0.8882468968603043,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.38824689686030434,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_feature_contribution": 4.401050894452959,
+        "displayed_abs_contribution_coverage": 0.5163040742040219,
+        "displayed_teacher_agreement": true,
+        "top_pair_terms": [
+          {
+            "feature_name": "rdkit_pka__rdkit__RingCount",
+            "display_name": "ring count",
+            "description": "total number of rings",
+            "source_family": "rdkit",
+            "raw_name": "RingCount",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 5.0,
+            "query_value": 5.0,
+            "delta_value": 0.0,
+            "base_value_text": "value 5",
+            "query_value_text": "value 5",
+            "delta_value_text": "+0",
+            "contribution": 0.9026113141068864,
+            "contribution_abs": 0.9026113141068864,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is mutagenic",
+            "text_hint": "For ring count, the neighbor's ring count is value 5, while the query's ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is 0.9026, which pushes toward option (B): is mutagenic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.266245608034635,
+            "query_value": 0.266245608034635,
+            "delta_value": 0.0,
+            "base_value_text": "value 0.2662",
+            "query_value_text": "value 0.2662",
+            "delta_value_text": "+0",
+            "contribution": 0.7219255646727012,
+            "contribution_abs": 0.7219255646727012,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is mutagenic",
+            "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2662, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is +0. This pairwise contribution is 0.7219, which pushes toward option (B): is mutagenic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__LabuteASA",
+            "display_name": "Labute surface area",
+            "description": "Labute approximate surface area",
+            "source_family": "rdkit",
+            "raw_name": "LabuteASA",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 131.8727315892109,
+            "query_value": 131.8727315892109,
+            "delta_value": 0.0,
+            "base_value_text": "value 131.8727",
+            "query_value_text": "value 131.8727",
+            "delta_value_text": "+0",
+            "contribution": -0.7078889955642781,
+            "contribution_abs": 0.7078889955642781,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not mutagenic",
+            "text_hint": "For Labute surface area, the neighbor's Labute surface area is value 131.8727, while the query's Labute surface area is value 131.8727. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7079, which pushes toward option (A): is not mutagenic."
+          },
+          {
+            "feature_name": "fg_top_level__benzene",
+            "display_name": "benzene",
+            "description": "top-level functional-group indicator or count for benzene",
+            "source_family": "fg_top_level",
+            "raw_name": "benzene",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 4.0,
+            "query_value": 4.0,
+            "delta_value": 0.0,
+            "base_value_text": "count 4",
+            "query_value_text": "count 4",
+            "delta_value_text": "+0",
+            "contribution": 0.6895073570298892,
+            "contribution_abs": 0.6895073570298892,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is mutagenic",
+            "text_hint": "The neighbor has 4 copies of benzene, while the query has 4 (query-minus-neighbor delta +0). This pairwise contribution is 0.6895, which pushes toward option (B): is mutagenic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "display_name": "maximum partial charge",
+            "description": "most positive atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxPartialCharge",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.2767532688831201,
+            "query_value": 0.2805187559465614,
+            "delta_value": 0.0037654870634413196,
+            "base_value_text": "value 0.2768",
+            "query_value_text": "value 0.2805",
+            "delta_value_text": "+0.0038",
+            "contribution": -0.4561575818342649,
+            "contribution_abs": 0.4561575818342649,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not mutagenic",
+            "text_hint": "For maximum partial charge, the neighbor's maximum partial charge is value 0.2768, while the query's maximum partial charge is value 0.2805. The query-minus-neighbor delta is +0.0038. This pairwise contribution is -0.4562, which pushes toward option (A): is not mutagenic."
+          },
+          {
+            "feature_name": "fg_top_level__nitro",
+            "display_name": "nitro",
+            "description": "top-level functional-group indicator or count for nitro",
+            "source_family": "fg_top_level",
+            "raw_name": "nitro",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 1.0,
+            "query_value": 1.0,
+            "delta_value": 0.0,
+            "base_value_text": "present (1)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+0",
+            "contribution": 0.3244082632122705,
+            "contribution_abs": 0.3244082632122705,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is mutagenic",
+            "text_hint": "Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is 0.3244, which pushes toward option (B): is mutagenic."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 5.4516,
+            "query_value": 5.4516,
+            "delta_value": 0.0,
+            "base_value_text": "value 5.4516",
+            "query_value_text": "value 5.4516",
+            "delta_value_text": "+0",
+            "contribution": 0.3231625364962315,
+            "contribution_abs": 0.3231625364962315,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is mutagenic",
+            "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.4516, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3232, which pushes toward option (B): is mutagenic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+            "display_name": "heavy-atom molecular weight",
+            "description": "molecular weight contributed by heavy atoms",
+            "source_family": "rdkit",
+            "raw_name": "HeavyAtomMolWt",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 286.225,
+            "query_value": 286.225,
+            "delta_value": 0.0,
+            "base_value_text": "value 286.225",
+            "query_value_text": "value 286.225",
+            "delta_value_text": "+0",
+            "contribution": 0.2753892815364378,
+            "contribution_abs": 0.2753892815364378,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is mutagenic",
+            "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 286.225, while the query's heavy-atom molecular weight is value 286.225. The query-minus-neighbor delta is +0. This pairwise contribution is 0.2754, which pushes toward option (B): is mutagenic."
           }
         ]
       }
@@ -477,12 +693,42 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.9826678263374636,
+        "pair_score_class1_probability": 0.9826678263374636,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9826678263374636,
+        "teacher_confidence_margin": 0.48266782633746363,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is mutagenic",
           "label": 1
         },
+        "feature_logit": 3.848417270927404,
+        "feature_probability": 0.9791313398390659,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.47913133983906586,
+        "feature_evidence_strength": "high",
+        "total_abs_feature_contribution": 8.955133132898656,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 3.2078534697132324,
+        "displayed_feature_probability": 0.9611287499071526,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.4611287499071526,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_feature_contribution": 4.816910866653791,
+        "displayed_abs_contribution_coverage": 0.5378938308530342,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "rdkit_pka__rdkit__qed",
@@ -609,6 +855,48 @@
             "supports_option": "B",
             "supports_text": "is mutagenic",
             "text_hint": "For ring count, the neighbor's ring count is value 4, while the query's ring count is value 5. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5519, which pushes toward option (B): is mutagenic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 5.054400000000003,
+            "query_value": 5.451600000000003,
+            "delta_value": 0.3971999999999998,
+            "base_value_text": "value 5.0544",
+            "query_value_text": "value 5.4516",
+            "delta_value_text": "+0.3972",
+            "contribution": -0.42110740323387774,
+            "contribution_abs": 0.42110740323387774,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not mutagenic",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 5.0544, while the query's estimated logP is value 5.4516. The query-minus-neighbor delta is +0.3972. This pairwise contribution is -0.4211, which pushes toward option (A): is not mutagenic."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 5.0544,
+            "query_value": 5.4516,
+            "delta_value": 0.3971999999999998,
+            "base_value_text": "value 5.0544",
+            "query_value_text": "value 5.4516",
+            "delta_value_text": "+0.3972",
+            "contribution": -0.38342129523640167,
+            "contribution_abs": 0.38342129523640167,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not mutagenic",
+            "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.0544, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0.3972. This pairwise contribution is -0.3834, which pushes toward option (A): is not mutagenic."
           }
         ]
       },
@@ -623,12 +911,42 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.9808700684840875,
+        "pair_score_class1_probability": 0.9808700684840875,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9808700684840875,
+        "teacher_confidence_margin": 0.48087006848408753,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is mutagenic",
           "label": 1
         },
+        "feature_logit": 3.7478964490018956,
+        "feature_probability": 0.9769753591942141,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.4769753591942141,
+        "feature_evidence_strength": "high",
+        "total_abs_feature_contribution": 9.88222425014199,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 4.16139590726098,
+        "displayed_feature_probability": 0.9846534023771636,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.4846534023771636,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_feature_contribution": 5.115787960252953,
+        "displayed_abs_contribution_coverage": 0.5176757611202203,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "rdkit_pka__rdkit__qed",
@@ -755,6 +1073,48 @@
             "supports_option": "B",
             "supports_text": "is mutagenic",
             "text_hint": "For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.25, while the query's fraction of sp3 carbons is value 0.1. The query-minus-neighbor delta is -0.15. This pairwise contribution is 0.5799, which pushes toward option (B): is mutagenic."
+          },
+          {
+            "feature_name": "fg_top_level__alkene",
+            "display_name": "alkene",
+            "description": "top-level functional-group indicator or count for alkene",
+            "source_family": "fg_top_level",
+            "raw_name": "alkene",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 0.5712706423982175,
+            "contribution_abs": 0.5712706423982175,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is mutagenic",
+            "text_hint": "The neighbor does not have alkene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.5713, which pushes toward option (B): is mutagenic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 2.21164,
+            "query_value": 5.451600000000003,
+            "delta_value": 3.2399600000000026,
+            "base_value_text": "value 2.2116",
+            "query_value_text": "value 5.4516",
+            "delta_value_text": "+3.24",
+            "contribution": -0.4771960264959866,
+            "contribution_abs": 0.4771960264959866,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_option": "A",
+            "supports_text": "is not mutagenic",
+            "text_hint": "For estimated logP, the neighbor's estimated logP is value 2.2116, while the query's estimated logP is value 5.4516. The query-minus-neighbor delta is +3.24. This pairwise contribution is -0.4772, which pushes toward option (A): is not mutagenic."
           }
         ]
       },
@@ -769,12 +1129,42 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.9976056815546688,
+        "pair_score_class1_probability": 0.9976056815546688,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9976056815546688,
+        "teacher_confidence_margin": 0.4976056815546688,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is mutagenic",
           "label": 1
         },
+        "feature_logit": 5.8429701229346085,
+        "feature_probability": 0.9971081711046301,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.4971081711046301,
+        "feature_evidence_strength": "high",
+        "total_abs_feature_contribution": 11.551575381538495,
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 6.4235119439034625,
+        "displayed_feature_probability": 0.9983796831701304,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.49837968317013037,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_feature_contribution": 6.4235119439034625,
+        "displayed_abs_contribution_coverage": 0.5560723738313127,
+        "displayed_teacher_agreement": true,
         "top_pair_terms": [
           {
             "feature_name": "fg_top_level__nitro",
@@ -901,6 +1291,48 @@
             "supports_option": "B",
             "supports_text": "is mutagenic",
             "text_hint": "For aromatic ring count, the neighbor's aromatic ring count is value 5, while the query's aromatic ring count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is 0.6021, which pushes toward option (B): is mutagenic."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticCarbocycles",
+            "display_name": "aliphatic carbocycle count",
+            "description": "number of aliphatic carbocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticCarbocycles",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "value 0",
+            "query_value_text": "value 1",
+            "delta_value_text": "+1",
+            "contribution": 0.5948889464292333,
+            "contribution_abs": 0.5948889464292333,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is mutagenic",
+            "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5949, which pushes toward option (B): is mutagenic."
+          },
+          {
+            "feature_name": "fg_top_level__alkene",
+            "display_name": "alkene",
+            "description": "top-level functional-group indicator or count for alkene",
+            "source_family": "fg_top_level",
+            "raw_name": "alkene",
+            "nlp_readiness": "natural_language_ready",
+            "base_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "base_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "contribution": 0.5712706423982175,
+            "contribution_abs": 0.5712706423982175,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_option": "B",
+            "supports_text": "is mutagenic",
+            "text_hint": "The neighbor does not have alkene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.5713, which pushes toward option (B): is mutagenic."
           }
         ]
       }
@@ -916,27 +1348,41 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.984505628526441,
+        "pair_score_class1_probability": 0.984505628526441,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.984505628526441,
+        "teacher_confidence_margin": 0.48450562852644097,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is mutagenic",
           "label": 1
         },
-        "middle_draft": "First, For ring count, the neighbor's ring count is value 5, while the query's ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is 0.9026, which pushes toward option (B): is mutagenic. Next, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2662, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is +0. This pairwise contribution is 0.7219, which pushes toward option (B): is mutagenic. Then, For Labute surface area, the neighbor's Labute surface area is value 131.8727, while the query's Labute surface area is value 131.8727. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7079, which pushes toward option (A): is not mutagenic. After that, The neighbor has 4 copies of benzene, while the query has 4 (query-minus-neighbor delta +0). This pairwise contribution is 0.6895, which pushes toward option (B): is mutagenic. Finally, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is 0.3244, which pushes toward option (B): is mutagenic. Step 6, For estimated logD, the neighbor's estimated logD is value 5.4516, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3232, which pushes toward option (B): is mutagenic. Taken together, this positive-neighbor comparison pushes toward option (B): is mutagenic with pair score 0.9845."
-      },
-      {
-        "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
-        "neighbor_smiles": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
-        "neighbor_role": "positive_neighbor",
-        "pair_model_type": "positive_neighbor_model",
-        "pair_score": 0.9600266619525235,
-        "pair_prediction": 1,
-        "pair_prediction_semantics": {
+        "feature_logit": 3.9758083895895777,
+        "feature_probability": 0.9815814807896528,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
           "option": "B",
           "text": "is mutagenic",
           "label": 1
         },
-        "middle_draft": "First, For ring count, the neighbor's ring count is value 5, while the query's ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is 0.9026, which pushes toward option (B): is mutagenic. Next, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2662, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is +0. This pairwise contribution is 0.7219, which pushes toward option (B): is mutagenic. Then, For Labute surface area, the neighbor's Labute surface area is value 131.8727, while the query's Labute surface area is value 131.8727. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7079, which pushes toward option (A): is not mutagenic. After that, The neighbor has 4 copies of benzene, while the query has 4 (query-minus-neighbor delta +0). This pairwise contribution is 0.6895, which pushes toward option (B): is mutagenic. Finally, For maximum partial charge, the neighbor's maximum partial charge is value 0.2768, while the query's maximum partial charge is value 0.2805. The query-minus-neighbor delta is +0.0038. This pairwise contribution is -0.4562, which pushes toward option (A): is not mutagenic. Step 6, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is 0.3244, which pushes toward option (B): is mutagenic. Taken together, this positive-neighbor comparison pushes toward option (B): is mutagenic with pair score 0.96."
+        "feature_confidence_margin": 0.4815814807896528,
+        "feature_evidence_strength": "high",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 2.841834372647926,
+        "displayed_feature_probability": 0.9448950530359556,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.44489505303595556,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_contribution_coverage": 0.5206008718279564,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "For ring count, the neighbor's ring count is value 5, while the query's ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is 0.9026, which pushes toward option (B): is mutagenic. Another relevant signal comes from a different feature. For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2662, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is +0. This pairwise contribution is 0.7219, which pushes toward option (B): is mutagenic. A related feature-level signal also matters. For Labute surface area, the neighbor's Labute surface area is value 131.8727, while the query's Labute surface area is value 131.8727. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7079, which pushes toward option (A): is not mutagenic. The evidence also includes another descriptor contrast. The neighbor has 4 copies of benzene, while the query has 4 (query-minus-neighbor delta +0). This pairwise contribution is 0.6895, which pushes toward option (B): is mutagenic. In addition, another feature provides context. Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is 0.3244, which pushes toward option (B): is mutagenic. A further feature-level signal points to another part of the profile. For estimated logD, the neighbor's estimated logD is value 5.4516, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3232, which pushes toward option (B): is mutagenic. The same profile includes another relevant descriptor. For minimum partial charge, the neighbor's minimum partial charge is value -0.2583, while the query's minimum partial charge is value -0.2583. The query-minus-neighbor delta is -0. This pairwise contribution is 0.3127, which pushes toward option (B): is mutagenic. One more feature-level signal is worth accounting for. For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 286.225, while the query's heavy-atom molecular weight is value 286.225. The query-minus-neighbor delta is +0. This pairwise contribution is 0.2754, which pushes toward option (B): is mutagenic. Taken together, relative to a neighbor labeled option (B): is mutagenic, the pairwise feature evidence strongly supports option (B): is mutagenic. This neighbor provides high-strength evidence for option (B): is mutagenic."
       },
       {
         "neighbor_id": "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
@@ -944,13 +1390,83 @@
         "neighbor_role": "positive_neighbor",
         "pair_model_type": "positive_neighbor_model",
         "pair_score": 0.9356212070822685,
+        "pair_score_class1_probability": 0.9356212070822685,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9356212070822685,
+        "teacher_confidence_margin": 0.4356212070822685,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is mutagenic",
           "label": 1
         },
-        "middle_draft": "First, For ring count, the neighbor's ring count is value 5, while the query's ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is 0.9026, which pushes toward option (B): is mutagenic. Next, For Labute surface area, the neighbor's Labute surface area is value 131.8727, while the query's Labute surface area is value 131.8727. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7079, which pushes toward option (A): is not mutagenic. Then, The neighbor has 4 copies of benzene, while the query has 4 (query-minus-neighbor delta +0). This pairwise contribution is 0.6895, which pushes toward option (B): is mutagenic. After that, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2662, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is +0. This pairwise contribution is 0.6331, which pushes toward option (B): is mutagenic. Finally, For maximum partial charge, the neighbor's maximum partial charge is value 0.2768, while the query's maximum partial charge is value 0.2805. The query-minus-neighbor delta is +0.0038. This pairwise contribution is -0.4562, which pushes toward option (A): is not mutagenic. Step 6, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is 0.3244, which pushes toward option (B): is mutagenic. Taken together, this positive-neighbor comparison pushes toward option (B): is mutagenic with pair score 0.9356."
+        "feature_logit": 2.500572026544098,
+        "feature_probability": 0.924181911437362,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.42418191143736195,
+        "feature_evidence_strength": "high",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 1.9841773839842118,
+        "displayed_feature_probability": 0.8791257696834959,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.3791257696834959,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_contribution_coverage": 0.5131009393081817,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "For ring count, the neighbor's ring count is value 5, while the query's ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is 0.9026, which pushes toward option (B): is mutagenic. Another relevant signal comes from a different feature. For Labute surface area, the neighbor's Labute surface area is value 131.8727, while the query's Labute surface area is value 131.8727. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7079, which pushes toward option (A): is not mutagenic. A related feature-level signal also matters. The neighbor has 4 copies of benzene, while the query has 4 (query-minus-neighbor delta +0). This pairwise contribution is 0.6895, which pushes toward option (B): is mutagenic. The evidence also includes another descriptor contrast. For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2662, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is +0. This pairwise contribution is 0.6331, which pushes toward option (B): is mutagenic. In addition, another feature provides context. For maximum partial charge, the neighbor's maximum partial charge is value 0.2768, while the query's maximum partial charge is value 0.2805. The query-minus-neighbor delta is +0.0038. This pairwise contribution is -0.4562, which pushes toward option (A): is not mutagenic. A further feature-level signal points to another part of the profile. Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is 0.3244, which pushes toward option (B): is mutagenic. The same profile includes another relevant descriptor. For estimated logD, the neighbor's estimated logD is value 5.4516, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3232, which pushes toward option (B): is mutagenic. One more feature-level signal is worth accounting for. For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 286.225, while the query's heavy-atom molecular weight is value 286.225. The query-minus-neighbor delta is +0. This pairwise contribution is 0.2754, which pushes toward option (B): is mutagenic. Taken together, relative to a neighbor labeled option (B): is mutagenic, the pairwise feature evidence strongly supports option (B): is mutagenic. This neighbor provides high-strength evidence for option (B): is mutagenic."
+      },
+      {
+        "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
+        "neighbor_smiles": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
+        "neighbor_role": "positive_neighbor",
+        "pair_model_type": "positive_neighbor_model",
+        "pair_score": 0.9600266619525235,
+        "pair_score_class1_probability": 0.9600266619525235,
+        "pair_prediction": 1,
+        "pair_prediction_probability": 0.9600266619525235,
+        "teacher_confidence_margin": 0.4600266619525235,
+        "teacher_confidence": "high",
+        "pair_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "feature_logit": 3.002893975508748,
+        "feature_probability": 0.9527046958668378,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.4527046958668378,
+        "feature_evidence_strength": "high",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 2.0729577396558736,
+        "displayed_feature_probability": 0.8882468968603043,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.38824689686030434,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_contribution_coverage": 0.5163040742040219,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "For ring count, the neighbor's ring count is value 5, while the query's ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is 0.9026, which pushes toward option (B): is mutagenic. Another relevant signal comes from a different feature. For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2662, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is +0. This pairwise contribution is 0.7219, which pushes toward option (B): is mutagenic. A related feature-level signal also matters. For Labute surface area, the neighbor's Labute surface area is value 131.8727, while the query's Labute surface area is value 131.8727. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7079, which pushes toward option (A): is not mutagenic. The evidence also includes another descriptor contrast. The neighbor has 4 copies of benzene, while the query has 4 (query-minus-neighbor delta +0). This pairwise contribution is 0.6895, which pushes toward option (B): is mutagenic. In addition, another feature provides context. For maximum partial charge, the neighbor's maximum partial charge is value 0.2768, while the query's maximum partial charge is value 0.2805. The query-minus-neighbor delta is +0.0038. This pairwise contribution is -0.4562, which pushes toward option (A): is not mutagenic. A further feature-level signal points to another part of the profile. Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is 0.3244, which pushes toward option (B): is mutagenic. The same profile includes another relevant descriptor. For estimated logD, the neighbor's estimated logD is value 5.4516, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3232, which pushes toward option (B): is mutagenic. One more feature-level signal is worth accounting for. For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 286.225, while the query's heavy-atom molecular weight is value 286.225. The query-minus-neighbor delta is +0. This pairwise contribution is 0.2754, which pushes toward option (B): is mutagenic. Taken together, relative to a neighbor labeled option (B): is mutagenic, the pairwise feature evidence strongly supports option (B): is mutagenic. This neighbor provides high-strength evidence for option (B): is mutagenic."
       }
     ],
     "negative_neighbors": [
@@ -960,13 +1476,41 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.9826678263374636,
+        "pair_score_class1_probability": 0.9826678263374636,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9826678263374636,
+        "teacher_confidence_margin": 0.48266782633746363,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is mutagenic",
           "label": 1
         },
-        "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2105, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is +0.0557. This pairwise contribution is 0.8289, which pushes toward option (B): is mutagenic. Next, The neighbor has 4 copies of benzene, while the query has 4 (query-minus-neighbor delta +0). This pairwise contribution is 0.7878, which pushes toward option (B): is mutagenic. Then, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is 0.6776, which pushes toward option (B): is mutagenic. After that, For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5949, which pushes toward option (B): is mutagenic. Finally, The neighbor does not have alkene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.5713, which pushes toward option (B): is mutagenic. Step 6, For ring count, the neighbor's ring count is value 4, while the query's ring count is value 5. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5519, which pushes toward option (B): is mutagenic. Taken together, this negative-neighbor comparison pushes toward option (B): is mutagenic with pair score 0.9827."
+        "feature_logit": 3.848417270927404,
+        "feature_probability": 0.9791313398390659,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.47913133983906586,
+        "feature_evidence_strength": "high",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 3.2078534697132324,
+        "displayed_feature_probability": 0.9611287499071526,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.4611287499071526,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_contribution_coverage": 0.5378938308530342,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2105, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is +0.0557. This pairwise contribution is 0.8289, which pushes toward option (B): is mutagenic. Another relevant signal comes from a different feature. The neighbor has 4 copies of benzene, while the query has 4 (query-minus-neighbor delta +0). This pairwise contribution is 0.7878, which pushes toward option (B): is mutagenic. A related feature-level signal also matters. Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is 0.6776, which pushes toward option (B): is mutagenic. The evidence also includes another descriptor contrast. For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5949, which pushes toward option (B): is mutagenic. In addition, another feature provides context. The neighbor does not have alkene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.5713, which pushes toward option (B): is mutagenic. A further feature-level signal points to another part of the profile. For ring count, the neighbor's ring count is value 4, while the query's ring count is value 5. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5519, which pushes toward option (B): is mutagenic. The same profile includes another relevant descriptor. For estimated logP, the neighbor's estimated logP is value 5.0544, while the query's estimated logP is value 5.4516. The query-minus-neighbor delta is +0.3972. This pairwise contribution is -0.4211, which pushes toward option (A): is not mutagenic. One more feature-level signal is worth accounting for. For estimated logD, the neighbor's estimated logD is value 5.0544, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0.3972. This pairwise contribution is -0.3834, which pushes toward option (A): is not mutagenic. Taken together, relative to a neighbor labeled option (A): is not mutagenic, the pairwise feature evidence strongly supports option (B): is mutagenic. This neighbor provides high-strength evidence for option (B): is mutagenic."
       },
       {
         "neighbor_id": "Cc1cccc(C)c1[N+](=O)[O-]",
@@ -974,13 +1518,41 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.9808700684840875,
+        "pair_score_class1_probability": 0.9808700684840875,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9808700684840875,
+        "teacher_confidence_margin": 0.48087006848408753,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is mutagenic",
           "label": 1
         },
-        "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4558, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is -0.1896. This pairwise contribution is 0.8786, which pushes toward option (B): is mutagenic. Next, For ring count, the neighbor's ring count is value 1, while the query's ring count is value 5. The query-minus-neighbor delta is +4. This pairwise contribution is 0.7263, which pushes toward option (B): is mutagenic. Then, Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is 0.6776, which pushes toward option (B): is mutagenic. After that, The neighbor has 1 copies of benzene, while the query has 4 (query-minus-neighbor delta +3). This pairwise contribution is 0.61, which pushes toward option (B): is mutagenic. Finally, For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5949, which pushes toward option (B): is mutagenic. Step 6, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.25, while the query's fraction of sp3 carbons is value 0.1. The query-minus-neighbor delta is -0.15. This pairwise contribution is 0.5799, which pushes toward option (B): is mutagenic. Taken together, this negative-neighbor comparison pushes toward option (B): is mutagenic with pair score 0.9809."
+        "feature_logit": 3.7478964490018956,
+        "feature_probability": 0.9769753591942141,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.4769753591942141,
+        "feature_evidence_strength": "high",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 4.16139590726098,
+        "displayed_feature_probability": 0.9846534023771636,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.4846534023771636,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_contribution_coverage": 0.5176757611202203,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.4558, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is -0.1896. This pairwise contribution is 0.8786, which pushes toward option (B): is mutagenic. Another relevant signal comes from a different feature. For ring count, the neighbor's ring count is value 1, while the query's ring count is value 5. The query-minus-neighbor delta is +4. This pairwise contribution is 0.7263, which pushes toward option (B): is mutagenic. A related feature-level signal also matters. Both the neighbor and the query have nitro (query-minus-neighbor delta +0). This pairwise contribution is 0.6776, which pushes toward option (B): is mutagenic. The evidence also includes another descriptor contrast. The neighbor has 1 copies of benzene, while the query has 4 (query-minus-neighbor delta +3). This pairwise contribution is 0.61, which pushes toward option (B): is mutagenic. In addition, another feature provides context. For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5949, which pushes toward option (B): is mutagenic. A further feature-level signal points to another part of the profile. For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.25, while the query's fraction of sp3 carbons is value 0.1. The query-minus-neighbor delta is -0.15. This pairwise contribution is 0.5799, which pushes toward option (B): is mutagenic. The same profile includes another relevant descriptor. The neighbor does not have alkene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.5713, which pushes toward option (B): is mutagenic. One more feature-level signal is worth accounting for. For estimated logP, the neighbor's estimated logP is value 2.2116, while the query's estimated logP is value 5.4516. The query-minus-neighbor delta is +3.24. This pairwise contribution is -0.4772, which pushes toward option (A): is not mutagenic. Taken together, relative to a neighbor labeled option (A): is not mutagenic, the pairwise feature evidence strongly supports option (B): is mutagenic. This neighbor provides high-strength evidence for option (B): is mutagenic."
       },
       {
         "neighbor_id": "ClCc1c2ccccc2c2ccc3cccc4ccc1c2c43",
@@ -988,13 +1560,41 @@
         "neighbor_role": "negative_neighbor",
         "pair_model_type": "negative_neighbor_model",
         "pair_score": 0.9976056815546688,
+        "pair_score_class1_probability": 0.9976056815546688,
         "pair_prediction": 1,
+        "pair_prediction_probability": 0.9976056815546688,
+        "teacher_confidence_margin": 0.4976056815546688,
+        "teacher_confidence": "high",
         "pair_prediction_semantics": {
           "option": "B",
           "text": "is mutagenic",
           "label": 1
         },
-        "middle_draft": "First, The neighbor does not have nitro, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 1.1775, which pushes toward option (B): is mutagenic. Next, For aromatic carbocycle count, the neighbor's aromatic carbocycle count is value 5, while the query's aromatic carbocycle count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is 1.0518, which pushes toward option (B): is mutagenic. Then, The neighbor has 5 copies of benzene, while the query has 4 (query-minus-neighbor delta -1). This pairwise contribution is 0.949, which pushes toward option (B): is mutagenic. After that, For ring count, the neighbor's ring count is value 5, while the query's ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is 0.8395, which pushes toward option (B): is mutagenic. Finally, The neighbor has alkyl chloride, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.6374, which pushes toward option (B): is mutagenic. Step 6, For aromatic ring count, the neighbor's aromatic ring count is value 5, while the query's aromatic ring count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is 0.6021, which pushes toward option (B): is mutagenic. Taken together, this negative-neighbor comparison pushes toward option (B): is mutagenic with pair score 0.9976."
+        "feature_logit": 5.8429701229346085,
+        "feature_probability": 0.9971081711046301,
+        "feature_prediction": 1,
+        "feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "feature_confidence_margin": 0.4971081711046301,
+        "feature_evidence_strength": "high",
+        "teacher_feature_agreement": true,
+        "teacher_aligned_evidence_strength": "high",
+        "displayed_feature_logit": 6.4235119439034625,
+        "displayed_feature_probability": 0.9983796831701304,
+        "displayed_feature_prediction": 1,
+        "displayed_feature_prediction_semantics": {
+          "option": "B",
+          "text": "is mutagenic",
+          "label": 1
+        },
+        "displayed_feature_confidence_margin": 0.49837968317013037,
+        "displayed_feature_evidence_strength": "high",
+        "displayed_abs_contribution_coverage": 0.5560723738313127,
+        "displayed_teacher_agreement": true,
+        "middle_draft": "The neighbor does not have nitro, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 1.1775, which pushes toward option (B): is mutagenic. Another relevant signal comes from a different feature. For aromatic carbocycle count, the neighbor's aromatic carbocycle count is value 5, while the query's aromatic carbocycle count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is 1.0518, which pushes toward option (B): is mutagenic. A related feature-level signal also matters. The neighbor has 5 copies of benzene, while the query has 4 (query-minus-neighbor delta -1). This pairwise contribution is 0.949, which pushes toward option (B): is mutagenic. The evidence also includes another descriptor contrast. For ring count, the neighbor's ring count is value 5, while the query's ring count is value 5. The query-minus-neighbor delta is +0. This pairwise contribution is 0.8395, which pushes toward option (B): is mutagenic. In addition, another feature provides context. The neighbor has alkyl chloride, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.6374, which pushes toward option (B): is mutagenic. A further feature-level signal points to another part of the profile. For aromatic ring count, the neighbor's aromatic ring count is value 5, while the query's aromatic ring count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is 0.6021, which pushes toward option (B): is mutagenic. The same profile includes another relevant descriptor. For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5949, which pushes toward option (B): is mutagenic. One more feature-level signal is worth accounting for. The neighbor does not have alkene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.5713, which pushes toward option (B): is mutagenic. Taken together, relative to a neighbor labeled option (A): is not mutagenic, the pairwise feature evidence strongly supports option (B): is mutagenic. This neighbor provides high-strength evidence for option (B): is mutagenic."
       }
     ]
   },
@@ -1002,7 +1602,7 @@
     "positive_neighbors": {
       "group_name": "positive_neighbors",
       "num_neighbors": 3,
-      "num_shared_features": 6,
+      "num_shared_features": 8,
       "num_single_neighbor_features": 1,
       "shared_evidence": [
         {
@@ -1019,8 +1619,8 @@
           ],
           "neighbor_ids": [
             "O=[N+]([O-])c1c2c(c3ccc4cccc5ccc1c3c45)CCC=C2",
-            "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
-            "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4"
+            "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
+            "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4"
           ],
           "neighbor_similarities": [
             0.8218125960061444,
@@ -1061,9 +1661,9 @@
             },
             {
               "neighbor_rank": 2,
-              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
+              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
               "neighbor_similarity": 0.516289592760181,
-              "pair_score": 0.9600266619525235,
+              "pair_score": 0.9356212070822685,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
@@ -1080,9 +1680,9 @@
             },
             {
               "neighbor_rank": 3,
-              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
+              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
               "neighbor_similarity": 0.516289592760181,
-              "pair_score": 0.9356212070822685,
+              "pair_score": 0.9600266619525235,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
@@ -1113,8 +1713,8 @@
           ],
           "neighbor_ids": [
             "O=[N+]([O-])c1c2c(c3ccc4cccc5ccc1c3c45)CCC=C2",
-            "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
-            "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4"
+            "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
+            "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4"
           ],
           "neighbor_similarities": [
             0.8218125960061444,
@@ -1155,25 +1755,6 @@
             },
             {
               "neighbor_rank": 2,
-              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
-              "neighbor_similarity": 0.516289592760181,
-              "pair_score": 0.9600266619525235,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "is mutagenic",
-                "label": 1
-              },
-              "contribution": -0.7078889955642781,
-              "contribution_abs": 0.7078889955642781,
-              "contribution_rank": 3,
-              "supports_label": 0,
-              "supports_option": "A",
-              "supports_text": "is not mutagenic",
-              "text_hint": "For Labute surface area, the neighbor's Labute surface area is value 131.8727, while the query's Labute surface area is value 131.8727. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7079, which pushes toward option (A): is not mutagenic."
-            },
-            {
-              "neighbor_rank": 3,
               "neighbor_id": "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
               "neighbor_similarity": 0.516289592760181,
               "pair_score": 0.9356212070822685,
@@ -1186,6 +1767,25 @@
               "contribution": -0.7078889955642781,
               "contribution_abs": 0.7078889955642781,
               "contribution_rank": 2,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not mutagenic",
+              "text_hint": "For Labute surface area, the neighbor's Labute surface area is value 131.8727, while the query's Labute surface area is value 131.8727. The query-minus-neighbor delta is +0. This pairwise contribution is -0.7079, which pushes toward option (A): is not mutagenic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
+              "neighbor_similarity": 0.516289592760181,
+              "pair_score": 0.9600266619525235,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": -0.7078889955642781,
+              "contribution_abs": 0.7078889955642781,
+              "contribution_rank": 3,
               "supports_label": 0,
               "supports_option": "A",
               "supports_text": "is not mutagenic",
@@ -1207,8 +1807,8 @@
           ],
           "neighbor_ids": [
             "O=[N+]([O-])c1c2c(c3ccc4cccc5ccc1c3c45)CCC=C2",
-            "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
-            "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4"
+            "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
+            "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4"
           ],
           "neighbor_similarities": [
             0.8218125960061444,
@@ -1249,25 +1849,6 @@
             },
             {
               "neighbor_rank": 2,
-              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
-              "neighbor_similarity": 0.516289592760181,
-              "pair_score": 0.9600266619525235,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "is mutagenic",
-                "label": 1
-              },
-              "contribution": 0.7219255646727012,
-              "contribution_abs": 0.7219255646727012,
-              "contribution_rank": 2,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "is mutagenic",
-              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2662, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is +0. This pairwise contribution is 0.7219, which pushes toward option (B): is mutagenic."
-            },
-            {
-              "neighbor_rank": 3,
               "neighbor_id": "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
               "neighbor_similarity": 0.516289592760181,
               "pair_score": 0.9356212070822685,
@@ -1284,6 +1865,25 @@
               "supports_option": "B",
               "supports_text": "is mutagenic",
               "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2662, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is +0. This pairwise contribution is 0.6331, which pushes toward option (B): is mutagenic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
+              "neighbor_similarity": 0.516289592760181,
+              "pair_score": 0.9600266619525235,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": 0.7219255646727012,
+              "contribution_abs": 0.7219255646727012,
+              "contribution_rank": 2,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is mutagenic",
+              "text_hint": "For QED drug-likeness, the neighbor's QED drug-likeness is value 0.2662, while the query's QED drug-likeness is value 0.2662. The query-minus-neighbor delta is +0. This pairwise contribution is 0.7219, which pushes toward option (B): is mutagenic."
             }
           ]
         },
@@ -1301,8 +1901,8 @@
           ],
           "neighbor_ids": [
             "O=[N+]([O-])c1c2c(c3ccc4cccc5ccc1c3c45)CCC=C2",
-            "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
-            "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4"
+            "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
+            "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4"
           ],
           "neighbor_similarities": [
             0.8218125960061444,
@@ -1343,25 +1943,6 @@
             },
             {
               "neighbor_rank": 2,
-              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
-              "neighbor_similarity": 0.516289592760181,
-              "pair_score": 0.9600266619525235,
-              "pair_prediction": 1,
-              "pair_prediction_semantics": {
-                "option": "B",
-                "text": "is mutagenic",
-                "label": 1
-              },
-              "contribution": 0.6895073570298892,
-              "contribution_abs": 0.6895073570298892,
-              "contribution_rank": 4,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "is mutagenic",
-              "text_hint": "The neighbor has 4 copies of benzene, while the query has 4 (query-minus-neighbor delta +0). This pairwise contribution is 0.6895, which pushes toward option (B): is mutagenic."
-            },
-            {
-              "neighbor_rank": 3,
               "neighbor_id": "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
               "neighbor_similarity": 0.516289592760181,
               "pair_score": 0.9356212070822685,
@@ -1374,6 +1955,25 @@
               "contribution": 0.6895073570298892,
               "contribution_abs": 0.6895073570298892,
               "contribution_rank": 3,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is mutagenic",
+              "text_hint": "The neighbor has 4 copies of benzene, while the query has 4 (query-minus-neighbor delta +0). This pairwise contribution is 0.6895, which pushes toward option (B): is mutagenic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
+              "neighbor_similarity": 0.516289592760181,
+              "pair_score": 0.9600266619525235,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": 0.6895073570298892,
+              "contribution_abs": 0.6895073570298892,
+              "contribution_rank": 4,
               "supports_label": 1,
               "supports_option": "B",
               "supports_text": "is mutagenic",
@@ -1395,8 +1995,8 @@
           ],
           "neighbor_ids": [
             "O=[N+]([O-])c1c2c(c3ccc4cccc5ccc1c3c45)CCC=C2",
-            "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
-            "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4"
+            "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
+            "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4"
           ],
           "neighbor_similarities": [
             0.8218125960061444,
@@ -1437,9 +2037,9 @@
             },
             {
               "neighbor_rank": 2,
-              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
+              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
               "neighbor_similarity": 0.516289592760181,
-              "pair_score": 0.9600266619525235,
+              "pair_score": 0.9356212070822685,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
@@ -1456,9 +2056,9 @@
             },
             {
               "neighbor_rank": 3,
-              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
+              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
               "neighbor_similarity": 0.516289592760181,
-              "pair_score": 0.9356212070822685,
+              "pair_score": 0.9600266619525235,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
@@ -1476,6 +2076,194 @@
           ]
         },
         {
+          "feature_name": "rdkit_pka__pka__logd_estimate",
+          "display_name": "estimated logD",
+          "description": "estimated logD at the configured pH",
+          "source_family": "pka",
+          "raw_name": "logd_estimate",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "O=[N+]([O-])c1c2c(c3ccc4cccc5ccc1c3c45)CCC=C2",
+            "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
+            "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4"
+          ],
+          "neighbor_similarities": [
+            0.8218125960061444,
+            0.516289592760181,
+            0.516289592760181
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.5992699517758714
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is mutagenic",
+            "label": 1
+          },
+          "total_abs_contribution": 0.9694876094886945,
+          "total_weighted_evidence": 0.5992699517758714,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "O=[N+]([O-])c1c2c(c3ccc4cccc5ccc1c3c45)CCC=C2",
+              "neighbor_similarity": 0.8218125960061444,
+              "pair_score": 0.984505628526441,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": 0.3231625364962315,
+              "contribution_abs": 0.3231625364962315,
+              "contribution_rank": 6,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is mutagenic",
+              "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.4516, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3232, which pushes toward option (B): is mutagenic."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
+              "neighbor_similarity": 0.516289592760181,
+              "pair_score": 0.9356212070822685,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": 0.3231625364962315,
+              "contribution_abs": 0.3231625364962315,
+              "contribution_rank": 7,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is mutagenic",
+              "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.4516, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3232, which pushes toward option (B): is mutagenic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
+              "neighbor_similarity": 0.516289592760181,
+              "pair_score": 0.9600266619525235,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": 0.3231625364962315,
+              "contribution_abs": 0.3231625364962315,
+              "contribution_rank": 7,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is mutagenic",
+              "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.4516, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3232, which pushes toward option (B): is mutagenic."
+            }
+          ]
+        },
+        {
+          "feature_name": "rdkit_pka__rdkit__HeavyAtomMolWt",
+          "display_name": "heavy-atom molecular weight",
+          "description": "molecular weight contributed by heavy atoms",
+          "source_family": "rdkit",
+          "raw_name": "HeavyAtomMolWt",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "O=[N+]([O-])c1c2c(c3ccc4cccc5ccc1c3c45)CCC=C2",
+            "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
+            "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4"
+          ],
+          "neighbor_similarities": [
+            0.8218125960061444,
+            0.516289592760181,
+            0.516289592760181
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.5106796204016596
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is mutagenic",
+            "label": 1
+          },
+          "total_abs_contribution": 0.8261678446093135,
+          "total_weighted_evidence": 0.5106796204016596,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "O=[N+]([O-])c1c2c(c3ccc4cccc5ccc1c3c45)CCC=C2",
+              "neighbor_similarity": 0.8218125960061444,
+              "pair_score": 0.984505628526441,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": 0.2753892815364378,
+              "contribution_abs": 0.2753892815364378,
+              "contribution_rank": 8,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is mutagenic",
+              "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 286.225, while the query's heavy-atom molecular weight is value 286.225. The query-minus-neighbor delta is +0. This pairwise contribution is 0.2754, which pushes toward option (B): is mutagenic."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
+              "neighbor_similarity": 0.516289592760181,
+              "pair_score": 0.9356212070822685,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": 0.2753892815364378,
+              "contribution_abs": 0.2753892815364378,
+              "contribution_rank": 8,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is mutagenic",
+              "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 286.225, while the query's heavy-atom molecular weight is value 286.225. The query-minus-neighbor delta is +0. This pairwise contribution is 0.2754, which pushes toward option (B): is mutagenic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
+              "neighbor_similarity": 0.516289592760181,
+              "pair_score": 0.9600266619525235,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": 0.2753892815364378,
+              "contribution_abs": 0.2753892815364378,
+              "contribution_rank": 8,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is mutagenic",
+              "text_hint": "For heavy-atom molecular weight, the neighbor's heavy-atom molecular weight is value 286.225, while the query's heavy-atom molecular weight is value 286.225. The query-minus-neighbor delta is +0. This pairwise contribution is 0.2754, which pushes toward option (B): is mutagenic."
+            }
+          ]
+        },
+        {
           "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
           "display_name": "maximum partial charge",
           "description": "most positive atomic partial charge",
@@ -1487,8 +2275,8 @@
             3
           ],
           "neighbor_ids": [
-            "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
-            "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4"
+            "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
+            "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4"
           ],
           "neighbor_similarities": [
             0.516289592760181,
@@ -1509,9 +2297,9 @@
           "term_instances": [
             {
               "neighbor_rank": 2,
-              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
+              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
               "neighbor_similarity": 0.516289592760181,
-              "pair_score": 0.9600266619525235,
+              "pair_score": 0.9356212070822685,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
@@ -1528,9 +2316,9 @@
             },
             {
               "neighbor_rank": 3,
-              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3cc4c(c5ccc1c2c35)CCC=C4",
+              "neighbor_id": "O=[N+]([O-])c1ccc2ccc3c4c(cc5ccc1c2c53)C=CCC4",
               "neighbor_similarity": 0.516289592760181,
-              "pair_score": 0.9356212070822685,
+              "pair_score": 0.9600266619525235,
               "pair_prediction": 1,
               "pair_prediction_semantics": {
                 "option": "B",
@@ -1550,11 +2338,11 @@
       ],
       "single_neighbor_evidence": [
         {
-          "feature_name": "rdkit_pka__pka__logd_estimate",
-          "display_name": "estimated logD",
-          "description": "estimated logD at the configured pH",
-          "source_family": "pka",
-          "raw_name": "logd_estimate",
+          "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+          "display_name": "minimum partial charge",
+          "description": "most negative atomic partial charge",
+          "source_family": "rdkit",
+          "raw_name": "MinPartialCharge",
           "occurrence_count": 1,
           "neighbor_ranks": [
             1
@@ -1567,7 +2355,7 @@
           ],
           "support_weight_by_label": {
             "0": 0.0,
-            "1": 0.2655790430498984
+            "1": 0.25699645525255954
           },
           "support_mode": "single",
           "dominant_support": {
@@ -1575,8 +2363,8 @@
             "text": "is mutagenic",
             "label": 1
           },
-          "total_abs_contribution": 0.3231625364962315,
-          "total_weighted_evidence": 0.2655790430498984,
+          "total_abs_contribution": 0.3127190511577874,
+          "total_weighted_evidence": 0.25699645525255954,
           "term_instances": [
             {
               "neighbor_rank": 1,
@@ -1589,13 +2377,13 @@
                 "text": "is mutagenic",
                 "label": 1
               },
-              "contribution": 0.3231625364962315,
-              "contribution_abs": 0.3231625364962315,
-              "contribution_rank": 6,
+              "contribution": 0.3127190511577874,
+              "contribution_abs": 0.3127190511577874,
+              "contribution_rank": 7,
               "supports_label": 1,
               "supports_option": "B",
               "supports_text": "is mutagenic",
-              "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.4516, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3232, which pushes toward option (B): is mutagenic."
+              "text_hint": "For minimum partial charge, the neighbor's minimum partial charge is value -0.2583, while the query's minimum partial charge is value -0.2583. The query-minus-neighbor delta is -0. This pairwise contribution is 0.3127, which pushes toward option (B): is mutagenic."
             }
           ],
           "neighbor_rank": 1,
@@ -1608,20 +2396,20 @@
             "text": "is mutagenic",
             "label": 1
           },
-          "contribution": 0.3231625364962315,
-          "contribution_abs": 0.3231625364962315,
-          "contribution_rank": 6,
+          "contribution": 0.3127190511577874,
+          "contribution_abs": 0.3127190511577874,
+          "contribution_rank": 7,
           "supports_label": 1,
           "supports_option": "B",
           "supports_text": "is mutagenic",
-          "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.4516, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3232, which pushes toward option (B): is mutagenic."
+          "text_hint": "For minimum partial charge, the neighbor's minimum partial charge is value -0.2583, while the query's minimum partial charge is value -0.2583. The query-minus-neighbor delta is -0. This pairwise contribution is 0.3127, which pushes toward option (B): is mutagenic."
         }
       ]
     },
     "negative_neighbors": {
       "group_name": "negative_neighbors",
       "num_neighbors": 3,
-      "num_shared_features": 5,
+      "num_shared_features": 7,
       "num_single_neighbor_features": 5,
       "shared_evidence": [
         {
@@ -1907,6 +2695,194 @@
           ]
         },
         {
+          "feature_name": "rdkit_pka__rdkit__NumAliphaticCarbocycles",
+          "display_name": "aliphatic carbocycle count",
+          "description": "number of aliphatic carbocyclic rings",
+          "source_family": "rdkit",
+          "raw_name": "NumAliphaticCarbocycles",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "O=[N+]([O-])c1c2ccccc2cc2c1ccc1ccccc12",
+            "Cc1cccc(C)c1[N+](=O)[O-]",
+            "ClCc1c2ccccc2c2ccc3cccc4ccc1c2c43"
+          ],
+          "neighbor_similarities": [
+            0.3650510204081633,
+            0.30909090909090914,
+            0.2811428571428572
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.5682883602652924
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is mutagenic",
+            "label": 1
+          },
+          "total_abs_contribution": 1.7846668392876999,
+          "total_weighted_evidence": 0.5682883602652924,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "O=[N+]([O-])c1c2ccccc2cc2c1ccc1ccccc12",
+              "neighbor_similarity": 0.3650510204081633,
+              "pair_score": 0.9826678263374636,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": 0.5948889464292333,
+              "contribution_abs": 0.5948889464292333,
+              "contribution_rank": 4,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is mutagenic",
+              "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5949, which pushes toward option (B): is mutagenic."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "Cc1cccc(C)c1[N+](=O)[O-]",
+              "neighbor_similarity": 0.30909090909090914,
+              "pair_score": 0.9808700684840875,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": 0.5948889464292333,
+              "contribution_abs": 0.5948889464292333,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is mutagenic",
+              "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5949, which pushes toward option (B): is mutagenic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "ClCc1c2ccccc2c2ccc3cccc4ccc1c2c43",
+              "neighbor_similarity": 0.2811428571428572,
+              "pair_score": 0.9976056815546688,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": 0.5948889464292333,
+              "contribution_abs": 0.5948889464292333,
+              "contribution_rank": 7,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is mutagenic",
+              "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5949, which pushes toward option (B): is mutagenic."
+            }
+          ]
+        },
+        {
+          "feature_name": "fg_top_level__alkene",
+          "display_name": "alkene",
+          "description": "top-level functional-group indicator or count for alkene",
+          "source_family": "fg_top_level",
+          "raw_name": "alkene",
+          "occurrence_count": 3,
+          "neighbor_ranks": [
+            1,
+            2,
+            3
+          ],
+          "neighbor_ids": [
+            "O=[N+]([O-])c1c2ccccc2cc2c1ccc1ccccc12",
+            "Cc1cccc(C)c1[N+](=O)[O-]",
+            "ClCc1c2ccccc2c2ccc3cccc4ccc1c2c43"
+          ],
+          "neighbor_similarities": [
+            0.3650510204081633,
+            0.30909090909090914,
+            0.2811428571428572
+          ],
+          "support_weight_by_label": {
+            "0": 0.0,
+            "1": 0.5457261537381792
+          },
+          "support_mode": "single",
+          "dominant_support": {
+            "option": "B",
+            "text": "is mutagenic",
+            "label": 1
+          },
+          "total_abs_contribution": 1.7138119271946524,
+          "total_weighted_evidence": 0.5457261537381792,
+          "term_instances": [
+            {
+              "neighbor_rank": 1,
+              "neighbor_id": "O=[N+]([O-])c1c2ccccc2cc2c1ccc1ccccc12",
+              "neighbor_similarity": 0.3650510204081633,
+              "pair_score": 0.9826678263374636,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": 0.5712706423982175,
+              "contribution_abs": 0.5712706423982175,
+              "contribution_rank": 5,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is mutagenic",
+              "text_hint": "The neighbor does not have alkene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.5713, which pushes toward option (B): is mutagenic."
+            },
+            {
+              "neighbor_rank": 2,
+              "neighbor_id": "Cc1cccc(C)c1[N+](=O)[O-]",
+              "neighbor_similarity": 0.30909090909090914,
+              "pair_score": 0.9808700684840875,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": 0.5712706423982175,
+              "contribution_abs": 0.5712706423982175,
+              "contribution_rank": 7,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is mutagenic",
+              "text_hint": "The neighbor does not have alkene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.5713, which pushes toward option (B): is mutagenic."
+            },
+            {
+              "neighbor_rank": 3,
+              "neighbor_id": "ClCc1c2ccccc2c2ccc3cccc4ccc1c2c43",
+              "neighbor_similarity": 0.2811428571428572,
+              "pair_score": 0.9976056815546688,
+              "pair_prediction": 1,
+              "pair_prediction_semantics": {
+                "option": "B",
+                "text": "is mutagenic",
+                "label": 1
+              },
+              "contribution": 0.5712706423982175,
+              "contribution_abs": 0.5712706423982175,
+              "contribution_rank": 8,
+              "supports_label": 1,
+              "supports_option": "B",
+              "supports_text": "is mutagenic",
+              "text_hint": "The neighbor does not have alkene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.5713, which pushes toward option (B): is mutagenic."
+            }
+          ]
+        },
+        {
           "feature_name": "rdkit_pka__rdkit__qed",
           "display_name": "QED drug-likeness",
           "description": "quantitative estimate of drug-likeness",
@@ -1979,11 +2955,11 @@
           ]
         },
         {
-          "feature_name": "rdkit_pka__rdkit__NumAliphaticCarbocycles",
-          "display_name": "aliphatic carbocycle count",
-          "description": "number of aliphatic carbocyclic rings",
+          "feature_name": "rdkit_pka__rdkit__MolLogP",
+          "display_name": "estimated logP",
+          "description": "RDKit-estimated octanol/water partition coefficient (logP)",
           "source_family": "rdkit",
-          "raw_name": "NumAliphaticCarbocycles",
+          "raw_name": "MolLogP",
           "occurrence_count": 2,
           "neighbor_ranks": [
             1,
@@ -1998,17 +2974,17 @@
             0.30909090909090914
           ],
           "support_weight_by_label": {
-            "0": 0.0,
-            "1": 0.4010395821834737
+            "0": 0.301222640896173,
+            "1": 0.0
           },
           "support_mode": "single",
           "dominant_support": {
-            "option": "B",
-            "text": "is mutagenic",
-            "label": 1
+            "option": "A",
+            "text": "is not mutagenic",
+            "label": 0
           },
-          "total_abs_contribution": 1.1897778928584666,
-          "total_weighted_evidence": 0.4010395821834737,
+          "total_abs_contribution": 0.8983034297298643,
+          "total_weighted_evidence": 0.301222640896173,
           "term_instances": [
             {
               "neighbor_rank": 1,
@@ -2021,13 +2997,13 @@
                 "text": "is mutagenic",
                 "label": 1
               },
-              "contribution": 0.5948889464292333,
-              "contribution_abs": 0.5948889464292333,
-              "contribution_rank": 4,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "is mutagenic",
-              "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5949, which pushes toward option (B): is mutagenic."
+              "contribution": -0.42110740323387774,
+              "contribution_abs": 0.42110740323387774,
+              "contribution_rank": 7,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not mutagenic",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 5.0544, while the query's estimated logP is value 5.4516. The query-minus-neighbor delta is +0.3972. This pairwise contribution is -0.4211, which pushes toward option (A): is not mutagenic."
             },
             {
               "neighbor_rank": 2,
@@ -2040,24 +3016,24 @@
                 "text": "is mutagenic",
                 "label": 1
               },
-              "contribution": 0.5948889464292333,
-              "contribution_abs": 0.5948889464292333,
-              "contribution_rank": 5,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "is mutagenic",
-              "text_hint": "For aliphatic carbocycle count, the neighbor's aliphatic carbocycle count is value 0, while the query's aliphatic carbocycle count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is 0.5949, which pushes toward option (B): is mutagenic."
+              "contribution": -0.4771960264959866,
+              "contribution_abs": 0.4771960264959866,
+              "contribution_rank": 8,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not mutagenic",
+              "text_hint": "For estimated logP, the neighbor's estimated logP is value 2.2116, while the query's estimated logP is value 5.4516. The query-minus-neighbor delta is +3.24. This pairwise contribution is -0.4772, which pushes toward option (A): is not mutagenic."
             }
           ]
         }
       ],
       "single_neighbor_evidence": [
         {
-          "feature_name": "fg_top_level__alkene",
-          "display_name": "alkene",
-          "description": "top-level functional-group indicator or count for alkene",
-          "source_family": "fg_top_level",
-          "raw_name": "alkene",
+          "feature_name": "rdkit_pka__pka__logd_estimate",
+          "display_name": "estimated logD",
+          "description": "estimated logD at the configured pH",
+          "source_family": "pka",
+          "raw_name": "logd_estimate",
           "occurrence_count": 1,
           "neighbor_ranks": [
             1
@@ -2069,17 +3045,17 @@
             0.3650510204081633
           ],
           "support_weight_by_label": {
-            "0": 0.0,
-            "1": 0.20854293093669624
+            "0": 0.13996833507226808,
+            "1": 0.0
           },
           "support_mode": "single",
           "dominant_support": {
-            "option": "B",
-            "text": "is mutagenic",
-            "label": 1
+            "option": "A",
+            "text": "is not mutagenic",
+            "label": 0
           },
-          "total_abs_contribution": 0.5712706423982175,
-          "total_weighted_evidence": 0.20854293093669624,
+          "total_abs_contribution": 0.38342129523640167,
+          "total_weighted_evidence": 0.13996833507226808,
           "term_instances": [
             {
               "neighbor_rank": 1,
@@ -2092,13 +3068,13 @@
                 "text": "is mutagenic",
                 "label": 1
               },
-              "contribution": 0.5712706423982175,
-              "contribution_abs": 0.5712706423982175,
-              "contribution_rank": 5,
-              "supports_label": 1,
-              "supports_option": "B",
-              "supports_text": "is mutagenic",
-              "text_hint": "The neighbor does not have alkene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.5713, which pushes toward option (B): is mutagenic."
+              "contribution": -0.38342129523640167,
+              "contribution_abs": 0.38342129523640167,
+              "contribution_rank": 8,
+              "supports_label": 0,
+              "supports_option": "A",
+              "supports_text": "is not mutagenic",
+              "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.0544, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0.3972. This pairwise contribution is -0.3834, which pushes toward option (A): is not mutagenic."
             }
           ],
           "neighbor_rank": 1,
@@ -2111,13 +3087,13 @@
             "text": "is mutagenic",
             "label": 1
           },
-          "contribution": 0.5712706423982175,
-          "contribution_abs": 0.5712706423982175,
-          "contribution_rank": 5,
-          "supports_label": 1,
-          "supports_option": "B",
-          "supports_text": "is mutagenic",
-          "text_hint": "The neighbor does not have alkene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.5713, which pushes toward option (B): is mutagenic."
+          "contribution": -0.38342129523640167,
+          "contribution_abs": 0.38342129523640167,
+          "contribution_rank": 8,
+          "supports_label": 0,
+          "supports_option": "A",
+          "supports_text": "is not mutagenic",
+          "text_hint": "For estimated logD, the neighbor's estimated logD is value 5.0544, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0.3972. This pairwise contribution is -0.3834, which pushes toward option (A): is not mutagenic."
         },
         {
           "feature_name": "rdkit_pka__rdkit__FractionCSP3",
@@ -2389,6 +3365,6 @@
         }
       ]
     },
-    "middle_draft": "Across the positive neighbors, shared local signals include ring count, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, Labute surface area, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not mutagenic, QED drug-likeness, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, benzene, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, nitro, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, and maximum partial charge, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not mutagenic. The remaining one-off signals from the positive neighbors are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.8218), the comparison shows that for estimated logD, the neighbor's estimated logD is value 5.4516, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3232, which pushes toward option (B): is mutagenic. Across the negative neighbors, shared local signals include nitro, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, benzene, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, ring count, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, QED drug-likeness, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, and aliphatic carbocycle count, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic. The remaining one-off signals from the negative neighbors are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.3651), the comparison shows that the neighbor does not have alkene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is 0.5713, which pushes toward option (B): is mutagenic. With neighbor 2 (similarity 0.3091), the comparison shows that for fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.25, while the query's fraction of sp3 carbons is value 0.1. The query-minus-neighbor delta is -0.15. This pairwise contribution is 0.5799, which pushes toward option (B): is mutagenic. With neighbor 3 (similarity 0.2811), the comparison shows that for aromatic carbocycle count, the neighbor's aromatic carbocycle count is value 5, while the query's aromatic carbocycle count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is 1.0518, which pushes toward option (B): is mutagenic. With neighbor 3 (similarity 0.2811), the comparison shows that the neighbor has alkyl chloride, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.6374, which pushes toward option (B): is mutagenic. With neighbor 3 (similarity 0.2811), the comparison shows that for aromatic ring count, the neighbor's aromatic ring count is value 5, while the query's aromatic ring count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is 0.6021, which pushes toward option (B): is mutagenic. Taken together, these local analog comparisons support option (B): is mutagenic with local score 0.9717, positive-neighbor aggregate 0.9641, and negative-neighbor aggregate 0.9865."
+    "middle_draft": "Across the neighbors labeled option (B): is mutagenic, shared local signals include ring count, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, Labute surface area, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (A): is not mutagenic, QED drug-likeness, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, benzene, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, nitro, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, estimated logD, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, heavy-atom molecular weight, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, and maximum partial charge, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not mutagenic. The remaining one-off signals from the neighbors labeled option (B): is mutagenic are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.8218), the comparison shows that for minimum partial charge, the neighbor's minimum partial charge is value -0.2583, while the query's minimum partial charge is value -0.2583. The query-minus-neighbor delta is -0. This pairwise contribution is 0.3127, which pushes toward option (B): is mutagenic. Across the neighbors labeled option (A): is not mutagenic, shared local signals include nitro, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, benzene, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, ring count, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, aliphatic carbocycle count, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, alkene, which recurs in 3 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, QED drug-likeness, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (B): is mutagenic, and estimated logP, which recurs in 2 of 3 neighbor comparisons and consistently pushes toward option (A): is not mutagenic. The remaining one-off signals from the neighbors labeled option (A): is not mutagenic are all kept explicitly for downstream rewriting. With neighbor 1 (similarity 0.3651), the comparison shows that for estimated logD, the neighbor's estimated logD is value 5.0544, while the query's estimated logD is value 5.4516. The query-minus-neighbor delta is +0.3972. This pairwise contribution is -0.3834, which pushes toward option (A): is not mutagenic. With neighbor 2 (similarity 0.3091), the comparison shows that for fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0.25, while the query's fraction of sp3 carbons is value 0.1. The query-minus-neighbor delta is -0.15. This pairwise contribution is 0.5799, which pushes toward option (B): is mutagenic. With neighbor 3 (similarity 0.2811), the comparison shows that for aromatic carbocycle count, the neighbor's aromatic carbocycle count is value 5, while the query's aromatic carbocycle count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is 1.0518, which pushes toward option (B): is mutagenic. With neighbor 3 (similarity 0.2811), the comparison shows that the neighbor has alkyl chloride, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is 0.6374, which pushes toward option (B): is mutagenic. With neighbor 3 (similarity 0.2811), the comparison shows that for aromatic ring count, the neighbor's aromatic ring count is value 5, while the query's aromatic ring count is value 4. The query-minus-neighbor delta is -1. This pairwise contribution is 0.6021, which pushes toward option (B): is mutagenic. Taken together, these local analog comparisons support option (B): is mutagenic with local prediction probability 0.9717, aggregate over neighbors labeled option (B): is mutagenic 0.9641, and aggregate over neighbors labeled option (A): is not mutagenic 0.9865."
   }
 }

@@ -9,6 +9,7 @@ from trim.evaluation.metrics import compute_binary_classification_metrics
 from trim.features.table_loader import build_feature_source_bundle
 from trim.features.preprocessing import transform_feature_frame
 from trim.utils.io import load_pickle, save_json
+from trim.utils.paths import serialize_project_path
 
 
 def evaluate_global_bundle(
@@ -57,8 +58,8 @@ def evaluate_global_bundle(
         summary_path = output_dir / f"{task}__{split}_metrics.json"
         predictions_df.to_csv(predictions_path, index=False)
         payload["artifacts"] = {
-            "predictions_csv": str(predictions_path.resolve()),
-            "metrics_json": str(summary_path.resolve()),
+            "predictions_csv": serialize_project_path(predictions_path),
+            "metrics_json": serialize_project_path(summary_path),
         }
         save_json(summary_path, payload)
 

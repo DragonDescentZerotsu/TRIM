@@ -7,7 +7,7 @@ from pathlib import Path
 from trim.reasoning.semantics.feature_semantics import build_feature_semantics_map
 from trim.reasoning.semantics.task_semantics import load_task_label_semantics
 from trim.utils.io import load_json
-from trim.utils.paths import OUTPUTS_ROOT, PROJECT_ROOT, resolve_project_path
+from trim.utils.paths import OUTPUTS_ROOT, PROJECT_ROOT, resolve_project_path, serialize_project_path
 
 
 DEFAULT_FEATURE_CONFIG = (
@@ -146,7 +146,7 @@ def render_playbook_research_prompts_for_tasks(
         rendered_tasks.append(
             {
                 "task": task,
-                "output_path": str(output_path.resolve()),
+                "output_path": serialize_project_path(output_path),
             }
         )
 
@@ -158,6 +158,6 @@ def render_playbook_research_prompts_for_tasks(
     summary_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return {
         "num_tasks": len(rendered_tasks),
-        "summary_path": str(summary_path.resolve()),
+        "summary_path": serialize_project_path(summary_path),
         "tasks": rendered_tasks,
     }

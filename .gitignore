@@ -24,29 +24,42 @@ data/cache/
 # data/processed/
 data/raw/
 
-# Generated experiment artifacts
-outputs/logs/
-# outputs/models/
-outputs/plots/
-outputs/predictions/
-outputs/metrics/*/
-outputs/reasoning_rewrite_outputs/
-outputs/reasoning_rewrite_candidates/
-outputs/reasoning_rewrite_candidates_wo_playbook/
-outputs/reasoning_rewrite_outputs_wo_playbook/
-
-# Keep top-level metric summaries, ignore nested intermediates
-outputs/traces/
-outputs/metrics/**/*.pkl
-outputs/metrics/**/*.parquet
-outputs/metrics/**/*.npy
-outputs/metrics/**/*.npz
-outputs/metrics/**/*.csv
-outputs/metrics/**/*.json
-!outputs/metrics/*.csv
-!outputs/metrics/*.json
-
 data/sft/agent_reasoning_messages/hf_public/
 data/sft/agent_reasoning_messages/openrouter/
 data/sft/agent_reasoning_messages/vllm/
 data/sft/agent_reasoning_messages_wo_playbook/
+
+# Generated experiment artifacts
+# Keep only the runtime files needed by the current agent tools.
+outputs/*
+
+!outputs/reasoning_agent_tools/
+outputs/reasoning_agent_tools/*
+!outputs/reasoning_agent_tools/manifests/
+outputs/reasoning_agent_tools/manifests/*
+!outputs/reasoning_agent_tools/manifests/fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts/
+!outputs/reasoning_agent_tools/manifests/fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts/*.json
+
+!outputs/models/
+outputs/models/*
+
+!outputs/models/global_ebm/
+outputs/models/global_ebm/*
+!outputs/models/global_ebm/all_tasks_njobs16_parallel_core_pka_no_fr_keep_nan/
+outputs/models/global_ebm/all_tasks_njobs16_parallel_core_pka_no_fr_keep_nan/*
+!outputs/models/global_ebm/all_tasks_njobs16_parallel_core_pka_no_fr_keep_nan/*/
+outputs/models/global_ebm/all_tasks_njobs16_parallel_core_pka_no_fr_keep_nan/*/*
+!outputs/models/global_ebm/all_tasks_njobs16_parallel_core_pka_no_fr_keep_nan/*/fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts/
+outputs/models/global_ebm/all_tasks_njobs16_parallel_core_pka_no_fr_keep_nan/*/fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts/*
+!outputs/models/global_ebm/all_tasks_njobs16_parallel_core_pka_no_fr_keep_nan/*/fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts/model_bundle.pkl
+
+!outputs/models/pair_ebm/
+outputs/models/pair_ebm/*
+!outputs/models/pair_ebm/all_tasks_topk4_same_scaffold_njobs16_fg_plus_rdkit_core_pka_no_fr_counts/
+outputs/models/pair_ebm/all_tasks_topk4_same_scaffold_njobs16_fg_plus_rdkit_core_pka_no_fr_counts/*
+!outputs/models/pair_ebm/all_tasks_topk4_same_scaffold_njobs16_fg_plus_rdkit_core_pka_no_fr_counts/*/
+outputs/models/pair_ebm/all_tasks_topk4_same_scaffold_njobs16_fg_plus_rdkit_core_pka_no_fr_counts/*/*
+!outputs/models/pair_ebm/all_tasks_topk4_same_scaffold_njobs16_fg_plus_rdkit_core_pka_no_fr_counts/*/fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts/
+outputs/models/pair_ebm/all_tasks_topk4_same_scaffold_njobs16_fg_plus_rdkit_core_pka_no_fr_counts/*/fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts/*
+!outputs/models/pair_ebm/all_tasks_topk4_same_scaffold_njobs16_fg_plus_rdkit_core_pka_no_fr_counts/*/fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts/pos_model_bundle.pkl
+!outputs/models/pair_ebm/all_tasks_topk4_same_scaffold_njobs16_fg_plus_rdkit_core_pka_no_fr_counts/*/fg_top_level+rdkit_descriptors_and_pka_easy_to_NLP_Lv1_core_pka_no_fr_counts/neg_model_bundle.pkl

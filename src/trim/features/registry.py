@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 from .base import CompositeFeatureSource, FeatureSource
-from trim.utils.paths import PROJECT_ROOT
+from trim.utils.paths import PROJECT_ROOT, serialize_project_path
 
 
 _FEATURE_SOURCE_FACTORIES: dict[str, object] = {}
@@ -61,7 +61,7 @@ def load_feature_specs_from_paths(
         specs.extend(source_specs)
         loaded_configs.append(
             {
-                "config_path": str(path.resolve()),
+                "config_path": serialize_project_path(path.resolve()),
                 "feature_set_name": feature_set_name,
                 "sources": source_specs,
             }
@@ -73,4 +73,3 @@ def load_feature_specs_from_paths(
 
 def build_composite_feature_source(specs: list[dict[str, object]]) -> CompositeFeatureSource:
     return CompositeFeatureSource([build_feature_source(spec) for spec in specs])
-

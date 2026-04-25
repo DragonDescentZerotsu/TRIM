@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from trim.utils.io import load_json, save_json
-from trim.utils.paths import DATA_ROOT, OUTPUTS_ROOT, resolve_project_path
+from trim.utils.paths import DATA_ROOT, OUTPUTS_ROOT, resolve_project_path, serialize_project_path
 
 
 TASK_USER_PROMPT_SCHEMA_VERSION = "trim_tdc_cot_user_prompt_v1"
@@ -186,7 +186,7 @@ def export_task_user_prompts_for_tasks(
         written_tasks.append(
             {
                 "task": task,
-                "output_path": str(output_path.resolve()),
+                "output_path": serialize_project_path(output_path),
             }
         )
 
@@ -199,6 +199,6 @@ def export_task_user_prompts_for_tasks(
     save_json(summary_path, summary)
     return {
         "num_tasks": len(written_tasks),
-        "summary_path": str(summary_path.resolve()),
+        "summary_path": serialize_project_path(summary_path),
         "tasks": written_tasks,
     }

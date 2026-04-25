@@ -19,6 +19,7 @@ from trim.reasoning.agent_tools import (
     load_task_tool_manifest,
 )
 from trim.utils.io import save_json
+from trim.utils.paths import serialize_project_path
 
 
 def parse_args() -> argparse.Namespace:
@@ -79,8 +80,8 @@ def main() -> int:
         save_json(local_path, local_payload)
         manifest_index["tasks"][task] = {
             "smiles": smiles,
-            "global_preview": str(global_path.resolve()),
-            "local_preview": str(local_path.resolve()),
+            "global_preview": serialize_project_path(global_path),
+            "local_preview": serialize_project_path(local_path),
         }
 
     manifest_path = output_root / "manifest.json"

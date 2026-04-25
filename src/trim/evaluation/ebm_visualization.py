@@ -7,6 +7,8 @@ from pathlib import Path
 
 import numpy as np
 
+from trim.utils.paths import resolve_project_path, serialize_project_path
+
 
 def configure_matplotlib_cache() -> None:
     matplotlib_cache_dir = Path(tempfile.gettempdir()) / "trim_matplotlib"
@@ -382,12 +384,12 @@ def export_global_curves(
             png_path = output_dir / f"global_feature_curves_page_{page_index:02d}.png"
         fig.savefig(png_path, dpi=180, bbox_inches="tight")
         plt.close(fig)
-        figure_paths.append(str(png_path.resolve()))
+        figure_paths.append(serialize_project_path(png_path))
 
     csv_path = output_dir / "global_feature_summary.csv"
     _write_summary_csv(csv_path, summary_rows)
 
-    return {"summary_csv": str(csv_path.resolve()), "figure_pngs": figure_paths}
+    return {"summary_csv": serialize_project_path(csv_path), "figure_pngs": figure_paths}
 
 
 def export_pair_heatmaps(
@@ -457,12 +459,12 @@ def export_pair_heatmaps(
             png_path = output_dir / f"{bundle_stem}_interaction_heatmaps_page_{page_index:02d}.png"
         fig.savefig(png_path, dpi=180, bbox_inches="tight")
         plt.close(fig)
-        figure_paths.append(str(png_path.resolve()))
+        figure_paths.append(serialize_project_path(png_path))
 
     csv_path = output_dir / f"{bundle_stem}_interaction_summary.csv"
     _write_summary_csv(csv_path, summary_rows)
 
-    return {"summary_csv": str(csv_path.resolve()), "figure_pngs": figure_paths}
+    return {"summary_csv": serialize_project_path(csv_path), "figure_pngs": figure_paths}
 
 
 def export_combined_ebm_pdf(
@@ -603,11 +605,12 @@ def export_combined_ebm_pdf(
             blank_ax = fig.add_subplot(subgrid[row_index, col_index])
             blank_ax.axis("off")
 
-        _write_summary_csv(Path(section["summary_csv"]), summary_rows)
+        section_summary_csv = resolve_project_path(section["summary_csv"])
+        _write_summary_csv(section_summary_csv, summary_rows)
         payload_sections.append(
             {
                 "title": section["title"],
-                "summary_csv": str(Path(section["summary_csv"]).resolve()),
+                "summary_csv": serialize_project_path(section_summary_csv),
                 "num_terms": len(section["term_indices"]),
             }
         )
@@ -616,6 +619,6 @@ def export_combined_ebm_pdf(
     plt.close(fig)
 
     return {
-        "pdf_path": str(output_pdf_path.resolve()),
+        "pdf_path": serialize_project_path(output_pdf_path),
         "sections": payload_sections,
     }

@@ -6,7 +6,12 @@ from pathlib import Path
 from typing import Any
 
 from trim.data.datasets import load_tdc_split
-from trim.reasoning.rewrite.pipeline import extract_reasoning_text_for_mode, load_mode_output_json, model_slug
+from trim.reasoning.rewrite.pipeline import (
+    extract_reasoning_text_for_mode,
+    load_mode_output_json,
+    model_slug,
+    validate_saved_rewrite_output,
+)
 from trim.reasoning.semantics.task_semantics import load_brief_task_semantics, load_task_label_semantics
 from trim.reasoning.task_user_prompts import (
     DEFAULT_TASK_MANIFEST_INDEX,
@@ -14,8 +19,14 @@ from trim.reasoning.task_user_prompts import (
     load_task_names_from_manifest_index,
     render_task_user_message,
 )
-from trim.utils.io import ensure_directory
-from trim.utils.paths import DATA_ROOT, DEFAULT_PROCESSED_DATA_ROOT, OUTPUTS_ROOT, resolve_project_path
+from trim.utils.io import ensure_directory, load_json
+from trim.utils.paths import (
+    DATA_ROOT,
+    DEFAULT_PROCESSED_DATA_ROOT,
+    OUTPUTS_ROOT,
+    resolve_project_path,
+    serialize_project_path,
+)
 
 try:
     from tqdm.auto import tqdm
@@ -27,6 +38,7 @@ except Exception:  # pragma: no cover - tqdm is optional in some environments
 AGENT_REASONING_SFT_SCHEMA_VERSION = "trim_agent_reasoning_sft_messages_v1"
 DEFAULT_AGENT_REASONING_SFT_OUTPUT_ROOT = DATA_ROOT / "sft" / "agent_reasoning_messages"
 DEFAULT_REWRITE_OUTPUT_ROOT = OUTPUTS_ROOT / "reasoning_rewrite_outputs"
+DEFAULT_NEIGHBOR_LEVEL_REWRITE_OUTPUT_ROOT = OUTPUTS_ROOT / "reasoning_rewrite_outputs_neighbor_level"
 DEFAULT_REWRITE_FILTER_ROOT = OUTPUTS_ROOT / "reasoning_rewrite_filters"
 DEFAULT_REWRITE_PROVIDER = "openrouter"
 DEFAULT_REWRITE_MODEL = "openai/gpt-5.4-mini"
@@ -36,7 +48,8 @@ DEFAULT_TOOL_CACHE_ROOT = "data/cache/tdc_mol_fingerprints"
 SFT_MODE_FULL = "full"
 SFT_MODE_GLOBAL_ONLY = "global_only"
 SFT_MODE_LOCAL_ONLY = "local_only"
-SFT_MODES = (SFT_MODE_FULL, SFT_MODE_GLOBAL_ONLY, SFT_MODE_LOCAL_ONLY)
+SFT_MODE_LOCAL_NEIGHBOR_ONLY = "local_neighbor_only"
+SFT_MODES = (SFT_MODE_FULL, SFT_MODE_GLOBAL_ONLY, SFT_MODE_LOCAL_ONLY, SFT_MODE_LOCAL_NEIGHBOR_ONLY)
 
 GET_MOL_PROPERTIES_TOOL_NAME = "get_mol_properties_and_fg"
 COMPARE_SIMILAR_MOLS_TOOL_NAME = "compare_similar_mols"
@@ -83,12 +96,28 @@ def _validate_sft_mode(sft_mode: str) -> str:
     return normalized
 
 
+def _resolve_rewrite_output_root_for_sft_mode(
+    *,
+    sft_mode: str,
+    rewrite_output_root: str | Path,
+) -> str | Path:
+    validated_mode = _validate_sft_mode(sft_mode)
+    if validated_mode != SFT_MODE_LOCAL_NEIGHBOR_ONLY:
+        return rewrite_output_root
+    resolved_root = resolve_project_path(rewrite_output_root)
+    if resolved_root == resolve_project_path(DEFAULT_REWRITE_OUTPUT_ROOT):
+        return DEFAULT_NEIGHBOR_LEVEL_REWRITE_OUTPUT_ROOT
+    return rewrite_output_root
+
+
 def _rewrite_modes_for_sft_mode(sft_mode: str) -> tuple[str, ...]:
     validated_mode = _validate_sft_mode(sft_mode)
     if validated_mode == SFT_MODE_GLOBAL_ONLY:
         return ("global",)
     if validated_mode == SFT_MODE_LOCAL_ONLY:
         return ("local",)
+    if validated_mode == SFT_MODE_LOCAL_NEIGHBOR_ONLY:
+        return ("local_neighbor", "local_summary")
     return ("global", "local", "hybrid")
 
 
@@ -191,6 +220,29 @@ def _rewrite_result_path(
     )
 
 
+def _local_neighbor_rewrite_result_path(
+    *,
+    output_root: str | Path,
+    provider: str,
+    model: str,
+    split: str,
+    task: str,
+    sample_index: int,
+    neighbor_index: int,
+) -> Path:
+    return (
+        resolve_project_path(output_root)
+        / provider
+        / model_slug(model)
+        / "local_neighbor"
+        / split
+        / task
+        / f"sample_{int(sample_index):05d}"
+        / f"neighbor_{int(neighbor_index):02d}"
+        / "result.json"
+    )
+
+
 def _sample_indices_with_saved_rewrites(
     *,
     rewrite_output_root: str | Path,
@@ -222,6 +274,43 @@ def _sample_indices_with_saved_rewrites(
 
     if not sample_indices:
         raise FileNotFoundError(f"No saved rewrite outputs found under {mode_root}")
+    return sample_indices
+
+
+def _sample_indices_with_saved_local_neighbor_rewrites(
+    *,
+    rewrite_output_root: str | Path,
+    provider: str,
+    model: str,
+    split: str,
+    task: str,
+) -> set[int]:
+    mode_root = (
+        resolve_project_path(rewrite_output_root)
+        / provider
+        / model_slug(model)
+        / "local_neighbor"
+        / split
+        / task
+    )
+    if not mode_root.exists():
+        raise FileNotFoundError(f"Local-neighbor rewrite output directory does not exist: {mode_root}")
+
+    sample_indices: set[int] = set()
+    for sample_dir in sorted(path for path in mode_root.glob("sample_*") if path.is_dir()):
+        try:
+            sample_index = int(sample_dir.name.split("_")[-1])
+        except ValueError as exc:
+            raise ValueError(f"Could not parse sample index from local-neighbor path: {sample_dir}") from exc
+        neighbor_result_paths = [
+            sample_dir / f"neighbor_{neighbor_index:02d}" / "result.json"
+            for neighbor_index in range(1, 7)
+        ]
+        if all(path.exists() for path in neighbor_result_paths):
+            sample_indices.add(sample_index)
+
+    if not sample_indices:
+        raise FileNotFoundError(f"No complete six-neighbor rewrite outputs found under {mode_root}")
     return sample_indices
 
 
@@ -292,6 +381,10 @@ def list_rewritten_sample_indices_for_sft_mode(
     model: str = DEFAULT_REWRITE_MODEL,
 ) -> list[int]:
     validated_mode = _validate_sft_mode(sft_mode)
+    rewrite_output_root = _resolve_rewrite_output_root_for_sft_mode(
+        sft_mode=validated_mode,
+        rewrite_output_root=rewrite_output_root,
+    )
     if validated_mode == SFT_MODE_FULL:
         return list_fully_rewritten_sample_indices(
             task=task,
@@ -300,6 +393,36 @@ def list_rewritten_sample_indices_for_sft_mode(
             provider=provider,
             model=model,
         )
+
+    if validated_mode == SFT_MODE_LOCAL_NEIGHBOR_ONLY:
+        records = _load_rewrite_filter_records(filter_root=rewrite_filter_root, split=split, task=task)
+        correct_indices = {
+            int(record["sample_index"])
+            for record in records
+            if bool(record.get("local_prediction_correct"))
+        }
+        summary_indices = _sample_indices_with_saved_rewrites(
+            rewrite_output_root=rewrite_output_root,
+            provider=provider,
+            model=model,
+            mode="local_summary",
+            split=split,
+            task=task,
+        )
+        neighbor_indices = _sample_indices_with_saved_local_neighbor_rewrites(
+            rewrite_output_root=rewrite_output_root,
+            provider=provider,
+            model=model,
+            split=split,
+            task=task,
+        )
+        selected_indices = sorted(correct_indices.intersection(summary_indices).intersection(neighbor_indices))
+        if not selected_indices:
+            raise FileNotFoundError(
+                f"No rewritten {validated_mode} samples found for task={task!r}, split={split!r}, "
+                f"provider={provider!r}, model={model!r}"
+            )
+        return selected_indices
 
     rewrite_mode = "global" if validated_mode == SFT_MODE_GLOBAL_ONLY else "local"
     correct_field = f"{rewrite_mode}_prediction_correct"
@@ -388,7 +511,7 @@ def _load_reasoning_bundle(
                 f"{mode} rewrite payload sample_index mismatch for task={task}: {payload.get('sample_index')!r}"
             )
         bundles[mode] = payload
-        paths[f"{mode}_result_json"] = str(result_path.resolve())
+        paths[f"{mode}_result_json"] = serialize_project_path(result_path)
 
     first_mode = modes[0]
     sample_id = str(bundles[first_mode].get("sample_id", "") or "")
@@ -410,6 +533,127 @@ def _load_reasoning_bundle(
             context=f"{mode} reasoning for {task} sample {sample_index}",
         )
     return result
+
+
+def _load_local_neighbor_level_reasoning_bundle(
+    *,
+    task: str,
+    split: str,
+    sample_index: int,
+    rewrite_output_root: str | Path,
+    provider: str,
+    model: str,
+) -> dict[str, Any]:
+    paths: dict[str, str] = {}
+    neighbor_reasonings: list[str] = []
+    sample_id: str | None = None
+
+    for neighbor_index in range(1, 7):
+        result_path = _local_neighbor_rewrite_result_path(
+            output_root=rewrite_output_root,
+            provider=provider,
+            model=model,
+            split=split,
+            task=task,
+            sample_index=sample_index,
+            neighbor_index=neighbor_index,
+        )
+        payload = load_json(result_path)
+        validate_saved_rewrite_output(mode="local_neighbor", payload=payload)
+        if str(payload.get("task")) != task:
+            raise ValueError(
+                f"local_neighbor rewrite payload task mismatch for sample {sample_index}: {payload.get('task')!r}"
+            )
+        if str(payload.get("split")) != split:
+            raise ValueError(
+                f"local_neighbor rewrite payload split mismatch for sample {sample_index}: {payload.get('split')!r}"
+            )
+        if int(payload.get("sample_index")) != int(sample_index):
+            raise ValueError(
+                f"local_neighbor rewrite payload sample_index mismatch for task={task}: "
+                f"{payload.get('sample_index')!r}"
+            )
+        if int(payload.get("neighbor_index")) != int(neighbor_index):
+            raise ValueError(
+                f"local_neighbor rewrite payload neighbor_index mismatch for task={task} "
+                f"sample={sample_index}: expected {neighbor_index}, got {payload.get('neighbor_index')!r}"
+            )
+        current_sample_id = str(payload.get("sample_id", "") or "")
+        if sample_id is None:
+            sample_id = current_sample_id
+        elif sample_id != current_sample_id:
+            raise ValueError(
+                f"local_neighbor rewrite payload sample_id mismatch for task={task} "
+                f"sample={sample_index}: {sample_id!r} != {current_sample_id!r}"
+            )
+        neighbor_reasonings.append(
+            _require_non_empty_text(
+                extract_reasoning_text_for_mode(payload=payload, mode="local_neighbor"),
+                context=f"local_neighbor {neighbor_index} reasoning for {task} sample {sample_index}",
+            )
+        )
+        paths[f"local_neighbor_{neighbor_index:02d}_result_json"] = serialize_project_path(result_path)
+
+    summary_path = _rewrite_result_path(
+        output_root=rewrite_output_root,
+        provider=provider,
+        model=model,
+        mode="local_summary",
+        split=split,
+        task=task,
+        sample_index=sample_index,
+    )
+    summary_payload = load_mode_output_json(
+        output_root=rewrite_output_root,
+        provider=provider,
+        model=model,
+        mode="local_summary",
+        split=split,
+        task=task,
+        sample_index=sample_index,
+    )
+    validate_saved_rewrite_output(mode="local_summary", payload=summary_payload)
+    if str(summary_payload.get("task")) != task:
+        raise ValueError(
+            f"local_summary rewrite payload task mismatch for sample {sample_index}: {summary_payload.get('task')!r}"
+        )
+    if str(summary_payload.get("split")) != split:
+        raise ValueError(
+            f"local_summary rewrite payload split mismatch for sample {sample_index}: {summary_payload.get('split')!r}"
+        )
+    if int(summary_payload.get("sample_index")) != int(sample_index):
+        raise ValueError(
+            f"local_summary rewrite payload sample_index mismatch for task={task}: "
+            f"{summary_payload.get('sample_index')!r}"
+        )
+
+    summary_sample_id = str(summary_payload.get("sample_id", "") or "")
+    if sample_id is None:
+        sample_id = summary_sample_id
+    elif sample_id != summary_sample_id:
+        raise ValueError(
+            f"local_summary rewrite payload sample_id mismatch for task={task} "
+            f"sample={sample_index}: {sample_id!r} != {summary_sample_id!r}"
+        )
+    summary_reasoning = _require_non_empty_text(
+        extract_reasoning_text_for_mode(payload=summary_payload, mode="local_summary"),
+        context=f"local_summary reasoning for {task} sample {sample_index}",
+    )
+    paths["local_summary_result_json"] = serialize_project_path(summary_path)
+
+    joined_reasoning = "\n\n".join(
+        [
+            *neighbor_reasonings,
+            f"Overall neighbor-based conclusion: {summary_reasoning}",
+        ]
+    )
+    return {
+        "sample_id": sample_id or "",
+        "source_paths": paths,
+        "local_neighbor_reasonings": neighbor_reasonings,
+        "local_summary_reasoning": summary_reasoning,
+        "local_neighbor_level_reasoning": joined_reasoning,
+    }
 
 
 def _resolve_final_answer_option(task: str, gt_label: int) -> str:
@@ -550,15 +794,29 @@ def build_agent_reasoning_sft_record(
     prompt_root: str | Path = DEFAULT_TASK_USER_PROMPT_ROOT,
 ) -> dict[str, Any]:
     validated_mode = _validate_sft_mode(sft_mode)
-    reasoning_bundle = _load_reasoning_bundle(
-        task=task,
-        split=split,
-        sample_index=sample_index,
+    rewrite_output_root = _resolve_rewrite_output_root_for_sft_mode(
+        sft_mode=validated_mode,
         rewrite_output_root=rewrite_output_root,
-        provider=provider,
-        model=model,
-        modes=_rewrite_modes_for_sft_mode(validated_mode),
     )
+    if validated_mode == SFT_MODE_LOCAL_NEIGHBOR_ONLY:
+        reasoning_bundle = _load_local_neighbor_level_reasoning_bundle(
+            task=task,
+            split=split,
+            sample_index=sample_index,
+            rewrite_output_root=rewrite_output_root,
+            provider=provider,
+            model=model,
+        )
+    else:
+        reasoning_bundle = _load_reasoning_bundle(
+            task=task,
+            split=split,
+            sample_index=sample_index,
+            rewrite_output_root=rewrite_output_root,
+            provider=provider,
+            model=model,
+            modes=_rewrite_modes_for_sft_mode(validated_mode),
+        )
     user_message = render_task_user_message(task=task, smiles=smiles, prompt_root=prompt_root)
     final_answer_option = _resolve_final_answer_option(task, gt_label)
 
@@ -597,10 +855,15 @@ def build_agent_reasoning_sft_record(
                 "content": f"Answer: ({final_answer_option})",
             },
         ]
-    elif validated_mode == SFT_MODE_LOCAL_ONLY:
+    elif validated_mode in (SFT_MODE_LOCAL_ONLY, SFT_MODE_LOCAL_NEIGHBOR_ONLY):
         local_tool_text = _require_non_empty_text(
             tool_runner.compare_similar_mols(smiles),
             context=f"{COMPARE_SIMILAR_MOLS_TOOL_NAME} for {task} sample {sample_index}",
+        )
+        local_reasoning_key = (
+            "local_neighbor_level_reasoning"
+            if validated_mode == SFT_MODE_LOCAL_NEIGHBOR_ONLY
+            else "local_reasoning"
         )
         messages = [
             {
@@ -627,7 +890,7 @@ def build_agent_reasoning_sft_record(
             },
             {
                 "role": "assistant",
-                "thinking": reasoning_bundle["local_reasoning"],
+                "thinking": reasoning_bundle[local_reasoning_key],
                 "content": f"Answer: ({final_answer_option})",
             },
         ]
@@ -722,6 +985,10 @@ def build_agent_reasoning_sft_for_task(
     skip_existing: bool = True,
 ) -> dict[str, Any]:
     validated_mode = _validate_sft_mode(sft_mode)
+    rewrite_output_root = _resolve_rewrite_output_root_for_sft_mode(
+        sft_mode=validated_mode,
+        rewrite_output_root=rewrite_output_root,
+    )
     split_payload = load_tdc_split(task, split, data_root=dataset_root)
     rewritten_sample_indices = list_rewritten_sample_indices_for_sft_mode(
         task=task,
@@ -865,7 +1132,7 @@ def build_agent_reasoning_sft_for_task(
         "split": split,
         "sft_mode": validated_mode,
         "num_records": len(records),
-        "output_path": str(output_path.resolve()),
+        "output_path": serialize_project_path(output_path),
     }
 
 
@@ -935,5 +1202,5 @@ def build_agent_reasoning_sft_datasets(
         sft_mode=validated_mode,
     ) / "manifest.json"
     summary_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    payload["summary_path"] = str(summary_path.resolve())
+    payload["summary_path"] = serialize_project_path(summary_path)
     return payload

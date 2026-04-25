@@ -15,7 +15,7 @@ if str(SRC_ROOT) not in sys.path:
 from trim.reasoning.rewrite import render_rewrite_prompt
 from trim.reasoning.rewrite.rendering import resolve_reasoning_text
 from trim.utils.io import load_json
-from trim.utils.paths import resolve_project_path
+from trim.utils.paths import resolve_project_path, serialize_project_path
 
 
 def parse_args() -> argparse.Namespace:
@@ -24,8 +24,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--mode",
         required=True,
-        choices=["global", "local", "hybrid"],
+        choices=["global", "local", "local_neighbor", "hybrid"],
         help="Which rewrite prompt to render",
+    )
+    parser.add_argument(
+        "--neighbor-index",
+        type=int,
+        default=None,
+        help="Required when --mode local_neighbor; 1-based neighbor index to render",
     )
     parser.add_argument(
         "--template-root",
@@ -66,6 +72,7 @@ def main() -> int:
         candidate_payload=candidate_payload,
         mode=args.mode,
         template_root=args.template_root,
+        neighbor_index=args.neighbor_index,
         global_reasoning=resolve_reasoning_text(args.global_reasoning),
         local_reasoning=resolve_reasoning_text(args.local_reasoning),
     )
@@ -81,9 +88,9 @@ def main() -> int:
     print(
         json.dumps(
             {
-                "candidate_json": str(candidate_path),
+                "candidate_json": serialize_project_path(candidate_path),
                 "mode": args.mode,
-                "output_path": str(output_path.resolve()),
+                "output_path": serialize_project_path(output_path),
             },
             indent=2,
             ensure_ascii=False,

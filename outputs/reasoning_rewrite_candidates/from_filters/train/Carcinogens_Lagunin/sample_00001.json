@@ -17,7 +17,7 @@
   "keep_for_rewrite": true,
   "drop_reason": null,
   "teacher_case": "both_correct",
-  "playbook_path": "/data1/tianang/Projects/TRIM/playbooks/Carcinogens_Lagunin.md",
+  "playbook_path": "playbooks/Carcinogens_Lagunin.md",
   "global_rewrite_input": {
     "task_playbook": "# Carcinogens_Lagunin Molecular Property Threshold Quick Reference Manual\n\nThis manual is intended for the single-task **Carcinogens_Lagunin** dataset from Therapeutics Data Commons (using your label definition: A = non-carcinogen, B = carcinogen). This dataset is provided under TDC’s “Carcinogens” task and is based on work by Alexey Lagunin and colleagues on rodent carcinogenicity prediction. The external test set description includes samples from the ISS carcinogen database and the Prestwick chemical library.\n\nImportant note: for the endpoint of **rodent carcinogenicity**, **structural alerts and metabolically generated reactive intermediates** are often more decisive than any single physicochemical property. Therefore, many physicochemical descriptors, especially charge distribution and surface-area-related features, **do not have stable hard thresholds** in the literature. In such cases, this manual prioritizes: (i) empirical thresholds that are strongly associated with **systemic exposure and developability** and are repeatedly used in medicinal chemistry and ADMET practice, as “neighboring-task proxies”; and (ii) **functional-group/substructure alerts** that are more directly relevant to carcinogenicity, listed at the end.\n\n## neutral fraction\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A higher neutral fraction (more neutral species at physiological pH) usually implies greater passive membrane permeability potential and a stronger tendency for tissue distribution. In a risk-assessment context, greater “opportunity for exposure” is an intuitive consideration, but it is not a carcinogenicity-specific causal factor.\n- Brief note: In PBPK/ADMET practice, whether ionization is “relevant in vivo” is often judged **site by site**. A common empirical rule is that **any basic center with pKa ≤ 4.4** or **any acidic center with pKa > 10.4** tends to remain neutral at physiological pH and may contribute little to in vivo ionization. Therefore, neutral fraction is usually interpreted together with the **strongest acidic/basic pKa and the number of ionizable sites**.\n- Source: Ezuruike et al., 2022 (tutorial on PBPK compound files, including pKa/site relevance and empirical cutoffs)\n\n## estimated logD\n- Common threshold(s) or range(s):\n  - **Golden Triangle (neighboring-task proxy: permeability / clearance / oral absorption)**: On the MW–logD7.4 plot, the region more favorable for simultaneously achieving permeability and low clearance forms a triangle. The paper explicitly notes that compounds in the **logD 1.0–2.0** range are more likely to be both “permeable and metabolically stable.” It also describes the triangle boundaries textually; for example, the baseline extends roughly from **MW = 200 with logD ≈ 2–5**, and the apex is around **MW ≈ 450 with logD ≈ 1–2**, with the center near **logD ≈ 1.5 and MW ≈ 350**.\n  - **PFI (neighboring-task proxy: developability / solubility risk)**: PFI = Chrom logD7.4 + #Ar; **PFI < 6** is commonly used as a more desirable quality target. Some practical guidance also notes that permeability may peak around **PFI = 6–8**, implying that lower is not always better and that trade-offs exist.\n- Usually associated with: Excessively high logD7.4 is often associated with higher lipophilicity, protein binding, and risks involving metabolic enzymes and ion channels, all of which add to the “developability burden.” Very low logD is often associated with insufficient passive permeability. These are neighboring-task empirical patterns, not carcinogenicity-specific causes.\n- Brief note: This task is “carcinogenic vs. non-carcinogenic,” so logD thresholds are used more as proxies for **exposure and developability**. If a model implicitly learns that “higher exposure makes long-term bioassay positives more likely,” logD may be indirectly relevant, but it should not be treated as a substitute for structural carcinogenic mechanisms.\n- Source: Johnson et al., 2009 (Golden Triangle); RSC Med. Chem. 2021 (PFI < 6); Wiley chapter sample table (PFI < 6 and note that permeability may peak at PFI = 6–8)\n\n## strongest acidic pKa\n- Common threshold(s) or range(s):\n  - Site-relevance empirical boundary: **acidic center pKa > 10.4** tends to remain neutral at physiological pH and may be considered “not relevant for in vivo ionization.”\n- Usually associated with: The lower the strongest acidic pKa (stronger acid), the more likely the compound is to be deprotonated at physiological pH, usually corresponding to a higher anionic fraction, higher polarity, and lower passive permeability.\n- Brief note: Carcinogenicity itself has no universal hard threshold for acidic pKa. The threshold here is mainly used to interpret exposure-related properties such as neutral fraction, logD, and PSA.\n- Source: Ezuruike et al., 2022 (pKa site relevance and empirical cutoffs)\n\n## strongest basic pKa\n- Common threshold(s) or range(s):\n  - Site-relevance empirical boundary: **basic center pKa ≤ 4.4** tends to remain neutral at physiological pH and may be considered “not relevant for in vivo ionization.”\n- Usually associated with: The higher the strongest basic pKa (stronger base), the more likely the compound is to be protonated at physiological pH, usually corresponding to a higher cationic fraction, greater aqueous solubility, and lower passive permeability, though transporter interactions may also become stronger.\n- Brief note: For rodent carcinogenicity labels such as Carcinogens_Lagunin, pKa is more often used as an **exposure/distribution** explanatory variable than as a direct “carcinogenic mechanism threshold.”\n- Source: Ezuruike et al., 2022 (pKa site relevance and empirical cutoffs)\n\n## number of acidic sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More acidic sites usually reduce neutral fraction, increase the anionic proportion, and raise polarity-related indicators such as PSA and hydrogen bonding potential.\n- Brief note: The literature more often evaluates whether ionization is relevant on a site-by-site basis rather than defining hard cutoffs for the number of acidic sites.\n- Source: Ezuruike et al., 2022 (site-by-site evaluation of ionization relevance)\n\n## number of basic sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More basic sites usually reduce neutral fraction, increase the cationic proportion, and increase hydrogen-bonding and polarity-related properties.\n- Brief note: For carcinogenicity, the number of ionizable sites alone is usually insufficient to provide a mechanistic explanation. In neighboring ADMET tasks, a more common approach is to evaluate it jointly with logD, PSA, MW, transporters, and related factors.\n- Source: Ezuruike et al., 2022; Wiley chapter sample table summarizing commonly used integrated rules\n\n## number of ionizable sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A higher total number of ionizable sites usually means more complex pH-dependent ionization and distribution, which may lead to larger changes in polarity and solubility and to more complex absorption behavior.\n- Brief note: Empirically, each ionizable site is judged separately for whether its pKa is relevant in vivo, and the results are then aggregated into descriptors such as neutral fraction and logD.\n- Source: Ezuruike et al., 2022\n\n## exact molecular weight\n- Common threshold(s) or range(s):\n  - **Ro5 (oral accessibility proxy)**: MW > 500 indicates a higher likelihood of poor absorption/permeation.\n  - **GSK 4/400 (general ADMET proxy)**: MW < 400 is used as a more favorable empirical boundary.\n  - **Golden Triangle (permeability + low clearance proxy)**: In this framework, above approximately **MW ≈ 450**, the probability of being both “permeable and low clearance” drops markedly; the center of the favorable region is near MW ≈ 350.\n- Usually associated with: Larger molecules are generally less able to balance solubility, passive permeability, and metabolic stability. In toxicology, they are also more likely to bring broader “developability risks.”\n- Brief note: Veber’s analysis suggests that a simple **MW = 500** cutoff alone does not effectively distinguish good from poor oral bioavailability; MW is often only a proxy for properties such as flexibility and polarity.\n- Source: Lipinski et al., 2001; Veber et al., 2002; Johnson et al., 2009; Wiley chapter sample table (4/400 overview)\n\n## fraction of sp3 carbons\n- Common threshold(s) or range(s):\n  - A practical anchor reported in review literature: **Fsp3 ≥ 0.42** is described as a “suitable value,” and about **84%** of marketed drugs meet this criterion. This is a neighboring-task proxy based on the traditional view that higher 3D character and saturation are associated with developability and success.\n- Usually associated with: Higher Fsp3 is usually associated with greater saturation, stronger 3D shape, and more diverse conformational space. In medicinal chemistry it is often viewed as one strategy for reducing solubility and non-specific binding risks associated with excessive planarity and aromaticity.\n- Brief note: There is no recognized direct threshold relationship between Fsp3 and carcinogenicity. In this task it is better used as a proxy for **developability/aromaticity**, and the signal is usually more robust when interpreted together with aromatic ring count and PFI.\n- Source: Wei et al., 2020 (Fsp3 review and threshold anchor); Ritchie & Macdonald, 2009 (aromatic ring count and developability)\n\n## heavy-atom count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: An approximate indicator of “molecular size/complexity”; often used in potency metrics to normalize activity by size, for example as the denominator in ligand efficiency.\n- Brief note: The original Golden Triangle discussion notes that **MW may overestimate “true size” in some cases because of heavy atoms such as halogens**, so heavy-atom count, molecular volume, and total surface area may sometimes represent size more effectively than MW. This explains why HAC is used in some projects to replace or supplement MW, though there is no unified hard threshold.\n- Source: Nicolaou, 2014 (definition of heavy atoms in the context of ligand efficiency); Johnson et al., 2009 (discussion of HAC as a better size proxy)\n\n## heavy-atom molecular weight\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A size/compositional proxy similar to MW, but more focused on the contribution of non-hydrogen atoms.\n- Brief note: Like heavy-atom count, this kind of “size proxy” is more often used to explain or correct the limitations of MW, for example when heavy halogens inflate MW, rather than being used as a universal filtering threshold.\n- Source: Johnson et al., 2009 (discussion that MW may overestimate size and that HAC/surface area can serve as alternatives)\n\n## Labute surface area\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A proxy for molecular “size/exposed surface,” in the same family as volume and total surface area; it may indirectly affect solubility, membrane permeability, and protein binding.\n- Brief note: In commonly used empirical medicinal chemistry rules such as Ro5, Veber, 3/75, 4/400, and PFI, the main variables are MW, logP/logD, PSA, RB, and aromatic rings. Total surface area and similar area metrics appear more often in fine-grained project-level modeling or as alternatives to MW.\n- Source: Wiley chapter sample table (common rule sets); Johnson et al., 2009 (discussion of total surface area as a size surrogate)\n\n## maximum absolute partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A proxy for strong local charge or polarization, which may relate to strong hydrogen-bonding sites or electronic effects near ionizable centers.\n- Brief note: In publicly reproducible empirical filtering systems, atomic partial charges are more often used as continuous QSAR/QSPR features than as hard filtering rules. Therefore, it is better treated as an **interpretive feature** that supports pKa, PSA, and hydrogen-bond counts.\n- Source: Reviews of common empirical rules, which focus mainly on MW, logP, PSA, and RB rather than hard thresholds for partial charge\n\n## maximum partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A proxy for the strongest positive charge, typically near strongly cationic centers, or for overall polarization.\n- Brief note: As with “maximum absolute partial charge,” this is better treated as a model feature than as a threshold-based filter.\n- Source: Wiley chapter sample table, reflecting the practical focus of common rule sets\n\n## minimum absolute partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Information about the atom closest to electrical neutrality (the smallest absolute partial charge), which often lacks an intuitive medicinal chemistry interpretation.\n- Brief note: This type of “extreme-value statistic” rarely appears in threshold-based medicinal chemistry rules. If used for model interpretation, it should usually be considered together with local structural context, such as proximity to ionizable centers or strong acceptors.\n- Source: Wiley chapter sample table (common rule sets)\n\n## minimum partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A proxy for the strongest negative charge, usually near strongly anionic centers or strong acceptors, or for polarization.\n- Brief note: To use this type of metric as an “interpretable threshold,” model- or dataset-specific calibration is usually required; stable universal hard cutoffs are not available in public medicinal chemistry rules.\n- Source: Wiley chapter sample table (common rule sets)\n\n## estimated logP\n- Common threshold(s) or range(s):\n  - **Ro5 (oral accessibility proxy)**: logP > 5 indicates a higher likelihood of poor absorption/permeation.\n  - **3/75 (toxicity-risk proxy)**: Empirically, **logP > 3 and PSA < 75 Å²** is associated with increased risk of in vivo toxicity findings; in practice, this is often phrased as maintaining **logP < 3 and PSA > 75** to reduce risk.\n  - **4/400 (general ADMET proxy)**: The combination of cLogP < 4 and MW < 400 is often used as a more favorable empirical boundary for ADMET.\n- Usually associated with: Higher logP often leads to lower solubility, increased non-specific binding, and greater developability risks involving CYPs and hERG, and may also increase tissue distribution during chronic exposure.\n- Brief note: For Carcinogens_Lagunin, “high logP” can at most help explain the dimension of **exposure/developability risk**; it cannot replace recognition of structural carcinogenic mechanisms. Therefore, it should be used together with structural alerts.\n- Source: Lipinski et al., 2001 (Ro5); Wiley chapter sample table (3/75 and 4/400); Goetz & Shalaeva, 2018 (reuse of the 3/75 concept and associated risk framing)\n\n## molecular weight\n- Common threshold(s) or range(s):\n  - **Ro5**: MW > 500 is a risk signal.\n  - **4/400**: MW < 400 is an empirical boundary for general ADMET.\n  - **Golden Triangle**: In MW–logD7.4 space, once **MW exceeds about 450**, the probability of being both “permeable and low clearance” drops sharply; the center is around MW ≈ 350.\n- Usually associated with: Increasing MW is generally associated with greater flexibility, greater polarity, and poorer passive permeability, which indirectly reduces oral exposure. It may also alter metabolic pathways and the probability of forming reactive intermediates, though without a universal direction.\n- Brief note: Veber’s analysis emphasizes that MW itself is not the best hard threshold and is often only a synthetic proxy for variables such as rotatable bonds and PSA.\n- Source: Lipinski et al., 2001; Veber et al., 2002; Johnson et al., 2009; Wiley chapter sample table\n\n## NH/OH group count\n- Common threshold(s) or range(s):\n  - **Ro5 HBD formulation**: H-bond donors, counted as OH + NH, above 5 indicate a higher likelihood of poor absorption/permeation.\n- Usually associated with: More NH/OH groups generally increase hydrogen-bond donor capacity and PSA, reduce passive permeability, and increase solvation, often in the same direction as lower logP/logD.\n- Brief note: This count strongly overlaps with “hydrogen-bond donor count.” In carcinogenicity tasks, it behaves more like an **exposure/permeability proxy** than a mechanism-specific variable.\n- Source: Lipinski et al., 2001 (OH + NH as HBD)\n\n## nitrogen/oxygen atom count\n- Common threshold(s) or range(s):\n  - **Approximate Ro5 HBA formulation**: In that paper, H-bond acceptors are approximately described by the **number of N + O atoms**; when N + O > 10, poor absorption/permeation becomes more likely.\n- Usually associated with: More N/O atoms generally increase acceptor count and PSA, increase polarity, and reduce passive permeability, while sometimes improving solubility.\n- Brief note: N + O does not always equal HBA, for example in quaternary ammonium compounds or amides, but as a coarse anchor for “polarity burden” it is widely cited in the Ro5 context.\n- Source: Lipinski et al., 2001 (N + O as an approximate HBA count)\n\n## aliphatic carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More saturated/aliphatic carbocycles rather than aromatic rings generally make structures more 3D and may improve certain developability risks, though the outcome depends on the full combination of logD, RB, PSA, and related properties.\n- Brief note: The literature more often provides thresholds for **aromatic ring count** rather than hard thresholds for aliphatic carbocycle count. In practice, “increasing saturation” is usually treated as a directional design strategy rather than a split rule.\n- Source: Wei et al., 2020 (discussion of Fsp3 and 3D character); Ritchie & Macdonald, 2009 (importance of aromatic ring count for developability)\n\n## aliphatic heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Aliphatic heterocycles often increase both 3D shape and heteroatom content, affecting polarity, hydrogen bonding, logD, PSA, and transporters in both directions depending on context.\n- Brief note: No consistent universal threshold exists; a more robust approach is to capture its influence indirectly through PSA, logD, HBD/HBA, and RB.\n- Source: Common integrated rules such as Veber and Golden Triangle, which reflect the practice of using multiparameter criteria rather than single ring-count thresholds\n\n## aliphatic ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More aliphatic rings often reduce molecular flexibility (fewer rotatable bonds) and increase 3D shape, though they may also increase hydrophobicity depending on substitution.\n- Brief note: If one wants to impose thresholds, practice more often does so on RB, logD, or PFI rather than on aliphatic ring count alone.\n- Source: Veber et al., 2002 (RB threshold); RSC Med. Chem. 2021 (PFI as a quality metric)\n\n## aromatic carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More aromatic carbocycles generally increase logP/logD, reduce aqueous solubility, and move in the same direction as CYP/hERG and protein-binding risk from a neighboring-task developability perspective.\n- Brief note: Publicly reproducible empirical rules more commonly use thresholds like “total aromatic ring count > 3”; hard thresholds specifically separating aromatic carbocycles from aromatic heterocycles are not stable in the accessible sources used here.\n- Source: Ritchie & Macdonald, 2009 (total aromatic ring count and developability); Bunally, 2019 (independent negative effect of aromatic ring count on solubility)\n\n## aromatic heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More aromatic heterocycles still represent increased aromaticity, but they also introduce heteroatoms and raise PSA/HBA, so their effects on logD, solubility, and permeability may be non-monotonic.\n- Brief note: In practice, it is better to start from the overall threshold anchor for **aromatic ring count** (>3 as a risk signal) together with PFI (logD7.4 + #Ar), and then distinguish carbocycle versus heterocycle contributions at the specific structural level.\n- Source: Ritchie & Macdonald, 2009; RSC Med. Chem. 2021 (PFI definition and target)\n\n## aromatic ring count\n- Common threshold(s) or range(s):\n  - **Key anchor (neighboring-task developability proxy)**: Literature gives the clear conclusion that **“more than three aromatic rings”** is associated with poorer developability and higher attrition risk in development.\n  - **PFI quality metric**: PFI = Chrom logD7.4 + #Ar, and **PFI < 6** is used as a more desirable target. This is equivalent to limiting #Ar at a given logD or limiting logD at a given #Ar.\n- Usually associated with: Higher aromatic ring count is associated with lower solubility, greater lipophilicity, increased serum albumin binding, and higher risks for certain CYP inhibition and hERG issues.\n- Brief note: For rodent carcinogenicity, aromatic rings themselves are not a necessary carcinogenic mechanism. However, greater aromaticity can change metabolic activation and long-term tissue exposure patterns, and it co-occurs more often with several structural alerts such as PAHs, aromatic amines, and nitroaromatics. Therefore, in this task it is a very useful **upstream risk indicator**.\n- Source: Ritchie & Macdonald, 2009 (aromatic ring threshold and trends); RSC Med. Chem. 2021 (PFI < 6); Wiley chapter sample table (PFI definition and practical note)\n\n## hydrogen-bond acceptor count\n- Common threshold(s) or range(s):\n  - **Ro5**: HBA > 10 indicates a higher likelihood of poor absorption/permeation.\n  - **Veber (alternative formulation)**: HBD + HBA ≤ 12 can be used as an empirical screen equivalent to PSA ≤ 140 Å².\n- Usually associated with: More HBAs increase polarity and solvation and often reduce passive membrane permeability, though they may also improve solubility and affect transporter interactions.\n- Brief note: In carcinogenicity tasks, the relevance is mainly indirect through **exposure/distribution** and clustering of structural classes; the true mechanism depends more on structural alerts and metabolic activation.\n- Source: Lipinski et al., 2001; Veber et al., 2002\n\n## hydrogen-bond donor count\n- Common threshold(s) or range(s):\n  - **Ro5**: HBD > 5 indicates a higher likelihood of poor absorption/permeation.\n  - **Veber (alternative formulation)**: HBD + HBA ≤ 12, interchangeable with PSA ≤ 140 Å² as a screening criterion.\n- Usually associated with: More HBDs usually lead to higher PSA and stronger hydration, reducing passive permeability and potentially altering metabolism and binding.\n- Brief note: Like HBA, HBD is usually an **exposure/developability proxy** rather than a mechanistic carcinogenicity threshold.\n- Source: Lipinski et al., 2001; Veber et al., 2002\n\n## heteroatom count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More heteroatoms are usually associated with higher PSA, stronger hydrogen-bonding potential, and greater polarity, but the direction differs by heteroatom type, such as N, O, S, or halogens.\n- Brief note: In Ro5, HBA is often approximated by the count of N + O, but “heteroatom count” is broader and lacks a unified threshold. In practice, thresholds are applied more often to HBA/HBD and PSA.\n- Source: Lipinski et al., 2001; Veber et al., 2002\n\n## rotatable-bond count\n- Common threshold(s) or range(s):\n  - **Veber**: rotatable bonds ≤ 10 and PSA ≤ 140 Å², or HBD + HBA ≤ 12, are associated with a higher probability of good oral bioavailability.\n  - Veber’s dataset also showed that compounds with rotatable bonds **>10** more often exhibited lower oral bioavailability, especially within its MW groupings.\n- Usually associated with: More rotatable bonds (greater flexibility) usually increase conformational entropy penalties, reduce membrane permeability and oral absorption probability, and may also increase exposure of metabolic sites.\n- Brief note: For carcinogenicity, RB mainly acts through an **exposure/ADMET proxy role** rather than as a direct mechanistic threshold.\n- Source: Veber et al., 2002 (thresholds and trend conclusions)\n\n## saturated carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A higher proportion of saturated carbocycles often tracks with higher Fsp3 and more 3D structure, potentially improving solubility and reducing non-specific risks caused by excessive aromaticity, depending on logD and substitution.\n- Brief note: There is no unified count threshold; more robust anchors are Fsp3 and aromatic ring count.\n- Source: Wei et al., 2020; Ritchie & Macdonald, 2009\n\n## saturated heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Saturated heterocycles often increase both 3D character and polarity due to heteroatoms, leading to trade-offs in logD, PSA, permeability, and transporter effects.\n- Brief note: No unified threshold exists; it is better controlled indirectly using logD (Golden Triangle), PSA (Veber), and HBD/HBA (Ro5/Veber).\n- Source: Johnson et al., 2009; Veber et al., 2002; Lipinski et al., 2001\n\n## saturated ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More saturated rings may reduce RB (greater rigidity) and increase 3D character, moving in the same direction as Fsp3.\n- Brief note: “Saturated ring count” itself lacks a recognized threshold and is used more as an explanatory structural descriptor.\n- Source: Wei et al., 2020; Veber et al., 2002 (RB and accessibility)\n\n## ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Total ring count reflects structural complexity and rigidity, but the **type of ring**—aromatic vs. aliphatic, carbocycle vs. heterocycle, fused vs. isolated—is usually more important than the total count itself.\n- Brief note: The literature explicitly points out that **aromatic ring count** may be more predictive than **total ring count** in developability analysis, so thresholds for total ring count are unstable in public empirical rules.\n- Source: Ritchie & Macdonald, 2009 (emphasis on aromatic ring count over total ring count)\n\n## topological polar surface area\n- Common threshold(s) or range(s):\n  - **Veber**: TPSA ≤ 140 Å², or equivalently HBD + HBA ≤ 12, is associated with a higher probability of good oral bioavailability.\n  - **3/75 (toxicity-risk proxy)**: The rule is often phrased as maintaining **PSA > 75 and cLogP < 3** to reduce in vivo toxicity risk; equivalently, the combination of PSA < 75 and logP > 3 is less favorable.\n- Usually associated with: Higher TPSA usually lowers passive permeability and brain penetration and improves aqueous solubility; very low TPSA together with high logP is associated with greater non-specific binding and toxicity risk in neighboring-task practice.\n- Brief note: In rodent carcinogenicity tasks, TPSA behaves more like a **systemic exposure/distribution proxy**; actual carcinogenic discrimination still depends heavily on structural alerts and metabolic activation.\n- Source: Veber et al., 2002; Wiley chapter sample table; Goetz & Shalaeva, 2018 (3/75 risk framing)\n\n## QED drug-likeness\n- Common threshold(s) or range(s):\n  - QED is a continuous variable (0–1). The original study gave **distribution anchors** for sets considered “chemically attractive” and “unattractive”: the attractive set had mean QED ≈ **0.67** (s.d. ≈ 0.16), while the unattractive set had mean QED ≈ **0.49** (s.d. ≈ 0.23), and the “too complex” set had an even lower mean.\n  - Some applications use **QED ≥ 0.5** as a threshold for being “more drug-like,” for example when summarizing datasets with a 0.5 cutoff.\n- Usually associated with: Higher QED usually means the compound simultaneously satisfies, or comes close to satisfying, several classic oral-drug property preferences, such as MW, logP, PSA, HBD/HBA, aromatic rings, and RB. Therefore, it is more a proxy for developability and oral drug-likeness than a carcinogenicity mechanism metric.\n- Brief note: For Carcinogens_Lagunin, QED is better viewed as a summary feature of overall drug-like shape. It may capture exposure-related properties, but **it cannot replace structural alerts**. For interpretation, it is better to decompose QED back into its components, such as logP/logD, PSA, aromatic ring count, and RB, to see what actually drives the model.\n- Source: Bickerton et al., 2012 (QED distribution anchors); RDKit QED documentation (QED components); Scientific Reports 2022 (example use of QED ≥ 0.5)\n\n## Functional-group notes\n- Group name: Alkyl and aryl N-nitroso groups\n- Usually associated with: B (carcinogen; typically associated with genotoxic pathways)\n- Brief note: In the ISS carcinogenicity structural-alert list, “Alkyl and aryl N-nitroso groups” are explicit alert categories and showed relatively high positive predictive value in statistics derived from the ISSCAN dataset.\n- Source: “Carcinogenicity (genotox and nongenotox) alerts by ISS” profiler\n\n- Group name: Nitro-aromatic\n- Usually associated with: B (increased carcinogenic risk, often associated with mutagenicity and metabolic reductive activation)\n- Brief note: The ISS structural alerts include a “Nitro-aromatic (Genotox)” category; within the alert framework, this is a common genotoxicity-related substructure.\n- Source: ISS carcinogenicity alerts profiler\n\n- Group name: Primary aromatic amine / hydroxylamine and derived esters\n- Usually associated with: B (elevated carcinogenic risk; a classic pathway involving metabolic activation and electrophilic intermediates)\n- Brief note: The ISS alert list explicitly includes “Primary aromatic amine, hydroxyl amine and its derived esters” as a genotoxic carcinogenic structural alert.\n- Source: ISS carcinogenicity alerts profiler; JRC report emphasizing structural alerts for identifying potentially mutagenic/carcinogenic chemical reactivity\n\n- Group name: Epoxides and aziridines\n- Usually associated with: B (strong electrophiles / alkylation-related reactivity; typically genotoxic)\n- Brief note: The ISS alert list includes “Epoxides and aziridines” as genotoxic carcinogenic structural alerts; these functional groups are commonly included in alert sets for reactivity and alkylation risk.\n- Source: ISS carcinogenicity alerts profiler; JRC structural alert and QSAR compilation report\n\n- Group name: alpha,beta-unsaturated carbonyls\n- Usually associated with: B (increased risk of electrophilic addition and covalent binding; typically a genotoxic alert)\n- Brief note: The ISS alert list includes “alpha,beta-unsaturated carbonyls (Genotox)”; these structures are classic substructure indicators of electrophilic reactivity and covalent-binding risk.\n- Source: ISS carcinogenicity alerts profiler; JRC report compiling structural alerts and mechanisms\n\n- Group name: S or N mustard\n- Usually associated with: B (strong alkylation/crosslinking; classic genotoxic pathway)\n- Brief note: The ISS alert list explicitly includes “S or N mustard (Genotox)”; these are high-priority alerts for strong alkylating functionality.\n- Source: ISS carcinogenicity alerts profiler\n\n- Group name: Alkyl (C<5) or benzyl ester of sulphonic or phosphonic acid\n- Usually associated with: B (increased alkylation/electrophilic reactivity risk)\n- Brief note: The ISS alert list includes these small-alkyl or benzyl sulfonate/phosphonate esters as genotoxic carcinogenic structural alerts.\n- Source: ISS carcinogenicity alerts profiler\n\n- Group name: Hydrazine\n- Usually associated with: B (increased carcinogenic risk, associated with metabolic activation and reactive intermediates)\n- Brief note: The ISS alert list includes “Hydrazine (Genotox).”\n- Source: ISS carcinogenicity alerts profiler\n\n- Group name: Aromatic diazo / azo / azoxy\n- Usually associated with: B (increased carcinogenic risk, potentially associated with reductive metabolism yielding aromatic amines and related pathways)\n- Brief note: The ISS alert list includes entries such as “Aromatic diazo (Genotox)” and “Aliphatic azo and azoxy (Genotox),” indicating clear relevance within the alert framework.\n- Source: ISS carcinogenicity alerts profiler\n\n- Group name: Polycyclic Aromatic Hydrocarbons (PAHs) and Heterocyclic PAHs\n- Usually associated with: B (one of the classic genotoxic carcinogen classes)\n- Brief note: The ISS alert list includes both “Polycyclic Aromatic Hydrocarbons (Genotox)” and “Heterocyclic Polycyclic Aromatic Hydrocarbons (Genotox)” as alert categories.\n- Source: ISS carcinogenicity alerts profiler\n\n- Group name: Quinones\n- Usually associated with: B (risk mechanisms involving redox cycling and electrophilic addition; typically a genotoxic alert)\n- Brief note: The ISS alert list includes “Quinones (Genotox).”\n- Source: ISS carcinogenicity alerts profiler\n\n- Group name: Simple aldehyde\n- Usually associated with: B (reactive carbonyl-related risk; a genotoxic category in the alert framework)\n- Brief note: The ISS alert list includes “Simple aldehyde (Genotox).”\n- Source: ISS carcinogenicity alerts profiler",
     "task_description": "task Carcinogens_Lagunin where option (A) means is not a carcinogen and option (B) means is a carcinogen",
@@ -80,13 +80,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.031168442029271923,
+          "pair_score_class1_probability": 0.031168442029271923,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9688315579707281,
+          "teacher_confidence_margin": 0.46883155797072806,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a carcinogen",
             "label": 0
           },
-          "middle_draft": "First, The neighbor has pyridazine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.4936, which pushes toward option (A): is not a carcinogen. Next, For strongest basic pKa, the neighbor's strongest basic pKa is value 6.5838, while the query's strongest basic pKa is value 9.0464. The query-minus-neighbor delta is +2.4626. This pairwise contribution is -0.363, which pushes toward option (A): is not a carcinogen. Then, For maximum partial charge, the neighbor's maximum partial charge is value 0.1623, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is -0.005. This pairwise contribution is -0.3599, which pushes toward option (A): is not a carcinogen. After that, The neighbor does not have benzene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.353, which pushes toward option (A): is not a carcinogen. Finally, Neither the neighbor nor the query has alkyl aryl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.3448, which pushes toward option (B): is a carcinogen. Step 6, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3289, which pushes toward option (B): is a carcinogen. Taken together, this positive-neighbor comparison pushes toward option (A): is not a carcinogen with pair score 0.0312."
+          "feature_logit": 1.3359481596355904,
+          "feature_probability": 0.7918228280763754,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": {
+            "option": "B",
+            "text": "is a carcinogen",
+            "label": 1
+          },
+          "feature_confidence_margin": 0.2918228280763754,
+          "feature_evidence_strength": "medium",
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": -0.8738369470080278,
+          "displayed_feature_probability": 0.2944565408399103,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.2055434591600897,
+          "displayed_feature_evidence_strength": "medium",
+          "displayed_abs_contribution_coverage": 0.36364699903418246,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, The neighbor has pyridazine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.4936, which pushes toward option (A): is not a carcinogen. Next, For strongest basic pKa, the neighbor's strongest basic pKa is value 6.5838, while the query's strongest basic pKa is value 9.0464. The query-minus-neighbor delta is +2.4626. This pairwise contribution is -0.363, which pushes toward option (A): is not a carcinogen. Then, For maximum partial charge, the neighbor's maximum partial charge is value 0.1623, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is -0.005. This pairwise contribution is -0.3599, which pushes toward option (A): is not a carcinogen. After that, The neighbor does not have benzene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.353, which pushes toward option (A): is not a carcinogen. Finally, Neither the neighbor nor the query has alkyl aryl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.3448, which pushes toward option (B): is a carcinogen. Step 6, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3289, which pushes toward option (B): is a carcinogen. Step 7, For aliphatic ring count, the neighbor's aliphatic ring count is value 0, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3139, which pushes toward option (B): is a carcinogen. Step 8, For number of basic sites, the neighbor's number of basic sites is value 4, while the query's number of basic sites is present (1). The query-minus-neighbor delta is -3. This pairwise contribution is -0.292, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (B): is a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen."
         },
         {
           "neighbor_id": "CC(O)CNC(=O)N(N=O)C(C)Cl",
@@ -94,13 +122,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.0679716073241704,
+          "pair_score_class1_probability": 0.0679716073241704,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9320283926758296,
+          "teacher_confidence_margin": 0.4320283926758296,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a carcinogen",
             "label": 0
           },
-          "middle_draft": "First, For ring count, the neighbor's ring count is value 0, while the query's ring count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is -0.5436, which pushes toward option (A): is not a carcinogen. Next, For estimated logP, the neighbor's estimated logP is value 0.645, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is +0.4842. This pairwise contribution is 0.4486, which pushes toward option (B): is a carcinogen. Then, The neighbor does not have benzene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.353, which pushes toward option (A): is not a carcinogen. After that, Neither the neighbor nor the query has alkyl aryl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.3448, which pushes toward option (B): is a carcinogen. Finally, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3289, which pushes toward option (B): is a carcinogen. Step 6, For aliphatic ring count, the neighbor's aliphatic ring count is value 0, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3139, which pushes toward option (B): is a carcinogen. Taken together, this positive-neighbor comparison pushes toward option (A): is not a carcinogen with pair score 0.068."
+          "feature_logit": 2.1543596162880765,
+          "feature_probability": 0.8960754643739804,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": {
+            "option": "B",
+            "text": "is a carcinogen",
+            "label": 1
+          },
+          "feature_confidence_margin": 0.39607546437398045,
+          "feature_evidence_strength": "high",
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": 0.038390656556481856,
+          "displayed_feature_probability": 0.5095964855257115,
+          "displayed_feature_prediction": 1,
+          "displayed_feature_prediction_semantics": {
+            "option": "B",
+            "text": "is a carcinogen",
+            "label": 1
+          },
+          "displayed_feature_confidence_margin": 0.009596485525711462,
+          "displayed_feature_evidence_strength": "low",
+          "displayed_abs_contribution_coverage": 0.35589865647329716,
+          "displayed_teacher_agreement": false,
+          "middle_draft": "First, For ring count, the neighbor's ring count is value 0, while the query's ring count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is -0.5436, which pushes toward option (A): is not a carcinogen. Next, For estimated logP, the neighbor's estimated logP is value 0.645, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is +0.4842. This pairwise contribution is 0.4486, which pushes toward option (B): is a carcinogen. Then, The neighbor does not have benzene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.353, which pushes toward option (A): is not a carcinogen. After that, Neither the neighbor nor the query has alkyl aryl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.3448, which pushes toward option (B): is a carcinogen. Finally, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3289, which pushes toward option (B): is a carcinogen. Step 6, For aliphatic ring count, the neighbor's aliphatic ring count is value 0, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3139, which pushes toward option (B): is a carcinogen. Step 7, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3414, while the query's minimum absolute partial charge is value 0.1573. The query-minus-neighbor delta is -0.1842. This pairwise contribution is -0.2837, which pushes toward option (A): is not a carcinogen. Step 8, For estimated logD, the neighbor's estimated logD is value 0.6448, while the query's estimated logD is value -0.5293. The query-minus-neighbor delta is -1.1741. This pairwise contribution is -0.2175, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (B): is a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen."
         },
         {
           "neighbor_id": "O=S(=O)(O)c1ccc(/N=N/c2c(O)ccc3cc(S(=O)(=O)O)ccc23)cc1",
@@ -108,13 +164,41 @@
           "neighbor_role": "positive_neighbor",
           "pair_model_type": "positive_neighbor_model",
           "pair_score": 0.028172191060574177,
+          "pair_score_class1_probability": 0.028172191060574177,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9718278089394258,
+          "teacher_confidence_margin": 0.4718278089394258,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a carcinogen",
             "label": 0
           },
-          "middle_draft": "First, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0, while the query's fraction of sp3 carbons is value 0.4545. The query-minus-neighbor delta is +0.4545. This pairwise contribution is -1.0775, which pushes toward option (A): is not a carcinogen. Next, For maximum partial charge, the neighbor's maximum partial charge is value 0.294, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is -0.1368. This pairwise contribution is -0.4881, which pushes toward option (A): is not a carcinogen. Then, Neither the neighbor nor the query has alkyl aryl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.3448, which pushes toward option (B): is a carcinogen. After that, For strongest acidic pKa, the neighbor's strongest acidic pKa is value -0.5358, while the query's strongest acidic pKa is value 9.6532. The query-minus-neighbor delta is +10.189. This pairwise contribution is -0.3339, which pushes toward option (A): is not a carcinogen. Finally, For estimated logD, the neighbor's estimated logD is value -4.4816, while the query's estimated logD is value -0.5293. The query-minus-neighbor delta is +3.9523. This pairwise contribution is -0.3337, which pushes toward option (A): is not a carcinogen. Step 6, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3289, which pushes toward option (B): is a carcinogen. Taken together, this positive-neighbor comparison pushes toward option (A): is not a carcinogen with pair score 0.0282."
+          "feature_logit": 1.2317895374435075,
+          "feature_probability": 0.7741316316920859,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": {
+            "option": "B",
+            "text": "is a carcinogen",
+            "label": 1
+          },
+          "feature_confidence_margin": 0.2741316316920859,
+          "feature_evidence_strength": "medium",
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": -1.4875601519791783,
+          "displayed_feature_probability": 0.18428821769998122,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.3157117823000188,
+          "displayed_feature_evidence_strength": "high",
+          "displayed_abs_contribution_coverage": 0.4273960582421378,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0, while the query's fraction of sp3 carbons is value 0.4545. The query-minus-neighbor delta is +0.4545. This pairwise contribution is -1.0775, which pushes toward option (A): is not a carcinogen. Next, For maximum partial charge, the neighbor's maximum partial charge is value 0.294, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is -0.1368. This pairwise contribution is -0.4881, which pushes toward option (A): is not a carcinogen. Then, Neither the neighbor nor the query has alkyl aryl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.3448, which pushes toward option (B): is a carcinogen. After that, For strongest acidic pKa, the neighbor's strongest acidic pKa is value -0.5358, while the query's strongest acidic pKa is value 9.6532. The query-minus-neighbor delta is +10.189. This pairwise contribution is -0.3339, which pushes toward option (A): is not a carcinogen. Finally, For estimated logD, the neighbor's estimated logD is value -4.4816, while the query's estimated logD is value -0.5293. The query-minus-neighbor delta is +3.9523. This pairwise contribution is -0.3337, which pushes toward option (A): is not a carcinogen. Step 6, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3289, which pushes toward option (B): is a carcinogen. Step 7, For aliphatic ring count, the neighbor's aliphatic ring count is value 0, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3139, which pushes toward option (B): is a carcinogen. Step 8, The neighbor has 2 copies of sulfonic acid, while the query has 0 (query-minus-neighbor delta -2). This pairwise contribution is -0.242, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (B): is a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen."
         }
       ],
       "negative_neighbors": [
@@ -124,13 +208,41 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.04895968498596394,
+          "pair_score_class1_probability": 0.04895968498596394,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9510403150140361,
+          "teacher_confidence_margin": 0.4510403150140361,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a carcinogen",
             "label": 0
           },
-          "middle_draft": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.3139, while the query's minimum partial charge is value -0.5043. The query-minus-neighbor delta is -0.1904. This pairwise contribution is 0.3127, which pushes toward option (B): is a carcinogen. Next, For aliphatic ring count, the neighbor's aliphatic ring count is value 0, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.2776, which pushes toward option (B): is a carcinogen. Then, For hydrogen-bond donor count, the neighbor's hydrogen-bond donor count is value 1, while the query's hydrogen-bond donor count is value 4. The query-minus-neighbor delta is +3. This pairwise contribution is -0.1843, which pushes toward option (A): is not a carcinogen. After that, For NH/OH group count, the neighbor's NH/OH group count is value 1, while the query's NH/OH group count is value 4. The query-minus-neighbor delta is +3. This pairwise contribution is -0.168, which pushes toward option (A): is not a carcinogen. Finally, Neither the neighbor nor the query has hydrazine (query-minus-neighbor delta +0). This pairwise contribution is -0.1661, which pushes toward option (A): is not a carcinogen. Step 6, For estimated logP, the neighbor's estimated logP is value 5.4294, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is -4.3002. This pairwise contribution is -0.1643, which pushes toward option (A): is not a carcinogen. Taken together, this negative-neighbor comparison pushes toward option (A): is not a carcinogen with pair score 0.049."
+          "feature_logit": 0.8409933490385875,
+          "feature_probability": 0.6986743855372542,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": {
+            "option": "B",
+            "text": "is a carcinogen",
+            "label": 1
+          },
+          "feature_confidence_margin": 0.19867438553725425,
+          "feature_evidence_strength": "medium",
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": 0.20077179285188432,
+          "displayed_feature_probability": 0.5500250214774574,
+          "displayed_feature_prediction": 1,
+          "displayed_feature_prediction_semantics": {
+            "option": "B",
+            "text": "is a carcinogen",
+            "label": 1
+          },
+          "displayed_feature_confidence_margin": 0.050025021477457354,
+          "displayed_feature_evidence_strength": "low",
+          "displayed_abs_contribution_coverage": 0.297120921866266,
+          "displayed_teacher_agreement": false,
+          "middle_draft": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.3139, while the query's minimum partial charge is value -0.5043. The query-minus-neighbor delta is -0.1904. This pairwise contribution is 0.3127, which pushes toward option (B): is a carcinogen. Next, For aliphatic ring count, the neighbor's aliphatic ring count is value 0, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.2776, which pushes toward option (B): is a carcinogen. Then, For hydrogen-bond donor count, the neighbor's hydrogen-bond donor count is value 1, while the query's hydrogen-bond donor count is value 4. The query-minus-neighbor delta is +3. This pairwise contribution is -0.1843, which pushes toward option (A): is not a carcinogen. After that, For NH/OH group count, the neighbor's NH/OH group count is value 1, while the query's NH/OH group count is value 4. The query-minus-neighbor delta is +3. This pairwise contribution is -0.168, which pushes toward option (A): is not a carcinogen. Finally, Neither the neighbor nor the query has hydrazine (query-minus-neighbor delta +0). This pairwise contribution is -0.1661, which pushes toward option (A): is not a carcinogen. Step 6, For estimated logP, the neighbor's estimated logP is value 5.4294, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is -4.3002. This pairwise contribution is -0.1643, which pushes toward option (A): is not a carcinogen. Step 7, For neutral fraction, the neighbor's neutral fraction is value 0.001, while the query's neutral fraction is value 0.022. The query-minus-neighbor delta is +0.021. This pairwise contribution is 0.1501, which pushes toward option (B): is a carcinogen. Step 8, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.143, which pushes toward option (B): is a carcinogen. Taken together, relative to a neighbor labeled option (A): is not a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen."
         },
         {
           "neighbor_id": "C[C@@H]1NCCc2cc(O)c(O)cc21",
@@ -138,13 +250,41 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.07003197739373411,
+          "pair_score_class1_probability": 0.07003197739373411,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9299680226062659,
+          "teacher_confidence_margin": 0.4299680226062659,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a carcinogen",
             "label": 0
           },
-          "middle_draft": "First, For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3638, which pushes toward option (B): is a carcinogen. Next, The neighbor has 2 copies of phenol, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is 0.2416, which pushes toward option (B): is a carcinogen. Then, For estimated logP, the neighbor's estimated logP is value 1.3045, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is -0.1753. This pairwise contribution is -0.2065, which pushes toward option (A): is not a carcinogen. After that, For maximum partial charge, the neighbor's maximum partial charge is value 0.1572, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is +0. This pairwise contribution is -0.1804, which pushes toward option (A): is not a carcinogen. Finally, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.1572, while the query's minimum absolute partial charge is value 0.1573. The query-minus-neighbor delta is +0. This pairwise contribution is -0.1704, which pushes toward option (A): is not a carcinogen. Step 6, Neither the neighbor nor the query has hydrazine (query-minus-neighbor delta +0). This pairwise contribution is -0.1661, which pushes toward option (A): is not a carcinogen. Taken together, this negative-neighbor comparison pushes toward option (A): is not a carcinogen with pair score 0.07."
+          "feature_logit": 1.2213543552333566,
+          "feature_probability": 0.7723018029649407,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": {
+            "option": "B",
+            "text": "is a carcinogen",
+            "label": 1
+          },
+          "feature_confidence_margin": 0.27230180296494066,
+          "feature_evidence_strength": "medium",
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": -0.3844133292321176,
+          "displayed_feature_probability": 0.4050628982529104,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.09493710174708958,
+          "displayed_feature_evidence_strength": "low",
+          "displayed_abs_contribution_coverage": 0.31809011079860056,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3638, which pushes toward option (B): is a carcinogen. Next, The neighbor has 2 copies of phenol, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is 0.2416, which pushes toward option (B): is a carcinogen. Then, For estimated logP, the neighbor's estimated logP is value 1.3045, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is -0.1753. This pairwise contribution is -0.2065, which pushes toward option (A): is not a carcinogen. After that, For maximum partial charge, the neighbor's maximum partial charge is value 0.1572, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is +0. This pairwise contribution is -0.1804, which pushes toward option (A): is not a carcinogen. Finally, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.1572, while the query's minimum absolute partial charge is value 0.1573. The query-minus-neighbor delta is +0. This pairwise contribution is -0.1704, which pushes toward option (A): is not a carcinogen. Step 6, Neither the neighbor nor the query has hydrazine (query-minus-neighbor delta +0). This pairwise contribution is -0.1661, which pushes toward option (A): is not a carcinogen. Step 7, Neither the neighbor nor the query has sulfonic acid (query-minus-neighbor delta +0). This pairwise contribution is -0.1345, which pushes toward option (A): is not a carcinogen. Step 8, For strongest basic pKa, the neighbor's strongest basic pKa is value 9.1402, while the query's strongest basic pKa is value 9.0464. The query-minus-neighbor delta is -0.0938. This pairwise contribution is -0.1318, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (A): is not a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen."
         },
         {
           "neighbor_id": "CN1[C@@H](CC(=O)c2ccccc2)CCC[C@H]1C[C@H](O)c1ccccc1",
@@ -152,18 +292,1351 @@
           "neighbor_role": "negative_neighbor",
           "pair_model_type": "negative_neighbor_model",
           "pair_score": 0.031099778685811392,
+          "pair_score_class1_probability": 0.031099778685811392,
           "pair_prediction": 0,
+          "pair_prediction_probability": 0.9689002213141886,
+          "teacher_confidence_margin": 0.4689002213141886,
+          "teacher_confidence": "high",
           "pair_prediction_semantics": {
             "option": "A",
             "text": "is not a carcinogen",
             "label": 0
           },
-          "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.8018, while the query's QED drug-likeness is value 0.5633. The query-minus-neighbor delta is -0.2385. This pairwise contribution is 0.5058, which pushes toward option (B): is a carcinogen. Next, The neighbor does not have secondary aliphatic amine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.409, which pushes toward option (A): is not a carcinogen. Then, For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3638, which pushes toward option (B): is a carcinogen. After that, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.1639, while the query's minimum absolute partial charge is value 0.1573. The query-minus-neighbor delta is -0.0067. This pairwise contribution is -0.3032, which pushes toward option (A): is not a carcinogen. Finally, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.818, while the query's strongest acidic pKa is value 9.6532. The query-minus-neighbor delta is -4.1648. This pairwise contribution is -0.2558, which pushes toward option (A): is not a carcinogen. Step 6, For maximum partial charge, the neighbor's maximum partial charge is value 0.1639, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is -0.0067. This pairwise contribution is -0.228, which pushes toward option (A): is not a carcinogen. Taken together, this negative-neighbor comparison pushes toward option (A): is not a carcinogen with pair score 0.0311."
+          "feature_logit": 0.3685916659848648,
+          "feature_probability": 0.5911186315014746,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": {
+            "option": "B",
+            "text": "is a carcinogen",
+            "label": 1
+          },
+          "feature_confidence_margin": 0.09111863150147459,
+          "feature_evidence_strength": "low",
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_logit": -0.2941319377440208,
+          "displayed_feature_probability": 0.4269926025702114,
+          "displayed_feature_prediction": 0,
+          "displayed_feature_prediction_semantics": {
+            "option": "A",
+            "text": "is not a carcinogen",
+            "label": 0
+          },
+          "displayed_feature_confidence_margin": 0.07300739742978862,
+          "displayed_feature_evidence_strength": "low",
+          "displayed_abs_contribution_coverage": 0.36923879158739153,
+          "displayed_teacher_agreement": true,
+          "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.8018, while the query's QED drug-likeness is value 0.5633. The query-minus-neighbor delta is -0.2385. This pairwise contribution is 0.5058, which pushes toward option (B): is a carcinogen. Next, The neighbor does not have secondary aliphatic amine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.409, which pushes toward option (A): is not a carcinogen. Then, For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3638, which pushes toward option (B): is a carcinogen. After that, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.1639, while the query's minimum absolute partial charge is value 0.1573. The query-minus-neighbor delta is -0.0067. This pairwise contribution is -0.3032, which pushes toward option (A): is not a carcinogen. Finally, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.818, while the query's strongest acidic pKa is value 9.6532. The query-minus-neighbor delta is -4.1648. This pairwise contribution is -0.2558, which pushes toward option (A): is not a carcinogen. Step 6, For maximum partial charge, the neighbor's maximum partial charge is value 0.1639, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is -0.0067. This pairwise contribution is -0.228, which pushes toward option (A): is not a carcinogen. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.3884, while the query's minimum partial charge is value -0.5043. The query-minus-neighbor delta is -0.1159. This pairwise contribution is 0.2169, which pushes toward option (B): is a carcinogen. Step 8, For estimated logP, the neighbor's estimated logP is value 4.236, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is -3.1068. This pairwise contribution is -0.1845, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (A): is not a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen."
         }
       ]
     },
     "local_prediction": 0,
     "local_prediction_semantics": "option (A): is not a carcinogen"
+  },
+  "local_per_neighbor_rewrite_input": {
+    "task_playbook": "# Carcinogens_Lagunin Molecular Property Threshold Quick Reference Manual\n\nThis manual is intended for the single-task **Carcinogens_Lagunin** dataset from Therapeutics Data Commons (using your label definition: A = non-carcinogen, B = carcinogen). This dataset is provided under TDC’s “Carcinogens” task and is based on work by Alexey Lagunin and colleagues on rodent carcinogenicity prediction. The external test set description includes samples from the ISS carcinogen database and the Prestwick chemical library.\n\nImportant note: for the endpoint of **rodent carcinogenicity**, **structural alerts and metabolically generated reactive intermediates** are often more decisive than any single physicochemical property. Therefore, many physicochemical descriptors, especially charge distribution and surface-area-related features, **do not have stable hard thresholds** in the literature. In such cases, this manual prioritizes: (i) empirical thresholds that are strongly associated with **systemic exposure and developability** and are repeatedly used in medicinal chemistry and ADMET practice, as “neighboring-task proxies”; and (ii) **functional-group/substructure alerts** that are more directly relevant to carcinogenicity, listed at the end.\n\n## neutral fraction\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A higher neutral fraction (more neutral species at physiological pH) usually implies greater passive membrane permeability potential and a stronger tendency for tissue distribution. In a risk-assessment context, greater “opportunity for exposure” is an intuitive consideration, but it is not a carcinogenicity-specific causal factor.\n- Brief note: In PBPK/ADMET practice, whether ionization is “relevant in vivo” is often judged **site by site**. A common empirical rule is that **any basic center with pKa ≤ 4.4** or **any acidic center with pKa > 10.4** tends to remain neutral at physiological pH and may contribute little to in vivo ionization. Therefore, neutral fraction is usually interpreted together with the **strongest acidic/basic pKa and the number of ionizable sites**.\n- Source: Ezuruike et al., 2022 (tutorial on PBPK compound files, including pKa/site relevance and empirical cutoffs)\n\n## estimated logD\n- Common threshold(s) or range(s):\n  - **Golden Triangle (neighboring-task proxy: permeability / clearance / oral absorption)**: On the MW–logD7.4 plot, the region more favorable for simultaneously achieving permeability and low clearance forms a triangle. The paper explicitly notes that compounds in the **logD 1.0–2.0** range are more likely to be both “permeable and metabolically stable.” It also describes the triangle boundaries textually; for example, the baseline extends roughly from **MW = 200 with logD ≈ 2–5**, and the apex is around **MW ≈ 450 with logD ≈ 1–2**, with the center near **logD ≈ 1.5 and MW ≈ 350**.\n  - **PFI (neighboring-task proxy: developability / solubility risk)**: PFI = Chrom logD7.4 + #Ar; **PFI < 6** is commonly used as a more desirable quality target. Some practical guidance also notes that permeability may peak around **PFI = 6–8**, implying that lower is not always better and that trade-offs exist.\n- Usually associated with: Excessively high logD7.4 is often associated with higher lipophilicity, protein binding, and risks involving metabolic enzymes and ion channels, all of which add to the “developability burden.” Very low logD is often associated with insufficient passive permeability. These are neighboring-task empirical patterns, not carcinogenicity-specific causes.\n- Brief note: This task is “carcinogenic vs. non-carcinogenic,” so logD thresholds are used more as proxies for **exposure and developability**. If a model implicitly learns that “higher exposure makes long-term bioassay positives more likely,” logD may be indirectly relevant, but it should not be treated as a substitute for structural carcinogenic mechanisms.\n- Source: Johnson et al., 2009 (Golden Triangle); RSC Med. Chem. 2021 (PFI < 6); Wiley chapter sample table (PFI < 6 and note that permeability may peak at PFI = 6–8)\n\n## strongest acidic pKa\n- Common threshold(s) or range(s):\n  - Site-relevance empirical boundary: **acidic center pKa > 10.4** tends to remain neutral at physiological pH and may be considered “not relevant for in vivo ionization.”\n- Usually associated with: The lower the strongest acidic pKa (stronger acid), the more likely the compound is to be deprotonated at physiological pH, usually corresponding to a higher anionic fraction, higher polarity, and lower passive permeability.\n- Brief note: Carcinogenicity itself has no universal hard threshold for acidic pKa. The threshold here is mainly used to interpret exposure-related properties such as neutral fraction, logD, and PSA.\n- Source: Ezuruike et al., 2022 (pKa site relevance and empirical cutoffs)\n\n## strongest basic pKa\n- Common threshold(s) or range(s):\n  - Site-relevance empirical boundary: **basic center pKa ≤ 4.4** tends to remain neutral at physiological pH and may be considered “not relevant for in vivo ionization.”\n- Usually associated with: The higher the strongest basic pKa (stronger base), the more likely the compound is to be protonated at physiological pH, usually corresponding to a higher cationic fraction, greater aqueous solubility, and lower passive permeability, though transporter interactions may also become stronger.\n- Brief note: For rodent carcinogenicity labels such as Carcinogens_Lagunin, pKa is more often used as an **exposure/distribution** explanatory variable than as a direct “carcinogenic mechanism threshold.”\n- Source: Ezuruike et al., 2022 (pKa site relevance and empirical cutoffs)\n\n## number of acidic sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More acidic sites usually reduce neutral fraction, increase the anionic proportion, and raise polarity-related indicators such as PSA and hydrogen bonding potential.\n- Brief note: The literature more often evaluates whether ionization is relevant on a site-by-site basis rather than defining hard cutoffs for the number of acidic sites.\n- Source: Ezuruike et al., 2022 (site-by-site evaluation of ionization relevance)\n\n## number of basic sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More basic sites usually reduce neutral fraction, increase the cationic proportion, and increase hydrogen-bonding and polarity-related properties.\n- Brief note: For carcinogenicity, the number of ionizable sites alone is usually insufficient to provide a mechanistic explanation. In neighboring ADMET tasks, a more common approach is to evaluate it jointly with logD, PSA, MW, transporters, and related factors.\n- Source: Ezuruike et al., 2022; Wiley chapter sample table summarizing commonly used integrated rules\n\n## number of ionizable sites\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A higher total number of ionizable sites usually means more complex pH-dependent ionization and distribution, which may lead to larger changes in polarity and solubility and to more complex absorption behavior.\n- Brief note: Empirically, each ionizable site is judged separately for whether its pKa is relevant in vivo, and the results are then aggregated into descriptors such as neutral fraction and logD.\n- Source: Ezuruike et al., 2022\n\n## exact molecular weight\n- Common threshold(s) or range(s):\n  - **Ro5 (oral accessibility proxy)**: MW > 500 indicates a higher likelihood of poor absorption/permeation.\n  - **GSK 4/400 (general ADMET proxy)**: MW < 400 is used as a more favorable empirical boundary.\n  - **Golden Triangle (permeability + low clearance proxy)**: In this framework, above approximately **MW ≈ 450**, the probability of being both “permeable and low clearance” drops markedly; the center of the favorable region is near MW ≈ 350.\n- Usually associated with: Larger molecules are generally less able to balance solubility, passive permeability, and metabolic stability. In toxicology, they are also more likely to bring broader “developability risks.”\n- Brief note: Veber’s analysis suggests that a simple **MW = 500** cutoff alone does not effectively distinguish good from poor oral bioavailability; MW is often only a proxy for properties such as flexibility and polarity.\n- Source: Lipinski et al., 2001; Veber et al., 2002; Johnson et al., 2009; Wiley chapter sample table (4/400 overview)\n\n## fraction of sp3 carbons\n- Common threshold(s) or range(s):\n  - A practical anchor reported in review literature: **Fsp3 ≥ 0.42** is described as a “suitable value,” and about **84%** of marketed drugs meet this criterion. This is a neighboring-task proxy based on the traditional view that higher 3D character and saturation are associated with developability and success.\n- Usually associated with: Higher Fsp3 is usually associated with greater saturation, stronger 3D shape, and more diverse conformational space. In medicinal chemistry it is often viewed as one strategy for reducing solubility and non-specific binding risks associated with excessive planarity and aromaticity.\n- Brief note: There is no recognized direct threshold relationship between Fsp3 and carcinogenicity. In this task it is better used as a proxy for **developability/aromaticity**, and the signal is usually more robust when interpreted together with aromatic ring count and PFI.\n- Source: Wei et al., 2020 (Fsp3 review and threshold anchor); Ritchie & Macdonald, 2009 (aromatic ring count and developability)\n\n## heavy-atom count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: An approximate indicator of “molecular size/complexity”; often used in potency metrics to normalize activity by size, for example as the denominator in ligand efficiency.\n- Brief note: The original Golden Triangle discussion notes that **MW may overestimate “true size” in some cases because of heavy atoms such as halogens**, so heavy-atom count, molecular volume, and total surface area may sometimes represent size more effectively than MW. This explains why HAC is used in some projects to replace or supplement MW, though there is no unified hard threshold.\n- Source: Nicolaou, 2014 (definition of heavy atoms in the context of ligand efficiency); Johnson et al., 2009 (discussion of HAC as a better size proxy)\n\n## heavy-atom molecular weight\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A size/compositional proxy similar to MW, but more focused on the contribution of non-hydrogen atoms.\n- Brief note: Like heavy-atom count, this kind of “size proxy” is more often used to explain or correct the limitations of MW, for example when heavy halogens inflate MW, rather than being used as a universal filtering threshold.\n- Source: Johnson et al., 2009 (discussion that MW may overestimate size and that HAC/surface area can serve as alternatives)\n\n## Labute surface area\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A proxy for molecular “size/exposed surface,” in the same family as volume and total surface area; it may indirectly affect solubility, membrane permeability, and protein binding.\n- Brief note: In commonly used empirical medicinal chemistry rules such as Ro5, Veber, 3/75, 4/400, and PFI, the main variables are MW, logP/logD, PSA, RB, and aromatic rings. Total surface area and similar area metrics appear more often in fine-grained project-level modeling or as alternatives to MW.\n- Source: Wiley chapter sample table (common rule sets); Johnson et al., 2009 (discussion of total surface area as a size surrogate)\n\n## maximum absolute partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A proxy for strong local charge or polarization, which may relate to strong hydrogen-bonding sites or electronic effects near ionizable centers.\n- Brief note: In publicly reproducible empirical filtering systems, atomic partial charges are more often used as continuous QSAR/QSPR features than as hard filtering rules. Therefore, it is better treated as an **interpretive feature** that supports pKa, PSA, and hydrogen-bond counts.\n- Source: Reviews of common empirical rules, which focus mainly on MW, logP, PSA, and RB rather than hard thresholds for partial charge\n\n## maximum partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A proxy for the strongest positive charge, typically near strongly cationic centers, or for overall polarization.\n- Brief note: As with “maximum absolute partial charge,” this is better treated as a model feature than as a threshold-based filter.\n- Source: Wiley chapter sample table, reflecting the practical focus of common rule sets\n\n## minimum absolute partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Information about the atom closest to electrical neutrality (the smallest absolute partial charge), which often lacks an intuitive medicinal chemistry interpretation.\n- Brief note: This type of “extreme-value statistic” rarely appears in threshold-based medicinal chemistry rules. If used for model interpretation, it should usually be considered together with local structural context, such as proximity to ionizable centers or strong acceptors.\n- Source: Wiley chapter sample table (common rule sets)\n\n## minimum partial charge\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A proxy for the strongest negative charge, usually near strongly anionic centers or strong acceptors, or for polarization.\n- Brief note: To use this type of metric as an “interpretable threshold,” model- or dataset-specific calibration is usually required; stable universal hard cutoffs are not available in public medicinal chemistry rules.\n- Source: Wiley chapter sample table (common rule sets)\n\n## estimated logP\n- Common threshold(s) or range(s):\n  - **Ro5 (oral accessibility proxy)**: logP > 5 indicates a higher likelihood of poor absorption/permeation.\n  - **3/75 (toxicity-risk proxy)**: Empirically, **logP > 3 and PSA < 75 Å²** is associated with increased risk of in vivo toxicity findings; in practice, this is often phrased as maintaining **logP < 3 and PSA > 75** to reduce risk.\n  - **4/400 (general ADMET proxy)**: The combination of cLogP < 4 and MW < 400 is often used as a more favorable empirical boundary for ADMET.\n- Usually associated with: Higher logP often leads to lower solubility, increased non-specific binding, and greater developability risks involving CYPs and hERG, and may also increase tissue distribution during chronic exposure.\n- Brief note: For Carcinogens_Lagunin, “high logP” can at most help explain the dimension of **exposure/developability risk**; it cannot replace recognition of structural carcinogenic mechanisms. Therefore, it should be used together with structural alerts.\n- Source: Lipinski et al., 2001 (Ro5); Wiley chapter sample table (3/75 and 4/400); Goetz & Shalaeva, 2018 (reuse of the 3/75 concept and associated risk framing)\n\n## molecular weight\n- Common threshold(s) or range(s):\n  - **Ro5**: MW > 500 is a risk signal.\n  - **4/400**: MW < 400 is an empirical boundary for general ADMET.\n  - **Golden Triangle**: In MW–logD7.4 space, once **MW exceeds about 450**, the probability of being both “permeable and low clearance” drops sharply; the center is around MW ≈ 350.\n- Usually associated with: Increasing MW is generally associated with greater flexibility, greater polarity, and poorer passive permeability, which indirectly reduces oral exposure. It may also alter metabolic pathways and the probability of forming reactive intermediates, though without a universal direction.\n- Brief note: Veber’s analysis emphasizes that MW itself is not the best hard threshold and is often only a synthetic proxy for variables such as rotatable bonds and PSA.\n- Source: Lipinski et al., 2001; Veber et al., 2002; Johnson et al., 2009; Wiley chapter sample table\n\n## NH/OH group count\n- Common threshold(s) or range(s):\n  - **Ro5 HBD formulation**: H-bond donors, counted as OH + NH, above 5 indicate a higher likelihood of poor absorption/permeation.\n- Usually associated with: More NH/OH groups generally increase hydrogen-bond donor capacity and PSA, reduce passive permeability, and increase solvation, often in the same direction as lower logP/logD.\n- Brief note: This count strongly overlaps with “hydrogen-bond donor count.” In carcinogenicity tasks, it behaves more like an **exposure/permeability proxy** than a mechanism-specific variable.\n- Source: Lipinski et al., 2001 (OH + NH as HBD)\n\n## nitrogen/oxygen atom count\n- Common threshold(s) or range(s):\n  - **Approximate Ro5 HBA formulation**: In that paper, H-bond acceptors are approximately described by the **number of N + O atoms**; when N + O > 10, poor absorption/permeation becomes more likely.\n- Usually associated with: More N/O atoms generally increase acceptor count and PSA, increase polarity, and reduce passive permeability, while sometimes improving solubility.\n- Brief note: N + O does not always equal HBA, for example in quaternary ammonium compounds or amides, but as a coarse anchor for “polarity burden” it is widely cited in the Ro5 context.\n- Source: Lipinski et al., 2001 (N + O as an approximate HBA count)\n\n## aliphatic carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More saturated/aliphatic carbocycles rather than aromatic rings generally make structures more 3D and may improve certain developability risks, though the outcome depends on the full combination of logD, RB, PSA, and related properties.\n- Brief note: The literature more often provides thresholds for **aromatic ring count** rather than hard thresholds for aliphatic carbocycle count. In practice, “increasing saturation” is usually treated as a directional design strategy rather than a split rule.\n- Source: Wei et al., 2020 (discussion of Fsp3 and 3D character); Ritchie & Macdonald, 2009 (importance of aromatic ring count for developability)\n\n## aliphatic heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Aliphatic heterocycles often increase both 3D shape and heteroatom content, affecting polarity, hydrogen bonding, logD, PSA, and transporters in both directions depending on context.\n- Brief note: No consistent universal threshold exists; a more robust approach is to capture its influence indirectly through PSA, logD, HBD/HBA, and RB.\n- Source: Common integrated rules such as Veber and Golden Triangle, which reflect the practice of using multiparameter criteria rather than single ring-count thresholds\n\n## aliphatic ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More aliphatic rings often reduce molecular flexibility (fewer rotatable bonds) and increase 3D shape, though they may also increase hydrophobicity depending on substitution.\n- Brief note: If one wants to impose thresholds, practice more often does so on RB, logD, or PFI rather than on aliphatic ring count alone.\n- Source: Veber et al., 2002 (RB threshold); RSC Med. Chem. 2021 (PFI as a quality metric)\n\n## aromatic carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More aromatic carbocycles generally increase logP/logD, reduce aqueous solubility, and move in the same direction as CYP/hERG and protein-binding risk from a neighboring-task developability perspective.\n- Brief note: Publicly reproducible empirical rules more commonly use thresholds like “total aromatic ring count > 3”; hard thresholds specifically separating aromatic carbocycles from aromatic heterocycles are not stable in the accessible sources used here.\n- Source: Ritchie & Macdonald, 2009 (total aromatic ring count and developability); Bunally, 2019 (independent negative effect of aromatic ring count on solubility)\n\n## aromatic heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More aromatic heterocycles still represent increased aromaticity, but they also introduce heteroatoms and raise PSA/HBA, so their effects on logD, solubility, and permeability may be non-monotonic.\n- Brief note: In practice, it is better to start from the overall threshold anchor for **aromatic ring count** (>3 as a risk signal) together with PFI (logD7.4 + #Ar), and then distinguish carbocycle versus heterocycle contributions at the specific structural level.\n- Source: Ritchie & Macdonald, 2009; RSC Med. Chem. 2021 (PFI definition and target)\n\n## aromatic ring count\n- Common threshold(s) or range(s):\n  - **Key anchor (neighboring-task developability proxy)**: Literature gives the clear conclusion that **“more than three aromatic rings”** is associated with poorer developability and higher attrition risk in development.\n  - **PFI quality metric**: PFI = Chrom logD7.4 + #Ar, and **PFI < 6** is used as a more desirable target. This is equivalent to limiting #Ar at a given logD or limiting logD at a given #Ar.\n- Usually associated with: Higher aromatic ring count is associated with lower solubility, greater lipophilicity, increased serum albumin binding, and higher risks for certain CYP inhibition and hERG issues.\n- Brief note: For rodent carcinogenicity, aromatic rings themselves are not a necessary carcinogenic mechanism. However, greater aromaticity can change metabolic activation and long-term tissue exposure patterns, and it co-occurs more often with several structural alerts such as PAHs, aromatic amines, and nitroaromatics. Therefore, in this task it is a very useful **upstream risk indicator**.\n- Source: Ritchie & Macdonald, 2009 (aromatic ring threshold and trends); RSC Med. Chem. 2021 (PFI < 6); Wiley chapter sample table (PFI definition and practical note)\n\n## hydrogen-bond acceptor count\n- Common threshold(s) or range(s):\n  - **Ro5**: HBA > 10 indicates a higher likelihood of poor absorption/permeation.\n  - **Veber (alternative formulation)**: HBD + HBA ≤ 12 can be used as an empirical screen equivalent to PSA ≤ 140 Å².\n- Usually associated with: More HBAs increase polarity and solvation and often reduce passive membrane permeability, though they may also improve solubility and affect transporter interactions.\n- Brief note: In carcinogenicity tasks, the relevance is mainly indirect through **exposure/distribution** and clustering of structural classes; the true mechanism depends more on structural alerts and metabolic activation.\n- Source: Lipinski et al., 2001; Veber et al., 2002\n\n## hydrogen-bond donor count\n- Common threshold(s) or range(s):\n  - **Ro5**: HBD > 5 indicates a higher likelihood of poor absorption/permeation.\n  - **Veber (alternative formulation)**: HBD + HBA ≤ 12, interchangeable with PSA ≤ 140 Å² as a screening criterion.\n- Usually associated with: More HBDs usually lead to higher PSA and stronger hydration, reducing passive permeability and potentially altering metabolism and binding.\n- Brief note: Like HBA, HBD is usually an **exposure/developability proxy** rather than a mechanistic carcinogenicity threshold.\n- Source: Lipinski et al., 2001; Veber et al., 2002\n\n## heteroatom count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More heteroatoms are usually associated with higher PSA, stronger hydrogen-bonding potential, and greater polarity, but the direction differs by heteroatom type, such as N, O, S, or halogens.\n- Brief note: In Ro5, HBA is often approximated by the count of N + O, but “heteroatom count” is broader and lacks a unified threshold. In practice, thresholds are applied more often to HBA/HBD and PSA.\n- Source: Lipinski et al., 2001; Veber et al., 2002\n\n## rotatable-bond count\n- Common threshold(s) or range(s):\n  - **Veber**: rotatable bonds ≤ 10 and PSA ≤ 140 Å², or HBD + HBA ≤ 12, are associated with a higher probability of good oral bioavailability.\n  - Veber’s dataset also showed that compounds with rotatable bonds **>10** more often exhibited lower oral bioavailability, especially within its MW groupings.\n- Usually associated with: More rotatable bonds (greater flexibility) usually increase conformational entropy penalties, reduce membrane permeability and oral absorption probability, and may also increase exposure of metabolic sites.\n- Brief note: For carcinogenicity, RB mainly acts through an **exposure/ADMET proxy role** rather than as a direct mechanistic threshold.\n- Source: Veber et al., 2002 (thresholds and trend conclusions)\n\n## saturated carbocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: A higher proportion of saturated carbocycles often tracks with higher Fsp3 and more 3D structure, potentially improving solubility and reducing non-specific risks caused by excessive aromaticity, depending on logD and substitution.\n- Brief note: There is no unified count threshold; more robust anchors are Fsp3 and aromatic ring count.\n- Source: Wei et al., 2020; Ritchie & Macdonald, 2009\n\n## saturated heterocycle count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Saturated heterocycles often increase both 3D character and polarity due to heteroatoms, leading to trade-offs in logD, PSA, permeability, and transporter effects.\n- Brief note: No unified threshold exists; it is better controlled indirectly using logD (Golden Triangle), PSA (Veber), and HBD/HBA (Ro5/Veber).\n- Source: Johnson et al., 2009; Veber et al., 2002; Lipinski et al., 2001\n\n## saturated ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: More saturated rings may reduce RB (greater rigidity) and increase 3D character, moving in the same direction as Fsp3.\n- Brief note: “Saturated ring count” itself lacks a recognized threshold and is used more as an explanatory structural descriptor.\n- Source: Wei et al., 2020; Veber et al., 2002 (RB and accessibility)\n\n## ring count\n- Common threshold(s) or range(s): no stable literature threshold found\n- Usually associated with: Total ring count reflects structural complexity and rigidity, but the **type of ring**—aromatic vs. aliphatic, carbocycle vs. heterocycle, fused vs. isolated—is usually more important than the total count itself.\n- Brief note: The literature explicitly points out that **aromatic ring count** may be more predictive than **total ring count** in developability analysis, so thresholds for total ring count are unstable in public empirical rules.\n- Source: Ritchie & Macdonald, 2009 (emphasis on aromatic ring count over total ring count)\n\n## topological polar surface area\n- Common threshold(s) or range(s):\n  - **Veber**: TPSA ≤ 140 Å², or equivalently HBD + HBA ≤ 12, is associated with a higher probability of good oral bioavailability.\n  - **3/75 (toxicity-risk proxy)**: The rule is often phrased as maintaining **PSA > 75 and cLogP < 3** to reduce in vivo toxicity risk; equivalently, the combination of PSA < 75 and logP > 3 is less favorable.\n- Usually associated with: Higher TPSA usually lowers passive permeability and brain penetration and improves aqueous solubility; very low TPSA together with high logP is associated with greater non-specific binding and toxicity risk in neighboring-task practice.\n- Brief note: In rodent carcinogenicity tasks, TPSA behaves more like a **systemic exposure/distribution proxy**; actual carcinogenic discrimination still depends heavily on structural alerts and metabolic activation.\n- Source: Veber et al., 2002; Wiley chapter sample table; Goetz & Shalaeva, 2018 (3/75 risk framing)\n\n## QED drug-likeness\n- Common threshold(s) or range(s):\n  - QED is a continuous variable (0–1). The original study gave **distribution anchors** for sets considered “chemically attractive” and “unattractive”: the attractive set had mean QED ≈ **0.67** (s.d. ≈ 0.16), while the unattractive set had mean QED ≈ **0.49** (s.d. ≈ 0.23), and the “too complex” set had an even lower mean.\n  - Some applications use **QED ≥ 0.5** as a threshold for being “more drug-like,” for example when summarizing datasets with a 0.5 cutoff.\n- Usually associated with: Higher QED usually means the compound simultaneously satisfies, or comes close to satisfying, several classic oral-drug property preferences, such as MW, logP, PSA, HBD/HBA, aromatic rings, and RB. Therefore, it is more a proxy for developability and oral drug-likeness than a carcinogenicity mechanism metric.\n- Brief note: For Carcinogens_Lagunin, QED is better viewed as a summary feature of overall drug-like shape. It may capture exposure-related properties, but **it cannot replace structural alerts**. For interpretation, it is better to decompose QED back into its components, such as logP/logD, PSA, aromatic ring count, and RB, to see what actually drives the model.\n- Source: Bickerton et al., 2012 (QED distribution anchors); RDKit QED documentation (QED components); Scientific Reports 2022 (example use of QED ≥ 0.5)\n\n## Functional-group notes\n- Group name: Alkyl and aryl N-nitroso groups\n- Usually associated with: B (carcinogen; typically associated with genotoxic pathways)\n- Brief note: In the ISS carcinogenicity structural-alert list, “Alkyl and aryl N-nitroso groups” are explicit alert categories and showed relatively high positive predictive value in statistics derived from the ISSCAN dataset.\n- Source: “Carcinogenicity (genotox and nongenotox) alerts by ISS” profiler\n\n- Group name: Nitro-aromatic\n- Usually associated with: B (increased carcinogenic risk, often associated with mutagenicity and metabolic reductive activation)\n- Brief note: The ISS structural alerts include a “Nitro-aromatic (Genotox)” category; within the alert framework, this is a common genotoxicity-related substructure.\n- Source: ISS carcinogenicity alerts profiler\n\n- Group name: Primary aromatic amine / hydroxylamine and derived esters\n- Usually associated with: B (elevated carcinogenic risk; a classic pathway involving metabolic activation and electrophilic intermediates)\n- Brief note: The ISS alert list explicitly includes “Primary aromatic amine, hydroxyl amine and its derived esters” as a genotoxic carcinogenic structural alert.\n- Source: ISS carcinogenicity alerts profiler; JRC report emphasizing structural alerts for identifying potentially mutagenic/carcinogenic chemical reactivity\n\n- Group name: Epoxides and aziridines\n- Usually associated with: B (strong electrophiles / alkylation-related reactivity; typically genotoxic)\n- Brief note: The ISS alert list includes “Epoxides and aziridines” as genotoxic carcinogenic structural alerts; these functional groups are commonly included in alert sets for reactivity and alkylation risk.\n- Source: ISS carcinogenicity alerts profiler; JRC structural alert and QSAR compilation report\n\n- Group name: alpha,beta-unsaturated carbonyls\n- Usually associated with: B (increased risk of electrophilic addition and covalent binding; typically a genotoxic alert)\n- Brief note: The ISS alert list includes “alpha,beta-unsaturated carbonyls (Genotox)”; these structures are classic substructure indicators of electrophilic reactivity and covalent-binding risk.\n- Source: ISS carcinogenicity alerts profiler; JRC report compiling structural alerts and mechanisms\n\n- Group name: S or N mustard\n- Usually associated with: B (strong alkylation/crosslinking; classic genotoxic pathway)\n- Brief note: The ISS alert list explicitly includes “S or N mustard (Genotox)”; these are high-priority alerts for strong alkylating functionality.\n- Source: ISS carcinogenicity alerts profiler\n\n- Group name: Alkyl (C<5) or benzyl ester of sulphonic or phosphonic acid\n- Usually associated with: B (increased alkylation/electrophilic reactivity risk)\n- Brief note: The ISS alert list includes these small-alkyl or benzyl sulfonate/phosphonate esters as genotoxic carcinogenic structural alerts.\n- Source: ISS carcinogenicity alerts profiler\n\n- Group name: Hydrazine\n- Usually associated with: B (increased carcinogenic risk, associated with metabolic activation and reactive intermediates)\n- Brief note: The ISS alert list includes “Hydrazine (Genotox).”\n- Source: ISS carcinogenicity alerts profiler\n\n- Group name: Aromatic diazo / azo / azoxy\n- Usually associated with: B (increased carcinogenic risk, potentially associated with reductive metabolism yielding aromatic amines and related pathways)\n- Brief note: The ISS alert list includes entries such as “Aromatic diazo (Genotox)” and “Aliphatic azo and azoxy (Genotox),” indicating clear relevance within the alert framework.\n- Source: ISS carcinogenicity alerts profiler\n\n- Group name: Polycyclic Aromatic Hydrocarbons (PAHs) and Heterocyclic PAHs\n- Usually associated with: B (one of the classic genotoxic carcinogen classes)\n- Brief note: The ISS alert list includes both “Polycyclic Aromatic Hydrocarbons (Genotox)” and “Heterocyclic Polycyclic Aromatic Hydrocarbons (Genotox)” as alert categories.\n- Source: ISS carcinogenicity alerts profiler\n\n- Group name: Quinones\n- Usually associated with: B (risk mechanisms involving redox cycling and electrophilic addition; typically a genotoxic alert)\n- Brief note: The ISS alert list includes “Quinones (Genotox).”\n- Source: ISS carcinogenicity alerts profiler\n\n- Group name: Simple aldehyde\n- Usually associated with: B (reactive carbonyl-related risk; a genotoxic category in the alert framework)\n- Brief note: The ISS alert list includes “Simple aldehyde (Genotox).”\n- Source: ISS carcinogenicity alerts profiler",
+    "task_description": "molecule local analog-comparison task Carcinogens_Lagunin where option (A) means is not a carcinogen and option (B) means is a carcinogen",
+    "positive_label_semantics": "is a carcinogen",
+    "negative_label_semantics": "is not a carcinogen",
+    "num_neighbors": 6,
+    "neighbors": [
+      {
+        "neighbor_index": 1,
+        "neighbor_id": "CC(O)CN(C)c1ccc(NN)nn1",
+        "neighbor_smiles": "CC(O)CN(C)c1ccc(NN)nn1",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): is a carcinogen",
+        "neighbor_similarity": 0.20686456400742118,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.031168442029271923,
+          "pair_score_class1_probability": 0.031168442029271923,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9688315579707281,
+          "pair_prediction_semantics": "option (A): is not a carcinogen",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.46883155797072806
+        },
+        "evidence_strength": {
+          "feature_probability": 0.7918228280763754,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": "option (B): is a carcinogen",
+          "feature_evidence_strength": "medium",
+          "feature_confidence_margin": 0.2918228280763754,
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.36364699903418246
+        },
+        "middle_draft": "First, The neighbor has pyridazine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.4936, which pushes toward option (A): is not a carcinogen. Next, For strongest basic pKa, the neighbor's strongest basic pKa is value 6.5838, while the query's strongest basic pKa is value 9.0464. The query-minus-neighbor delta is +2.4626. This pairwise contribution is -0.363, which pushes toward option (A): is not a carcinogen. Then, For maximum partial charge, the neighbor's maximum partial charge is value 0.1623, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is -0.005. This pairwise contribution is -0.3599, which pushes toward option (A): is not a carcinogen. After that, The neighbor does not have benzene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.353, which pushes toward option (A): is not a carcinogen. Finally, Neither the neighbor nor the query has alkyl aryl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.3448, which pushes toward option (B): is a carcinogen. Step 6, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3289, which pushes toward option (B): is a carcinogen. Step 7, For aliphatic ring count, the neighbor's aliphatic ring count is value 0, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3139, which pushes toward option (B): is a carcinogen. Step 8, For number of basic sites, the neighbor's number of basic sites is value 4, while the query's number of basic sites is present (1). The query-minus-neighbor delta is -3. This pairwise contribution is -0.292, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (B): is a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "fg_top_level__pyridazine",
+            "display_name": "pyridazine",
+            "description": "top-level functional-group indicator or count for pyridazine",
+            "source_family": "fg_top_level",
+            "raw_name": "pyridazine",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "present (1)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-1",
+            "observation_text": "For pyridazine, the neighbor value is present (1), the query value is absent (0), and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "display_name": "strongest basic pKa",
+            "description": "pKa of the strongest basic site",
+            "source_family": "pka",
+            "raw_name": "most_basic_pka",
+            "neighbor_value": 6.5838,
+            "query_value": 9.0464,
+            "delta_value": 2.4626,
+            "neighbor_value_text": "value 6.5838",
+            "query_value_text": "value 9.0464",
+            "delta_value_text": "+2.4626",
+            "observation_text": "For strongest basic pKa, the neighbor value is value 6.5838, the query value is value 9.0464, and the query-minus-neighbor delta is +2.4626."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "display_name": "maximum partial charge",
+            "description": "most positive atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxPartialCharge",
+            "neighbor_value": 0.1622710538424899,
+            "query_value": 0.1572614559721115,
+            "delta_value": -0.005009597870378413,
+            "neighbor_value_text": "value 0.1623",
+            "query_value_text": "value 0.1573",
+            "delta_value_text": "-0.005",
+            "observation_text": "For maximum partial charge, the neighbor value is value 0.1623, the query value is value 0.1573, and the query-minus-neighbor delta is -0.005."
+          },
+          {
+            "feature_name": "fg_top_level__benzene",
+            "display_name": "benzene",
+            "description": "top-level functional-group indicator or count for benzene",
+            "source_family": "fg_top_level",
+            "raw_name": "benzene",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For benzene, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "fg_top_level__alkyl aryl ether",
+            "display_name": "alkyl aryl ether",
+            "description": "top-level functional-group indicator or count for alkyl aryl ether",
+            "source_family": "fg_top_level",
+            "raw_name": "alkyl aryl ether",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For alkyl aryl ether, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticHeterocycles",
+            "display_name": "aliphatic heterocycle count",
+            "description": "number of aliphatic heterocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticHeterocycles",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "value 0",
+            "query_value_text": "value 0",
+            "delta_value_text": "+0",
+            "observation_text": "For aliphatic heterocycle count, the neighbor value is value 0, the query value is value 0, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "display_name": "aliphatic ring count",
+            "description": "number of aliphatic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticRings",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "value 0",
+            "query_value_text": "value 0",
+            "delta_value_text": "+0",
+            "observation_text": "For aliphatic ring count, the neighbor value is value 0, the query value is value 0, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_basic_sites",
+            "display_name": "number of basic sites",
+            "description": "number of basic ionizable sites in the molecule",
+            "source_family": "pka",
+            "raw_name": "num_basic_sites",
+            "neighbor_value": 4.0,
+            "query_value": 1.0,
+            "delta_value": -3.0,
+            "neighbor_value_text": "value 4",
+            "query_value_text": "present (1)",
+            "delta_value_text": "-3",
+            "observation_text": "For number of basic sites, the neighbor value is value 4, the query value is present (1), and the query-minus-neighbor delta is -3."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "fg_top_level__pyridazine",
+            "contribution": -0.49359310158291864,
+            "contribution_abs": 0.49359310158291864,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "contribution": -0.3630053559532667,
+            "contribution_abs": 0.3630053559532667,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "contribution": -0.359857581635307,
+            "contribution_abs": 0.359857581635307,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "fg_top_level__benzene",
+            "contribution": -0.35302725216196346,
+            "contribution_abs": 0.35302725216196346,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "fg_top_level__alkyl aryl ether",
+            "contribution": 0.34476718823795716,
+            "contribution_abs": 0.34476718823795716,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticHeterocycles",
+            "contribution": 0.3288995881076879,
+            "contribution_abs": 0.3288995881076879,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "contribution": 0.3139313970966714,
+            "contribution_abs": 0.3139313970966714,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__num_basic_sites",
+            "contribution": -0.2919518291168884,
+            "contribution_abs": 0.2919518291168884,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, The neighbor has pyridazine, while the query does not (query-minus-neighbor delta -1). This pairwise contribution is -0.4936, which pushes toward option (A): is not a carcinogen. Next, For strongest basic pKa, the neighbor's strongest basic pKa is value 6.5838, while the query's strongest basic pKa is value 9.0464. The query-minus-neighbor delta is +2.4626. This pairwise contribution is -0.363, which pushes toward option (A): is not a carcinogen. Then, For maximum partial charge, the neighbor's maximum partial charge is value 0.1623, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is -0.005. This pairwise contribution is -0.3599, which pushes toward option (A): is not a carcinogen. After that, The neighbor does not have benzene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.353, which pushes toward option (A): is not a carcinogen. Finally, Neither the neighbor nor the query has alkyl aryl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.3448, which pushes toward option (B): is a carcinogen. Step 6, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3289, which pushes toward option (B): is a carcinogen. Step 7, For aliphatic ring count, the neighbor's aliphatic ring count is value 0, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3139, which pushes toward option (B): is a carcinogen. Step 8, For number of basic sites, the neighbor's number of basic sites is value 4, while the query's number of basic sites is present (1). The query-minus-neighbor delta is -3. This pairwise contribution is -0.292, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (B): is a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen."
+        }
+      },
+      {
+        "neighbor_index": 2,
+        "neighbor_id": "CC(O)CNC(=O)N(N=O)C(C)Cl",
+        "neighbor_smiles": "CC(O)CNC(=O)N(N=O)C(C)Cl",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): is a carcinogen",
+        "neighbor_similarity": 0.15193798449612403,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.0679716073241704,
+          "pair_score_class1_probability": 0.0679716073241704,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9320283926758296,
+          "pair_prediction_semantics": "option (A): is not a carcinogen",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4320283926758296
+        },
+        "evidence_strength": {
+          "feature_probability": 0.8960754643739804,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": "option (B): is a carcinogen",
+          "feature_evidence_strength": "high",
+          "feature_confidence_margin": 0.39607546437398045,
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 1,
+          "displayed_teacher_agreement": false,
+          "displayed_abs_contribution_coverage": 0.35589865647329716
+        },
+        "middle_draft": "First, For ring count, the neighbor's ring count is value 0, while the query's ring count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is -0.5436, which pushes toward option (A): is not a carcinogen. Next, For estimated logP, the neighbor's estimated logP is value 0.645, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is +0.4842. This pairwise contribution is 0.4486, which pushes toward option (B): is a carcinogen. Then, The neighbor does not have benzene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.353, which pushes toward option (A): is not a carcinogen. After that, Neither the neighbor nor the query has alkyl aryl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.3448, which pushes toward option (B): is a carcinogen. Finally, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3289, which pushes toward option (B): is a carcinogen. Step 6, For aliphatic ring count, the neighbor's aliphatic ring count is value 0, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3139, which pushes toward option (B): is a carcinogen. Step 7, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3414, while the query's minimum absolute partial charge is value 0.1573. The query-minus-neighbor delta is -0.1842. This pairwise contribution is -0.2837, which pushes toward option (A): is not a carcinogen. Step 8, For estimated logD, the neighbor's estimated logD is value 0.6448, while the query's estimated logD is value -0.5293. The query-minus-neighbor delta is -1.1741. This pairwise contribution is -0.2175, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (B): is a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__RingCount",
+            "display_name": "ring count",
+            "description": "total number of rings",
+            "source_family": "rdkit",
+            "raw_name": "RingCount",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "value 0",
+            "query_value_text": "value 1",
+            "delta_value_text": "+1",
+            "observation_text": "For ring count, the neighbor value is value 0, the query value is value 1, and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "neighbor_value": 0.6450000000000004,
+            "query_value": 1.1291999999999998,
+            "delta_value": 0.4841999999999994,
+            "neighbor_value_text": "value 0.645",
+            "query_value_text": "value 1.1292",
+            "delta_value_text": "+0.4842",
+            "observation_text": "For estimated logP, the neighbor value is value 0.645, the query value is value 1.1292, and the query-minus-neighbor delta is +0.4842."
+          },
+          {
+            "feature_name": "fg_top_level__benzene",
+            "display_name": "benzene",
+            "description": "top-level functional-group indicator or count for benzene",
+            "source_family": "fg_top_level",
+            "raw_name": "benzene",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For benzene, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "fg_top_level__alkyl aryl ether",
+            "display_name": "alkyl aryl ether",
+            "description": "top-level functional-group indicator or count for alkyl aryl ether",
+            "source_family": "fg_top_level",
+            "raw_name": "alkyl aryl ether",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For alkyl aryl ether, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticHeterocycles",
+            "display_name": "aliphatic heterocycle count",
+            "description": "number of aliphatic heterocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticHeterocycles",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "value 0",
+            "query_value_text": "value 0",
+            "delta_value_text": "+0",
+            "observation_text": "For aliphatic heterocycle count, the neighbor value is value 0, the query value is value 0, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "display_name": "aliphatic ring count",
+            "description": "number of aliphatic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticRings",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "value 0",
+            "query_value_text": "value 0",
+            "delta_value_text": "+0",
+            "observation_text": "For aliphatic ring count, the neighbor value is value 0, the query value is value 0, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "neighbor_value": 0.3414292108943644,
+            "query_value": 0.1572614559721115,
+            "delta_value": -0.1841677549222529,
+            "neighbor_value_text": "value 0.3414",
+            "query_value_text": "value 0.1573",
+            "delta_value_text": "-0.1842",
+            "observation_text": "For minimum absolute partial charge, the neighbor value is value 0.3414, the query value is value 0.1573, and the query-minus-neighbor delta is -0.1842."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "neighbor_value": 0.6448,
+            "query_value": -0.5293,
+            "delta_value": -1.1741000000000001,
+            "neighbor_value_text": "value 0.6448",
+            "query_value_text": "value -0.5293",
+            "delta_value_text": "-1.1741",
+            "observation_text": "For estimated logD, the neighbor value is value 0.6448, the query value is value -0.5293, and the query-minus-neighbor delta is -1.1741."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__RingCount",
+            "contribution": -0.543628425385221,
+            "contribution_abs": 0.543628425385221,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "contribution": 0.44864192832851507,
+            "contribution_abs": 0.44864192832851507,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "fg_top_level__benzene",
+            "contribution": -0.35302725216196346,
+            "contribution_abs": 0.35302725216196346,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "fg_top_level__alkyl aryl ether",
+            "contribution": 0.34476718823795716,
+            "contribution_abs": 0.34476718823795716,
+            "contribution_rank": 4,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticHeterocycles",
+            "contribution": 0.3288995881076879,
+            "contribution_abs": 0.3288995881076879,
+            "contribution_rank": 5,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "contribution": 0.3139313970966714,
+            "contribution_abs": 0.3139313970966714,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "contribution": -0.28371502883021804,
+            "contribution_abs": 0.28371502883021804,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "contribution": -0.2174787388369471,
+            "contribution_abs": 0.2174787388369471,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For ring count, the neighbor's ring count is value 0, while the query's ring count is value 1. The query-minus-neighbor delta is +1. This pairwise contribution is -0.5436, which pushes toward option (A): is not a carcinogen. Next, For estimated logP, the neighbor's estimated logP is value 0.645, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is +0.4842. This pairwise contribution is 0.4486, which pushes toward option (B): is a carcinogen. Then, The neighbor does not have benzene, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.353, which pushes toward option (A): is not a carcinogen. After that, Neither the neighbor nor the query has alkyl aryl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.3448, which pushes toward option (B): is a carcinogen. Finally, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3289, which pushes toward option (B): is a carcinogen. Step 6, For aliphatic ring count, the neighbor's aliphatic ring count is value 0, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3139, which pushes toward option (B): is a carcinogen. Step 7, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.3414, while the query's minimum absolute partial charge is value 0.1573. The query-minus-neighbor delta is -0.1842. This pairwise contribution is -0.2837, which pushes toward option (A): is not a carcinogen. Step 8, For estimated logD, the neighbor's estimated logD is value 0.6448, while the query's estimated logD is value -0.5293. The query-minus-neighbor delta is -1.1741. This pairwise contribution is -0.2175, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (B): is a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen."
+        }
+      },
+      {
+        "neighbor_index": 3,
+        "neighbor_id": "O=S(=O)(O)c1ccc(/N=N/c2c(O)ccc3cc(S(=O)(=O)O)ccc23)cc1",
+        "neighbor_smiles": "O=S(=O)(O)c1ccc(/N=N/c2c(O)ccc3cc(S(=O)(=O)O)ccc23)cc1",
+        "neighbor_role": "positive_neighbor",
+        "neighbor_label": 1,
+        "neighbor_label_semantics": "option (B): is a carcinogen",
+        "neighbor_similarity": 0.14303030303030304,
+        "pair_teacher": {
+          "pair_model_type": "positive_neighbor_model",
+          "pair_score": 0.028172191060574177,
+          "pair_score_class1_probability": 0.028172191060574177,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9718278089394258,
+          "pair_prediction_semantics": "option (A): is not a carcinogen",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4718278089394258
+        },
+        "evidence_strength": {
+          "feature_probability": 0.7741316316920859,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": "option (B): is a carcinogen",
+          "feature_evidence_strength": "medium",
+          "feature_confidence_margin": 0.2741316316920859,
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.4273960582421378
+        },
+        "middle_draft": "First, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0, while the query's fraction of sp3 carbons is value 0.4545. The query-minus-neighbor delta is +0.4545. This pairwise contribution is -1.0775, which pushes toward option (A): is not a carcinogen. Next, For maximum partial charge, the neighbor's maximum partial charge is value 0.294, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is -0.1368. This pairwise contribution is -0.4881, which pushes toward option (A): is not a carcinogen. Then, Neither the neighbor nor the query has alkyl aryl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.3448, which pushes toward option (B): is a carcinogen. After that, For strongest acidic pKa, the neighbor's strongest acidic pKa is value -0.5358, while the query's strongest acidic pKa is value 9.6532. The query-minus-neighbor delta is +10.189. This pairwise contribution is -0.3339, which pushes toward option (A): is not a carcinogen. Finally, For estimated logD, the neighbor's estimated logD is value -4.4816, while the query's estimated logD is value -0.5293. The query-minus-neighbor delta is +3.9523. This pairwise contribution is -0.3337, which pushes toward option (A): is not a carcinogen. Step 6, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3289, which pushes toward option (B): is a carcinogen. Step 7, For aliphatic ring count, the neighbor's aliphatic ring count is value 0, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3139, which pushes toward option (B): is a carcinogen. Step 8, The neighbor has 2 copies of sulfonic acid, while the query has 0 (query-minus-neighbor delta -2). This pairwise contribution is -0.242, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (B): is a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "display_name": "fraction of sp3 carbons",
+            "description": "fraction of carbon atoms that are sp3 hybridized",
+            "source_family": "rdkit",
+            "raw_name": "FractionCSP3",
+            "neighbor_value": 0.0,
+            "query_value": 0.4545454545454545,
+            "delta_value": 0.4545454545454545,
+            "neighbor_value_text": "value 0",
+            "query_value_text": "value 0.4545",
+            "delta_value_text": "+0.4545",
+            "observation_text": "For fraction of sp3 carbons, the neighbor value is value 0, the query value is value 0.4545, and the query-minus-neighbor delta is +0.4545."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "display_name": "maximum partial charge",
+            "description": "most positive atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxPartialCharge",
+            "neighbor_value": 0.2940331851009245,
+            "query_value": 0.1572614559721115,
+            "delta_value": -0.13677172912881302,
+            "neighbor_value_text": "value 0.294",
+            "query_value_text": "value 0.1573",
+            "delta_value_text": "-0.1368",
+            "observation_text": "For maximum partial charge, the neighbor value is value 0.294, the query value is value 0.1573, and the query-minus-neighbor delta is -0.1368."
+          },
+          {
+            "feature_name": "fg_top_level__alkyl aryl ether",
+            "display_name": "alkyl aryl ether",
+            "description": "top-level functional-group indicator or count for alkyl aryl ether",
+            "source_family": "fg_top_level",
+            "raw_name": "alkyl aryl ether",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For alkyl aryl ether, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "display_name": "strongest acidic pKa",
+            "description": "pKa of the strongest acidic site",
+            "source_family": "pka",
+            "raw_name": "most_acidic_pka",
+            "neighbor_value": -0.5358,
+            "query_value": 9.6532,
+            "delta_value": 10.189,
+            "neighbor_value_text": "value -0.5358",
+            "query_value_text": "value 9.6532",
+            "delta_value_text": "+10.189",
+            "observation_text": "For strongest acidic pKa, the neighbor value is value -0.5358, the query value is value 9.6532, and the query-minus-neighbor delta is +10.189."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "display_name": "estimated logD",
+            "description": "estimated logD at the configured pH",
+            "source_family": "pka",
+            "raw_name": "logd_estimate",
+            "neighbor_value": -4.4816,
+            "query_value": -0.5293,
+            "delta_value": 3.9523,
+            "neighbor_value_text": "value -4.4816",
+            "query_value_text": "value -0.5293",
+            "delta_value_text": "+3.9523",
+            "observation_text": "For estimated logD, the neighbor value is value -4.4816, the query value is value -0.5293, and the query-minus-neighbor delta is +3.9523."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticHeterocycles",
+            "display_name": "aliphatic heterocycle count",
+            "description": "number of aliphatic heterocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticHeterocycles",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "value 0",
+            "query_value_text": "value 0",
+            "delta_value_text": "+0",
+            "observation_text": "For aliphatic heterocycle count, the neighbor value is value 0, the query value is value 0, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "display_name": "aliphatic ring count",
+            "description": "number of aliphatic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticRings",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "value 0",
+            "query_value_text": "value 0",
+            "delta_value_text": "+0",
+            "observation_text": "For aliphatic ring count, the neighbor value is value 0, the query value is value 0, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__sulfonic acid",
+            "display_name": "sulfonic acid",
+            "description": "top-level functional-group indicator or count for sulfonic acid",
+            "source_family": "fg_top_level",
+            "raw_name": "sulfonic acid",
+            "neighbor_value": 2.0,
+            "query_value": 0.0,
+            "delta_value": -2.0,
+            "neighbor_value_text": "count 2",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "-2",
+            "observation_text": "For sulfonic acid, the neighbor value is count 2, the query value is absent (0), and the query-minus-neighbor delta is -2."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__FractionCSP3",
+            "contribution": -1.0774779758344704,
+            "contribution_abs": 1.0774779758344704,
+            "contribution_rank": 1,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "contribution": -0.4880995163367588,
+            "contribution_abs": 0.4880995163367588,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "fg_top_level__alkyl aryl ether",
+            "contribution": 0.34476718823795716,
+            "contribution_abs": 0.34476718823795716,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "contribution": -0.3339425860826259,
+            "contribution_abs": 0.3339425860826259,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__logd_estimate",
+            "contribution": -0.3336787115071675,
+            "contribution_abs": 0.3336787115071675,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticHeterocycles",
+            "contribution": 0.3288995881076879,
+            "contribution_abs": 0.3288995881076879,
+            "contribution_rank": 6,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "contribution": 0.3139313970966714,
+            "contribution_abs": 0.3139313970966714,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "fg_top_level__sulfonic acid",
+            "contribution": -0.24195953566047224,
+            "contribution_abs": 0.24195953566047224,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For fraction of sp3 carbons, the neighbor's fraction of sp3 carbons is value 0, while the query's fraction of sp3 carbons is value 0.4545. The query-minus-neighbor delta is +0.4545. This pairwise contribution is -1.0775, which pushes toward option (A): is not a carcinogen. Next, For maximum partial charge, the neighbor's maximum partial charge is value 0.294, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is -0.1368. This pairwise contribution is -0.4881, which pushes toward option (A): is not a carcinogen. Then, Neither the neighbor nor the query has alkyl aryl ether (query-minus-neighbor delta +0). This pairwise contribution is 0.3448, which pushes toward option (B): is a carcinogen. After that, For strongest acidic pKa, the neighbor's strongest acidic pKa is value -0.5358, while the query's strongest acidic pKa is value 9.6532. The query-minus-neighbor delta is +10.189. This pairwise contribution is -0.3339, which pushes toward option (A): is not a carcinogen. Finally, For estimated logD, the neighbor's estimated logD is value -4.4816, while the query's estimated logD is value -0.5293. The query-minus-neighbor delta is +3.9523. This pairwise contribution is -0.3337, which pushes toward option (A): is not a carcinogen. Step 6, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3289, which pushes toward option (B): is a carcinogen. Step 7, For aliphatic ring count, the neighbor's aliphatic ring count is value 0, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.3139, which pushes toward option (B): is a carcinogen. Step 8, The neighbor has 2 copies of sulfonic acid, while the query has 0 (query-minus-neighbor delta -2). This pairwise contribution is -0.242, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (B): is a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen."
+        }
+      },
+      {
+        "neighbor_index": 4,
+        "neighbor_id": "CC(Cc1ccccc1)NCCC(c1ccccc1)c1ccccc1",
+        "neighbor_smiles": "CC(Cc1ccccc1)NCCC(c1ccccc1)c1ccccc1",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): is not a carcinogen",
+        "neighbor_similarity": 0.23861892583120203,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.04895968498596394,
+          "pair_score_class1_probability": 0.04895968498596394,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9510403150140361,
+          "pair_prediction_semantics": "option (A): is not a carcinogen",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4510403150140361
+        },
+        "evidence_strength": {
+          "feature_probability": 0.6986743855372542,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": "option (B): is a carcinogen",
+          "feature_evidence_strength": "medium",
+          "feature_confidence_margin": 0.19867438553725425,
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 1,
+          "displayed_teacher_agreement": false,
+          "displayed_abs_contribution_coverage": 0.297120921866266
+        },
+        "middle_draft": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.3139, while the query's minimum partial charge is value -0.5043. The query-minus-neighbor delta is -0.1904. This pairwise contribution is 0.3127, which pushes toward option (B): is a carcinogen. Next, For aliphatic ring count, the neighbor's aliphatic ring count is value 0, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.2776, which pushes toward option (B): is a carcinogen. Then, For hydrogen-bond donor count, the neighbor's hydrogen-bond donor count is value 1, while the query's hydrogen-bond donor count is value 4. The query-minus-neighbor delta is +3. This pairwise contribution is -0.1843, which pushes toward option (A): is not a carcinogen. After that, For NH/OH group count, the neighbor's NH/OH group count is value 1, while the query's NH/OH group count is value 4. The query-minus-neighbor delta is +3. This pairwise contribution is -0.168, which pushes toward option (A): is not a carcinogen. Finally, Neither the neighbor nor the query has hydrazine (query-minus-neighbor delta +0). This pairwise contribution is -0.1661, which pushes toward option (A): is not a carcinogen. Step 6, For estimated logP, the neighbor's estimated logP is value 5.4294, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is -4.3002. This pairwise contribution is -0.1643, which pushes toward option (A): is not a carcinogen. Step 7, For neutral fraction, the neighbor's neutral fraction is value 0.001, while the query's neutral fraction is value 0.022. The query-minus-neighbor delta is +0.021. This pairwise contribution is 0.1501, which pushes toward option (B): is a carcinogen. Step 8, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.143, which pushes toward option (B): is a carcinogen. Taken together, relative to a neighbor labeled option (A): is not a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "neighbor_value": -0.3138928365798332,
+            "query_value": -0.5042598752600684,
+            "delta_value": -0.19036703868023525,
+            "neighbor_value_text": "value -0.3139",
+            "query_value_text": "value -0.5043",
+            "delta_value_text": "-0.1904",
+            "observation_text": "For minimum partial charge, the neighbor value is value -0.3139, the query value is value -0.5043, and the query-minus-neighbor delta is -0.1904."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "display_name": "aliphatic ring count",
+            "description": "number of aliphatic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticRings",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "value 0",
+            "query_value_text": "value 0",
+            "delta_value_text": "+0",
+            "observation_text": "For aliphatic ring count, the neighbor value is value 0, the query value is value 0, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHDonors",
+            "display_name": "hydrogen-bond donor count",
+            "description": "number of hydrogen-bond donors",
+            "source_family": "rdkit",
+            "raw_name": "NumHDonors",
+            "neighbor_value": 1.0,
+            "query_value": 4.0,
+            "delta_value": 3.0,
+            "neighbor_value_text": "value 1",
+            "query_value_text": "value 4",
+            "delta_value_text": "+3",
+            "observation_text": "For hydrogen-bond donor count, the neighbor value is value 1, the query value is value 4, and the query-minus-neighbor delta is +3."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NHOHCount",
+            "display_name": "NH/OH group count",
+            "description": "number of NH or OH groups",
+            "source_family": "rdkit",
+            "raw_name": "NHOHCount",
+            "neighbor_value": 1.0,
+            "query_value": 4.0,
+            "delta_value": 3.0,
+            "neighbor_value_text": "value 1",
+            "query_value_text": "value 4",
+            "delta_value_text": "+3",
+            "observation_text": "For NH/OH group count, the neighbor value is value 1, the query value is value 4, and the query-minus-neighbor delta is +3."
+          },
+          {
+            "feature_name": "fg_top_level__hydrazine",
+            "display_name": "hydrazine",
+            "description": "top-level functional-group indicator or count for hydrazine",
+            "source_family": "fg_top_level",
+            "raw_name": "hydrazine",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For hydrazine, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "neighbor_value": 5.4294000000000056,
+            "query_value": 1.1291999999999998,
+            "delta_value": -4.300200000000006,
+            "neighbor_value_text": "value 5.4294",
+            "query_value_text": "value 1.1292",
+            "delta_value_text": "-4.3002",
+            "observation_text": "For estimated logP, the neighbor value is value 5.4294, the query value is value 1.1292, and the query-minus-neighbor delta is -4.3002."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "display_name": "neutral fraction",
+            "description": "estimated fraction of the molecule that is neutral at the configured pH",
+            "source_family": "pka",
+            "raw_name": "fraction_neutral",
+            "neighbor_value": 0.001,
+            "query_value": 0.022,
+            "delta_value": 0.020999999999999998,
+            "neighbor_value_text": "value 0.001",
+            "query_value_text": "value 0.022",
+            "delta_value_text": "+0.021",
+            "observation_text": "For neutral fraction, the neighbor value is value 0.001, the query value is value 0.022, and the query-minus-neighbor delta is +0.021."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticHeterocycles",
+            "display_name": "aliphatic heterocycle count",
+            "description": "number of aliphatic heterocyclic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticHeterocycles",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "value 0",
+            "query_value_text": "value 0",
+            "delta_value_text": "+0",
+            "observation_text": "For aliphatic heterocycle count, the neighbor value is value 0, the query value is value 0, and the query-minus-neighbor delta is +0."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "contribution": 0.31266593328809067,
+            "contribution_abs": 0.31266593328809067,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "contribution": 0.27757872808171824,
+            "contribution_abs": 0.27757872808171824,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumHDonors",
+            "contribution": -0.18427828528568865,
+            "contribution_abs": 0.18427828528568865,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NHOHCount",
+            "contribution": -0.16801356994093747,
+            "contribution_abs": 0.16801356994093747,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "fg_top_level__hydrazine",
+            "contribution": -0.1660727971585847,
+            "contribution_abs": 0.1660727971585847,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "contribution": -0.16425539926967478,
+            "contribution_abs": 0.16425539926967478,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__fraction_neutral",
+            "contribution": 0.15010279811471886,
+            "contribution_abs": 0.15010279811471886,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticHeterocycles",
+            "contribution": 0.14304438502224215,
+            "contribution_abs": 0.14304438502224215,
+            "contribution_rank": 8,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For minimum partial charge, the neighbor's minimum partial charge is value -0.3139, while the query's minimum partial charge is value -0.5043. The query-minus-neighbor delta is -0.1904. This pairwise contribution is 0.3127, which pushes toward option (B): is a carcinogen. Next, For aliphatic ring count, the neighbor's aliphatic ring count is value 0, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.2776, which pushes toward option (B): is a carcinogen. Then, For hydrogen-bond donor count, the neighbor's hydrogen-bond donor count is value 1, while the query's hydrogen-bond donor count is value 4. The query-minus-neighbor delta is +3. This pairwise contribution is -0.1843, which pushes toward option (A): is not a carcinogen. After that, For NH/OH group count, the neighbor's NH/OH group count is value 1, while the query's NH/OH group count is value 4. The query-minus-neighbor delta is +3. This pairwise contribution is -0.168, which pushes toward option (A): is not a carcinogen. Finally, Neither the neighbor nor the query has hydrazine (query-minus-neighbor delta +0). This pairwise contribution is -0.1661, which pushes toward option (A): is not a carcinogen. Step 6, For estimated logP, the neighbor's estimated logP is value 5.4294, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is -4.3002. This pairwise contribution is -0.1643, which pushes toward option (A): is not a carcinogen. Step 7, For neutral fraction, the neighbor's neutral fraction is value 0.001, while the query's neutral fraction is value 0.022. The query-minus-neighbor delta is +0.021. This pairwise contribution is 0.1501, which pushes toward option (B): is a carcinogen. Step 8, For aliphatic heterocycle count, the neighbor's aliphatic heterocycle count is value 0, while the query's aliphatic heterocycle count is value 0. The query-minus-neighbor delta is +0. This pairwise contribution is 0.143, which pushes toward option (B): is a carcinogen. Taken together, relative to a neighbor labeled option (A): is not a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen."
+        }
+      },
+      {
+        "neighbor_index": 5,
+        "neighbor_id": "C[C@@H]1NCCc2cc(O)c(O)cc21",
+        "neighbor_smiles": "C[C@@H]1NCCc2cc(O)c(O)cc21",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): is not a carcinogen",
+        "neighbor_similarity": 0.2230014025245442,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.07003197739373411,
+          "pair_score_class1_probability": 0.07003197739373411,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9299680226062659,
+          "pair_prediction_semantics": "option (A): is not a carcinogen",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4299680226062659
+        },
+        "evidence_strength": {
+          "feature_probability": 0.7723018029649407,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": "option (B): is a carcinogen",
+          "feature_evidence_strength": "medium",
+          "feature_confidence_margin": 0.27230180296494066,
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.31809011079860056
+        },
+        "middle_draft": "First, For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3638, which pushes toward option (B): is a carcinogen. Next, The neighbor has 2 copies of phenol, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is 0.2416, which pushes toward option (B): is a carcinogen. Then, For estimated logP, the neighbor's estimated logP is value 1.3045, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is -0.1753. This pairwise contribution is -0.2065, which pushes toward option (A): is not a carcinogen. After that, For maximum partial charge, the neighbor's maximum partial charge is value 0.1572, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is +0. This pairwise contribution is -0.1804, which pushes toward option (A): is not a carcinogen. Finally, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.1572, while the query's minimum absolute partial charge is value 0.1573. The query-minus-neighbor delta is +0. This pairwise contribution is -0.1704, which pushes toward option (A): is not a carcinogen. Step 6, Neither the neighbor nor the query has hydrazine (query-minus-neighbor delta +0). This pairwise contribution is -0.1661, which pushes toward option (A): is not a carcinogen. Step 7, Neither the neighbor nor the query has sulfonic acid (query-minus-neighbor delta +0). This pairwise contribution is -0.1345, which pushes toward option (A): is not a carcinogen. Step 8, For strongest basic pKa, the neighbor's strongest basic pKa is value 9.1402, while the query's strongest basic pKa is value 9.0464. The query-minus-neighbor delta is -0.0938. This pairwise contribution is -0.1318, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (A): is not a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "display_name": "aliphatic ring count",
+            "description": "number of aliphatic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticRings",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "value 1",
+            "query_value_text": "value 0",
+            "delta_value_text": "-1",
+            "observation_text": "For aliphatic ring count, the neighbor value is value 1, the query value is value 0, and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "fg_top_level__phenol",
+            "display_name": "phenol",
+            "description": "top-level functional-group indicator or count for phenol",
+            "source_family": "fg_top_level",
+            "raw_name": "phenol",
+            "neighbor_value": 2.0,
+            "query_value": 2.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "count 2",
+            "query_value_text": "count 2",
+            "delta_value_text": "+0",
+            "observation_text": "For phenol, the neighbor value is count 2, the query value is count 2, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "neighbor_value": 1.3045,
+            "query_value": 1.1291999999999998,
+            "delta_value": -0.17530000000000023,
+            "neighbor_value_text": "value 1.3045",
+            "query_value_text": "value 1.1292",
+            "delta_value_text": "-0.1753",
+            "observation_text": "For estimated logP, the neighbor value is value 1.3045, the query value is value 1.1292, and the query-minus-neighbor delta is -0.1753."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "display_name": "maximum partial charge",
+            "description": "most positive atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxPartialCharge",
+            "neighbor_value": 0.1572433614504224,
+            "query_value": 0.1572614559721115,
+            "delta_value": 1.809452168910486e-05,
+            "neighbor_value_text": "value 0.1572",
+            "query_value_text": "value 0.1573",
+            "delta_value_text": "+0",
+            "observation_text": "For maximum partial charge, the neighbor value is value 0.1572, the query value is value 0.1573, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "neighbor_value": 0.1572433614504224,
+            "query_value": 0.1572614559721115,
+            "delta_value": 1.809452168910486e-05,
+            "neighbor_value_text": "value 0.1572",
+            "query_value_text": "value 0.1573",
+            "delta_value_text": "+0",
+            "observation_text": "For minimum absolute partial charge, the neighbor value is value 0.1572, the query value is value 0.1573, and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__hydrazine",
+            "display_name": "hydrazine",
+            "description": "top-level functional-group indicator or count for hydrazine",
+            "source_family": "fg_top_level",
+            "raw_name": "hydrazine",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For hydrazine, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "fg_top_level__sulfonic acid",
+            "display_name": "sulfonic acid",
+            "description": "top-level functional-group indicator or count for sulfonic acid",
+            "source_family": "fg_top_level",
+            "raw_name": "sulfonic acid",
+            "neighbor_value": 0.0,
+            "query_value": 0.0,
+            "delta_value": 0.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "absent (0)",
+            "delta_value_text": "+0",
+            "observation_text": "For sulfonic acid, the neighbor value is absent (0), the query value is absent (0), and the query-minus-neighbor delta is +0."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "display_name": "strongest basic pKa",
+            "description": "pKa of the strongest basic site",
+            "source_family": "pka",
+            "raw_name": "most_basic_pka",
+            "neighbor_value": 9.1402,
+            "query_value": 9.0464,
+            "delta_value": -0.09379999999999988,
+            "neighbor_value_text": "value 9.1402",
+            "query_value_text": "value 9.0464",
+            "delta_value_text": "-0.0938",
+            "observation_text": "For strongest basic pKa, the neighbor value is value 9.1402, the query value is value 9.0464, and the query-minus-neighbor delta is -0.0938."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "contribution": 0.36377304561490126,
+            "contribution_abs": 0.36377304561490126,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "fg_top_level__phenol",
+            "contribution": 0.2415941576762164,
+            "contribution_abs": 0.2415941576762164,
+            "contribution_rank": 2,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "contribution": -0.2065328721918719,
+            "contribution_abs": 0.2065328721918719,
+            "contribution_rank": 3,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "contribution": -0.18041204837216465,
+            "contribution_abs": 0.18041204837216465,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "contribution": -0.1704415646380686,
+            "contribution_abs": 0.1704415646380686,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "fg_top_level__hydrazine",
+            "contribution": -0.1660727971585847,
+            "contribution_abs": 0.1660727971585847,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "fg_top_level__sulfonic acid",
+            "contribution": -0.13449285289326252,
+            "contribution_abs": 0.13449285289326252,
+            "contribution_rank": 7,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_basic_pka",
+            "contribution": -0.13182839726928283,
+            "contribution_abs": 0.13182839726928283,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3638, which pushes toward option (B): is a carcinogen. Next, The neighbor has 2 copies of phenol, while the query has 2 (query-minus-neighbor delta +0). This pairwise contribution is 0.2416, which pushes toward option (B): is a carcinogen. Then, For estimated logP, the neighbor's estimated logP is value 1.3045, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is -0.1753. This pairwise contribution is -0.2065, which pushes toward option (A): is not a carcinogen. After that, For maximum partial charge, the neighbor's maximum partial charge is value 0.1572, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is +0. This pairwise contribution is -0.1804, which pushes toward option (A): is not a carcinogen. Finally, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.1572, while the query's minimum absolute partial charge is value 0.1573. The query-minus-neighbor delta is +0. This pairwise contribution is -0.1704, which pushes toward option (A): is not a carcinogen. Step 6, Neither the neighbor nor the query has hydrazine (query-minus-neighbor delta +0). This pairwise contribution is -0.1661, which pushes toward option (A): is not a carcinogen. Step 7, Neither the neighbor nor the query has sulfonic acid (query-minus-neighbor delta +0). This pairwise contribution is -0.1345, which pushes toward option (A): is not a carcinogen. Step 8, For strongest basic pKa, the neighbor's strongest basic pKa is value 9.1402, while the query's strongest basic pKa is value 9.0464. The query-minus-neighbor delta is -0.0938. This pairwise contribution is -0.1318, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (A): is not a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen."
+        }
+      },
+      {
+        "neighbor_index": 6,
+        "neighbor_id": "CN1[C@@H](CC(=O)c2ccccc2)CCC[C@H]1C[C@H](O)c1ccccc1",
+        "neighbor_smiles": "CN1[C@@H](CC(=O)c2ccccc2)CCC[C@H]1C[C@H](O)c1ccccc1",
+        "neighbor_role": "negative_neighbor",
+        "neighbor_label": 0,
+        "neighbor_label_semantics": "option (A): is not a carcinogen",
+        "neighbor_similarity": 0.2010452961672474,
+        "pair_teacher": {
+          "pair_model_type": "negative_neighbor_model",
+          "pair_score": 0.031099778685811392,
+          "pair_score_class1_probability": 0.031099778685811392,
+          "pair_prediction": 0,
+          "pair_prediction_probability": 0.9689002213141886,
+          "pair_prediction_semantics": "option (A): is not a carcinogen",
+          "teacher_confidence": "high",
+          "teacher_confidence_margin": 0.4689002213141886
+        },
+        "evidence_strength": {
+          "feature_probability": 0.5911186315014746,
+          "feature_prediction": 1,
+          "feature_prediction_semantics": "option (B): is a carcinogen",
+          "feature_evidence_strength": "low",
+          "feature_confidence_margin": 0.09111863150147459,
+          "teacher_feature_agreement": false,
+          "teacher_aligned_evidence_strength": "low",
+          "displayed_feature_prediction": 0,
+          "displayed_teacher_agreement": true,
+          "displayed_abs_contribution_coverage": 0.36923879158739153
+        },
+        "middle_draft": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.8018, while the query's QED drug-likeness is value 0.5633. The query-minus-neighbor delta is -0.2385. This pairwise contribution is 0.5058, which pushes toward option (B): is a carcinogen. Next, The neighbor does not have secondary aliphatic amine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.409, which pushes toward option (A): is not a carcinogen. Then, For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3638, which pushes toward option (B): is a carcinogen. After that, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.1639, while the query's minimum absolute partial charge is value 0.1573. The query-minus-neighbor delta is -0.0067. This pairwise contribution is -0.3032, which pushes toward option (A): is not a carcinogen. Finally, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.818, while the query's strongest acidic pKa is value 9.6532. The query-minus-neighbor delta is -4.1648. This pairwise contribution is -0.2558, which pushes toward option (A): is not a carcinogen. Step 6, For maximum partial charge, the neighbor's maximum partial charge is value 0.1639, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is -0.0067. This pairwise contribution is -0.228, which pushes toward option (A): is not a carcinogen. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.3884, while the query's minimum partial charge is value -0.5043. The query-minus-neighbor delta is -0.1159. This pairwise contribution is 0.2169, which pushes toward option (B): is a carcinogen. Step 8, For estimated logP, the neighbor's estimated logP is value 4.236, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is -3.1068. This pairwise contribution is -0.1845, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (A): is not a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen.",
+        "tool_visible_observations": [
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "display_name": "QED drug-likeness",
+            "description": "quantitative estimate of drug-likeness",
+            "source_family": "rdkit",
+            "raw_name": "qed",
+            "neighbor_value": 0.801796190854678,
+            "query_value": 0.5632719285067509,
+            "delta_value": -0.23852426234792712,
+            "neighbor_value_text": "value 0.8018",
+            "query_value_text": "value 0.5633",
+            "delta_value_text": "-0.2385",
+            "observation_text": "For QED drug-likeness, the neighbor value is value 0.8018, the query value is value 0.5633, and the query-minus-neighbor delta is -0.2385."
+          },
+          {
+            "feature_name": "fg_top_level__secondary aliphatic amine",
+            "display_name": "secondary aliphatic amine",
+            "description": "top-level functional-group indicator or count for secondary aliphatic amine",
+            "source_family": "fg_top_level",
+            "raw_name": "secondary aliphatic amine",
+            "neighbor_value": 0.0,
+            "query_value": 1.0,
+            "delta_value": 1.0,
+            "neighbor_value_text": "absent (0)",
+            "query_value_text": "present (1)",
+            "delta_value_text": "+1",
+            "observation_text": "For secondary aliphatic amine, the neighbor value is absent (0), the query value is present (1), and the query-minus-neighbor delta is +1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "display_name": "aliphatic ring count",
+            "description": "number of aliphatic rings",
+            "source_family": "rdkit",
+            "raw_name": "NumAliphaticRings",
+            "neighbor_value": 1.0,
+            "query_value": 0.0,
+            "delta_value": -1.0,
+            "neighbor_value_text": "value 1",
+            "query_value_text": "value 0",
+            "delta_value_text": "-1",
+            "observation_text": "For aliphatic ring count, the neighbor value is value 1, the query value is value 0, and the query-minus-neighbor delta is -1."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "display_name": "minimum absolute partial charge",
+            "description": "smallest absolute atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinAbsPartialCharge",
+            "neighbor_value": 0.1639332197784145,
+            "query_value": 0.1572614559721115,
+            "delta_value": -0.006671763806302994,
+            "neighbor_value_text": "value 0.1639",
+            "query_value_text": "value 0.1573",
+            "delta_value_text": "-0.0067",
+            "observation_text": "For minimum absolute partial charge, the neighbor value is value 0.1639, the query value is value 0.1573, and the query-minus-neighbor delta is -0.0067."
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "display_name": "strongest acidic pKa",
+            "description": "pKa of the strongest acidic site",
+            "source_family": "pka",
+            "raw_name": "most_acidic_pka",
+            "neighbor_value": 13.818,
+            "query_value": 9.6532,
+            "delta_value": -4.1648,
+            "neighbor_value_text": "value 13.818",
+            "query_value_text": "value 9.6532",
+            "delta_value_text": "-4.1648",
+            "observation_text": "For strongest acidic pKa, the neighbor value is value 13.818, the query value is value 9.6532, and the query-minus-neighbor delta is -4.1648."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "display_name": "maximum partial charge",
+            "description": "most positive atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MaxPartialCharge",
+            "neighbor_value": 0.1639332197784145,
+            "query_value": 0.1572614559721115,
+            "delta_value": -0.006671763806302994,
+            "neighbor_value_text": "value 0.1639",
+            "query_value_text": "value 0.1573",
+            "delta_value_text": "-0.0067",
+            "observation_text": "For maximum partial charge, the neighbor value is value 0.1639, the query value is value 0.1573, and the query-minus-neighbor delta is -0.0067."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "display_name": "minimum partial charge",
+            "description": "most negative atomic partial charge",
+            "source_family": "rdkit",
+            "raw_name": "MinPartialCharge",
+            "neighbor_value": -0.388358782631956,
+            "query_value": -0.5042598752600684,
+            "delta_value": -0.11590109262811243,
+            "neighbor_value_text": "value -0.3884",
+            "query_value_text": "value -0.5043",
+            "delta_value_text": "-0.1159",
+            "observation_text": "For minimum partial charge, the neighbor value is value -0.3884, the query value is value -0.5043, and the query-minus-neighbor delta is -0.1159."
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "display_name": "estimated logP",
+            "description": "RDKit-estimated octanol/water partition coefficient (logP)",
+            "source_family": "rdkit",
+            "raw_name": "MolLogP",
+            "neighbor_value": 4.236000000000003,
+            "query_value": 1.1291999999999998,
+            "delta_value": -3.1068000000000033,
+            "neighbor_value_text": "value 4.236",
+            "query_value_text": "value 1.1292",
+            "delta_value_text": "-3.1068",
+            "observation_text": "For estimated logP, the neighbor value is value 4.236, the query value is value 1.1292, and the query-minus-neighbor delta is -3.1068."
+          }
+        ],
+        "hidden_teacher_signals": [
+          {
+            "feature_name": "rdkit_pka__rdkit__qed",
+            "contribution": 0.5057957899602312,
+            "contribution_abs": 0.5057957899602312,
+            "contribution_rank": 1,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "fg_top_level__secondary aliphatic amine",
+            "contribution": -0.4090091110287118,
+            "contribution_abs": 0.4090091110287118,
+            "contribution_rank": 2,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__NumAliphaticRings",
+            "contribution": 0.36377304561490126,
+            "contribution_abs": 0.36377304561490126,
+            "contribution_rank": 3,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinAbsPartialCharge",
+            "contribution": -0.30317991863424604,
+            "contribution_abs": 0.30317991863424604,
+            "contribution_rank": 4,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__pka__most_acidic_pka",
+            "contribution": -0.25580301298637376,
+            "contribution_abs": 0.25580301298637376,
+            "contribution_rank": 5,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MaxPartialCharge",
+            "contribution": -0.22804102204703303,
+            "contribution_abs": 0.22804102204703303,
+            "contribution_rank": 6,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MinPartialCharge",
+            "contribution": 0.21685640408247292,
+            "contribution_abs": 0.21685640408247292,
+            "contribution_rank": 7,
+            "supports_label": 1,
+            "supports_semantics": "option (B): is a carcinogen"
+          },
+          {
+            "feature_name": "rdkit_pka__rdkit__MolLogP",
+            "contribution": -0.18452411270526162,
+            "contribution_abs": 0.18452411270526162,
+            "contribution_rank": 8,
+            "supports_label": 0,
+            "supports_semantics": "option (A): is not a carcinogen"
+          }
+        ],
+        "middle_draft_reference": {
+          "purpose": "legacy_alias_for_middle_draft",
+          "text": "First, For QED drug-likeness, the neighbor's QED drug-likeness is value 0.8018, while the query's QED drug-likeness is value 0.5633. The query-minus-neighbor delta is -0.2385. This pairwise contribution is 0.5058, which pushes toward option (B): is a carcinogen. Next, The neighbor does not have secondary aliphatic amine, while the query has it once (query-minus-neighbor delta +1). This pairwise contribution is -0.409, which pushes toward option (A): is not a carcinogen. Then, For aliphatic ring count, the neighbor's aliphatic ring count is value 1, while the query's aliphatic ring count is value 0. The query-minus-neighbor delta is -1. This pairwise contribution is 0.3638, which pushes toward option (B): is a carcinogen. After that, For minimum absolute partial charge, the neighbor's minimum absolute partial charge is value 0.1639, while the query's minimum absolute partial charge is value 0.1573. The query-minus-neighbor delta is -0.0067. This pairwise contribution is -0.3032, which pushes toward option (A): is not a carcinogen. Finally, For strongest acidic pKa, the neighbor's strongest acidic pKa is value 13.818, while the query's strongest acidic pKa is value 9.6532. The query-minus-neighbor delta is -4.1648. This pairwise contribution is -0.2558, which pushes toward option (A): is not a carcinogen. Step 6, For maximum partial charge, the neighbor's maximum partial charge is value 0.1639, while the query's maximum partial charge is value 0.1573. The query-minus-neighbor delta is -0.0067. This pairwise contribution is -0.228, which pushes toward option (A): is not a carcinogen. Step 7, For minimum partial charge, the neighbor's minimum partial charge is value -0.3884, while the query's minimum partial charge is value -0.5043. The query-minus-neighbor delta is -0.1159. This pairwise contribution is 0.2169, which pushes toward option (B): is a carcinogen. Step 8, For estimated logP, the neighbor's estimated logP is value 4.236, while the query's estimated logP is value 1.1292. The query-minus-neighbor delta is -3.1068. This pairwise contribution is -0.1845, which pushes toward option (A): is not a carcinogen. Taken together, relative to a neighbor labeled option (A): is not a carcinogen, these feature comparisons do not align cleanly with option (A): is not a carcinogen. This neighbor should be treated only as low-strength evidence for option (A): is not a carcinogen."
+        }
+      }
+    ]
   },
   "hybrid_rewrite_input": {
     "gt_label": 0,
@@ -174,7 +1647,7 @@
     }
   },
   "source_artifacts": {
-    "global_evidence_path": "/data1/tianang/Projects/TRIM/outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan/Carcinogens_Lagunin/train/sample_00001.json",
-    "local_evidence_path": "/data1/tianang/Projects/TRIM/outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts/Carcinogens_Lagunin/train/sample_00001.json"
+    "global_evidence_path": "outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan/Carcinogens_Lagunin/train/sample_00001.json",
+    "local_evidence_path": "outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts/Carcinogens_Lagunin/train/sample_00001.json"
   }
 }

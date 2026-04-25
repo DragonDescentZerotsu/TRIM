@@ -22,7 +22,7 @@ from trim.reasoning.agent_sft import (
 )
 from trim.reasoning.rewrite.pipeline import model_slug
 from trim.utils.io import ensure_directory, load_json, save_json
-from trim.utils.paths import resolve_project_path
+from trim.utils.paths import resolve_project_path, serialize_project_path
 
 
 HF_PUBLIC_RECORD_SCHEMA_VERSION = "trim_agent_reasoning_sft_messages_hf_public_v1"
@@ -50,7 +50,8 @@ def parse_args() -> argparse.Namespace:
         default=SFT_MODE_FULL,
         help=(
             "Source SFT mode to export. 'full' uses the original provider/model/split layout; "
-            "'global_only' and 'local_only' use provider/model/<mode>/split and write separate HF dataset roots."
+            "non-full modes such as 'global_only', 'local_only', and 'local_neighbor_only' use "
+            "provider/model/<mode>/split and write separate HF dataset roots."
         ),
     )
     parser.add_argument(
@@ -332,10 +333,10 @@ def export_hf_public_dataset(
     readme_path.write_text(readme_text, encoding="utf-8")
 
     return {
-        "dataset_root": str(dataset_root.resolve()),
-        "split_output_dir": str(split_output_dir.resolve()),
-        "manifest_path": str(manifest_path.resolve()),
-        "readme_path": str(readme_path.resolve()),
+        "dataset_root": serialize_project_path(dataset_root),
+        "split_output_dir": serialize_project_path(split_output_dir),
+        "manifest_path": serialize_project_path(manifest_path),
+        "readme_path": serialize_project_path(readme_path),
         "split": split,
         "sft_mode": sft_mode,
         "provider": provider,
@@ -346,7 +347,7 @@ def export_hf_public_dataset(
             {
                 "task": task,
                 "num_records": num_records,
-                "path": str(path.resolve()),
+                "path": serialize_project_path(path),
             }
             for task, num_records, path in exported_files
         ],

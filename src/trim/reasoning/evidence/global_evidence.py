@@ -11,7 +11,7 @@ from trim.features.table_loader import build_feature_source_bundle
 from trim.reasoning.evidence.schemas import GLOBAL_EVIDENCE_STAGE, REASONING_SCHEMA_VERSION
 from trim.reasoning.semantics import build_feature_semantics_map, load_task_label_semantics
 from trim.utils.io import load_pickle, save_json
-from trim.utils.paths import DEFAULT_PROCESSED_DATA_ROOT, OUTPUTS_ROOT
+from trim.utils.paths import DEFAULT_PROCESSED_DATA_ROOT, OUTPUTS_ROOT, serialize_project_path
 
 
 def _format_number(value: object, *, decimals: int = 4) -> str:
@@ -297,6 +297,48 @@ def _build_text_hint(
     return hint
 
 
+_RANKED_EVIDENCE_CONNECTORS = (
+    "",
+    "Another relevant signal comes from a different feature. ",
+    "A related feature-level signal also matters. ",
+    "The evidence also includes another descriptor contrast. ",
+    "In addition, another feature provides context. ",
+    "A further feature-level signal points to another part of the profile. ",
+    "The same profile includes another relevant descriptor. ",
+    "One more feature-level signal is worth accounting for. ",
+    "Another descriptor adds context to the overall pattern. ",
+    "The molecular profile also contains this additional signal. ",
+    "A separate descriptor-level cue is also relevant. ",
+    "Another part of the profile contributes to the same evidence set. ",
+)
+
+
+def _build_ranked_evidence_detail_clause(
+    *,
+    evidence_items: list[dict[str, object]],
+    no_evidence_text: str,
+) -> str:
+    if not evidence_items:
+        return no_evidence_text
+
+    clauses: list[str] = []
+    for item_index, item in enumerate(evidence_items):
+        statement = str(item["text_hint"]).strip()
+        if not statement:
+            continue
+        if not statement.endswith("."):
+            statement = f"{statement}."
+        connector = (
+            _RANKED_EVIDENCE_CONNECTORS[item_index]
+            if item_index < len(_RANKED_EVIDENCE_CONNECTORS)
+            else _RANKED_EVIDENCE_CONNECTORS[-1]
+        )
+        clauses.append(f"{connector}{statement}")
+    if not clauses:
+        return no_evidence_text
+    return " ".join(clauses)
+
+
 def _build_global_middle_draft(
     *,
     top_features: list[dict[str, object]],
@@ -305,7 +347,6 @@ def _build_global_middle_draft(
     label_semantics: dict[int, dict[str, str]],
     include_intro: bool,
 ) -> str:
-    transition_words = ["First", "Next", "Then", "After that", "Finally"]
     predicted_label_payload = _label_payload(predicted_label, label_semantics)
 
     if include_intro and top_features:
@@ -321,21 +362,10 @@ def _build_global_middle_draft(
     else:
         intro_clause = ""
 
-    if top_features:
-        step_clauses = []
-        for step_index, feature in enumerate(top_features):
-            transition = (
-                transition_words[step_index]
-                if step_index < len(transition_words)
-                else f"Step {step_index + 1}"
-            )
-            step_statement = str(feature["text_hint"]).rstrip()
-            if step_statement.endswith("."):
-                step_statement = step_statement[:-1]
-            step_clauses.append(f"{transition}, {step_statement}.")
-        detail_clause = " ".join(step_clauses)
-    else:
-        detail_clause = "No ranked global feature evidence was available for this sample."
+    detail_clause = _build_ranked_evidence_detail_clause(
+        evidence_items=top_features,
+        no_evidence_text="No ranked global feature evidence was available for this sample.",
+    )
 
     conclusion_clause = (
         f"Taken together, these global descriptor-level signals make the model predict option "
@@ -594,15 +624,15 @@ def extract_global_evidence_for_split(
         for record in records:
             sample_path = output_path / f"sample_{int(record['sample_index']):05d}.json"
             save_json(sample_path, record)
-        artifact_paths["output_dir"] = str(output_path.resolve())
+        artifact_paths["output_dir"] = serialize_project_path(output_path)
 
     return {
         "schema_version": REASONING_SCHEMA_VERSION,
         "evidence_stage": GLOBAL_EVIDENCE_STAGE,
         "task": task,
         "split": split,
-        "bundle_path": str(bundle_path.resolve()),
-        "dataset_root": str(Path(dataset_root).resolve()),
+        "bundle_path": serialize_project_path(bundle_path),
+        "dataset_root": serialize_project_path(Path(dataset_root)),
         "feature_set_name": str(bundle["feature_set_name"]),
         "num_records": int(len(records)),
         "sample_indices": [int(record["sample_index"]) for record in records],

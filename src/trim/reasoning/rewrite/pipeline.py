@@ -15,7 +15,7 @@ from trim.reasoning.rewrite.llm import (
 )
 from trim.reasoning.rewrite.rendering import render_rewrite_prompt
 from trim.utils.io import ensure_directory, load_json, save_json
-from trim.utils.paths import OUTPUTS_ROOT, resolve_project_path
+from trim.utils.paths import OUTPUTS_ROOT, resolve_project_path, serialize_project_path
 
 try:
     from tqdm.auto import tqdm
@@ -190,6 +190,10 @@ def reasoning_key_for_mode(mode: str) -> str:
         return "reasoning"
     if mode == "local":
         return "reasoning"
+    if mode == "local_neighbor":
+        return "reasoning"
+    if mode == "local_summary":
+        return "reasoning"
     if mode == "hybrid":
         return "reasoning"
     raise ValueError(f"Unsupported rewrite mode for reasoning key lookup: {mode}")
@@ -266,8 +270,8 @@ def _build_rewrite_output_payload(
         "split": str(candidate_payload["split"]),
         "sample_id": str(candidate_payload["sample_id"]),
         "sample_index": int(sample_index),
-        "prompt_path": str(prompt_path.resolve()),
-        "response_text_path": str(raw_text_path.resolve()),
+        "prompt_path": serialize_project_path(prompt_path),
+        "response_text_path": serialize_project_path(raw_text_path),
         "candidate_json_path": str(candidate_payload.get("_candidate_json_path", "")),
         "parsed_output": parsed_output,
         "post_checks": post_checks,
@@ -447,7 +451,7 @@ def run_rewrite_batch(
         max_samples=max_samples,
         allow_missing_playbook=allow_missing_playbook,
     )
-    candidate_dir = Path(candidate_manifest["artifacts"]["output_dir"])
+    candidate_dir = resolve_project_path(candidate_manifest["artifacts"]["output_dir"])
     manifest_sample_files = candidate_manifest.get("artifacts", {}).get("sample_files")
     if manifest_sample_files:
         candidate_paths = [resolve_project_path(path) for path in manifest_sample_files]
@@ -458,7 +462,7 @@ def run_rewrite_batch(
 
     def _process_candidate(candidate_path: Path) -> dict[str, Any]:
         candidate_payload = load_json(candidate_path)
-        candidate_payload["_candidate_json_path"] = str(candidate_path.resolve())
+        candidate_payload["_candidate_json_path"] = serialize_project_path(candidate_path)
 
         candidate_rows: list[dict[str, Any]] = []
         mode_outputs: dict[str, dict[str, Any]] = {}
@@ -518,19 +522,17 @@ def run_rewrite_batch(
                         "sample_index": int(candidate_payload["sample_index"]),
                         "mode": requested_mode,
                         "status": "succeeded",
-                        "output_path": str(
-                            (
-                                _sample_artifact_dir(
-                                    output_root=output_root,
-                                    provider=llm_config.provider,
-                                    model=llm_config.model,
-                                    mode=requested_mode,
-                                    split=split,
-                                    task=task,
-                                    sample_index=int(candidate_payload["sample_index"]),
-                                )
-                                / "result.json"
-                            ).resolve()
+                        "output_path": serialize_project_path(
+                            _sample_artifact_dir(
+                                output_root=output_root,
+                                provider=llm_config.provider,
+                                model=llm_config.model,
+                                mode=requested_mode,
+                                split=split,
+                                task=task,
+                                sample_index=int(candidate_payload["sample_index"]),
+                            )
+                            / "result.json"
                         ),
                     }
                 )
@@ -542,7 +544,7 @@ def run_rewrite_batch(
                     "sample_index": int(candidate_payload["sample_index"]),
                     "sample_id": str(candidate_payload.get("sample_id", "")),
                     "failed_mode": requested_mode,
-                    "candidate_path": str(candidate_path.resolve()),
+                    "candidate_path": serialize_project_path(candidate_path),
                     "error": f"{type(exc).__name__}: {exc}",
                     "rows": candidate_rows,
                 }

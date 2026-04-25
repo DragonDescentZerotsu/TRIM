@@ -15,7 +15,7 @@ if str(SRC_ROOT) not in sys.path:
 from trim.reasoning.evidence.global_evidence import extract_global_evidence_for_split
 from trim.reasoning.evidence.local_evidence import extract_local_evidence_for_split
 from trim.utils.io import load_json, save_json
-from trim.utils.paths import resolve_project_path
+from trim.utils.paths import resolve_project_path, serialize_project_path
 
 
 DEFAULT_MANIFEST_INDEX = (
@@ -56,6 +56,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--prompt-root", default=None)
     parser.add_argument("--global-output-root", default=DEFAULT_GLOBAL_OUTPUT_ROOT)
     parser.add_argument("--local-output-root", default=DEFAULT_LOCAL_OUTPUT_ROOT)
+    parser.add_argument(
+        "--evidence-mode",
+        choices=("global", "local", "both"),
+        default="both",
+        help="Which evidence family to export. Defaults to both for backward compatibility.",
+    )
     parser.add_argument("--include-global-intro", action="store_true")
     parser.add_argument("--include-global-local-trend", action="store_true")
     return parser.parse_args()
@@ -97,6 +103,8 @@ def main() -> int:
     cache_root = _resolve_path(args.cache_root)
 
     summary_rows: list[dict[str, object]] = []
+    run_global = args.evidence_mode in {"global", "both"}
+    run_local = args.evidence_mode in {"local", "both"}
 
     for task_row in task_rows:
         task = str(task_row["task"])
@@ -110,61 +118,69 @@ def main() -> int:
 
         print(f"[reasoning-evidence] task={task}")
         for split in splits:
-            print(f"[reasoning-evidence] task={task} split={split} global")
             global_output_dir = global_output_root / task / split
-            global_payload = extract_global_evidence_for_split(
-                bundle_path=bundle_paths["global_bundle_path"],
-                split=split,
-                dataset_root=dataset_root,
-                prompt_root=args.prompt_root,
-                output_dir=global_output_dir,
-                include_local_trend=args.include_global_local_trend,
-                include_intro=args.include_global_intro,
-            )
-            _save_child_manifest(global_output_dir, global_payload)
-
-            print(f"[reasoning-evidence] task={task} split={split} local")
             local_output_dir = local_output_root / task / split
-            local_payload = extract_local_evidence_for_split(
-                pos_bundle_path=bundle_paths["pos_bundle_path"],
-                neg_bundle_path=bundle_paths["neg_bundle_path"],
-                split=split,
-                dataset_root=dataset_root,
-                cache_root=cache_root,
-                top_k_pos=int(local_tool["top_k_pos"]),
-                top_k_neg=int(local_tool["top_k_neg"]),
-                top_term_k=int(local_tool["top_term_k_per_neighbor"]),
-                strict_cross_scaffold_pairs=bool(local_tool["strict_cross_scaffold_pairs"]),
-                prompt_root=args.prompt_root,
-                output_dir=local_output_dir,
-            )
-            _save_child_manifest(local_output_dir, local_payload)
+            global_payload = None
+            local_payload = None
+
+            if run_global:
+                print(f"[reasoning-evidence] task={task} split={split} global")
+                global_payload = extract_global_evidence_for_split(
+                    bundle_path=bundle_paths["global_bundle_path"],
+                    split=split,
+                    dataset_root=dataset_root,
+                    prompt_root=args.prompt_root,
+                    output_dir=global_output_dir,
+                    include_local_trend=args.include_global_local_trend,
+                    include_intro=args.include_global_intro,
+                )
+                _save_child_manifest(global_output_dir, global_payload)
+
+            if run_local:
+                print(f"[reasoning-evidence] task={task} split={split} local")
+                local_payload = extract_local_evidence_for_split(
+                    pos_bundle_path=bundle_paths["pos_bundle_path"],
+                    neg_bundle_path=bundle_paths["neg_bundle_path"],
+                    split=split,
+                    dataset_root=dataset_root,
+                    cache_root=cache_root,
+                    top_k_pos=int(local_tool["top_k_pos"]),
+                    top_k_neg=int(local_tool["top_k_neg"]),
+                    top_term_k=int(local_tool["top_term_k_per_neighbor"]),
+                    strict_cross_scaffold_pairs=bool(local_tool["strict_cross_scaffold_pairs"]),
+                    prompt_root=args.prompt_root,
+                    output_dir=local_output_dir,
+                )
+                _save_child_manifest(local_output_dir, local_payload)
 
             summary_rows.append(
                 {
                     "task": task,
                     "split": split,
-                    "global_num_records": int(global_payload["num_records"]),
-                    "local_num_records": int(local_payload["num_records"]),
-                    "global_output_dir": str(global_output_dir.resolve()),
-                    "local_output_dir": str(local_output_dir.resolve()),
+                    "global_num_records": int(global_payload["num_records"]) if global_payload is not None else None,
+                    "local_num_records": int(local_payload["num_records"]) if local_payload is not None else None,
+                    "global_output_dir": serialize_project_path(global_output_dir) if run_global else None,
+                    "local_output_dir": serialize_project_path(local_output_dir) if run_local else None,
                 }
             )
 
     summary_payload = {
         "schema_version": "trim_reasoning_full_evidence_v1",
-        "manifest_index_path": str(manifest_index_path),
+        "manifest_index_path": serialize_project_path(manifest_index_path),
         "splits": splits,
         "tasks": [str(row["task"]) for row in task_rows],
-        "dataset_root": str(dataset_root),
-        "cache_root": str(cache_root),
-        "global_output_root": str(global_output_root),
-        "local_output_root": str(local_output_root),
+        "evidence_mode": args.evidence_mode,
+        "dataset_root": serialize_project_path(dataset_root),
+        "cache_root": serialize_project_path(cache_root),
+        "global_output_root": serialize_project_path(global_output_root),
+        "local_output_root": serialize_project_path(local_output_root),
         "rows": summary_rows,
     }
 
-    save_json(global_output_root / "summary.json", summary_payload)
-    save_json(local_output_root / "summary.json", summary_payload)
+    if run_global:
+        save_json(global_output_root / "summary.json", summary_payload)
+    if run_local:
+        save_json(local_output_root / "summary.json", summary_payload)
     print(json.dumps(summary_payload, indent=2, ensure_ascii=False))
     return 0
 

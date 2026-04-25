@@ -274,6 +274,30 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
       - `outputs/rewrite_prompts/local/train/BBB_Martins/sample_00000.md`
       - 当前 `hybrid` 也已经可以用真实的 polished `single-molecule` + polished `neighbor-comparison` reasoning 做 end-to-end 实跑，并输出到：
         - `outputs/reasoning_rewrite_outputs/openrouter/openai__gpt-5.4-mini/hybrid/train/BBB_Martins/sample_00000/result.json`
+    - 当前 local-only reasoning SFT 已切到新版 per-neighbor rewrite 路线：
+      - evidence 默认每个 neighbor 使用 `top_term_k_per_neighbor=8`；`global/local` middle draft 已去掉固定 `First/Next/Then/After that/Finally` 和 `Step N` 连接词，改成自然 feature-level 连接。
+      - candidate 中新增 `local_per_neighbor_rewrite_input`，每个 neighbor 单独包含 `middle_draft`、tool-visible observations、hidden teacher signals、pair teacher direction 和 conservative `teacher_aligned_evidence_strength`。
+      - per-neighbor template：`prompt_templates/reasoning_sft/rewrite_local_neighbor_reasoning.md`
+      - summary template：`prompt_templates/reasoning_sft/rewrite_local_summary_reasoning.md`
+      - 单条 runner/checker：
+        - `scripts/run_local_neighbor_rewrite_examples.py`
+        - `scripts/check_local_neighbor_rewrite_examples.py`
+        - `scripts/run_local_summary_rewrite_examples.py`
+        - `scripts/check_local_summary_rewrite_examples.py`
+      - 全量 batch runner：`scripts/run_local_neighbor_summary_rewrites.py`
+        - 默认 candidate root：`outputs/reasoning_rewrite_candidates/no_step`
+        - 默认 rewrite output root：`outputs/reasoning_rewrite_outputs_neighbor_level_no_step`
+        - 支持 `--mode all|local_neighbor|local_summary`
+        - 支持 `--output-provider` 和 `--output-model`，可在请求走 `openai` 时继续把结果写到既有的 `openrouter/<model_slug>/...` 目录下续跑
+        - `provider=openai` 时会对 chat completion 使用 `max_completion_tokens`，不再发送 OpenAI `gpt-5.4-mini` 不接受的 `max_tokens`
+        - 默认 `--teacher-filter local_correct`，只为 local teacher 预测正确的样本生成/消费 candidates，避免把 `global_only_correct` 样本送去 local-only rewrite 浪费 API。
+        - sample 级并发；单个 sample 内固定顺序为 `neighbor_01..06 -> local_summary`
+        - 不加 `--overwrite` 时会复用并校验已有输出；失败不会中断整 task，会写入 manifest。
+        - 每个 task manifest：`outputs/reasoning_rewrite_outputs_neighbor_level_no_step/<provider>/<model_slug>/local_neighbor_summary/<split>/<task>/manifest.json`
+      - per-neighbor rewrite 的 hard filter 只禁止 `Step [0-9]+` 这类机械编号；自然 prose 中自发出现的 `Finally` 可以接受。
+      - summary rewrite 不输入 legacy `local_summary_middle_draft`；只聚合 6 个 per-neighbor rewrite outputs、similarity、neighbor label、neighbor-level prediction、evidence strength 和 final local teacher prediction。
+      - summary prompt/checker 会显式校验 exact neighbor-level vote count，避免把 `5:1` 写成 `4:2` 这类聚合错误。
+      - SFT builder 已支持 `--sft-mode local_neighbor_only`，会把 6 个 `local_neighbor` rewrite 和 1 个 `local_summary` rewrite 拼成 local-only transcript。
     - 已新增 task-level user prompt 资产，供后续 agent `messages` 数据直接复用：
       - `src/trim/reasoning/task_user_prompts.py`
         - 统一加载/渲染每个 task 的标准 user message template
