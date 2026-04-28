@@ -232,3 +232,599 @@ TRIM 的核心问题可以概括为：
 ```
 
 TRIM 的回答是：先用可解释教师模型生成可验证的单分子和多分子对比证据，再用受约束的语言模型改写将这些证据转化为自然推理，最后组装成工具调用式监督微调轨迹。
+
+## 13. 当前 analogical-only 版本的实验与分析规划
+
+如果当前版本已经不再强调单分子分析，而是聚焦于相似分子类比推理，那么论文实验也应当围绕一个更明确的问题展开：
+
+```text
+TRIM 生成的 analogical reasoning traces 是否让模型学会了
+基于已知正负类邻居、相似度和特征差异进行证据化比较，
+而不是简单做 KNN label voting、模板复述或教师模型蒸馏？
+```
+
+在整体效果没有特别惊艳的情况下，论文不应只依赖平均 F1 提升，而应通过多组分析证明训练后的模型确实具备更好的 evidence-grounded analogical reasoning 行为。下面列出推荐的核心分析、具体做法、指标和能够支撑的结论。
+
+### 13.1 主性能表：SFT 是否优于同工具 prompted baseline
+
+**目的。** 证明 TRIM 的 SFT 不是只改变输出风格，而是在相同工具可用的情况下提升了模型预测和推理质量。
+
+**做法。** 在同一组测试任务、同一套 scaffold split、同一个 `compare_similar_mols` 工具上比较：
+
+```text
+1. Prompted LLM, no tools
+2. Prompted LLM + compare_similar_mols tool
+3. SFT on TRIM analogical traces + same tool
+4. SFT + process-aware RL + same tool（如果已经有）
+5. Pairwise EBM teacher
+6. KNN-k baseline
+```
+
+这里的关键公平性是：prompted baseline 和 SFT model 在推理时应看到同样的工具返回。否则提升可能来自信息量差异，而不是训练带来的推理能力差异。
+
+**指标。**
+
+- task-mean macro-F1；
+- balanced accuracy；
+- ROC-AUC，如果模型能输出概率或置信度；
+- valid tool-call rate；
+- trace quality score，见 13.4；
+- 每个任务单独结果，避免平均值掩盖任务差异。
+
+**能说明什么。** 如果 SFT model 显著优于 prompted LLM + 同工具，说明模型不是单纯受益于工具信息，而是通过 TRIM traces 学会了更稳定地使用工具证据。如果 SFT 接近或超过 pairwise teacher，可以进一步说明 LLM 不是简单蒸馏教师，而是在工具使用、证据整合和任务语义表达上获得了额外收益。
+
+### 13.2 KNN-hard slice：证明模型不是复制邻居标签
+
+**目的。** 直接回应“TRIM 是否只是 KNN label voting”的质疑。
+
+**做法。** 在测试集中构造 KNN-hard 子集。可以定义多种难度切片：
+
+```text
+KNN-wrong slice:
+  KNN-k 的预测标签 != ground truth
+
+KNN-low-margin slice:
+  top-k 邻居中正负比例接近，例如 3:2 或 2:3
+
+nearest-neighbor-misleading slice:
+  最相似邻居的标签 != ground truth
+
+positive-negative-conflict slice:
+  top positive neighbor 和 top negative neighbor 的相似度差很小
+
+teacher-vs-KNN slice:
+  KNN 预测错误，但 pairwise EBM teacher 预测正确
+```
+
+对每个切片分别评估 KNN、prompted LLM + tool、SFT model 和 SFT+RL。
+
+**指标。**
+
+- slice-level macro-F1 或 accuracy；
+- 相对 KNN 的提升；
+- SFT 相对 prompted LLM 的提升；
+- 错误样本中的 trace contradiction rate；
+- 模型是否仍覆盖正负两侧邻居。
+
+**能说明什么。** 如果 SFT 在 KNN-hard slice 上明显优于 KNN 和 prompted baseline，就能有力说明模型不是只读取邻居标签或相似度投票，而是在利用特征差异做更细粒度的类比判断。
+
+### 13.3 Label-only / feature-only / full evidence ablation
+
+**目的。** 区分 neighbor label、feature difference 和完整类比证据各自的作用。
+
+**做法。** 在推理时构造三个版本的相似分子工具输出：
+
+```text
+Label-only:
+  返回 neighbor SMILES、similarity、neighbor label；
+  不返回 descriptor differences 或 functional-group differences。
+
+Feature-only no-label:
+  返回 neighbor SMILES、similarity、descriptor differences、functional-group differences；
+  隐藏 neighbor label 或把正负类块名去掉。
+
+Full evidence:
+  返回 neighbor label、similarity、descriptor differences、functional-group differences。
+```
+
+三组工具输出应保持邻居集合一致，只改变可见字段。这样可以避免不同 retrieval 结果引入混杂因素。
+
+**指标。**
+
+- 全测试集 macro-F1；
+- KNN-hard slice macro-F1；
+- trace quality score；
+- neighbor coverage；
+- feature-delta citation rate；
+- label citation correctness。
+
+**预期模式。**
+
+理想结果不是“no-label 最好”，而是：
+
+```text
+Full evidence > label-only
+Full evidence > feature-only no-label
+```
+
+其中 label 是类比锚点，feature differences 是避免退化成 KNN 的关键证据。
+
+**能说明什么。** 如果 full evidence 明显优于 label-only，说明模型确实使用了特征差异，而不是只做标签投票。如果 full evidence 优于 feature-only no-label，说明 neighbor label 对 supervised analogy 是必要锚点，完全抹掉 label 会破坏类比任务定义。
+
+### 13.4 Trace grounding metrics：证明推理更忠实于工具证据
+
+**目的。** 即使最终 F1 提升有限，也要证明 SFT 后模型生成的推理更 grounded、更少胡编、更能覆盖邻居比较。
+
+**做法。** 对每条模型输出自动打分。可以从工具返回和最终 trace 中解析以下指标：
+
+```text
+Tool success:
+  是否调用了正确工具；
+  工具参数中的 SMILES 是否和用户 query 一致；
+  是否在工具失败时仍强行回答。
+
+Neighbor coverage:
+  返回的每个正类/负类邻居是否都被提到；
+  是否只讨论正类邻居而忽略负类邻居；
+  是否只讨论最相似的一个邻居。
+
+Label grounding:
+  提到的 neighbor label 是否与工具返回一致；
+  是否把 positive neighbor 说成 negative，或反过来。
+
+Feature grounding:
+  trace 中引用的 feature 是否存在于工具返回；
+  引用的数值是否正确；
+  query higher/lower than neighbor 的方向是否正确；
+  是否把缺失值当成真实数值解释。
+
+Evidence integration:
+  是否在最终答案前先讨论证据；
+  是否显式处理正负邻居冲突；
+  是否把所有 descriptor 解释成固定单调规律。
+
+Contradiction:
+  最终结论是否和前文证据方向矛盾；
+  是否先说证据支持正类，最后无解释地答负类。
+```
+
+可以把每个维度做成 0/1 指标，也可以加权得到一个 trace quality score。
+
+**比较对象。**
+
+```text
+Prompted LLM + tool
+SFT model + tool
+SFT+RL model + tool
+```
+
+**能说明什么。** 如果 SFT 的 F1 提升不大，但 tool success、neighbor coverage、feature grounding、delta direction correctness 明显提升，论文仍然可以主张：TRIM 主要提升的是 evidence-grounded reasoning behavior，而不仅是最终分类分数。
+
+### 13.5 Evidence corruption test：验证模型是否真的依赖证据
+
+**目的。** 测试模型是否会根据工具证据变化而改变判断，而不是无视工具输出或套用固定模板。
+
+**做法。** 在 evaluation 时对 `compare_similar_mols` 的输出做 controlled corruption。保持用户 query 和任务不变，只改变工具返回：
+
+```text
+Shuffle neighbor labels:
+  在同一批邻居中随机打乱 label。
+
+Swap positive/negative blocks:
+  把正类邻居块和负类邻居块互换。
+
+Shuffle feature deltas:
+  保留 feature 名称和数值集合，但打乱到不同邻居上。
+
+Flip delta directions:
+  把 query higher than neighbor 改成 lower，或把差值符号取反。
+
+Remove top teacher-important features:
+  删除 pairwise EBM 贡献最大的几个 feature differences。
+
+Replace similarities:
+  打乱 similarity，使模型无法可靠依赖相似度排序。
+```
+
+这些 corruption 不用于正常测试分数，而用于 faithfulness analysis。
+
+**指标。**
+
+- corrupted evidence 下 final accuracy 的下降；
+- final answer flip rate；
+- trace contradiction rate；
+- 模型是否引用被 corrupted 的证据；
+- 模型是否对冲突证据表现出更低 confidence。
+
+**能说明什么。** 如果证据被破坏后模型表现下降，并且输出方向随证据变化而变化，说明模型确实依赖工具证据。如果 corruption 后模型几乎不变，说明它可能主要依赖任务先验、模板或训练集偏见。
+
+### 13.6 Teacher-evidence agreement：模型是否复现了教师证据重点
+
+**目的。** TRIM 的训练数据来自 pairwise teacher，因此应验证 SFT 后模型是否真的使用了 teacher 所强调的关键比较证据。
+
+**做法。** 对每个样本，保存 pairwise EBM 的 top-k evidence terms，例如：
+
+```text
+neighbor id
+feature name
+neighbor baseline value
+query-minus-neighbor delta
+term sign: supports label 1 or label 0
+term magnitude
+```
+
+然后从模型 trace 中抽取被提到的 feature 和方向，比较二者一致性。
+
+**指标。**
+
+- top-k feature mention recall：teacher top-k 中有多少被模型提到；
+- top-k feature precision：模型提到的 feature 中有多少属于 teacher top evidence；
+- sign agreement：模型说该差异支持/反对某标签时，是否与 teacher term sign 一致；
+- neighbor-level evidence coverage：每个邻居是否至少提到一个 teacher-important 差异；
+- magnitude sensitivity：teacher term 越大，模型越可能提到该 feature 吗。
+
+**能说明什么。** 这能证明模型不是随意写化学解释，而是在学习 teacher-grounded evidence selection。如果 SFT 的 teacher-evidence agreement 高于 prompted baseline，说明 TRIM traces 让模型更忠实地使用结构化证据。
+
+### 13.7 Conflict handling slice：测试模型处理矛盾证据的能力
+
+**目的。** 类比推理的难点通常不是所有邻居都一致，而是正负邻居同时相似、不同 feature 指向不同标签。需要专门评估这种情况。
+
+**做法。** 构造 conflict-heavy 子集：
+
+```text
+正类和负类 top neighbor similarity 差距很小；
+KNN vote margin 很小；
+pairwise teacher 中同时存在强正向和强负向 feature terms；
+正类邻居中有削弱正类的差异，负类邻居中有削弱负类的差异；
+prompted baseline 经常只看一侧邻居。
+```
+
+**指标。**
+
+- conflict slice F1；
+- 是否同时讨论正负邻居；
+- 是否使用转折结构处理冲突，例如 “although..., however...”；
+- 是否过度依赖单个最近邻；
+- final answer 是否与综合证据一致。
+
+**能说明什么。** 如果 SFT 在 conflict slice 上比 prompted baseline 更稳定，说明它学到的是多证据整合，而不是简单模板或单邻居复制。
+
+### 13.8 Held-out task generalization：回应 cooked SFT data 的质疑
+
+**目的。** 证明模型学到的不是固定任务、固定字段、固定模板上的局部适应，而是可以迁移的 analogical reasoning procedure。
+
+**做法。** 做任务级 held-out：
+
+```text
+Split A:
+  训练 SFT 用 8 个任务；
+  测试在剩下 8 个任务。
+
+Split B:
+  按任务类型留出，例如 train on ADMET/toxicity，test on CYP/transporter/antiviral。
+
+Leave-one-task-out:
+  每次留一个任务完全不参与 SFT，在该任务上测试。
+```
+
+测试时仍允许调用该 held-out task 的 compare tool，因为目标是测试是否能使用新任务的工具证据，而不是完全无工具猜测。
+
+**指标。**
+
+- held-out task macro-F1；
+- 相对 prompted LLM + tool 的提升；
+- trace quality 是否保持；
+- feature grounding 和 neighbor coverage 是否退化；
+- 与 in-task SFT 的性能差距。
+
+**能说明什么。** 如果模型在未见任务上仍能更好地覆盖邻居、引用差异并整合证据，就能直接回应 cooked concern：模型学到的不只是某几个 TDC 任务的固定答案模式，而是类比推理流程。
+
+### 13.9 Tool-output format robustness：测试是否只背了固定格式
+
+**目的。** 证明 SFT 模型不是只适应了训练时固定的 tool output 排版。
+
+**做法。** 在 evaluation 时保持信息内容不变，但改变工具输出格式：
+
+```text
+Shuffle neighbor order:
+  正负类块内邻居顺序随机。
+
+Shuffle feature order:
+  每个邻居下 feature differences 顺序随机。
+
+Alternative label wording:
+  positive/negative 改成 active/inactive 或 label 1/0。
+
+Numeric formatting:
+  小数位数改变，或把 delta 写成 “query is 0.8 higher” 而不是 “delta = +0.8”。
+
+Different k:
+  返回 k=2、k=4、k=6 个邻居。
+
+Compact vs verbose:
+  同样信息用表格或自然语言短句两种格式返回。
+```
+
+**指标。**
+
+- final F1 是否下降；
+- trace grounding 是否下降；
+- neighbor coverage 是否受 k 变化影响；
+- feature direction correctness 是否保持。
+
+**能说明什么。** 如果模型对格式扰动鲁棒，说明它不是只背固定模板。如果模型对格式极其敏感，则需要在训练中加入 tool-output format augmentation。
+
+### 13.10 Reasoning-vs-answer training ablation
+
+**目的。** 证明自然语言 analogical reasoning traces 本身有价值，而不是只需要工具输出和最终标签。
+
+**做法。** 训练几个数据变体：
+
+```text
+Answer-only SFT:
+  用户问题 -> 最终标签，不含工具调用和 reasoning。
+
+Tool-output + answer SFT:
+  包含工具调用和工具返回，但 assistant 只输出最终答案。
+
+Template reasoning SFT:
+  用固定模板填充邻居和 feature，不经过 rewrite model。
+
+TRIM rewritten reasoning SFT:
+  当前完整自然语言类比推理轨迹。
+```
+
+如果训练成本有限，可以先在较小模型或任务子集上做。
+
+**指标。**
+
+- full test macro-F1；
+- KNN-hard slice F1；
+- trace quality；
+- teacher-evidence agreement；
+- held-out task generalization。
+
+**能说明什么。** 如果 TRIM rewritten reasoning 在 trace quality、hard slice 或 held-out task 上优于 answer-only 和 template reasoning，就能证明推理数据不是装饰，而是训练了更好的证据组织和比较行为。
+
+### 13.11 Error taxonomy：系统分析模型还错在哪里
+
+**目的。** 即使整体性能一般，也可以通过错误分类展示方法的优势、局限和下一步改进方向。
+
+**做法。** 从 prompted baseline、SFT model、SFT+RL model 中各抽样一批错误样本，例如每个模型 100 条，人工或半自动分类：
+
+```text
+Tool-use errors:
+  没有调用工具；
+  工具参数 SMILES 错误；
+  工具失败后仍回答。
+
+Neighbor-use errors:
+  忽略负类邻居；
+  忽略正类邻居；
+  只复制最近邻标签；
+  把邻居 label 读反。
+
+Feature-comparison errors:
+  delta 方向读反；
+  引用不存在的 feature；
+  数值大小比较错误；
+  忽略关键 functional-group difference。
+
+Reasoning errors:
+  把 descriptor 解释成跨任务固定单调规律；
+  没有处理冲突证据；
+  前文证据和最终答案矛盾；
+  先给答案再找理由。
+
+Teacher/data errors:
+  pairwise teacher 本身错误；
+  neighbor retrieval 不够相关；
+  task label 噪声或定义模糊。
+```
+
+**指标。**
+
+- 各错误类型占比；
+- SFT 相对 prompted baseline 减少了哪些错误；
+- SFT 仍然最多的错误是什么；
+- 错误类型和任务/相似度/KNN margin 的关系。
+
+**能说明什么。** Error taxonomy 可以把 paper 从“平均分不够惊艳”转成“我们明确改善了哪些 reasoning failure，并知道剩余瓶颈在哪里”。
+
+### 13.12 Similarity margin analysis
+
+**目的。** 分析 TRIM 在什么难度区间最有效。
+
+**做法。** 按相似度和邻居标签分布分桶：
+
+```text
+Top-neighbor similarity:
+  high / medium / low
+
+Positive-negative similarity gap:
+  top positive similarity - top negative similarity 的绝对值
+
+KNN vote margin:
+  top-k 中多数类比例，例如 5:0, 4:1, 3:2
+
+Retrieval quality:
+  是否存在至少一个高相似度正类邻居和一个高相似度负类邻居
+```
+
+**指标。**
+
+- 每个桶的 F1；
+- 每个桶中 SFT 相对 KNN 的提升；
+- 每个桶的 trace quality；
+- 每个桶的 error type 分布。
+
+**能说明什么。** 如果 TRIM 主要在 low-margin 或 positive-negative-conflict 区间提升，说明它的贡献正是细粒度类比，而不是简单近邻检索。
+
+### 13.13 Feature family analysis
+
+**目的。** 理解模型和 teacher 实际依赖哪些分子证据，并检查是否符合化学直觉。
+
+**做法。** 将 feature 按家族分组：
+
+```text
+size/shape:
+  molecular weight, heavy atoms, ring count, rotatable bonds
+
+polarity/H-bonding:
+  TPSA, HBA, HBD
+
+lipophilicity:
+  logP, logD
+
+ionization/pKa:
+  acidic/basic sites, strongest acidic pKa, strongest basic pKa, neutral fraction
+
+functional groups:
+  top-level functional-group indicators
+
+task-specific fragments:
+  如果有额外 fragment 或 top-level groups，也单独统计
+```
+
+统计 pairwise teacher top terms 和模型 trace 中被引用 feature 的分布。
+
+**指标。**
+
+- teacher top evidence 的 feature-family 分布；
+- SFT trace citation 的 feature-family 分布；
+- prompted baseline trace citation 的 feature-family 分布；
+- 每个任务中最常被使用的 feature family；
+- feature family citation 与正确率的关系。
+
+**能说明什么。** 这可以展示 TRIM 让模型关注了哪些具体证据，也能发现模型是否过度依赖某些通用化学话术，例如总是讲 logP/TPSA，却忽略 teacher 真正强调的 pKa 或 functional group。
+
+### 13.14 Calibration and confidence analysis
+
+**目的。** 如果模型能输出概率或置信度，应检查它是否知道何时证据冲突、何时应该不确定。
+
+**做法。**
+
+让模型在最终答案中输出一个 calibrated confidence，或从 logprob/采样一致性估计置信度。然后比较：
+
+```text
+正确样本 vs 错误样本；
+KNN-easy vs KNN-hard；
+conflict-heavy vs non-conflict；
+clean evidence vs corrupted evidence。
+```
+
+**指标。**
+
+- expected calibration error；
+- Brier score；
+- confidence-accuracy curve；
+- corrupted evidence 后 confidence 是否下降；
+- conflict slice 中 confidence 是否低于 easy slice。
+
+**能说明什么。** 好的 reasoning agent 不只应该答对，还应该在证据冲突或 retrieval 弱时降低置信度。这个分析可以作为附录补充。
+
+### 13.15 Qualitative paired case studies
+
+**目的。** 用少量高质量案例直观展示 SFT 前后的推理差异。
+
+**做法。** 选择 3 到 5 个代表性样本，每个样本并排展示：
+
+```text
+任务和 query SMILES；
+工具返回的正负邻居和关键 feature differences；
+prompted LLM trace；
+SFT model trace；
+ground truth；
+为什么 SFT trace 更 grounded。
+```
+
+推荐选择以下类型：
+
+```text
+Case 1:
+  KNN wrong but SFT correct。
+
+Case 2:
+  Prompted model 忽略负类邻居，SFT 同时比较正负邻居。
+
+Case 3:
+  正负邻居都很相似，SFT 正确处理冲突证据。
+
+Case 4:
+  Prompted model 产生 unsupported monotone claim，SFT 使用具体 baseline/delta。
+
+Case 5:
+  SFT 仍然失败，用于诚实展示局限。
+```
+
+**能说明什么。** 定性案例不能替代统计结果，但能帮助 reviewer 理解“更好的 reasoning”具体是什么样的，而不是只看分数。
+
+### 13.16 ChEMBL assay profile 作为可选 stress test
+
+**目的。** 如果需要回应“RDKit feature schema 是否 cooked”的担心，可以把 ChEMBL assay/activity 作为一个小型 evidence-modality transfer test，而不是主线实验。
+
+**建议不要做的方式。**
+
+不要把某个分子的全部 ChEMBL activities 直接塞进模型。原因是：
+
+```text
+activities 数量极大；
+assay 条件异质；
+很多 value 缺失或是文本判断；
+可能和 TDC label 有直接或间接 leakage；
+上下文成本过高；
+会把论文主线从 reasoning data synthesis 带偏到 database feature engineering。
+```
+
+**更合适的做法。**
+
+只构造 compact assay profile，例如：
+
+```text
+每个 assay_type 的记录数；
+Binding / Functional / ADME / Toxicity 的 active/inactive 文本统计；
+有 pChEMBL 的 target class summary；
+按 target 或 endpoint 聚合的 min/median/max pChEMBL；
+是否有 COX、hERG、CYP、P-gp 等任务相关 assay 记录；
+缺失值比例和文本 comment summary。
+```
+
+然后让工具返回 query 和 neighbors 的 compact profile difference，而不是原始 activities。
+
+**指标。**
+
+- 模型是否能在新 evidence modality 下保持 neighbor coverage；
+- 是否正确引用 assay profile difference；
+- 是否因为 assay evidence 改变 final answer；
+- 与 RDKit-only analogical reasoning 的 trace quality 对比。
+
+**能说明什么。** 这个实验最多说明 TRIM 学到的比较流程可能迁移到 assay-profile evidence。它不应替代主实验，也不应作为主要性能提升来源。
+
+### 13.17 推荐的最小实验组合
+
+如果时间有限，优先完成下面五项：
+
+```text
+1. Main performance table:
+   prompted LLM + tool vs SFT + tool vs KNN vs pairwise teacher。
+
+2. Anti-KNN analysis:
+   KNN-hard slice + label-only / feature-only / full evidence ablation。
+
+3. Trace quality table:
+   tool success、neighbor coverage、feature grounding、delta direction correctness、contradiction rate。
+
+4. Evidence corruption:
+   shuffle labels、flip deltas、remove top teacher features，观察性能和 trace 是否退化。
+
+5. Held-out task generalization:
+   训练任务和测试任务分开，检查 analogical reasoning procedure 是否迁移。
+```
+
+这五项能共同支撑一个更强的论文叙事：
+
+```text
+即使平均 F1 提升不是压倒性的，TRIM 训练出的模型也更会调用工具、
+更完整覆盖正负邻居、更忠实引用特征差异、在 KNN 失败的样本上更稳，
+并且这种类比推理行为能一定程度迁移到未见任务。
+```
