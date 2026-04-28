@@ -15,6 +15,7 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from trim.reasoning.rewrite.pipeline import validate_saved_rewrite_output
+from trim.reasoning.rewrite.neighbor_selection import parse_source_neighbor_indices
 from trim.utils.paths import serialize_project_path
 
 
@@ -25,7 +26,7 @@ DEFAULT_ROOT = (
 DEFAULT_CANDIDATE_ROOT = "outputs/reasoning_rewrite_candidates/from_filters/train"
 
 REQUIRED_QUALITY_CHECKS: tuple[str, ...] = (
-    "uses_all_six_neighbors",
+    "uses_all_selected_neighbors",
     "uses_similarity_and_evidence_strength",
     "handles_conflicting_neighbors",
     "uses_neighbor_level_predictions_as_votes",
@@ -35,12 +36,17 @@ REQUIRED_QUALITY_CHECKS: tuple[str, ...] = (
     "final_prediction_matches_required_label",
     "no_meta_references",
 )
+QUALITY_CHECK_ALIASES: dict[str, tuple[str, ...]] = {
+    "uses_all_selected_neighbors": ("uses_all_six_neighbors",),
+}
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Check local-summary rewrite example outputs.")
     parser.add_argument("--root", default=DEFAULT_ROOT)
     parser.add_argument("--candidate-root", default=DEFAULT_CANDIDATE_ROOT)
+    parser.add_argument("--neighbor-root", default=None)
+    parser.add_argument("--summary-source-neighbor-indices", default="1,2,3,4,5,6")
     parser.add_argument(
         "--example",
         action="append",
@@ -77,11 +83,11 @@ def _expected_label(candidate_payload: dict[str, Any]) -> int:
     return int(candidate_payload["local_rewrite_input"]["local_prediction"])
 
 
-def _neighbor_result_path(summary_root: Path, task: str, sample_index: int, neighbor_index: int) -> Path:
+def _neighbor_result_path(neighbor_root: Path, task: str, sample_index: int, neighbor_index: int) -> Path:
     return (
-        summary_root.parent.parent
+        neighbor_root.parent.parent
         / "local_neighbor"
-        / summary_root.name
+        / neighbor_root.name
         / task
         / f"sample_{sample_index:05d}"
         / f"neighbor_{neighbor_index:02d}"
@@ -89,11 +95,16 @@ def _neighbor_result_path(summary_root: Path, task: str, sample_index: int, neig
     )
 
 
-def _neighbor_prediction_counts(summary_root: Path, task: str, sample_index: int) -> tuple[dict[str, int], list[str]]:
+def _neighbor_prediction_counts(
+    neighbor_root: Path,
+    task: str,
+    sample_index: int,
+    source_neighbor_indices: object,
+) -> tuple[dict[str, int], list[str]]:
     counts = {"A": 0, "B": 0}
     errors: list[str] = []
-    for neighbor_index in range(1, 7):
-        path = _neighbor_result_path(summary_root, task, sample_index, neighbor_index)
+    for neighbor_index in parse_source_neighbor_indices(source_neighbor_indices):
+        path = _neighbor_result_path(neighbor_root, task, sample_index, neighbor_index)
         if not path.exists():
             errors.append(f"missing_neighbor_result:{serialize_project_path(path)}")
             continue
@@ -132,7 +143,9 @@ def _count_phrase_present(reasoning: str, *, option: str, count: int) -> bool:
 def main() -> int:
     args = parse_args()
     root = Path(args.root)
+    neighbor_root = Path(args.neighbor_root) if args.neighbor_root else root
     candidate_root = Path(args.candidate_root)
+    source_neighbor_indices = parse_source_neighbor_indices(args.summary_source_neighbor_indices)
     examples = _parse_examples(args.example)
 
     rows: list[dict[str, Any]] = []
@@ -171,17 +184,27 @@ def main() -> int:
             pipeline_error = str(exc)
 
         expected_label = _expected_label(candidate_payload)
-        neighbor_counts, neighbor_count_errors = _neighbor_prediction_counts(root, task, sample_index)
+        neighbor_counts, neighbor_count_errors = _neighbor_prediction_counts(
+            neighbor_root,
+            task,
+            sample_index,
+            source_neighbor_indices,
+        )
         missing_count_phrases = [
             f"option ({option}) = {count}"
             for option, count in sorted(neighbor_counts.items())
             if not _count_phrase_present(reasoning, option=option, count=count)
         ]
         missing_neighbors = [
-            index for index in range(1, 7) if not re.search(rf"\bNeighbors?\s*{index}\b", reasoning)
+            index
+            for index in range(1, len(source_neighbor_indices) + 1)
+            if not re.search(rf"\bNeighbors?\s*{index}\b", reasoning)
         ]
         missing_quality_checks = [
-            name for name in REQUIRED_QUALITY_CHECKS if name not in quality_check
+            name
+            for name in REQUIRED_QUALITY_CHECKS
+            if name not in quality_check
+            and not any(alias in quality_check for alias in QUALITY_CHECK_ALIASES.get(name, ()))
         ]
         failed_quality_checks = [
             name for name, value in quality_check.items() if value is not True

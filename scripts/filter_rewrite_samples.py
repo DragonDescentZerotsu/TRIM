@@ -59,12 +59,21 @@ def _task_names(global_root: Path, local_root: Path, requested_tasks: list[str] 
     return selected
 
 
+def _variant_input_requested(args: argparse.Namespace) -> bool:
+    return args.global_root != DEFAULT_GLOBAL_ROOT or args.local_root != DEFAULT_LOCAL_ROOT
+
+
 def main() -> int:
     args = parse_args()
     splits = args.splits or ["train"]
     global_root = resolve_project_path(args.global_root)
     local_root = resolve_project_path(args.local_root)
     output_root = resolve_project_path(args.output_root)
+    if _variant_input_requested(args) and args.output_root == DEFAULT_OUTPUT_ROOT:
+        raise ValueError(
+            "Variant evidence roots were requested, but --output-root still points to the legacy rewrite-filter "
+            f"cache ({DEFAULT_OUTPUT_ROOT}). Choose a variant-specific filter output root."
+        )
     tasks = _task_names(global_root, local_root, args.tasks)
 
     summary_rows: list[dict[str, object]] = []

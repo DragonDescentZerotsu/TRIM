@@ -12,6 +12,9 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from trim.reasoning.evidence.local_evidence import (
+    DEFAULT_RANDOM_TOP_TERM_MAX,
+    DEFAULT_RANDOM_TOP_TERM_MIN,
+    LOCAL_TERM_SELECTION_MODES,
     build_default_local_evidence_output_dir,
     extract_local_evidence_for_split,
 )
@@ -30,6 +33,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--top-k-pos", type=int, default=3, help="Number of positive neighbors to keep per sample")
     parser.add_argument("--top-k-neg", type=int, default=3, help="Number of negative neighbors to keep per sample")
     parser.add_argument("--top-term-k", type=int, default=8, help="Number of pair terms to keep per neighbor")
+    parser.add_argument(
+        "--term-selection-mode",
+        choices=LOCAL_TERM_SELECTION_MODES,
+        default="ranked_top_k",
+        help=(
+            "How to select pair terms for each neighbor middle draft. ranked_top_k preserves the legacy behavior; "
+            "random_k_ranked samples a per-neighbor term count; top_k_shuffled selects top-k then shuffles display order."
+        ),
+    )
+    parser.add_argument("--random-top-term-min", type=int, default=DEFAULT_RANDOM_TOP_TERM_MIN)
+    parser.add_argument("--random-top-term-max", type=int, default=DEFAULT_RANDOM_TOP_TERM_MAX)
+    parser.add_argument("--random-seed", type=int, default=0)
     parser.add_argument("--sample-index", type=int, action="append", default=None, help="Optional sample index to export")
     parser.add_argument("--max-samples", type=int, default=None, help="Optional cap on exported samples")
     parser.add_argument("--prompt-root", default=None, help="Optional prompt root used to recover task label semantics")
@@ -57,6 +72,11 @@ def main() -> int:
 
     output_dir = args.output_dir
     if output_dir is None:
+        if args.term_selection_mode != "ranked_top_k":
+            raise ValueError(
+                "Non-default term selection requires an explicit --output-dir so variant evidence does not overwrite "
+                "the legacy local evidence cache."
+            )
         output_dir = build_default_local_evidence_output_dir(pos_bundle_path=pos_bundle_path, split=args.split)
 
     payload = extract_local_evidence_for_split(
@@ -68,6 +88,10 @@ def main() -> int:
         top_k_pos=args.top_k_pos,
         top_k_neg=args.top_k_neg,
         top_term_k=args.top_term_k,
+        term_selection_mode=args.term_selection_mode,
+        random_top_term_min=args.random_top_term_min,
+        random_top_term_max=args.random_top_term_max,
+        random_seed=args.random_seed,
         strict_cross_scaffold_pairs=not args.allow_same_scaffold,
         sample_indices=args.sample_index,
         max_samples=args.max_samples,

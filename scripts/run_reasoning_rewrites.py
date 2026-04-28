@@ -68,8 +68,33 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def _variant_input_requested(args: argparse.Namespace) -> bool:
+    return args.global_root != DEFAULT_GLOBAL_ROOT or args.local_root != DEFAULT_LOCAL_ROOT
+
+
+def _guard_variant_cache_roots(args: argparse.Namespace) -> None:
+    if not _variant_input_requested(args):
+        return
+    default_roots = {
+        "--filtered-root": str(DEFAULT_FILTERED_ROOT),
+        "--candidate-root": str(DEFAULT_CANDIDATE_ROOT),
+        "--output-root": str(DEFAULT_REWRITE_OUTPUT_ROOT),
+    }
+    still_default = [
+        flag
+        for flag, default_value in default_roots.items()
+        if str(getattr(args, flag.removeprefix("--").replace("-", "_"))) == default_value
+    ]
+    if still_default:
+        raise ValueError(
+            "Variant evidence roots were requested, but these downstream cache roots still point to legacy defaults: "
+            f"{', '.join(still_default)}. Choose variant-specific roots for filters, candidates, and rewrite outputs."
+        )
+
+
 def main() -> int:
     args = parse_args()
+    _guard_variant_cache_roots(args)
     llm_config = build_llm_request_config(
         provider=args.provider,
         model=args.model,

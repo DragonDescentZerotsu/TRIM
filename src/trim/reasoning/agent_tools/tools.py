@@ -15,6 +15,7 @@ from trim.models.aggregation import aggregate_local_scores
 from trim.models.retrieval import CachedSimilarityRetriever
 from trim.reasoning.agent_tools.manifests import (
     DEFAULT_AGENT_TOOL_FEATURE_SET_NAME,
+    DEFAULT_AGENT_TOOL_FEATURE_CONFIG_PATHS,
     DEFAULT_AGENT_TOOL_MANIFEST_ROOT,
     load_task_tool_manifest,
 )
@@ -43,6 +44,7 @@ LEGACY_COMPATIBLE_CACHE_SIGNATURE_VERSIONS = {"portable_v2"}
 DEFAULT_AGENT_TOOL_CACHE_ROOT = OUTPUTS_ROOT / "reasoning_agent_tools" / "tool_cache"
 DEFAULT_NEIGHBORS_PER_LABEL = 3
 SUPPORTED_NEIGHBORS_PER_LABEL = (1, 2, 3)
+DEFAULT_COMPARE_MODE = "retrieval_only"
 TOOL_CACHE_CONTENT_DIGEST_MAX_BYTES = 64 * 1024 * 1024
 TOOL_CACHE_CONTENT_DIGEST_CHUNK_BYTES = 1024 * 1024
 
@@ -62,6 +64,13 @@ def _normalize_neighbors_per_label(value: object = DEFAULT_NEIGHBORS_PER_LABEL) 
     if normalized not in SUPPORTED_NEIGHBORS_PER_LABEL:
         raise ValueError("neighbors_per_label must be one of 1, 2, or 3")
     return normalized
+
+
+def _normalize_compare_mode(value: object = DEFAULT_COMPARE_MODE) -> str:
+    mode = str(value or DEFAULT_COMPARE_MODE)
+    if mode not in {"retrieval_only", "pair_ebm"}:
+        raise ValueError("compare_mode must be either 'retrieval_only' or 'pair_ebm'")
+    return mode
 
 
 def _safe_scalar(value: object) -> object:
@@ -286,24 +295,67 @@ class TaskReasoningAgentTools:
 
         bundle_paths = {
             str(name): resolve_project_path(path)
-            for name, path in dict(manifest["bundle_paths"]).items()
+            for name, path in dict(manifest.get("bundle_paths", {})).items()
         }
-        self.global_bundle = load_pickle(bundle_paths["global_bundle_path"])
-        self.pos_bundle = load_pickle(bundle_paths["pos_bundle_path"])
-        self.neg_bundle = load_pickle(bundle_paths["neg_bundle_path"])
+        local_tool_manifest = dict(manifest.get("local_tool", {}))
+        self.compare_mode = _normalize_compare_mode(local_tool_manifest.get("compare_mode", DEFAULT_COMPARE_MODE))
+        self.global_bundle = (
+            load_pickle(bundle_paths["global_bundle_path"])
+            if "global_bundle_path" in bundle_paths
+            else None
+        )
+        self.pos_bundle = (
+            load_pickle(bundle_paths["pos_bundle_path"])
+            if self.compare_mode == "pair_ebm" and "pos_bundle_path" in bundle_paths
+            else None
+        )
+        self.neg_bundle = (
+            load_pickle(bundle_paths["neg_bundle_path"])
+            if self.compare_mode == "pair_ebm" and "neg_bundle_path" in bundle_paths
+            else None
+        )
+        if self.compare_mode == "pair_ebm" and (self.pos_bundle is None or self.neg_bundle is None):
+            raise FileNotFoundError("compare_mode='pair_ebm' requires both pos_model_bundle.pkl and neg_model_bundle.pkl")
 
-        self.feature_bundle = build_feature_source_bundle(self.global_bundle["feature_config_paths"])
+        feature_config_paths = list(manifest.get("feature_config_paths") or DEFAULT_AGENT_TOOL_FEATURE_CONFIG_PATHS)
+        if isinstance(self.global_bundle, dict) and self.global_bundle.get("feature_config_paths"):
+            feature_config_paths = list(self.global_bundle["feature_config_paths"])
+        self.feature_bundle = build_feature_source_bundle(feature_config_paths)
         self.feature_source = self.feature_bundle["feature_source"]
         self.retriever = CachedSimilarityRetriever(cache_root=self.cache_root, data_root=self.dataset_root)
         self.label_semantics = _resolve_label_semantics(self.task)
+        manifest_label_semantics = manifest.get("label_semantics")
+        if isinstance(manifest_label_semantics, dict):
+            for label_key, label_payload in manifest_label_semantics.items():
+                if isinstance(label_payload, dict):
+                    self.label_semantics[int(label_key)] = dict(label_payload)
 
-        self.global_feature_columns = [str(column) for column in self.global_bundle["feature_columns"]]
+        if isinstance(self.global_bundle, dict):
+            self.global_feature_columns = [str(column) for column in self.global_bundle["feature_columns"]]
+        else:
+            self.global_feature_columns = [
+                str(column)
+                for column in (
+                    local_tool_manifest.get("raw_feature_names")
+                    or manifest.get("global_tool", {}).get("dense_feature_names", [])
+                    or local_tool_manifest.get("dense_feature_names", [])
+                )
+            ]
         self.global_feature_index = {
             feature_name: index for index, feature_name in enumerate(self.global_feature_columns)
         }
         self.global_feature_semantics = build_feature_semantics_map(self.global_feature_columns)
 
-        self.local_raw_feature_columns = _resolve_raw_feature_columns(self.pos_bundle)
+        if isinstance(self.pos_bundle, dict):
+            self.local_raw_feature_columns = _resolve_raw_feature_columns(self.pos_bundle)
+        else:
+            self.local_raw_feature_columns = [
+                str(column)
+                for column in (
+                    local_tool_manifest.get("raw_feature_names")
+                    or local_tool_manifest.get("dense_feature_names", [])
+                )
+            ]
         self.local_feature_index = {
             feature_name: index for index, feature_name in enumerate(self.local_raw_feature_columns)
         }
@@ -452,7 +504,7 @@ class TaskReasoningAgentTools:
         return metadata
 
     def _build_tool_cache_namespace_payload(self) -> dict[str, object]:
-        bundle_paths = dict(self.manifest["bundle_paths"])
+        bundle_paths = dict(self.manifest.get("bundle_paths", {}))
         return {
             "schema_version": AGENT_TOOL_PAYLOAD_CACHE_SCHEMA_VERSION,
             "cache_signature_version": AGENT_TOOL_CACHE_SIGNATURE_VERSION,
@@ -460,6 +512,9 @@ class TaskReasoningAgentTools:
             "feature_set_name": self.feature_set_name,
             "manifest": {
                 "schema_version": self.manifest.get("schema_version"),
+                "feature_config_paths": self._portable_path_values(
+                    self.manifest.get("feature_config_paths", DEFAULT_AGENT_TOOL_FEATURE_CONFIG_PATHS)
+                ),
                 "global_tool": self.manifest.get("global_tool"),
                 "local_tool": self.manifest.get("local_tool"),
             },
@@ -474,7 +529,7 @@ class TaskReasoningAgentTools:
         }
 
     def _build_tool_cache_diagnostic_payload(self) -> dict[str, object]:
-        bundle_paths = dict(self.manifest["bundle_paths"])
+        bundle_paths = dict(self.manifest.get("bundle_paths", {}))
         return {
             "schema_version": AGENT_TOOL_PAYLOAD_CACHE_SCHEMA_VERSION,
             "cache_signature_version": AGENT_TOOL_CACHE_SIGNATURE_VERSION,
@@ -853,6 +908,11 @@ class TaskReasoningAgentTools:
         *,
         neighbors_per_label: object = None,
     ) -> dict[str, object]:
+        if not isinstance(self.global_bundle, dict):
+            raise RuntimeError(
+                f"get_mol_properties_and_fg requires a global EBM bundle for task {self.task!r}; "
+                "the current manifest only supports retrieval-based compare_similar_mols."
+            )
         smiles = self._resolve_tool_smiles(smiles)
         cached_payload = self._load_cached_tool_payload(tool_name="get_mol_properties_and_fg", smiles=smiles)
         if cached_payload is not None:
@@ -1004,6 +1064,46 @@ class TaskReasoningAgentTools:
             feature_payloads.append(feature_payload)
         return feature_payloads, top_pair_feature_names
 
+    def _build_retrieval_neighbor_feature_payloads(
+        self,
+        *,
+        query_raw_row,
+        neighbor_raw_row,
+        dense_feature_names: list[str],
+    ) -> list[dict[str, object]]:
+        feature_payloads: list[dict[str, object]] = []
+        for feature_name in dense_feature_names:
+            if feature_name not in self.local_feature_index:
+                continue
+            semantics = self.local_feature_semantics[feature_name]
+            neighbor_value = _safe_scalar(neighbor_raw_row[feature_name])
+            query_value = _safe_scalar(query_raw_row[feature_name])
+            delta_value, delta_value_text, delta_missing_reason = _delta_value_payload(
+                base_value=neighbor_value,
+                query_value=query_value,
+                semantics=semantics,
+            )
+            feature_payload = {
+                **semantics,
+                "feature_name": feature_name,
+                "neighbor_value": _sanitize_json_value(neighbor_value),
+                "neighbor_value_text": _infer_value_phrase(neighbor_value, semantics),
+                "query_value": _sanitize_json_value(query_value),
+                "query_value_text": _infer_value_phrase(query_value, semantics),
+                "delta_value": delta_value,
+                "delta_value_text": delta_value_text,
+            }
+            neighbor_missing_reason = _missing_value_reason(neighbor_value, semantics)
+            query_missing_reason = _missing_value_reason(query_value, semantics)
+            if neighbor_missing_reason is not None:
+                feature_payload["neighbor_value_missing_reason"] = neighbor_missing_reason
+            if query_missing_reason is not None:
+                feature_payload["query_value_missing_reason"] = query_missing_reason
+            if delta_missing_reason is not None:
+                feature_payload["delta_value_missing_reason"] = delta_missing_reason
+            feature_payloads.append(feature_payload)
+        return feature_payloads
+
     def _build_neighbor_group_payload(
         self,
         *,
@@ -1034,6 +1134,39 @@ class TaskReasoningAgentTools:
             [train_index_by_smiles[neighbor.smiles] for neighbor in valid_neighbors],
             dtype=int,
         )
+        dense_feature_names = list(self.manifest["local_tool"]["dense_feature_names"])
+
+        if self.compare_mode == "retrieval_only":
+            neighbor_payloads: list[dict[str, object]] = []
+            for row_index, neighbor in enumerate(valid_neighbors):
+                neighbor_raw_row = train_raw_df.iloc[neighbor_indices[row_index]]
+                neighbor_payloads.append(
+                    {
+                        "neighbor_smiles": neighbor.smiles,
+                        "neighbor_label": int(neighbor.label),
+                        "neighbor_label_semantics": _label_payload(int(neighbor.label), self.label_semantics),
+                        "neighbor_similarity": float(neighbor.similarity),
+                        "neighbor_scaffold": str(neighbor.scaffold),
+                        "comparison_mode": "retrieval_only",
+                        "functional_group_differences": self._functional_group_differences(
+                            query_raw_row=query_raw_row,
+                            neighbor_raw_row=neighbor_raw_row,
+                        ),
+                        "feature_comparisons": self._build_retrieval_neighbor_feature_payloads(
+                            query_raw_row=query_raw_row,
+                            neighbor_raw_row=neighbor_raw_row,
+                            dense_feature_names=dense_feature_names,
+                        ),
+                    }
+                )
+            return (
+                neighbor_payloads,
+                [],
+                [float(neighbor.similarity) for neighbor in valid_neighbors],
+            )
+
+        if not isinstance(model_bundle, dict):
+            raise RuntimeError("pair_ebm compare mode requires a pair EBM model bundle")
         query_matrix = np.repeat(query_raw_values[np.newaxis, :], repeats=len(valid_neighbors), axis=0)
         pair_matrix = build_pair_matrix(
             query_values=query_matrix,
@@ -1044,7 +1177,6 @@ class TaskReasoningAgentTools:
         pair_scores = model.predict_proba(pair_matrix)[:, 1]
         pair_predictions = model.predict(pair_matrix)
         pair_term_matrix = np.asarray(model.eval_terms(pair_matrix), dtype=float)
-        dense_feature_names = list(self.manifest["local_tool"]["dense_feature_names"])
         top_term_k = int(self.manifest["local_tool"]["top_term_k_per_neighbor"])
 
         neighbor_payloads: list[dict[str, object]] = []
@@ -1131,19 +1263,30 @@ class TaskReasoningAgentTools:
             model_bundle=self.neg_bundle,
         )
 
-        aggregated = aggregate_local_scores(
-            pos_scores=pos_scores,
-            pos_similarities=pos_similarities,
-            neg_scores=neg_scores,
-            neg_similarities=neg_similarities,
-        )
-        local_score = float(aggregated["s_local"])
-        local_prediction = 1 if local_score >= 0.5 else 0
+        if self.compare_mode == "pair_ebm":
+            aggregated = aggregate_local_scores(
+                pos_scores=pos_scores,
+                pos_similarities=pos_similarities,
+                neg_scores=neg_scores,
+                neg_similarities=neg_similarities,
+            )
+            local_score = float(aggregated["s_local"])
+            local_prediction = 1 if local_score >= 0.5 else 0
+            s_pos = float(aggregated["s_pos"]) if not math.isnan(float(aggregated["s_pos"])) else None
+            s_neg = float(aggregated["s_neg"]) if not math.isnan(float(aggregated["s_neg"])) else None
+            local_prediction_semantics = _label_payload(local_prediction, self.label_semantics)
+        else:
+            local_score = None
+            local_prediction = None
+            s_pos = None
+            s_neg = None
+            local_prediction_semantics = None
 
         payload = {
             "tool_name": "compare_similar_mols",
             "task": self.task,
             "smiles": str(smiles),
+            "comparison_mode": self.compare_mode,
             "query_split": query_split,
             "query_label": query_label,
             "query_label_semantics": _label_payload(query_label, self.label_semantics),
@@ -1151,17 +1294,22 @@ class TaskReasoningAgentTools:
             "query_memberships": query_metadata.get("all_memberships", []),
             "query_present_functional_group_count": int(len(query_present_functional_groups)),
             "query_present_functional_groups": query_present_functional_groups,
-            "local_prediction": int(local_prediction),
-            "local_prediction_semantics": _label_payload(local_prediction, self.label_semantics),
+            "local_prediction": local_prediction,
+            "local_prediction_semantics": local_prediction_semantics,
             "local_score": local_score,
-            "s_pos": float(aggregated["s_pos"]) if not math.isnan(float(aggregated["s_pos"])) else None,
-            "s_neg": float(aggregated["s_neg"]) if not math.isnan(float(aggregated["s_neg"])) else None,
+            "s_pos": s_pos,
+            "s_neg": s_neg,
             "neighbors_per_label": int(neighbors_per_label),
             "top_k_pos": int(neighbors_per_label),
             "top_k_neg": int(neighbors_per_label),
             "num_positive_neighbors": int(len(positive_neighbors)),
             "num_negative_neighbors": int(len(negative_neighbors)),
-            "dense_feature_count": int(self.manifest["local_tool"]["dense_feature_count"]),
+            "dense_feature_count": int(
+                self.manifest["local_tool"].get(
+                    "dense_feature_count",
+                    len(self.manifest["local_tool"]["dense_feature_names"]),
+                )
+            ),
             "dense_feature_names": list(self.manifest["local_tool"]["dense_feature_names"]),
             "positive_neighbors": positive_neighbors,
             "negative_neighbors": negative_neighbors,

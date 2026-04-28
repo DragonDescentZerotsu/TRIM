@@ -12,6 +12,12 @@ from trim.reasoning.rewrite.pipeline import (
     model_slug,
     validate_saved_rewrite_output,
 )
+from trim.reasoning.rewrite.neighbor_selection import (
+    display_index_by_source_index,
+    infer_neighbors_per_label,
+    parse_source_neighbor_indices,
+    relabel_neighbor_mentions,
+)
 from trim.reasoning.semantics.task_semantics import load_brief_task_semantics, load_task_label_semantics
 from trim.reasoning.task_user_prompts import (
     DEFAULT_TASK_MANIFEST_INDEX,
@@ -284,6 +290,7 @@ def _sample_indices_with_saved_local_neighbor_rewrites(
     model: str,
     split: str,
     task: str,
+    source_neighbor_indices: object = None,
 ) -> set[int]:
     mode_root = (
         resolve_project_path(rewrite_output_root)
@@ -296,6 +303,7 @@ def _sample_indices_with_saved_local_neighbor_rewrites(
     if not mode_root.exists():
         raise FileNotFoundError(f"Local-neighbor rewrite output directory does not exist: {mode_root}")
 
+    resolved_source_indices = parse_source_neighbor_indices(source_neighbor_indices)
     sample_indices: set[int] = set()
     for sample_dir in sorted(path for path in mode_root.glob("sample_*") if path.is_dir()):
         try:
@@ -304,13 +312,16 @@ def _sample_indices_with_saved_local_neighbor_rewrites(
             raise ValueError(f"Could not parse sample index from local-neighbor path: {sample_dir}") from exc
         neighbor_result_paths = [
             sample_dir / f"neighbor_{neighbor_index:02d}" / "result.json"
-            for neighbor_index in range(1, 7)
+            for neighbor_index in resolved_source_indices
         ]
         if all(path.exists() for path in neighbor_result_paths):
             sample_indices.add(sample_index)
 
     if not sample_indices:
-        raise FileNotFoundError(f"No complete six-neighbor rewrite outputs found under {mode_root}")
+        raise FileNotFoundError(
+            "No complete selected-neighbor rewrite outputs found under "
+            f"{mode_root} for source neighbors {resolved_source_indices}"
+        )
     return sample_indices
 
 
@@ -379,6 +390,7 @@ def list_rewritten_sample_indices_for_sft_mode(
     rewrite_filter_root: str | Path = DEFAULT_REWRITE_FILTER_ROOT,
     provider: str = DEFAULT_REWRITE_PROVIDER,
     model: str = DEFAULT_REWRITE_MODEL,
+    summary_source_neighbor_indices: object = None,
 ) -> list[int]:
     validated_mode = _validate_sft_mode(sft_mode)
     rewrite_output_root = _resolve_rewrite_output_root_for_sft_mode(
@@ -409,14 +421,7 @@ def list_rewritten_sample_indices_for_sft_mode(
             split=split,
             task=task,
         )
-        neighbor_indices = _sample_indices_with_saved_local_neighbor_rewrites(
-            rewrite_output_root=rewrite_output_root,
-            provider=provider,
-            model=model,
-            split=split,
-            task=task,
-        )
-        selected_indices = sorted(correct_indices.intersection(summary_indices).intersection(neighbor_indices))
+        selected_indices = sorted(correct_indices.intersection(summary_indices))
         if not selected_indices:
             raise FileNotFoundError(
                 f"No rewritten {validated_mode} samples found for task={task!r}, split={split!r}, "
@@ -543,56 +548,13 @@ def _load_local_neighbor_level_reasoning_bundle(
     rewrite_output_root: str | Path,
     provider: str,
     model: str,
+    summary_source_neighbor_indices: object = None,
 ) -> dict[str, Any]:
     paths: dict[str, str] = {}
     neighbor_reasonings: list[str] = []
     sample_id: str | None = None
-
-    for neighbor_index in range(1, 7):
-        result_path = _local_neighbor_rewrite_result_path(
-            output_root=rewrite_output_root,
-            provider=provider,
-            model=model,
-            split=split,
-            task=task,
-            sample_index=sample_index,
-            neighbor_index=neighbor_index,
-        )
-        payload = load_json(result_path)
-        validate_saved_rewrite_output(mode="local_neighbor", payload=payload)
-        if str(payload.get("task")) != task:
-            raise ValueError(
-                f"local_neighbor rewrite payload task mismatch for sample {sample_index}: {payload.get('task')!r}"
-            )
-        if str(payload.get("split")) != split:
-            raise ValueError(
-                f"local_neighbor rewrite payload split mismatch for sample {sample_index}: {payload.get('split')!r}"
-            )
-        if int(payload.get("sample_index")) != int(sample_index):
-            raise ValueError(
-                f"local_neighbor rewrite payload sample_index mismatch for task={task}: "
-                f"{payload.get('sample_index')!r}"
-            )
-        if int(payload.get("neighbor_index")) != int(neighbor_index):
-            raise ValueError(
-                f"local_neighbor rewrite payload neighbor_index mismatch for task={task} "
-                f"sample={sample_index}: expected {neighbor_index}, got {payload.get('neighbor_index')!r}"
-            )
-        current_sample_id = str(payload.get("sample_id", "") or "")
-        if sample_id is None:
-            sample_id = current_sample_id
-        elif sample_id != current_sample_id:
-            raise ValueError(
-                f"local_neighbor rewrite payload sample_id mismatch for task={task} "
-                f"sample={sample_index}: {sample_id!r} != {current_sample_id!r}"
-            )
-        neighbor_reasonings.append(
-            _require_non_empty_text(
-                extract_reasoning_text_for_mode(payload=payload, mode="local_neighbor"),
-                context=f"local_neighbor {neighbor_index} reasoning for {task} sample {sample_index}",
-            )
-        )
-        paths[f"local_neighbor_{neighbor_index:02d}_result_json"] = serialize_project_path(result_path)
+    source_indices = parse_source_neighbor_indices(summary_source_neighbor_indices)
+    source_to_display = display_index_by_source_index(source_indices)
 
     summary_path = _rewrite_result_path(
         output_root=rewrite_output_root,
@@ -613,6 +575,76 @@ def _load_local_neighbor_level_reasoning_bundle(
         sample_index=sample_index,
     )
     validate_saved_rewrite_output(mode="local_summary", payload=summary_payload)
+    saved_source_indices = summary_payload.get("selected_source_neighbor_indices")
+    if saved_source_indices is not None and [int(index) for index in saved_source_indices] != [
+        int(index) for index in source_indices
+    ]:
+        raise ValueError(
+            "local_summary selected_source_neighbor_indices mismatch for "
+            f"task={task} sample={sample_index}: expected {list(source_indices)}, got {saved_source_indices}"
+        )
+    summary_neighbor_paths = summary_payload.get("neighbor_result_paths")
+    if not isinstance(summary_neighbor_paths, dict):
+        summary_neighbor_paths = {}
+
+    for source_neighbor_index in source_indices:
+        display_neighbor_index = source_to_display[source_neighbor_index]
+        result_path_text = summary_neighbor_paths.get(str(display_neighbor_index))
+        if result_path_text:
+            result_path = resolve_project_path(result_path_text)
+        else:
+            result_path = _local_neighbor_rewrite_result_path(
+                output_root=rewrite_output_root,
+                provider=provider,
+                model=model,
+                split=split,
+                task=task,
+                sample_index=sample_index,
+                neighbor_index=source_neighbor_index,
+            )
+        payload = load_json(result_path)
+        validate_saved_rewrite_output(mode="local_neighbor", payload=payload)
+        if str(payload.get("task")) != task:
+            raise ValueError(
+                f"local_neighbor rewrite payload task mismatch for sample {sample_index}: {payload.get('task')!r}"
+            )
+        if str(payload.get("split")) != split:
+            raise ValueError(
+                f"local_neighbor rewrite payload split mismatch for sample {sample_index}: {payload.get('split')!r}"
+            )
+        if int(payload.get("sample_index")) != int(sample_index):
+            raise ValueError(
+                f"local_neighbor rewrite payload sample_index mismatch for task={task}: "
+                f"{payload.get('sample_index')!r}"
+            )
+        if int(payload.get("neighbor_index")) != int(source_neighbor_index):
+            raise ValueError(
+                f"local_neighbor rewrite payload neighbor_index mismatch for task={task} "
+                f"sample={sample_index}: expected {source_neighbor_index}, got {payload.get('neighbor_index')!r}"
+            )
+        current_sample_id = str(payload.get("sample_id", "") or "")
+        if sample_id is None:
+            sample_id = current_sample_id
+        elif sample_id != current_sample_id:
+            raise ValueError(
+                f"local_neighbor rewrite payload sample_id mismatch for task={task} "
+                f"sample={sample_index}: {sample_id!r} != {current_sample_id!r}"
+            )
+        reasoning_text = _require_non_empty_text(
+            extract_reasoning_text_for_mode(payload=payload, mode="local_neighbor"),
+            context=(
+                f"local_neighbor {source_neighbor_index} reasoning for {task} "
+                f"sample {sample_index}"
+            ),
+        )
+        neighbor_reasonings.append(
+            relabel_neighbor_mentions(
+                reasoning_text,
+                source_to_display=source_to_display,
+            )
+        )
+        paths[f"local_neighbor_{display_neighbor_index:02d}_result_json"] = serialize_project_path(result_path)
+
     if str(summary_payload.get("task")) != task:
         raise ValueError(
             f"local_summary rewrite payload task mismatch for sample {sample_index}: {summary_payload.get('task')!r}"
@@ -640,6 +672,7 @@ def _load_local_neighbor_level_reasoning_bundle(
         context=f"local_summary reasoning for {task} sample {sample_index}",
     )
     paths["local_summary_result_json"] = serialize_project_path(summary_path)
+    paths["local_summary_source_neighbor_indices"] = ",".join(str(index) for index in source_indices)
 
     joined_reasoning = "\n\n".join(
         [
@@ -733,6 +766,7 @@ def _init_agent_sft_worker(
     manifest_root: str,
     dataset_root: str,
     cache_root: str,
+    summary_source_neighbor_indices: str,
 ) -> None:
     tool_runner = build_task_tool_runner(
         task=task,
@@ -752,6 +786,7 @@ def _init_agent_sft_worker(
             "provider": provider,
             "model": model,
             "prompt_root": prompt_root,
+            "summary_source_neighbor_indices": summary_source_neighbor_indices,
             "tool_runner": tool_runner,
         }
     )
@@ -776,6 +811,7 @@ def _build_agent_reasoning_sft_record_worker(
         provider=str(_AGENT_SFT_WORKER_CONTEXT["provider"]),
         model=str(_AGENT_SFT_WORKER_CONTEXT["model"]),
         prompt_root=str(_AGENT_SFT_WORKER_CONTEXT["prompt_root"]),
+        summary_source_neighbor_indices=str(_AGENT_SFT_WORKER_CONTEXT["summary_source_neighbor_indices"]),
     )
 
 
@@ -792,6 +828,7 @@ def build_agent_reasoning_sft_record(
     provider: str = DEFAULT_REWRITE_PROVIDER,
     model: str = DEFAULT_REWRITE_MODEL,
     prompt_root: str | Path = DEFAULT_TASK_USER_PROMPT_ROOT,
+    summary_source_neighbor_indices: object = None,
 ) -> dict[str, Any]:
     validated_mode = _validate_sft_mode(sft_mode)
     rewrite_output_root = _resolve_rewrite_output_root_for_sft_mode(
@@ -806,6 +843,7 @@ def build_agent_reasoning_sft_record(
             rewrite_output_root=rewrite_output_root,
             provider=provider,
             model=model,
+            summary_source_neighbor_indices=summary_source_neighbor_indices,
         )
     else:
         reasoning_bundle = _load_reasoning_bundle(
@@ -819,6 +857,7 @@ def build_agent_reasoning_sft_record(
         )
     user_message = render_task_user_message(task=task, smiles=smiles, prompt_root=prompt_root)
     final_answer_option = _resolve_final_answer_option(task, gt_label)
+    local_tool_neighbors_per_label = infer_neighbors_per_label(summary_source_neighbor_indices)
 
     messages: list[dict[str, Any]]
     if validated_mode == SFT_MODE_GLOBAL_ONLY:
@@ -857,7 +896,7 @@ def build_agent_reasoning_sft_record(
         ]
     elif validated_mode in (SFT_MODE_LOCAL_ONLY, SFT_MODE_LOCAL_NEIGHBOR_ONLY):
         local_tool_text = _require_non_empty_text(
-            tool_runner.compare_similar_mols(smiles),
+            tool_runner.compare_similar_mols(smiles, neighbors_per_label=local_tool_neighbors_per_label),
             context=f"{COMPARE_SIMILAR_MOLS_TOOL_NAME} for {task} sample {sample_index}",
         )
         local_reasoning_key = (
@@ -900,7 +939,7 @@ def build_agent_reasoning_sft_record(
             context=f"{GET_MOL_PROPERTIES_TOOL_NAME} for {task} sample {sample_index}",
         )
         local_tool_text = _require_non_empty_text(
-            tool_runner.compare_similar_mols(smiles),
+            tool_runner.compare_similar_mols(smiles, neighbors_per_label=local_tool_neighbors_per_label),
             context=f"{COMPARE_SIMILAR_MOLS_TOOL_NAME} for {task} sample {sample_index}",
         )
         messages = [
@@ -983,6 +1022,7 @@ def build_agent_reasoning_sft_for_task(
     cache_root: str | Path = DEFAULT_TOOL_CACHE_ROOT,
     max_concurrency: int = 1,
     skip_existing: bool = True,
+    summary_source_neighbor_indices: object = None,
 ) -> dict[str, Any]:
     validated_mode = _validate_sft_mode(sft_mode)
     rewrite_output_root = _resolve_rewrite_output_root_for_sft_mode(
@@ -998,6 +1038,7 @@ def build_agent_reasoning_sft_for_task(
         rewrite_filter_root=rewrite_filter_root,
         provider=provider,
         model=model,
+        summary_source_neighbor_indices=summary_source_neighbor_indices,
     )
 
     output_path = _dataset_output_dir(
@@ -1057,6 +1098,7 @@ def build_agent_reasoning_sft_for_task(
                         provider=provider,
                         model=model,
                         prompt_root=prompt_root,
+                        summary_source_neighbor_indices=summary_source_neighbor_indices,
                     )
                     records.append(record)
                     _append_jsonl_record(handle, record)
@@ -1078,6 +1120,10 @@ def build_agent_reasoning_sft_for_task(
                         str(manifest_root),
                         str(dataset_root),
                         str(cache_root),
+                        ",".join(
+                            str(index)
+                            for index in parse_source_neighbor_indices(summary_source_neighbor_indices)
+                        ),
                     ),
                 ) as executor:
                     in_flight: dict[Future[dict[str, Any]], int] = {}
@@ -1133,6 +1179,9 @@ def build_agent_reasoning_sft_for_task(
         "sft_mode": validated_mode,
         "num_records": len(records),
         "output_path": serialize_project_path(output_path),
+        "summary_source_neighbor_indices": [
+            int(index) for index in parse_source_neighbor_indices(summary_source_neighbor_indices)
+        ],
     }
 
 
@@ -1154,6 +1203,7 @@ def build_agent_reasoning_sft_datasets(
     cache_root: str | Path = DEFAULT_TOOL_CACHE_ROOT,
     max_concurrency: int = 1,
     skip_existing: bool = True,
+    summary_source_neighbor_indices: object = None,
 ) -> dict[str, Any]:
     validated_mode = _validate_sft_mode(sft_mode)
     task_list = tasks or load_task_names_from_manifest_index(manifest_index_path)
@@ -1178,6 +1228,7 @@ def build_agent_reasoning_sft_datasets(
             cache_root=cache_root,
             max_concurrency=max_concurrency,
             skip_existing=skip_existing,
+            summary_source_neighbor_indices=summary_source_neighbor_indices,
         )
         summaries.append(summary)
         total_records += int(summary["num_records"])
@@ -1190,6 +1241,9 @@ def build_agent_reasoning_sft_datasets(
         "split": split,
         "max_concurrency": int(max_concurrency),
         "skip_existing": bool(skip_existing),
+        "summary_source_neighbor_indices": [
+            int(index) for index in parse_source_neighbor_indices(summary_source_neighbor_indices)
+        ],
         "num_tasks": len(summaries),
         "num_records": total_records,
         "tasks": summaries,

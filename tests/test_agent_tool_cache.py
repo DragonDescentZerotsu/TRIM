@@ -3,7 +3,11 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+import pandas as pd
+
+from trim.models.retrieval import NeighborRecord
 from trim.reasoning.agent_tools.tools import TaskReasoningAgentTools
+from trim.reasoning.semantics import build_feature_semantics_map
 from trim.utils.io import save_json
 
 
@@ -339,3 +343,88 @@ def test_tool_smiles_lookup_falls_back_to_canonical_task_smiles(tmp_path: Path, 
     assert tools._resolve_tool_smiles("raw") == "canonical"
     assert tools._resolve_tool_smiles("canonical") == "canonical"
     assert tools._resolve_tool_smiles("unknown") == "unknown"
+
+
+def test_compare_similar_mols_defaults_to_retrieval_only_without_pair_bundles(tmp_path: Path):
+    feature_names = ["rdkit_pka__rdkit__MolWt", "fg_top_level__amine"]
+    train_df = pd.DataFrame(
+        [
+            {"rdkit_pka__rdkit__MolWt": 40.0, "fg_top_level__amine": 1.0},
+            {"rdkit_pka__rdkit__MolWt": 80.0, "fg_top_level__amine": 0.0},
+        ],
+        index=["POS", "NEG"],
+    )
+    query_df = pd.DataFrame(
+        [{"rdkit_pka__rdkit__MolWt": 50.0, "fg_top_level__amine": 1.0}],
+        index=["QUERY"],
+    )
+
+    class FakeFeatureSource:
+        def load(self, smiles_list):
+            rows = []
+            for smiles in smiles_list:
+                if smiles == "QUERY":
+                    rows.append(query_df.loc[smiles])
+                else:
+                    rows.append(train_df.loc[smiles])
+            return pd.DataFrame(rows).reset_index(drop=True)
+
+    class FakeRetriever:
+        def get_neighbors(self, *, desired_label, **kwargs):
+            if desired_label == 1:
+                return [NeighborRecord(smiles="POS", label=1, similarity=0.91, scaffold="pos_scaffold")]
+            return [NeighborRecord(smiles="NEG", label=0, similarity=0.82, scaffold="neg_scaffold")]
+
+    tools = TaskReasoningAgentTools.__new__(TaskReasoningAgentTools)
+    tools.task = "New_Task"
+    tools.feature_set_name = "core_pka_no_fr"
+    tools.manifest = {
+        "schema_version": "manifest_v1",
+        "bundle_paths": {},
+        "local_tool": {
+            "compare_mode": "retrieval_only",
+            "strict_cross_scaffold_pairs": True,
+            "top_term_k_per_neighbor": 8,
+            "dense_feature_names": ["rdkit_pka__rdkit__MolWt"],
+        },
+    }
+    tools.global_bundle = None
+    tools.pos_bundle = None
+    tools.neg_bundle = None
+    tools.compare_mode = "retrieval_only"
+    tools.cache_root = tmp_path / "similarity"
+    tools.tool_cache_root = tmp_path / "tool_cache"
+    tools.enable_tool_cache = False
+    tools.feature_source = FakeFeatureSource()
+    tools.retriever = FakeRetriever()
+    tools.label_semantics = {
+        0: {"option": "A", "text": "negative"},
+        1: {"option": "B", "text": "positive"},
+    }
+    tools.global_feature_columns = feature_names
+    tools.global_feature_index = {name: index for index, name in enumerate(feature_names)}
+    tools.global_feature_semantics = build_feature_semantics_map(feature_names)
+    tools.local_raw_feature_columns = feature_names
+    tools.local_feature_index = {name: index for index, name in enumerate(feature_names)}
+    tools.local_feature_semantics = build_feature_semantics_map(feature_names)
+    tools._smiles_index = {
+        "QUERY": [{"split": "valid", "label": 1, "scaffold": "query_scaffold"}],
+    }
+    tools._train_raw_df = train_df.reset_index(drop=True)
+    tools._train_raw_values = tools._train_raw_df.to_numpy(dtype=float)
+    tools._train_index_by_smiles = {"POS": 0, "NEG": 1}
+    tools._tool_payload_cache = {}
+    tools._compatible_tool_cache_path_cache = {}
+    tools._resolved_smiles_cache = {}
+    tools._tool_cache_namespace = "unused"
+
+    payload = tools.compare_similar_mols_payload("QUERY", neighbors_per_label=1)
+
+    assert payload["comparison_mode"] == "retrieval_only"
+    assert payload["local_prediction"] is None
+    assert payload["local_score"] is None
+    assert payload["positive_neighbors"][0]["neighbor_smiles"] == "POS"
+    assert payload["negative_neighbors"][0]["neighbor_smiles"] == "NEG"
+    assert "pair_score" not in payload["positive_neighbors"][0]
+    assert "pair_prediction" not in payload["positive_neighbors"][0]
+    assert payload["positive_neighbors"][0]["feature_comparisons"][0]["delta_value"] == 10.0

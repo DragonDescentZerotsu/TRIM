@@ -27,6 +27,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--feature-set-name", default=DEFAULT_AGENT_TOOL_FEATURE_SET_NAME)
     parser.add_argument("--dataset-root", default="data/processed/tdc_no_conflict_labels_salt_removed")
     parser.add_argument("--cache-root", default="data/cache/tdc_mol_fingerprints")
+    parser.add_argument(
+        "--feature-config",
+        action="append",
+        dest="feature_configs",
+        default=None,
+        help="Feature config path for retrieval-only manifests. Repeat for multiple configs.",
+    )
+    parser.add_argument(
+        "--compare-mode",
+        choices=("retrieval_only", "pair_ebm"),
+        default="retrieval_only",
+        help="Whether compare_similar_mols should only retrieve neighbors or also run pair EBM models.",
+    )
     parser.add_argument("--global-top-k", type=int, default=10)
     parser.add_argument("--local-top-term-k", type=int, default=8)
     parser.add_argument("--local-top-k-pos", type=int, default=3)
@@ -43,6 +56,8 @@ def main() -> int:
         feature_set_name=args.feature_set_name,
         dataset_root=args.dataset_root,
         cache_root=args.cache_root,
+        feature_config_paths=args.feature_configs,
+        compare_mode=args.compare_mode,
         global_top_k=args.global_top_k,
         local_top_term_k=args.local_top_term_k,
         local_top_k_pos=args.local_top_k_pos,

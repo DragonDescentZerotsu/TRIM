@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import hashlib
 import math
 from pathlib import Path
+import random
 
 import numpy as np
 
@@ -32,6 +34,83 @@ from trim.utils.paths import (
 
 LOCAL_EVIDENCE_STAGE = "local_evidence_only"
 DEFAULT_TOP_TERM_K_PER_NEIGHBOR = 8
+DEFAULT_RANDOM_TOP_TERM_MIN = 3
+DEFAULT_RANDOM_TOP_TERM_MAX = 6
+LOCAL_TERM_SELECTION_MODES = ("ranked_top_k", "random_k_ranked", "top_k_shuffled")
+
+
+def _validate_term_selection_config(
+    *,
+    top_term_k: int,
+    term_selection_mode: str,
+    random_top_term_min: int,
+    random_top_term_max: int,
+) -> None:
+    if term_selection_mode not in LOCAL_TERM_SELECTION_MODES:
+        raise ValueError(
+            f"Unsupported term_selection_mode={term_selection_mode!r}; "
+            f"expected one of {LOCAL_TERM_SELECTION_MODES}"
+        )
+    if int(top_term_k) < 1:
+        raise ValueError(f"top_term_k must be >= 1, got {top_term_k}")
+    if int(random_top_term_min) < 1:
+        raise ValueError(f"random_top_term_min must be >= 1, got {random_top_term_min}")
+    if int(random_top_term_max) < int(random_top_term_min):
+        raise ValueError(
+            "random_top_term_max must be >= random_top_term_min, got "
+            f"{random_top_term_max} < {random_top_term_min}"
+        )
+
+
+def _stable_rng(*, random_seed: int, parts: list[object]) -> random.Random:
+    payload = "|".join([str(int(random_seed)), *(str(part) for part in parts)])
+    digest = hashlib.sha256(payload.encode("utf-8")).digest()
+    seed = int.from_bytes(digest[:8], byteorder="big", signed=False)
+    return random.Random(seed)
+
+
+def _select_pair_term_indices(
+    *,
+    ranked_indices: list[int],
+    top_term_k: int,
+    term_selection_mode: str,
+    random_top_term_min: int,
+    random_top_term_max: int,
+    rng: random.Random | None,
+) -> tuple[list[int], dict[str, object]]:
+    if term_selection_mode == "ranked_top_k":
+        return ranked_indices[: int(top_term_k)], {
+            "mode": term_selection_mode,
+            "requested_top_term_k": int(top_term_k),
+            "selected_term_count": int(min(len(ranked_indices), int(top_term_k))),
+        }
+
+    if rng is None:
+        raise ValueError(f"term_selection_mode={term_selection_mode!r} requires a deterministic RNG")
+
+    if term_selection_mode == "random_k_ranked":
+        requested_count = rng.randint(int(random_top_term_min), int(random_top_term_max))
+        selected = ranked_indices[:requested_count]
+        return selected, {
+            "mode": term_selection_mode,
+            "requested_min_terms": int(random_top_term_min),
+            "requested_max_terms": int(random_top_term_max),
+            "sampled_term_count": int(requested_count),
+            "selected_term_count": int(len(selected)),
+            "preserves_ranked_order": True,
+        }
+
+    if term_selection_mode == "top_k_shuffled":
+        selected = list(ranked_indices[: int(top_term_k)])
+        rng.shuffle(selected)
+        return selected, {
+            "mode": term_selection_mode,
+            "requested_top_term_k": int(top_term_k),
+            "selected_term_count": int(len(selected)),
+            "preserves_ranked_order": False,
+        }
+
+    raise ValueError(f"Unsupported term_selection_mode={term_selection_mode!r}")
 
 
 def _sigmoid(value: float) -> float:
@@ -251,13 +330,25 @@ def _extract_top_pair_terms(
     term_contributions: np.ndarray,
     label_semantics: dict[int, dict[str, str]],
     top_term_k: int,
-) -> list[dict[str, object]]:
+    term_selection_mode: str,
+    random_top_term_min: int,
+    random_top_term_max: int,
+    rng: random.Random | None,
+) -> tuple[list[dict[str, object]], dict[str, object]]:
     non_nan_indices = [index for index, value in enumerate(term_contributions) if not math.isnan(float(value))]
     ranked_indices = sorted(non_nan_indices, key=lambda index: abs(float(term_contributions[index])), reverse=True)
-    selected_indices = ranked_indices[:top_term_k]
+    rank_by_index = {term_index: rank for rank, term_index in enumerate(ranked_indices, start=1)}
+    selected_indices, selection_payload = _select_pair_term_indices(
+        ranked_indices=ranked_indices,
+        top_term_k=top_term_k,
+        term_selection_mode=term_selection_mode,
+        random_top_term_min=random_top_term_min,
+        random_top_term_max=random_top_term_max,
+        rng=rng,
+    )
 
     terms: list[dict[str, object]] = []
-    for rank, term_index in enumerate(selected_indices, start=1):
+    for display_order, term_index in enumerate(selected_indices, start=1):
         raw_feature_name = raw_feature_columns[term_index]
         semantics = feature_semantics_map[raw_feature_name]
         base_value = neighbor_raw_row[raw_feature_name]
@@ -283,7 +374,8 @@ def _extract_top_pair_terms(
             "delta_value_text": delta_value_text,
             "contribution": contribution,
             "contribution_abs": float(abs(contribution)),
-            "contribution_rank": rank,
+            "contribution_rank": int(rank_by_index[term_index]),
+            "display_order": int(display_order),
             "supports_label": int(contribution_label["label"]),
             "supports_option": str(contribution_label["option"]),
             "supports_text": str(contribution_label["text"]),
@@ -308,7 +400,8 @@ def _extract_top_pair_terms(
         if delta_missing_reason is not None:
             term_payload["delta_value_missing_reason"] = delta_missing_reason
         terms.append(term_payload)
-    return terms
+    selection_payload["available_non_nan_term_count"] = int(len(ranked_indices))
+    return terms, selection_payload
 
 
 def _build_neighbor_evidence(
@@ -324,13 +417,17 @@ def _build_neighbor_evidence(
     feature_semantics_map: dict[str, dict[str, str]],
     label_semantics: dict[int, dict[str, str]],
     top_term_k: int,
+    term_selection_mode: str,
+    random_top_term_min: int,
+    random_top_term_max: int,
+    term_selection_rng: random.Random | None,
 ) -> dict[str, object]:
     pair_model_type = _pair_model_type(neighbor.label)
     pair_prediction = 1 if pair_score >= 0.5 else 0
     pair_prediction_probability = _pair_prediction_probability(pair_score, pair_prediction)
     teacher_confidence_margin = abs(pair_prediction_probability - 0.5)
     term_payload = _term_sum_payload(term_contributions, label_semantics)
-    top_pair_terms = _extract_top_pair_terms(
+    top_pair_terms, term_selection_payload = _extract_top_pair_terms(
         raw_feature_columns=raw_feature_columns,
         feature_semantics_map=feature_semantics_map,
         query_raw_row=query_raw_row,
@@ -338,6 +435,10 @@ def _build_neighbor_evidence(
         term_contributions=term_contributions,
         label_semantics=label_semantics,
         top_term_k=top_term_k,
+        term_selection_mode=term_selection_mode,
+        random_top_term_min=random_top_term_min,
+        random_top_term_max=random_top_term_max,
+        rng=term_selection_rng,
     )
     displayed_payload = _displayed_term_sum_payload(
         top_pair_terms=top_pair_terms,
@@ -373,6 +474,7 @@ def _build_neighbor_evidence(
         "teacher_aligned_evidence_strength": teacher_aligned_evidence_strength,
         **displayed_payload,
         "displayed_teacher_agreement": bool(displayed_teacher_agreement),
+        "term_selection": term_selection_payload,
         "top_pair_terms": top_pair_terms,
     }
 
@@ -779,6 +881,8 @@ def _build_local_summary_middle_draft(
 def _extract_neighbor_group(
     *,
     model_bundle: dict[str, object],
+    split: str,
+    sample_index: int,
     query_smiles: str,
     query_label: int,
     query_raw_row,
@@ -790,6 +894,10 @@ def _extract_neighbor_group(
     feature_semantics_map: dict[str, dict[str, str]],
     label_semantics: dict[int, dict[str, str]],
     top_term_k: int,
+    term_selection_mode: str,
+    random_top_term_min: int,
+    random_top_term_max: int,
+    random_seed: int,
 ) -> tuple[list[dict[str, object]], list[float], list[float]]:
     if not neighbors:
         return [], [], []
@@ -811,6 +919,21 @@ def _extract_neighbor_group(
     evidence_rows: list[dict[str, object]] = []
     for row_index, neighbor in enumerate(valid_neighbors):
         neighbor_raw_row = train_raw_df.iloc[neighbor_indices[row_index]]
+        term_selection_rng = None
+        if term_selection_mode != "ranked_top_k":
+            term_selection_rng = _stable_rng(
+                random_seed=random_seed,
+                parts=[
+                    model_bundle.get("task", ""),
+                    split,
+                    sample_index,
+                    query_smiles,
+                    neighbor.smiles,
+                    neighbor.label,
+                    row_index,
+                    model_bundle.get("model_type", ""),
+                ],
+            )
         evidence_rows.append(
             _build_neighbor_evidence(
                 query_smiles=query_smiles,
@@ -824,6 +947,10 @@ def _extract_neighbor_group(
                 feature_semantics_map=feature_semantics_map,
                 label_semantics=label_semantics,
                 top_term_k=top_term_k,
+                term_selection_mode=term_selection_mode,
+                random_top_term_min=random_top_term_min,
+                random_top_term_max=random_top_term_max,
+                term_selection_rng=term_selection_rng,
             )
         )
 
@@ -857,12 +984,22 @@ def extract_local_evidence_for_split(
     top_k_pos: int = 3,
     top_k_neg: int = 3,
     top_term_k: int = DEFAULT_TOP_TERM_K_PER_NEIGHBOR,
+    term_selection_mode: str = "ranked_top_k",
+    random_top_term_min: int = DEFAULT_RANDOM_TOP_TERM_MIN,
+    random_top_term_max: int = DEFAULT_RANDOM_TOP_TERM_MAX,
+    random_seed: int = 0,
     strict_cross_scaffold_pairs: bool = True,
     sample_indices: list[int] | None = None,
     max_samples: int | None = None,
     prompt_root: str | Path | None = None,
     output_dir: str | Path | None = None,
 ) -> dict[str, object]:
+    _validate_term_selection_config(
+        top_term_k=top_term_k,
+        term_selection_mode=term_selection_mode,
+        random_top_term_min=random_top_term_min,
+        random_top_term_max=random_top_term_max,
+    )
     pos_bundle_path = Path(pos_bundle_path)
     neg_bundle_path = Path(neg_bundle_path)
     pos_bundle = load_pickle(pos_bundle_path)
@@ -927,6 +1064,8 @@ def extract_local_evidence_for_split(
 
         pos_evidence, pos_scores, pos_similarities = _extract_neighbor_group(
             model_bundle=pos_bundle,
+            split=split,
+            sample_index=sample_index,
             query_smiles=query_smiles,
             query_label=query_label,
             query_raw_row=query_raw_row,
@@ -938,9 +1077,15 @@ def extract_local_evidence_for_split(
             feature_semantics_map=feature_semantics_map,
             label_semantics=label_semantics,
             top_term_k=top_term_k,
+            term_selection_mode=term_selection_mode,
+            random_top_term_min=random_top_term_min,
+            random_top_term_max=random_top_term_max,
+            random_seed=random_seed,
         )
         neg_evidence, neg_scores, neg_similarities = _extract_neighbor_group(
             model_bundle=neg_bundle,
+            split=split,
+            sample_index=sample_index,
             query_smiles=query_smiles,
             query_label=query_label,
             query_raw_row=query_raw_row,
@@ -952,6 +1097,10 @@ def extract_local_evidence_for_split(
             feature_semantics_map=feature_semantics_map,
             label_semantics=label_semantics,
             top_term_k=top_term_k,
+            term_selection_mode=term_selection_mode,
+            random_top_term_min=random_top_term_min,
+            random_top_term_max=random_top_term_max,
+            random_seed=random_seed,
         )
         aggregated = aggregate_local_scores(
             pos_scores=pos_scores,
@@ -990,6 +1139,13 @@ def extract_local_evidence_for_split(
                 "local_score": local_score,
                 "s_pos": s_pos,
                 "s_neg": s_neg,
+                "local_term_selection": {
+                    "mode": str(term_selection_mode),
+                    "top_term_k": int(top_term_k),
+                    "random_top_term_min": int(random_top_term_min),
+                    "random_top_term_max": int(random_top_term_max),
+                    "random_seed": int(random_seed),
+                },
                 "keep_for_reasoning": True,
                 "drop_reason": None,
                 "local_per_neighbor_decision_evidence": {
@@ -1037,6 +1193,13 @@ def extract_local_evidence_for_split(
         "dataset_root": serialize_project_path(Path(dataset_root)),
         "cache_root": serialize_project_path(Path(cache_root)),
         "feature_set_name": str(pos_bundle["feature_set_name"]),
+        "local_term_selection": {
+            "mode": str(term_selection_mode),
+            "top_term_k": int(top_term_k),
+            "random_top_term_min": int(random_top_term_min),
+            "random_top_term_max": int(random_top_term_max),
+            "random_seed": int(random_seed),
+        },
         "num_records": int(len(records)),
         "sample_indices": [int(record["sample_index"]) for record in records],
         "records": records,

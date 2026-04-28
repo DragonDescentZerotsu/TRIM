@@ -62,8 +62,22 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def _looks_like_variant_evidence_dir(global_dir: str, local_dir: str) -> bool:
+    legacy_global_fragment = "outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan"
+    legacy_local_fragment = "outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts"
+    return legacy_global_fragment not in str(global_dir) or legacy_local_fragment not in str(local_dir)
+
+
 def main() -> int:
     args = parse_args()
+    if args.output_dir == "outputs/reasoning_rewrite_candidates" and _looks_like_variant_evidence_dir(
+        args.global_dir,
+        args.local_dir,
+    ):
+        raise ValueError(
+            "Variant evidence directories were requested, but --output-dir still points to the generic legacy "
+            "candidate cache. Choose a variant-specific candidate output directory."
+        )
     manifest = build_rewrite_candidates(
         global_dir=args.global_dir,
         local_dir=args.local_dir,

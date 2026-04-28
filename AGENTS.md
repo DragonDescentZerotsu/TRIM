@@ -186,6 +186,34 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
           - `outputs/reasoning_evidence/global/all_tasks_core_pka_no_fr_keep_nan`
           - `outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts`
         - 并在两个根目录下各自写出 `summary.json`
+    - 已新增 local reasoning evidence 多样性派生脚本：
+      - `scripts/derive_local_evidence_variants.py`
+        - 作用：从已有 top-8 local evidence root 派生新版本，不重新跑 pair EBM；只改写每个 neighbor 的 `top_pair_terms`、`local_per_neighbor_middle_draft`、`local_summary_middle_draft` 和 displayed evidence strength
+        - 默认输入：
+          - `outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts`
+        - 已支持两个 variant：
+          - `random_k_ranked`：每个 neighbor 用 deterministic seed 随机保留 top `3..6` 个 pair-term feature text hints，保留原 rank 顺序
+          - `top_k_shuffled`：每个 neighbor 固定保留 top `6` 个 pair-term feature text hints，但显示顺序随机；`contribution_rank` 仍保留原始贡献排名，另写 `display_order`
+        - 当前已用 seed `17` 派生并全量校验完成两套产物：
+          - `outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts_random_k_3_6_seed17`
+            - `21254` samples，`48` 个 task/split manifest；全量 neighbor term count 只出现 `[3, 4, 5, 6]`
+          - `outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts_top6_shuffled_seed17`
+            - `21254` samples，`48` 个 task/split manifest；每个 neighbor 固定 `6` 个 term，显示顺序已打乱
+        - 复现命令：
+          - ```bash
+            /data1/tianang/anaconda3/condabin/conda run -n vllm python scripts/derive_local_evidence_variants.py \
+              --variant both \
+              --random-seed 17 \
+              --random-top-term-min 3 \
+              --random-top-term-max 6 \
+              --shuffled-top-term-k 6
+            ```
+        - 注意：后续如果用这些 variant evidence 跑 rewrite / local-neighbor SFT，必须显式指定独立 cache root，不能复用默认 candidate/output：
+          - `--local-root outputs/reasoning_evidence/local/all_tasks_core_pka_no_fr_counts_random_k_3_6_seed17`
+          - `--candidate-root outputs/reasoning_rewrite_candidates/no_step_random_k_3_6_seed17`
+          - `--output-root outputs/reasoning_rewrite_outputs_neighbor_level_no_step_random_k_3_6_seed17`
+          - 或者把 `random_k_3_6_seed17` 换成 `top6_shuffled_seed17`
+        - 相关保护已接到脚本里：当 local/global evidence root 指向非默认 variant，但 filter/candidate/rewrite output root 仍使用默认 cache 时，会直接报错，避免覆盖旧 cache
     - 已新增 reasoning rewrite prompt templates：
       - `prompt_templates/reasoning_sft/rewrite_global_reasoning.md`
       - `prompt_templates/reasoning_sft/rewrite_local_reasoning.md`
@@ -288,16 +316,26 @@ If you are on `node002` or `node001`, default to the `vllm` conda environment wh
         - 默认 candidate root：`outputs/reasoning_rewrite_candidates/no_step`
         - 默认 rewrite output root：`outputs/reasoning_rewrite_outputs_neighbor_level_no_step`
         - 支持 `--mode all|local_neighbor|local_summary`
+          - `local_neighbor` 只生成逐 neighbor rewrite；`local_summary` 只消费已有逐 neighbor rewrite 并生成 summary；`all` 会先跑逐 neighbor 再跑 summary
         - 支持 `--output-provider` 和 `--output-model`，可在请求走 `openai` 时继续把结果写到既有的 `openrouter/<model_slug>/...` 目录下续跑
+        - 支持 `--neighbor-output-root` / `--neighbor-output-provider` / `--neighbor-output-model`，用于 `mode=local_summary` 时从旧目录复用已有 per-neighbor rewrite，只把新的 summary 写到 `--output-root`
+        - 支持 `--summary-source-neighbor-indices` 参数化 summary 使用哪些原始 neighbor；例如 `1,2,4,5` 表示每个 label 只用前 2 个 neighbor，并在 summary prompt/SFT 中连续重编号成 `Neighbor 1..4`
         - `provider=openai` 时会对 chat completion 使用 `max_completion_tokens`，不再发送 OpenAI `gpt-5.4-mini` 不接受的 `max_tokens`
         - 默认 `--teacher-filter local_correct`，只为 local teacher 预测正确的样本生成/消费 candidates，避免把 `global_only_correct` 样本送去 local-only rewrite 浪费 API。
         - sample 级并发；单个 sample 内固定顺序为 `neighbor_01..06 -> local_summary`
         - 不加 `--overwrite` 时会复用并校验已有输出；失败不会中断整 task，会写入 manifest。
         - 每个 task manifest：`outputs/reasoning_rewrite_outputs_neighbor_level_no_step/<provider>/<model_slug>/local_neighbor_summary/<split>/<task>/manifest.json`
       - per-neighbor rewrite 的 hard filter 只禁止 `Step [0-9]+` 这类机械编号；自然 prose 中自发出现的 `Finally` 可以接受。
-      - summary rewrite 不输入 legacy `local_summary_middle_draft`；只聚合 6 个 per-neighbor rewrite outputs、similarity、neighbor label、neighbor-level prediction、evidence strength 和 final local teacher prediction。
-      - summary prompt/checker 会显式校验 exact neighbor-level vote count，避免把 `5:1` 写成 `4:2` 这类聚合错误。
-      - SFT builder 已支持 `--sft-mode local_neighbor_only`，会把 6 个 `local_neighbor` rewrite 和 1 个 `local_summary` rewrite 拼成 local-only transcript。
+      - summary rewrite 不输入 legacy `local_summary_middle_draft`；只聚合选中的 per-neighbor rewrite outputs、similarity、neighbor label、neighbor-level prediction、evidence strength 和 final local teacher prediction。
+        - 注意：`LOCAL_TEACHER_PREDICTION_SEMANTICS` 仍来自原 local evidence 里的 teacher prediction；4-neighbor summary 只改变 summary 输入和展示，不重新计算 local teacher。
+      - summary prompt/checker 会按选中的 display neighbors 显式校验 exact neighbor-level vote count，避免把 `5:1` 写成 `4:2` 或把 `4:0` 写成纯 “unanimous”。
+      - 4-neighbor summary 相关实现入口：
+        - `src/trim/reasoning/rewrite/neighbor_selection.py`：解析 `--summary-source-neighbor-indices`、建立 source->display 映射、把旧 per-neighbor 文本中的 `Neighbor 4/5` 改写成 display `Neighbor 3/4`
+        - `src/trim/reasoning/rewrite/rendering.py`：`render_rewrite_prompt(..., mode="local_summary", summary_source_neighbor_indices=...)` 只渲染选中的 neighbor block 和对应 vote count
+        - `scripts/run_local_summary_rewrite_examples.py` / `scripts/check_local_summary_rewrite_examples.py`：单样本 summary 运行与检查，均支持 `--summary-source-neighbor-indices`
+      - SFT builder 已支持 `--sft-mode local_neighbor_only` 和 `--summary-source-neighbor-indices`，会把选中的 `local_neighbor` rewrite 和 1 个 `local_summary` rewrite 拼成 local-only transcript；`1,2,4,5` 时 tool result 使用 `neighbors_per_label=2`，并只展示 `Neighbor 1..4`。
+        - 当前 4-neighbor gpt-oss-120b 版本源数据：`data/sft/agent_reasoning_messages_4nbr_gptoss120b/vllm/gpt-oss-120b/local_neighbor_only/train`
+        - HF public 导出：`data/sft/agent_reasoning_messages_4nbr_gptoss120b/hf_public/vllm/gpt-oss-120b-local-neighbor-only`
     - 已新增 task-level user prompt 资产，供后续 agent `messages` 数据直接复用：
       - `src/trim/reasoning/task_user_prompts.py`
         - 统一加载/渲染每个 task 的标准 user message template

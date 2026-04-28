@@ -43,7 +43,7 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Transcript assembly mode. 'full' keeps the current global+local+hybrid format; "
             "'global_only' and 'local_only' build ablation datasets from samples where that teacher is correct; "
-            "'local_neighbor_only' builds local-only transcripts from six per-neighbor rewrites plus a summary rewrite."
+            "'local_neighbor_only' builds local-only transcripts from selected per-neighbor rewrites plus a summary rewrite."
         ),
     )
     parser.add_argument("--task", action="append", default=None, help="Optional task name. Repeat for multiple tasks.")
@@ -70,6 +70,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--feature-set-name", default=DEFAULT_AGENT_TOOL_FEATURE_SET_NAME)
     parser.add_argument("--manifest-root", default=str(DEFAULT_AGENT_TOOL_MANIFEST_ROOT))
     parser.add_argument("--cache-root", default=str(DEFAULT_TOOL_CACHE_ROOT))
+    parser.add_argument(
+        "--summary-source-neighbor-indices",
+        default="1,2,3,4,5,6",
+        help=(
+            "For sft-mode=local_neighbor_only, comma-separated original per-neighbor indices to include. "
+            "Use 1,2,4,5 for two neighbors per label with display labels Neighbor 1..4."
+        ),
+    )
     parser.add_argument(
         "--max-concurrency",
         type=int,
@@ -109,6 +117,7 @@ def main() -> int:
         cache_root=args.cache_root,
         max_concurrency=args.max_concurrency,
         skip_existing=not args.overwrite,
+        summary_source_neighbor_indices=args.summary_source_neighbor_indices,
     )
     print(json.dumps(summary, indent=2, ensure_ascii=False))
     return 0

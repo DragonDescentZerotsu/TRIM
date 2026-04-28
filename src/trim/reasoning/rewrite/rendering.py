@@ -4,6 +4,12 @@ from pathlib import Path
 from typing import Any
 
 from trim.reasoning.rewrite.candidates import REWRITE_CANDIDATE_SCHEMA_VERSION
+from trim.reasoning.rewrite.neighbor_selection import (
+    display_index_by_source_index,
+    format_neighbor_names,
+    parse_source_neighbor_indices,
+    relabel_neighbor_mentions,
+)
 from trim.utils.io import load_json
 from trim.utils.paths import PROJECT_ROOT, resolve_project_path
 
@@ -93,6 +99,24 @@ def _format_neighbor_vote_count(votes_by_option: dict[str, list[int]]) -> str:
     )
 
 
+def _format_selected_neighbor_comparisons(rows: list[dict[str, str]]) -> str:
+    blocks: list[str] = []
+    for row in rows:
+        blocks.append(
+            "\n".join(
+                [
+                    f"Neighbor {row['display_index']}",
+                    f"Neighbor label: {row['label_semantics']}",
+                    f"Similarity to query: {row['similarity']}",
+                    f"Neighbor-level prediction: {row['prediction_semantics']}",
+                    f"Evidence strength: {row['evidence_strength']}",
+                    f"Reasoning: {row['reasoning']}",
+                ]
+            )
+        )
+    return "\n\n".join(blocks)
+
+
 def _flatten_local_neighbors(payload: dict[str, Any]) -> list[dict[str, Any]]:
     similarities = list(payload["neighbor_similarities"])
     drafts = dict(payload["local_per_neighbor_middle_draft"])
@@ -154,6 +178,7 @@ def render_rewrite_prompt(
     template_root: str | Path | None = None,
     neighbor_index: int | None = None,
     local_neighbor_outputs: dict[int, dict[str, Any]] | None = None,
+    summary_source_neighbor_indices: object = None,
     global_reasoning: str | None = None,
     local_reasoning: str | None = None,
     hybrid_reasoning: str | None = None,
@@ -226,34 +251,50 @@ def render_rewrite_prompt(
         payload = candidate_payload["local_per_neighbor_rewrite_input"]
         local_payload = candidate_payload["local_rewrite_input"]
         neighbors_by_index = _local_neighbors_by_index(payload)
+        source_neighbor_indices = parse_source_neighbor_indices(summary_source_neighbor_indices)
+        source_to_display = display_index_by_source_index(source_neighbor_indices)
         replacements = {
             "POSITIVE_LABEL_SEMANTICS": str(payload["positive_label_semantics"]),
             "NEGATIVE_LABEL_SEMANTICS": str(payload["negative_label_semantics"]),
             "LOCAL_TEACHER_PREDICTION_SEMANTICS": str(local_payload["local_prediction_semantics"]),
+            "SELECTED_NEIGHBOR_COUNT": str(len(source_neighbor_indices)),
+            "SELECTED_NEIGHBOR_NAMES": format_neighbor_names(len(source_neighbor_indices)),
         }
         votes_by_option: dict[str, list[int]] = {"A": [], "B": []}
-        for index in range(1, 7):
-            if index not in neighbors_by_index:
-                raise ValueError(f"local_summary missing candidate neighbor {index}")
-            if index not in local_neighbor_outputs:
-                raise ValueError(f"local_summary missing neighbor rewrite output {index}")
-            neighbor = neighbors_by_index[index]
-            output_payload = local_neighbor_outputs[index]
+        comparison_rows: list[dict[str, str]] = []
+        for display_index, source_index in enumerate(source_neighbor_indices, start=1):
+            if source_index not in neighbors_by_index:
+                raise ValueError(f"local_summary missing candidate neighbor {source_index}")
+            if source_index not in local_neighbor_outputs:
+                raise ValueError(f"local_summary missing neighbor rewrite output {source_index}")
+            neighbor = neighbors_by_index[source_index]
+            output_payload = local_neighbor_outputs[source_index]
             parsed_output = output_payload.get("parsed_output", output_payload)
             if not isinstance(parsed_output, dict):
-                raise ValueError(f"Neighbor {index} output must be a JSON object")
+                raise ValueError(f"Neighbor {source_index} output must be a JSON object")
             reasoning = str(parsed_output.get("reasoning", "") or "").strip()
             if not reasoning:
-                raise ValueError(f"Neighbor {index} output is missing reasoning")
-            votes_by_option[_prediction_option_from_output(parsed_output)].append(index)
-            replacements[f"NEIGHBOR_{index}_LABEL_SEMANTICS"] = str(neighbor["neighbor_label_semantics"])
-            replacements[f"NEIGHBOR_{index}_SIMILARITY"] = _format_similarity(neighbor["neighbor_similarity"])
-            replacements[f"NEIGHBOR_{index}_PREDICTION_SEMANTICS"] = _prediction_semantics_from_output(
-                parsed_output
+                raise ValueError(f"Neighbor {source_index} output is missing reasoning")
+            votes_by_option[_prediction_option_from_output(parsed_output)].append(display_index)
+            relabeled_reasoning = relabel_neighbor_mentions(
+                reasoning,
+                source_to_display=source_to_display,
             )
-            replacements[f"NEIGHBOR_{index}_EVIDENCE_STRENGTH"] = str(parsed_output["evidence_strength"])
-            replacements[f"NEIGHBOR_{index}_REASONING"] = reasoning
+            comparison_rows.append(
+                {
+                    "display_index": str(display_index),
+                    "source_index": str(source_index),
+                    "label_semantics": str(neighbor["neighbor_label_semantics"]),
+                    "similarity": _format_similarity(neighbor["neighbor_similarity"]),
+                    "prediction_semantics": _prediction_semantics_from_output(parsed_output),
+                    "evidence_strength": str(parsed_output["evidence_strength"]),
+                    "reasoning": relabeled_reasoning,
+                }
+            )
         replacements["NEIGHBOR_PREDICTION_VOTE_COUNT"] = _format_neighbor_vote_count(votes_by_option)
+        replacements["SELECTED_NEIGHBOR_COMPARISONS"] = _format_selected_neighbor_comparisons(
+            comparison_rows
+        )
         return _replace_slots(template_text, replacements)
 
     if mode == "hybrid":

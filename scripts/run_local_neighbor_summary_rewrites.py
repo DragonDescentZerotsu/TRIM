@@ -75,6 +75,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--candidate-root", default=DEFAULT_CANDIDATE_ROOT)
     parser.add_argument("--output-root", default=DEFAULT_OUTPUT_ROOT)
     parser.add_argument("--template-root", default="prompt_templates/reasoning_sft")
+    parser.add_argument("--neighbor-output-root", default=None)
+    parser.add_argument("--neighbor-output-provider", default=None)
+    parser.add_argument("--neighbor-output-model", default=None)
+    parser.add_argument(
+        "--summary-source-neighbor-indices",
+        default="1,2,3,4,5,6",
+        help=(
+            "Comma-separated original per-neighbor indices to include in the summary. "
+            "Use 1,2,4,5 for two neighbors per label with display labels Neighbor 1..4."
+        ),
+    )
     parser.add_argument(
         "--skip-candidate-build",
         action="store_true",
@@ -103,6 +114,25 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dotenv-path", default=".env")
     parser.add_argument("--overwrite", action="store_true", help="Re-run even if result JSON already exists")
     return parser.parse_args()
+
+
+def _variant_input_requested(args: argparse.Namespace) -> bool:
+    return args.global_root != DEFAULT_GLOBAL_ROOT or args.local_root != DEFAULT_LOCAL_ROOT
+
+
+def _guard_variant_cache_roots(args: argparse.Namespace) -> None:
+    if not _variant_input_requested(args):
+        return
+    still_default = []
+    if args.candidate_root == DEFAULT_CANDIDATE_ROOT:
+        still_default.append("--candidate-root")
+    if args.output_root == DEFAULT_OUTPUT_ROOT:
+        still_default.append("--output-root")
+    if still_default:
+        raise ValueError(
+            "Variant evidence roots were requested, but these downstream cache roots still point to legacy defaults: "
+            f"{', '.join(still_default)}. Choose variant-specific candidate and rewrite output roots."
+        )
 
 
 def _resolve_tasks(*, global_root: str | Path, split: str, requested_tasks: list[str] | None) -> list[str]:
@@ -246,6 +276,10 @@ def _run_candidate(
     overwrite: bool,
     output_provider: str | None = None,
     output_model: str | None = None,
+    neighbor_output_root: str | Path | None = None,
+    neighbor_output_provider: str | None = None,
+    neighbor_output_model: str | None = None,
+    summary_source_neighbor_indices: object = None,
 ) -> dict[str, Any]:
     candidate_payload = load_json(candidate_path)
     task = str(candidate_payload["task"])
@@ -294,14 +328,25 @@ def _run_candidate(
             )
 
     if mode in {"all", "local_summary"}:
+        if neighbor_outputs:
+            resolved_neighbor_output_root = output_root
+            resolved_neighbor_output_provider = str(output_provider or llm_config.provider)
+            resolved_neighbor_output_model = str(output_model or llm_config.model)
+        else:
+            resolved_neighbor_output_root = neighbor_output_root or output_root
+            resolved_neighbor_output_provider = str(
+                neighbor_output_provider or output_provider or llm_config.provider
+            )
+            resolved_neighbor_output_model = str(neighbor_output_model or output_model or llm_config.model)
         if not neighbor_outputs:
             neighbor_outputs = _load_neighbor_outputs(
-                root=output_root,
-                provider=str(output_provider or llm_config.provider),
-                model=str(output_model or llm_config.model),
+                root=resolved_neighbor_output_root,
+                provider=resolved_neighbor_output_provider,
+                model=resolved_neighbor_output_model,
                 split=split,
                 task=task,
                 sample_index=sample_index,
+                source_neighbor_indices=summary_source_neighbor_indices,
             )
         run_one_summary_rewrite(
             candidate_payload=candidate_payload,
@@ -309,13 +354,16 @@ def _run_candidate(
             neighbor_outputs=neighbor_outputs,
             llm_config=llm_config,
             output_root=output_root,
-            neighbor_output_root=output_root,
+            neighbor_output_root=resolved_neighbor_output_root,
             template_root=template_root,
             overwrite=overwrite,
             max_retries=max_retries,
             retry_delay_s=retry_delay_s,
             output_provider=output_provider,
             output_model=output_model,
+            neighbor_output_provider=resolved_neighbor_output_provider,
+            neighbor_output_model=resolved_neighbor_output_model,
+            source_neighbor_indices=summary_source_neighbor_indices,
         )
         rows.append(
             {
@@ -371,6 +419,10 @@ def run_task_batch(
     overwrite: bool,
     output_provider: str | None = None,
     output_model: str | None = None,
+    neighbor_output_root: str | Path | None = None,
+    neighbor_output_provider: str | None = None,
+    neighbor_output_model: str | None = None,
+    summary_source_neighbor_indices: object = None,
 ) -> dict[str, Any]:
     candidate_manifest, candidate_paths = _build_or_load_candidates(
         task=task,
@@ -404,6 +456,10 @@ def run_task_batch(
                 overwrite=overwrite,
                 output_provider=output_provider,
                 output_model=output_model,
+                neighbor_output_root=neighbor_output_root,
+                neighbor_output_provider=neighbor_output_provider,
+                neighbor_output_model=neighbor_output_model,
+                summary_source_neighbor_indices=summary_source_neighbor_indices,
             )
         except Exception as exc:
             sample_index = int(path.stem.split("_")[-1])
@@ -455,6 +511,12 @@ def run_task_batch(
         "candidate_manifest": candidate_manifest,
         "candidate_root": serialize_project_path(resolve_project_path(candidate_root)),
         "output_root": serialize_project_path(resolve_project_path(output_root)),
+        "neighbor_output_root": serialize_project_path(
+            resolve_project_path(neighbor_output_root or output_root)
+        ),
+        "neighbor_output_provider": str(neighbor_output_provider or output_provider or llm_config.provider),
+        "neighbor_output_model": str(neighbor_output_model or output_model or llm_config.model),
+        "summary_source_neighbor_indices": str(summary_source_neighbor_indices),
         "teacher_filter": str(teacher_filter),
         "num_candidates": int(len(candidate_paths)),
         "max_concurrency": int(resolved_max_concurrency),
@@ -481,6 +543,7 @@ def run_task_batch(
 
 def main() -> int:
     args = parse_args()
+    _guard_variant_cache_roots(args)
     llm_config = build_llm_request_config(
         provider=args.provider,
         model=args.model,
@@ -518,6 +581,10 @@ def main() -> int:
             overwrite=args.overwrite,
             output_provider=args.output_provider,
             output_model=args.output_model,
+            neighbor_output_root=args.neighbor_output_root,
+            neighbor_output_provider=args.neighbor_output_provider,
+            neighbor_output_model=args.neighbor_output_model,
+            summary_source_neighbor_indices=args.summary_source_neighbor_indices,
         )
         summaries.append(summary)
 
@@ -535,6 +602,14 @@ def main() -> int:
         "retry_delay_s": float(args.retry_delay_s),
         "candidate_root": serialize_project_path(resolve_project_path(args.candidate_root)),
         "output_root": serialize_project_path(resolve_project_path(args.output_root)),
+        "neighbor_output_root": serialize_project_path(
+            resolve_project_path(args.neighbor_output_root or args.output_root)
+        ),
+        "neighbor_output_provider": str(
+            args.neighbor_output_provider or args.output_provider or llm_config.provider
+        ),
+        "neighbor_output_model": str(args.neighbor_output_model or args.output_model or llm_config.model),
+        "summary_source_neighbor_indices": str(args.summary_source_neighbor_indices),
         "teacher_filter": str(args.teacher_filter),
         "summaries": summaries,
     }
